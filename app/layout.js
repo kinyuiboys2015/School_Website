@@ -34,42 +34,42 @@ export const metadata = {
   metadataBase: new URL("https://kinyui boyssenior.school"),
 
   title: {
-    default: "A.I.C kinyui boys Senior School",
+    default: "S.A kinyui boys Senior School",
     template: "%s | kinyui boys Senior School",
   },
 
   description:
-    "The official website of A.I.C kinyui boys Senior School.",
+    "The official website of S.A kinyui boys Senior School",
   
 "keywords": [
     // Core Names & Official Identity
-    "AIC kinyui boys sec School",
-    "AIC katz High School",
-    "AIC Katz High School",
+    "SA kinyui boys sec School",
+    "SA  High School",
+    "SA Kinyui High School",
     "kinyui boys High School",
     "kinyui boys boarding School",
-    "AIC kinyui boys High School",
-    "A.I.C kinyui boys High School",
-    "AIC kinyui boys High School",
-    "AIC kinyui boys High School",
+    "SA kinyui boys High School",
+    "S.A kinyui boys High School",
+    "SA kinyui boys High School",
+    "SA kinyui boys High School",
 
     "kinyui boys Senior High School",
     "kinyui boys Secondary School",
-    "AIC kinyui boys Secondary School",
-    "AIC kinyui boys Senior High",
-    "AIC Katz",
-    "AIC kinyui boys",
-    "A.I.C kinyui boys",
-    "Katz High School",
-    "Katz Senior High School",
+    "SA kinyui boys Secondary School",
+    "SA kinyui boys Senior High",
+    "SA Kinyui",
+    "SA kinyui boys",
+    "S.A kinyui boys",
+    "Kinyui High School",
+    "Kinyui Senior High School",
     "kinyui boys School",
     "kinyui boys Senior School",
-    "Katz School",
-    "Katz",
+    "Kinyui School",
+    "Kinyui",
 
     // Institutional Specifics (New & Essential)
     "kinyui boys Boarding School",
-    "AIC Sponsored Schools Machakos",
+    "SA Sponsored Schools Machakos",
     "kinyui boys County Secondary School",
     "kinyui boys 6-stream enrollment school",
     "God-fearing citizens kinyui boys", // From school mission
@@ -114,26 +114,25 @@ export const metadata = {
     "kinyui boys High School County Boarding",
     "kinyui boys High School Matungulu Sub-county",
     "kinyui boys High School Machakos Area",
-    "kinyui boys High School Angaza Technology Literacy Center",
+    "kinyui boys High School Technology Literacy Center",
     "kinyui boys High School God-fearing Citizens",
     "kinyui boys High School Fully Empowered Learners",
     "kinyui boys High School Since 1976",
 
     // Technical & Partners (SEO & Verification)
-    "Angaza Technology Literacy Center kinyui boys",
     "kinyui boys school computer lab",
     "kinyui boys digital learning portal",
 
     // SEO Misspellings & Slang
-    "Katwanya school",
-    "Katanyaa school",
-    "Katz senior school",
-    "Katwanya high",
+    "kunyui sec school",
+    "kinui school",
+    "Kinyui senior school",
+    "kiyui high",
     "kinyui boys sec",
     "kinyui boys boys and girls"
   ],
 
-  authors: [{ name: "A.I.C kinyui boys Senior School" }],
+  authors: [{ name: "S.A kinyui boys Senior School" }],
   
   alternates: {
     canonical: "/",
@@ -141,7 +140,7 @@ export const metadata = {
 
   /* Open Graph (Social Media Sharing) */
   openGraph: {
-    title: "A.I.C kinyui boys School",
+    title: "S.A kinyui boys School",
     description: "Official school website.",
     url: "https://kinyui boyssenior.school",
     siteName: "kinyui boys Senior School",
@@ -152,7 +151,7 @@ export const metadata = {
         url: "/seo/kinyui.png",
         width: 1200,
         height: 630,
-        alt: "A.I.C kinyui boys Senior School",
+        alt: "S.A kinyui boys Senior School",
       },
     ],
   },
@@ -160,7 +159,7 @@ export const metadata = {
   /* Twitter Card */
   twitter: {
     card: "summary_large_image",
-    title: "A.I.C kinyui boys Senior School",
+    title: "S.A kinyui boys Senior School",
     description: "Empowering students through education and faith in Machakos County.",
     images: ["/seo/kinyui.png"],
   },
@@ -196,11 +195,11 @@ export default function RootLayout({ children }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "School",
-    "name": "A.I.C kinyui boys Senior School",
+    "name": "S.A kinyui boys Senior School",
     "alternateName": "kinyui boys Senior School",
-    "url": "https://kinyui boyssenior.school",
-    "logo": "https://kinyui boyssenior.school/seo/kinyui.png",
-    "image": "https://kinyui boyssenior.school/seo/kinyui.png",
+    "url": "https://kinyuiboyssenior.school",
+    "logo": "https://kinyuiboyssenior.school/seo/kinyui.png",
+    "image": "https://kinyuiboyssenior.school/seo/kinyui.png",
     "description": "A public Senior school in Matungulu, Machakos County, Kenya.",
     "address": {
       "@type": "PostalAddress",
@@ -210,11 +209,11 @@ export default function RootLayout({ children }) {
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": "-1.2825", // Optional: replace with your actual GPS coordinates
-      "longitude": "37.2618"
+      "latitude": "-1.20826", // Optional: replace with your actual GPS coordinates
+      "longitude": "37.32415"
     },
-    "hasMap": "https://www.google.com/maps?q=kinyui boys+Secondary+School", 
-    "telephone": "+254 710 894 145", // Update with official school phone
+    "hasMap": "https://maps.app.goo.gl/TEkuDUZZnXfaE1YC8", 
+    "telephone": "+254 733 587223", // Update with official school phone
     "priceRange": "N/A"
   };
 
