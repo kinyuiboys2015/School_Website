@@ -50,4 +50,5 @@ A modern, responsive web application for managing school assignments with beauti
 1. **Clone the repository**
    ```bash
    git clone https://github.com/Emmanuel10701/Katz.git
-   cd Katz# Katwanyaa Senior School Website
+   cd Katz# kinyui boys Senior School Website
+# KinyuiSenior
