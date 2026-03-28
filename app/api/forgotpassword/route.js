@@ -52,7 +52,7 @@ export async function POST(req) {
       },
     });
 
-    const baseUrl = 'https://kinyuiboyssenior.school';
+    const baseUrl = 'https://kinyui-senior.vercel.app';
     
     const resetLink = `${baseUrl}/pages/resetpassword?token=${token}`;
     

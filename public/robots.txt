@@ -1,4 +1,4 @@
-# https://kinyuiboyssenior.school/robots.txt
+# https://kinyui-senior.vercel.app/robots.txt
 # Created: 2026-03-17
 # Last Updated: 2026-03-17
 
@@ -95,7 +95,7 @@ Noarchive: /MainDashboard
 Noarchive: /pages/adminLogin
 
 # --- IMPORTANT: SITEMAP LOCATION ---
-Sitemap: https://kinyuiboyssenior.school/sitemap.xml
+Sitemap: https://kinyui-senior.vercel.app/sitemap.xml
 
 # Host directive (helps search engines know the canonical version)
-Host: https://kinyuiboyssenior.school
+Host: https://kinyui-senior.vercel.app

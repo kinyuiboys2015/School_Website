@@ -185,8 +185,8 @@ export default function StaffProfilePage() {
       `Experienced educator specializing in ${staff.expertise?.slice(0, 3).join(', ') || 'education'}. ` +
       `View full profile, qualifications, and contact information.`;
     
-    const profileUrl = `https://kinyuiboyssenior.school/pages/staff/${id}`;
-    const imageUrl = staff.image?.startsWith('http') ? staff.image : `https://kinyuiboyssenior.school${staff.image}`;
+    const profileUrl = `https://kinyui-senior.vercel.app/pages/staff/${id}`;
+    const imageUrl = staff.image?.startsWith('http') ? staff.image : `https://kinyui-senior.vercel.app${staff.image}`;
     
     return (
       <Head>
@@ -243,7 +243,7 @@ export default function StaffProfilePage() {
                 "name": schoolName,
                 "alternateName": ["kinyui boys High School", "SA kinyui boys", "Katz School"],
                 "description": schoolDescription,
-                "url": "https://kinyuiboyssenior.school",
+                "url": "https://kinyui-senior.vercel.app",
                 "address": {
                   "@type": "PostalAddress",
                   "addressLocality": "Matungulu",
@@ -274,7 +274,7 @@ export default function StaffProfilePage() {
               },
               "sameAs": [
                 profileUrl,
-                `https://kinyuiboyssenior.school/pages/staff`
+                `https://kinyui-senior.vercel.app/pages/staff`
               ]
             })
           }}
@@ -292,13 +292,13 @@ export default function StaffProfilePage() {
                   "@type": "ListItem",
                   "position": 1,
                   "name": "Home",
-                  "item": "https://kinyuiboyssenior.school"
+                  "item": "https://kinyui-senior.vercel.app"
                 },
                 {
                   "@type": "ListItem",
                   "position": 2,
                   "name": "Staff Directory",
-                  "item": "https://kinyuiboyssenior.school/pages/staff"
+                  "item": "https://kinyui-senior.vercel.app/pages/staff"
                 },
                 {
                   "@type": "ListItem",
