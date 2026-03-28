@@ -68,7 +68,7 @@ export const metadata = {
   },
   
   alternates: {
-    canonical: 'https://kinyui boyssenior.school/pages/gallery',
+    canonical: 'https://kinyuiboyssenior.school/pages/gallery',
   },
   
   robots: {

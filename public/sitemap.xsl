@@ -306,7 +306,7 @@
                               <xsl:otherwise>🏠</xsl:otherwise>
                             </xsl:choose>
                           </span>
-                          <xsl:value-of select="substring-after(loc, 'https://kinyui boyssenior.school')"/>
+                          <xsl:value-of select="substring-after(loc, 'https://kinyuiboyssenior.school')"/>
                         </a>
                       </td>
                       <td>
@@ -340,7 +340,7 @@
           <div class="footer">
             <p>
               <strong>SA kinyui boys Senior School</strong> | Matungulu, Machakos County, Kenya<br/>
-              <a href="https://kinyui boyssenior.school">Visit Website</a> | 
+              <a href="https://kinyuiboyssenior.school">Visit Website</a> | 
               <a href="/contact">Contact Us</a> | 
               <a href="/privacy">Privacy Policy</a><br/>
               <small>Generated: <xsl:value-of select="urlset/url[1]/lastmod"/> | 

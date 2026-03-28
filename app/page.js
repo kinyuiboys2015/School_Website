@@ -116,7 +116,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'School',
   name: 'kinyui boys Senior School',
-  image: 'https://kinyui boyssenior.school/kinyui.png',
+  image: 'https://kinyuiboyssenior.school/kinyui.png',
   description: 'A secondary school committed to academic excellence, integrity, and holistic student development.',
   address: {
     '@type': 'PostalAddress',
@@ -125,7 +125,7 @@ const jsonLd = {
     'addressRegion': 'Machakos County',
     'addressCountry': 'KE'
   },
-  url: 'https://kinyui boyssenior.school',
+  url: 'https://kinyuiboyssenior.school',
   telephone: '+254710894145', // Update with the actual school office line
   sameAs: [
     'https://facebook.com/kinyui boyshigh',

@@ -31,7 +31,7 @@ export const viewport = {
 /* METADATA                                  */
 /* -------------------------------------------------------------------------- */
 export const metadata = {
-  metadataBase: new URL("https://kinyui boyssenior.school"),
+  metadataBase: new URL("https://kinyuiboyssenior.school"),
 
   title: {
     default: "S.A kinyui boys Senior School",
@@ -142,7 +142,7 @@ export const metadata = {
   openGraph: {
     title: "S.A kinyui boys School",
     description: "Official school website.",
-    url: "https://kinyui boyssenior.school",
+    url: "https://kinyuiboyssenior.school",
     siteName: "kinyui boys Senior School",
     locale: "en_KE",
     type: "website",
