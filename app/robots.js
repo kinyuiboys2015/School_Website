@@ -1,4 +1,3 @@
-// app/robots.js - BUT THIS IS A DOWNGRADE from your current setup
 export default function robots() {
   return {
     rules: [
