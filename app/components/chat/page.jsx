@@ -73,7 +73,7 @@ const staticCategories = {
   general: {
     name: "Overview",
     icon: 'school',
-    content: `🏫 A.I.C kinyui boys Senior SCHOOL
+    content: `🏫 SA kinyui boys Senior SCHOOL
 
 **A Public  Extra County School in Machakos**
 
@@ -135,7 +135,7 @@ Steps:
 
 **Technology Partnership:**
 • Angaza Center technology partnership
-• A.I.C  kinyui boys  Church support
+• SA  kinyui boys  Church support
 • Fully equipped computer lab
 • Internet access for all students`,
     links: [
@@ -322,7 +322,7 @@ Steps:
 • Admissions: kinyui boysschool@yahoo.com
 
 **Physical Address:**
-A.I.C kinyui boys Senior School
+SA kinyui boys Senior School
 Kambusu, Matungulu Sub-County
 Machakos County
 P.O. Box 363 – 90131 Tala, Kenya
@@ -752,7 +752,7 @@ export default function ChatBot() {
   }, [schoolData, documentData]);
 
   const getWelcomeMessage = () => {
-    const schoolName = schoolData?.name || 'A.I.C kinyui boys Senior SCHOOL';
+    const schoolName = schoolData?.name || 'SA kinyui boys Senior SCHOOL';
     const motto = schoolData?.motto ? `\n\n**${schoolData.motto}** ✨` : '\n\n**Soaring to Excellence** ✨';
     const studentCount = schoolData?.studentCount || '1000+';
     const staffCount = schoolData?.staffCount || '50+';

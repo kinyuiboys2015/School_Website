@@ -182,7 +182,7 @@ function calculateAge(dateOfBirth) {
 function generateApplicationNumber() {
   const year = new Date().getFullYear();
   const randomNum = randomBytes(4).toString('hex').toUpperCase();
-  return `KATZ/${year}/${randomNum}`;
+  return `KBSS/${year}/${randomNum}`;
 }
 
 function validatePhone(phone) {

@@ -174,7 +174,7 @@ export default function StaffProfilePage() {
       `${schoolName} faculty`,
       `teacher at kinyui boys`,
       `kinyui boys High School staff`,
-      `AIC kinyui boys teachers`,
+      `SA kinyui boys teachers`,
       `Katz school teachers`,
       ...staff.expertise || []
     ].filter(Boolean).join(', ');
@@ -241,7 +241,7 @@ export default function StaffProfilePage() {
               "worksFor": {
                 "@type": "EducationalOrganization",
                 "name": schoolName,
-                "alternateName": ["kinyui boys High School", "AIC kinyui boys", "Katz School"],
+                "alternateName": ["kinyui boys High School", "SA kinyui boys", "Katz School"],
                 "description": schoolDescription,
                 "url": "https://kinyui boyssenior.school",
                 "address": {

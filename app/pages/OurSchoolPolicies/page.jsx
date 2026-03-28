@@ -31,7 +31,7 @@ const allTerms = [
     subSections: [
       { 
         subTitle: "3.1. Payment Methods:", 
-        content: "Bank payments to A.I.C kinyui boys HIGH SCHOOL, Cooperative Bank, Account No: 0112876543210. MPESA Paybill: 894145 (Account: Student Name + Admission No). Crossed bankers cheque payable to kinyui boys SECONDARY SCHOOL or Postal money order payable to kinyui boys SECONDARY SCHOOL." 
+        content: "Bank payments to SA kinyui boys HIGH SCHOOL, Cooperative Bank, Account No: 0112876543210. MPESA Paybill: 894145 (Account: Student Name + Admission No). Crossed bankers cheque payable to kinyui boys SECONDARY SCHOOL or Postal money order payable to kinyui boys SECONDARY SCHOOL." 
       },
       { 
         subTitle: "3.2. Payment Deadlines:", 
@@ -327,7 +327,7 @@ export default function TermsAndConditions() {
                   <span className="text-white font-bold text-xs sm:text-sm">KH</span>
                 </div>
                 <span className="text-xs sm:text-sm font-bold text-blue-900 uppercase tracking-wider">
-                  A.I.C kinyui boys High School
+                  SA kinyui boys High School
                 </span>
               </div>
               <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-slate-900 mb-2 leading-tight">
@@ -363,7 +363,7 @@ export default function TermsAndConditions() {
                 </div>
                 <div>
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">School Fees Structure 2026</h2>
-                  <p className="text-blue-100 text-xs sm:text-sm">A.I.C kinyui boys High School - Boarding</p>
+                  <p className="text-blue-100 text-xs sm:text-sm">SA kinyui boys High School - Boarding</p>
                 </div>
               </div>
               
@@ -571,7 +571,7 @@ export default function TermsAndConditions() {
                       <div>
                         <p className="font-semibold text-xs sm:text-sm text-blue-800 mb-2">🏦 Bank Transfer:</p>
                         <ul className="space-y-1 text-xs sm:text-sm text-slate-700">
-                          <li>• Account Name: A.I.C kinyui boys HIGH SCHOOL</li>
+                          <li>• Account Name: SA kinyui boys HIGH SCHOOL</li>
                           <li>• Bank: Cooperative Bank</li>
                           <li>• Account No: 0112876543210</li>
                         </ul>
@@ -825,7 +825,7 @@ export default function TermsAndConditions() {
           
           <div className="text-center mt-6 sm:mt-8">
             <p className="text-[10px] sm:text-xs text-slate-500">
-              © 2024 A.I.C kinyui boys High School. All rights reserved. 
+              © 2024 SA kinyui boys High School. All rights reserved. 
               <span className="block sm:inline sm:ml-2 mt-1 sm:mt-0">For queries, contact: kinyui boysschool@yahoo.com | Tel: 0710 894 145</span>
             </p>
           </div>

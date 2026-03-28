@@ -75,7 +75,7 @@ export default function ModernFooter() {
     },
     {
       icon: SiYoutube,
-      href: 'https://www.youtube.com/@A.I.C.-kinyui boys-HIGH-SCHOOOL',
+      href: 'https://www.youtube.com/@SA.-kinyui boys-HIGH-SCHOOOL',
       label: 'YouTube',
       color: '#FF0000', // YouTube red
       hoverColor: '#CC0000'

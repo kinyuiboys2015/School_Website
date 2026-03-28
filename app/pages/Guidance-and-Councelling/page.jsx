@@ -1139,7 +1139,7 @@ const DEFAULT_SESSIONS = [
     priority: 'high',
     image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80',
     featured: true,
-    location: 'A.I.C kinyui boys '
+    location: 'SA kinyui boys '
   },
   {
     id: 'devotion-sunday',
@@ -1155,7 +1155,7 @@ const DEFAULT_SESSIONS = [
     priority: 'high',
     image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80',
     featured: true,
-    location: 'A.I.C kinyui boys '
+    location: 'SA kinyui boys '
   }
 ];
 

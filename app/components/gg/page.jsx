@@ -206,7 +206,7 @@ const ModernGalleryCard = ({ gallery, onView, onFavorite, viewMode = 'grid', onS
 
   // Create SEO-friendly image alt text
   const getImageAltText = (gallery, index = 0) => {
-    const schoolName = "A.I.C kinyui boys Senior School";
+    const schoolName = "SA kinyui boys Senior School";
     const category = gallery.category?.replace(/_/g, ' ') || 'School';
     const year = gallery.year || new Date().getFullYear();
     const title = gallery.title || 'Gallery';
@@ -756,7 +756,7 @@ const ModernGalleryDetailModal = ({ gallery, onClose, onDownload, onShare }) => 
 
   // Create SEO-friendly image alt text for modal
   const getImageAltText = (gallery, index) => {
-    const schoolName = "A.I.C kinyui boys Senior School";
+    const schoolName = "SA kinyui boys Senior School";
     const category = gallery.category?.replace(/_/g, ' ') || 'School';
     const year = gallery.year || new Date().getFullYear();
     const title = gallery.title || 'Gallery';
@@ -1363,13 +1363,13 @@ export default function ModernGallery() {
   const gallerySchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "A.I.C kinyui boys Senior School Gallery",
+    "name": "SA kinyui boys Senior School Gallery",
     "description": "Official photo and video gallery of kinyui boys Senior School in Matungulu, Machakos County, Kenya",
     "url": "https://kinyui boyssenior.school/pages/gallery",
     "image": "https://kinyui boyssenior.school/seo/kinyui.png",
     "isPartOf": {
       "@type": "School",
-      "name": "A.I.C kinyui boys Senior School",
+      "name": "SA kinyui boys Senior School",
       "url": "https://kinyui boyssenior.school"
     },
     "about": {
@@ -1478,7 +1478,7 @@ export default function ModernGallery() {
           {/* Hidden SEO Content for Image Search */}
           <div className="sr-only" aria-hidden="true">
             <h2>kinyui boys Senior School Images and Photos</h2>
-            <p>Browse through our collection of school photos including classrooms, laboratories, sports day events, graduation ceremonies, teaching moments, and general school activities at A.I.C kinyui boys Senior School in Matungulu, Machakos County, Kenya.</p>
+            <p>Browse through our collection of school photos including classrooms, laboratories, sports day events, graduation ceremonies, teaching moments, and general school activities at SA kinyui boys Senior School in Matungulu, Machakos County, Kenya.</p>
             <ul>
               <li>Classroom activities at kinyui boys High School</li>
               <li>Science laboratory experiments in Machakos County</li>
@@ -1487,7 +1487,7 @@ export default function ModernGallery() {
               <li>Teaching moments with dedicated staff members</li>
               <li>School infrastructure and modern facilities</li>
               <li>Student life in Matungulu, Eastern Kenya</li>
-              <li>AIC sponsored school events and celebrations</li>
+              <li>SA sponsored school events and celebrations</li>
               <li>Historical photos from kinyui boys archives</li>
               <li>Academic competitions and achievements</li>
             </ul>

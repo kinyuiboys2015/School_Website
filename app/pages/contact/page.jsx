@@ -645,7 +645,7 @@ export default function ContactPage() {
           <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-slate-600 flex items-center gap-2">
               <Navigation className="w-4 h-4 text-orange-600" />
-              A.I.C kinyui boys Senior School, Matungulu, Machakos County
+              SA kinyui boys Senior School, Matungulu, Machakos County
             </p>
             <a
               href="https://maps.app.goo.gl/q6ubZsEk5KWxzAUv9"

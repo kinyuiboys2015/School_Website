@@ -3,13 +3,13 @@ import ClientGallery from '../../components/gg/page';
 import { Metadata } from 'next';
 
 export const metadata = {
-  title: 'A.I.C kinyui boys Senior School Gallery',
+  title: 'S.A kinyui boys Senior School Gallery',
   description: 'Explore the official gallery of kinyui boys Senior School in Matungulu, Machakos County. View photos of classrooms, laboratories, sports day, graduation ceremonies, teaching moments, and school events.',
   keywords: [
     "kinyui boys Senior School photos",
     "kinyui boys High School pictures",
-    "AIC kinyui boys images",
-    "Katz High School gallery",
+    "SA kinyui boys images",
+    "kinyui High School gallery",
     "kinyui boys school grounds photos",
     "kinyui boys classrooms photos",
     "kinyui boys teaching moments",
@@ -37,23 +37,23 @@ export const metadata = {
     "kinyui boys class of 2024 photos",
     "kinyui boys old school photos",
     "kinyui boys historical images",
-    "Katwanya school pictures",
-    "Katanyaa high school images",
-    "Katz school gallery",
-    "AIC Katwanya photos"
+    "kinyui boys school pictures",
+    "kinyui boys high school images",
+    "kinyui boys school gallery",
+    "SA kinyui boys photos"
   ].join(', '),
   
   openGraph: {
-    title: 'A.I.C kinyui boys Senior School - Photo Gallery',
+    title: 'SA kinyui boys Senior School - Photo Gallery',
     description: 'Browse through our collection of school photos, events, and memorable moments.',
-    url: 'https://kinyui boyssenior.school/pages/gallery',
-    siteName: 'kinyui boys Senior School',
+    url: 'https://kinyuiboyssenior.school/pages/gallery',
+    siteName: 'SA kinyui boys Senior School',
     images: [
       {
         url: '/seo/kinyui.png',
         width: 1200,
         height: 630,
-        alt: 'A.I.C kinyui boys Senior School Gallery',
+        alt: 'S.A kinyui boys Senior School Gallery',
       },
     ],
     locale: 'en_KE',
@@ -62,7 +62,7 @@ export const metadata = {
   
   twitter: {
     card: 'summary_large_image',
-    title: 'A.I.C kinyui boys Senior School Gallery',
+    title: 'S.A kinyui boys Senior School Gallery',
     description: 'Browse through our collection of school photos, events, and memorable moments.',
     images: ['/seo/kinyui.png'],
   },

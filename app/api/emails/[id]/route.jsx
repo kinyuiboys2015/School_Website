@@ -164,7 +164,7 @@ const SOCIAL_MEDIA = {
     color: '#1877F2',
   },
   youtube: {
-    url: process.env.SCHOOL_YOUTUBE || 'https://www.youtube.com/@A.I.C.-kinyui boys-HIGH-SCHOOOL',
+    url: process.env.SCHOOL_YOUTUBE || 'https://www.youtube.com/@SA.-kinyui boys-HIGH-SCHOOOL',
     color: '#FF0000',
   },
   linkedin: {
