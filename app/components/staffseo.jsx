@@ -39,7 +39,7 @@ export default function StaffProfilePage() {
   const [showShareModal, setShowShareModal] = useState(false);
 
   // School description
-  const schoolDescription = "Katwanyaa Senior School provides exceptional education through trained professionals dedicated to holistic student development and academic excellence.";
+  const schoolDescription = "kinyui boys Senior School provides exceptional education through trained professionals dedicated to holistic student development and academic excellence.";
 
   // In the transformStaffData function, update the image handling:
   const transformStaffData = (apiData) => {
@@ -94,7 +94,7 @@ export default function StaffProfilePage() {
       email: apiData.email || '',
       phone: apiData.phone || '',
       image: getImageUrl(apiData.image), // Use the helper function
-      bio: apiData.bio || `A committed educator at Katwanyaa Senior School with a passion for student success and educational excellence.`,
+      bio: apiData.bio || `A committed educator at kinyui boys Senior School with a passion for student success and educational excellence.`,
       expertise: expertise,
       responsibilities: responsibilities,
       achievements: achievements,
@@ -152,7 +152,7 @@ export default function StaffProfilePage() {
     const fullName = staff.name;
     const position = staff.position;
     const department = staff.department;
-    const schoolName = "Katwanyaa Senior School";
+    const schoolName = "kinyui boys Senior School";
     
     // Create multiple name variations for better searchability
     const firstName = fullName.split(' ')[0];
@@ -172,9 +172,9 @@ export default function StaffProfilePage() {
       `${schoolName} staff`,
       `${schoolName} teachers`,
       `${schoolName} faculty`,
-      `teacher at Katwanyaa`,
-      `Katwanyaa High School staff`,
-      `AIC Katwanyaa teachers`,
+      `teacher at kinyui boys`,
+      `kinyui boys High School staff`,
+      `AIC kinyui boys teachers`,
       `Katz school teachers`,
       ...staff.expertise || []
     ].filter(Boolean).join(', ');
@@ -185,14 +185,14 @@ export default function StaffProfilePage() {
       `Experienced educator specializing in ${staff.expertise?.slice(0, 3).join(', ') || 'education'}. ` +
       `View full profile, qualifications, and contact information.`;
     
-    const profileUrl = `https://katwanyaasenior.school/pages/staff/${id}`;
-    const imageUrl = staff.image?.startsWith('http') ? staff.image : `https://katwanyaasenior.school${staff.image}`;
+    const profileUrl = `https://kinyui boyssenior.school/pages/staff/${id}`;
+    const imageUrl = staff.image?.startsWith('http') ? staff.image : `https://kinyui boyssenior.school${staff.image}`;
     
     return (
       <Head>
         {/* Basic Meta Tags */}
-        <title>{`${fullName} - ${position} at Katwanyaa Senior School`}</title>
-        <meta name="title" content={`${fullName} - ${position} | Katwanyaa Senior School Faculty`} />
+        <title>{`${fullName} - ${position} at kinyui boys Senior School`}</title>
+        <meta name="title" content={`${fullName} - ${position} | kinyui boys Senior School Faculty`} />
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
         <meta name="author" content={schoolName} />
@@ -221,7 +221,7 @@ export default function StaffProfilePage() {
         <meta name="twitter:title" content={`${fullName} - ${position} at ${schoolName}`} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={imageUrl} />
-        <meta name="twitter:site" content="@KatwanyaaHS" />
+        <meta name="twitter:site" content="@kinyui boysHS" />
         <meta name="twitter:creator" content={schoolName} />
         
         {/* Robots - Allow indexing */}
@@ -241,9 +241,9 @@ export default function StaffProfilePage() {
               "worksFor": {
                 "@type": "EducationalOrganization",
                 "name": schoolName,
-                "alternateName": ["Katwanyaa High School", "AIC Katwanyaa", "Katz School"],
+                "alternateName": ["kinyui boys High School", "AIC kinyui boys", "Katz School"],
                 "description": schoolDescription,
-                "url": "https://katwanyaasenior.school",
+                "url": "https://kinyui boyssenior.school",
                 "address": {
                   "@type": "PostalAddress",
                   "addressLocality": "Matungulu",
@@ -274,7 +274,7 @@ export default function StaffProfilePage() {
               },
               "sameAs": [
                 profileUrl,
-                `https://katwanyaasenior.school/pages/staff`
+                `https://kinyui boyssenior.school/pages/staff`
               ]
             })
           }}
@@ -292,13 +292,13 @@ export default function StaffProfilePage() {
                   "@type": "ListItem",
                   "position": 1,
                   "name": "Home",
-                  "item": "https://katwanyaasenior.school"
+                  "item": "https://kinyui boyssenior.school"
                 },
                 {
                   "@type": "ListItem",
                   "position": 2,
                   "name": "Staff Directory",
-                  "item": "https://katwanyaasenior.school/pages/staff"
+                  "item": "https://kinyui boyssenior.school/pages/staff"
                 },
                 {
                   "@type": "ListItem",
@@ -319,7 +319,7 @@ export default function StaffProfilePage() {
     if (!showShareModal || !staff) return null;
   
     const profileUrl = typeof window !== 'undefined' ? window.location.href : '';
-    const shareText = `Check out ${staff.name}'s profile - ${staff.position} at Katwanyaa Senior School `;
+    const shareText = `Check out ${staff.name}'s profile - ${staff.position} at kinyui boys Senior School `;
     
     const handleCopy = async () => {
       await navigator.clipboard.writeText(profileUrl);
@@ -408,7 +408,7 @@ export default function StaffProfilePage() {
           </div>
           
           <div className="bg-slate-50 p-4 text-center">
-            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Katwanyaa Senior School</p>
+            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">kinyui boys Senior School</p>
           </div>
         </div>
       </div>
@@ -445,7 +445,7 @@ export default function StaffProfilePage() {
             ))}
           </div>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest max-w-[200px] leading-relaxed">
-            Katwanyaa Senior School Professional Directory
+            kinyui boys Senior School Professional Directory
           </p>
         </div>
   
@@ -509,11 +509,11 @@ export default function StaffProfilePage() {
                 <FaGraduationCap className="text-white text-xs sm:text-sm" />
               </div>
               <span className="font-bold text-gray-800 text-xs sm:text-sm hidden xs:block sm:hidden md:block">
-                Katwanyaa Senior School
+                kinyui boys Senior School
               </span>
               <span className="font-bold text-gray-800 hidden sm:block md:hidden">KHS</span>
-              <span className="font-bold text-gray-800 hidden md:block lg:hidden">Katwanyaa</span>
-              <span className="font-bold text-gray-800 hidden lg:block">Katwanyaa Senior School</span>
+              <span className="font-bold text-gray-800 hidden md:block lg:hidden">kinyui boys</span>
+              <span className="font-bold text-gray-800 hidden lg:block">kinyui boys Senior School</span>
             </div>
   
             <div className="flex gap-1 sm:gap-2">
@@ -552,7 +552,7 @@ export default function StaffProfilePage() {
               {/* School Badge - responsive sizing */}
               <div className="absolute top-2 sm:top-3 lg:top-4 right-2 sm:right-3 lg:right-4 bg-white/10 backdrop-blur-md px-2 sm:px-3 lg:px-4 py-1 sm:py-1.5 lg:py-2 rounded-full border border-white/20">
                 <span className="text-white text-[10px] sm:text-xs lg:text-sm font-medium tracking-wide whitespace-nowrap">
-                  🏫 Katwanyaa Senior School
+                  🏫 kinyui boys Senior School
                 </span>
               </div>
             </div>
@@ -799,7 +799,7 @@ export default function StaffProfilePage() {
                 <div className="flex items-center gap-1.5 text-[8px] sm:text-[10px] lg:text-xs text-gray-400">
                   <span className="whitespace-nowrap">Updated {new Date().getFullYear()}</span>
                   <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-gray-300 rounded-full"></span>
-                  <span className="whitespace-nowrap">Katwanyaa Senior School</span>
+                  <span className="whitespace-nowrap">kinyui boys Senior School</span>
                 </div>
               </div>
             </div>
@@ -822,12 +822,12 @@ export default function StaffProfilePage() {
                 
                 <div className="mt-6 text-center">
                   <h4 className="font-black text-slate-900 text-sm sm:text-lg uppercase tracking-[0.3em] leading-none mb-2">
-                    Katwanyaa Senior School
+                    kinyui boys Senior School
                   </h4>
                   <div className="flex items-center justify-center gap-2">
                     <div className="h-px w-4 bg-blue-600/30" />
                     <span className="text-[10px] sm:text-xs font-bold text-blue-600 uppercase tracking-widest">
-                      Mixed High School
+                      Boarding School
                     </span>
                     <div className="h-px w-4 bg-blue-600/30" />
                   </div>
@@ -837,7 +837,7 @@ export default function StaffProfilePage() {
               {/* Meta Information */}
               <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 text-slate-400">
                 <p className="text-[10px] sm:text-xs font-black uppercase tracking-tighter">
-                Education Is Light 
+                Soaring to Excellence 
                 </p>
                 <div className="w-1 h-1 rounded-full bg-slate-200" />
                 <p className="text-[10px] sm:text-xs font-black uppercase tracking-tighter">
@@ -845,7 +845,7 @@ export default function StaffProfilePage() {
                 </p>
                 <div className="w-1 h-1 rounded-full bg-slate-200" />
                 <p className="text-[10px] sm:text-xs font-black uppercase tracking-tighter text-slate-300">
-                  © {new Date().getFullYear()} Katwanyaa Senior School
+                  © {new Date().getFullYear()} kinyui boys Senior School
                 </p>
               </div>
         

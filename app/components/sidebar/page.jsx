@@ -432,7 +432,7 @@ const handleLogout = () => {
               <div className="relative">
                 <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-blue-500 via-purple-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-blue-500/30">
                   <img 
-                    src="/katz.jpeg" 
+                    src="/kinyui.png" 
                     alt="School Logo" 
                     className="w-full h-full object-contain p-2"
                   />
@@ -565,7 +565,7 @@ const handleLogout = () => {
             {/* Version Info */}
             <div className="text-center mt-3 lg:mt-4 pt-3 lg:pt-4 border-t border-gray-200">
               <p className="text-gray-400 text-[10px] lg:text-xs">
-                v2.1.0 • Katwanyaa Senior  School
+                v2.1.0 • kinyui boys Senior  School
               </p>
             </div>
           </div>

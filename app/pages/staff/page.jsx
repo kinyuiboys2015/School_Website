@@ -545,7 +545,7 @@ export default function StaffDirectory() {
           bio: staff.bio,
           responsibilities: staff.responsibilities || [],
           achievements: staff.achievements || [],
-          location: 'Katwanyaa Senior School',
+          location: 'kinyui boys Senior School',
           joinDate: '2020'
         }));
         
@@ -684,7 +684,7 @@ export default function StaffDirectory() {
             <Link href="/" className="flex items-center gap-2">
               <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-500 via-purple-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
                 <img 
-                  src="/katz.jpeg" 
+                  src="/kinyui.png" 
                   alt="School Logo" 
                   className="w-full h-full object-contain p-1"
                 />

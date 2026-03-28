@@ -221,8 +221,8 @@ export default function ModernNavbar() {
                 shadow-lg border border-white/30 overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
                 <Image
-                  src="/katz.jpeg"
-                  alt="Katwanyaa Senior School Logo"
+                  src="/kinyui.png"
+                  alt="kinyui boys Senior School Logo"
                   width={48}
                   height={48}
                   className="relative z-10 filter drop-shadow-sm group-hover:scale-100 transition-transform duration-300 w-10 h-10 xs:w-12 xs:h-12 sm:w-14 sm:h-14"
@@ -235,7 +235,7 @@ export default function ModernNavbar() {
                    Katz
                 </h1>
                 <p className="text-xs sm:text-sm text-white/90 font-medium tracking-wide whitespace-nowrap">
-                  Education is Light
+                  Soaring to Excellence
                 </p>
               </div>
             </div>
@@ -598,7 +598,7 @@ export default function ModernNavbar() {
               {/* Mobile Footer - Responsive */}
               <div className="mt-6 xs:mt-8 pt-4 xs:pt-6 border-t border-white/20 text-center">
                 <p className="text-white/70 text-xs xs:text-sm font-medium">
-                  Education is light
+                  Soaring to Excellence
                 </p>
               </div>
             </div>

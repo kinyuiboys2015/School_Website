@@ -2,12 +2,12 @@
 
 import React, { useState } from "react";
 
-// Updated rules for Katwanyaa High School
+// Updated rules for kinyui boys High School
 const allTerms = [
   { 
     id: 1,
     title: "1. Registration and Admission",
-    intro: "Katwanyaa High School maintains high admission standards to ensure quality education and student success.",
+    intro: "kinyui boys High School maintains high admission standards to ensure quality education and student success.",
     subSections: [
       { subTitle: "1.1. Entry Requirements:", content: "Admission to Form 1 requires a minimum KCPE score of 250 marks. Transfer students must present original leaving certificate and report from previous school." },
       { subTitle: "1.2. Registration Documents:", content: "Original birth certificate, KCPE result slip, transfer letter, baptism card (optional), and 4 passport photos must be submitted on reporting day." },
@@ -17,7 +17,7 @@ const allTerms = [
   { 
     id: 2,
     title: "2. Academics and Class Attendance",
-    intro: "Academic excellence is the core mandate of Katwanyaa High School, and students must demonstrate commitment to their studies.",
+    intro: "Academic excellence is the core mandate of kinyui boys High School, and students must demonstrate commitment to their studies.",
     subSections: [
       { subTitle: "2.1. Attendance:", content: "Minimum class attendance: 90%. Any absence requires a written explanation from parent/guardian. Absence exceeding 3 days needs a doctor's note." },
       { subTitle: "2.2. Academic Performance:", content: "Students must maintain a mean grade of C plain and above. Those scoring below D+ in two subjects attend mandatory holiday tuition." },
@@ -31,7 +31,7 @@ const allTerms = [
     subSections: [
       { 
         subTitle: "3.1. Payment Methods:", 
-        content: "Bank payments to A.I.C KATWANYAA HIGH SCHOOL, Cooperative Bank, Account No: 0112876543210. MPESA Paybill: 894145 (Account: Student Name + Admission No). Crossed bankers cheque payable to KATWANYAA SECONDARY SCHOOL or Postal money order payable to KATWANYAA SECONDARY SCHOOL." 
+        content: "Bank payments to A.I.C kinyui boys HIGH SCHOOL, Cooperative Bank, Account No: 0112876543210. MPESA Paybill: 894145 (Account: Student Name + Admission No). Crossed bankers cheque payable to kinyui boys SECONDARY SCHOOL or Postal money order payable to kinyui boys SECONDARY SCHOOL." 
       },
       { 
         subTitle: "3.2. Payment Deadlines:", 
@@ -43,14 +43,14 @@ const allTerms = [
       },
       { 
         subTitle: "3.4. Official Contact:", 
-        content: "For fee queries, contact Accounts Clerk at P.O.Box 363-90131, TALA or call 0710 894 145. Email: katwanyaaschool@yahoo.com" 
+        content: "For fee queries, contact Accounts Clerk at P.O.BOX 142-90131, TALA or call 0710 894 145. Email: kinyui boysschool@yahoo.com" 
       }
     ]
   },
   { 
     id: 4,
     title: "4. Code of Conduct and Discipline",
-    intro: "Katwanyaa High School upholds strict discipline to create a conducive learning environment.",
+    intro: "kinyui boys High School upholds strict discipline to create a conducive learning environment.",
     subSections: [
       { subTitle: "4.1. School Uniform:", content: "Full school uniform must be worn at all times: blue checked shirt, navy blue sweater, grey shorts/trousers, white socks, and black shoes. School tie and badge compulsory." },
       { subTitle: "4.2. Prohibited Items:", content: "STRICTLY PROHIBITED: Mobile phones, smartphones, smartwatches, alcohol, cigarettes, bhang, weapons, playing cards, and inappropriate magazines." },
@@ -60,7 +60,7 @@ const allTerms = [
   { 
     id: 5,
     title: "5. Boarding and Accommodation",
-    intro: "As a fully boarding school, Katwanyaa provides structured residential facilities with clear guidelines.",
+    intro: "As a fully boarding school, kinyui boys provides structured residential facilities with clear guidelines.",
     subSections: [
       { subTitle: "5.1. Daily Routine:", content: "Wake up: 5:00 AM. Breakfast: 6:30 AM. Lunch: 1:00 PM. Supper: 6:30 PM. Lights out: 10:00 PM (Form 3-4), 9:30 PM (Form 1-2)." },
       { subTitle: "5.2. Dormitory Rules:", content: "Beds made by 6:00 AM. Personal belongings locked in boxes. No food in dormitories. Cleaning roster strictly followed." },
@@ -82,7 +82,7 @@ const allTerms = [
     title: "7. Health and Medical Care",
     intro: "Student health and wellness are prioritized with comprehensive medical support systems.",
     subSections: [
-      { subTitle: "7.1. School Dispensary:", content: "School nurse on duty 24/7. Minor ailments treated at school dispensary. Serious cases referred to Katwanyaa Health Centre." },
+      { subTitle: "7.1. School Dispensary:", content: "School nurse on duty 24/7. Minor ailments treated at school dispensary. Serious cases referred to kinyui boys Health Centre." },
       { subTitle: "7.2. Medical Checkups:", content: "Routine medical checkups conducted every term. Parents must provide updated medical history and allergy information." },
       { subTitle: "7.3. Emergency Contacts:", content: "Parents notified immediately of serious illness/accident. Emergency contacts must be kept updated: Principal: 0710 894 145, Nurse: 0722 123 456." }
     ]
@@ -110,7 +110,7 @@ const allTerms = [
   { 
     id: 10,
     title: "10. Dress Code and Grooming",
-    intro: "Proper grooming reflects the discipline and identity of Katwanyaa High School.",
+    intro: "Proper grooming reflects the discipline and identity of kinyui boys High School.",
     subSections: [
       { subTitle: "10.1. Hair Rules:", content: "Boys: Short, neat, above collar, no shaved lines. Girls: Natural hair, neatly combed, no extensions, no coloring. Dreadlocks not allowed." },
       { subTitle: "10.2. Personal Effects:", content: "NO jewelry except simple watches. No makeup, nail polish, or cosmetics. No visible tattoos or piercings." },
@@ -327,7 +327,7 @@ export default function TermsAndConditions() {
                   <span className="text-white font-bold text-xs sm:text-sm">KH</span>
                 </div>
                 <span className="text-xs sm:text-sm font-bold text-blue-900 uppercase tracking-wider">
-                  A.I.C Katwanyaa High School
+                  A.I.C kinyui boys High School
                 </span>
               </div>
               <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-slate-900 mb-2 leading-tight">
@@ -363,7 +363,7 @@ export default function TermsAndConditions() {
                 </div>
                 <div>
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">School Fees Structure 2026</h2>
-                  <p className="text-blue-100 text-xs sm:text-sm">A.I.C Katwanyaa High School - Mixed Day & Boarding</p>
+                  <p className="text-blue-100 text-xs sm:text-sm">A.I.C kinyui boys High School - Boarding</p>
                 </div>
               </div>
               
@@ -571,7 +571,7 @@ export default function TermsAndConditions() {
                       <div>
                         <p className="font-semibold text-xs sm:text-sm text-blue-800 mb-2">🏦 Bank Transfer:</p>
                         <ul className="space-y-1 text-xs sm:text-sm text-slate-700">
-                          <li>• Account Name: A.I.C KATWANYAA HIGH SCHOOL</li>
+                          <li>• Account Name: A.I.C kinyui boys HIGH SCHOOL</li>
                           <li>• Bank: Cooperative Bank</li>
                           <li>• Account No: 0112876543210</li>
                         </ul>
@@ -586,8 +586,8 @@ export default function TermsAndConditions() {
                       <div className="md:col-span-2">
                         <p className="font-semibold text-xs sm:text-sm text-blue-800 mb-2">📝 Other Methods:</p>
                         <ul className="space-y-1 text-xs sm:text-sm text-slate-700">
-                          <li>• Crossed bankers cheque payable to KATWANYAA SECONDARY SCHOOL</li>
-                          <li>• Postal money order payable to KATWANYAA SECONDARY SCHOOL</li>
+                          <li>• Crossed bankers cheque payable to kinyui boys SECONDARY SCHOOL</li>
+                          <li>• Postal money order payable to kinyui boys SECONDARY SCHOOL</li>
                         </ul>
                       </div>
                     </div>
@@ -595,7 +595,7 @@ export default function TermsAndConditions() {
 
                   {/* Contact Info */}
                   <div className="mt-4 text-center text-xs sm:text-sm text-slate-600">
-                    <p>📞 For queries, contact Accounts Clerk: P.O.Box 363-90131, TALA | Tel: 0710 894 145 | Email: katwanyaaschool@yahoo.com</p>
+                    <p>📞 For queries, contact Accounts Clerk: P.O.BOX 142-90131, TALA | Tel: 0710 894 145 | Email: kinyui boysschool@yahoo.com</p>
                   </div>
               </>
             </div>
@@ -825,8 +825,8 @@ export default function TermsAndConditions() {
           
           <div className="text-center mt-6 sm:mt-8">
             <p className="text-[10px] sm:text-xs text-slate-500">
-              © 2024 A.I.C Katwanyaa High School. All rights reserved. 
-              <span className="block sm:inline sm:ml-2 mt-1 sm:mt-0">For queries, contact: katwanyaaschool@yahoo.com | Tel: 0710 894 145</span>
+              © 2024 A.I.C kinyui boys High School. All rights reserved. 
+              <span className="block sm:inline sm:ml-2 mt-1 sm:mt-0">For queries, contact: kinyui boysschool@yahoo.com | Tel: 0710 894 145</span>
             </p>
           </div>
         </div>

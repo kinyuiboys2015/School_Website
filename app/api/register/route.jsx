@@ -4,11 +4,11 @@ import { hashPassword, generateToken, sanitizeUser } from '../../../libs/auth';
 import nodemailer from 'nodemailer';
 
 // Constants
-const SCHOOL_NAME = 'Katwanyaa Senior School';
+const SCHOOL_NAME = 'kinyui boys Senior School';
 const SCHOOL_LOCATION = 'Matungulu, Machakos County';
-const SCHOOL_MOTTO = 'Education is Light';
-const CONTACT_PHONE = '0710894145';
-const CONTACT_EMAIL = 'katzict@gmail.com';
+const SCHOOL_MOTTO = 'Soaring to Excellence';
+const CONTACT_PHONE = '0733 587223';
+const CONTACT_EMAIL = 'kinyuiboys2015@gmail.com';
 
 // Email Transporter
 const transporter = nodemailer.createTransport({
@@ -840,7 +840,7 @@ function getRegistrationSuccessTemplate(user) {
           <div class="cta-box">
             <h3 class="cta-title">🚀 Get Started Now</h3>
             <p style="margin: 0 0 14px 0; font-size: 14px; color: #0369a1;">Access your dashboard and start managing the school system</p>
-            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'hhttps://katwanyaasenior.school'}/MainDashboard" class="cta-btn">
+            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'hhttps://kinyui boyssenior.school'}/MainDashboard" class="cta-btn">
               Open Dashboard
             </a>
           </div>
@@ -882,7 +882,7 @@ function getRegistrationSuccessTemplate(user) {
         <div class="footer">
           <p class="footer-title">${SCHOOL_NAME}</p>
           <p class="footer-text">${SCHOOL_LOCATION}</p>
-          <p class="footer-text">Public Mixed Day and Boarding School</p>
+          <p class="footer-text">Public Boarding School</p>
           <p class="footer-small">© ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
           <p class="footer-small">📞 ${CONTACT_PHONE} | 📧 ${CONTACT_EMAIL}</p>
         </div>

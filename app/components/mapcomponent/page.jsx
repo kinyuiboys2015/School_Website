@@ -12,7 +12,7 @@ const Marker = dynamic(() => import('react-leaflet').then(mod => mod.Marker), { 
 const Popup = dynamic(() => import('react-leaflet').then(mod => mod.Popup), { ssr: false });
 const Circle = dynamic(() => import('react-leaflet').then(mod => mod.Circle), { ssr: false });
 
-// Standard coordinates for Katwanyaa/Kambusu area
+// Standard coordinates for kinyui boys/Kambusu area
 const schoolLocation = [-1.3068, 37.3512]; 
 
 const nearbyLandmarks = [
@@ -90,7 +90,7 @@ export default function MapComponent() {
             <Popup className="custom-popup">
               <div className="p-1 max-w-[180px]">
                 <h3 className="font-bold text-gray-900 text-xs sm:text-sm">
-                  Katwanyaa Senior School
+                  kinyui boys Senior School
                 </h3>
                 <p className="text-[10px] text-gray-500 mt-1 mb-2">
                   Tala-Kambusu Road, Machakos

@@ -19,7 +19,7 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
 
 // --- FILE MANAGER CLASS ---
 
-const BUCKET_NAME = 'Katwanyaa Senior';
+const BUCKET_NAME = 'kinyui boys Senior';
 
 export class FileManager {
   /**
@@ -74,7 +74,7 @@ export class FileManager {
     try {
       const cleanUrl = fileUrl.split('?')[0];
       const patterns = [
-        /storage\/v1\/object\/public\/Katwanyaa(?:%20| )High\/(.+)/
+        /storage\/v1\/object\/public\/kinyui boys(?:%20| )High\/(.+)/
       ];
 
       for (const pattern of patterns) {

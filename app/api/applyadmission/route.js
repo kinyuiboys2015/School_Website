@@ -14,11 +14,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const SCHOOL_NAME = ' katwanyaa Senior  School';
+const SCHOOL_NAME = ' kinyui boys Senior  School';
 const SCHOOL_LOCATION = 'Matungulu, Machakos County';
-const SCHOOL_MOTTO = 'Education Is Light';
-const CONTACT_PHONE = '0710894145';
-const SCHOOL_EMAIL = 'katzict@gmail.com';
+const SCHOOL_MOTTO = 'Soaring to Excellence';
+const CONTACT_PHONE = '0733 587223';
+const SCHOOL_EMAIL = 'kinyuiboys2015@gmail.com';
 // ====================================================================
 // UTILITY FUNCTIONS
 // ====================================================================
@@ -675,8 +675,8 @@ async function sendApplicantConfirmation(toEmail, applicantName, applicationNumb
             <div class="school-info">
               <h3 class="school-info-title">About ${SCHOOL_NAME}</h3>
               <p class="school-info-text">
-                ${SCHOOL_NAME} is a Public Girl's Boarding School located in ${SCHOOL_LOCATION}. 
-                We provide quality education to 700+ students through the 8-4-4 and CBC curriculum system. 
+                ${SCHOOL_NAME} is a Public Boy's Boarding School located in ${SCHOOL_LOCATION}. 
+                We provide quality education to 400+ students through the 8-4-4 and CBC curriculum system. 
                 Our motto is "<strong>${SCHOOL_MOTTO}</strong>".
               </p>
             </div>

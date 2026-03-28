@@ -3,11 +3,11 @@ import { prisma } from '../../../libs/prisma';
 import nodemailer from 'nodemailer';
 
 // School Information
-const SCHOOL_NAME = 'Katwanyaa Senior School';
+const SCHOOL_NAME = 'kinyui boys Senior School';
 const SCHOOL_LOCATION = 'Matungulu, Machakos County';
-const SCHOOL_MOTTO = 'Education is Light';
-const CONTACT_PHONE = '0710894145';
-const CONTACT_EMAIL = 'katzict@gmail.com';
+const SCHOOL_MOTTO = 'Soaring to Excellence';
+const CONTACT_PHONE = '0733 587223';
+const CONTACT_EMAIL = 'kinyuiboys2015@gmail.com';
 
 // Email Templates
 const emailTemplates = {
@@ -334,7 +334,7 @@ const emailTemplates = {
               <p class="info-text">
                 <strong>${SCHOOL_NAME}</strong><br>
                 ${SCHOOL_LOCATION}<br>
-                Public Mixed Day and Boarding School | 1200+ Students | 8-4-4 Curriculum
+                Public Boarding School | 400+ Students | 8-4-4 Curriculum
               </p>
             </div>
           </div>
@@ -677,7 +677,7 @@ const emailTemplates = {
           <div class="content">
             <p class="welcome-text">
               Hello! 👋<br><br>
-              Thank you for subscribing to <strong>${SCHOOL_NAME}</strong> newsletter with email <strong>${email}</strong>. You'll now receive important school updates, announcements, events, and academic information from our Public Mixed Day and Boarding School.
+              Thank you for subscribing to <strong>${SCHOOL_NAME}</strong> newsletter with email <strong>${email}</strong>. You'll now receive important school updates, announcements, events, and academic information from our Public Boarding School.
             </p>
             
             <div class="info-card">
@@ -704,7 +704,7 @@ const emailTemplates = {
             <p class="footer-title">${SCHOOL_NAME}</p>
             <p class="footer-text">${SCHOOL_MOTTO}</p>
             <p class="footer-small">© ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
-            <p class="footer-small">Public Mixed Day and Boarding School | ${SCHOOL_LOCATION} | 1200+ Students</p>
+            <p class="footer-small">Public Mi Boarding School | ${SCHOOL_LOCATION} | 400+ Students</p>
           </div>
         </div>
       </body>

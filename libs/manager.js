@@ -13,7 +13,7 @@ class SupabaseFileManager {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     );
     
-    this.bucketName = 'Katwanyaa Senior';
+    this.bucketName = 'kinyui boys Senior';
   }
 
   // Upload single file

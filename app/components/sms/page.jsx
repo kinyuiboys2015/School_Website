@@ -1533,10 +1533,10 @@ const handleSendCampaign = async () => {
           <div className="h-7 w-1 bg-gradient-to-b from-cyan-500 to-emerald-500 rounded-full shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
           <div>
             <h2 className="text-[10px] font-black uppercase tracking-[0.25em] text-cyan-400">
-              Katwanyaa Senior School
+              kinyui boys Senior School
             </h2>
             <p className="text-[9px] italic font-medium text-white/40 tracking-widest uppercase">
-              "Education is Light"
+              "Soaring to Excellence"
             </p>
           </div>
         </div>
@@ -1570,7 +1570,7 @@ const handleSendCampaign = async () => {
             <Zap className="w-3 h-3" />
             Celcom
           </span>
-          . Fast, reliable, and built for Katwanyaa Senior School.
+          . Fast, reliable, and built for kinyui boys Senior School.
         </p>
         
         {/* Quick Stats Pills */}

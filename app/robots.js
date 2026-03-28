@@ -21,7 +21,7 @@ export default function robots() {
         disallow: ['/MainDashboard', '/pages/adminLogin'],
       },
     ],
-    sitemap: 'https://katwanyaasenior.school/sitemap.xml',
-    host: 'https://katwanyaasenior.school',
+    sitemap: 'https://kinyui boyssenior.school/sitemap.xml',
+    host: 'https://kinyui boyssenior.school',
   }
 }

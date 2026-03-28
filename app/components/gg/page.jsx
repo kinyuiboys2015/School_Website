@@ -89,10 +89,10 @@ const ModernHeroBanner = ({ stats, onRefresh }) => {
               <div className="h-6 sm:h-8 w-1 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,99,235,0.5)]" />
               <div>
                 <h2 className="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] text-blue-400">
-                 Katwanyaa Senior School
+                 kinyui boys Senior School
                 </h2>
                 <p className="text-[8px] sm:text-[10px] italic font-medium text-white/60 tracking-widest uppercase">
-                  "Education is Light"               
+                  "Soaring to Excellence"               
                 </p>
               </div>
             </div>
@@ -206,7 +206,7 @@ const ModernGalleryCard = ({ gallery, onView, onFavorite, viewMode = 'grid', onS
 
   // Create SEO-friendly image alt text
   const getImageAltText = (gallery, index = 0) => {
-    const schoolName = "A.I.C Katwanyaa Senior School";
+    const schoolName = "A.I.C kinyui boys Senior School";
     const category = gallery.category?.replace(/_/g, ' ') || 'School';
     const year = gallery.year || new Date().getFullYear();
     const title = gallery.title || 'Gallery';
@@ -247,9 +247,9 @@ const ModernGalleryCard = ({ gallery, onView, onFavorite, viewMode = 'grid', onS
                   itemType="https://schema.org/ImageObject"
                 />
                 {/* Hidden image metadata for SEO */}
-                <meta itemProp="caption" content={gallery.description || `Photos from ${gallery.title} at Katwanyaa Senior School`} />
+                <meta itemProp="caption" content={gallery.description || `Photos from ${gallery.title} at kinyui boys Senior School`} />
                 <meta itemProp="datePublished" content={gallery.date} />
-                <meta itemProp="contentLocation" content="Katwanyaa Senior School, Matungulu, Machakos County, Kenya" />
+                <meta itemProp="contentLocation" content="kinyui boys Senior School, Matungulu, Machakos County, Kenya" />
               </>
             ) : (
               <div className={`w-full h-full bg-gradient-to-br ${theme.gradient} flex items-center justify-center`}>
@@ -321,7 +321,7 @@ const ModernGalleryCard = ({ gallery, onView, onFavorite, viewMode = 'grid', onS
             </h3>
             
             <p className="text-slate-500 text-xs sm:text-sm mb-4 sm:mb-6 line-clamp-2 leading-relaxed" itemProp="abstract">
-              {gallery.description || `${gallery.title} - ${gallery.category?.replace(/_/g, ' ')} gallery at Katwanyaa Senior School.`}
+              {gallery.description || `${gallery.title} - ${gallery.category?.replace(/_/g, ' ')} gallery at kinyui boys Senior School.`}
             </p>
 
             {/* 3. Bento-Style Info Grid */}
@@ -756,7 +756,7 @@ const ModernGalleryDetailModal = ({ gallery, onClose, onDownload, onShare }) => 
 
   // Create SEO-friendly image alt text for modal
   const getImageAltText = (gallery, index) => {
-    const schoolName = "A.I.C Katwanyaa Senior School";
+    const schoolName = "A.I.C kinyui boys Senior School";
     const category = gallery.category?.replace(/_/g, ' ') || 'School';
     const year = gallery.year || new Date().getFullYear();
     const title = gallery.title || 'Gallery';
@@ -927,7 +927,7 @@ const ModernGalleryDetailModal = ({ gallery, onClose, onDownload, onShare }) => 
                 </div>
                 <div className="flex items-center gap-1 sm:gap-2">
                   <IoLocationOutline className="text-rose-500 text-sm sm:text-lg" />
-                  Katwanyaa, Machakos
+                  kinyui boys, Machakos
                 </div>
               </div>
             </section>
@@ -1363,18 +1363,18 @@ export default function ModernGallery() {
   const gallerySchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "A.I.C Katwanyaa Senior School Gallery",
-    "description": "Official photo and video gallery of Katwanyaa Senior School in Matungulu, Machakos County, Kenya",
-    "url": "https://katwanyaasenior.school/pages/gallery",
-    "image": "https://katwanyaasenior.school/seo/katz.png",
+    "name": "A.I.C kinyui boys Senior School Gallery",
+    "description": "Official photo and video gallery of kinyui boys Senior School in Matungulu, Machakos County, Kenya",
+    "url": "https://kinyui boyssenior.school/pages/gallery",
+    "image": "https://kinyui boyssenior.school/seo/kinyui.png",
     "isPartOf": {
       "@type": "School",
-      "name": "A.I.C Katwanyaa Senior School",
-      "url": "https://katwanyaasenior.school"
+      "name": "A.I.C kinyui boys Senior School",
+      "url": "https://kinyui boyssenior.school"
     },
     "about": {
       "@type": "EducationalOrganization",
-      "name": "Katwanyaa Senior School",
+      "name": "kinyui boys Senior School",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Matungulu",
@@ -1436,7 +1436,7 @@ export default function ModernGallery() {
               Loading school galleries...
             </p>
             <p className="text-slate-400 text-[8px] sm:text-xs uppercase tracking-widest mt-0.5 font-bold">
-              Katwanyaa Senior School
+              kinyui boys Senior School
             </p>
           </div>
         </Stack>
@@ -1477,18 +1477,18 @@ export default function ModernGallery() {
 
           {/* Hidden SEO Content for Image Search */}
           <div className="sr-only" aria-hidden="true">
-            <h2>Katwanyaa Senior School Images and Photos</h2>
-            <p>Browse through our collection of school photos including classrooms, laboratories, sports day events, graduation ceremonies, teaching moments, and general school activities at A.I.C Katwanyaa Senior School in Matungulu, Machakos County, Kenya.</p>
+            <h2>kinyui boys Senior School Images and Photos</h2>
+            <p>Browse through our collection of school photos including classrooms, laboratories, sports day events, graduation ceremonies, teaching moments, and general school activities at A.I.C kinyui boys Senior School in Matungulu, Machakos County, Kenya.</p>
             <ul>
-              <li>Classroom activities at Katwanyaa High School</li>
+              <li>Classroom activities at kinyui boys High School</li>
               <li>Science laboratory experiments in Machakos County</li>
-              <li>Sports day events at Katwanyaa Senior School grounds</li>
+              <li>Sports day events at kinyui boys Senior School grounds</li>
               <li>Graduation ceremonies and prize giving days</li>
               <li>Teaching moments with dedicated staff members</li>
               <li>School infrastructure and modern facilities</li>
               <li>Student life in Matungulu, Eastern Kenya</li>
               <li>AIC sponsored school events and celebrations</li>
-              <li>Historical photos from Katwanyaa archives</li>
+              <li>Historical photos from kinyui boys archives</li>
               <li>Academic competitions and achievements</li>
             </ul>
             
@@ -1496,7 +1496,7 @@ export default function ModernGallery() {
             {categoryOptions.filter(c => c.id !== 'all').map(cat => (
               <div key={cat.id}>
                 <h4>{cat.name}</h4>
-                <p>{cat.name} photos at Katwanyaa Senior School, Matungulu, Machakos County, Kenya</p>
+                <p>{cat.name} photos at kinyui boys Senior School, Matungulu, Machakos County, Kenya</p>
               </div>
             ))}
           </div>
@@ -1825,7 +1825,7 @@ export default function ModernGallery() {
                   Preserving School History.
                 </h3>
                 <p className="text-purple-200 text-xs sm:text-sm md:text-base leading-relaxed max-w-xl mx-auto md:mx-0">
-                  Every photo tells a story. Explore decades of academic excellence, achievements, and memories at Katwanyaa Senior School.
+                  Every photo tells a story. Explore decades of academic excellence, achievements, and memories at kinyui boys Senior School.
                 </p>
 
                 {/* Feature Grid */}

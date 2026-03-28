@@ -13,11 +13,11 @@ const transporter = nodemailer.createTransport({
 });
 
 // School Information
-const SCHOOL_NAME = 'Katwanyaa Senior School';
+const SCHOOL_NAME = 'kinyui boys Senior School';
 const SCHOOL_LOCATION = 'Matungulu, Machakos County';
-const SCHOOL_MOTTO = 'Education is Light';
-const CONTACT_PHONE = '0710894145';
-const CONTACT_EMAIL = 'katzict@gmail.com';
+const SCHOOL_MOTTO = 'Soaring to Excellence';
+const CONTACT_PHONE = '0733 587223';
+const CONTACT_EMAIL = 'kinyuiboys2015@gmail.com';
 
 export async function POST(req) {
   try {
@@ -52,7 +52,7 @@ export async function POST(req) {
       },
     });
 
-    const baseUrl = 'https://katwanyaasenior.school';
+    const baseUrl = 'https://kinyui boyssenior.school';
     
     const resetLink = `${baseUrl}/pages/resetpassword?token=${token}`;
     
@@ -707,7 +707,7 @@ export async function POST(req) {
             <div class="footer">
               <p class="footer-title">${SCHOOL_NAME}</p>
               <p class="footer-text">${SCHOOL_LOCATION}</p>
-              <p class="footer-text">Public Mixed Day and Boarding School</p>
+              <p class="footer-text">Public Boarding School</p>
               <p class="footer-small">© ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
               <p class="footer-small">This email was sent to ${email} for your account security.</p>
             </div>

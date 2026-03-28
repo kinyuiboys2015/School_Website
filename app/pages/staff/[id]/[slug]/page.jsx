@@ -28,40 +28,40 @@ export async function generateMetadata({ params }) {
   if (!staff) {
     // Return generic metadata that works for all staff pages
     return {
-      title: "Staff Profile | Katwanyaa Senior School",
-      description: "Meet our dedicated educators and staff members at Katwanyaa Senior School",
+      title: "Staff Profile | kinyui boys Senior School",
+      description: "Meet our dedicated educators and staff members at kinyui boys Senior School",
       openGraph: {
-        title: "Staff Profile | Katwanyaa Senior School",
+        title: "Staff Profile | kinyui boys Senior School",
         description: "Professional educators dedicated to student success",
         images: [
           {
-            url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://katwanyaasenior.school'}/seo/katz.png`,
+            url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyui boyssenior.school'}/seo/kinyui.png`,
             width: 1200,
             height: 630,
-            alt: 'Katwanyaa Senior School Staff'
+            alt: 'kinyui boys Senior School Staff'
           }
         ],
       },
       twitter: {
         card: 'summary_large_image',
-        title: "Staff Profile | Katwanyaa Senior School",
+        title: "Staff Profile | kinyui boys Senior School",
         description: "Professional educators dedicated to student success",
       }
     };
   }
 
-  const title = `${staff.name} | ${staff.position} | Katwanyaa Senior School`;
-  const description = staff.bio || `Meet ${staff.name}, a dedicated ${staff.position} at Katwanyaa Senior School specializing in ${staff.department}.`;
+  const title = `${staff.name} | ${staff.position} | kinyui boys Senior School`;
+  const description = staff.bio || `Meet ${staff.name}, a dedicated ${staff.position} at kinyui boys Senior School specializing in ${staff.department}.`;
   
   // Fix the image URL
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://katwanyaasenior.school';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyui boyssenior.school';
   const imageUrl = staff.image 
     ? staff.image.startsWith('http') 
       ? staff.image 
       : staff.image.startsWith('/')
         ? `${baseUrl}${staff.image}`
         : `${baseUrl}/images/staff/${staff.image}`
-    : `${baseUrl}//seo/katz.png`;
+    : `${baseUrl}//seo/kinyui.png`;
 
   return {
     title,
@@ -115,7 +115,7 @@ export async function generateStaticParams() {
   
   // ALTERNATIVE: If you want to fetch from API but avoid build errors:
   // try {
-  //   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://katwanyaasenior.school';
+  //   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyui boyssenior.school';
   //   const res = await fetch(`${baseUrl}/api/staff`, { next: { revalidate: 3600 } });
   //   
   //   if (res.ok) {

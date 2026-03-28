@@ -31,109 +31,109 @@ export const viewport = {
 /* METADATA                                  */
 /* -------------------------------------------------------------------------- */
 export const metadata = {
-  metadataBase: new URL("https://katwanyaasenior.school"),
+  metadataBase: new URL("https://kinyui boyssenior.school"),
 
   title: {
-    default: "A.I.C Katwanyaa Senior School",
-    template: "%s | Katwanyaa Senior School",
+    default: "A.I.C kinyui boys Senior School",
+    template: "%s | kinyui boys Senior School",
   },
 
   description:
-    "The official website of A.I.C Katwanyaa Senior School.",
+    "The official website of A.I.C kinyui boys Senior School.",
   
 "keywords": [
     // Core Names & Official Identity
-    "AIC Katwanyaa sec School",
+    "AIC kinyui boys sec School",
     "AIC katz High School",
     "AIC Katz High School",
-    "Katwanyaa High School",
-    "Katwanyaa day and boarding School",
-    "AIC Katwanyaa High School",
-    "A.I.C Katwanyaa High School",
-    "AIC Katwanyaa High School",
-    "AIC Katwanyaa High School",
+    "kinyui boys High School",
+    "kinyui boys boarding School",
+    "AIC kinyui boys High School",
+    "A.I.C kinyui boys High School",
+    "AIC kinyui boys High School",
+    "AIC kinyui boys High School",
 
-    "Katwanyaa Senior High School",
-    "Katwanyaa Secondary School",
-    "AIC Katwanyaa Secondary School",
-    "AIC Katwanyaa Senior High",
+    "kinyui boys Senior High School",
+    "kinyui boys Secondary School",
+    "AIC kinyui boys Secondary School",
+    "AIC kinyui boys Senior High",
     "AIC Katz",
-    "AIC Katwanyaa",
-    "A.I.C Katwanyaa",
+    "AIC kinyui boys",
+    "A.I.C kinyui boys",
     "Katz High School",
     "Katz Senior High School",
-    "Katwanyaa School",
-    "Katwanyaa Senior School",
+    "kinyui boys School",
+    "kinyui boys Senior School",
     "Katz School",
     "Katz",
 
     // Institutional Specifics (New & Essential)
-    "Katwanyaa Mixed Day and Boarding School",
+    "kinyui boys Boarding School",
     "AIC Sponsored Schools Machakos",
-    "Katwanyaa County Secondary School",
-    "Katwanyaa 6-stream enrollment school",
-    "God-fearing citizens Katwanyaa", // From school mission
-    "Empowered students Katwanyaa",
+    "kinyui boys County Secondary School",
+    "kinyui boys 6-stream enrollment school",
+    "God-fearing citizens kinyui boys", // From school mission
+    "Empowered students kinyui boys",
 
     // Location-Specific & Regional
-    "Katwanyaa Senior School Matungulu",
+    "kinyui boys Senior School Matungulu",
     "Secondary schools in Matungulu East",
     "High schools in Machakos County",
     "Best secondary schools in Machakos",
     "Public schools in Kenya",
     "Schools near Matungulu",
     "Best day schools in Matungulu",
-    "Katwanyaa school location",
-    "Katwanyaa school map",
+    "kinyui boys school location",
+    "kinyui boys school map",
     "Kangundo sub-region schools",
     "Tala-Matungulu area schools",
 
     // Functional & API Specific (For your integration)
-    "Katwanyaa high school results",
-    "Katwanyaa high school admissions",
-    "Katwanyaa high school events",
-    "Katwanyaa high  school news",
-    "Katwanyaa school contact",
-    "Katwanyaa school history",
-    "Katwanyaa school achievements",
-    "Katwanyaa school curriculum",
-    "Katwanyaa school fees",
-    "Katwanyaa school uniform",
-    "Katwanyaa school alumni",
-    "Katwanyaa school principal",
-    "Katwanyaa school staff",
-    "Katwanyaa student portal",
-    "Katwanyaa assignment uploads",
-    "Katwanyaa exam schedule",
-    "Katwanyaa video tour",
-    "Katwanyaa resources and downloads",
+    "kinyui boys high school results",
+    "kinyui boys high school admissions",
+    "kinyui boys high school events",
+    "kinyui boys high  school news",
+    "kinyui boys school contact",
+    "kinyui boys school history",
+    "kinyui boys school achievements",
+    "kinyui boys school curriculum",
+    "kinyui boys school fees",
+    "kinyui boys school uniform",
+    "kinyui boys school alumni",
+    "kinyui boys school principal",
+    "kinyui boys school staff",
+    "kinyui boys student portal",
+    "kinyui boys assignment uploads",
+    "kinyui boys exam schedule",
+    "kinyui boys video tour",
+    "kinyui boys resources and downloads",
 
-    // Katwanyaa High School + Official Extensions
-    "Katwanyaa High School KCSE Results",
-    "Katwanyaa High School KNEC Code 12345507",
-    "Katwanyaa High School County Mixed Day and Boarding",
-    "Katwanyaa High School Matungulu Sub-county",
-    "Katwanyaa High School Machakos Area",
-    "Katwanyaa High School Angaza Technology Literacy Center",
-    "Katwanyaa High School God-fearing Citizens",
-    "Katwanyaa High School Fully Empowered Learners",
-    "Katwanyaa High School Since 1976",
+    // kinyui boys High School + Official Extensions
+    "kinyui boys High School KCSE Results",
+    "kinyui boys High School KNEC Code 12345507",
+    "kinyui boys High School County Boarding",
+    "kinyui boys High School Matungulu Sub-county",
+    "kinyui boys High School Machakos Area",
+    "kinyui boys High School Angaza Technology Literacy Center",
+    "kinyui boys High School God-fearing Citizens",
+    "kinyui boys High School Fully Empowered Learners",
+    "kinyui boys High School Since 1976",
 
     // Technical & Partners (SEO & Verification)
-    "Angaza Technology Literacy Center Katwanyaa",
-    "Katwanyaa school computer lab",
-    "Katwanyaa digital learning portal",
+    "Angaza Technology Literacy Center kinyui boys",
+    "kinyui boys school computer lab",
+    "kinyui boys digital learning portal",
 
     // SEO Misspellings & Slang
     "Katwanya school",
     "Katanyaa school",
     "Katz senior school",
     "Katwanya high",
-    "Katwanyaa sec",
-    "Katwanyaa boys and girls"
+    "kinyui boys sec",
+    "kinyui boys boys and girls"
   ],
 
-  authors: [{ name: "A.I.C Katwanyaa Senior School" }],
+  authors: [{ name: "A.I.C kinyui boys Senior School" }],
   
   alternates: {
     canonical: "/",
@@ -141,18 +141,18 @@ export const metadata = {
 
   /* Open Graph (Social Media Sharing) */
   openGraph: {
-    title: "A.I.C Katwanyaa School",
+    title: "A.I.C kinyui boys School",
     description: "Official school website.",
-    url: "https://katwanyaasenior.school",
-    siteName: "Katwanyaa Senior School",
+    url: "https://kinyui boyssenior.school",
+    siteName: "kinyui boys Senior School",
     locale: "en_KE",
     type: "website",
     images: [
       {
-        url: "/seo/katz.png",
+        url: "/seo/kinyui.png",
         width: 1200,
         height: 630,
-        alt: "A.I.C Katwanyaa Senior School",
+        alt: "A.I.C kinyui boys Senior School",
       },
     ],
   },
@@ -160,9 +160,9 @@ export const metadata = {
   /* Twitter Card */
   twitter: {
     card: "summary_large_image",
-    title: "A.I.C Katwanyaa Senior School",
+    title: "A.I.C kinyui boys Senior School",
     description: "Empowering students through education and faith in Machakos County.",
-    images: ["/seo/katz.png"],
+    images: ["/seo/kinyui.png"],
   },
 
   /* Search Engine Bot Instructions */
@@ -178,8 +178,8 @@ export const metadata = {
   },
 
   icons: {
-    icon: "/seo/katz.png",
-    apple: "/seo/katz.png",
+    icon: "/seo/kinyui.png",
+    apple: "/seo/kinyui.png",
   },
 
   verification: {
@@ -196,11 +196,11 @@ export default function RootLayout({ children }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "School",
-    "name": "A.I.C Katwanyaa Senior School",
-    "alternateName": "Katwanyaa Senior School",
-    "url": "https://katwanyaasenior.school",
-    "logo": "https://katwanyaasenior.school/seo/katz.png",
-    "image": "https://katwanyaasenior.school/seo/katz.png",
+    "name": "A.I.C kinyui boys Senior School",
+    "alternateName": "kinyui boys Senior School",
+    "url": "https://kinyui boyssenior.school",
+    "logo": "https://kinyui boyssenior.school/seo/kinyui.png",
+    "image": "https://kinyui boyssenior.school/seo/kinyui.png",
     "description": "A public Senior school in Matungulu, Machakos County, Kenya.",
     "address": {
       "@type": "PostalAddress",
@@ -213,7 +213,7 @@ export default function RootLayout({ children }) {
       "latitude": "-1.2825", // Optional: replace with your actual GPS coordinates
       "longitude": "37.2618"
     },
-    "hasMap": "https://www.google.com/maps?q=Katwanyaa+Secondary+School", 
+    "hasMap": "https://www.google.com/maps?q=kinyui boys+Secondary+School", 
     "telephone": "+254 710 894 145", // Update with official school phone
     "priceRange": "N/A"
   };

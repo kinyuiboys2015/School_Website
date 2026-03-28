@@ -31,13 +31,13 @@ const ModernSchoolLayout = () => {
   const [expandedCards, setExpandedCards] = useState({});
   
   const schoolImages = [
-    { src: "/bg/14.jpeg", alt: "Katwanyaa Senior School - Main Building" },
-    { src: "/bg/9.jpeg", alt: "Katwanyaa Senior School - Students" },
-    { src: "/hero/st.jpeg", alt: "Katwanyaa Senior School - Classroom" },
-   { src: "/hero/student.jpeg", alt: "Katwanyaa Senior School - Classroom" },
-    { src: "/hero/env.jpeg", alt: "Katwanyaa Senior School - Classroom" },
-    { src: "/hero/sports.jpeg", alt: "Katwanyaa Senior School - Classroom" },
-    { src: "hero/katz8.jpeg", alt: "Katwanyaa Senior School - Sports" },
+    { src: "/bg/14.jpeg", alt: "kinyui boys Senior School - Main Building" },
+    { src: "/bg/9.jpeg", alt: "kinyui boys Senior School - Students" },
+    { src: "/hero/st.jpeg", alt: "kinyui boys Senior School - Classroom" },
+   { src: "/hero/student.jpeg", alt: "kinyui boys Senior School - Classroom" },
+    { src: "/hero/env.jpeg", alt: "kinyui boys Senior School - Classroom" },
+    { src: "/hero/sports.jpeg", alt: "kinyui boys Senior School - Classroom" },
+    { src: "hero/katz8.jpeg", alt: "kinyui boys Senior School - Sports" },
   ];
 
   // Auto-rotate carousel every 5 seconds
@@ -125,12 +125,12 @@ const whyChooseUs = [
       icon: <FiAward />
     },
     {
-      title: "800+ Students Enrolled",
+      title: "400+ Students Enrolled",
       gradient: "from-blue-600 to-indigo-600",
-      description: "Currently serving 800+ students as a mixed day and boarding school in Matungulu, Machakos County with consistent enrollment growth.",
+      description: "Currently serving 400+ students as a boarding school in Matungulu, Machakos County with consistent enrollment growth.",
       highlight: "Growing Enrollment",
-      details: ["Mixed Day", "Boarding", "Co-curricular", "Guidance"],
-      metrics: ["800+ Std", "Mixed", "Day/Board"],
+      details: ["Boarding", "Co-curricular", "Guidance"],
+      metrics: ["400+ Std", "Mixed", "Day/Board"],
       icon: <FiUsers />
     },
     {
@@ -175,7 +175,7 @@ const whyChooseUs = [
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                 </span>
                 <span className="text-[9px] font-black tracking-[0.2em] text-blue-700 uppercase">
-                  Katwanyaa Senior School
+                  kinyui boys Senior School
                 </span>
               </div>
 
@@ -198,20 +198,20 @@ const whyChooseUs = [
                 </div>
                 <div className="flex items-center gap-2">
                   <FiPhone className="text-blue-600" size={16} />
-                  <span className="text-xs text-slate-600">0710894145</span>
+                  <span className="text-xs text-slate-600">0733 587223</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <FiMail className="text-blue-600" size={16} />
-                  <span className="text-xs text-slate-600">katzict@gmail.com</span>
+                  <span className="text-xs text-slate-600">kinyuiboys2015@gmail.com</span>
                 </div>
               </div>
               
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
                 {[
-                  { label: 'Students', value: '800+' },
+                  { label: 'Students', value: '400+' },
                   { label: 'Teachers', value: '20+' },
                   { label: 'KCSE Target', value: '6.0' },
-                  { label: 'Motto', value: 'Education is Light' }
+                  { label: 'Motto', value: 'Soaring to Excellence' }
                 ].map((stat, idx) => (
                   <div key={idx} className="p-3 bg-slate-50 rounded-xl border border-slate-100">
                     <p className="text-lg font-black text-blue-600">{stat.value}</p>
@@ -279,8 +279,8 @@ const whyChooseUs = [
               {/* Caption */}
               <div className="absolute bottom-20 left-6 right-6 z-10">
                 <div className="backdrop-blur-md bg-white/10 p-4 rounded-xl border border-white/20">
-                  <p className="text-white text-lg font-black tracking-tight">Katwanyaa Senior School</p>
-                  <p className="text-white/70 text-xs font-bold uppercase tracking-wider">Education is Light</p>
+                  <p className="text-white text-lg font-black tracking-tight">kinyui boys Senior School</p>
+                  <p className="text-white/70 text-xs font-bold uppercase tracking-wider">Soaring to Excellence</p>
                 </div>
               </div>
             </div>
@@ -294,7 +294,7 @@ const whyChooseUs = [
               Katz's Senior School Achievements
             </h2>
             <p className="text-slate-600 text-sm sm:text-base">
-Our school accomplishments from 2019-{new Date().getFullYear()} at Katwanyaa Senior School, Matungulu            </p>
+Our school accomplishments from 2019-{new Date().getFullYear()} at kinyui boys Senior School, Matungulu            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -350,7 +350,7 @@ Our school accomplishments from 2019-{new Date().getFullYear()} at Katwanyaa Sen
               Our Educational Pillars
             </h3>
             <p className="text-slate-600 text-sm sm:text-base">
-              Building on real achievements at Katwanyaa Senior School
+              Building on real achievements at kinyui boys Senior School
             </p>
           </div>
 
@@ -465,7 +465,7 @@ Our school accomplishments from 2019-{new Date().getFullYear()} at Katwanyaa Sen
                 <p className="text-xs font-bold">KShs 1.2M KCB LPG Funding (2022) - 40% cost reduction (700K → 420K per term)</p>
               </div>
               <div className="bg-white p-3 rounded-xl border border-blue-100">
-                <p className="text-xs font-bold">800+ Students enrolled - Mixed day & boarding</p>
+                <p className="text-xs font-bold">400+ Students enrolled - boarding</p>
               </div>
               <div className="bg-white p-3 rounded-xl border border-blue-100">
                 <p className="text-xs font-bold">Environmental Conservation - Reduced firewood usage, staff from 6 to 4 cooks</p>
@@ -483,7 +483,7 @@ Our school accomplishments from 2019-{new Date().getFullYear()} at Katwanyaa Sen
 
             <div className="flex items-center gap-4">
               <span className="text-[9px] font-black uppercase text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                Education is Light
+                Soaring to Excellence
               </span>
             </div>
           </div>

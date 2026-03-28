@@ -75,14 +75,14 @@ export default function ModernFooter() {
     },
     {
       icon: SiYoutube,
-      href: 'https://www.youtube.com/@A.I.C.-KATWANYAA-HIGH-SCHOOOL',
+      href: 'https://www.youtube.com/@A.I.C.-kinyui boys-HIGH-SCHOOOL',
       label: 'YouTube',
       color: '#FF0000', // YouTube red
       hoverColor: '#CC0000'
     },
     {
       icon: SiLinkedin,
-      href: 'https://www.linkedin.com/in/katwanyaa-senior-school-8662113b7/',
+      href: 'https://www.linkedin.com/in/kinyui boys-senior-school-8662113b7/',
       label: 'LinkedIn',
       color: '#0A66C2', // LinkedIn blue
       hoverColor: '#004182'
@@ -172,14 +172,14 @@ export default function ModernFooter() {
     },
     {
       icon: FiMail,
-      text: 'Katzict@gmail.com',
-      href: 'mailto:katzict@gmail.com',
+      text: 'kinyuiboys2015@gmail.com',
+      href: 'mailto:kinyuiboys2015@gmail.com',
       detail: 'General Inquiries'
     },
     {
       icon: FiMail,
-      text: 'katwanyaa Contact email',
-      href: 'mailto:katzict@gmail.com',
+      text: 'kinyui boys Contact email',
+      href: 'mailto:kinyuiboys2015@gmail.com',
       detail: 'Admissions'
     },
     {
@@ -196,7 +196,7 @@ const achievements = [
   'Top Improving School in KCSE (2024) - Matungulu Sub-county',
   'KShs 6 Million ICT Donation (2023) - 50+ laptops from Angaza Centre',
   '40% Cost Reduction (2022) - LPG adoption with KCB KShs 1.2M funding',
-  '975 Students Enrolled - Mixed day & boarding',
+  '400+ Students Enrolled - boarding',
   'Consistent University Placement - Kenyan universities'
 ];
 
@@ -214,7 +214,7 @@ const achievements = [
               <div className="flex flex-col xs:flex-row items-start gap-4">
                 <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 border-white flex-shrink-0 shadow-sm">
                   <img 
-                    src="/katz.jpeg" 
+                    src="/kinyui.png" 
                     alt="School Logo" 
                     className="w-full h-full object-cover"
                   />
@@ -222,11 +222,11 @@ const achievements = [
                 
                 <div className="min-w-0 flex-1">
                   <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white leading-tight break-words">
-                 Katwanyaa Senior School 
+                 kinyui boys Senior School 
                   </h3>
                   <div className="text-white text-sm font-medium flex items-center gap-2 mt-2 flex-wrap">
                     <FiTarget className="flex-shrink-0 w-4 h-4" />
-                    <span className="opacity-90">Education is light </span>
+                    <span className="opacity-90">Soaring to Excellence </span>
                   </div>
                 </div>
               </div>
@@ -437,7 +437,7 @@ const achievements = [
           <div className="mt-12 lg:mt-16 pt-8 border-t border-gray-700">
             <div className="flex flex-col gap-6 w-full">
               <div className="text-gray-300 text-sm font-normal text-center break-words px-4">
-                <p>© {currentYear} Katwanyaa Senior School, Matungulu Machakos. All rights reserved.</p>
+                <p>© {currentYear} kinyui boys Senior School, Matungulu Machakos. All rights reserved.</p>
               </div>
 
               <div className="flex items-center justify-center gap-4 sm:gap-6 text-sm font-normal flex-wrap">
@@ -462,7 +462,7 @@ const achievements = [
               <div className="flex items-center justify-center gap-2 mt-3 flex-wrap">
                 <span>Empowering Future Leaders with</span>
                 <span className="text-lg">💚</span>
-                <span>since 1976..Education is Light</span>
+                <span>since 1976..Soaring to Excellence</span>
               </div>
 <div className="mt-12 py-6 border-t border-white/10">
   <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">

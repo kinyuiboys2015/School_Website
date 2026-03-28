@@ -71,7 +71,7 @@ export default function ContactPage() {
     {
       id: 'admissions',
       name: 'Admissions Office',
-      email: 'katwanyaahighschool.yahoo.com',
+      email: 'kinyui boyshighschool.yahoo.com',
       phone: '+254 720 123 456',
       description: 'For enrollment, applications, and admission inquiries. We guide students through the admission process.',
       icon: <User className="w-4 h-4" />,
@@ -93,7 +93,7 @@ export default function ContactPage() {
     {
       id: 'student-affairs',
       name: 'Student Affairs',
-      email: 'katzict@gmail.com',
+      email: 'kinyuiboys2015@gmail.com',
       phone: '+254 720 123 458',
       description: 'Student welfare, discipline, counseling, and extracurricular activities. Building holistic students.',
       icon: <Users className="w-4 h-4" />,
@@ -104,7 +104,7 @@ export default function ContactPage() {
     {
       id: 'sports',
       name: 'Sports Department',
-      email: 'katzict@gmail.com',
+      email: 'kinyuiboys2015@gmail.com',
       phone: '+254 720 123 459',
       description: 'Athletics, sports programs, competitions, and physical education. Developing champions.',
       icon: <Award className="w-4 h-4" />,
@@ -285,7 +285,7 @@ export default function ContactPage() {
 
           {/* Modern High-Density Headline */}
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white mb-8 tracking-tight leading-[0.95]">
-            Katwanyaa Senior <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-400 via-orange-300 to-white/70">school.</span>
+            kinyui boys Senior <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-400 via-orange-300 to-white/70">school.</span>
           </h1>
 
           {/* Rich Narrative Description */}
@@ -636,7 +636,7 @@ export default function ContactPage() {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Katwanyaa Senior School Location"
+              title="kinyui boys Senior School Location"
               className="rounded-2xl"
             ></iframe>
           </div>
@@ -645,7 +645,7 @@ export default function ContactPage() {
           <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-slate-600 flex items-center gap-2">
               <Navigation className="w-4 h-4 text-orange-600" />
-              A.I.C Katwanyaa Senior School, Matungulu, Machakos County
+              A.I.C kinyui boys Senior School, Matungulu, Machakos County
             </p>
             <a
               href="https://maps.app.goo.gl/q6ubZsEk5KWxzAUv9"
@@ -781,7 +781,7 @@ export default function ContactPage() {
             <MessageSquare className="w-6 h-6" />
             <span className="text-xs mt-1 font-medium">Message</span>
           </button>
-          <a href="mailto:katzict@gmail.com" className="flex flex-col items-center text-slate-600 hover:text-orange-600 transition-colors p-2">
+          <a href="mailto:kinyuiboys2015@gmail.com" className="flex flex-col items-center text-slate-600 hover:text-orange-600 transition-colors p-2">
             <Mail className="w-6 h-6" />
             <span className="text-xs mt-1 font-medium">Email</span>
           </a>

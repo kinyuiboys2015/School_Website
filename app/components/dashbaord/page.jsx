@@ -1228,10 +1228,10 @@ setGrowthMetrics({
               <div className="h-8 w-1 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,99,235,0.5)]" />
               <div>
                 <h2 className="text-xs font-black uppercase tracking-[0.3em] text-blue-400">
-                  Katwanyaa Senior School
+                  kinyui boys Senior School
                 </h2>
                 <p className="text-[10px] italic font-medium text-white/60 tracking-widest uppercase">
-                  "Education is Light"
+                  "Soaring to Excellence"
                 </p>
               </div>
             </div>
@@ -1279,7 +1279,7 @@ setGrowthMetrics({
                 ))}
               </div>
               <p className="text-[11px] font-bold text-slate-500 tracking-tight">
-                Join 1200+ students on the virtual tour
+                Join 400+ students on the virtual tour
               </p>
             </div>
             
@@ -1723,10 +1723,10 @@ const StatCard = ({ icon: Icon, label, value, change, color, subtitle, trend }) 
                   <div className="h-6 w-1 bg-blue-500 rounded-full shadow-[0_0_12px_rgba(59,99,235,0.4)]" />
                   <div>
                     <h2 className="text-[10px] font-black uppercase tracking-[0.25em] text-blue-400">
-                      Katwanyaa Senior School
+                      kinyui boys Senior School
                     </h2>
                     <p className="text-[9px] italic font-medium text-white/50 tracking-widest uppercase">
-                      "Education is Light"
+                      "Soaring to Excellence"
                     </p>
                   </div>
                 </div>

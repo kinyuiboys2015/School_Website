@@ -16,10 +16,10 @@ import { IoRocketOutline } from 'react-icons/io5';
 import { FaHammer, FaTree } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 
-// Hero Slides with Accurate Katwanyaa Senior School Information
+// Hero Slides with Accurate kinyui boys Senior School Information
 const heroSlides = [
   {
-    title: "Katwanyaa Senior School",
+    title: "kinyui boys Senior School",
     subtitle: "Matungulu, Machakos County",
     gradient: "from-blue-500 via-cyan-400 to-purple-600",
     description: "A public secondary school in Matungulu sub-county serving the local community. Offers STEM, Social Sciences, and Arts & Sports pathways under the Competency Based Curriculum (CBC).",
@@ -30,7 +30,7 @@ const heroSlides = [
       pathways: "STEM + Arts", 
       type: "Public School" 
     },
-    features: ["Public School", "Mixed Day & Boarding", "STEM Pathway", "Social Sciences"],
+    features: ["Public School", "Boarding", "STEM Pathway", "Social Sciences"],
     cta: "Admissions",
     link: "/pages/admissions",
     highlightColor: "blue",
@@ -510,7 +510,7 @@ const ModernHero = () => {
               </span>
               <span className="flex items-center">
                 <Trophy className="w-3 h-3 mr-2" />
-                Katwanyaa Senior School
+                kinyui boys Senior School
               </span>
             </div>
             <div className="flex space-x-4 md:space-x-6 lg:space-x-8">
@@ -544,7 +544,7 @@ const ModernHero = () => {
                 <div className="overflow-hidden">
                   <h4 className="text-white font-bold text-xs sm:text-sm md:text-base truncate">Katz High School Tour</h4>
                   <p className="text-white/60 text-[10px] sm:text-xs md:text-sm truncate">
-                    {schoolData?.name || 'Katwanyaa Senior School'} - Virtual Tour
+                    {schoolData?.name || 'kinyui boys Senior School'} - Virtual Tour
                   </p>
                 </div>
               </div>
@@ -611,7 +611,7 @@ const ModernHero = () => {
             <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-r from-transparent to-black/80 p-2 sm:p-3 md:p-4">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0">
                 <div className="text-white/80 text-xs sm:text-sm hidden sm:block truncate">
-                  Experience Katwanyaa Senior School from anywhere
+                  Experience kinyui boys Senior School from anywhere
                 </div>
                 <button
                   onClick={handleContactClick}

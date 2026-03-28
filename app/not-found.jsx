@@ -227,7 +227,7 @@ const Modern404 = () => {
               </p>
               <div className="flex items-baseline gap-2 flex-nowrap">
                 <span className="text-2xl sm:text-3xl font-black text-amber-300 drop-shadow">
-                  800+
+                  400+
                 </span>
                 <span className="text-xs sm:text-sm text-slate-300 italic">
                   Active students
@@ -269,9 +269,9 @@ const Modern404 = () => {
           {/* Footer */}
           <footer className="mt-8 md:mt-12 lg:mt-16 text-center">
             <p className="text-slate-500 text-sm font-medium">
-              &copy; {new Date().getFullYear()} Katwanyaa  Senior school in Matungulu, Machakos    
+              &copy; {new Date().getFullYear()} kinyui boys  Senior school in Matungulu, Machakos    
               <span className="mx-2 text-slate-300">•</span>
-               PEducation is Light               <span className="mx-2 text-slate-300">•</span>
+               PSoaring to Excellence               <span className="mx-2 text-slate-300">•</span>
               <a href="/" className="text-rose-600 hover:text-rose-800 transition-colors font-medium">
                 Site Map homepage
               </a>

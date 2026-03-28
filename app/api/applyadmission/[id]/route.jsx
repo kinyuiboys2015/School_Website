@@ -13,11 +13,11 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
-const SCHOOL_NAME = ' katwanyaa Senior  School';
+const SCHOOL_NAME = ' kinyui boys Senior  School';
 const SCHOOL_LOCATION = 'Matungulu, Machakos County';
-const SCHOOL_MOTTO = 'Education Is Light';
-const CONTACT_PHONE = '0710894145';
-const CONTACT_EMAIL = 'katzict@gmail.com';
+const SCHOOL_MOTTO = 'Soaring to Excellence';
+const CONTACT_PHONE = '0733 587223';
+const CONTACT_EMAIL = 'kinyuiboys2015@gmail.com';
 // ==================== AUTHENTICATION UTILITIES ====================
 
 // Device Token Manager

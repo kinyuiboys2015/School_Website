@@ -115,22 +115,22 @@ export default function ModernHero() {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'School',
-  name: 'Katwanyaa Senior School',
-  image: 'https://katwanyaasenior.school/katz.jpeg',
+  name: 'kinyui boys Senior School',
+  image: 'https://kinyui boyssenior.school/kinyui.png',
   description: 'A secondary school committed to academic excellence, integrity, and holistic student development.',
   address: {
     '@type': 'PostalAddress',
-    'streetAddress': 'Katwanyaa',
+    'streetAddress': 'kinyui boys',
     'addressLocality': 'Machakos', // Adjust if the specific locality differs
     'addressRegion': 'Machakos County',
     'addressCountry': 'KE'
   },
-  url: 'https://katwanyaasenior.school',
+  url: 'https://kinyui boyssenior.school',
   telephone: '+254710894145', // Update with the actual school office line
   sameAs: [
-    'https://facebook.com/katwanyaahigh',
-    'https://twitter.com/katwanyaahigh',
-    'https://instagram.com/katwanyaahigh'
+    'https://facebook.com/kinyui boyshigh',
+    'https://twitter.com/kinyui boyshigh',
+    'https://instagram.com/kinyui boyshigh'
   ],
   foundingDate: '1976', // Update with the actual founding year
   numberOfStudents: '800', // Update with current enrollment
@@ -173,7 +173,7 @@ const jsonLd = {
       title: "Academic Excellence",
       subtitle: "Redefined Through Innovation",
       gradient: "from-blue-500 via-cyan-400 to-purple-600",
-      description: "At Katwanyaa Senior School, we're pioneering a new era of education. With a 94% KCSE success rate and state-of-the-art STEM facilities, we're not just teaching—we're inspiring the next generation of leaders and innovators.",
+      description: "At kinyui boys Senior School, we're pioneering a new era of education. With a 94% KCSE success rate and state-of-the-art STEM facilities, we're not just teaching—we're inspiring the next generation of leaders and innovators.",
       background: "bg-gradient-to-br from-blue-900/90 via-indigo-900/80 to-purple-900/70",
       image: "/student.jpg",
       stats: { 
@@ -472,8 +472,8 @@ const jsonLd = {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center overflow-hidden">
               <img 
-                src="/katz.jpeg" 
-                alt="Katwanyaa Senior School Logo" 
+                src="/kinyui.png" 
+                alt="kinyui boys Senior School Logo" 
                 className="w-full h-full object-contain p-2"
               />
             </div>
@@ -483,7 +483,7 @@ const jsonLd = {
         <div className="text-center space-y-4 md:space-y-6 px-2">
           <div>
             <h2 className="text-xl md:text-3xl font-bold text-white mb-2 leading-tight">
-              Katwanyaa Senior School
+              kinyui boys Senior School
             </h2>
             <div className="h-1 w-32 md:w-48 mx-auto bg-gradient-to-r from-transparent via-white/50 to-transparent"></div>
           </div>

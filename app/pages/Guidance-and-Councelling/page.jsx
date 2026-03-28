@@ -686,7 +686,7 @@ const TeamMemberModal = ({ member, isOpen, onClose }) => {
             {activeTab === 'overview' && (
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                 <p className="text-slate-600 text-xs sm:text-base leading-relaxed">
-                  {member.bio || `Dedicated ${roleStyle.label} at Katwanyaa Senior.`}
+                  {member.bio || `Dedicated ${roleStyle.label} at kinyui boys Senior.`}
                 </p>
               </div>
             )}
@@ -1139,7 +1139,7 @@ const DEFAULT_SESSIONS = [
     priority: 'high',
     image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80',
     featured: true,
-    location: 'A.I.C Katwanyaa '
+    location: 'A.I.C kinyui boys '
   },
   {
     id: 'devotion-sunday',
@@ -1155,7 +1155,7 @@ const DEFAULT_SESSIONS = [
     priority: 'high',
     image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80',
     featured: true,
-    location: 'A.I.C Katwanyaa '
+    location: 'A.I.C kinyui boys '
   }
 ];
 
@@ -1453,7 +1453,7 @@ if (loading) {
         <div className="h-10 w-1.5 bg-purple-500 rounded-full shadow-[0_0_20px_rgba(168,85,247,0.5)]" />
         <div>
           <h2 className="text-[10px] md:text-xs font-black uppercase tracking-[0.4em] text-purple-400">
-            Katwanyaa Senior School
+            kinyui boys Senior School
           </h2>
           <p className="text-[9px] italic font-bold text-white/40 tracking-[0.2em] uppercase mt-1">
             Student Support Services
@@ -1890,7 +1890,7 @@ onClick={() => toast.info('Access schedule sessions via the Student Portal.')}  
                 Your Well-being Matters.
               </h3>
               <p className="text-purple-200 text-sm md:text-base leading-relaxed max-w-xl mx-auto md:mx-0">
-  At Katwanyaa Secondary, we believe that true education extends beyond academics. Our Guidance and Counseling Department is dedicated to nurturing the complete student—mind, body, and spirit. We provide a safe, confidential space where you can explore challenges, discover strengths, and develop resilience.              </p>
+  At kinyui boys Secondary, we believe that true education extends beyond academics. Our Guidance and Counseling Department is dedicated to nurturing the complete student—mind, body, and spirit. We provide a safe, confidential space where you can explore challenges, discover strengths, and develop resilience.              </p>
 
               {/* Feature Grid */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-6">

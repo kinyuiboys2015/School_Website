@@ -370,8 +370,8 @@ export default function AdminDashboard() {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center overflow-hidden">
               <img 
-                src="/katz.jpeg" 
-                alt="Katwanyaa Senior School Logo" 
+                src="/kinyui.png" 
+                alt="kinyui boys Senior School Logo" 
                 className="w-full h-full object-contain p-2"
               />
             </div>
@@ -381,7 +381,7 @@ export default function AdminDashboard() {
         <div className="text-center space-y-4 md:space-y-6 px-2">
           <div>
             <h2 className="text-xl md:text-3xl font-bold text-white mb-2 leading-tight">
-              Katwanyaa Senior School
+              kinyui boys Senior School
             </h2>
             <div className="h-1 w-32 md:w-48 mx-auto bg-gradient-to-r from-transparent via-white/50 to-transparent"></div>
           </div>
@@ -1005,7 +1005,7 @@ const handleLogout = () => {
 
           <div className="flex flex-col">
             <h1 className="text-lg md:text-xl font-black text-gray-900 tracking-tight leading-none uppercase italic">
-              Katwanyaa <span className="text-blue-600 group-hover:text-indigo-600 transition-colors">Senior</span>
+              kinyui boys <span className="text-blue-600 group-hover:text-indigo-600 transition-colors">Senior</span>
             </h1>
             
             <div className="flex items-center gap-2 mt-1">
@@ -1014,7 +1014,7 @@ const handleLogout = () => {
               </span>
               <div className="h-[1px] w-4 bg-gray-200" />
               <p className="text-[10px] md:text-xs font-bold text-gray-500 italic">
-                "Education is Light"
+                "Soaring to Excellence"
               </p>
             </div>
           </div>

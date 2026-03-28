@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function AboutPage() {
   const stats = [
-    { icon: <Users className="w-5 h-5" />, label: "Students", value: "700+" },
+    { icon: <Users className="w-5 h-5" />, label: "Students", value: "400+" },
     { icon: <BookOpen className="w-5 h-5" />, label: "Curriculums", value: "12" },
     { icon: <Trophy className="w-5 h-5" />, label: "Awards", value: "45+" },
 { icon: <ShieldCheck className="w-5 h-5" />, label: "Completion Rate", value: "88%" },
@@ -56,7 +56,7 @@ const date = new Date(); // Add this line!
 
           {/* Refined Title - Significantly Smaller & Tighter */}
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-6 tracking-tighter leading-none">
-            Katwanyaa <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-300 to-white/70">Senior School.</span>
+            kinyui boys <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-300 to-white/70">Senior School.</span>
           </h1>
 
           {/* Expanded Rich Description */}
@@ -223,7 +223,7 @@ const date = new Date(); // Add this line!
           </div>
           <div>
             <p className="text-[10px] font-medium text-slate-600">Event Status</p>
-            <p className="text-xs font-bold text-slate-800">Education Is Light</p>
+            <p className="text-xs font-bold text-slate-800">Soaring to Excellence</p>
           </div>
         </div>
         <div className="text-[10px] font-bold bg-green-100 text-green-800 px-2 py-1 rounded-full">
@@ -287,7 +287,7 @@ Katz        </div>
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
           </span>
-          <span className="text-[10px] font-medium text-green-600">1200+ students</span>
+          <span className="text-[10px] font-medium text-green-600">400+ students</span>
         </div>
       </div>
     </div>
@@ -472,7 +472,7 @@ Katz        </div>
               <div>
                 <p className="text-orange-100 text-[9px] sm:text-xs uppercase font-black tracking-tighter mb-0.5 sm:mb-1 opacity-80">School Address</p>
                 <p className="text-white text-sm sm:text-base font-bold leading-snug sm:leading-relaxed">
-                  Katwanyaa Senior School, Matungulu, Machakos County
+                  kinyui boys Senior School, Matungulu, Machakos County
                 </p>
               </div>
             </div>
@@ -494,8 +494,8 @@ Katz        </div>
               </div>
               <div>
                 <p className="text-orange-100 text-[9px] sm:text-xs uppercase font-black tracking-tighter mb-0.5 sm:mb-1 opacity-80">Email</p>
-                <p className="text-white text-sm sm:text-base font-bold">katzict@gmail.com</p>
-                <p className="text-white/80 text-xs">katzict@gmail.com</p>
+                <p className="text-white text-sm sm:text-base font-bold">kinyuiboys2015@gmail.com</p>
+                <p className="text-white/80 text-xs">kinyuiboys2015@gmail.com</p>
               </div>
             </div>
           </div>
@@ -503,7 +503,7 @@ Katz        </div>
         
         <div className="relative z-10 mt-8 sm:mt-12">
           <a 
-            href="https://www.google.com/maps/search/?api=1&query=Katwanyaa+High+School" 
+            href="https://www.google.com/maps/search/?api=1&query=kinyui boys+High+School" 
             target="_blank" 
             rel="noopener noreferrer"
             className="w-full py-3 sm:py-4 bg-white text-orange-600 font-black text-xs sm:text-sm rounded-xl sm:rounded-2xl shadow-xl transition-transform hover:scale-100 flex items-center justify-center gap-2 uppercase tracking-wider"
@@ -520,7 +520,7 @@ Katz        </div>
         <div className="flex items-center justify-between mb-6 sm:mb-8">
           <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 flex items-center gap-3 tracking-tight">
             <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
-            About Katwanyaa Senior School
+            About kinyui boys Senior School
           </h3>
         </div>
         
@@ -530,7 +530,7 @@ Katz        </div>
           <div className="bg-orange-50/50 rounded-2xl p-5 sm:p-6 border border-orange-100">
             <h4 className="text-sm sm:text-base font-black text-orange-600 uppercase tracking-wider mb-3">Overview</h4>
             <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
-              Katwanyaa Senior School is a reputable public secondary school located in Matungulu Sub-county, Machakos County. The institution is committed to academic excellence and holistic student development in a conducive learning environment.
+              kinyui boys Senior School is a reputable public secondary school located in Matungulu Sub-county, Machakos County. The institution is committed to academic excellence and holistic student development in a conducive learning environment.
             </p>
           </div>
 
@@ -543,7 +543,7 @@ Katz        </div>
                 </div>
                 <h5 className="font-black text-slate-900 text-sm uppercase">Category</h5>
               </div>
-              <p className="text-slate-700 font-medium text-sm sm:text-base">Mixed Day & Boarding</p>
+              <p className="text-slate-700 font-medium text-sm sm:text-base"> Boarding</p>
               <p className="text-xs text-slate-500 mt-1">Public Secondary School</p>
             </div>
 

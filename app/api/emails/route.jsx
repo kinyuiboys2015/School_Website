@@ -152,12 +152,12 @@ const transporter = nodemailer.createTransport({
 });
 
 // School Information
-const SCHOOL_NAME = process.env.SCHOOL_NAME || 'Katwanyaa Senior School';
+const SCHOOL_NAME = process.env.SCHOOL_NAME || 'kinyui boys Senior School';
 const SCHOOL_LOCATION = process.env.SCHOOL_LOCATION || 'Matungulu, Machakos County';
-const SCHOOL_MOTTO = process.env.SCHOOL_MOTTO || 'Education is Light';
+const SCHOOL_MOTTO = process.env.SCHOOL_MOTTO || 'Soaring to Excellence';
 const CONTACT_PHONE = process.env.CONTACT_PHONE || '+254720123456';
-const CONTACT_EMAIL = process.env.CONTACT_EMAIL ||'katzict@gmail.com';
-const SCHOOL_WEBSITE = process.env.SCHOOL_WEBSITE || 'https://katwanyaasenior.school';
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL ||'kinyuiboys2015@gmail.com';
+const SCHOOL_WEBSITE = process.env.SCHOOL_WEBSITE || 'https://kinyui boyssenior.school';
 
 // Social Media Configuration
 const SOCIAL_MEDIA = {
@@ -166,15 +166,15 @@ const SOCIAL_MEDIA = {
     color: '#1877F2',
   },
   youtube: {
-    url: process.env.SCHOOL_YOUTUBE || 'https://www.youtube.com/@A.I.C.-KATWANYAA-HIGH-SCHOOOL',
+    url: process.env.SCHOOL_YOUTUBE || 'https://www.youtube.com/@A.I.C.-kinyui boys-HIGH-SCHOOOL',
     color: '#FF0000',
   },
   linkedin: {
-    url: process.env.SCHOOL_LINKEDIN || 'https://www.linkedin.com/in/katwanyaa-senior-school-8662113b7/',
+    url: process.env.SCHOOL_LINKEDIN || 'https://www.linkedin.com/in/kinyui boys-senior-school-8662113b7/',
     color: '#0A66C2',
   },
   twitter: {
-    url: process.env.SCHOOL_TWITTER || 'https://twitter.com/katwanyaaschool',
+    url: process.env.SCHOOL_TWITTER || 'https://twitter.com/kinyui boysschool',
     color: '#1DA1F2',
   }
 };

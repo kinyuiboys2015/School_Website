@@ -152,10 +152,10 @@ const transporter = nodemailer.createTransport({
 });
 
 // School information
-const SCHOOL_NAME = 'Katwanyaa Senior School';
+const SCHOOL_NAME = 'kinyui boys Senior School';
 const SCHOOL_LOCATION = 'Matungulu, Machakos County';
-const SCHOOL_MOTTO = 'Education is Light';
-const SCHOOL_EMAIL = 'katzict@gmail.com';
+const SCHOOL_MOTTO = 'Soaring to Excellence';
+const SCHOOL_EMAIL = 'kinyuiboys2015@gmail.com';
 const SCHOOL_PHONE = '+254720123456';
 
 // Format date function
@@ -256,7 +256,7 @@ const emailTemplates = {
                 
                 <p style="color: #475569; font-size: clamp(14px, 3.5vw, 16px); line-height: 1.6; margin: 0 0 4%;">
                   We are thrilled to announce that admissions for the <strong>${data.schoolYear || admission.schoolYear || '2025'}</strong> 
-                  academic year are now open! Join our community of excellence at our Public Mixed Day and Boarding School.
+                  academic year are now open! Join our community of excellence at our Public Boarding School.
                 </p>
                 
                 ${admission.deadline ? `
@@ -280,8 +280,8 @@ const emailTemplates = {
               <div style="background: #f0f9ff; border-radius: 12px; padding: 5%; margin: 0 0 6%; border-left: 4px solid #3b82f6;">
                 <h3 style="color: #1e40af; font-size: clamp(18px, 4.5vw, 22px); font-weight: 600; margin: 0 0 4%;">Quick Facts:</h3>
                 <ul style="color: #475569; font-size: clamp(14px, 3.5vw, 16px); line-height: 1.6; margin: 0; padding-left: 5%;">
-                  <li style="margin: 0 0 2%;">Public Mixed Day and Boarding School in Matungulu, Machakos</li>
-                  <li style="margin: 0 0 2%;">1200+ students community</li>
+                  <li style="margin: 0 0 2%;">Public Boarding School in Matungulu, Machakos</li>
+                  <li style="margin: 0 0 2%;">400+ students community</li>
                   <li style="margin: 0 0 2%;">8-4-4 Curriculum System</li>
                   <li style="margin: 0;">Quality education for all</li>
                 </ul>
@@ -289,7 +289,7 @@ const emailTemplates = {
               
               <!-- CTA Button -->
               <div style="text-align: center; margin: 8% 0;">
-                <a href="https://katwanyaasenior.school/pages/apply-for-admissions" 
+                <a href="https://kinyui boyssenior.school/pages/apply-for-admissions" 
                    style="display: inline-block; 
                           width: 100%; 
                           max-width: 280px; 

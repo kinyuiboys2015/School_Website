@@ -5,10 +5,10 @@
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <title>Katwanyaa Senior School - Sitemap</title>
+        <title>kinyui boys Senior School - Sitemap</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta name="description" content="Sitemap for A.I.C Katwanyaa Senior School official website"/>
+        <meta name="description" content="Sitemap for A.I.C kinyui boys Senior School official website"/>
         <style>
           * {
             margin: 0;
@@ -246,10 +246,10 @@
         <div class="container">
           <div class="header">
             <h1>
-              Katwanyaa Senior School
+              kinyui boys Senior School
               <span>Sitemap</span>
             </h1>
-            <p>A.I.C Katwanyaa Senior School - Education is Light</p>
+            <p>A.I.C kinyui boys Senior School - Soaring to Excellence</p>
             
             <div class="stats">
               <div class="stat-item">
@@ -306,7 +306,7 @@
                               <xsl:otherwise>🏠</xsl:otherwise>
                             </xsl:choose>
                           </span>
-                          <xsl:value-of select="substring-after(loc, 'https://katwanyaasenior.school')"/>
+                          <xsl:value-of select="substring-after(loc, 'https://kinyui boyssenior.school')"/>
                         </a>
                       </td>
                       <td>
@@ -339,8 +339,8 @@
           
           <div class="footer">
             <p>
-              <strong>A.I.C Katwanyaa Senior School</strong> | Matungulu, Machakos County, Kenya<br/>
-              <a href="https://katwanyaasenior.school">Visit Website</a> | 
+              <strong>A.I.C kinyui boys Senior School</strong> | Matungulu, Machakos County, Kenya<br/>
+              <a href="https://kinyui boyssenior.school">Visit Website</a> | 
               <a href="/contact">Contact Us</a> | 
               <a href="/privacy">Privacy Policy</a><br/>
               <small>Generated: <xsl:value-of select="urlset/url[1]/lastmod"/> | 

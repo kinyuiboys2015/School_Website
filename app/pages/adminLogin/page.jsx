@@ -1138,7 +1138,7 @@ const handlePasswordAfterVerification = async () => {
   ];
 
   const systemMetrics = [
-    { label: "Manage Students", value: "700+", icon: <Users className="w-4 h-4" /> },
+    { label: "Manage Students", value: "400+", icon: <Users className="w-4 h-4" /> },
     { label: "School Status", value: "Online", icon: <Server className="w-4 h-4" /> },
     { label: "Manage Events", value: "12", icon: <Shield className="w-4 h-4" /> },
   ];

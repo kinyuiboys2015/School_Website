@@ -73,9 +73,9 @@ const staticCategories = {
   general: {
     name: "Overview",
     icon: 'school',
-    content: `🏫 A.I.C Katwanyaa Senior SCHOOL
+    content: `🏫 A.I.C kinyui boys Senior SCHOOL
 
-**A Public County School in Machakos**
+**A Public  Extra County School in Machakos**
 
 Quick Facts:
 • Established: 1976
@@ -84,13 +84,13 @@ Quick Facts:
 • Staff: 50+
 
 School Type:
-• Public County School
-• Mixed (Boys & Girls) - Day & Boarding
+• Public Extra County School
+• MBoys Boarding
 • Competency-Based Curriculum (CBE)
 
 Contact:
 • Phone: +254 729 370 590
-• Email: katwanyaaschool@yahoo.com
+• Email: kinyui boysschool@yahoo.com
 • Address: P.O. Box 363 – 90131 Tala, Kenya
 
 Hours:
@@ -135,7 +135,7 @@ Steps:
 
 **Technology Partnership:**
 • Angaza Center technology partnership
-• A.I.C  katwanyaa  Church support
+• A.I.C  kinyui boys  Church support
 • Fully equipped computer lab
 • Internet access for all students`,
     links: [
@@ -318,11 +318,11 @@ Steps:
 
 **Contact Information:**
 • Phone: +254 729 370 590
-• Email: katwanyaaschool@yahoo.com
-• Admissions: katwanyaaschool@yahoo.com
+• Email: kinyui boysschool@yahoo.com
+• Admissions: kinyui boysschool@yahoo.com
 
 **Physical Address:**
-A.I.C Katwanyaa Senior School
+A.I.C kinyui boys Senior School
 Kambusu, Matungulu Sub-County
 Machakos County
 P.O. Box 363 – 90131 Tala, Kenya
@@ -376,7 +376,7 @@ const buildDynamicCategories = (schoolData, documentData) => {
       icon: 'school',
       content: `🏫 ${schoolData.name}
 
-**Motto:** ${schoolData.motto || 'Education is Light'}
+**Motto:** ${schoolData.motto || 'Soaring to Excellence'}
 
 **Vision:**
 ${schoolData.vision || 'To be a center of excellence in holistic education'}
@@ -419,7 +419,7 @@ ${schoolData.admissionDocumentsRequired && schoolData.admissionDocumentsRequired
   : '• KCPE Certificate\n• Birth Certificate\n• School Reports\n• Passport Photos\n• Medical Report'}
 
 **Contact Admissions:**
-• Email: ${schoolData.admissionContactEmail || 'katwanyaaschool@yahoo.com'}
+• Email: ${schoolData.admissionContactEmail || 'kinyui boysschool@yahoo.com'}
 • Phone: ${schoolData.admissionContactPhone || '+254 729 370 590'}
 • Location: ${schoolData.admissionLocation || 'Kambusu, Matungulu, Machakos County'}
 • Office Hours: ${schoolData.admissionOfficeHours || 'Mon-Fri: 8:00 AM - 5:00 PM'}
@@ -565,7 +565,7 @@ ${documentData?.kcseResultsPdf ? `**KCSE Examination Results:**
 
 **School Contacts:**
 • Phone: ${schoolData.admissionContactPhone || '+254 729 370 590'}
-• Email: ${schoolData.admissionContactEmail || 'katwanyaaschool@yahoo.com'}
+• Email: ${schoolData.admissionContactEmail || 'kinyui boysschool@yahoo.com'}
 • Location: ${schoolData.admissionLocation || 'Kambusu, Matungulu, Machakos County'}
 • Website: ${schoolData.admissionWebsite || 'Contact office for details'}
 
@@ -735,7 +735,7 @@ export default function ChatBot() {
   }, []);
 
   useEffect(() => {
-    const chatData = localStorage.getItem('Katwanyaa_chat');
+    const chatData = localStorage.getItem('kinyui boys_chat');
     if (chatData) {
       const { messages: savedMessages, timestamp } = JSON.parse(chatData);
       const fourHoursAgo = Date.now() - (4 * 60 * 60 * 1000);
@@ -743,7 +743,7 @@ export default function ChatBot() {
       if (timestamp > fourHoursAgo) {
         setMessages(savedMessages);
       } else {
-        localStorage.removeItem('Katwanyaa_chat');
+        localStorage.removeItem('kinyui boys_chat');
         setMessages([getWelcomeMessage()]);
       }
     } else {
@@ -752,8 +752,8 @@ export default function ChatBot() {
   }, [schoolData, documentData]);
 
   const getWelcomeMessage = () => {
-    const schoolName = schoolData?.name || 'A.I.C Katwanyaa Senior SCHOOL';
-    const motto = schoolData?.motto ? `\n\n**${schoolData.motto}** ✨` : '\n\n**Education is Light** ✨';
+    const schoolName = schoolData?.name || 'A.I.C kinyui boys Senior SCHOOL';
+    const motto = schoolData?.motto ? `\n\n**${schoolData.motto}** ✨` : '\n\n**Soaring to Excellence** ✨';
     const studentCount = schoolData?.studentCount || '1000+';
     const staffCount = schoolData?.staffCount || '50+';
     
@@ -765,7 +765,7 @@ export default function ChatBot() {
 Hello! I'm Katwa, your assistant.
 
 About Our School:
-• Public County School (Mixed - Day & Boarding)
+• Public Extra County School (Boarding)
 • Established: 1976
 • Location: Kambusu, Matungulu, Machakos County
 • Students: ${studentCount} | Teachers: ${staffCount}
@@ -788,7 +788,7 @@ ${schoolData ? 'For the most current information, choose a category below! 👇'
         messages: messages,
         timestamp: Date.now()
       };
-      localStorage.setItem('Katwanyaa_chat', JSON.stringify(chatData));
+      localStorage.setItem('kinyui boys_chat', JSON.stringify(chatData));
     }
   }, [messages]);
 
@@ -863,7 +863,7 @@ ${schoolData ? 'For the most current information, choose a category below! 👇'
   };
 
   const clearChat = () => {
-    localStorage.removeItem('Katwanyaa_chat');
+    localStorage.removeItem('kinyui boys_chat');
     setMessages([getWelcomeMessage()]);
     setShowCategories(true);
   };
@@ -923,7 +923,7 @@ ${schoolData ? 'For the most current information, choose a category below! 👇'
     <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center shadow-lg bg-white shrink-0 overflow-hidden border border-white/20">
         <img
-          src="/katz.jpeg"
+          src="/kinyui.png"
           alt="Logo"
           className="w-full h-full object-cover"
         />
@@ -931,10 +931,10 @@ ${schoolData ? 'For the most current information, choose a category below! 👇'
 
       <div className="min-w-0 flex flex-col">
         <h3 className="text-sm sm:text-base font-black text-white truncate leading-tight">
-          {schoolData?.name || 'Katwanyaa Senior School'}
+          {schoolData?.name || 'kinyui boys Senior School'}
         </h3>
         <p className="text-blue-200 text-[10px] sm:text-xs truncate opacity-80 font-medium">
-          {schoolData?.motto || 'Education is Light'}
+          {schoolData?.motto || 'Soaring to Excellence'}
         </p>
       </div>
     </div>
