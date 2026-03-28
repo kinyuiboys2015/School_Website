@@ -27,7 +27,7 @@ const Modern404 = () => {
     { name: 'Admissions', href: '/pages/admissions', icon: FiUsers, description: 'Join our family' },
     { name: 'Events & News', href: '/pages/eventsandnews', icon: FiCalendar, description: 'Upcoming terms' },
     { name: 'Support', href: '/pages/contact', icon: FiMail, description: 'Talk to the office' },
-        { name: 'Portal', href: '/pages/StudentPortal', icon: FiMail, description: 'Navigate to Portal' },
+    { name: 'Portal', href: '/pages/StudentPortal', icon: FiMail, description: 'Navigate to Portal' },
     { name: 'Guidance', href: '/pages/Guidance-and-Coucelling', icon: FiMail, description: 'Guidance sessions' },
 
   ];
