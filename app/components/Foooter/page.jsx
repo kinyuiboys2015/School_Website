@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import {
@@ -19,7 +20,6 @@ import {
   FiShield,
   FiAward,
   FiGithub,
-  
   FiTarget,
   FiBriefcase,
   FiActivity,
@@ -27,674 +27,704 @@ import {
   FiBell,
   FiCheckCircle,
   FiDownload,
-  FiEye, FiX 
+  FiEye,
+  FiX,
 } from 'react-icons/fi';
-import { 
-  SiFacebook, 
-  SiX,
-  SiYoutube, 
-  SiLinkedin, 
-  SiWhatsapp 
+import {
+  SiFacebook,
+  SiYoutube,
+  SiLinkedin,
+  SiWhatsapp,
 } from 'react-icons/si';
 
-export default function ModernFooter() {
-  const [showPrivacy, setShowPrivacy] = useState(false);
-  const [showSitemap, setShowSitemap] = useState(false);
-  const currentYear = new Date().getFullYear();
+// ----------------------------------------------------------------------
+// Data Layer (kept as static for consistency with original)
+// ----------------------------------------------------------------------
 
-  // Quick Links
-  const quickLinks = [
-    { name: 'Home', href: '/', icon: FiHome },
-    { name: 'About Us', href: '/pages/AboutUs', icon: FiUsers },
-    { name: 'Fees', href: '/pages/fees', icon: FiBook },
-    { name: 'Admissions', href: '/pages/admissions', icon: FiUserCheck },
-    { name: 'Gallery', href: '/pages/gallery', icon: FiImage },
-    { name: 'News & Events', href: '/pages/eventsandnews', icon: FiCalendar },
-    { name: 'Contact', href: '/pages/contact', icon: FiPhone },
-    { name: 'Careers', href: '/pages/careers', icon: FiBriefcase },
-  ];
+const QUICK_LINKS = [
+  { name: 'Home', href: '/', icon: FiHome },
+  { name: 'About Us', href: '/pages/AboutUs', icon: FiUsers },
+  { name: 'Fees', href: '/pages/fees', icon: FiBook },
+  { name: 'Admissions', href: '/pages/admissions', icon: FiUserCheck },
+  { name: 'Gallery', href: '/pages/gallery', icon: FiImage },
+  { name: 'News & Events', href: '/pages/eventsandnews', icon: FiCalendar },
+  { name: 'Contact', href: '/pages/contact', icon: FiPhone },
+  { name: 'Careers', href: '/pages/careers', icon: FiBriefcase },
+];
 
-  // Resources
-  const resources = [
-    { name: 'Student Portal', href: '/pages/StudentPortal', icon: FiBookOpen },
-    { name: 'Apply Now', href: '/pages/apply-for-admissions', icon: FiUserPlus },
-    { name: 'Guidance & Counselling', href: '/pages/Guidance-and-Councelling', icon: FiHelpCircle },
-    { name: 'Staff Directory', href: '/pages/staff', icon: FiUsers },
-    { name: 'Admin Login', href: '/pages/adminLogin', icon: FiLock },
-    { name: 'School Policies', href: '/pages/OurSchoolPolicies', icon: FiShield },
-  ];
+const RESOURCES = [
+  { name: 'Student Portal', href: '/pages/StudentPortal', icon: FiBookOpen },
+  { name: 'Apply Now', href: '/pages/apply-for-admissions', icon: FiUserPlus },
+  {
+    name: 'Guidance & Counselling',
+    href: '/pages/Guidance-and-Councelling',
+    icon: FiHelpCircle,
+  },
+  { name: 'Staff Directory', href: '/pages/staff', icon: FiUsers },
+  { name: 'Admin Login', href: '/pages/adminLogin', icon: FiLock },
+  { name: 'School Policies', href: '/pages/OurSchoolPolicies', icon: FiShield },
+];
 
-  // Social Media Links with React-colored icons
-  const socialLinks = [
-    {
-      icon: SiFacebook,
-      href: 'https://web.facebook.com/groups/414008468611340',
-      label: 'Facebook',
-      color: '#1877F2', // Facebook blue
-      hoverColor: '#0A5CD0'
-    },
-    {
-      icon: SiYoutube,
-      href: 'https://www.youtube.com/@SA.-kinyui boys-HIGH-SCHOOOL',
-      label: 'YouTube',
-      color: '#FF0000', // YouTube red
-      hoverColor: '#CC0000'
-    },
-    {
-      icon: SiLinkedin,
-      href: 'https://www.linkedin.com/in/kinyui boys-senior-school-8662113b7/',
-      label: 'LinkedIn',
-      color: '#0A66C2', // LinkedIn blue
-      hoverColor: '#004182'
-    },
-    {
-      icon: SiWhatsapp,
-      href: 'https://wa.me/25471089415',
-      label: 'WhatsApp',
-      color: '#25D366', // WhatsApp green
-      hoverColor: '#1DA851'
-    },
-  ];
+const SOCIAL_LINKS = [
+  {
+    icon: SiFacebook,
+    href: 'https://web.facebook.com/groups/414008468611340',
+    label: 'Facebook',
+    color: '#1877F2',
+    hoverColor: '#0A5CD0',
+  },
+  {
+    icon: SiYoutube,
+    href: 'https://www.youtube.com/@SA.-kinyui boys-HIGH-SCHOOOL',
+    label: 'YouTube',
+    color: '#FF0000',
+    hoverColor: '#CC0000',
+  },
+  {
+    icon: SiLinkedin,
+    href: 'https://www.linkedin.com/in/kinyui boys-senior-school-8662113b7/',
+    label: 'LinkedIn',
+    color: '#0A66C2',
+    hoverColor: '#004182',
+  },
+  {
+    icon: SiWhatsapp,
+    href: 'https://wa.me/25471089415',
+    label: 'WhatsApp',
+    color: '#25D366',
+    hoverColor: '#1DA851',
+  },
+];
 
-  // Newsletter states
-  const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
+const CONTACT_INFO = [
+  {
+    icon: FiMapPin,
+    text: 'Matungulu Machakos County, Kenya',
+    href: 'https://maps.app.goo.gl/CvZsLB55zaNhwbeG8',
+    detail: 'Along Tala Kangudo kanzalu road',
+  },
+  {
+    icon: FiPhone,
+    text: '0710 894 145',
+    href: 'tel:0710 894 145',
+    detail: 'Main Office Line',
+  },
+  {
+    icon: FiPhone,
+    text: '0710 894 145',
+    href: 'tel:0710 894 145',
+    detail: 'Admissions Office',
+  },
+  {
+    icon: FiMail,
+    text: 'kinyuiboys2015@gmail.com',
+    href: 'mailto:kinyuiboys2015@gmail.com',
+    detail: 'General Inquiries',
+  },
+  {
+    icon: FiMail,
+    text: 'kinyui boys Contact email',
+    href: 'mailto:kinyuiboys2015@gmail.com',
+    detail: 'Admissions',
+  },
+  {
+    icon: FiClock,
+    text: 'Mon - Fri: 7:30 AM - 5:00 PM',
+    href: '#',
+    detail: 'Sat: 8:00 AM - 1:00 PM',
+  },
+];
 
-  // Newsletter handler
-  const handleSubscribe = async (e) => {
-    e.preventDefault();
-    
-    if (!email || isSubmitting) return;
-    
-    setIsSubmitting(true);
-    
-    try {
-      const response = await fetch('/api/subscriber', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email.trim(),
-          subscribedAt: new Date().toISOString(),
-          source: 'footer-newsletter'
-        }),
-      });
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        setShowSuccess(true);
-        setEmail('');
-        
-        setTimeout(() => {
-          setShowSuccess(false);
-        }, 5000);
-        
-        toast.success('Successfully subscribed to newsletter!', {
-          icon: '✅',
-          duration: 3000,
-        });
-      } else {
-        throw new Error(data.error || 'Subscription failed');
-      }
-    } catch (error) {
-      console.error('Subscription error:', error);
-      toast.error('Failed to subscribe. Please try again.', {
-        icon: '❌',
-        duration: 3000,
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // Contact Information
-  const contactInfo = [
-    {
-      icon: FiMapPin,
-      text: 'Matungulu Machakos County, Kenya',
-      href: 'https://maps.app.goo.gl/CvZsLB55zaNhwbeG8',
-      detail: 'Along Tala Kangudo kanzalu road'
-    },
-    {
-      icon: FiPhone,
-      text: '0710 894 145',
-      href: 'tel:0710 894 145',
-      detail: 'Main Office Line'
-    },
-    {
-      icon: FiPhone,
-      text: '0710 894 145',
-      href: 'tel:0710 894 145',
-      detail: 'Admissions Office'
-    },
-    {
-      icon: FiMail,
-      text: 'kinyuiboys2015@gmail.com',
-      href: 'mailto:kinyuiboys2015@gmail.com',
-      detail: 'General Inquiries'
-    },
-    {
-      icon: FiMail,
-      text: 'kinyui boys Contact email',
-      href: 'mailto:kinyuiboys2015@gmail.com',
-      detail: 'Admissions'
-    },
-    {
-      icon: FiClock,
-      text: 'Mon - Fri: 7:30 AM - 5:00 PM',
-      href: '#',
-      detail: 'Sat: 8:00 AM - 1:00 PM'
-    }
-  ];
-
-// Achievements
-const achievements = [
+const ACHIEVEMENTS = [
   '3rd Best Public School in Matungulu Sub-county (2019) - Produced A- candidate',
   'Top Improving School in KCSE (2024) - Matungulu Sub-county',
   'KShs 6 Million ICT Donation (2023) - 50+ laptops from Angaza Centre',
   '40% Cost Reduction (2022) - LPG adoption with KCB KShs 1.2M funding',
   '400+ Students Enrolled - boarding',
-  'Consistent University Placement - Kenyan universities'
+  'Consistent University Placement - Kenyan universities',
 ];
 
-  return (
-    <footer className="w-full  bg-slate-900 text-white">
-      {/* Main Footer Content */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto">
-          {/* Grid Layout - Responsive with zoom support */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 w-full">
-            
-            {/* Column 1: School Information */}
-            <div className="space-y-6 min-w-0 w-full">
-              {/* Header Section */}
-              <div className="flex flex-col xs:flex-row items-start gap-4">
-                <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 border-white flex-shrink-0 shadow-sm">
-                  <img 
-                    src="/kinyui.png" 
-                    alt="School Logo" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white leading-tight break-words">
-                 kinyui boys Senior School 
-                  </h3>
-                  <div className="text-white text-sm font-medium flex items-center gap-2 mt-2 flex-wrap">
-                    <FiTarget className="flex-shrink-0 w-4 h-4" />
-                    <span className="opacity-90">Soaring to Excellence </span>
-                  </div>
-                </div>
-              </div>
+// ----------------------------------------------------------------------
+// Subcomponents (modular, reusable)
+// ----------------------------------------------------------------------
 
-              {/* Description */}
-              <p className="text-gray-300 text-sm sm:text-base font-normal leading-relaxed break-words max-w-prose">
-                A County learning institution in Matungulu Machakos, dedicated to academic excellence, 
-                holistic development, and nurturing future leaders through quality education since 1976.
+// --- Brand & Logo Section -------------------------------------------------
+const BrandSection = () => (
+  <div className="space-y-6">
+    <div className="flex flex-col xs:flex-row items-start gap-4">
+      <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 border-white/20 shadow-lg flex-shrink-0 bg-white/5">
+        <img
+          src="/kinyui.png"
+          alt="Kinyui Boys Senior School Logo"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="min-w-0 flex-1">
+        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white leading-tight break-words">
+          Kinyui Boys Senior School
+        </h3>
+        <div className="text-white/80 text-sm font-medium flex items-center gap-2 mt-2 flex-wrap">
+          <FiTarget className="flex-shrink-0 w-4 h-4" />
+          <span className="opacity-90">Soaring to Excellence</span>
+        </div>
+      </div>
+    </div>
+    <p className="text-gray-200 text-sm sm:text-base font-normal leading-relaxed break-words max-w-prose">
+      A County learning institution in Matungulu Machakos, dedicated to academic
+      excellence, holistic development, and nurturing future leaders through
+      quality education since 1976.
+    </p>
+  </div>
+);
+
+// --- Contact Info (first 3 items) -----------------------------------------
+const ContactList = () => (
+  <div className="space-y-4">
+    {CONTACT_INFO.slice(0, 3).map((item, index) => {
+      const Icon = item.icon;
+      return (
+        <a
+          key={index}
+          href={item.href}
+          className="flex items-start gap-3 text-gray-200 hover:text-white transition-all text-sm sm:text-base font-normal group"
+        >
+          <div className="mt-1 p-1.5 bg-white/10 rounded-md group-hover:bg-white/20 transition-colors flex-shrink-0">
+            <Icon className="text-lg" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <span className="block break-all sm:break-words leading-tight">
+              {item.text}
+            </span>
+            {item.detail && (
+              <p className="text-xs sm:text-sm text-gray-300 font-normal mt-0.5 break-words">
+                {item.detail}
               </p>
+            )}
+          </div>
+        </a>
+      );
+    })}
+  </div>
+);
 
-              {/* Contact List */}
-              <div className="space-y-4">
-                {contactInfo.slice(0, 3).map((item, index) => {
-                  const ItemIcon = item.icon;
+// --- Link Group (generic) -------------------------------------------------
+const LinkGroup = ({ title, icon: Icon, links }) => (
+  <div className="space-y-4">
+    <div className="flex items-center gap-2 flex-wrap">
+      <Icon className="text-white text-lg sm:text-xl flex-shrink-0" />
+      <h4 className="text-base sm:text-lg lg:text-xl font-semibold text-white break-words">
+        {title}
+      </h4>
+    </div>
+    <div className="space-y-3">
+      {links.map((link, idx) => {
+        const LinkIcon = link.icon;
+        return (
+          <a
+            key={idx}
+            href={link.href}
+            className="flex items-start gap-3 text-gray-200 hover:text-white text-sm sm:text-base font-normal group break-words hover:translate-x-1 transition-transform"
+          >
+            <LinkIcon className="flex-shrink-0 text-lg group-hover:scale-100 transition-transform mt-0.5 text-white/70" />
+            <span className="min-w-0 flex-1 break-words leading-tight">
+              {link.name}
+            </span>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+);
+
+// --- Achievements ---------------------------------------------------------
+const AchievementsList = () => (
+  <div className="mt-6 pt-6 border-t border-white/20 space-y-3">
+    <div className="flex items-center gap-2 flex-wrap">
+      <FiAward className="text-white text-lg flex-shrink-0" />
+      <h4 className="text-sm sm:text-base lg:text-lg font-semibold text-white break-words">
+        Achievements
+      </h4>
+    </div>
+    <div className="space-y-2">
+      {ACHIEVEMENTS.map((achievement, idx) => (
+        <div key={idx} className="flex items-start gap-3 text-gray-200 text-sm font-normal group">
+          <FiCheckCircle className="flex-shrink-0 text-lg mt-0.5 text-emerald-400" />
+          <span className="min-w-0 flex-1 break-words leading-relaxed">
+            {achievement}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+// --- Social Icons (colored, with hover) -----------------------------------
+const SocialLinksGroup = () => (
+  <div className="mt-6 pt-6 border-t border-white/20 space-y-3">
+    <div className="flex items-center gap-2 flex-wrap">
+      <FiUsers className="text-white text-lg flex-shrink-0" />
+      <h5 className="text-sm sm:text-base lg:text-lg font-semibold text-white break-words">
+        Connect With Us
+      </h5>
+    </div>
+    <div className="flex flex-wrap gap-3 pt-1">
+      {SOCIAL_LINKS.map((social, idx) => {
+        const SocialIcon = social.icon;
+        return (
+          <a
+            key={idx}
+            href={social.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center border border-white/20 flex-shrink-0 hover:scale-105 hover:shadow-lg transform transition-all duration-200"
+            aria-label={social.label}
+            style={{
+              backgroundColor: social.color,
+              borderColor: social.color,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = social.hoverColor;
+              e.currentTarget.style.borderColor = social.hoverColor;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = social.color;
+              e.currentTarget.style.borderColor = social.color;
+            }}
+          >
+            <SocialIcon className="text-lg sm:text-xl text-white" />
+          </a>
+        );
+      })}
+    </div>
+  </div>
+);
+
+// --- Newsletter Form ------------------------------------------------------
+const NewsletterForm = () => {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/subscriber', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email.trim(),
+          subscribedAt: new Date().toISOString(),
+          source: 'footer-newsletter',
+        }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setShowSuccess(true);
+        setEmail('');
+        setTimeout(() => setShowSuccess(false), 5000);
+        toast.success('Successfully subscribed to newsletter!', { icon: '✅' });
+      } else {
+        throw new Error(data.error || 'Subscription failed');
+      }
+    } catch (error) {
+      console.error('Subscription error:', error);
+      toast.error('Failed to subscribe. Please try again.', { icon: '❌' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+      <div className="flex items-center gap-3 mb-5 flex-wrap">
+        <div className="p-3 bg-amber-600 rounded-lg flex-shrink-0">
+          <FiBell className="text-white text-lg" />
+        </div>
+        <div className="min-w-0">
+          <h4 className="text-base sm:text-lg font-semibold text-white break-words">
+            Newsletter
+          </h4>
+          <p className="text-gray-200 text-sm font-normal break-words">
+            Get academic events & announcements
+          </p>
+        </div>
+      </div>
+      <form onSubmit={handleSubscribe} className="space-y-4">
+        <div className="relative">
+          <FiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg flex-shrink-0" />
+          <input
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full pl-12 pr-4 py-3 bg-black/30 border-2 border-white/20 hover:border-white/40 focus:border-amber-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all text-sm sm:text-base"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={isSubmitting || !email}
+          className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-amber-800/60 text-white py-3 rounded-lg font-medium text-sm sm:text-base transition-all disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] transform"
+        >
+          {isSubmitting ? (
+            <span className="flex items-center justify-center gap-2">
+              <svg
+                className="animate-spin h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              <span>Subscribing...</span>
+            </span>
+          ) : (
+            <span className="flex items-center justify-center gap-2">
+              <FiCheckCircle className="text-lg" />
+              <span>Subscribe</span>
+            </span>
+          )}
+        </button>
+      </form>
+      {showSuccess && (
+        <div className="mt-4 p-4 bg-emerald-600/30 border border-emerald-500 rounded-lg animate-pulse">
+          <div className="flex items-center gap-3 flex-wrap">
+            <FiCheckCircle className="text-emerald-300 text-lg flex-shrink-0" />
+            <div className="min-w-0">
+              <p className="text-emerald-300 font-medium text-sm sm:text-base break-words">
+                Successfully subscribed!
+              </p>
+              <p className="text-emerald-200 text-sm font-normal break-words">
+                You'll receive updates soon.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// --- Modals (Privacy & Sitemap) -------------------------------------------
+const PrivacyModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto overflow-x-hidden">
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-[#2a0a0a] text-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-white/10 p-5 sm:p-8 my-auto animate-slide-up">
+        <div className="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
+          <div className="flex items-center gap-2 min-w-0">
+            <FiShield className="text-xl text-amber-400 shrink-0" />
+            <h2 className="text-base sm:text-xl font-black uppercase tracking-tight truncate">
+              Privacy & Terms
+            </h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-white/10 rounded-full transition-all active:scale-90"
+          >
+            <FiX size={20} className="text-white" />
+          </button>
+        </div>
+        <div className="space-y-4 sm:space-y-6">
+          <section className="bg-white/5 rounded-2xl p-4 sm:p-6 border border-white/5 hover:bg-white/10 transition-colors">
+            <h3 className="text-[10px] font-black text-amber-400 uppercase tracking-[0.2em] mb-3 flex items-center gap-2">
+              <FiShield size={14} /> Commitment
+            </h3>
+            <p className="text-slate-200 text-xs sm:text-sm font-medium leading-relaxed italic">
+              "We are committed to protecting the privacy and security of all personal
+              information in compliance with the Data Protection Act."
+            </p>
+          </section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="bg-white/5 rounded-2xl p-4 sm:p-6 border border-white/5">
+              <h3 className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                <FiEye size={14} /> Collection
+              </h3>
+              <ul className="space-y-3">
+                {['Academic Records', 'Parent Contacts', 'Medical Info'].map((text, i) => (
+                  <li key={i} className="flex items-center gap-3 text-xs text-slate-200 font-bold">
+                    <div className="w-1.5 h-1.5 bg-amber-500 rounded-full shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
+                    {text}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-white/5 rounded-2xl p-4 sm:p-6 border border-white/5">
+              <h3 className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                <FiDownload size={14} /> Protection
+              </h3>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { e: '🔐', t: 'Encrypted' },
+                  { e: '🛡️', t: 'Secure' },
+                  { e: '📊', t: 'Audits' },
+                  { e: '👩‍🏫', t: 'Training' },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="bg-black/30 rounded-xl p-2 text-center border border-white/5"
+                  >
+                    <div className="text-sm mb-0.5">{item.e}</div>
+                    <div className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">
+                      {item.t}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mt-8 pt-6 border-t border-white/5">
+          <div className="flex flex-row gap-3 items-center">
+            <button
+              onClick={onClose}
+              className="flex-1 bg-white/5 hover:bg-white/10 text-white py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all active:scale-95 border border-white/10"
+            >
+              Close
+            </button>
+            <button
+              onClick={onClose}
+              className="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all active:scale-95 text-center shadow-lg shadow-amber-500/25"
+            >
+              Accept
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SitemapModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+  const sections = [
+    { title: 'Main Sections', links: QUICK_LINKS.slice(0, 4) },
+    { title: 'Resources', links: RESOURCES.slice(0, 4) },
+    { title: 'Quick Links', links: QUICK_LINKS.slice(4) },
+  ];
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto overflow-x-hidden">
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-[#2a0a0a] text-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-white/10 p-5 sm:p-8 my-auto animate-slide-up">
+        <div className="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
+          <div className="flex items-center gap-2">
+            <FiGlobe className="text-xl sm:text-2xl text-amber-400" />
+            <h2 className="text-base sm:text-xl font-black uppercase tracking-tight">
+              Navigation
+            </h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-white/10 rounded-full transition-colors active:scale-90"
+          >
+            <FiX size={20} className="text-white" />
+          </button>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {sections.map((section, idx) => (
+            <div key={idx} className="space-y-4">
+              <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                <span className="w-4 h-[1px] bg-amber-500/50" /> {section.title}
+              </h3>
+              <div className="flex flex-col gap-1">
+                {section.links.map((item, index) => {
+                  const Icon = item.icon;
                   return (
                     <a
                       key={index}
                       href={item.href}
-                      className="flex items-start gap-3 text-gray-300 hover:text-white transition-all text-sm sm:text-base font-normal group"
+                      className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-amber-300 transition-all group"
+                      onClick={onClose}
                     >
-                      <div className="mt-1 p-1.5 bg-white/10 rounded-md group-hover:bg-white/20 transition-colors flex-shrink-0">
-                        <ItemIcon className="text-lg group-hover:scale-100 transition-transform" /> 
+                      <div className="p-1.5 bg-white/5 rounded-lg group-hover:bg-amber-500/20 transition-colors">
+                        <Icon size={14} className="shrink-0" />
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <span className="block break-all sm:break-words leading-tight">{item.text}</span>
-                        {item.detail && (
-                          <p className="text-xs sm:text-sm text-gray-400 font-normal mt-0.5 break-words">
-                            {item.detail}
-                          </p> 
-                        )}
-                      </div>
+                      <span className="text-xs font-bold tracking-tight">{item.name}</span>
                     </a>
                   );
                 })}
               </div>
             </div>
+          ))}
+        </div>
+        <div className="mt-8 pt-6 border-t border-white/5">
+          <div className="flex flex-row gap-3 items-center">
+            <button
+              onClick={onClose}
+              className="flex-1 bg-white/5 hover:bg-white/10 text-white py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all active:scale-95 border border-white/10"
+            >
+              Close
+            </button>
+            <a
+              href="/pages/contact"
+              onClick={onClose}
+              className="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all active:scale-95 text-center shadow-lg shadow-amber-500/25"
+            >
+              Contact
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-            {/* Column 2: Quick Links */}
-            <div className="space-y-4 min-w-0 w-full">
-              <div className="flex items-center gap-2 flex-wrap">
-                <FiGlobe className="text-white text-lg sm:text-xl flex-shrink-0" />
-                <h4 className="text-base sm:text-lg lg:text-xl font-semibold text-white break-words">Quick Links</h4>
-              </div>
-              <div className="space-y-3">
-                {quickLinks.map((link, index) => {
-                  const Icon = link.icon;
-                  return (
-                    <a 
-                      key={index} 
-                      href={link.href} 
-                      className="flex items-start gap-3 text-gray-300 hover:text-white text-sm sm:text-base font-normal group break-words hover:translate-x-1 transition-transform"
-                    >
-                      <Icon className="flex-shrink-0 text-lg group-hover:scale-100 transition-transform mt-0.5 text-white/70" />
-                      <span className="min-w-0 flex-1 break-words leading-tight">{link.name}</span>
-                    </a>
-                  );
-                })}
-              </div>
+// --- Developer Credits (bottom bar) ---------------------------------------
+const DevCredits = () => (
+  <div className="mt-12 py-6 border-t border-white/10">
+    <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">
+      <div className="flex items-center gap-2">
+        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">
+          System Architecture
+        </p>
+      </div>
+      <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2">
+        <p className="text-[11px] font-bold text-white/60 tracking-tight">
+          Developed by{' '}
+          <a
+            href="https://www.linkedin.com/in/emmanuel-makau-40a12028b/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white hover:text-emerald-400 transition-colors duration-300 underline decoration-emerald-500/30 underline-offset-4"
+          >
+            Emmanuel Makau
+          </a>
+        </p>
+        <div className="flex items-center gap-4 bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-inner">
+          <a
+            href="https://github.com/Emmanuel10701"
+            className="text-white/50 hover:text-white transition-all hover:scale-110"
+            title="GitHub Profile"
+          >
+            <FiGithub size={14} />
+          </a>
+          <a
+            href="mailto:emmanuelmakau90@gmail.com"
+            className="text-white/50 hover:text-emerald-400 transition-all hover:scale-110"
+            title="Email Developer"
+          >
+            <FiMail size={14} />
+          </a>
+          <a
+            href="tel:+254793472960"
+            className="text-white/50 hover:text-blue-400 transition-all hover:scale-110"
+            title="Call"
+          >
+            <FiPhone size={14} />
+          </a>
+          <div className="w-[1px] h-3 bg-white/10 mx-1" />
+          <span className="text-[9px] font-black text-white/30 tracking-widest uppercase">
+            v2.0.26
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
-              {/* Achievements */}
-              <div className="mt-6 pt-6 border-t border-white/20 space-y-3">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <FiAward className="text-white text-lg flex-shrink-0" />
-                  <h4 className="text-sm sm:text-base lg:text-lg font-semibold text-white break-words">Achievements</h4>
-                </div>
-                <div className="space-y-2">
-                  {achievements.map((achievement, index) => (
-                    <div key={index} className="flex items-start gap-3 text-gray-300 text-sm font-normal group">
-                      <FiCheckCircle className="flex-shrink-0 text-lg mt-0.5 text-green-400" />
-                      <span className="min-w-0 flex-1 break-words leading-relaxed">{achievement}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+// ----------------------------------------------------------------------
+// Main Footer Component (completely redesigned, modular, maroon background)
+// ----------------------------------------------------------------------
+export default function ModernFooter() {
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showSitemap, setShowSitemap] = useState(false);
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="w-full bg-gradient-to-b from-[#3a0f0f] to-[#1f0606] text-white">
+      {/* Main Footer Content */}
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto">
+          {/* Responsive Grid Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 w-full">
+            {/* Column 1: Brand + Contact */}
+            <div className="space-y-6 min-w-0 w-full">
+              <BrandSection />
+              <ContactList />
             </div>
 
-            {/* Column 3: Resources */}
-            <div className="space-y-4 min-w-0 w-full">
-              <div className="flex items-center gap-2 flex-wrap">
-                <FiActivity className="text-white text-lg sm:text-xl flex-shrink-0" />
-                <h4 className="text-base sm:text-lg lg:text-xl font-semibold text-white break-words">Resources</h4>
-              </div>
-              <div className="space-y-3">
-                {resources.map((resource, index) => {
-                  const Icon = resource.icon;
-                  return (
-                    <a
-                      key={index}
-                      href={resource.href}
-                      className="flex items-start gap-3 text-gray-300 hover:text-white  text-sm sm:text-base font-normal group break-words hover:translate-x-1 transition-transform"
-                    >
-                      <Icon className="flex-shrink-0 text-lg group-hover:scale-100 transition-transform mt-0.5 text-white/70" />
-                      <span className="min-w-0 flex-1 break-words leading-tight">{resource.name}</span>
-                    </a>
-                  );
-                })}
-              </div>
+            {/* Column 2: Quick Links + Achievements */}
+            <div className="space-y-6 min-w-0 w-full">
+              <LinkGroup title="Quick Links" icon={FiGlobe} links={QUICK_LINKS} />
+              <AchievementsList />
+            </div>
 
-              {/* Social Media with React-colored icons */}
-              <div className="mt-6 pt-6 border-t border-white/20 space-y-3">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <FiUsers className="text-white text-lg flex-shrink-0" />
-                  <h5 className="text-sm sm:text-base lg:text-lg font-semibold text-white break-words">Connect With Us</h5>
-                </div>
-                <div className="flex flex-wrap gap-3 pt-1">
-                  {socialLinks.map((social, index) => {
-                    const SocialIcon = social.icon;
-                    return (
-                      <a
-                        key={index}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center  border border-white/20 flex-shrink-0 hover:scale-100 hover:shadow-lg transform transition-transform"
-                        aria-label={social.label}
-                        style={{
-                          backgroundColor: social.color,
-                          borderColor: social.color,
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = social.hoverColor;
-                          e.currentTarget.style.borderColor = social.hoverColor;
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = social.color;
-                          e.currentTarget.style.borderColor = social.color;
-                        }}
-                      >
-                        <SocialIcon className="text-lg sm:text-xl text-white" />
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
+            {/* Column 3: Resources + Social */}
+            <div className="space-y-6 min-w-0 w-full">
+              <LinkGroup title="Resources" icon={FiActivity} links={RESOURCES} />
+              <SocialLinksGroup />
             </div>
 
             {/* Column 4: Newsletter */}
             <div className="space-y-4 min-w-0 w-full">
               <div className="flex items-center gap-2 flex-wrap">
                 <FiBell className="text-white text-lg sm:text-xl flex-shrink-0" />
-                <h4 className="text-base sm:text-lg lg:text-xl font-semibold text-white break-words">Stay Updated</h4>
+                <h4 className="text-base sm:text-lg lg:text-xl font-semibold text-white break-words">
+                  Stay Updated
+                </h4>
               </div>
-              
-              {/* Newsletter Subscription */}
-              <div className="bg-slate-800 rounded-xl p-6 border border-gray-700">
-                <div className="flex items-center gap-3 mb-5 flex-wrap">
-                  <div className="p-3 bg-blue-600 rounded-lg flex-shrink-0">
-                    <FiBell className="text-white text-lg" />
-                  </div>
-                  <div className="min-w-0">
-                    <h4 className="text-base sm:text-lg font-semibold text-white break-words">Newsletter</h4>
-                    <p className="text-gray-300 text-sm font-normal break-words">Get academic events & announcements</p>
-                  </div>
-                </div>
-
-                <form onSubmit={handleSubscribe} className="space-y-4">
-                  <div className="relative">
-                    <FiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg flex-shrink-0" />
-                    <input
-                      type="email"
-                      placeholder="you@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="w-full pl-12 pr-4 py-3 bg-gray-800 border-2 border-gray-700 hover:border-gray-600 focus:border-blue-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm sm:text-base font-normal"
-                    />
-                  </div>
-                  
-                  <button
-                    type="submit"
-                    disabled={isSubmitting || !email}
-                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white py-3 rounded-lg font-medium text-sm sm:text-base transition-all disabled:cursor-not-allowed hover:scale-[1.00] active:scale-[0.99] transform"
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center justify-center gap-2">
-                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <span>Subscribing...</span>
-                      </span>
-                    ) : (
-                      <span className="flex items-center justify-center gap-2">
-                        <FiCheckCircle className="text-lg" />
-                        <span>Subscribe</span>
-                      </span>
-                    )}
-                  </button>
-                </form>
-
-                {/* Success Message */}
-                {showSuccess && (
-                  <div className="mt-4 p-4 bg-emerald-600/30 border border-emerald-500 rounded-lg animate-pulse">
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <FiCheckCircle className="text-emerald-300 text-lg flex-shrink-0" />
-                      <div className="min-w-0">
-                        <p className="text-emerald-300 font-medium text-sm sm:text-base break-words">Successfully subscribed!</p>
-                        <p className="text-emerald-200 text-sm font-normal break-words">You'll receive updates soon.</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <NewsletterForm />
             </div>
           </div>
 
-          {/* Footer Bottom - Zoom responsive */}
-          <div className="mt-12 lg:mt-16 pt-8 border-t border-gray-700">
+          {/* Footer Bottom */}
+          <div className="mt-12 lg:mt-16 pt-8 border-t border-white/20">
             <div className="flex flex-col gap-6 w-full">
               <div className="text-gray-300 text-sm font-normal text-center break-words px-4">
-                <p>© {currentYear} kinyui boys Senior School, Matungulu Machakos. All rights reserved.</p>
+                <p>
+                  © {currentYear} Kinyui Boys Senior School, Matungulu Machakos. All rights
+                  reserved.
+                </p>
               </div>
-
               <div className="flex items-center justify-center gap-4 sm:gap-6 text-sm font-normal flex-wrap">
-                <button 
-                  onClick={() => setShowSitemap(true)} 
-                  className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 hover:scale-100 whitespace-nowrap flex-shrink-0 px-2 py-1"
+                <button
+                  onClick={() => setShowSitemap(true)}
+                  className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 hover:scale-105 whitespace-nowrap flex-shrink-0 px-2 py-1"
                 >
                   <FiGlobe className="text-lg" />
                   <span className="break-words">Sitemap</span>
                 </button>
-                <button 
-                  onClick={() => setShowPrivacy(true)} 
-                  className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 hover:scale-100 whitespace-nowrap flex-shrink-0 px-2 py-1"
+                <button
+                  onClick={() => setShowPrivacy(true)}
+                  className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 hover:scale-105 whitespace-nowrap flex-shrink-0 px-2 py-1"
                 >
                   <FiShield className="text-lg" />
                   <span className="break-words">Terms & Privacy</span>
                 </button>
               </div>
             </div>
-
             <div className="mt-6 text-center text-sm text-gray-300 font-normal break-words px-4">
               <div className="flex items-center justify-center gap-2 mt-3 flex-wrap">
                 <span>Empowering Future Leaders with</span>
                 <span className="text-lg">💚</span>
                 <span>since 1976..Soaring to Excellence</span>
               </div>
-<div className="mt-12 py-6 border-t border-white/10">
-  <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">
-    <div className="flex items-center gap-2">
-      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">
-        System Architecture
-      </p>
-    </div>
-
-    {/* Modern Dev Credits */}
-    <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2">
-      <p className="text-[11px] font-bold text-white/60 tracking-tight">
-        Developed by{" "}
-        <a 
-          href="https://www.linkedin.com/in/emmanuel-makau-40a12028b/" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-white hover:text-emerald-400 transition-colors duration-300 underline decoration-emerald-500/30 underline-offset-4"
-        >
-          Emmanuel Makau
-        </a>
-      </p>
-
-      {/* Social Links Bar */}
-      <div className="flex items-center gap-4 bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-inner">
-        <a 
-          href="https://github.com/Emmanuel10701" 
-          className="text-white/50 hover:text-white transition-all hover:scale-110"
-          title="GitHub Profile"
-        >
-          <FiGithub size={14} />
-        </a>
-        <a 
-          href="mailto:emmanuelmakau90@gmail.com" 
-          className="text-white/50 hover:text-emerald-400 transition-all hover:scale-110"
-          title="Email Developer"
-        >
-          <FiMail size={14} />
-        </a>
-        <a 
-          href="tel:+254793472960" 
-          className="text-white/50 hover:text-blue-400 transition-all hover:scale-110"
-          title="Call"
-        >
-          <FiPhone size={14} />
-        </a>
-        <div className="w-[1px] h-3 bg-white/10 mx-1" />
-        <span className="text-[9px] font-black text-white/30 tracking-widest uppercase">
-          v2.0.26
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-
-
             </div>
+            <DevCredits />
           </div>
         </div>
       </div>
 
-{/* Privacy Policy Modal */}
-{showPrivacy && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto overflow-x-hidden">
-    <div 
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm" 
-      onClick={() => setShowPrivacy(false)} 
-    />
-    
-    <div className="relative bg-slate-900 text-white rounded-[2rem] max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-white/10 p-5 sm:p-8 my-auto animate-slide-up">
-      
-      {/* Header - Compact */}
-      <div className="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
-        <div className="flex items-center gap-2 min-w-0">
-          <FiShield className="text-xl text-blue-400 shrink-0" />
-          <h2 className="text-base sm:text-xl font-black uppercase tracking-tight truncate">Privacy & Terms</h2>
-        </div>
-        <button 
-          onClick={() => setShowPrivacy(false)} 
-          className="p-2 hover:bg-white/10 rounded-full transition-all active:scale-90"
-        >
-
-          <FiX size={20} className="text-white" />
-        </button>
-      </div>
-
-      <div className="space-y-4 sm:space-y-6">
-        {/* Commitment Section */}
-        <section className="bg-white/5 rounded-2xl p-4 sm:p-6 border border-white/5 hover:bg-white/10 transition-colors">
-          <h3 className="text-[10px] font-black text-blue-400 uppercase tracking-[0.2em] mb-3 flex items-center gap-2">
-            <FiShield size={14}/> Commitment
-          </h3>
-          <p className="text-slate-300 text-xs sm:text-sm font-medium leading-relaxed italic">
-            "We are committed to protecting the privacy and security of all personal information in compliance with the Data Protection Act."
-          </p>
-        </section>
-
-        {/* Info Grid - Stacked on Mobile */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-white/5 rounded-2xl p-4 sm:p-6 border border-white/5">
-            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-              <FiEye size={14} /> Collection
-            </h3>
-            <ul className="space-y-3">
-              {['Academic Records', 'Parent Contacts', 'Medical Info'].map((text, i) => (
-                <li key={i} className="flex items-center gap-3 text-xs text-slate-300 font-bold">
-                  <div className="w-1.5 h-1.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
-                  {text}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="bg-white/5 rounded-2xl p-4 sm:p-6 border border-white/5">
-            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-              <FiDownload size={14} /> Protection
-            </h3>
-            <div className="grid grid-cols-2 gap-2">
-              {[
-                { e: '🔐', t: 'Encrypted' },
-                { e: '🛡️', t: 'Secure' },
-                { e: '📊', t: 'Audits' },
-                { e: '👩‍🏫', t: 'Training' }
-              ].map((item, i) => (
-                <div key={i} className="bg-slate-950/50 rounded-xl p-2 text-center border border-white/5">
-                  <div className="text-sm mb-0.5">{item.e}</div>
-                  <div className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">{item.t}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer Actions */}
-      <div className="mt-8 pt-6 border-t border-white/5">
-        <div className="flex flex-row gap-3 items-center">
-          <button 
-            onClick={() => setShowPrivacy(false)} 
-            className="flex-1 bg-white/5 hover:bg-white/10 text-white py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all active:scale-95 border border-white/10"
-          >
-            Close
-          </button>
-          <button 
-            onClick={() => setShowPrivacy(false)} 
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all active:scale-95 text-center shadow-lg shadow-blue-500/25"
-          >
-            Accept
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-
-{/* Sitemap Modal */}
-{showSitemap && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto overflow-x-hidden">
-    <div 
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm" 
-      onClick={() => setShowSitemap(false)} 
-    />
-    
-    <div className="relative bg-slate-900 text-white rounded-[2rem] max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-white/10 p-5 sm:p-8 my-auto animate-slide-up">
-      
-      {/* Header - Scaled for Mobile */}
-      <div className="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
-        <div className="flex items-center gap-2">
-          <FiGlobe className="text-xl sm:text-2xl text-blue-400" />
-          <h2 className="text-base sm:text-xl font-black uppercase tracking-tight">Navigation</h2>
-        </div>
-        <button 
-          onClick={() => setShowSitemap(false)} 
-          className="p-2 hover:bg-white/10 rounded-full transition-colors active:scale-90"
-        >
-          <FiX size={20} className="text-white" />
-        </button>
-      </div>
-
-      {/* Grid: 1 col on mobile, 2 on small tablets, 3 on desktop */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {['Main Sections', 'Resources', 'Quick Links'].map((section, idx) => (
-          <div key={idx} className="space-y-4">
-            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2">
-              <span className="w-4 h-[1px] bg-blue-500/50" /> {section}
-            </h3>
-            <div className="flex flex-col gap-1">
-              {(section === 'Main Sections' ? quickLinks.slice(0, 4) : 
-                section === 'Resources' ? resources.slice(0, 4) : 
-                quickLinks.slice(4)).map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <a
-                    key={index}
-                    href={item.href}
-                    className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 text-slate-300 hover:text-blue-400 transition-all group"
-                    onClick={() => setShowSitemap(false)}
-                  >
-                    <div className="p-1.5 bg-white/5 rounded-lg group-hover:bg-blue-500/20 transition-colors">
-                      <Icon size={14} className="shrink-0" />
-                    </div>
-                    <span className="text-xs font-bold tracking-tight">{item.name}</span>
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Footer Actions - The ones we just perfected */}
-      <div className="mt-8 pt-6 border-t border-white/5">
-        <div className="flex flex-row gap-3 items-center">
-          <button 
-            onClick={() => setShowSitemap(false)} 
-            className="flex-1 bg-white/5 hover:bg-white/10 text-white py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all active:scale-95 border border-white/10"
-          >
-            Close
-          </button>
-          <a
-            href="/pages/contact"
-            onClick={() => setShowSitemap(false)}
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all active:scale-95 text-center shadow-lg shadow-blue-500/25"
-          >
-            Contact
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+      {/* Modals */}
+      <PrivacyModal isOpen={showPrivacy} onClose={() => setShowPrivacy(false)} />
+      <SitemapModal isOpen={showSitemap} onClose={() => setShowSitemap(false)} />
     </footer>
   );
 }
