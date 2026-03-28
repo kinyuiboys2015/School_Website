@@ -202,8 +202,8 @@ export default function ModernNavbar() {
       <nav 
         className={`fixed w-full z-50 transition-all duration-300 ${
           isScrolled 
-            ? 'bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 backdrop-blur-lg shadow-xl border-b border-white/10' 
-            : 'bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 shadow-lg'
+            ? 'bg-gradient-to-br from-[#2a0a0a] to-[#1a0505] backdrop-blur-lg shadow-xl border-b border-white/10' 
+            : 'bg-gradient-to-br from-[#3a0f0f] to-[#1f0606] shadow-lg'
         }`}
       >
         <div className="w-full px-3 xs:px-4 sm:px-6 lg:px-8">
@@ -211,16 +211,16 @@ export default function ModernNavbar() {
             
             {/* Logo Section - Mobile Responsive */}
             <div 
-              className="flex items-center gap-2 xs:gap-3  cursor-pointer hover:opacity-90 transition-opacity "
+              className="flex items-center gap-2 xs:gap-3 cursor-pointer hover:opacity-90 transition-opacity"
               onClick={handleLogoClick}
               role="button"
               tabIndex={0}
               onKeyDown={handleLogoKeyDown}
             >
               <div className="relative w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 
-                bg-white/20 rounded-lg xs:rounded-xl flex items-center justify-center 
-                shadow-lg border border-white/30 overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+                bg-white/10 rounded-lg xs:rounded-xl flex items-center justify-center 
+                shadow-lg border border-white/20 overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
                 <Image
                   src="/kinyui.png"
                   alt="kinyui boys Senior School Logo"
@@ -231,11 +231,11 @@ export default function ModernNavbar() {
                   sizes="(max-width: 480px) 48px, (max-width: 640px) 56px, 64px"
                 />
               </div>
-              <div className=" sm:block">
-                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent whitespace-nowrap tracking-tight">
-                   Katz
+              <div className="sm:block">
+                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-amber-200 to-yellow-300 bg-clip-text text-transparent whitespace-nowrap tracking-tight">
+                   Kinyui Boys
                 </h1>
-                <p className="text-xs sm:text-sm text-white/90 font-medium tracking-wide whitespace-nowrap">
+                <p className="text-xs sm:text-sm text-amber-100/90 font-medium tracking-wide whitespace-nowrap">
                   Soaring to Excellence
                 </p>
               </div>
@@ -259,10 +259,9 @@ export default function ModernNavbar() {
                         <button
                           className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.78rem] xs:text-[0.85rem] uppercase tracking-wide whitespace-nowrap px-2 xs:px-2.5 py-2 relative ${
                             isActive || isAcademicDropdownOpen
-                              ? 'text-white' 
-                              : 'text-white/85 hover:text-white'
+                              ? 'text-amber-200' 
+                              : 'text-white/80 hover:text-amber-200'
                           }`}
-                          style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}
                           aria-expanded={isAcademicDropdownOpen}
                           aria-haspopup="true"
                         >
@@ -274,16 +273,16 @@ export default function ModernNavbar() {
                           
                           {/* Active underline indicator */}
                           {(isActive || isAcademicDropdownOpen) && (
-                            <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-white rounded-full"></span>
+                            <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-amber-400 rounded-full"></span>
                           )}
                         </button>
 
                         {/* Academic Dropdown Menu */}
                         {isAcademicDropdownOpen && (
                           <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 z-50">
-                            <div className="px-3 py-2 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-xl">
-                              <h3 className="font-bold text-gray-800 text-[0.7rem] uppercase tracking-wider flex items-center gap-1.5" style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}>
-                                <FiBook className="text-blue-600 text-xs" />
+                            <div className="px-3 py-2 border-b border-gray-100 bg-gradient-to-r from-amber-50 to-orange-50 rounded-t-xl">
+                              <h3 className="font-bold text-gray-800 text-[0.7rem] uppercase tracking-wider flex items-center gap-1.5">
+                                <FiBook className="text-amber-600 text-xs" />
                                 Academic Resources
                               </h3>
                             </div>
@@ -294,22 +293,20 @@ export default function ModernNavbar() {
                                 href={dropdownItem.href}
                                 className={`group flex items-center gap-2 px-3 py-2.5 text-xs font-medium transition-all hover:pl-3.5 ${
                                   isActiveLink(dropdownItem.href)
-                                    ? 'text-blue-700 bg-blue-50 border-l-3 border-blue-600'
-                                    : 'text-gray-700 hover:text-blue-700 hover:bg-blue-50/50'
+                                    ? 'text-amber-700 bg-amber-50 border-l-3 border-amber-600'
+                                    : 'text-gray-700 hover:text-amber-700 hover:bg-amber-50/50'
                                 }`}
-                                style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}
                                 onClick={() => setIsAcademicDropdownOpen(false)}
                               >
                                 <dropdownItem.icon className="text-xs flex-shrink-0" />
                                 <span className="flex-1 truncate">{dropdownItem.name}</span>
-                                <FiChevronRight className="text-gray-400 text-xs group-hover:text-blue-600 opacity-0 group-hover:opacity-100 transition-all" />
+                                <FiChevronRight className="text-gray-400 text-xs group-hover:text-amber-600 opacity-0 group-hover:opacity-100 transition-all" />
                               </a>
                             ))}
                             
                             <a 
                               href="https://analytics.zeraki.app/" 
-                              className="group flex items-center gap-2 px-3 py-2.5 text-xs font-medium text-gray-700 hover:text-blue-700 hover:bg-blue-50/50 transition-all hover:pl-3.5"
-                              style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}
+                              className="group flex items-center gap-2 px-3 py-2.5 text-xs font-medium text-gray-700 hover:text-amber-700 hover:bg-amber-50/50 transition-all hover:pl-3.5"
                               onClick={() => setIsAcademicDropdownOpen(false)}
                               target="_blank"
                               rel="noopener noreferrer"
@@ -318,11 +315,11 @@ export default function ModernNavbar() {
                                 <img 
                                   src="/zeraki.jpg" 
                                   alt="Zeraki Analytics" 
-                                  className="w-full h-full object-cover rounded-md border border-gray-200 group-hover:border-blue-300 transition-colors"
+                                  className="w-full h-full object-cover rounded-md border border-gray-200 group-hover:border-amber-300 transition-colors"
                                 />
                               </div>
                               <span className="flex-1 truncate">Zeraki Analytics</span>
-                              <FiChevronRight className="text-gray-400 text-xs group-hover:text-blue-600 opacity-0 group-hover:opacity-100 transition-all" />
+                              <FiChevronRight className="text-gray-400 text-xs group-hover:text-amber-600 opacity-0 group-hover:opacity-100 transition-all" />
                             </a>
                           </div>
                         )}
@@ -336,21 +333,20 @@ export default function ModernNavbar() {
                       href={item.href}
                       className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.78rem] xs:text-[0.85rem] uppercase tracking-wide whitespace-nowrap px-2 xs:px-2.5 py-2 relative ${
                         isActive 
-                          ? 'text-white' 
-                          : 'text-white/85 hover:text-white'
+                          ? 'text-amber-200' 
+                          : 'text-white/80 hover:text-amber-200'
                       }`}
-                      style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}
                     >
                       <item.icon className="text-xs flex-shrink-0 group-hover:scale-100 transition-transform" />
                       <span className="truncate">{item.name}</span>
                       
                       {/* Active underline indicator */}
                       {isActive && (
-                        <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-5 h-0.5 bg-white rounded-full"></span>
+                        <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-5 h-0.5 bg-amber-400 rounded-full"></span>
                       )}
                       
                       {/* Hover underline indicator */}
-                      <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-white/50 rounded-full group-hover:w-5 transition-all duration-300"></span>
+                      <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-amber-400/50 rounded-full group-hover:w-5 transition-all duration-300"></span>
                     </a>
                   );
                 })}
@@ -368,10 +364,9 @@ export default function ModernNavbar() {
                       isActiveLink('/pages/staff') || 
                       isActiveLink('/pages/career') ||
                       isActiveLink('/pages/adminLogin')
-                        ? 'text-white' 
-                        : 'text-white/85 hover:text-white'
+                        ? 'text-amber-200' 
+                        : 'text-white/80 hover:text-amber-200'
                     }`}
-                    style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}
                     aria-expanded={isResourcesDropdownOpen}
                     aria-haspopup="true"
                   >
@@ -386,16 +381,16 @@ export default function ModernNavbar() {
                       isActiveLink('/pages/staff') || 
                       isActiveLink('/pages/career') ||
                       isActiveLink('/pages/adminLogin')) && (
-                      <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-white rounded-full"></span>
+                      <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-amber-400 rounded-full"></span>
                     )}
                   </button>
 
                   {/* Resources Dropdown Menu - INCLUDES ADMIN LOGIN */}
                   {isResourcesDropdownOpen && (
                     <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 z-50">
-                      <div className="px-3 py-2 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-t-xl">
-                        <h3 className="font-bold text-gray-800 text-[0.7rem] uppercase tracking-wider flex items-center gap-1.5" style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}>
-                          <FiGrid className="text-purple-600 text-xs" />
+                      <div className="px-3 py-2 border-b border-gray-100 bg-gradient-to-r from-amber-50 to-orange-50 rounded-t-xl">
+                        <h3 className="font-bold text-gray-800 text-[0.7rem] uppercase tracking-wider flex items-center gap-1.5">
+                          <FiGrid className="text-amber-600 text-xs" />
                           Resources & Admin
                         </h3>
                       </div>
@@ -407,23 +402,22 @@ export default function ModernNavbar() {
                           className={`group flex items-center gap-2 px-3 py-2.5 text-xs font-medium transition-all hover:pl-3.5 ${
                             isActiveLink(dropdownItem.href)
                               ? dropdownItem.isHighlighted
-                                ? 'bg-gradient-to-r from-blue-50 to-blue-100 border-l-3 border-blue-600 text-blue-700'
-                                : 'text-purple-700 bg-purple-50 border-l-3 border-purple-600'
+                                ? 'bg-gradient-to-r from-amber-50 to-amber-100 border-l-3 border-amber-600 text-amber-700'
+                                : 'text-amber-700 bg-amber-50 border-l-3 border-amber-600'
                               : dropdownItem.isHighlighted
-                                ? 'text-blue-600 hover:text-blue-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100'
-                                : 'text-gray-700 hover:text-purple-700 hover:bg-purple-50/50'
+                                ? 'text-amber-600 hover:text-amber-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-amber-100'
+                                : 'text-gray-700 hover:text-amber-700 hover:bg-amber-50/50'
                           }`}
-                          style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}
                           onClick={() => setIsResourcesDropdownOpen(false)}
                         >
                           <dropdownItem.icon className={`text-xs flex-shrink-0 ${
-                            dropdownItem.isHighlighted ? 'text-blue-600' : ''
+                            dropdownItem.isHighlighted ? 'text-amber-600' : ''
                           }`} />
                           <span className="flex-1 truncate">{dropdownItem.name}</span>
                           <FiChevronRight className={`text-xs ${
                             dropdownItem.isHighlighted 
-                              ? 'text-blue-400 group-hover:text-blue-600' 
-                              : 'text-gray-400 group-hover:text-purple-600'
+                              ? 'text-amber-400 group-hover:text-amber-600' 
+                              : 'text-gray-400 group-hover:text-amber-600'
                           } opacity-0 group-hover:opacity-100 transition-all`} />
                         </a>
                       ))}
@@ -437,7 +431,7 @@ export default function ModernNavbar() {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="lg:hidden p-2.5 xs:p-3 rounded-lg xs:rounded-xl text-white 
-                bg-white/15 hover:bg-white/25 transition-all active:scale-95 ml-auto"
+                bg-white/10 hover:bg-white/20 transition-all active:scale-95 ml-auto"
               aria-label={isOpen ? "Close menu" : "Open menu"}
               aria-expanded={isOpen}
             >
@@ -452,7 +446,7 @@ export default function ModernNavbar() {
 
         {/* Mobile Menu - Responsive */}
         {isOpen && (
-          <div className="lg:hidden bg-gradient-to-b from-blue-700 to-purple-800 border-t border-white/10">
+          <div className="lg:hidden bg-gradient-to-b from-[#2a0a0a] to-[#1a0505] border-t border-white/10">
             <div className="px-3 xs:px-4 sm:px-6 py-6 xs:py-8 max-w-2xl mx-auto">
               {/* Mobile Navigation */}
               <div className="space-y-1.5 xs:space-y-2 mb-6 xs:mb-8">
@@ -466,10 +460,9 @@ export default function ModernNavbar() {
                           onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
                           className={`w-full flex items-center justify-between p-3 xs:p-4 rounded-lg xs:rounded-xl text-left ${
                             isActive || isMobileDropdownOpen
-                              ? 'bg-white/20 text-white'
-                              : 'text-white/90 hover:bg-white/10'
+                              ? 'bg-white/10 text-amber-200'
+                              : 'text-white/90 hover:bg-white/5'
                           }`}
-                          style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}
                           aria-expanded={isMobileDropdownOpen}
                         >
                           <div className="flex items-center gap-2 xs:gap-3">
@@ -490,10 +483,9 @@ export default function ModernNavbar() {
                                 href={dropdownItem.href}
                                 className={`flex items-center gap-2 xs:gap-3 p-2.5 xs:p-3 rounded-lg ${
                                   isActiveLink(dropdownItem.href)
-                                    ? 'bg-white/20 text-white'
-                                    : 'text-white/80 hover:bg-white/10'
+                                    ? 'bg-white/10 text-amber-200'
+                                    : 'text-white/80 hover:bg-white/5'
                                 }`}
-                                style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}
                                 onClick={() => {
                                   setIsOpen(false);
                                   setIsMobileDropdownOpen(false);
@@ -507,8 +499,7 @@ export default function ModernNavbar() {
                             {/* Zeraki Link for Mobile */}
                             <a
                               href="https://analytics.zeraki.app/"
-                              className="flex items-center gap-2 xs:gap-3 p-2.5 xs:p-3 rounded-lg text-white/80 hover:bg-white/10"
-                              style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}
+                              className="flex items-center gap-2 xs:gap-3 p-2.5 xs:p-3 rounded-lg text-white/80 hover:bg-white/5"
                               onClick={() => {
                                 setIsOpen(false);
                                 setIsMobileDropdownOpen(false);
@@ -537,10 +528,9 @@ export default function ModernNavbar() {
                       href={item.href}
                       className={`flex items-center gap-2 xs:gap-3 p-3 xs:p-4 rounded-lg xs:rounded-xl ${
                         isActive
-                          ? 'bg-white/20 text-white'
-                          : 'text-white/90 hover:bg-white/10'
+                          ? 'bg-white/10 text-amber-200'
+                          : 'text-white/90 hover:bg-white/5'
                       }`}
-                      style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}
                       onClick={() => setIsOpen(false)}
                     >
                       <item.icon className="text-lg xs:text-xl" />
@@ -558,10 +548,9 @@ export default function ModernNavbar() {
                       isActiveLink('/pages/staff') ||
                       isActiveLink('/pages/career') ||
                       isActiveLink('/pages/adminLogin')
-                        ? 'bg-white/20 text-white'
-                        : 'text-white/90 hover:bg-white/10'
+                        ? 'bg-white/10 text-amber-200'
+                        : 'text-white/90 hover:bg-white/5'
                     }`}
-                    style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}
                     aria-expanded={isMobileResourcesDropdownOpen}
                   >
                     <div className="flex items-center gap-2 xs:gap-3">
@@ -583,13 +572,12 @@ export default function ModernNavbar() {
                           className={`flex items-center gap-2 xs:gap-3 p-2.5 xs:p-3 rounded-lg ${
                             isActiveLink(dropdownItem.href)
                               ? dropdownItem.isHighlighted
-                                ? 'bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-white'
-                                : 'bg-white/20 text-white'
+                                ? 'bg-gradient-to-r from-amber-500/20 to-amber-600/20 text-amber-200'
+                                : 'bg-white/10 text-amber-200'
                               : dropdownItem.isHighlighted
-                                ? 'text-white hover:bg-gradient-to-r hover:from-blue-500/20 hover:to-blue-600/20'
-                                : 'text-white/80 hover:bg-white/10'
+                                ? 'text-white hover:bg-gradient-to-r hover:from-amber-500/20 hover:to-amber-600/20'
+                                : 'text-white/80 hover:bg-white/5'
                           }`}
-                          style={{ fontFamily: "'Inter', 'Poppins', system-ui, sans-serif" }}
                           onClick={() => {
                             setIsOpen(false);
                             setIsMobileResourcesDropdownOpen(false);
