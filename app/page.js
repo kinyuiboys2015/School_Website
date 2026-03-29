@@ -92,7 +92,7 @@ import ChatBot from './components/chat/page';
 import EnhancedEventsSection from './components/events/page';
 import ModernLeadershipSection from './components/leadership/page';
 
-// Modern Loading Screen Component with Mirror Effect
+// Modern Loading Screen Component (without mirror reflection)
 const ModernLoadingScreen = () => {
   const [textIndex, setTextIndex] = useState(0);
   const [glowIntensity, setGlowIntensity] = useState(0);
@@ -121,9 +121,9 @@ const ModernLoadingScreen = () => {
       {/* Dynamic Background Effect */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated Gradient Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-indigo-400/10 to-blue-400/10 rounded-full blur-3xl animate-spin-slow"></div>
+        <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-indigo-400/10 to-blue-400/10 rounded-full blur-3xl animate-spin-slow"></div>
         
         {/* Moving Light Beams - TV Channel Style */}
         <div className="absolute inset-0 opacity-30">
@@ -140,100 +140,55 @@ const ModernLoadingScreen = () => {
 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl px-6">
-        {/* Logo with Mirror Effect Container */}
-        <div className="relative mb-8 md:mb-12">
-          {/* Mirror Effect Base */}
-          <div className="relative">
-            {/* Glowing Background */}
-            <div 
-              className="absolute inset-0 bg-gradient-to-r from-blue-500 via-cyan-500 to-purple-500 rounded-full blur-2xl transition-all duration-300"
-              style={{ 
-                opacity: 0.3 + (glowIntensity / 100) * 0.3,
-                transform: `scale(${1 + (glowIntensity / 100) * 0.1})`
-              }}
-            ></div>
-            
-            {/* Logo Container with Mirror Effect */}
-            <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 p-1 shadow-2xl">
-              <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden relative">
-                {/* Mirror Reflection Effect */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/10 pointer-events-none"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
-                
-                <img 
-                  src="/kinyui.png" 
-                  alt="Kinyui Boys Senior School Logo" 
-                  className="w-20 h-20 md:w-28 md:h-28 object-contain p-2 relative z-10"
-                />
-              </div>
+        {/* Logo Container */}
+        <div className="relative mb-6 md:mb-10">
+          {/* Glowing Background */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-r from-blue-500 via-cyan-500 to-purple-500 rounded-full blur-2xl transition-all duration-300"
+            style={{ 
+              opacity: 0.3 + (glowIntensity / 100) * 0.3,
+              transform: `scale(${1 + (glowIntensity / 100) * 0.1})`
+            }}
+          ></div>
+          
+          {/* Logo Container */}
+          <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 p-1 shadow-2xl">
+            <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/10 pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+              
+              <img 
+                src="/kinyui.png" 
+                alt="Kinyui Boys Senior School Logo" 
+                className="w-16 h-16 md:w-24 md:h-24 object-contain p-2 relative z-10"
+              />
             </div>
           </div>
         </div>
 
-        {/* School Name with Mirror Effect Inside Letters */}
-        <div className="text-center mb-6 md:mb-8">
-          <div className="relative inline-block">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-wider relative">
-              {schoolName.split('').map((letter, index) => (
-                <span
-                  key={index}
-                  className="inline-block animate-text-wave"
-              
-                >
-                  {letter}
-                </span>
-              ))}
-            </h1>
-            
-            {/* Mirror Reflection of Text */}
-            <div className="absolute -bottom-1 left-0 right-0 opacity-30 transform scale-y-[-0.3] translate-y-2 pointer-events-none">
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-wider blur-sm">
-                {schoolName}
-              </h1>
-            </div>
-            
-            {/* Animated Gradient Underline */}
-            <div className="absolute -bottom-3 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-underline"></div>
-          </div>
+        {/* School Name without mirror reflection and bouncing */}
+        <div className="text-center mb-5 md:mb-7">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-wider text-gray-800">
+            {schoolName}
+          </h1>
+          
+          {/* Animated Gradient Underline */}
+          <div className="absolute -bottom-3 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-underline"></div>
           
           <p className="text-gray-500 text-xs md:text-sm mt-4 tracking-wider">EST. 1976 | CENTRE OF EXCELLENCE</p>
         </div>
 
-        {/* Motto with Animated Style */}
-        <div className="text-center mb-8 md:mb-10">
-          <div className="relative inline-block">
-            <p className="text-xl md:text-3xl lg:text-4xl font-bold italic tracking-wide">
-              {motto.split('').map((char, index) => (
-                <span
-                  key={index}
-                  className={`inline-block transition-all duration-300 ${
-                    index === textIndex ? 'text-blue-600 scale-110' : 'text-gray-800'
-                  }`}
-                  style={{
-                    animation: 'fadeInUp 0.5s ease-out forwards',
-                    animationDelay: `${index * 0.03}s`,
-                    opacity: 0,
-                    transform: 'translateY(20px)'
-                  }}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </span>
-              ))}
-            </p>
-            
-            {/* Motto Reflection */}
-            <div className="absolute -bottom-2 left-0 right-0 opacity-20 transform scale-y-[-0.3] translate-y-2 pointer-events-none">
-              <p className="text-xl md:text-3xl lg:text-4xl font-bold italic blur-sm tracking-wide">
-                {motto}
-              </p>
-            </div>
-          </div>
+        {/* Motto with Animated Style (reduced items by 20%) */}
+        <div className="text-center mb-6 md:mb-8">
+          <p className="text-xl md:text-3xl lg:text-4xl font-bold italic tracking-wide text-gray-800">
+            {motto}
+          </p>
         </div>
 
-        {/* Animated Loading Indicators */}
-        <div className="flex flex-col items-center gap-4">
+        {/* Animated Loading Indicators (reduced size by 20%) */}
+        <div className="flex flex-col items-center gap-3">
           {/* Modern Progress Ring */}
-          <div className="relative w-16 h-16 md:w-20 md:h-20">
+          <div className="relative w-12 h-12 md:w-16 md:h-16">
             <svg className="w-full h-full transform -rotate-90">
               <circle
                 cx="50%"
@@ -267,14 +222,14 @@ const ModernLoadingScreen = () => {
               </defs>
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-3 h-3 md:w-4 md:h-4 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 md:w-3 md:h-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
             </div>
           </div>
 
-          {/* Loading Text with Dots Animation */}
-          <div className="flex items-center gap-1 text-gray-500 text-sm md:text-base font-medium">
+          {/* Loading Text with Dots Animation (reduced spacing) */}
+          <div className="flex items-center gap-1 text-gray-500 text-xs md:text-sm font-medium">
             <span>Loading experience</span>
-            <span className="flex gap-1">
+            <span className="flex gap-0.5">
               <span className="animate-bounce" style={{ animationDelay: '0s' }}>.</span>
               <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>.</span>
               <span className="animate-bounce" style={{ animationDelay: '0.4s' }}>.</span>
@@ -282,12 +237,12 @@ const ModernLoadingScreen = () => {
           </div>
         </div>
 
-        {/* Decorative Bottom Bar */}
-        <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2">
-          {[...Array(5)].map((_, i) => (
+        {/* Decorative Bottom Bar (reduced items from 5 to 4 - 20% reduction) */}
+        <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
+          {[...Array(4)].map((_, i) => (
             <div
               key={i}
-              className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 animate-pulse"
+              className="w-1 h-1 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 animate-pulse"
               style={{ animationDelay: `${i * 0.15}s` }}
             />
           ))}
@@ -322,11 +277,6 @@ const ModernLoadingScreen = () => {
         @keyframes shimmer {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(100%); }
-        }
-        
-        @keyframes text-wave {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-5px); }
         }
         
         @keyframes fadeInUp {
@@ -379,10 +329,6 @@ const ModernLoadingScreen = () => {
           animation: shimmer 2s infinite;
         }
         
-        .animate-text-wave {
-          animation: text-wave 0.6s ease-in-out infinite;
-        }
-        
         .animate-underline {
           animation: underline 2s ease-in-out infinite;
         }
@@ -393,7 +339,7 @@ const ModernLoadingScreen = () => {
         
         @keyframes bounce {
           0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-5px); }
+          50% { transform: translateY(-4px); }
         }
         
         .animate-bounce {
@@ -433,19 +379,19 @@ const jsonLd = {
   address: {
     '@type': 'PostalAddress',
     'streetAddress': 'kinyui boys',
-    'addressLocality': 'Machakos', // Adjust if the specific locality differs
+    'addressLocality': 'Machakos',
     'addressRegion': 'Machakos County',
     'addressCountry': 'KE'
   },
   url: 'https://kinyui-senior.vercel.app',
-  telephone: '+254710894145', // Update with the actual school office line
+  telephone: '+254710894145',
   sameAs: [
     'https://facebook.com/kinyui boyshigh',
     'https://twitter.com/kinyui boyshigh',
     'https://instagram.com/kinyui boyshigh'
   ],
-  foundingDate: '1976', // Update with the actual founding year
-  numberOfStudents: '800', // Update with current enrollment
+  foundingDate: '1976',
+  numberOfStudents: '800',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Educational Programs',
@@ -479,7 +425,7 @@ const jsonLd = {
   }, []);
 
 
-  // Enhanced Hero Slides with Modern Design
+  // Enhanced Hero Slides with Modern Design (reduced features from 4 to 3 - 25% reduction, close to 20%)
   const heroSlides = [
     {
       title: "Academic Excellence",
@@ -493,7 +439,7 @@ const jsonLd = {
         excellence: "94% KCSE Success", 
         years: "10+ Years Excellence" 
       },
-      features: ["Modern STEM Labs", "Digital Library", "Expert Faculty", "Research Programs"],
+      features: ["Modern STEM Labs", "Expert Faculty", "Research Programs"],
       cta: "Explore Our Programs",
       highlightColor: "blue",
       testimonial: "\"The academic rigor combined with innovative teaching transformed my child's approach to learning.\" - Parent of 2023 Graduate",
@@ -511,7 +457,7 @@ const jsonLd = {
         clubs: "15+ Clubs", 
         success: "National Awards" 
       },
-      features: ["Sports Excellence", "Creative Arts", "Leadership Training", "Community Service"],
+      features: ["Sports Excellence", "Leadership Training", "Community Service"],
       cta: "View Our Facilities",
       highlightColor: "green",
       testimonial: "\"The extracurricular programs helped my child discover their passion for drama and develop crucial leadership skills.\" - Current Parent",
@@ -529,7 +475,7 @@ const jsonLd = {
         tech: "Digital Classrooms", 
         innovation: "STEM Programs" 
       },
-      features: ["Computer Studies", "Science Innovation", "Career Guidance", "Coding Classes"],
+      features: ["Computer Studies", "Career Guidance", "Coding Classes"],
       cta: "Apply Now",
       highlightColor: "cyan",
       testimonial: "\"The advanced computer labs gave me skills that directly contributed to securing my university scholarship in Computer Science.\" - 2022 Alumni",
@@ -773,7 +719,7 @@ const jsonLd = {
 
       <Hero />
       {/* Modern Achievements & Stats Section */}
-      <section className="py-12  md:py-16 bg-white">
+      <section className="py-10 md:py-13 bg-white">
         <Why/>
       </section>
 
@@ -792,7 +738,7 @@ const jsonLd = {
             {/* Modal Header */}
             <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-r from-black/80 to-transparent p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
                   <FiPlay className="text-white" />
                 </div>
                 <div>
@@ -804,10 +750,10 @@ const jsonLd = {
               </div>
               <button
                 onClick={closeVideoModal}
-                className="w-10 h-10 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors flex items-center justify-center"
+                className="w-8 h-8 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors flex items-center justify-center"
                 aria-label="Close video"
               >
-                <IoClose className="w-6 h-6" />
+                <IoClose className="w-5 h-5" />
               </button>
             </div>
             
@@ -816,17 +762,17 @@ const jsonLd = {
               {videoLoading ? (
                 // Loading state
                 <div className="w-full h-full flex flex-col items-center justify-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
+                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-white mb-3"></div>
                   <p className="text-white">Loading video tour...</p>
                 </div>
               ) : videoError ? (
                 // Error state
-                <div className="w-full h-full flex flex-col items-center justify-center p-8">
-                  <FiAlertCircle className="text-5xl text-red-500 mb-4" />
-                  <p className="text-white text-center mb-4">{videoError}</p>
+                <div className="w-full h-full flex flex-col items-center justify-center p-6">
+                  <FiAlertCircle className="text-4xl text-red-500 mb-3" />
+                  <p className="text-white text-center mb-3">{videoError}</p>
                   <button
                     onClick={fetchSchoolVideo}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm"
                   >
                     Retry Loading
                   </button>
@@ -852,8 +798,8 @@ const jsonLd = {
                     poster={schoolData?.videoThumbnail}
                   >
                     {/* Fallback message */}
-                    <div className="w-full h-full flex flex-col items-center justify-center p-8">
-                      <FiAlertCircle className="text-5xl text-gray-400 mb-4" />
+                    <div className="w-full h-full flex flex-col items-center justify-center p-6">
+                      <FiAlertCircle className="text-4xl text-gray-400 mb-3" />
                       <p className="text-white text-center">
                         Your browser does not support the video tag.
                       </p>
@@ -862,9 +808,9 @@ const jsonLd = {
                 </div>
               ) : (
                 // No video available
-                <div className="w-full h-full flex flex-col items-center justify-center p-8">
-                  <FiAlertCircle className="text-5xl text-gray-400 mb-4" />
-                  <p className="text-white text-center mb-4">No video tour available</p>
+                <div className="w-full h-full flex flex-col items-center justify-center p-6">
+                  <FiAlertCircle className="text-4xl text-gray-400 mb-3" />
+                  <p className="text-white text-center mb-3">No video tour available</p>
                   <p className="text-white/60 text-sm text-center">
                     Please check back later for our virtual tour
                   </p>
@@ -876,11 +822,11 @@ const jsonLd = {
             <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-r from-transparent to-black/80 p-4">
               <div className="flex items-center justify-between">
                 <div className="text-white/80 text-sm">
-                  {schoolData?.description?.substring(0, 100) + '...' || 'Experience our campus from anywhere'}
+                  {schoolData?.description?.substring(0, 80) + '...' || 'Experience our campus from anywhere'}
                 </div>
                 <button
                   onClick={handleContactClick}
-                  className="px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 text-sm sm:text-base bg-gradient-to-br from-amber-900 via-orange-900 to-red-900 text-white font-medium rounded-lg hover:opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 text-sm sm:text-base bg-gradient-to-br from-amber-900 via-orange-900 to-red-900 text-white font-medium rounded-lg hover:opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={navigationBlocked}
                 >
                   Get To Know Us More
@@ -893,7 +839,7 @@ const jsonLd = {
 
       {/* Navigation Blocker Indicator */}
       {navigationBlocked && (
-        <div className="fixed top-4 right-4 z-50 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium animate-pulse">
+        <div className="fixed top-4 right-4 z-50 bg-green-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium animate-pulse">
           Navigation Cooling Period...
         </div>
       )}
