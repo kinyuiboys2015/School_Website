@@ -266,7 +266,7 @@ const ModernSchoolLayout = () => {
                       idx === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
                     }`}
                   >
-                    <Image src={image.src} alt={image.alt} fill className="object-cover" priority={idx === 0} />
+<img src={image.src} alt={image.alt} className="object-cover w-full h-full" />
                   </div>
                 ))}
 
