@@ -5,7 +5,7 @@ import {
   FiSearch, FiChevronLeft, FiChevronRight,
   FiShield, FiBook, FiUsers, FiHome, FiClock, FiActivity, FiHeart,
   FiAlertTriangle, FiDollarSign, FiPhone, FiMail, FiMapPin, FiArrowUp,
-  FiX, FiCheckCircle, FiBookOpen, FiAward, FiTarget, FiStar
+  FiX, FiBookOpen, FiAward, FiTarget, FiStar
 } from "react-icons/fi";
 
 const allTerms = [
@@ -212,16 +212,17 @@ const RULES_PER_PAGE = 5;
 function RuleCard({ term }) {
   const Icon = term.icon;
   return (
-    <div className="rounded-2xl border border-slate-300 shadow-xl bg-white transition-all duration-300 overflow-hidden">
+    <div className="rounded-2xl border border-slate-200 shadow-sm bg-white overflow-hidden">
       <div className="p-4 sm:p-5 md:p-6 flex items-center gap-3 sm:gap-4">
         <div className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${term.color} flex items-center justify-center shadow-lg`}>
           <Icon className="text-white" size={18} />
         </div>
         <div className="flex-1 min-w-0">
           <span className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest">Section {String(term.id).padStart(2, "0")}</span>
-          <h3 className="text-sm sm:text-base md:text-lg font-extrabold text-slate-900 truncate">{term.title}</h3>
+          <h3 className="text-sm sm:text-base md:text-lg font-extrabold text-slate-900">{term.title}</h3>
         </div>
       </div>
+      
       <div className="border-t border-slate-100">
         <div className="px-4 sm:px-5 md:px-6 pt-4 pb-2">
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">{term.intro}</p>
@@ -330,7 +331,7 @@ export default function SchoolPolicies() {
                   </div>
                 </div>
                 <div className={`w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center transition-transform ${showFees ? "rotate-180" : ""}`}>
-                  <FiChevronDown className="text-white" size={20} />
+                  <FiChevronRight className="text-white" size={20} style={{ transform: showFees ? 'rotate(90deg)' : 'rotate(0deg)' }} />
                 </div>
               </div>
             </div>
@@ -428,7 +429,7 @@ export default function SchoolPolicies() {
           )}
         </div>
 
-        {/* Search + Controls */}
+        {/* Search + Results Info */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-6">
           <div className="relative flex-1">
             <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
