@@ -347,35 +347,39 @@ const ModernStaffLeadership = () => {
                 <p className="text-slate-500 text-sm mb-6 hidden md:block">
                   {featuredStaff?.department || 'Administration'}
                 </p>
-
-                {/* NEW ORDER: Quote First */}
-                {featuredStaff?.quote && (
-                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-2xl border-l-4 border-amber-500 mb-6 shadow-sm">
-                    <div className="flex items-start gap-3">
-                      <FiMessageSquare className="text-amber-500 text-xl mt-0.5 flex-shrink-0" />
-                      <div>
-                        <span className="text-xs font-black text-amber-600 uppercase tracking-wider block mb-2">Personal Quote</span>
-                        <p className="text-slate-700 italic font-medium leading-relaxed">"{featuredStaff.quote}"</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Bio Section - Redesigned */}
-                <div className="mb-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
-                      <FiUser className="text-white text-sm" />
-                    </div>
-                    <h3 className="text-sm font-black text-slate-700 uppercase tracking-wider">Professional Biography</h3>
-                  </div>
-                  <div className="bg-slate-50 rounded-xl p-5 border border-slate-100">
-                    <p className="text-slate-600 leading-relaxed">
-                      {featuredStaff?.bio ||
-                        `${featuredStaff?.name} is a dedicated member of our school's leadership team with a passion for education and student development.`}
-                    </p>
-                  </div>
-                </div>
+{/* NEW ORDER: Quote First - Mobile Responsive */}
+{featuredStaff?.quote && (
+  <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl border-l-4 border-amber-500 mb-4 sm:mb-6 shadow-sm">
+    <div className="flex items-start gap-2 sm:gap-3">
+      <FiMessageSquare className="text-amber-500 text-base sm:text-lg md:text-xl mt-0.5 flex-shrink-0" />
+      <div className="flex-1 min-w-0">
+        <span className="text-[10px] sm:text-xs md:text-sm font-black text-amber-600 uppercase tracking-wider block mb-1.5 sm:mb-2">
+          Personal Quote
+        </span>
+        <p className="text-slate-700 font-bold text-sm sm:text-base md:text-lg leading-relaxed">
+          "{featuredStaff.quote}"
+        </p>
+      </div>
+    </div>
+  </div>
+)}
+{/* Bio Section - Mobile Responsive */}
+<div className="mb-4 sm:mb-6">
+  <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
+      <FiUser className="text-white text-xs sm:text-sm" />
+    </div>
+    <h3 className="text-[11px] sm:text-sm font-black text-slate-700 uppercase tracking-wider">
+      Professional Biography
+    </h3>
+  </div>
+  <div className="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-100">
+    <p className="text-slate-700 font-medium text-sm sm:text-base leading-relaxed">
+      {featuredStaff?.bio ||
+        `${featuredStaff?.name} is a dedicated member of our school's leadership team with a passion for education and student development.`}
+    </p>
+  </div>
+</div>
 
                 {/* Achievements & Responsibilities - Side by Side Redesigned */}
                 <div className="grid sm:grid-cols-2 gap-5 mt-6">
@@ -516,56 +520,6 @@ const ModernStaffLeadership = () => {
             </button>
           ))}
         </div>
-
-        {/* All Staff Grid - Compact Cards */}
-        <div className="mb-8">
-          <button
-            onClick={() => setShowAllStaff(!showAllStaff)}
-            className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1 mx-auto"
-          >
-            {showAllStaff ? 'Hide All Staff' : `Show All Staff (${allOtherStaff.length})`}
-            <FiChevronRight className={`transition-transform ${showAllStaff ? 'rotate-90' : ''}`} />
-          </button>
-        </div>
-
-        {showAllStaff && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-12">
-            {allOtherStaff.map((staffMember) => (
-              <button
-                key={staffMember.id}
-                onClick={() => handleStaffClick(staffMember)}
-                className="group bg-white rounded-xl p-3 shadow-sm border border-slate-100 hover:shadow-md hover:border-blue-300 transition-all text-left"
-              >
-                <div className="flex flex-col items-center text-center">
-                  <div className="relative w-16 h-16 rounded-full overflow-hidden mb-2">
-                    {staffMember.image ? (
-                      <img
-                        src={getImageUrl(staffMember.image)}
-                        alt={staffMember.name}
-                        className="w-full h-full object-cover object-top"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                            staffMember.name
-                          )}&background=4f46e5&color=fff&bold=true&size=128`;
-                        }}
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
-                        <FiUser className="text-white text-2xl" />
-                      </div>
-                    )}
-                  </div>
-                  <h3 className="font-bold text-slate-900 text-sm truncate w-full">{staffMember.name}</h3>
-                  <p className="text-slate-500 text-xs truncate w-full">{staffMember.position || staffMember.role || 'Staff Member'}</p>
-                  <div className="mt-2 text-xs text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                    View Profile
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        )}
 
         {/* Staff Section */}
         <section className="py-16 px-6 bg-gradient-to-b from-gray-50 to-white rounded-3xl">
