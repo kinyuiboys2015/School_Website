@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
   FiMail,
   FiPhone,
@@ -38,6 +40,7 @@ const getImageUrl = (imagePath) => {
 };
 
 const ModernStaffLeadership = () => {
+  const router = useRouter();
   const [staff, setStaff] = useState([]);
   const [principal, setPrincipal] = useState(null);
   const [featuredStaff, setFeaturedStaff] = useState(null);
@@ -166,6 +169,15 @@ const ModernStaffLeadership = () => {
     }
   };
 
+  const navigateToStaffDirectory = () => {
+    try {
+      router.push('/staff');
+    } catch (err) {
+      console.error('Navigation error:', err);
+      window.location.href = '/staff';
+    }
+  };
+
   const getRoleColor = (role) => {
     if (!role) return 'bg-gradient-to-r from-indigo-500 to-purple-500';
     const roleLower = role.toLowerCase();
@@ -238,20 +250,6 @@ const ModernStaffLeadership = () => {
   const allOtherStaff = staff.filter(
     (s) => !sideCards.some(card => card.staff.id === s.id)
   );
-
-  // Staff counts for stats card
-  const leadershipCount = staff.filter(
-    (s) =>
-      s.role?.toLowerCase().includes('principal') ||
-      s.position?.toLowerCase().includes('principal') ||
-      s.role?.toLowerCase().includes('deputy')
-  ).length;
-
-  const teachingCount = staff.filter(
-    (s) => s.role?.toLowerCase().includes('teacher') || s.role?.toLowerCase().includes('teaching')
-  ).length;
-
-  const supportCount = staff.filter((s) => s.role?.toLowerCase().includes('support')).length;
 
   return (
     <div className="bg-gradient-to-br from-slate-50 via-white to-slate-100 font-sans">
@@ -522,6 +520,16 @@ const ModernStaffLeadership = () => {
         </div>
 
         {/* All Staff Grid - Compact Cards */}
+        <div className="mb-8">
+          <button
+            onClick={() => setShowAllStaff(!showAllStaff)}
+            className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1 mx-auto"
+          >
+            {showAllStaff ? 'Hide All Staff' : `Show All Staff (${allOtherStaff.length})`}
+            <FiChevronRight className={`transition-transform ${showAllStaff ? 'rotate-90' : ''}`} />
+          </button>
+        </div>
+
         {showAllStaff && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-12">
             {allOtherStaff.map((staffMember) => (
@@ -562,7 +570,7 @@ const ModernStaffLeadership = () => {
         )}
 
         {/* Staff Section */}
-        <section className="py-16 px-6 bg-gradient-to-b from-gray-50 to-white">
+        <section className="py-16 px-6 bg-gradient-to-b from-gray-50 to-white rounded-3xl">
           <div className="max-w-6xl mx-auto text-center">
             {/* Heading */}
             <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4">
@@ -600,16 +608,16 @@ const ModernStaffLeadership = () => {
               </div>
             </div>
 
-            {/* CTA Button */}
+            {/* CTA Button - FIXED with proper navigation */}
             <div className="text-center">
-              <a
-                href="/pages/staff"
+              <button
+                onClick={navigateToStaffDirectory}
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-7 py-3 rounded-full font-semibold shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
               >
                 <FiUsers className="text-lg" />
                 View Complete Directory
                 <FiChevronRight className="text-lg" />
-              </a>
+              </button>
             </div>
           </div>
         </section>
