@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -175,6 +176,7 @@ const ModernSchoolLayout = () => {
   ];
 
   // Create the scrolling images by duplicating the list for seamless loop
+  // Tripled the images to make the restart less noticeable
   const scrollImages = [...uniImages, ...uniImages, ...uniImages];
 
   return (
@@ -510,7 +512,7 @@ const ModernSchoolLayout = () => {
               <div
                 className="flex gap-8 animate-marquee"
                 style={{
-                  animation: 'marquee 80s linear infinite',
+                  animation: 'marquee 120s linear infinite',
                   width: 'max-content',
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = 'paused')}
