@@ -80,48 +80,56 @@ const ModernSchoolLayout = () => {
   const contactEmail = schoolData?.admissionContactEmail || 'kinyuiboys2015@gmail.com';
   const contactPhone = schoolData?.admissionContactPhone || '0733 587223';
 
-  const whyChooseUs = [
-    {
-      id: 1,
-      title: "3rd Best School in Matungulu",
-      description: "Ranked third-best public school in Matungulu Sub-county (2019) after Matungulu Girls and Tala High, producing an A- candidate. This achievement marked a significant milestone in our academic journey, demonstrating our commitment to excellence in education and student development.",
-      shortDescription: "Ranked third-best public school in Matungulu Sub-county (2019) after Matungulu Girls and Tala High, producing an A- candidate.",
-      metrics: "Top Performer 2019",
-      icon: <FiAward className="w-5 h-5" />,
-      image: { src: "/hero/st.jpeg", alt: "Academic Excellence" },
-      color: "blue"
-    },
-    {
-      id: 2,
-      title: "KShs 7.2M Infrastructure Boost",
-      description: "KShs 6M ICT donation (50+ laptops from Angaza Centre, 2023) + KShs 1.2M KCB LPG funding (2022) transforming learning and kitchen operations. This investment has revolutionized our digital learning capabilities and improved our kitchen efficiency, reducing costs and environmental impact.",
-      shortDescription: "KShs 6M ICT donation (50+ laptops from Angaza Centre, 2023) + KShs 1.2M KCB LPG funding (2022) transforming learning and kitchen operations.",
-      metrics: "KShs 7.2M Total",
-      icon: <FiCpu className="w-5 h-5" />,
-      image: { src: "/hero/student.jpeg", alt: "Infrastructure Development" },
-      color: "indigo"
-    },
-    {
-      id: 3,
-      title: "Athletic Excellence & Coaching",
-      description: "A powerhouse in Machakos County sports: Featuring our championship-winning Rugby 7s program led by Mr. Simiyu, and our elite Basketball squad under the tactical leadership of Mr. Kioko (Mr. Kim). Both programs are consistent KSSSA regional contenders recognized for discipline and technical skill.",
-      shortDescription: "Championship Rugby 7s led by Mr. Simiyu and elite Basketball under Mr. Kioko (Mr. Kim) — consistent KSSSA regional contenders.",
-      metrics: "Multi-Sport Champions",
-      icon: <FiStar className="w-5 h-5" />,
-      image: { src: "/hero/sports.jpeg", alt: "Athletic Excellence" },
-      color: "amber"
-    },
-    {
-      id: 4,
-      title: "Environmental Conservation",
-      description: "LPG adoption reduced kitchen expenses by 40% (KShs 700K to KShs 420K per term) and firewood consumption, conserving local trees. This initiative has not only saved costs but also contributed significantly to environmental sustainability, reducing our carbon footprint and promoting eco-friendly practices.",
-      shortDescription: "LPG adoption reduced kitchen expenses by 40% (KShs 700K to KShs 420K per term) and firewood consumption, conserving local trees.",
-      metrics: "40% Cost Saved",
-      icon: <FiHeart className="w-5 h-5" />,
-      image: { src: "/hero/env.jpeg", alt: "Environmental Conservation" },
-      color: "emerald"
-    }
-  ];
+const whyChooseUs = [
+  {
+    id: 1,
+    title: "Robust Academic Performance",
+    description:
+      "In recent KCSE (2024), Kinyui Boys Senior School showcased outstanding academic results with a wide range of high grades, reflecting a consistent commitment to excellence and comprehensive preparation of students for higher education. Our dedicated teaching staff ensures that every student receives personalized support, mentorship, and academic guidance, fostering both individual growth and collective success. The school’s culture encourages curiosity, discipline, and critical thinking, ensuring students are not only academically competent but also prepared for the challenges of the modern world.",
+    shortDescription:
+      "Strong KCSE academic performance and student preparation, emphasizing individual growth and readiness for higher education.",
+    metrics: "Strong KCSE Results",
+    icon: <FiAward className="w-5 h-5" />,
+    image: { src: "/hero/st.jpeg", alt: "Academic Excellence" },
+    color: "blue"
+  },
+  {
+    id: 2,
+    title: "Comprehensive CBC Pathways",
+    description:
+      "Kinyui Boys Senior School offers a diverse and comprehensive Competency-Based Curriculum (CBC) that covers STEM, Social Sciences, Arts, and Sports. These pathways provide students with the opportunity to discover and pursue their individual strengths while developing essential life skills. Through project-based learning, collaborative activities, and practical experiences, students gain both theoretical knowledge and hands-on skills. The school’s modern teaching approach ensures that learners are equipped to thrive in higher education and in their future professional careers, while also nurturing creativity, innovation, and problem-solving abilities.",
+    shortDescription:
+      "Diverse CBC pathways including STEM, Social Sciences, Arts, and Sports, fostering creativity, innovation, and life skills development.",
+    metrics: "Diverse Curriculum",
+    icon: <FiCpu className="w-5 h-5" />,
+    image: { src: "/hero/student.jpeg", alt: "Infrastructure Development" },
+    color: "indigo"
+  },
+  {
+    id: 3,
+    title: "Vibrant Student Life",
+    description:
+      "Beyond academics, Kinyui Boys Senior School offers a rich and engaging student life that includes clubs, mentorship programs, sports competitions, and leadership opportunities. These activities are designed to develop confidence, teamwork, discipline, and resilience. Students are encouraged to take initiative, participate in community service, and pursue extracurricular passions, creating a balanced and holistic development experience. Our strong sports programs, including football, athletics, and inter-school competitions, are celebrated achievements that promote school spirit, collaboration, and excellence across all areas of student life.",
+    shortDescription:
+      "Engaging student life with clubs, mentorship programs, and sports fostering confidence, leadership, and teamwork.",
+    metrics: "Holistic Development",
+    icon: <FiStar className="w-5 h-5" />,
+    image: { src: "/hero/sports.jpeg", alt: "Athletic Excellence" },
+    color: "amber"
+  },
+  {
+    id: 4,
+    title: "Caring School Community",
+    description:
+      "Kinyui Boys Senior School is built on a foundation of care, support, and community involvement. Teachers, parents, and school leaders work collaboratively to nurture students’ growth academically, socially, and emotionally. The school fosters a welcoming and inclusive environment where every student feels valued, supported, and empowered to reach their full potential. Through regular mentorship, counseling, and community engagement initiatives, students develop strong character, integrity, and social responsibility, ensuring they are prepared to be responsible leaders and active contributors to society.",
+    shortDescription:
+      "Supportive and inclusive school community promoting student growth, mentorship, and character development.",
+    metrics: "Supportive Environment",
+    icon: <FiHeart className="w-5 h-5" />,
+    image: { src: "/hero/env.jpeg", alt: "Environmental Conservation" },
+    color: "emerald"
+  }
+];
 
   const colorMap = {
     blue: { bg: 'bg-blue-500', light: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-200', ring: 'ring-blue-100' },
