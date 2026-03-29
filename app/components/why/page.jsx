@@ -148,7 +148,7 @@ const whyChooseUs = [
       span: "md:col-span-2"
     },
     {
-      title: `${studentCount}+ Eagles Enrolled`,
+      title: `${studentCount}+ Students Enrolled`,
       description: `Currently serving ${studentCount}+ students as a boarding school in Matungulu, Machakos County with consistent enrollment growth.`,
       highlight: "Growing Enrollment",
       tags: ["Boarding", "Co-curricular", "Guidance"],
@@ -173,7 +173,7 @@ const whyChooseUs = [
     },
     {
       title: "University & Career Pathways",
-      description: "Comprehensive career guidance and university preparation. Consistent placement of Eagles to Kenyan universities with alumni success stories.",
+      description: "Comprehensive career guidance and university preparation. Consistent placement of Students to Kenyan universities with alumni success stories.",
       highlight: "University Bound",
       tags: ["Career Counseling", "University Placement", "Alumni Network"],
       icon: <FiCalendar className="w-5 h-5" />,
@@ -219,7 +219,7 @@ const whyChooseUs = [
               </h1>
 
               <p className="text-gray-500 text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg">
-                {description || 'Located in the heart of Matungulu, Machakos County, The Eagles are dedicated to nurturing students into confident, compassionate, and accomplished leaders.'}
+                {description || 'Located in the heart of Matungulu, Machakos County, The Students are dedicated to nurturing students into confident, compassionate, and accomplished leaders.'}
               </p>
 
               <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
@@ -523,7 +523,7 @@ const whyChooseUs = [
                 </span>
               </h3>
               {/* Description - Full width on mobile */}
-              <p className="mt-4 text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed w-full px-2 sm:px-0">
+              <p className="mt-4 text-black text-sm sm:text-base md:text-lg leading-relaxed w-full md:w-[70%] px-2 sm:px-0">
                 We bridge the gap between secondary education and the professional world through 
                 strong alliances with top-tier universities. These partnerships foster 
                 innovation, academic excellence, and career readiness for our young men.
