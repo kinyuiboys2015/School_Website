@@ -322,6 +322,8 @@ const NewsletterForm = () => {
         <div className="inline-flex p-2 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full mb-3">
           <FiBell className="text-white text-lg" />
         </div>
+
+
         <h4 className="text-lg font-semibold text-white">Newsletter</h4>
         <p className="text-gray-300 text-xs mt-1">Get academic events & announcements</p>
       </div>
@@ -505,37 +507,33 @@ export default function ModernFooter() {
                   </div>
                 </div>
               </div>
-   {/* Subscriber Bar - Rounded, Elevated, Spaced */}
-<div className="relative -mt-10 px-4 sm:px-6 lg:px-8 z-10">
-  <div className="max-w-6xl mx-auto bg-gradient-to-br from-gray-700 via-gray-700 to-gray-900 text-white rounded-2xl shadow-xl p-6 md:p-8">
-    
-    <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-      
-      {/* Text Section */}
-      <div className="text-center md:text-left space-y-2">
-        <h3 className="text-xl md:text-2xl font-bold leading-tight">
-          Subscribe to Our School Newsletter
-        </h3>
-        <p className="text-white/80 text-sm md:text-base max-w-md">
-          Get the latest updates and news from Kinyui Boys Senior School
-        </p>
-      </div>
 
-      {/* Input Section */}
-      <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-        <input
-          type="email"
-          placeholder="Enter your email address"
-          className="flex-1 sm:w-72 px-4 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
-        />
-        <button className="bg-white text-amber-600 font-bold px-6 py-3 rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-md hover:shadow-lg">
-          Subscribe
-        </button>
-      </div>
+              {/* Subscriber Bar */}
+              <div className="mt-10 sm:mt-12">
+                <div className="bg-gradient-to-br from-gray-700 via-gray-700 to-gray-900 text-white rounded-2xl shadow-xl p-6 md:p-8">
+                  <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="text-center md:text-left space-y-2">
+                      <h3 className="text-xl md:text-2xl font-bold leading-tight">
+                        Subscribe to Our School Newsletter
+                      </h3>
+                      <p className="text-white/80 text-sm md:text-base max-w-md">
+                        Get the latest updates and news from Kinyui Boys Senior School
+                      </p>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                      <input
+                        type="email"
+                        placeholder="Enter your email address"
+                        className="flex-1 sm:w-72 px-4 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                      />
+                      <button className="bg-white text-amber-600 font-bold px-6 py-3 rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-md hover:shadow-lg">
+                        Subscribe
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-    </div>
-  </div>
-</div>
               {/* Footer Bottom */}
               <div className="mt-12 pt-8 border-t border-white/10">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
