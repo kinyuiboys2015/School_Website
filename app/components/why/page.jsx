@@ -537,17 +537,16 @@ const ModernSchoolLayout = () => {
               No university logos found in /public/unis folder
             </div>
           )}
-
-          <style jsx>{`
-            @keyframes marquee {
-              0% {
-                transform: translateX(0);
-              }
-              100% {
-                transform: translateX(-50%);
-              }
-            }
-          `}</style>
+<style>{`
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+`}</style>
         </div>
       </section>
 
