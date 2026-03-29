@@ -3,41 +3,41 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { 
   ChevronLeft, ChevronRight, ArrowRight, 
   Trophy, BookOpen, Clock, 
-  Play, X, MapPin, Sparkles, GraduationCap
+  Play, X, MapPin, Sparkles, GraduationCap, Users, School, Award
 } from 'lucide-react';
 import { GiGraduateCap } from 'react-icons/gi';
 import { useRouter } from 'next/navigation';
 
 const heroSlides = [
   {
-    title: "Kinyui Boys",
-    titleAccent: "Senior School",
+    title: "Kinyui",
+    titleAccent: "Senior",
     subtitle: "Matungulu, Machakos County",
-    description: "A public secondary school in Matungulu sub-county serving the local community. Offers STEM, Social Sciences, and Arts & Sports pathways under the Competency Based Curriculum (CBC).",
+    description: "A premier public boys' boarding school in Matungulu sub-county. Established to serve the Eastern Region with excellence in STEM, Social Sciences, and Arts & Sports pathways under CBC curriculum.",
     image: "/hero/katz8.jpeg",
-    tags: ["Public School", "Boarding", "STEM Pathway", "Social Sciences"],
+    tags: ["Public School", "Boys' Boarding", "STEM", "Social Sciences"],
     cta: "Admissions",
     link: "/pages/admissions",
     accent: "blue",
   },
   {
-    title: "CBC Pathways",
-    titleAccent: "Offered",
+    title: "CBC",
+    titleAccent: "Pathways",
     subtitle: "Curriculum & Programs",
-    description: "Students transition from Junior School to specialize in STEM, Social Sciences, or Arts & Sports. The school supports academic counseling and student development programs.",
+    description: "Specialized pathways including Pure Sciences, Applied Sciences, Humanities & Business Studies, and Creative Arts. Career guidance and mentorship programs available.",
     image: "/hero/st.jpeg",
-    tags: ["STEM Pathway", "Social Sciences", "Arts & Sports", "Student Support"],
+    tags: ["STEM", "Social Sciences", "Arts & Sports", "Mentorship"],
     cta: "Learn More",
     link: "/pages/about",
     accent: "emerald",
   },
   {
-    title: "Community",
-    titleAccent: "Focus",
-    subtitle: "Eastern Region School",
-    description: "Located in Matungulu Sub-County, Machakos County. As a C3 public senior school, it plays a vital role in the Eastern Region's education sector, serving students from the local community.",
+    title: "Eastern",
+    titleAccent: "Pride",
+    subtitle: "Regional Excellence",
+    description: "A C3 public senior school serving Matungulu, Machakos, and the greater Eastern Region. Day/boarding options with strong community ties and academic track record.",
     image: "/bg/14.jpeg",
-    tags: ["Community School", "Local Access", "Day/Boarding", "Regional Impact"],
+    tags: ["Community", "Regional", "Day/Boarding", "Excellence"],
     cta: "Contact Us",
     link: "/pages/contact",
     accent: "amber",
@@ -82,14 +82,13 @@ const ModernHero = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Progress bar for auto-slide
   useEffect(() => {
     if (showVideoModal) return;
     setProgress(0);
     const interval = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) return 100;
-        return prev + (100 / 80); // 8 seconds = 80 steps at 100ms
+        return prev + (100 / 80);
       });
     }, 100);
     return () => clearInterval(interval);
@@ -175,7 +174,7 @@ const ModernHero = () => {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-gray-950 font-sans">
-      {/* Background Image with Ken Burns */}
+      {/* Background Images */}
       {heroSlides.map((s, idx) => (
         <div
           key={idx}
@@ -190,11 +189,11 @@ const ModernHero = () => {
         </div>
       ))}
 
-      {/* Overlay: dark left side for text, slightly lighter right */}
+      {/* Overlay with adjusted padding for content */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/40" />
 
-      {/* Decorative grid pattern overlay */}
+      {/* Decorative grid pattern */}
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
         backgroundSize: '60px 60px'
@@ -203,7 +202,7 @@ const ModernHero = () => {
       {/* Left accent bar */}
       <div className={`absolute left-0 top-0 bottom-0 w-1 md:w-1.5 ${colors.bg} z-30 transition-colors duration-700`} />
 
-      {/* Slide number badge — top left */}
+      {/* Slide number badge */}
       <div className="absolute top-6 left-6 md:top-10 md:left-10 z-30 flex items-center gap-3">
         <span className={`text-5xl md:text-7xl font-black ${colors.text} opacity-20 leading-none select-none transition-colors duration-700`}>
           0{currentSlide + 1}
@@ -221,8 +220,8 @@ const ModernHero = () => {
         </div>
       </div>
 
-      {/* Main Content — left-aligned editorial layout */}
-      <div className={`relative z-20 h-full flex flex-col justify-center px-6 md:px-16 lg:px-24 max-w-4xl transition-all duration-500 ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
+      {/* Main Content — with 20% padding from both left and right */}
+      <div className={`relative z-20 h-full flex flex-col justify-center px-[10%] md:px-[20%] transition-all duration-500 ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
         
         {/* Subtitle tag */}
         <div className="flex items-center gap-2 mb-4 md:mb-5">
@@ -230,22 +229,21 @@ const ModernHero = () => {
           <span className={`text-xs md:text-sm uppercase tracking-[0.2em] font-semibold ${colors.text}`}>{slide.subtitle}</span>
         </div>
 
-        {/* Title — huge, left-aligned */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[0.95] mb-5 md:mb-7">
+        {/* Title — reduced size */}
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-4 md:mb-6">
           {slide.title}
-          <br />
-          <span className={`${colors.text} inline-block`}>
+          <span className={`${colors.text} inline-block ml-2`}>
             {slide.titleAccent}
           </span>
         </h1>
 
-        {/* Description */}
-        <p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-xl leading-relaxed mb-6 md:mb-8">
+        {/* Description with better readability */}
+        <p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-2xl leading-relaxed mb-5 md:mb-7">
           {isMobile ? slide.description.substring(0, 120) + '...' : slide.description}
         </p>
 
         {/* Tags row */}
-        <div className="flex flex-wrap gap-2 mb-7 md:mb-9">
+        <div className="flex flex-wrap gap-2 mb-6 md:mb-8">
           {slide.tags.map((tag, i) => (
             <span
               key={i}
@@ -289,40 +287,67 @@ const ModernHero = () => {
         </div>
       </div>
 
-      {/* Right-side floating glass card (desktop only) */}
+      {/* Right-side info card with additional Kinyui Boys info */}
       {!isMobile && (
-        <div className={`absolute right-12 lg:right-20 top-1/2 -translate-y-1/2 z-20 w-64 lg:w-72 
+        <div className={`absolute right-8 lg:right-12 top-1/2 -translate-y-1/2 z-20 w-72 lg:w-80 
           transition-all duration-700 ${isTransitioning ? 'opacity-0 translate-x-8' : 'opacity-100 translate-x-0'}`}>
-          <div className="bg-white/[0.07] backdrop-blur-xl border border-white/10 rounded-2xl p-6 space-y-5">
+          <div className="bg-white/[0.07] backdrop-blur-xl border border-white/10 rounded-2xl p-6 space-y-4">
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${colors.gradient} flex items-center justify-center`}>
-                <GiGraduateCap className="w-5 h-5 text-white" />
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colors.gradient} flex items-center justify-center`}>
+                <GiGraduateCap className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="text-white font-bold text-sm">Kinyui Boys</p>
+                <p className="text-white font-bold text-base">Kinyui Boys</p>
                 <p className="text-gray-400 text-xs">Senior School</p>
               </div>
             </div>
+            
             <div className="h-px bg-white/10" />
+            
+            {/* School Details */}
             <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-xs">Status</span>
-                <span className={`text-xs font-semibold ${colors.text}`}>C3 Public</span>
+              <div className="flex items-center gap-2">
+                <School className="w-3.5 h-3.5 text-gray-400" />
+                <span className="text-gray-400 text-xs">Category:</span>
+                <span className={`text-xs font-semibold ${colors.text}`}>C3 Public School</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-xs">Location</span>
-                <span className="text-white text-xs font-medium">Matungulu</span>
+              <div className="flex items-center gap-2">
+                <Users className="w-3.5 h-3.5 text-gray-400" />
+                <span className="text-gray-400 text-xs">Enrollment:</span>
+                <span className="text-white text-xs">Boys' Boarding</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-xs">Curriculum</span>
-                <span className="text-white text-xs font-medium">CBC Pathways</span>
+              <div className="flex items-center gap-2">
+                <MapPin className="w-3.5 h-3.5 text-gray-400" />
+                <span className="text-gray-400 text-xs">Location:</span>
+                <span className="text-white text-xs">Matungulu, Machakos</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-xs">Region</span>
-                <span className="text-white text-xs font-medium">Eastern</span>
+              <div className="flex items-center gap-2">
+                <Award className="w-3.5 h-3.5 text-gray-400" />
+                <span className="text-gray-400 text-xs">Region:</span>
+                <span className="text-white text-xs">Eastern Region</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-3.5 h-3.5 text-gray-400" />
+                <span className="text-gray-400 text-xs">Curriculum:</span>
+                <span className="text-white text-xs">CBC Pathways</span>
               </div>
             </div>
+            
             <div className="h-px bg-white/10" />
+            
+            {/* Additional Info */}
+            <div className="bg-white/5 rounded-xl p-3 space-y-2">
+              <p className="text-white/70 text-xs font-semibold">Quick Facts:</p>
+              <div className="grid grid-cols-2 gap-2 text-[10px]">
+                <span className="text-gray-400">Founded:</span>
+                <span className="text-white">1970s</span>
+                <span className="text-gray-400">Status:</span>
+                <span className="text-white">Active</span>
+                <span className="text-gray-400">Type:</span>
+                <span className="text-white">Day/Boarding</span>
+              </div>
+            </div>
+            
             <button
               onClick={openVideoModal}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 
@@ -335,8 +360,8 @@ const ModernHero = () => {
         </div>
       )}
 
-      {/* Navigation arrows — bottom right */}
-      <div className={`absolute z-30 flex gap-2 ${isMobile ? 'bottom-20 right-5' : 'bottom-8 right-10'}`}>
+      {/* Navigation arrows */}
+      <div className={`absolute z-30 flex gap-2 ${isMobile ? 'bottom-20 right-5' : 'bottom-8 right-8'}`}>
         <button 
           onClick={prevSlide}
           className="w-10 h-10 md:w-12 md:h-12 rounded-xl border border-white/15 text-white 
@@ -363,8 +388,8 @@ const ModernHero = () => {
         />
       </div>
 
-      {/* Bottom info strip */}
-      <div className={`absolute bottom-1 left-0 right-0 z-20 py-2.5 px-6 md:px-16 lg:px-24
+      {/* Bottom info strip with 20% padding */}
+      <div className={`absolute bottom-1 left-0 right-0 z-20 py-2.5 px-[10%] md:px-[20%]
         flex items-center ${isMobile ? 'justify-center' : 'justify-between'}
         text-white/50 text-[10px] md:text-xs uppercase tracking-[0.15em] font-medium`}>
         {isMobile ? (
@@ -375,11 +400,12 @@ const ModernHero = () => {
         ) : (
           <>
             <div className="flex items-center gap-6">
-              <span className="flex items-center gap-1.5"><BookOpen className="w-3 h-3" /> Matungulu, Machakos</span>
-              <span className="flex items-center gap-1.5"><Trophy className="w-3 h-3" /> Kinyui Boys Senior School</span>
+              <span className="flex items-center gap-1.5"><School className="w-3 h-3" /> Kinyui Boys Senior School</span>
+              <span className="flex items-center gap-1.5"><MapPin className="w-3 h-3" /> Matungulu, Machakos</span>
+              <span className="flex items-center gap-1.5"><Users className="w-3 h-3" /> Boys' Boarding</span>
             </div>
             <div className="flex items-center gap-6">
-              <span className="flex items-center gap-1.5"><Clock className="w-3 h-3" /> CBC Pathways</span>
+              <span className="flex items-center gap-1.5"><BookOpen className="w-3 h-3" /> CBC Pathways</span>
               <span className="text-white/30">
                 {String(currentSlide + 1).padStart(2, '0')} / {String(heroSlides.length).padStart(2, '0')}
               </span>

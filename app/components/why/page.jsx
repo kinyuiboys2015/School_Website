@@ -77,7 +77,6 @@ const ModernSchoolLayout = () => {
   const mission = schoolData?.mission;
   const description = schoolData?.description;
   const studentCount = schoolData?.studentCount || 400;
-  const staffCount = schoolData?.staffCount || 20;
   const contactEmail = schoolData?.admissionContactEmail || 'kinyuiboys2015@gmail.com';
   const contactPhone = schoolData?.admissionContactPhone || '0733 587223';
 
@@ -230,8 +229,7 @@ const ModernSchoolLayout = () => {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 pt-2">
                 {[
                   { label: 'Eagles', value: `${studentCount}+`, icon: '🦅' },
-                  { label: 'Staff', value: `${staffCount}+`, icon: '👨‍🏫' },
-                  { label: 'KCSE Target', value: '6.0', icon: '🎯' },
+                  { label: 'KCSE Target', value: '5.0', icon: '🎯' },
                   { label: 'Motto', value: motto?.split(' ').slice(0, 2).join(' ') || 'Soaring', icon: '🏆' }
                 ].map((stat, idx) => (
                   <div key={idx} className="relative p-3 sm:p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
