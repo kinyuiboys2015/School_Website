@@ -18,6 +18,9 @@ import {
   FiArrowLeft,
   FiClock,
   FiGlobe,
+  FiMessageSquare,
+  FiTrophy,
+  FiTarget,
 } from 'react-icons/fi';
 import { Loader2 } from 'lucide-react';
 import { IoPeopleOutline, IoRibbonOutline } from 'react-icons/io5';
@@ -348,35 +351,92 @@ const ModernStaffLeadership = () => {
                   {featuredStaff?.department || 'Administration'}
                 </p>
 
-                {/* Bio */}
-                <div className="mb-6">
-                  <h3 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <FiUser className="text-blue-500" /> Professional Biography
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed">
-                    {featuredStaff?.bio ||
-                      `${featuredStaff?.name} is a dedicated member of our school's leadership team with a passion for education and student development.`}
-                  </p>
-                </div>
-
-                {/* Quote */}
+                {/* NEW ORDER: Quote First */}
                 {featuredStaff?.quote && (
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border-l-4 border-blue-600 mb-6">
-                    <p className="text-slate-700 italic font-medium">"{featuredStaff.quote}"</p>
+                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-2xl border-l-4 border-amber-500 mb-6 shadow-sm">
+                    <div className="flex items-start gap-3">
+                      <FiMessageSquare className="text-amber-500 text-xl mt-0.5 flex-shrink-0" />
+                      <div>
+                        <span className="text-xs font-black text-amber-600 uppercase tracking-wider block mb-2">Personal Quote</span>
+                        <p className="text-slate-700 italic font-medium leading-relaxed">"{featuredStaff.quote}"</p>
+                      </div>
+                    </div>
                   </div>
                 )}
 
-                {/* Expertise */}
+                {/* Bio Section - Redesigned */}
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                      <FiUser className="text-white text-sm" />
+                    </div>
+                    <h3 className="text-sm font-black text-slate-700 uppercase tracking-wider">Professional Biography</h3>
+                  </div>
+                  <div className="bg-slate-50 rounded-xl p-5 border border-slate-100">
+                    <p className="text-slate-600 leading-relaxed">
+                      {featuredStaff?.bio ||
+                        `${featuredStaff?.name} is a dedicated member of our school's leadership team with a passion for education and student development.`}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Achievements & Responsibilities - Side by Side Redesigned */}
+                <div className="grid sm:grid-cols-2 gap-5 mt-6">
+                  {/* Achievements Section */}
+                  <div className="bg-gradient-to-br from-amber-50/50 to-yellow-50/30 rounded-xl p-4 border border-amber-100">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                        <FiTrophy className="text-white text-xs" />
+                      </div>
+                      <h3 className="text-xs font-black text-amber-700 uppercase tracking-wider">Achievements</h3>
+                    </div>
+                    {featuredStaff?.achievements && featuredStaff.achievements.length > 0 ? (
+                      <ul className="space-y-2">
+                        {featuredStaff.achievements.slice(0, 4).map((item, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                            <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 flex-shrink-0"></div>
+                            <span className="text-xs">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-xs text-slate-500 italic">Contributing to educational excellence</p>
+                    )}
+                  </div>
+
+                  {/* Responsibilities Section */}
+                  {featuredStaff?.responsibilities && featuredStaff.responsibilities.length > 0 && (
+                    <div className="bg-gradient-to-br from-emerald-50/50 to-teal-50/30 rounded-xl p-4 border border-emerald-100">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+                          <FiTarget className="text-white text-xs" />
+                        </div>
+                        <h3 className="text-xs font-black text-emerald-700 uppercase tracking-wider">Responsibilities</h3>
+                      </div>
+                      <ul className="space-y-2">
+                        {featuredStaff.responsibilities.slice(0, 4).map((item, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0"></div>
+                            <span className="text-xs">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                {/* Expertise Section - Optional */}
                 {featuredStaff?.expertise && featuredStaff.expertise.length > 0 && (
-                  <div className="mb-6">
-                    <h3 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                      <FiStar className="text-yellow-500" /> Areas of Expertise
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
+                  <div className="mt-5 pt-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <FiStar className="text-yellow-500 text-sm" />
+                      <h3 className="text-xs font-black text-slate-500 uppercase tracking-wider">Areas of Expertise</h3>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
                       {featuredStaff.expertise.slice(0, 4).map((skill, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1.5 bg-slate-100 text-slate-700 text-xs font-bold rounded-full"
+                          className="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-lg"
                         >
                           {skill}
                         </span>
@@ -386,54 +446,18 @@ const ModernStaffLeadership = () => {
                 )}
               </div>
 
-              {/* Responsibilities & Achievements Grid */}
-              <div className="grid sm:grid-cols-2 gap-6 mt-6">
-                {featuredStaff?.responsibilities && featuredStaff.responsibilities.length > 0 && (
-                  <div>
-                    <h3 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                      <FiBriefcase className="text-green-500" /> Key Responsibilities
-                    </h3>
-                    <ul className="space-y-2">
-                      {featuredStaff.responsibilities.slice(0, 4).map((item, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
-                          <div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 flex-shrink-0"></div>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                <div>
-                  <h3 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <IoRibbonOutline className="text-amber-500" /> Notable Achievements
-                  </h3>
-                  <ul className="space-y-2">
-                    {featuredStaff?.achievements && featuredStaff.achievements.length > 0 ? (
-                      featuredStaff.achievements.slice(0, 4).map((item, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
-                          <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 flex-shrink-0"></div>
-                          <span>{item}</span>
-                        </li>
-                      ))
-                    ) : (
-                      <li className="text-sm text-slate-500 italic">Contributing to educational excellence</li>
-                    )}
-                  </ul>
-                </div>
-              </div>
-
               {/* Contact - Removed phone number, only email */}
-              <div className="mt-6 pt-6 border-t border-slate-200">
-                <h3 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3">Contact</h3>
+              <div className="mt-5 pt-4 border-t border-slate-200">
                 <div className="flex flex-wrap gap-4">
                   {featuredStaff?.email && (
                     <a
                       href={`mailto:${featuredStaff.email}`}
-                      className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
+                      className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors group"
                     >
-                      <FiMail className="text-sm" />
-                      <span className="text-sm">{featuredStaff.email}</span>
+                      <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <FiMail className="text-sm" />
+                      </div>
+                      <span className="text-sm font-medium">{featuredStaff.email}</span>
                     </a>
                   )}
                 </div>
@@ -537,60 +561,58 @@ const ModernStaffLeadership = () => {
           </div>
         )}
 
-   {/* Staff Section */}
-<section className="py-16 px-6 bg-gradient-to-b from-gray-50 to-white">
-  <div className="max-w-6xl mx-auto text-center">
+        {/* Staff Section */}
+        <section className="py-16 px-6 bg-gradient-to-b from-gray-50 to-white">
+          <div className="max-w-6xl mx-auto text-center">
+            {/* Heading */}
+            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4">
+              Meet Our Dedicated Staff
+            </h2>
 
-    {/* Heading */}
-    <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4">
-      Meet Our Dedicated Staff
-    </h2>
+            {/* Short Modern Description */}
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+              Our team of passionate educators and professionals is committed to shaping 
+              excellence, discipline, and innovation in every student. Explore the people 
+              behind our success and discover the strength of our academic community.
+            </p>
 
-    {/* Short Modern Description */}
-    <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-      Our team of passionate educators and professionals is committed to shaping 
-      excellence, discipline, and innovation in every student. Explore the people 
-      behind our success and discover the strength of our academic community.
-    </p>
+            {/* Optional Feature Highlights (Modern Touch) */}
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
+                <h3 className="font-semibold text-gray-800 mb-2">Qualified Experts</h3>
+                <p className="text-sm text-gray-500">
+                  Highly trained teachers with years of experience.
+                </p>
+              </div>
 
-    {/* Optional Feature Highlights (Modern Touch) */}
-    <div className="grid md:grid-cols-3 gap-6 mb-12">
-      <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
-        <h3 className="font-semibold text-gray-800 mb-2">Qualified Experts</h3>
-        <p className="text-sm text-gray-500">
-          Highly trained teachers with years of experience.
-        </p>
-      </div>
+              <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
+                <h3 className="font-semibold text-gray-800 mb-2">Student Focused</h3>
+                <p className="text-sm text-gray-500">
+                  Dedicated to nurturing each learner’s potential.
+                </p>
+              </div>
 
-      <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
-        <h3 className="font-semibold text-gray-800 mb-2">Student Focused</h3>
-        <p className="text-sm text-gray-500">
-          Dedicated to nurturing each learner’s potential.
-        </p>
-      </div>
+              <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
+                <h3 className="font-semibold text-gray-800 mb-2">Support System</h3>
+                <p className="text-sm text-gray-500">
+                  Strong mentorship and guidance programs.
+                </p>
+              </div>
+            </div>
 
-      <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
-        <h3 className="font-semibold text-gray-800 mb-2">Support System</h3>
-        <p className="text-sm text-gray-500">
-          Strong mentorship and guidance programs.
-        </p>
-      </div>
-    </div>
-
-    {/* CTA Button */}
-    <div className="text-center">
-      <a
-        href="/pages/staff"
-        className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-7 py-3 rounded-full font-semibold shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
-      >
-        <FiUsers className="text-lg" />
-        View Complete Directory
-        <FiChevronRight className="text-lg" />
-      </a>
-    </div>
-
-  </div>
-</section>
+            {/* CTA Button */}
+            <div className="text-center">
+              <a
+                href="/pages/staff"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-7 py-3 rounded-full font-semibold shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+              >
+                <FiUsers className="text-lg" />
+                View Complete Directory
+                <FiChevronRight className="text-lg" />
+              </a>
+            </div>
+          </div>
+        </section>
 
         {/* Mobile Hint */}
         {isMobile && (
