@@ -1,4 +1,3 @@
-'use client';
 import { useEffect, useState, useCallback } from 'react';
 import { 
   FiArrowRight, 
@@ -91,6 +90,349 @@ import { useRouter } from 'next/navigation';
 import ChatBot from './components/chat/page';
 import EnhancedEventsSection from './components/events/page';
 import ModernLeadershipSection from './components/leadership/page';
+
+// Modern Loading Screen Component with Mirror Effect
+const ModernLoadingScreen = () => {
+  const [textIndex, setTextIndex] = useState(0);
+  const [glowIntensity, setGlowIntensity] = useState(0);
+  
+  const motto = "Soaring to Excellence";
+  const schoolName = "KINYUI BOYS";
+
+  // Animated text effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTextIndex((prev) => (prev + 1) % 3);
+    }, 300);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Pulsing glow effect
+  useEffect(() => {
+    const glowInterval = setInterval(() => {
+      setGlowIntensity((prev) => (prev + 1) % 100);
+    }, 50);
+    return () => clearInterval(glowInterval);
+  }, []);
+
+  return (
+    <div className="fixed inset-0 bg-white z-50 flex items-center justify-center overflow-hidden">
+      {/* Dynamic TV-Channel Style Background Effect */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Animated Gradient Orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-indigo-400/10 to-blue-400/10 rounded-full blur-3xl animate-spin-slow"></div>
+        
+        {/* Moving Light Beams - TV Channel Style */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-beam"></div>
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent animate-beam animation-delay-500"></div>
+          <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-transparent via-purple-500 to-transparent animate-beam-vertical"></div>
+          <div className="absolute right-0 top-0 w-1 h-full bg-gradient-to-b from-transparent via-pink-500 to-transparent animate-beam-vertical animation-delay-300"></div>
+        </div>
+
+        {/* Diagonal Scanning Lines */}
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent animate-scan"></div>
+        
+        {/* Floating Particles */}
+        {[...Array(30)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-float-particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${i * 0.2}s`,
+              animationDuration: `${3 + Math.random() * 4}s`,
+              opacity: 0.3 + Math.random() * 0.5
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl px-6">
+        {/* Logo with Mirror Effect Container */}
+        <div className="relative mb-8 md:mb-12">
+          {/* Mirror Effect Base */}
+          <div className="relative">
+            {/* Glowing Background */}
+            <div 
+              className="absolute inset-0 bg-gradient-to-r from-blue-500 via-cyan-500 to-purple-500 rounded-full blur-2xl transition-all duration-300"
+              style={{ 
+                opacity: 0.3 + (glowIntensity / 100) * 0.3,
+                transform: `scale(${1 + (glowIntensity / 100) * 0.1})`
+              }}
+            ></div>
+            
+            {/* Logo Container with Mirror Effect */}
+            <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 p-1 shadow-2xl">
+              <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden relative">
+                {/* Mirror Reflection Effect */}
+                <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/10 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+                
+                <img 
+                  src="/kinyui.png" 
+                  alt="Kinyui Boys Senior School Logo" 
+                  className="w-20 h-20 md:w-28 md:h-28 object-contain p-2 relative z-10"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* School Name with Mirror Effect Inside Letters */}
+        <div className="text-center mb-6 md:mb-8">
+          <div className="relative inline-block">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-wider relative">
+              {schoolName.split('').map((letter, index) => (
+                <span
+                  key={index}
+                  className="inline-block animate-text-wave"
+                  style={{
+                    animationDelay: `${index * 0.05}s`,
+                    background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    textShadow: `0 0 ${10 + (glowIntensity / 10)}px rgba(59,130,246,0.5)`
+                  }}
+                >
+                  {letter}
+                </span>
+              ))}
+            </h1>
+            
+            {/* Mirror Reflection of Text */}
+            <div className="absolute -bottom-1 left-0 right-0 opacity-30 transform scale-y-[-0.3] translate-y-2 pointer-events-none">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-wider blur-sm">
+                {schoolName}
+              </h1>
+            </div>
+            
+            {/* Animated Gradient Underline */}
+            <div className="absolute -bottom-3 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-underline"></div>
+          </div>
+          
+          <p className="text-gray-500 text-xs md:text-sm mt-4 tracking-wider">EST. 1976 | CENTRE OF EXCELLENCE</p>
+        </div>
+
+        {/* Motto with Animated Style */}
+        <div className="text-center mb-8 md:mb-10">
+          <div className="relative inline-block">
+            <p className="text-xl md:text-3xl lg:text-4xl font-bold italic tracking-wide">
+              {motto.split('').map((char, index) => (
+                <span
+                  key={index}
+                  className={`inline-block transition-all duration-300 ${
+                    index === textIndex ? 'text-blue-600 scale-110' : 'text-gray-800'
+                  }`}
+                  style={{
+                    animation: 'fadeInUp 0.5s ease-out forwards',
+                    animationDelay: `${index * 0.03}s`,
+                    opacity: 0,
+                    transform: 'translateY(20px)'
+                  }}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </span>
+              ))}
+            </p>
+            
+            {/* Motto Reflection */}
+            <div className="absolute -bottom-2 left-0 right-0 opacity-20 transform scale-y-[-0.3] translate-y-2 pointer-events-none">
+              <p className="text-xl md:text-3xl lg:text-4xl font-bold italic blur-sm tracking-wide">
+                {motto}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Animated Loading Indicators */}
+        <div className="flex flex-col items-center gap-4">
+          {/* Modern Progress Ring */}
+          <div className="relative w-16 h-16 md:w-20 md:h-20">
+            <svg className="w-full h-full transform -rotate-90">
+              <circle
+                cx="50%"
+                cy="50%"
+                r="45%"
+                fill="none"
+                stroke="#e5e7eb"
+                strokeWidth="3"
+                className="opacity-30"
+              />
+              <circle
+                cx="50%"
+                cy="50%"
+                r="45%"
+                fill="none"
+                stroke="url(#gradient)"
+                strokeWidth="3"
+                strokeLinecap="round"
+                className="animate-progress-ring"
+                style={{
+                  strokeDasharray: 283,
+                  strokeDashoffset: `calc(283 - (283 * ${(Date.now() % 3000) / 3000}))`
+                }}
+              />
+              <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#3b82f6" />
+                  <stop offset="50%" stopColor="#06b6d4" />
+                  <stop offset="100%" stopColor="#8b5cf6" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-3 h-3 md:w-4 md:h-4 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+
+          {/* Loading Text with Dots Animation */}
+          <div className="flex items-center gap-1 text-gray-500 text-sm md:text-base font-medium">
+            <span>Loading experience</span>
+            <span className="flex gap-1">
+              <span className="animate-bounce" style={{ animationDelay: '0s' }}>.</span>
+              <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>.</span>
+              <span className="animate-bounce" style={{ animationDelay: '0.4s' }}>.</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Decorative Bottom Bar */}
+        <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2">
+          {[...Array(5)].map((_, i) => (
+            <div
+              key={i}
+              className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 animate-pulse"
+              style={{ animationDelay: `${i * 0.15}s` }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Custom Animations */}
+      <style jsx global>{`
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        
+        @keyframes beam {
+          0% { transform: translateX(-100%); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translateX(100%); opacity: 0; }
+        }
+        
+        @keyframes beam-vertical {
+          0% { transform: translateY(-100%); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translateY(100%); opacity: 0; }
+        }
+        
+        @keyframes scan {
+          0% { transform: translate(-100%, -100%); opacity: 0; }
+          50% { opacity: 0.1; }
+          100% { transform: translate(100%, 100%); opacity: 0; }
+        }
+        
+        @keyframes float-particle {
+          0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+          50% { opacity: 0.5; }
+          100% { transform: translateY(-100px) translateX(50px); opacity: 0; }
+        }
+        
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        
+        @keyframes text-wave {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-5px); }
+        }
+        
+        @keyframes fadeInUp {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes underline {
+          0% { width: 0%; opacity: 0; }
+          50% { width: 100%; opacity: 1; }
+          100% { width: 0%; opacity: 0; }
+        }
+        
+        @keyframes progress-ring {
+          0% { stroke-dashoffset: 283; }
+          100% { stroke-dashoffset: 0; }
+        }
+        
+        .animate-pulse-slow {
+          animation: pulse-slow 4s ease-in-out infinite;
+        }
+        
+        .animation-delay-1000 {
+          animation-delay: 1s;
+        }
+        
+        .animation-delay-300 {
+          animation-delay: 0.3s;
+        }
+        
+        .animation-delay-500 {
+          animation-delay: 0.5s;
+        }
+        
+        .animate-beam {
+          animation: beam 3s ease-in-out infinite;
+        }
+        
+        .animate-beam-vertical {
+          animation: beam-vertical 3s ease-in-out infinite;
+        }
+        
+        .animate-scan {
+          animation: scan 4s ease-in-out infinite;
+        }
+        
+        .animate-float-particle {
+          animation: float-particle 4s ease-in-out infinite;
+        }
+        
+        .animate-shimmer {
+          animation: shimmer 2s infinite;
+        }
+        
+        .animate-text-wave {
+          animation: text-wave 0.6s ease-in-out infinite;
+        }
+        
+        .animate-underline {
+          animation: underline 2s ease-in-out infinite;
+        }
+        
+        .animate-progress-ring {
+          animation: progress-ring 2s linear infinite;
+        }
+        
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-5px); }
+        }
+        
+        .animate-bounce {
+          animation: bounce 0.6s ease-in-out infinite;
+        }
+      `}</style>
+    </div>
+  );
+};
 
 export default function ModernHero() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -446,74 +788,8 @@ const jsonLd = {
     }, 100);
   }, [router, closeVideoModal, navigationBlocked]);
 
-  const LoadingScreen = () => (
-    <div className="fixed inset-0 bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 z-50 flex flex-col items-center justify-center">
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(15)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-white/10 rounded-full animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${i * 0.3}s`,
-              animationDuration: `${4 + Math.random() * 3}s`
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-md">
-        <div className="relative w-24 h-24 md:w-32 md:h-32 mb-6 md:mb-8">
-          <div className="absolute inset-0 border-4 border-orange-500/20 rounded-full"></div>
-          <div className="absolute inset-3 md:inset-4 border-4 border-amber-500/30 rounded-full animate-ping"></div>
-          <div className="absolute inset-6 md:inset-8 border-4 border-white/40 rounded-full animate-spin"></div>
-          
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center overflow-hidden">
-              <img 
-                src="/kinyui.png" 
-                alt="kinyui boys Senior School Logo" 
-                className="w-full h-full object-contain p-2"
-              />
-            </div>
-          </div>
-        </div>
-        
-        <div className="text-center space-y-4 md:space-y-6 px-2">
-          <div>
-            <h2 className="text-xl md:text-3xl font-bold text-white mb-2 leading-tight">
-              kinyui boys Senior School
-            </h2>
-            <div className="h-1 w-32 md:w-48 mx-auto bg-gradient-to-r from-transparent via-white/50 to-transparent"></div>
-          </div>
-          
-          <div className="space-y-4">
-            <p className="text-white/80 text-base md:text-lg">Preparing an exceptional learning experience</p>
-            
-            <div className="flex items-center justify-center gap-2">
-              {[...Array(3)].map((_, i) => (
-                <div
-                  key={i}
-                  className="w-3 h-3 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full animate-bounce"
-                  style={{ animationDelay: `${i * 0.2}s` }}
-                />
-              ))}
-            </div>
-            
-            <div className="w-48 md:w-64 h-2 bg-white/10 rounded-full overflow-hidden mx-auto">
-              <div className="h-full bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 animate-gradient-loading"></div>
-            </div>
-            
-            <p className="text-white/60 text-xs md:text-sm">Loading For school Website...</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   if (isLoading) {
-    return <LoadingScreen />;
+    return <ModernLoadingScreen />;
   }
 
   return (
