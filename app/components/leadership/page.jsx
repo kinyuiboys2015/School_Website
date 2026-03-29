@@ -278,13 +278,13 @@ const ModernStaffLeadership = () => {
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-50 to-transparent"></div>
       </div>
               {/* Short Modern Description */}
-            <p className="text-gray-900 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+            <p className="text-gray-900 text-lg max-w-2xl px-10 mx-auto mb-10 leading-relaxed">
               Our team of passionate educators and professionals is committed to shaping 
               excellence, discipline, and innovation in every student. Explore the people 
               behind our success and discover the strength of our academic community.
             </p>
 {/* Optional Feature Highlights (Modern Touch) - Dark Theme with React Icons */}
-<div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-5 md:gap-6 mb-8 sm:mb-10 md:mb-12">
+<div className="flex px-10 sm:flex-row flex-wrap gap-4 sm:gap-5 md:gap-6 mb-8 sm:mb-10 md:mb-12">
   
   {/* Feature 1 - Qualified Experts */}
   <div className="flex-1 min-w-[200px] bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg border border-slate-700/50 hover:shadow-xl hover:border-slate-600 transition-all duration-300 group">
