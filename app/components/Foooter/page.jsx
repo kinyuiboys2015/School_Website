@@ -479,8 +479,8 @@ export default function ModernFooter() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="text-center md:text-left">
-                  <h3 className="text-white font-bold text-lg">Subscribe to Our Newsletter</h3>
-                  <p className="text-white/80 text-sm">Get the latest updates and news from Kinyui Boys</p>
+                  <h3 className="text-white font-bold text-lg">Subscribe to Our School Newsletter</h3>
+                  <p className="text-white/80 text-sm">Get the latest updates and news from Kinyui Boys Senior School</p>
                 </div>
                 <div className="flex gap-3 w-full md:w-auto">
                   <input
