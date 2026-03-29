@@ -1,4 +1,3 @@
-
 "use client";
 import { useEffect, useState, useCallback } from 'react';
 import { 
@@ -119,7 +118,7 @@ const ModernLoadingScreen = () => {
 
   return (
     <div className="fixed inset-0 bg-white z-50 flex items-center justify-center overflow-hidden">
-      {/* Dynamic TV-Channel Style Background Effect */}
+      {/* Dynamic Background Effect */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated Gradient Orbs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse-slow"></div>
@@ -327,12 +326,6 @@ const ModernLoadingScreen = () => {
           100% { transform: translate(100%, 100%); opacity: 0; }
         }
         
-        @keyframes float-particle {
-          0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
-          50% { opacity: 0.5; }
-          100% { transform: translateY(-100px) translateX(50px); opacity: 0; }
-        }
-        
         @keyframes shimmer {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(100%); }
@@ -387,10 +380,6 @@ const ModernLoadingScreen = () => {
         
         .animate-scan {
           animation: scan 4s ease-in-out infinite;
-        }
-        
-        .animate-float-particle {
-          animation: float-particle 4s ease-in-out infinite;
         }
         
         .animate-shimmer {
