@@ -36,6 +36,7 @@ import {
   SiLinkedin,
   SiWhatsapp,
 } from 'react-icons/si';
+import { FaLinkedin } from 'react-icons/fa';
 
 // ----------------------------------------------------------------------
 // Data Layer (kept as static for consistency with original)
@@ -81,7 +82,7 @@ const SOCIAL_LINKS = [
     hoverColor: '#CC0000',
   },
   {
-    icon: SiLinkedin,
+    icon: FaLinkedin,
     href: 'https://www.linkedin.com/in/kinyui boys-senior-school-8662113b7/',
     label: 'LinkedIn',
     color: '#0A66C2',
