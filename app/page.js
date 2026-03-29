@@ -178,14 +178,7 @@ const ModernLoadingScreen = () => {
                 <span
                   key={index}
                   className="inline-block animate-text-wave"
-                  style={{
-                    animationDelay: `${index * 0.05}s`,
-                    background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    textShadow: `0 0 ${10 + (glowIntensity / 10)}px rgba(59,130,246,0.5)`
-                  }}
+              
                 >
                   {letter}
                 </span>
