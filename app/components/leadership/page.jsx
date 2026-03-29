@@ -497,18 +497,6 @@ const ModernStaffLeadership = () => {
           ))}
         </div>
 
-        {/* View All Staff Button - No phone number or long description */}
-        <div className="mb-12">
-          <button
-            onClick={() => setShowAllStaff(!showAllStaff)}
-            className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
-          >
-            <FiUsers className="text-lg" /> 
-            {showAllStaff ? 'Show Less' : `View All Staff (${allOtherStaff.length})`}
-            <FiChevronRight className={`text-lg transition-transform ${showAllStaff ? 'rotate-90' : ''}`} />
-          </button>
-        </div>
-
         {/* All Staff Grid - Compact Cards */}
         {showAllStaff && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-12">
@@ -549,16 +537,60 @@ const ModernStaffLeadership = () => {
           </div>
         )}
 
-        {/* Staff Directory CTA - Simplified, no phone number or long description */}
-        <div className="text-center">
-          <a
-            href="/pages/staff"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
-          >
-            <FiUsers className="text-lg" /> View Complete Directory
-            <FiChevronRight className="text-lg" />
-          </a>
-        </div>
+   {/* Staff Section */}
+<section className="py-16 px-6 bg-gradient-to-b from-gray-50 to-white">
+  <div className="max-w-6xl mx-auto text-center">
+
+    {/* Heading */}
+    <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4">
+      Meet Our Dedicated Staff
+    </h2>
+
+    {/* Short Modern Description */}
+    <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+      Our team of passionate educators and professionals is committed to shaping 
+      excellence, discipline, and innovation in every student. Explore the people 
+      behind our success and discover the strength of our academic community.
+    </p>
+
+    {/* Optional Feature Highlights (Modern Touch) */}
+    <div className="grid md:grid-cols-3 gap-6 mb-12">
+      <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
+        <h3 className="font-semibold text-gray-800 mb-2">Qualified Experts</h3>
+        <p className="text-sm text-gray-500">
+          Highly trained teachers with years of experience.
+        </p>
+      </div>
+
+      <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
+        <h3 className="font-semibold text-gray-800 mb-2">Student Focused</h3>
+        <p className="text-sm text-gray-500">
+          Dedicated to nurturing each learner’s potential.
+        </p>
+      </div>
+
+      <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
+        <h3 className="font-semibold text-gray-800 mb-2">Support System</h3>
+        <p className="text-sm text-gray-500">
+          Strong mentorship and guidance programs.
+        </p>
+      </div>
+    </div>
+
+    {/* CTA Button */}
+    <div className="text-center">
+      <a
+        href="/pages/staff"
+        className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-7 py-3 rounded-full font-semibold shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+      >
+        <FiUsers className="text-lg" />
+        View Complete Directory
+        <FiChevronRight className="text-lg" />
+      </a>
+    </div>
+
+  </div>
+</section>
 
         {/* Mobile Hint */}
         {isMobile && (
