@@ -44,6 +44,7 @@ const ModernStaffLeadership = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [showAllStaff, setShowAllStaff] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -229,6 +230,11 @@ const ModernStaffLeadership = () => {
     { staff: adminDeputy, label: 'Deputy (Admin)', color: 'from-amber-500 to-orange-500' },
     { staff: randomTeacher, label: randomTeacher?.role || 'Teaching Staff', color: 'from-blue-600 to-indigo-600' },
   ].filter((item) => item.staff !== null);
+
+  // Get all staff excluding the ones already shown in sideCards
+  const allOtherStaff = staff.filter(
+    (s) => !sideCards.some(card => card.staff.id === s.id)
+  );
 
   // Staff counts for stats card
   const leadershipCount = staff.filter(
@@ -417,7 +423,7 @@ const ModernStaffLeadership = () => {
                 </div>
               </div>
 
-              {/* Contact */}
+              {/* Contact - Removed phone number, only email */}
               <div className="mt-6 pt-6 border-t border-slate-200">
                 <h3 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3">Contact</h3>
                 <div className="flex flex-wrap gap-4">
@@ -430,35 +436,26 @@ const ModernStaffLeadership = () => {
                       <span className="text-sm">{featuredStaff.email}</span>
                     </a>
                   )}
-                  {featuredStaff?.phone && (
-                    <a
-                      href={`tel:${featuredStaff.phone}`}
-                      className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
-                    >
-                      <FiPhone className="text-sm" />
-                      <span className="text-sm">{featuredStaff.phone}</span>
-                    </a>
-                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Side Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        {/* Side Cards Grid - Reduced Height */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {sideCards.map(({ staff, label, color }, idx) => (
             <button
               key={staff.id}
               onClick={() => handleStaffClick(staff)}
-              className={`group relative bg-white rounded-2xl p-6 shadow-md border-2 transition-all duration-300 text-left hover:shadow-xl ${
+              className={`group relative bg-white rounded-xl p-3 shadow-md border transition-all duration-300 text-left hover:shadow-lg ${
                 featuredStaff?.id === staff.id
                   ? 'border-blue-500 ring-2 ring-blue-200'
                   : 'border-slate-100 hover:border-blue-300'
               }`}
             >
-              <div className="flex items-center gap-4">
-                <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
                   {staff.image ? (
                     <img
                       src={getImageUrl(staff.image)}
@@ -468,76 +465,98 @@ const ModernStaffLeadership = () => {
                         e.target.onerror = null;
                         e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
                           staff.name
-                        )}&background=${color.split('-')[1]}&color=fff&bold=true&size=128`;
+                        )}&background=${color.split('-')[1]}&color=fff&bold=true&size=96`;
                       }}
                     />
                   ) : (
                     <div
                       className={`w-full h-full bg-gradient-to-br ${color} flex items-center justify-center`}
                     >
-                      <FiUser className="text-white text-xl" />
+                      <FiUser className="text-white text-sm" />
                     </div>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="mb-1">
+                  <div className="mb-0.5">
                     <span
-                      className={`inline-block px-2 py-0.5 bg-gradient-to-r ${color} text-white text-[10px] font-black uppercase tracking-wider rounded-full`}
+                      className={`inline-block px-1.5 py-0.5 bg-gradient-to-r ${color} text-white text-[9px] font-black uppercase tracking-wider rounded-full`}
                     >
                       {label}
                     </span>
                   </div>
-                  <h3 className="font-bold text-slate-900 truncate text-lg">{staff.name}</h3>
-                  <p className="text-slate-500 text-sm truncate">{staff.position || staff.role}</p>
+                  <h3 className="font-bold text-slate-900 text-sm truncate">{staff.name}</h3>
+                  <p className="text-slate-500 text-xs truncate">{staff.position || staff.role}</p>
                 </div>
               </div>
               {featuredStaff?.id === staff.id && (
-                <div className="absolute top-3 right-3 text-blue-500">
-                  <FiCheck className="text-sm" />
+                <div className="absolute top-2 right-2 text-blue-500">
+                  <FiCheck className="text-xs" />
                 </div>
               )}
-              <div className="mt-3 text-xs text-blue-600 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                View Profile <FiChevronRight size={12} />
-              </div>
             </button>
           ))}
-
-          {/* Stats Card */}
-          <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl p-6 text-white shadow-md">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-white/20 rounded-xl">
-                <IoPeopleOutline className="text-xl" />
-              </div>
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider opacity-90">Staff Overview</p>
-                <p className="text-2xl font-black">{staff.length} Team Members</p>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm opacity-90">Leadership</span>
-                <span className="font-bold">{leadershipCount}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm opacity-90">Teaching Staff</span>
-                <span className="font-bold">{teachingCount}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm opacity-90">Support Staff</span>
-                <span className="font-bold">{supportCount}</span>
-              </div>
-            </div>
-          </div>
         </div>
 
-        {/* Staff Directory CTA */}
+        {/* View All Staff Button - No phone number or long description */}
+        <div className="mb-12">
+          <button
+            onClick={() => setShowAllStaff(!showAllStaff)}
+            className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+          >
+            <FiUsers className="text-lg" /> 
+            {showAllStaff ? 'Show Less' : `View All Staff (${allOtherStaff.length})`}
+            <FiChevronRight className={`text-lg transition-transform ${showAllStaff ? 'rotate-90' : ''}`} />
+          </button>
+        </div>
+
+        {/* All Staff Grid - Compact Cards */}
+        {showAllStaff && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-12">
+            {allOtherStaff.map((staffMember) => (
+              <button
+                key={staffMember.id}
+                onClick={() => handleStaffClick(staffMember)}
+                className="group bg-white rounded-xl p-3 shadow-sm border border-slate-100 hover:shadow-md hover:border-blue-300 transition-all text-left"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden mb-2">
+                    {staffMember.image ? (
+                      <img
+                        src={getImageUrl(staffMember.image)}
+                        alt={staffMember.name}
+                        className="w-full h-full object-cover object-top"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                            staffMember.name
+                          )}&background=4f46e5&color=fff&bold=true&size=128`;
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                        <FiUser className="text-white text-2xl" />
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="font-bold text-slate-900 text-sm truncate w-full">{staffMember.name}</h3>
+                  <p className="text-slate-500 text-xs truncate w-full">{staffMember.position || staffMember.role || 'Staff Member'}</p>
+                  <div className="mt-2 text-xs text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                    View Profile
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Staff Directory CTA - Simplified, no phone number or long description */}
         <div className="text-center">
           <a
             href="/pages/staff"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
           >
-            <FiUsers className="text-xl" /> View Complete Staff Directory
-            <FiChevronRight className="text-xl" />
+            <FiUsers className="text-lg" /> View Complete Directory
+            <FiChevronRight className="text-lg" />
           </a>
         </div>
 
