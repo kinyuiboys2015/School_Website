@@ -450,31 +450,42 @@ const ModernSchoolLayout = () => {
         </div>
       </section>
 
-      {/* === ACHIEVEMENTS SUMMARY === */}
-      <section className="bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-18">
-          <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-50 p-6 sm:p-8 rounded-2xl border border-blue-100/60">
-            <div className="flex items-center gap-2 mb-5">
-              <span className="text-xl">🦅</span>
-              <h4 className="text-sm sm:text-base font-black text-blue-800">Eagles&apos; Achievements (2019&ndash;Present)</h4>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {[
-                '3rd Best Public School in Matungulu Sub-county (2019) — A- candidate',
-                'KShs 6M ICT Donation — 50+ laptops from Angaza Centre (2023) — Only school in Machakos',
-                'KShs 1.2M KCB LPG Funding (2022) — 40% cost reduction (700K → 420K per term)',
-                `${studentCount}+ Eagles enrolled — boarding`,
-                'Environmental Conservation — Reduced firewood usage, staff from 6 to 4 cooks',
-                'Top Improving School in KCSE (2024) — Matungulu Sub-county'
-              ].map((text, idx) => (
-                <div key={idx} className="bg-white p-4 rounded-xl border border-blue-100/60 shadow-sm">
-                  <p className="text-xs sm:text-sm text-gray-700 font-medium leading-relaxed">{text}</p>
-                </div>
-              ))}
-            </div>
+ {/* === KINYUI BOYS ACHIEVEMENTS === */}
+<section className="bg-gray-50">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-18">
+    <div className="bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-50 p-6 sm:p-8 rounded-2xl border border-indigo-100/60 shadow-md">
+      
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <span className="text-2xl">🦁</span>
+        <h4 className="text-sm sm:text-base md:text-lg font-black text-indigo-800">
+          Kinyui Boys Achievements (2019–Present)
+        </h4>
+      </div>
+
+      {/* Achievements Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        {[
+          'Top 3 in KCSE — County Level (2023)',
+          'ICT Upgrade — 50+ laptops donated through local sponsors (2022–2024)',
+          'New Library & STEM Labs Established (2021) — Boosting academic excellence',
+          `${studentCount}+ Boys enrolled — Boarding & Day Scholars`,
+          'Environmental Programs — Tree planting and reduced firewood consumption',
+          'Sports & Athletics Excellence — County football champions 2022–2024'
+        ].map((achievement, idx) => (
+          <div
+            key={idx}
+            className="bg-white p-4 sm:p-5 rounded-2xl border border-indigo-100 shadow-sm hover:shadow-lg transition-shadow duration-200"
+          >
+            <p className="text-xs sm:text-sm md:text-base text-gray-700 font-medium leading-relaxed">
+              {achievement}
+            </p>
           </div>
-        </div>
-      </section>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* === UNIVERSITY LOGOS SCROLLER === */}
       <section className="bg-gray-50 border-t border-gray-200 py-12">
