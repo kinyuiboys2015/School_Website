@@ -275,7 +275,7 @@ function RuleCard({ term }) {
 export default function SchoolPolicies() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showFees, setShowFees] = useState(false);
+  const [showFees, setShowFees] = useState(true);
   const topRef = useRef(null);
   const year = new Date().getFullYear();
 
