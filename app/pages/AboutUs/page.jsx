@@ -1,154 +1,93 @@
 "use client";
-import React from 'react';
-import { MapPin, Users, BookOpen, Mail, Trophy, Target, Globe,Clock , TrendingUp , Lightbulb , ExternalLink , ShieldCheck, ArrowRight, Phone, Sparkles, Heart, Zap } from 'lucide-react';
-import Image from 'next/image';
+import React, { useRef } from "react";
+import {
+  MapPin, Users, BookOpen, Mail, Trophy, Target, Globe, Clock,
+  TrendingUp, Lightbulb, ExternalLink, ShieldCheck, ArrowRight,
+  Phone, Sparkles, Heart, Zap, GraduationCap, Building2, Award,
+  ChevronRight, Star, Check
+} from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function AboutPage() {
-  const stats = [
-    { icon: <Users className="w-5 h-5" />, label: "Students", value: "400+" },
-    { icon: <BookOpen className="w-5 h-5" />, label: "Curriculums", value: "12" },
-    { icon: <Trophy className="w-5 h-5" />, label: "Awards", value: "45+" },
-{ icon: <ShieldCheck className="w-5 h-5" />, label: "Completion Rate", value: "88%" },
-  ];
+  const year = new Date().getFullYear();
+  const topRef = useRef(null);
 
-  const values = [
-    { title: "Integrity", icon: <ShieldCheck size={16}/> },
-    { title: "Leadership", icon: <Zap size={16}/> },
-    { title: "Compassion", icon: <Heart size={16}/> },
-    { title: "Innovation", icon: <Sparkles size={16}/> }
-  ];
-const date = new Date(); // Add this line!
   return (
-    <div className="bg-white text-slate-900">
-      {/* Hero Section */}
-      {/* Modern Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-amber-950 via-orange-950 to-red-950">
-        {/* Background with Zoom Effect */}
-    <div className="absolute inset-0 group overflow-hidden rounded-t-md">
-  {/* Modern Gradient Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-b from-orange-950/30 via-orange-950/80 to-orange-950 z-20"></div>
-  
-  <Image
-    src="/hero/katz8.jpeg"
-    alt="School"
-    fill
-    className="object-cover opacity-50 transition-transform duration-[10s] ease-out "
-    priority
-  />
+    <div ref={topRef} className="bg-slate-50 text-slate-900 min-h-screen">
 
+      {/* ═══════════════════════ HERO ═══════════════════════ */}
+      <section className="relative min-h-[90vh] flex items-end overflow-hidden">
+        <Image
+          src="/hero/katz8.jpeg"
+          alt="Kinyui Boys Senior School campus"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/30" />
+        <div className="absolute inset-0 opacity-[0.04]" style={{
+          backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")"
+        }} />
 
-
-  {/* Animated Radial Glow */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-600/20 rounded-full blur-[120px] z-10"></div>
-</div>
-
-        <div className="relative z-20 max-w-5xl mx-auto px-6 text-center">
-          {/* Modern Static Badge */}
-          <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-orange-500/10 border border-orange-400/20 backdrop-blur-md mb-8">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-            </span>
-            <span className="text-[10px] font-black tracking-[0.3em] text-orange-200 uppercase">
-           Registration Open • {new Date().getFullYear()} Academic Year     </span>
-          </div>
-
-          {/* Refined Title - Significantly Smaller & Tighter */}
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-6 tracking-tighter leading-none">
-            kinyui boys <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-300 to-white/70">Senior School.</span>
-          </h1>
-
-          {/* Expanded Rich Description */}
-          <div className="max-w-3xl mx-auto space-y-6 mb-12">
-            <p className="text-sm md:text-base text-slate-200 font-medium leading-relaxed mb-8">
-              Since 1976, a cornerstone of <span className="text-amber-400">academic distinction</span>, 
-              crafting a holistic pathway for future  leaders.
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-6 text-left border-y border-white/10 py-8">
-              <div className="space-y-2">
-                <h4 className="text-amber-400 font-black text-[10px] uppercase tracking-widest">Why Us</h4>
-                <p className="text-sm text-slate-300 leading-relaxed">
-                  We leverage modern STEM-based learning and state-of-the-art digital infrastructure to ensure our students are not just competitive, but are the innovators of tomorrow's global economy.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <h4 className="text-amber-400 font-black text-[10px] uppercase tracking-widest">Core Excellence</h4>
-                <p className="text-sm text-slate-300 leading-relaxed">
-                  Beyond the classroom, our community thrives on character development, sports leadership, and artistic expression, fostering well-rounded individuals ready for university and beyond.
-                </p>
-              </div>
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 md:pb-24">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-6">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+              </span>
+              <span className="text-[10px] sm:text-xs font-black tracking-[0.25em] text-amber-200 uppercase">
+                Est. 1976 &bull; Matungulu, Machakos County
+              </span>
             </div>
 
-            <p className="text-xs md:text-sm text-slate-400 italic">
-              "Empowering Students  through discipline, integrity, and a passion for lifelong learning."
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-5">
+              Kinyui Boys{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
+                Senior School
+              </span>
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl leading-relaxed mb-8 font-medium">
+              Forging disciplined leaders through academic excellence, moral integrity, and holistic development for nearly five decades.
             </p>
-          </div>
 
-       {/* MODERN ACTION DOCK - Always Flex & Height-Efficient */}
-<div className="flex flex-row gap-2 sm:gap-4 justify-center items-center w-full px-2">
-  
-  <Link href="/pages/apply-for-admissions" passHref className="flex-1 sm:flex-none">
-    <button className="w-full sm:w-auto px-4 sm:px-10 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-[11px] sm:text-sm font-black rounded-xl sm:rounded-2xl shadow-lg shadow-orange-900/20 flex items-center justify-center gap-2 transition-transform active:scale-95 whitespace-nowrap">
-      Admission <ArrowRight size={16} className="shrink-0" />
-    </button>
-  </Link>
-
-  <Link href="/pages/admissions" passHref className="flex-1 sm:flex-none">
-    <button className="w-full sm:w-auto px-4 sm:px-10 py-3 bg-slate-900 text-white text-[11px] sm:text-sm font-black rounded-xl sm:rounded-2xl border border-white/10 shadow-xl flex items-center justify-center transition-transform active:scale-95 whitespace-nowrap">
-      Curriculum
-    </button>
-  </Link>
-  
-</div>
-
-          {/* Trust Indicators */}
-          <div className="mt-12 flex justify-center gap-8 opacity-40 grayscale">
-            <span className="text-[10px] font-bold text-white uppercase tracking-widest">Government Accredited</span>
-            <span className="text-[10px] font-bold text-white uppercase tracking-widest">STEM Certified</span>
-            <span className="text-[10px] font-bold text-white uppercase tracking-widest">National Champion 2025</span>
-          </div>
-        </div>
-      </section>
-
-{/* Modernized Static Stats Section */}
-<section className="relative z-30 max-w-6xl mx-auto px-4 sm:px-6 -mt-8 md:-mt-16">
-  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-    {stats.map((stat, idx) => (
-      <div 
-        key={idx} 
-        className="relative bg-white rounded-[1.5rem] sm:rounded-[2.5rem] p-4 sm:p-7 shadow-xl shadow-slate-900/5 border border-slate-100 flex flex-col items-start overflow-hidden"
-      >
-        {/* Subtle Background Accent - Scaled for mobile */}
-        <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 bg-orange-50/50 rounded-bl-[2.5rem] sm:rounded-bl-[4rem] -z-0" />
-
-        <div className="relative z-10 w-full">
-          {/* Icon Container - Scaled for mobile */}
-          <div className="w-9 h-9 sm:w-12 sm:h-12 bg-gradient-to-br from-orange-500 to-amber-500 rounded-xl sm:rounded-2xl text-white flex items-center justify-center mb-3 sm:mb-6 shadow-lg shadow-orange-900/20">
-            {React.cloneElement(stat.icon, { size: 16, className: "sm:w-[20px] sm:h-[20px]" })}
-          </div>
-          
-          {/* Value - Scaled Fluidly */}
-          <div className="text-2xl sm:text-4xl font-black text-slate-900 mb-0.5 sm:mb-1 tracking-tighter">
-            {stat.value}
-          </div>
-          
-          {/* Label - Tightened for small screens */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="w-3 h-[2px] sm:w-4 bg-orange-500 rounded-full" />
-            <div className="text-[8px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest sm:tracking-[0.2em] truncate">
-              {stat.label}
+            <div className="flex flex-wrap gap-3">
+              <Link href="/pages/apply-for-admissions">
+                <button className="px-6 sm:px-8 py-3 sm:py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs sm:text-sm font-black rounded-xl shadow-lg shadow-orange-900/30 flex items-center gap-2 hover:shadow-xl transition-all active:scale-95">
+                  Apply Now <ArrowRight size={16} />
+                </button>
+              </Link>
+              <Link href="/pages/admissions">
+                <button className="px-6 sm:px-8 py-3 sm:py-3.5 bg-white/10 backdrop-blur-md text-white text-xs sm:text-sm font-black rounded-xl border border-white/20 flex items-center gap-2 hover:bg-white/20 transition-all active:scale-95">
+                  View Curriculum
+                </button>
+              </Link>
             </div>
           </div>
-        </div>
 
-        {/* Informative Sub-description - Hidden on tiny screens to maintain card height balance */}
-        <p className="hidden xs:block mt-3 sm:mt-4 text-[9px] sm:text-[11px] text-slate-500 leading-tight sm:leading-relaxed relative z-10">
-          Maintaining standards of excellence.
-        </p>
-      </div>
-    ))}
+          {/* Floating Stats Bar */}
+          <div className="mt-10 sm:mt-14 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            {[
+              { val: "400+", label: "Students", icon: Users },
+              { val: "88%", label: "Completion Rate", icon: TrendingUp },
+              { val: "45+", label: "Awards Won", icon: Trophy },
+              { val: "12", label: "Curriculums", icon: BookOpen },
+            ].map((s, i) => {
+              const Icon = s.icon;
+              return (
+                <div key={i} className="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-4 sm:p-5 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                    <Icon className="text-amber-400" size={18} />
+                  </div>
+                  <div>
+                    <div className="text-xl sm:text-2xl font-black text-white leading-none">{s.val}</div>
+                    <div className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider mt-0.5">{s.label}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
   </div>
 </section>
 

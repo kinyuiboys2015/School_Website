@@ -224,7 +224,7 @@ const ModernLoadingScreen = () => {
       </defs>
     </svg>
     <div className="absolute inset-0 flex items-center justify-center">
-      <div className="w-1.5 h-1.5 md:w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
+      <div className="w-1.5 h-1.5 md:w-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
     </div>
   </div>
 

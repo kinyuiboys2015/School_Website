@@ -39,7 +39,7 @@ import {
   SiYoutube,
   SiLinkedin,
   SiWhatsapp,
-  SiTwitter,
+  SiX,
   SiInstagram,
 } from 'react-icons/si';
 import { FaLinkedin } from 'react-icons/fa';
@@ -102,7 +102,7 @@ const SOCIAL_LINKS = [
     hoverColor: '#1DA851',
   },
   {
-    icon: SiTwitter,
+    icon: SiX,
     href: 'https://twitter.com/kinyuiboys',
     label: 'Twitter',
     color: '#1DA1F2',
