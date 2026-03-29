@@ -263,7 +263,7 @@ const ModernStaffLeadership = () => {
     <span className="text-[10px] sm:text-xs md:text-sm font-bold tracking-wider">Leadership Team</span>
   </div>
   
-  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tight mb-3 sm:mb-4">
+  <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tight mb-3 sm:mb-4">
     Meet Our{' '}
     <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-400">
       School Leadership
