@@ -497,24 +497,22 @@ const ModernSchoolLayout = () => {
       {/* === UNIVERSITY LOGOS SCROLLER === */}
       <section className="bg-gray-50 border-t border-gray-200 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-  <div className="max-w-7xl mx-auto px-4">
-    {/* Header Section */}
-    <div className="text-center mb-12">
-      <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600 block mb-2">
-        Our Partners
-      </span>
-      <h3 className="text-3xl font-black text-gray-900">
-        University Collaborations
-      </h3>
-      <p className="max-w-4xl mx-auto text-gray-500 text-base mt-4 leading-relaxed">
-        We bridge the gap between secondary education and the professional world through 
-        strong alliances with top-tier universities. These partnerships foster 
-        innovation, academic excellence, and career readiness for our young men.
-      </p>
-    </div>
-
-
-  </div>
+          <div className="max-w-7xl mx-auto px-4">
+            {/* Header Section */}
+            <div className="text-center mb-12">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600 block mb-2">
+                Our Partners
+              </span>
+              <h3 className="text-3xl font-black text-gray-900">
+                University Collaborations
+              </h3>
+              <p className="max-w-5xl mx-auto text-gray-500 text-base mt-4 leading-relaxed">
+                We bridge the gap between secondary education and the professional world through 
+                strong alliances with top-tier universities. These partnerships foster 
+                innovation, academic excellence, and career readiness for our young men.
+              </p>
+            </div>
+          </div>
 
           {imagesLoading ? (
             <div className="text-center text-gray-400 py-8">
@@ -526,7 +524,7 @@ const ModernSchoolLayout = () => {
               <div
                 className="flex gap-8 animate-marquee"
                 style={{
-                  animation: 'marquee 80s linear infinite', // Slower speed: 80 seconds
+                  animation: 'marquee 80s linear infinite',
                   width: 'max-content',
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = 'paused')}
@@ -541,8 +539,11 @@ const ModernSchoolLayout = () => {
                       className="object-contain p-1"
                       sizes="(max-width: 128px) 100vw, 128px"
                       onError={(e) => {
-                        // Hide broken images
-                        e.currentTarget.parentElement?.style.display = 'none';
+                        // Safely hide broken images
+                        const parent = e.currentTarget.parentElement;
+                        if (parent) {
+                          parent.style.display = 'none';
+                        }
                       }}
                     />
                   </div>
