@@ -39,39 +39,21 @@ const ModernSchoolLayout = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  // Function to check which images exist with their actual extensions
+  // Fetch university logo images from API (reads public/unis directory server-side)
   useEffect(() => {
-    const checkImages = async () => {
-      const extensions = ['jpg', 'jpeg', 'png'];
-      const existingImages = [];
-      
-      // Check numbers 1-45
-      for (let i = 1; i <= 45; i++) {
-        for (const ext of extensions) {
-          const imgPath = `/unis/${i}.${ext}`;
-          try {
-            const response = await fetch(imgPath, { method: 'HEAD' });
-            if (response.ok) {
-              existingImages.push(imgPath);
-              break; // Found the image, move to next number
-            }
-          } catch (error) {
-            // Image doesn't exist with this extension
-          }
+    fetch('/api/unis')
+      .then(res => res.json())
+      .then(data => {
+        const imgs = data.images || [];
+        // Shuffle for random order
+        for (let i = imgs.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [imgs[i], imgs[j]] = [imgs[j], imgs[i]];
         }
-      }
-      
-      // Shuffle the array for random order
-      for (let i = existingImages.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [existingImages[i], existingImages[j]] = [existingImages[j], existingImages[i]];
-      }
-      
-      setUniImages(existingImages);
-      setImagesLoading(false);
-    };
-    
-    checkImages();
+        setUniImages(imgs);
+      })
+      .catch(() => setUniImages([]))
+      .finally(() => setImagesLoading(false));
   }, []);
 
   useEffect(() => {
