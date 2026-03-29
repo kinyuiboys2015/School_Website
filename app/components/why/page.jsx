@@ -15,6 +15,7 @@ const ModernSchoolLayout = () => {
   const [expandedCards, setExpandedCards] = useState({});
   const [schoolData, setSchoolData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [uniImages, setUniImages] = useState([]); // university images array
 
   const schoolImages = [
     { src: "/bg/14.jpeg", alt: "Kinyui Boys Senior School - Main Building" },
@@ -35,6 +36,24 @@ const ModernSchoolLayout = () => {
       })
       .catch(err => console.error('Error fetching school data:', err))
       .finally(() => setLoading(false));
+  }, []);
+
+  // Fetch university images from the API
+  useEffect(() => {
+    fetch('/api/unis')
+      .then(res => res.json())
+      .then(data => {
+        if (data.images && Array.isArray(data.images)) {
+          setUniImages(data.images);
+        } else {
+          console.warn('No university images found');
+          setUniImages([]);
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching university images:', err);
+        setUniImages([]);
+      });
   }, []);
 
   useEffect(() => {
@@ -155,6 +174,9 @@ const ModernSchoolLayout = () => {
     }
   ];
 
+  // Create the scrolling images by duplicating the list for seamless loop
+  const scrollImages = [...uniImages, ...uniImages, ...uniImages];
+
   return (
     <div className="bg-gray-50 font-sans overflow-hidden">
 
@@ -165,7 +187,6 @@ const ModernSchoolLayout = () => {
 
             {/* Left — Text Content */}
             <div className="lg:col-span-5 space-y-5 sm:space-y-6">
-              {/* Eagles badge */}
               <div className="inline-flex items-center gap-2.5 px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-full border border-blue-100">
                 <span className="text-lg">🦅</span>
                 <span className="text-[10px] sm:text-xs font-bold tracking-[0.15em] text-blue-700 uppercase">
@@ -192,7 +213,6 @@ const ModernSchoolLayout = () => {
                 {description || 'Located in the heart of Matungulu, Machakos County, The Eagles are dedicated to nurturing students into confident, compassionate, and accomplished leaders.'}
               </p>
 
-              {/* Contact pills */}
               <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
                 <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-lg text-xs text-gray-600">
                   <FiMapPin className="text-blue-500 flex-shrink-0" size={14} /> Matungulu, Machakos County
@@ -205,7 +225,6 @@ const ModernSchoolLayout = () => {
                 </span>
               </div>
 
-              {/* Stats row */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 pt-2">
                 {[
                   { label: 'Eagles', value: `${studentCount}+`, icon: '🦅' },
@@ -221,7 +240,6 @@ const ModernSchoolLayout = () => {
                 ))}
               </div>
 
-              {/* CTA buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button
                   onClick={() => router.push('/pages/admissions')}
@@ -254,7 +272,6 @@ const ModernSchoolLayout = () => {
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-                {/* Nav arrows */}
                 <button onClick={prevImage} className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-white/30 z-10" aria-label="Previous">
                   <FiChevronLeft size={20} />
                 </button>
@@ -262,7 +279,6 @@ const ModernSchoolLayout = () => {
                   <FiChevronRight size={20} />
                 </button>
 
-                {/* Dots */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                   {schoolImages.map((_, idx) => (
                     <button key={idx} onClick={() => setCurrentImageIndex(idx)}
@@ -270,7 +286,6 @@ const ModernSchoolLayout = () => {
                   ))}
                 </div>
 
-                {/* Caption card */}
                 <div className="absolute bottom-12 left-4 right-4 sm:left-5 sm:right-auto z-10">
                   <div className="backdrop-blur-xl bg-white/10 border border-white/20 px-4 py-3 rounded-xl max-w-xs">
                     <p className="text-white font-black text-sm sm:text-base tracking-tight leading-snug">🦅 {schoolName}</p>
@@ -326,7 +341,6 @@ const ModernSchoolLayout = () => {
               const c = colorMap[item.color];
               return (
                 <div key={item.id} className="group relative bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-                  {/* Image top */}
                   {item.image && (
                     <div className="relative h-40 sm:h-48 overflow-hidden">
                       <Image src={item.image.src} alt={item.image.alt} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -459,6 +473,58 @@ const ModernSchoolLayout = () => {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* === UNIVERSITY LOGOS SCROLLER === */}
+      <section className="bg-gray-50 border-t border-gray-200 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">Our Partners</span>
+            <h3 className="text-2xl font-black text-gray-900 mt-2">University Collaborations</h3>
+            <p className="text-gray-500 text-sm mt-1">Proud to work with these institutions</p>
+          </div>
+
+          {uniImages.length > 0 ? (
+            <div className="relative overflow-hidden">
+              <div
+                className="flex gap-8 animate-marquee"
+                style={{
+                  animation: 'marquee 40s linear infinite',
+                  width: 'max-content',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = 'paused')}
+                onMouseLeave={(e) => (e.currentTarget.style.animationPlayState = 'running')}
+              >
+                {scrollImages.map((img, idx) => (
+                  <div key={idx} className="relative w-32 h-20 flex-shrink-0 bg-white rounded-xl shadow-sm p-2 hover:shadow-md transition-shadow">
+                    <Image
+                      src={img}
+                      alt={`University logo ${idx}`}
+                      fill
+                      className="object-contain p-1"
+                      sizes="(max-width: 128px) 100vw, 128px"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="text-center text-gray-400 py-8">
+              Loading university partners...
+            </div>
+          )}
+
+          <style jsx>{`
+            @keyframes marquee {
+              0% {
+                transform: translateX(0);
+              }
+              100% {
+                transform: translateX(-50%);
+              }
+            }
+          `}</style>
         </div>
       </section>
 
