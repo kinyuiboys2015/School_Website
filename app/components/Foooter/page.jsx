@@ -267,10 +267,10 @@ const SocialLinksGroup = () => (
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-16 h-16 rounded-full flex items-center justify-center"
+            className="w-14 h-14 rounded-full flex items-center justify-center"
             style={{ backgroundColor: social.color }}
           >
-            <SocialIcon className="text-white text-2xl" />
+            <SocialIcon className="text-white text-3xl" />
           </a>
         );
       })}
