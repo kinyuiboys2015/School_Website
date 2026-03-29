@@ -21,7 +21,6 @@ import {
   FiClock,
   FiGlobe,
   FiMessageSquare,
-  FiTrophy,
   FiTarget,
 } from 'react-icons/fi';
 import { Loader2 } from 'lucide-react';
@@ -384,7 +383,6 @@ const ModernStaffLeadership = () => {
                   <div className="bg-gradient-to-br from-amber-50/50 to-yellow-50/30 rounded-xl p-4 border border-amber-100">
                     <div className="flex items-center gap-2 mb-3">
                       <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
-                        <FiTrophy className="text-white text-xs" />
                       </div>
                       <h3 className="text-xs font-black text-amber-700 uppercase tracking-wider">Achievements</h3>
                     </div>
