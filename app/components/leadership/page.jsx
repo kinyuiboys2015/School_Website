@@ -276,7 +276,7 @@ const ModernStaffLeadership = () => {
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-50 to-transparent"></div>
       </div>
               {/* Short Modern Description */}
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+            <p className="text-gray-900 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
               Our team of passionate educators and professionals is committed to shaping 
               excellence, discipline, and innovation in every student. Explore the people 
               behind our success and discover the strength of our academic community.
