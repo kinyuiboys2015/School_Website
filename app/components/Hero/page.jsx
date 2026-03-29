@@ -230,7 +230,7 @@ const ModernHero = () => {
         </div>
 
         {/* Title — reduced size */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-4 md:mb-6">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-4 md:mb-6">
           {slide.title}
           <span className={`${colors.text} inline-block ml-2`}>
             {slide.titleAccent}
@@ -239,7 +239,7 @@ const ModernHero = () => {
 
         {/* Description with better readability */}
         <p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-2xl leading-relaxed mb-5 md:mb-7">
-          {isMobile ? slide.description.substring(0, 120) + '...' : slide.description}
+          {isMobile ? slide.description.substring(0, 200) + '...' : slide.description}
         </p>
 
         {/* Tags row */}
