@@ -420,7 +420,7 @@ const ModernStaffLeadership = () => {
         >
           <div className={`${isMobile ? 'flex flex-col' : 'grid md:grid-cols-2 gap-8'}`}>
             {/* Image Side */}
-            <div className={`relative ${isMobile ? 'h-64' : 'h-96 md:h-full min-h-[400px]'}`}>
+            <div className={`relative ${isMobile ? 'h-78' : 'h-96 md:h-full min-h-[400px]'}`}>
               <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-transparent z-10"></div>
               {getImageUrl(featuredStaff?.image) ? (
                 <img
