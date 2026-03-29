@@ -154,6 +154,12 @@ const STYLES = `
   }
   @media (max-width: 540px) {
     .kbss-grid { grid-template-columns: 1fr; }
+    .kbss-nav-link {
+      font-size: 0.95rem !important;
+      font-weight: 700 !important;
+      color: #FFFFFF !important;
+      padding: 0.5rem 0 !important;
+    }
   }
 
   .kbss-col {
@@ -214,17 +220,17 @@ const STYLES = `
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.6rem 0;
+    padding: 0.4rem 0;
     border-bottom: 1px solid rgba(200,146,42,0.08);
     text-decoration: none;
-    color: var(--text-secondary);
+    color: #FFFFFF;
     font-size: 0.875rem;
-    font-weight: 300;
+    font-weight: 700;
     transition: all 0.2s;
     gap: 0.5rem;
   }
   .kbss-nav-link:last-child { border-bottom: none; }
-  .kbss-nav-link:hover { color: var(--text-primary); padding-left: 0.35rem; }
+  .kbss-nav-link:hover { color: var(--gold-light); padding-left: 0.35rem; }
   .kbss-nav-link:hover .kbss-nav-arrow { opacity: 1; transform: translate(2px, -2px); color: var(--gold); }
   .kbss-nav-arrow {
     opacity: 0;
@@ -314,16 +320,19 @@ const STYLES = `
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-secondary);
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     transition: all 0.2s;
   }
   .kbss-social-link:hover {
     border-color: var(--gold);
-    color: var(--gold-light);
     background: var(--gold-dim);
+    transform: scale(1.1);
   }
+  .kbss-social-link--facebook { color: #1877F2; }
+  .kbss-social-link--youtube { color: #FF0000; }
+  .kbss-social-link--linkedin { color: #0A66C2; }
+  .kbss-social-link--whatsapp { color: #25D366; }
 
   /* Bottom bar */
   .kbss-bottom {
@@ -688,7 +697,7 @@ export default function FooterAlt() {
                   const Icon = s.icon;
                   return (
                     <a key={i} href={s.href} target="_blank" rel="noopener noreferrer"
-                      className="kbss-social-link" aria-label={s.label}>
+                      className={`kbss-social-link kbss-social-link--${s.label.toLowerCase()}`} aria-label={s.label}>
                       <Icon />
                     </a>
                   );
@@ -716,8 +725,8 @@ export default function FooterAlt() {
                   <span className="kbss-achievement-text">{a.sub}</span>
                 </div>
               ))}
-              <div style={{ marginTop: '1.75rem', paddingTop: '1.5rem', borderTop: '1px solid var(--rule)' }}>
-                <p className="kbss-col-label" style={{ marginBottom: '0.75rem' }}>Resources</p>
+              <div style={{ marginTop: '1rem', paddingTop: '0.75rem', borderTop: '1px solid var(--rule)' }}>
+                <p className="kbss-col-label" style={{ marginBottom: '0.5rem' }}>Resources</p>
                 {RESOURCES.slice(0, 4).map((link, i) => (
                   <a key={i} href={link.href} className="kbss-nav-link">
                     <span>{link.name}</span>
