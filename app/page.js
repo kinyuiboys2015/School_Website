@@ -99,7 +99,7 @@ const ModernLoadingScreen = () => {
   const [glowIntensity, setGlowIntensity] = useState(0);
   
   const motto = "Soaring to Excellence";
-  const schoolName = "KINYUI BOYS";
+  const schoolName = "KINYUI BOYS' SENIOR";
 
   // Animated text effect
   useEffect(() => {
@@ -137,20 +137,6 @@ const ModernLoadingScreen = () => {
         {/* Diagonal Scanning Lines */}
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent animate-scan"></div>
         
-        {/* Floating Particles */}
-        {[...Array(30)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-float-particle"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${i * 0.2}s`,
-              animationDuration: `${3 + Math.random() * 4}s`,
-              opacity: 0.3 + Math.random() * 0.5
-            }}
-          />
-        ))}
       </div>
 
       {/* Main Content */}
@@ -628,7 +614,7 @@ const jsonLd = {
             schoolInfo: null
           });
         }).finally(() => {
-          setTimeout(() => setIsLoading(false), 1000);
+          setTimeout(() => setIsLoading(false), 4000);
         });
 
       } catch (error) {
