@@ -478,21 +478,25 @@ const ModernSchoolLayout = () => {
 
       {/* === UNIVERSITY LOGOS SCROLLER === */}
       <section className="bg-gray-50 border-t border-gray-200 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto px-4">
+        <div className="w-[93%] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto px-4">
             {/* Header Section */}
             <div className="text-center mb-12">
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600 block mb-2">
                 Our Partners
               </span>
-              <h3 className="text-3xl font-black text-gray-900">
-                University Collaborations
-              </h3>
-              <p className="max-w-5xl mx-auto text-gray-500 text-base mt-4 leading-relaxed">
-                We bridge the gap between secondary education and the professional world through 
-                strong alliances with top-tier universities. These partnerships foster 
-                innovation, academic excellence, and career readiness for our young men.
-              </p>
+           <h3 className="text-3xl font-black text-gray-900">
+  University{" "}
+  <span className="bg-gradient-to-r from-red-800 to-rose-500 bg-clip-text text-transparent">
+    Collaborations
+  </span>
+</h3>
+             {/* Paragraph */}
+    <p className="mt-4 text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
+      We bridge the gap between secondary education and the professional world through 
+      strong alliances with top-tier universities. These partnerships foster 
+      innovation, academic excellence, and career readiness for our young men.
+    </p>
             </div>
           </div>
 
