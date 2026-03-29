@@ -166,87 +166,89 @@ const ModernLoadingScreen = () => {
           </div>
         </div>
 
-        {/* School Name without mirror reflection and bouncing */}
-        <div className="text-center mb-5 md:mb-7">
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-wider text-gray-800">
-            {schoolName}
-          </h1>
-          
-          {/* Animated Gradient Underline */}
-          <div className="absolute -bottom-3 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-underline"></div>
-          
-          <p className="text-gray-500 text-xs md:text-sm mt-4 tracking-wider">EST. 1976 | CENTRE OF EXCELLENCE</p>
-        </div>
+  {/* School Name */}
+<div className="text-center mb-4 md:mb-5">
+  <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-wider text-gray-800">
+    {schoolName}
+  </h1>
+  
+  {/* Animated Gradient Underline */}
+  <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-underline"></div>
+  
+  <p className="text-gray-500 text-[10px] md:text-xs mt-3 tracking-wider">
+    EST. 1976 | CENTRE OF EXCELLENCE
+  </p>
+</div>
 
-        {/* Motto with Animated Style (reduced items by 20%) */}
-        <div className="text-center mb-6 md:mb-8">
-          <p className="text-xl md:text-3xl lg:text-4xl font-bold italic tracking-wide text-gray-800">
-            {motto}
-          </p>
-        </div>
+{/* Motto */}
+<div className="text-center mb-5 md:mb-6">
+  <p className="text-lg md:text-2xl lg:text-3xl font-bold italic tracking-wide text-gray-800">
+    {motto}
+  </p>
+</div>
 
-        {/* Animated Loading Indicators (reduced size by 20%) */}
-        <div className="flex flex-col items-center gap-3">
-          {/* Modern Progress Ring */}
-          <div className="relative w-12 h-12 md:w-16 md:h-16">
-            <svg className="w-full h-full transform -rotate-90">
-              <circle
-                cx="50%"
-                cy="50%"
-                r="45%"
-                fill="none"
-                stroke="#e5e7eb"
-                strokeWidth="3"
-                className="opacity-30"
-              />
-              <circle
-                cx="50%"
-                cy="50%"
-                r="45%"
-                fill="none"
-                stroke="url(#gradient)"
-                strokeWidth="3"
-                strokeLinecap="round"
-                className="animate-progress-ring"
-                style={{
-                  strokeDasharray: 283,
-                  strokeDashoffset: `calc(283 - (283 * ${(Date.now() % 3000) / 3000}))`
-                }}
-              />
-              <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#3b82f6" />
-                  <stop offset="50%" stopColor="#06b6d4" />
-                  <stop offset="100%" stopColor="#8b5cf6" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-2 h-2 md:w-3 md:h-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
-            </div>
-          </div>
+{/* Loading Indicators */}
+<div className="flex flex-col items-center gap-2">
+  {/* Progress Ring */}
+  <div className="relative w-10 h-10 md:w-12 md:h-12">
+    <svg className="w-full h-full transform -rotate-90">
+      <circle
+        cx="50%"
+        cy="50%"
+        r="45%"
+        fill="none"
+        stroke="#e5e7eb"
+        strokeWidth="2.5"
+        className="opacity-30"
+      />
+      <circle
+        cx="50%"
+        cy="50%"
+        r="45%"
+        fill="none"
+        stroke="url(#gradient)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        className="animate-progress-ring"
+        style={{
+          strokeDasharray: 283,
+          strokeDashoffset: `calc(283 - (283 * ${(Date.now() % 3000) / 3000}))`
+        }}
+      />
+      <defs>
+        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#3b82f6" />
+          <stop offset="50%" stopColor="#06b6d4" />
+          <stop offset="100%" stopColor="#8b5cf6" />
+        </linearGradient>
+      </defs>
+    </svg>
+    <div className="absolute inset-0 flex items-center justify-center">
+      <div className="w-1.5 h-1.5 md:w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
+    </div>
+  </div>
 
-          {/* Loading Text with Dots Animation (reduced spacing) */}
-          <div className="flex items-center gap-1 text-gray-500 text-xs md:text-sm font-medium">
-            <span>Loading experience</span>
-            <span className="flex gap-0.5">
-              <span className="animate-bounce" style={{ animationDelay: '0s' }}>.</span>
-              <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>.</span>
-              <span className="animate-bounce" style={{ animationDelay: '0.4s' }}>.</span>
-            </span>
-          </div>
-        </div>
+  {/* Loading Text */}
+  <div className="flex items-center gap-1 text-gray-500 text-[10px] md:text-xs font-medium">
+    <span>Loading experience</span>
+    <span className="flex gap-0.5">
+      <span className="animate-bounce" style={{ animationDelay: '0s' }}>.</span>
+      <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>.</span>
+      <span className="animate-bounce" style={{ animationDelay: '0.4s' }}>.</span>
+    </span>
+  </div>
+</div>
 
-        {/* Decorative Bottom Bar (reduced items from 5 to 4 - 20% reduction) */}
-        <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
-          {[...Array(4)].map((_, i) => (
-            <div
-              key={i}
-              className="w-1 h-1 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 animate-pulse"
-              style={{ animationDelay: `${i * 0.15}s` }}
-            />
-          ))}
-        </div>
+{/* Decorative Bottom Bar */}
+<div className="absolute bottom-5 left-0 right-0 flex justify-center gap-1.5">
+  {[...Array(4)].map((_, i) => (
+    <div
+      key={i}
+      className="w-0.5 h-0.5 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 animate-pulse"
+      style={{ animationDelay: `${i * 0.15}s` }}
+    />
+  ))}
+</div>
       </div>
 
       {/* Custom Animations */}
