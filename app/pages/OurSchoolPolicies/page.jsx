@@ -38,7 +38,7 @@ const allTerms = [
     title: "Fee Structure & Payments",
     icon: FiDollarSign,
     color: "from-amber-600 to-amber-800",
-    intro: "School fees must be paid promptly to facilitate smooth school operations and resource availability. Below is the official fee structure for 2026.",
+    intro: `School fees must be paid promptly to facilitate smooth school operations and resource availability. Below is the official fee structure for ${new Date().getFullYear()}.`,
     subSections: [
       { subTitle: "Payment Methods", content: "Bank payments to SA Kinyui Boys HIGH SCHOOL, Cooperative Bank, Account No: 0112876543210. MPESA Paybill: 894145 (Account: Student Name + Admission No). Crossed bankers cheque payable to Kinyui Boys SECONDARY SCHOOL or Postal money order payable to Kinyui Boys SECONDARY SCHOOL." },
       { subTitle: "Payment Deadlines", content: "Fees payable in full by the second week of each term. Term 1: By 31st January, Term 2: By 30th April, Term 3: By 31st August." },
@@ -115,7 +115,8 @@ const allTerms = [
       { subTitle: "Continuous Assessment", content: "2 CATs per term. End-term examinations in Week 14. Form 3 and 4 have monthly mock examinations starting Term 2." },
       { subTitle: "Examination Rules", content: "NO cheating. Latecomers not admitted. Mobile phones strictly forbidden in exam rooms. KCSE rules apply to all internal exams." },
       { subTitle: "KCSE Preparation", content: "Form 4: Saturday morning tuition 8:00 AM - 12:00 PM. Holiday coaching for candidates: April and August holidays." }
-    ]
+    ],
+    isHighlighted: true // Adding flag to highlight this section
   },
   {
     id: 10,
@@ -211,16 +212,38 @@ const RULES_PER_PAGE = 5;
 
 function RuleCard({ term }) {
   const Icon = term.icon;
+  const isExamSection = term.id === 9; // Examinations & Assessment section
+  
   return (
-    <div className="rounded-2xl border border-slate-200 shadow-sm bg-white overflow-hidden">
-      <div className="p-4 sm:p-5 md:p-6 flex items-center gap-3 sm:gap-4">
+    <div className={`rounded-2xl border shadow-sm bg-white overflow-hidden transition-all ${
+      isExamSection 
+        ? 'border-cyan-300 shadow-md ring-2 ring-cyan-200' 
+        : 'border-slate-200'
+    }`}>
+      <div className={`p-4 sm:p-5 md:p-6 flex items-center gap-3 sm:gap-4 ${
+        isExamSection ? 'bg-gradient-to-r from-cyan-50 to-blue-50' : ''
+      }`}>
         <div className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${term.color} flex items-center justify-center shadow-lg`}>
           <Icon className="text-white" size={18} />
         </div>
         <div className="flex-1 min-w-0">
-          <span className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest">Section {String(term.id).padStart(2, "0")}</span>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest">Section {String(term.id).padStart(2, "0")}</span>
+            {isExamSection && (
+              <span className="text-[10px] sm:text-xs font-bold bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded-full">
+                ⚠️ IMPORTANT
+              </span>
+            )}
+          </div>
           <h3 className="text-sm sm:text-base md:text-lg font-extrabold text-slate-900">{term.title}</h3>
         </div>
+        {isExamSection && (
+          <div className="flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-cyan-200 flex items-center justify-center">
+              <FiTarget className="text-cyan-700" size={14} />
+            </div>
+          </div>
+        )}
       </div>
       
       <div className="border-t border-slate-100">
@@ -229,7 +252,11 @@ function RuleCard({ term }) {
         </div>
         <div className="px-4 sm:px-5 md:px-6 pb-5 space-y-3">
           {term.subSections.map((sub, idx) => (
-            <div key={idx} className="flex gap-3 p-3 sm:p-4 rounded-xl bg-slate-50 border border-slate-100">
+            <div key={idx} className={`flex gap-3 p-3 sm:p-4 rounded-xl border ${
+              isExamSection 
+                ? 'bg-cyan-50/30 border-cyan-100' 
+                : 'bg-slate-50 border-slate-100'
+            }`}>
               <div className={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br ${term.color} flex items-center justify-center`}>
                 <span className="text-white text-[10px] sm:text-xs font-black">{idx + 1}</span>
               </div>
