@@ -273,6 +273,36 @@ const ModernStaffLeadership = () => {
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-50 to-transparent"></div>
       </div>
+              {/* Short Modern Description */}
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+              Our team of passionate educators and professionals is committed to shaping 
+              excellence, discipline, and innovation in every student. Explore the people 
+              behind our success and discover the strength of our academic community.
+            </p>
+
+            {/* Optional Feature Highlights (Modern Touch) */}
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
+                <h3 className="font-semibold text-gray-800 mb-2">Qualified Experts</h3>
+                <p className="text-sm text-gray-500">
+                  Highly trained teachers with years of experience.
+                </p>
+              </div>
+
+              <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
+                <h3 className="font-semibold text-gray-800 mb-2">Student Focused</h3>
+                <p className="text-sm text-gray-500">
+                  Dedicated to nurturing each learner’s potential.
+                </p>
+              </div>
+
+              <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
+                <h3 className="font-semibold text-gray-800 mb-2">Support System</h3>
+                <p className="text-sm text-gray-500">
+                  Strong mentorship and guidance programs.
+                </p>
+              </div>
+            </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
         {/* Back to Principal Button (only when viewing other staff) */}
@@ -524,41 +554,9 @@ const ModernStaffLeadership = () => {
         {/* Staff Section */}
         <section className="py-16 px-6 bg-gradient-to-b from-gray-50 to-white rounded-3xl">
           <div className="max-w-6xl mx-auto text-center">
-            {/* Heading */}
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4">
-              Meet Our Dedicated Staff
-            </h2>
+   
 
-            {/* Short Modern Description */}
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-              Our team of passionate educators and professionals is committed to shaping 
-              excellence, discipline, and innovation in every student. Explore the people 
-              behind our success and discover the strength of our academic community.
-            </p>
-
-            {/* Optional Feature Highlights (Modern Touch) */}
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
-                <h3 className="font-semibold text-gray-800 mb-2">Qualified Experts</h3>
-                <p className="text-sm text-gray-500">
-                  Highly trained teachers with years of experience.
-                </p>
-              </div>
-
-              <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
-                <h3 className="font-semibold text-gray-800 mb-2">Student Focused</h3>
-                <p className="text-sm text-gray-500">
-                  Dedicated to nurturing each learner’s potential.
-                </p>
-              </div>
-
-              <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
-                <h3 className="font-semibold text-gray-800 mb-2">Support System</h3>
-                <p className="text-sm text-gray-500">
-                  Strong mentorship and guidance programs.
-                </p>
-              </div>
-            </div>
+    
 
             {/* CTA Button - FIXED with proper navigation */}
             <div className="text-center">
