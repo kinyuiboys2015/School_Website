@@ -234,19 +234,30 @@ const whyChooseUs = [
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 pt-2">
-                {[
-                  { label: 'Eagles', value: `${studentCount}+`, icon: '🦅' },
-                  { label: 'KCSE Target', value: '5.0', icon: '🎯' },
-                  { label: 'Motto', value: motto?.split(' ').slice(0, 2).join(' ') || 'Soaring', icon: '🏆' }
-                ].map((stat, idx) => (
-                  <div key={idx} className="relative p-3 sm:p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                    <span className="absolute top-2 right-2 text-sm opacity-40">{stat.icon}</span>
-                    <p className="text-xl sm:text-2xl font-black text-blue-600 leading-none">{stat.value}</p>
-                    <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-gray-400 mt-1">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
+<div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 pt-2">
+  {[
+    { label: 'Students', value: `${studentCount}+`, icon: '🧑🏾‍🎓' },
+    { label: 'KCSE Target', value: '5.0', icon: '🎯' },
+    { label: 'Motto', value: motto, icon: '🏆' }
+  ].map((stat, idx) => (
+    <div 
+      key={idx} 
+      className="relative p-3 sm:p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-center min-h-[80px] sm:min-h-[100px]"
+    >
+      <span className="absolute top-2 right-2 text-sm opacity-40">{stat.icon}</span>
+      
+      <p className={`font-black text-blue-600 leading-tight 
+        ${stat.label === 'Motto' ? 'text-xs sm:text-sm' : 'text-xl sm:text-2xl'}`}
+      >
+        {stat.value}
+      </p>
+      
+      <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-gray-400 mt-1">
+        {stat.label}
+      </p>
+    </div>
+  ))}
+</div>
 
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button
