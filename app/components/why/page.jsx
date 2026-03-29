@@ -495,27 +495,28 @@ const whyChooseUs = [
   </div>
 </section>
 
-      {/* === UNIVERSITY LOGOS SCROLLER === */}
+      {/* === UNIVERSITY LOGOS SCROLLER - FIXED FOR MOBILE === */}
       <section className="bg-gray-50 border-t border-gray-200 py-12">
-        <div className="w-[93%] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto px-4">
-            {/* Header Section */}
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto">
+            {/* Header Section - Fixed for mobile */}
             <div className="text-center mb-12">
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600 block mb-2">
                 Our Partners
               </span>
-           <h3 className="text-3xl font-black text-gray-900">
-  University{" "}
-  <span className="bg-gradient-to-r from-red-800 to-rose-500 bg-clip-text text-transparent">
-    Collaborations
-  </span>
-</h3>
-             {/* Paragraph */}
-    <p className="mt-4 text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
-      We bridge the gap between secondary education and the professional world through 
-      strong alliances with top-tier universities. These partnerships foster 
-      innovation, academic excellence, and career readiness for our young men.
-    </p>
+              {/* Title - No flex wrap on mobile, full width */}
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 whitespace-normal break-words">
+                University{" "}
+                <span className="bg-gradient-to-r from-red-800 to-rose-500 bg-clip-text text-transparent whitespace-normal break-words">
+                  Collaborations
+                </span>
+              </h3>
+              {/* Description - Full width on mobile */}
+              <p className="mt-4 text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed w-full px-2 sm:px-0">
+                We bridge the gap between secondary education and the professional world through 
+                strong alliances with top-tier universities. These partnerships foster 
+                innovation, academic excellence, and career readiness for our young men.
+              </p>
             </div>
           </div>
 
