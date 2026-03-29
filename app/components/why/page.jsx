@@ -497,11 +497,24 @@ const ModernSchoolLayout = () => {
       {/* === UNIVERSITY LOGOS SCROLLER === */}
       <section className="bg-gray-50 border-t border-gray-200 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">Our Partners</span>
-            <h3 className="text-2xl font-black text-gray-900 mt-2">University Collaborations</h3>
-            <p className="text-gray-500 text-sm mt-1">Proud to work with these institutions</p>
-          </div>
+  <div className="max-w-7xl mx-auto px-4">
+    {/* Header Section */}
+    <div className="text-center mb-12">
+      <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600 block mb-2">
+        Our Partners
+      </span>
+      <h3 className="text-3xl font-black text-gray-900">
+        University Collaborations
+      </h3>
+      <p className="max-w-4xl mx-auto text-gray-500 text-base mt-4 leading-relaxed">
+        We bridge the gap between secondary education and the professional world through 
+        strong alliances with top-tier universities. These partnerships foster 
+        innovation, academic excellence, and career readiness for our young men.
+      </p>
+    </div>
+
+
+  </div>
 
           {imagesLoading ? (
             <div className="text-center text-gray-400 py-8">
