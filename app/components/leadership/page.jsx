@@ -257,22 +257,24 @@ const ModernStaffLeadership = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-blue-900 via-indigo-800 to-purple-800 text-white py-16 md:py-24">
         <div className="absolute inset-0 bg-black/30"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-6">
-            <IoPeopleOutline className="w-4 h-4" />
-            <span className="text-sm font-bold tracking-wider">Leadership Team</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4">
-            Meet Our{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-400">
-              School Leadership
-            </span>
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto">
-            Committed professionals dedicated to academic excellence, student development,
-            and community engagement.
-          </p>
-        </div>
+<div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+  <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4 sm:mb-6">
+    <IoPeopleOutline className="w-3 h-3 sm:w-4 sm:h-4" />
+    <span className="text-[10px] sm:text-xs md:text-sm font-bold tracking-wider">Leadership Team</span>
+  </div>
+  
+  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tight mb-3 sm:mb-4">
+    Meet Our{' '}
+    <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-400">
+      School Leadership
+    </span>
+  </h1>
+  
+  <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-3xl mx-auto px-2 sm:px-0">
+    Committed professionals dedicated to academic excellence, student development,
+    and community engagement.
+  </p>
+</div>
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-50 to-transparent"></div>
       </div>
               {/* Short Modern Description */}
