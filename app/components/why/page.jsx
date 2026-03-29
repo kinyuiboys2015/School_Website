@@ -15,7 +15,27 @@ const ModernSchoolLayout = () => {
   const [expandedCards, setExpandedCards] = useState({});
   const [schoolData, setSchoolData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [uniImages, setUniImages] = useState([]); // university images array
+  
+  // Generate university images from 1 to 45 with random order
+  const [uniImages] = useState(() => {
+    const images = [];
+    const extensions = ['jpg', 'png', 'jpeg'];
+    
+    // Generate paths for numbers 1-45 with random extension selection
+    for (let i = 1; i <= 45; i++) {
+      // Randomly pick an extension for each image
+      const randomExt = extensions[Math.floor(Math.random() * extensions.length)];
+      images.push(`/unis/${i}.${randomExt}`);
+    }
+    
+    // Shuffle the array to randomize order
+    for (let i = images.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [images[i], images[j]] = [images[j], images[i]];
+    }
+    
+    return images;
+  });
 
   const schoolImages = [
     { src: "/bg/14.jpeg", alt: "Kinyui Boys Senior School - Main Building" },
@@ -36,24 +56,6 @@ const ModernSchoolLayout = () => {
       })
       .catch(err => console.error('Error fetching school data:', err))
       .finally(() => setLoading(false));
-  }, []);
-
-  // Fetch university images from the API
-  useEffect(() => {
-    fetch('/api/unis')
-      .then(res => res.json())
-      .then(data => {
-        if (data.images && Array.isArray(data.images)) {
-          setUniImages(data.images);
-        } else {
-          console.warn('No university images found');
-          setUniImages([]);
-        }
-      })
-      .catch(err => {
-        console.error('Error fetching university images:', err);
-        setUniImages([]);
-      });
   }, []);
 
   useEffect(() => {
@@ -485,35 +487,29 @@ const ModernSchoolLayout = () => {
             <p className="text-gray-500 text-sm mt-1">Proud to work with these institutions</p>
           </div>
 
-          {uniImages.length > 0 ? (
-            <div className="relative overflow-hidden">
-              <div
-                className="flex gap-8 animate-marquee"
-                style={{
-                  animation: 'marquee 40s linear infinite',
-                  width: 'max-content',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = 'paused')}
-                onMouseLeave={(e) => (e.currentTarget.style.animationPlayState = 'running')}
-              >
-                {scrollImages.map((img, idx) => (
-                  <div key={idx} className="relative w-32 h-20 flex-shrink-0 bg-white rounded-xl shadow-sm p-2 hover:shadow-md transition-shadow">
-                    <Image
-                      src={img}
-                      alt={`University logo ${idx}`}
-                      fill
-                      className="object-contain p-1"
-                      sizes="(max-width: 128px) 100vw, 128px"
-                    />
-                  </div>
-                ))}
-              </div>
+          <div className="relative overflow-hidden">
+            <div
+              className="flex gap-8 animate-marquee"
+              style={{
+                animation: 'marquee 40s linear infinite',
+                width: 'max-content',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = 'paused')}
+              onMouseLeave={(e) => (e.currentTarget.style.animationPlayState = 'running')}
+            >
+              {scrollImages.map((img, idx) => (
+                <div key={idx} className="relative w-32 h-20 flex-shrink-0 bg-white rounded-xl shadow-sm p-2 hover:shadow-md transition-shadow">
+                  <Image
+                    src={img}
+                    alt={`University logo ${idx}`}
+                    fill
+                    className="object-contain p-1"
+                    sizes="(max-width: 128px) 100vw, 128px"
+                  />
+                </div>
+              ))}
             </div>
-          ) : (
-            <div className="text-center text-gray-400 py-8">
-              Loading university partners...
-            </div>
-          )}
+          </div>
 
           <style jsx>{`
             @keyframes marquee {
