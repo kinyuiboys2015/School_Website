@@ -209,42 +209,37 @@ const BOARDING_FEES = {
 
 const RULES_PER_PAGE = 5;
 
-function RuleCard({ term, isOpen, onToggle }) {
+function RuleCard({ term }) {
   const Icon = term.icon;
   return (
-    <div className={`rounded-2xl border transition-all duration-300 overflow-hidden ${isOpen ? "border-slate-300 shadow-xl bg-white" : "border-slate-200 shadow-sm bg-white hover:shadow-md hover:border-slate-300"}`}>
-      <button onClick={onToggle} className="w-full text-left p-4 sm:p-5 md:p-6 flex items-center gap-3 sm:gap-4 focus:outline-none group">
+    <div className="rounded-2xl border border-slate-300 shadow-xl bg-white transition-all duration-300 overflow-hidden">
+      <div className="p-4 sm:p-5 md:p-6 flex items-center gap-3 sm:gap-4">
         <div className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${term.color} flex items-center justify-center shadow-lg`}>
           <Icon className="text-white" size={18} />
         </div>
         <div className="flex-1 min-w-0">
           <span className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest">Section {String(term.id).padStart(2, "0")}</span>
-          <h3 className="text-sm sm:text-base md:text-lg font-extrabold text-slate-900 group-hover:text-blue-700 transition-colors truncate">{term.title}</h3>
+          <h3 className="text-sm sm:text-base md:text-lg font-extrabold text-slate-900 truncate">{term.title}</h3>
         </div>
-        <div className={`flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all ${isOpen ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-500"}`}>
-          {isOpen ? <FiChevronUp size={18} /> : <FiChevronDown size={18} />}
+      </div>
+      <div className="border-t border-slate-100">
+        <div className="px-4 sm:px-5 md:px-6 pt-4 pb-2">
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed">{term.intro}</p>
         </div>
-      </button>
-      {isOpen && (
-        <div className="border-t border-slate-100">
-          <div className="px-4 sm:px-5 md:px-6 pt-4 pb-2">
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">{term.intro}</p>
-          </div>
-          <div className="px-4 sm:px-5 md:px-6 pb-5 space-y-3">
-            {term.subSections.map((sub, idx) => (
-              <div key={idx} className="flex gap-3 p-3 sm:p-4 rounded-xl bg-slate-50 border border-slate-100">
-                <div className={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br ${term.color} flex items-center justify-center`}>
-                  <span className="text-white text-[10px] sm:text-xs font-black">{idx + 1}</span>
-                </div>
-                <div className="min-w-0">
-                  <h4 className="text-sm sm:text-base font-bold text-slate-900 mb-1">{sub.subTitle}</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{sub.content}</p>
-                </div>
+        <div className="px-4 sm:px-5 md:px-6 pb-5 space-y-3">
+          {term.subSections.map((sub, idx) => (
+            <div key={idx} className="flex gap-3 p-3 sm:p-4 rounded-xl bg-slate-50 border border-slate-100">
+              <div className={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br ${term.color} flex items-center justify-center`}>
+                <span className="text-white text-[10px] sm:text-xs font-black">{idx + 1}</span>
               </div>
-            ))}
-          </div>
+              <div className="min-w-0">
+                <h4 className="text-sm sm:text-base font-bold text-slate-900 mb-1">{sub.subTitle}</h4>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{sub.content}</p>
+              </div>
+            </div>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }

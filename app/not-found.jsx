@@ -96,22 +96,22 @@ const KinyuiBoys404 = () => {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 overflow-hidden relative font-sans text-slate-900 antialiased">
       {/* Decorative Background Elements - Kinyui Colors (Amber/Orange) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.03]">
-        <div className="absolute top-1/4 -left-8 text-amber-600 scale-[4] rotate-12">
+        <div className="absolute top-1/4 -left-8 text-rose-950 scale-[4] rotate-12">
           <FiGlobe />
         </div>
-        <div className="absolute bottom-1/4 -right-8 text-orange-600 scale-[4] -rotate-12">
+        <div className="absolute bottom-1/4 -right-8 text-rose-950 scale-[4] -rotate-12">
           <FiMapPin />
         </div>
-        <div className="absolute top-1/2 left-1/4 text-amber-500 scale-[3] rotate-45">
+        <div className="absolute top-1/2 left-1/4 text-rose-950 scale-[3] rotate-45">
           <FiSearch />
         </div>
-        <div className="absolute top-3/4 right-1/3 text-orange-500 scale-[3] -rotate-45">
+        <div className="absolute top-3/4 right-1/3 text-rose-950 scale-[3] -rotate-45">
           <FiAlertCircle />
         </div>
-        <div className="absolute top-1/3 right-1/4 text-amber-400 scale-[2] rotate-90">
+        <div className="absolute top-1/3 right-1/4 text-rose-950 scale-[2] rotate-90">
           <FiStar />
         </div>
-        <div className="absolute bottom-1/3 left-1/3 text-orange-400 scale-[3] rotate-12">
+        <div className="absolute bottom-1/3 left-1/3 text-rose-950 scale-[3] rotate-12">
           <FiAward />
         </div>
       </div>
@@ -128,11 +128,11 @@ const KinyuiBoys404 = () => {
 
               <div className="relative">
                 <h1 className="text-7xl sm:text-8xl md:text-9xl font-black tracking-tighter text-slate-900 flex justify-center lg:justify-start items-baseline">
-                  <span className="text-amber-600 drop-shadow-sm">4</span>
-                  <span className="text-orange-500 mx-1 md:mx-2 drop-shadow-sm">
+                  <span className="text-rose-950 drop-shadow-sm">4</span>
+                  <span className="text-rose-800 mx-1 md:mx-2 drop-shadow-sm">
                     0
                   </span>
-                  <span className="text-amber-600 drop-shadow-sm">4</span>
+                  <span className="text-rose-950 drop-shadow-sm">4</span>
                 </h1>
                 <div className="h-2 w-32 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 mx-auto lg:mx-0 mt-2 md:mt-4 rounded-full"></div>
               </div>
@@ -154,7 +154,7 @@ const KinyuiBoys404 = () => {
                   className="
                     group
                     flex flex-1 sm:flex-none items-center justify-center gap-1.5 sm:gap-3
-                    bg-gradient-to-r from-amber-600 to-orange-600
+                    bg-gradient-to-r from-rose-950 to-orange-950
                     text-white
                     px-2 sm:px-6 py-2.5 sm:py-3 md:px-8 md:py-4
                     rounded-xl md:rounded-2xl
@@ -202,7 +202,7 @@ const KinyuiBoys404 = () => {
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-[2.5rem] shadow-2xl shadow-slate-200/60 border border-slate-100/80 p-6 sm:p-8 md:p-10">
                   <div className="flex items-center justify-between mb-6 md:mb-8">
                     <h3 className="text-xl sm:text-2xl font-bold text-slate-800 flex items-center gap-2">
-                      <FiMapPin className="text-amber-600" />
+                      <FiMapPin className="text-rose-950" />
                       Kinyui Directory
                     </h3>
                     <div className="flex gap-1">
@@ -235,7 +235,7 @@ const KinyuiBoys404 = () => {
                               className="
                                 p-2 sm:p-3
                                 bg-amber-50
-                                text-amber-600
+                                text-rose-950
                                 rounded-lg
                                 shadow-sm
                                 flex-shrink-0
@@ -296,7 +296,7 @@ const KinyuiBoys404 = () => {
                             font-semibold
                             rounded-lg
                             border border-amber-400/30
-                            bg-amber-600
+                            bg-rose-950
                             text-white
                             flex-shrink-0
                           "
@@ -305,13 +305,13 @@ const KinyuiBoys404 = () => {
                           Contact Office
                         </a>
                       </div>
-                      <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-amber-500/10 to-orange-500/10 -rotate-45 translate-x-8 -translate-y-8 rounded-full" />
+                      <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-rose-950/10 to-orange-500/10 -rotate-45 translate-x-8 -translate-y-8 rounded-full" />
                     </div>
                   </div>
 
                   {/* Motto */}
                   <div className="mt-4 text-center">
-                    <p className="text-xs text-amber-600 font-semibold italic">
+                    <p className="text-xs text-rose-950 font-semibold italic">
                       "Soaring to Excellence"
                     </p>
                   </div>
@@ -330,7 +330,7 @@ const KinyuiBoys404 = () => {
               <span className="mx-2 text-slate-300">•</span>
               <a
                 href="/"
-                className="text-amber-600 font-semibold hover:text-amber-700 transition-colors"
+                className="text-rose-950 font-semibold hover:text-rose-950 transition-colors"
               >
                 Back to Homepage
               </a>
