@@ -289,7 +289,7 @@ const ModernHero = () => {
 
       {/* Right-side info card with additional Kinyui Boys info */}
       {!isMobile && (
-        <div className={`absolute right-8 lg:right-12 top-1/2 -translate-y-1/2 z-20 w-72 lg:w-80 
+        <div className={`absolute right-14 lg:right-24 top-1/2 -translate-y-1/2 z-20 w-72 lg:w-80 
           transition-all duration-700 ${isTransitioning ? 'opacity-0 translate-x-8' : 'opacity-100 translate-x-0'}`}>
           <div className="bg-white/[0.07] backdrop-blur-xl border border-white/10 rounded-2xl p-6 space-y-4">
             <div className="flex items-center gap-3">
