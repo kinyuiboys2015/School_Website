@@ -586,11 +586,8 @@ const ModernStaffLeadership = () => {
         </div>
 
         {/* Staff Section */}
-        <section className="py-16 px-6 bg-gradient-to-b from-gray-50 to-white rounded-3xl">
+        <section className="py-4 px-6 bg-gradient-to-b from-gray-50 to-white rounded-3xl">
           <div className="max-w-6xl mx-auto text-center">
-   
-
-    
 
             {/* CTA Button - FIXED with proper navigation */}
             <div className="text-center">
