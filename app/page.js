@@ -168,14 +168,14 @@ const ModernLoadingScreen = () => {
 
   {/* School Name */}
 <div className="text-center mb-4 md:mb-5">
-  <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-wider text-gray-800">
+  <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-wider text-gray-800">
     {schoolName}
   </h1>
   
   {/* Animated Gradient Underline */}
   <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-underline"></div>
   
-  <p className="text-gray-500 text-[10px] md:text-xs mt-3 tracking-wider">
+  <p className="text-gray-900 text-[10px] md:text-base mt-3 tracking-wider">
     EST. 1976 | CENTRE OF EXCELLENCE
   </p>
 </div>
