@@ -439,7 +439,7 @@ const DevCredits = () => (
     <div className="flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
       <div className="flex items-center gap-2">
         <div className="w-1 h-1 rounded-full bg-emerald-500"></div>
-        <span className="text-gray-400 font-medium">System Active</span>
+        <span className="text-gray-400 font-medium">System Architecture</span>
       </div>
       <div className="flex items-center gap-3">
         <span className="text-gray-400 font-medium">Developed by</span>
@@ -452,7 +452,7 @@ const DevCredits = () => (
           Emmanuel Makau
         </a>
         <div className="w-px h-3 bg-white/20"></div>
-        <a href="https://github.com/Emmanuel10701" className="text-gray-400">
+        <a href="https://github.com/Emmanuel10701" className="text-gray-300">
           <FiGithub />
         </a>
         <span className="text-gray-500 font-medium">v3.0</span>
