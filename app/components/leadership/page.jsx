@@ -15,6 +15,8 @@ import {
   FiMapPin,
   FiCalendar,
   FiShield,
+  FiHeart,
+
   FiUser,
   FiCheck,
   FiArrowLeft,
@@ -279,30 +281,60 @@ const ModernStaffLeadership = () => {
               excellence, discipline, and innovation in every student. Explore the people 
               behind our success and discover the strength of our academic community.
             </p>
+{/* Optional Feature Highlights (Modern Touch) - Dark Theme with React Icons */}
+<div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-5 md:gap-6 mb-8 sm:mb-10 md:mb-12">
+  
+  {/* Feature 1 - Qualified Experts */}
+  <div className="flex-1 min-w-[200px] bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg border border-slate-700/50 hover:shadow-xl hover:border-slate-600 transition-all duration-300 group">
+    <div className="flex items-start gap-3 sm:gap-4">
+      <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+        <FiUsers className="text-white text-base sm:text-lg md:text-xl" />
+      </div>
+      <div className="flex-1">
+        <h3 className="font-bold text-white text-sm sm:text-base md:text-lg mb-1.5 sm:mb-2">
+          Qualified Experts
+        </h3>
+        <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
+          Highly trained teachers with years of experience.
+        </p>
+      </div>
+    </div>
+  </div>
 
-            {/* Optional Feature Highlights (Modern Touch) */}
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
-                <h3 className="font-semibold text-gray-800 mb-2">Qualified Experts</h3>
-                <p className="text-sm text-gray-500">
-                  Highly trained teachers with years of experience.
-                </p>
-              </div>
+  {/* Feature 2 - Student Focused */}
+  <div className="flex-1 min-w-[200px] bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg border border-slate-700/50 hover:shadow-xl hover:border-slate-600 transition-all duration-300 group">
+    <div className="flex items-start gap-3 sm:gap-4">
+      <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+        <FiStar className="text-white text-base sm:text-lg md:text-xl" />
+      </div>
+      <div className="flex-1">
+        <h3 className="font-bold text-white text-sm sm:text-base md:text-lg mb-1.5 sm:mb-2">
+          Student Focused
+        </h3>
+        <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
+          Dedicated to nurturing each learner's potential.
+        </p>
+      </div>
+    </div>
+  </div>
 
-              <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
-                <h3 className="font-semibold text-gray-800 mb-2">Student Focused</h3>
-                <p className="text-sm text-gray-500">
-                  Dedicated to nurturing each learner’s potential.
-                </p>
-              </div>
-
-              <div className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition">
-                <h3 className="font-semibold text-gray-800 mb-2">Support System</h3>
-                <p className="text-sm text-gray-500">
-                  Strong mentorship and guidance programs.
-                </p>
-              </div>
-            </div>
+  {/* Feature 3 - Support System */}
+  <div className="flex-1 min-w-[200px] bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg border border-slate-700/50 hover:shadow-xl hover:border-slate-600 transition-all duration-300 group">
+    <div className="flex items-start gap-3 sm:gap-4">
+      <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+        <FiHeart className="text-white text-base sm:text-lg md:text-xl" />
+      </div>
+      <div className="flex-1">
+        <h3 className="font-bold text-white text-sm sm:text-base md:text-lg mb-1.5 sm:mb-2">
+          Support System
+        </h3>
+        <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
+          Strong mentorship and guidance programs.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
         {/* Back to Principal Button (only when viewing other staff) */}
