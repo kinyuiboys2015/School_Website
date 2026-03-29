@@ -415,7 +415,9 @@ const ModernStaffLeadership = () => {
                 </p>
 {/* NEW ORDER: Quote First - Mobile Responsive */}
 {featuredStaff?.quote && (
-  <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl border-l-4 border-amber-500 mb-4 sm:mb-6 shadow-sm">
+  <div className="w-full sm:max-w-xl mx-auto bg-gradient-to-r from-amber-50 to-orange-50 
+                  p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl border-l-4 border-amber-500 
+                  mb-4 sm:mb-6 shadow-sm">
     <div className="flex items-start gap-2 sm:gap-3">
       <FiMessageSquare className="text-amber-500 text-base sm:text-lg md:text-xl mt-0.5 flex-shrink-0" />
       <div className="flex-1 min-w-0">
@@ -430,7 +432,8 @@ const ModernStaffLeadership = () => {
   </div>
 )}
 {/* Bio Section - Mobile Responsive */}
-<div className="mb-4 sm:mb-6">
+<div className="w-full sm:max-w-xl mx-auto mb-4 sm:mb-6">
+  {/* Header */}
   <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
     <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
       <FiUser className="text-white text-xs sm:text-sm" />
@@ -439,6 +442,8 @@ const ModernStaffLeadership = () => {
       Professional Biography
     </h3>
   </div>
+
+  {/* Bio Content */}
   <div className="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-100">
     <p className="text-slate-700 font-medium text-sm sm:text-base leading-relaxed">
       {featuredStaff?.bio ||
