@@ -1186,20 +1186,20 @@ const handlePasswordAfterVerification = async () => {
       <main className="min-h-screen bg-slate-100 font-sans flex items-center justify-center">
         <div className="w-full h-screen grid md:grid-cols-2">
           
-     {/* Left Panel - Branding */}
-<div className="relative hidden md:block bg-slate-950 text-white p-16 overflow-hidden">
-  {/* Dynamic Background */}
+{/* Left Panel - Branding */}
+<div className="relative hidden md:flex flex-col justify-between bg-slate-950 text-white px-16 py-20 lg:px-24 overflow-hidden border-r border-white/5">
+  {/* Background Layers */}
   <div 
-    className="absolute inset-0 bg-cover bg-center opacity-30 scale-105 transition-transform duration-1000 hover:scale-100"
+    className="absolute inset-0 bg-cover bg-center opacity-25 scale-110 transition-transform duration-1000"
     style={{ backgroundImage: "url('/hero/kbss.png')" }}
   ></div>
-  <div className="absolute inset-0 bg-gradient-to-br from-blue-900/60 via-slate-950 to-black"></div>
+  <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-slate-950 to-black"></div>
   
-  <div className="relative z-10 flex flex-col justify-between h-full">
-    {/* Top Section: Identity */}
-    <div>
-      <Link href="/" className="flex items-center gap-4 mb-16 group inline-flex">
-        <div className="p-1 bg-white/10 rounded-full backdrop-blur-md border border-white/20 transition-all group-hover:bg-white/20">
+  <div className="relative z-10 flex flex-col h-full">
+    {/* Top Section: Identity - Balanced with more horizontal breathing room */}
+    <div className="mb-auto">
+      <Link href="/" className="flex items-center gap-5 group transition-transform hover:translate-x-1">
+        <div className="relative p-1 bg-white/10 rounded-full backdrop-blur-xl border border-white/20 shadow-2xl">
           <Image
             src="/kinyui.png"
             alt="Kinyui Logo"
@@ -1207,44 +1207,56 @@ const handlePasswordAfterVerification = async () => {
             height={64}
             className="rounded-full"
           />
+          <div className="absolute inset-0 rounded-full bg-blue-500/20 animate-pulse"></div>
         </div>
         <div className="flex flex-col">
           <span className="text-2xl font-black tracking-tighter leading-none uppercase">
             Kinyui <span className="text-blue-400">Boys'</span>
           </span>
-          <span className="text-sm font-bold tracking-[0.3em] text-slate-400 uppercase">
+          <span className="text-[10px] font-bold tracking-[0.4em] text-blue-300/60 uppercase mt-1">
             Senior School
           </span>
         </div>
       </Link>
-
-      <div className="space-y-8 max-w-sm">
-        <h1 className="text-6xl font-black leading-[0.95] tracking-tighter">
-          Secure <br />
-          <span className="text-blue-500 italic">Admin</span> <br />
-          Portal
-        </h1>
-        <div className="h-1.5 w-20 bg-blue-600 rounded-full"></div>
-        <p className="text-xl text-slate-300 font-medium leading-relaxed">
-          The centralized administrative hub for managing school-wide digital operations and academic data.
-        </p>
-      </div>
     </div>
 
-    {/* Bottom Section: Motto & Legal */}
-    <div className="mt-auto">
-      <div className="inline-block px-5 py-3 bg-blue-600/10 border-l-4 border-blue-500 backdrop-blur-sm mb-10">
-        <p className="text-xs font-black uppercase tracking-[0.25em] text-blue-400 mb-1">Our Motto</p>
-        <p className="text-2xl font-black italic tracking-tight text-white">"Soaring To Excellence"</p>
+    {/* Center Section: Main Message - Shifted slightly right to balance the void */}
+    <div className="my-auto py-12 max-w-md lg:ml-4">
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
+        <ShieldCheck size={14} />
+        Authorized Personnel Only
       </div>
+      
+      <h1 className="text-6xl lg:text-7xl font-black leading-[0.9] tracking-tighter mb-8">
+        Secure <br />
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">
+          Admin
+        </span> <br />
+        Portal
+      </h1>
+      
+      <p className="text-xl text-slate-400 font-medium leading-relaxed max-w-sm">
+        Enter your credentials to access the school's central nervous system and digital operations.
+      </p>
+    </div>
 
-      <div className="border-t border-white/10 pt-8 flex flex-col gap-1">
-        <p className="text-sm font-bold text-slate-400 tracking-wide">
-          &copy; {new Date().getFullYear()} Kinyui Boys' Senior School
-        </p>
-        <p className="text-[10px] font-black uppercase tracking-widest text-slate-600">
-          Digital Infrastructure & Systems
-        </p>
+    {/* Bottom Section: Footer Info */}
+    <div className="mt-auto pt-12 border-t border-white/5">
+      <div className="flex flex-col gap-6">
+        <div className="space-y-1">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">School Motto</p>
+          <p className="text-2xl font-black italic tracking-tight text-white drop-shadow-md">
+            "Soaring To Excellence"
+          </p>
+        </div>
+        
+        <div className="flex items-center justify-between text-[10px] font-bold text-slate-600 tracking-widest uppercase mt-4">
+          <span>&copy; {new Date().getFullYear()} KBSS</span>
+          <span className="flex items-center gap-2">
+            <Server size={10} />
+            Secure Node: 041
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -1291,7 +1303,7 @@ const handlePasswordAfterVerification = async () => {
             onChange={handleInputChange}
             required
             placeholder="admin@kinyui.ac.ke"
-            className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm"
+            className="w-full pl-12 pr-4 py-4 bg-slate-50 border font-bold border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm"
           />
         </div>
       </div>
@@ -1321,7 +1333,7 @@ const handlePasswordAfterVerification = async () => {
                 onChange={handleInputChange}
                 required
                 placeholder="••••••••"
-                className="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm"
+                className="w-full pl-12 pr-12 py-4 font-bold bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm"
               />
               <button 
                 type="button"
