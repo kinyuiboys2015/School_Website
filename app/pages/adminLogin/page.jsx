@@ -1189,8 +1189,8 @@ const handlePasswordAfterVerification = async () => {
           {/* Left Panel - Branding */}
           <div className="relative hidden md:block bg-slate-900 text-white p-12">
             <div 
-              className="absolute inset-0 bg-cover bg-center opacity-20"
-              style={{ backgroundImage: "url('/hero/katz8.jpeg')" }}
+              className="absolute inset-0 bg-cover bg-center opacity-40"
+              style={{ backgroundImage: "url('/hero/kbss.png')" }}
             ></div>
             <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 via-slate-900 to-black"></div>
             
@@ -1204,7 +1204,7 @@ const handlePasswordAfterVerification = async () => {
                     height={50}
                     className="rounded-full"
                   />
-                  <span className="text-2xl font-bold tracking-tighter">Kinyui Academy</span>
+                  <span className="text-2xl font-bold tracking-tighter">Kinyui Boys' Senior School </span>
                 </Link>
                 <h1 className="text-4xl font-bold leading-tight mb-4">
                   Secure Admin Portal
@@ -1218,7 +1218,7 @@ const handlePasswordAfterVerification = async () => {
                 <p className="font-semibold mb-2 text-slate-200">Motto:</p>
                 <p>"Soaring To Excellence"</p>
                 <div className="mt-6 border-t border-slate-700 pt-4">
-                  &copy; {new Date().getFullYear()} Kinyui Academy. All Rights Reserved.
+                  &copy; {new Date().getFullYear()} Kinyui Boys' Senior School. All Rights Reserved.
                 </div>
               </div>
             </div>
