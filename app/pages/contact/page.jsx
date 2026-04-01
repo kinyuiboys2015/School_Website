@@ -252,621 +252,235 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="bg-white text-slate-900 min-h-screen relative">
+    <div className="bg-slate-50 text-slate-800 min-h-screen font-sans">
 
-      {/* Cinematic Hero with Optimized Background - Updated to orange gradient */}
-      <section className="relative min-h-[60vh] sm:min-h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-orange-950 via-amber-950 to-red-950 px-4 sm:px-6">
-        {/* Optimized Background Engine */}
-        <div className="absolute inset-0 z-0">
-          {/* Background Image with reduced file size */}
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-900/90 via-amber-900/95 to-red-900/90">
-            <Image
-            src="/hero/katz8.jpeg"
-              alt="Campus"
-              fill
-              priority
-              className="object-cover opacity-50 transition-transform duration-[10s] ease-out group-hover:scale-100"
-            />
-          </div>
-          
-          {/* Optimized Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-b from-orange-950/40 via-amber-950/80 to-red-950 z-10" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_10%,#1a0f0a_80%)] opacity-60 z-10" />
-        </div>
-
-        <div className="relative z-20 max-w-6xl mx-auto text-center px-4">
-          {/* Micro-Interaction Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-8 animate-fade-in">
-            <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            <span className="text-xs font-bold tracking-[0.2em] text-orange-500  uppercase">
-              Academic Excellence Since 1978
-            </span>
-          </div>
-
-          {/* Modern High-Density Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white mb-8 tracking-tight leading-[0.95]">
-            kinyui boys Senior <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-400 via-orange-300 to-white/70">school.</span>
+      {/* --- Hero Section --- */}
+      <section className="relative h-[50vh] md:h-[60vh] flex items-center justify-center text-white overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero/katz8.jpeg')" }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/50 to-transparent"></div>
+        <div className="relative z-10 text-center p-4 max-w-4xl mx-auto">
+          <span className="inline-block px-4 py-2 mb-4 text-sm font-bold tracking-widest text-amber-300 uppercase bg-black/20 backdrop-blur-sm rounded-full border border-amber-300/30">
+            Connect With Us
+          </span>
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-4 text-shadow-lg">
+            Kinyui Boys High School
           </h1>
-
-          {/* Rich Narrative Description */}
-          <div className="max-w-3xl mx-auto space-y-6 px-4">
-            <p className="text-base md:text-lg text-slate-200 font-medium leading-relaxed">
-              Where <span className="text-amber-400">excellence meets opportunity</span> in the heart of Matungulu, Machakos.
-            </p>
-            
-            <p className="hidden md:block text-sm text-slate-300 leading-relaxed">
-              A premier Mixed' institution committed to holistic education through innovative teaching, modern facilities, 
-              and a nurturing environment that empowers future women leaders.
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 pt-6 border-t border-white/10">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-white">60%</div>
-                <div className="text-xs uppercase tracking-wider text-slate-300 font-medium">KCSE Pass Rate</div>
-              </div>
-              <div className="hidden sm:block w-px h-8 bg-white/20"></div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-white">1:15</div>
-                <div className="text-xs uppercase tracking-wider text-slate-300 font-medium">Teacher Ratio</div>
-              </div>
-              <div className="hidden sm:block w-px h-8 bg-white/20"></div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-white">STEM+</div>
-                <div className="text-xs uppercase tracking-wider text-slate-300 font-medium">Accredited</div>
-              </div>
-            </div>
-          </div>
+          <p className="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto">
+            We're here to help. Reach out with any questions or inquiries, and our team will get back to you promptly.
+          </p>
         </div>
       </section>
 
-      {/* Main Content Section - Original UI with API Integration */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12">
-          
-          {/* Left Column: Form with ALL API Fields */}
-          <div className="lg:col-span-8">
-            <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl shadow-slate-200/50 border border-slate-100">
-              <div className="mb-10">
-                <span className="inline-block px-4 py-2 mb-5 text-xs font-bold tracking-[0.1em] text-orange-700 uppercase bg-orange-50 rounded-full">
-                  Contact Support
-                </span>
-                <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4 tracking-tight">
-                  Get in Touch <span className="text-orange-600">Directly</span>
-                </h2>
-                <p className="text-slate-500 text-lg leading-relaxed max-w-xl">
-                  Have a question or need assistance? Fill out the form and our team will respond within 24 hours.
-                </p>
-              </div>
+      {/* --- Main Content --- */}
+      <main className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-12 lg:gap-16">
 
-              {/* Status Messages */}
-              {submitStatus === 'success' && (
-                <div className="mb-8 p-6 bg-green-50 border-2 border-green-200 rounded-2xl animate-fade-in">
-                  <div className="flex items-center gap-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
-                    <div>
-                      <p className="text-green-800 font-bold text-lg">Success!</p>
-                      <p className="text-green-700">{statusMessage}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {submitStatus === 'error' && (
-                <div className="mb-8 p-6 bg-red-50 border-2 border-red-200 rounded-2xl animate-fade-in">
-                  <div className="flex items-center gap-3">
-                    <div className="w-6 h-6 flex items-center justify-center">
-                      <div className="w-2 h-2 bg-red-600 rounded-full animate-ping" />
-                    </div>
-                    <div>
-                      <p className="text-red-800 font-bold text-lg">Error</p>
-                      <p className="text-red-700">{statusMessage}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-  <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-  {/* Row 1: Name & Email */}
-  <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-    <div className="space-y-1 sm:space-y-2">
-      <label className="text-sm font-bold text-slate-700 ml-1">
-        Full Name <span className="text-red-500">*</span>
-      </label>
-      <input
-        type="text"
-        name="name"
-        required
-        value={formData.name}
-        onChange={handleInputChange}
-        className="w-full px-4 sm:px-5 font-semibold py-3 sm:py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-orange-500 focus:bg-white focus:border-transparent transition-all outline-none"
-        placeholder="Joseph Mutua"
-      />
-    </div>
-    <div className="space-y-1 sm:space-y-2">
-      <label className="text-sm font-bold text-slate-700 ml-1">
-        Email Address <span className="text-red-500">*</span>
-      </label>
-      <input
-        type="email"
-        name="email"
-        required
-        value={formData.email}
-        onChange={handleInputChange}
-        className="w-full px-4 sm:px-5 font-semibold py-3 sm:py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-orange-500 focus:bg-white focus:border-transparent transition-all outline-none"
-        placeholder="mary@example.com"
-      />
-    </div>
-  </div>
-
-  {/* Row 2: Phone & Student Grade */}
-  <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-    <div className="space-y-1 sm:space-y-2">
-      <label className="text-sm font-bold text-slate-700 ml-1">
-        Phone Number <span className="text-red-500">*</span>
-      </label>
-      <input
-        type="tel"
-        name="phone"
-        required
-        value={formData.phone}
-        onChange={handleInputChange}
-        className="w-full px-4 sm:px-5 py-3 sm:py-4 font-semibold bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-orange-500 focus:bg-white focus:border-transparent transition-all outline-none"
-        placeholder="0712 345 678"
-        pattern="(07|01)\d{8}"
-        title="Use 07XXXXXXXX or 01XXXXXXXX format"
-      />
-      <p className="text-[10px] sm:text-xs text-slate-500 ml-2">Format: 07XXXXXXXX or 01XXXXXXXX</p>
-    </div>
-    <div className="space-y-1 sm:space-y-2">
-      <label className="text-sm font-bold text-slate-700 ml-1">
-        Student Grade
-      </label>
-      <select
-        name="studentGrade"
-        value={formData.studentGrade}
-        onChange={handleInputChange}
-        className="w-full px-4 sm:px-5 py-3 sm:py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:ring-2 focus:ring-orange-500 focus:bg-white outline-none appearance-none"
-      >
-        <option value="">Select Grade</option>
-        <option value="Grade 8">Grade 8</option>
-        <option value="Grade 9">Grade 9</option>
-        <option value="Grade 10">Grade 10</option>
-        <option value="Grade 11">Grade 11</option>
-        <option value="Grade 12">Grade 12</option>
-        <option value="Form 1">Form 1</option>
-        <option value="Form 2">Form 2</option>
-        <option value="Form 3">Form 3</option>
-        <option value="Form 4">Form 4</option>
-      </select>
-    </div>
-  </div>
-
-  {/* Row 3: Inquiry Type & Contact Method */}
-  <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-    <div className="space-y-1 sm:space-y-2">
-      <label className="text-sm font-bold text-slate-700 ml-1">
-        Inquiry Type <span className="text-red-500">*</span>
-      </label>
-      <select
-        name="inquiryType"
-        required
-        value={formData.inquiryType}
-        onChange={handleInputChange}
-        className="w-full px-4 sm:px-5 py-3 sm:py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:ring-2 focus:ring-orange-500 focus:bg-white outline-none appearance-none"
-      >
-        <option value="general">General Inquiry</option>
-        <option value="admissions">Admissions</option>
-        <option value="academics">Academics</option>
-        <option value="fees">Fees & Payments</option>
-        <option value="sports">Sports & Activities</option>
-        <option value="facilities">Facilities</option>
-        <option value="alumni">Alumni Affairs</option>
-      </select>
-    </div>
-    <div className="space-y-1 sm:space-y-2">
-      <label className="text-sm font-bold text-slate-700 ml-1">
-        Preferred Contact Method
-      </label>
-      <select
-        name="contactMethod"
-        value={formData.contactMethod}
-        onChange={handleInputChange}
-        className="w-full px-4 sm:px-5 py-3 sm:py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:ring-2 focus:ring-orange-500 focus:bg-white outline-none appearance-none"
-      >
-        <option value="email">Email</option>
-        <option value="phone">Phone Call</option>
-        <option value="sms">SMS</option>
-      </select>
-    </div>
-  </div>
-
-  {/* Row 4: Subject */}
-  <div className="space-y-1 sm:space-y-2">
-    <label className="text-sm font-bold text-slate-700 ml-1">
-      Subject <span className="text-red-500">*</span>
-    </label>
-    <input
-      type="text"
-      name="subject"
-      required
-      value={formData.subject}
-      onChange={handleInputChange}
-      className="w-full px-4 sm:px-5 font-semibold py-3 sm:py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-orange-500 focus:bg-white focus:border-transparent transition-all outline-none"
-      placeholder="What is this regarding?"
-    />
-  </div>
-
-  {/* Row 5: Message */}
-  <div className="space-y-1 sm:space-y-2">
-    <label className="text-sm font-bold text-slate-700 ml-1">
-      Message <span className="text-red-500">*</span>
-    </label>
-    <textarea
-      name="message"
-      required
-      rows={rows} 
-      value={formData.message}
-      onChange={handleInputChange}
-      className="w-full px-4 sm:px-5 py-3 sm:py-4 font-semibold bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-orange-500 focus:bg-white outline-none resize-none"
-      placeholder="How can we help you today?"
-    />
-  </div>
-
-  {/* Submit Button */}
-  <button
-    type="submit"
-    disabled={isSubmitting}
-    className="w-full sm:w-auto px-10 sm:px-12 py-3 sm:py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-lg shadow-slate-900/20 hover:shadow-slate-900/30 active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
-  >
-    {isSubmitting ? (
-      <>
-        <CircularProgress size={20} color="inherit" />
-        Sending...
-      </>
-    ) : (
-      <>
-        Send Message
-        <Send size={18} className="text-orange-400" />
-      </>
-    )}
-  </button>
-</form>
-            </div>
-          </div>
-
-          {/* Right Column: Information & Actions */}
-          <div className="lg:col-span-4 space-y-8">
-            {/* Departments Card */}
-      <div className="bg-gradient-to-br from-orange-900 to-amber-900 rounded-3xl p-8 text-white">
-  <div className="flex items-center gap-3 mb-8">
-    <div className="p-2 bg-white/10 rounded-xl">
-      <Users className="w-5 h-5 text-amber-400" />
-    </div>
-    <h3 className="text-xl font-bold">Departments</h3>
-  </div>
-
-  <div className="space-y-5">
-    {departments.map((dept) => (
-      <div 
-        key={dept.id} 
-        className="group pb-5 border-b border-white/5 last:border-0 last:pb-0 cursor-pointer"
-        onClick={() => openDepartmentModal(dept)}
-      >
-        <div className="flex justify-between items-start mb-2">
-          <h4 className="font-bold text-white text-base group-hover:text-amber-400 transition-colors">
-            {dept.name}
-          </h4>
-        </div>
-        
-        <div className="flex flex-col  items-center">
-          <button className="px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-50 bg-white/5 border border-white/10 hover:bg-white/20 hover:border-white/20 rounded-full flex items-center gap-2 transition-all duration-300 active:scale-95">
-            View details
-            <ChevronRight size={14} className="text-amber-400 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
-
-            {/* Quick Actions Card */}
-            <div className="bg-gradient-to-r from-orange-600 to-amber-600 rounded-3xl p-8 text-white relative overflow-hidden">
-              {/* Subtle decorative circle */}
-              <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
-              
-              <div className="relative z-10">
-                <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
-                  <Sparkles className="w-5 h-5" />
-                  Quick Actions
-                </h3>
-                <div className="grid gap-3">
-                  {quickActions.map((action, idx) => (
-                    <a 
-                      key={idx} 
-                      href={action.link}
-                      className="flex items-center justify-between p-4 bg-white/10 rounded-2xl border border-white/10 hover:bg-white/15 active:scale-[0.98] transition-all"
-                    >
-                      <span className="font-bold text-sm">{action.title}</span>
-                      <ArrowRight size={16} />
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Google Maps Location Section - NEW */}
-      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="bg-gradient-to-br from-slate-50 to-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-100">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <div>
-              <span className="inline-block px-4 py-2 mb-3 text-xs font-bold tracking-[0.1em] text-orange-700 uppercase bg-orange-50 rounded-full">
-                Visit Us
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-                Our <span className="text-orange-600">Location</span>
+          {/* --- Left Column: Contact Info & Map --- */}
+          <div className="lg:col-span-1 space-y-12">
+            <div className="p-8 bg-white rounded-2xl shadow-lg border border-slate-200/80">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                <MapPin className="text-amber-500 w-7 h-7" />
+                Contact Information
               </h2>
+              <div className="space-y-5 text-slate-600">
+                <div className="flex items-start gap-4">
+                  <MapPin className="w-5 h-5 mt-1 text-amber-500 shrink-0" />
+                  <div>
+                    <h3 className="font-semibold text-slate-800">Our Address</h3>
+                    <p>Kinyui Boys High School, Matungulu, Machakos County, Kenya</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <Mail className="w-5 h-5 mt-1 text-amber-500 shrink-0" />
+                  <div>
+                    <h3 className="font-semibold text-slate-800">Email Us</h3>
+                    <a href="mailto:kinyuiboys2015@gmail.com" className="hover:text-amber-600 transition-colors">kinyuiboys2015@gmail.com</a>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <Phone className="w-5 h-5 mt-1 text-amber-500 shrink-0" />
+                  <div>
+                    <h3 className="font-semibold text-slate-800">Call Us</h3>
+                    <a href="tel:+254720123456" className="hover:text-amber-600 transition-colors">+254 720 123 456</a>
+                  </div>
+                </div>
+                 <div className="flex items-start gap-4">
+                  <Clock className="w-5 h-5 mt-1 text-amber-500 shrink-0" />
+                  <div>
+                    <h3 className="font-semibold text-slate-800">Office Hours</h3>
+                    <p>Mon - Fri: 8:00 AM - 5:00 PM</p>
+                    <p>Sat: 9:00 AM - 1:00 PM</p>
+                  </div>
+                </div>
+              </div>
             </div>
             
-            {/* Quick location info */}
-            <div className="flex items-center gap-3 text-slate-600 bg-white px-4 py-2 rounded-full border border-slate-200">
-              <MapPin className="w-4 h-4 text-orange-600" />
-              <span className="text-sm font-medium">Matungulu, Machakos County</span>
-              <a 
-                href="https://maps.app.goo.gl/q6ubZsEk5KWxzAUv9" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="ml-2 p-1.5 bg-orange-100 text-orange-700 rounded-full hover:bg-orange-200 transition-colors"
-                aria-label="Open in Google Maps"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
+            <div className="bg-white rounded-2xl shadow-lg border border-slate-200/80 overflow-hidden">
+               <div className="p-8">
+                 <h3 className="text-xl font-bold mb-4">Find Us on the Map</h3>
+               </div>
+               <div className="h-64 bg-slate-200">
+                 <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.1234!2d37.2618!3d-1.2921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMcKwMTcnMzEuNiJTIDM3wrAxNSc0Mi41IkU!5e0!3m2!1sen!2ske!4v1234567890"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Kinyui Boys High School Location"
+                  ></iframe>
+               </div>
+                <div className="p-4 text-center bg-slate-50">
+                    <a
+                      href="https://maps.app.goo.gl/q6ubZsEk5KWxzAUv9"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors"
+                    >
+                      Get Directions
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                </div>
             </div>
           </div>
 
-          {/* Map Container with proper aspect ratio */}
-          <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[450px] rounded-2xl overflow-hidden shadow-lg border border-slate-200">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.1234!2d37.2618!3d-1.2921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMcKwMTcnMzEuNiJTIDM3wrAxNSc0Mi41IkU!5e0!3m2!1sen!2ske!4v1234567890"
-              width="100%"
-              height="100%"
-              style={{ border: 0, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="kinyui boys Senior School Location"
-              className="rounded-2xl"
-            ></iframe>
-          </div>
-
-          {/* Map Footer with directions button */}
-          <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-slate-600 flex items-center gap-2">
-              <Navigation className="w-4 h-4 text-orange-600" />
-              SA kinyui boys Senior School, Matungulu, Machakos County
+          {/* --- Right Column: Contact Form --- */}
+          <div className="lg:col-span-2 bg-white p-8 sm:p-12 rounded-2xl shadow-xl border border-slate-200/80">
+            <h2 className="text-3xl font-bold text-slate-900 mb-2">Send Us a Message</h2>
+            <p className="text-slate-500 mb-8">
+              Have a question or need assistance? Fill out the form and our team will respond within 24 hours.
             </p>
-            <a
-              href="https://maps.app.goo.gl/q6ubZsEk5KWxzAUv9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-700 transition-colors shadow-lg shadow-orange-600/20 text-sm"
-            >
-              <MapPin className="w-4 h-4" />
-              Get Directions
-              <ExternalLink className="w-3.5 h-3.5 ml-1" />
-            </a>
+
+            {/* Status Messages */}
+            {submitStatus === 'success' && (
+              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg animate-fade-in">
+                <div className="flex items-center gap-3">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <div>
+                    <p className="text-green-800 font-semibold">Success!</p>
+                    <p className="text-green-700 text-sm">{statusMessage}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {submitStatus === 'error' && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-fade-in">
+                <div className="flex items-center gap-3">
+                  <X className="w-5 h-5 text-red-600" />
+                  <div>
+                    <p className="text-red-800 font-semibold">Error</p>
+                    <p className="text-red-700 text-sm">{statusMessage}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-sm font-semibold text-slate-700 mb-2 block">Full Name <span className="text-red-500">*</span></label>
+                  <input type="text" name="name" required value={formData.name} onChange={handleInputChange} className="w-full px-4 py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition" placeholder="e.g. John Doe" />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-slate-700 mb-2 block">Email Address <span className="text-red-500">*</span></label>
+                  <input type="email" name="email" required value={formData.email} onChange={handleInputChange} className="w-full px-4 py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition" placeholder="e.g. john.doe@example.com" />
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-sm font-semibold text-slate-700 mb-2 block">Phone Number <span className="text-red-500">*</span></label>
+                  <input type="tel" name="phone" required value={formData.phone} onChange={handleInputChange} className="w-full px-4 py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition" placeholder="0712 345 678" />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-slate-700 mb-2 block">Student Grade</label>
+                  <select name="studentGrade" value={formData.studentGrade} onChange={handleInputChange} className="w-full px-4 py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition appearance-none">
+                    <option value="">Select Grade (Optional)</option>
+                    <option value="Form 1">Form 1</option>
+                    <option value="Form 2">Form 2</option>
+                    <option value="Form 3">Form 3</option>
+                    <option value="Form 4">Form 4</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+               <div className="grid sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-sm font-semibold text-slate-700 mb-2 block">Inquiry Type <span className="text-red-500">*</span></label>
+                  <select name="inquiryType" required value={formData.inquiryType} onChange={handleInputChange} className="w-full px-4 py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition appearance-none">
+                    <option value="general">General Inquiry</option>
+                    <option value="admissions">Admissions</option>
+                    <option value="academics">Academics</option>
+                    <option value="fees">Fees & Payments</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-slate-700 mb-2 block">Preferred Contact Method</label>
+                  <select name="contactMethod" value={formData.contactMethod} onChange={handleInputChange} className="w-full px-4 py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition appearance-none">
+                    <option value="email">Email</option>
+                    <option value="phone">Phone Call</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-semibold text-slate-700 mb-2 block">Subject <span className="text-red-500">*</span></label>
+                <input type="text" name="subject" required value={formData.subject} onChange={handleInputChange} className="w-full px-4 py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition" placeholder="What is your message about?" />
+              </div>
+              <div>
+                <label className="text-sm font-semibold text-slate-700 mb-2 block">Your Message <span className="text-red-500">*</span></label>
+                <textarea name="message" required rows={6} value={formData.message} onChange={handleInputChange} className="w-full px-4 py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition resize-none" placeholder="Please describe your inquiry in detail..."></textarea>
+              </div>
+              <div>
+                <button type="submit" disabled={isSubmitting} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 transition-colors disabled:bg-slate-400 disabled:cursor-not-allowed">
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Send Message</span>
+                      <Send className="w-5 h-5" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-      </section>
+      </main>
 
-      {/* Modernized Department Detail Modal */}
+      {/* --- Department Modal --- */}
       {selectedDepartment && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
-          {/* High-quality Backdrop blur */}
-          <div 
-            className="absolute inset-0 bg-orange-950/60 backdrop-blur-md"
-            onClick={closeDepartmentModal}
-          />
-
-          {/* Modal Container */}
-          <div className="relative bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
-            
-            {/* Decorative Header Background */}
-            <div className={`absolute top-0 left-0 right-0 h-32 opacity-10 -z-10 ${
-              selectedDepartment.color === 'orange' ? 'bg-orange-600' : 
-              selectedDepartment.color === 'amber' ? 'bg-amber-600' :
-              selectedDepartment.color === 'red' ? 'bg-red-600' : 'bg-orange-600'
-            }`} />
-
-            <div className="p-8 sm:p-10">
-              {/* Header Section */}
-              <div className="flex items-start justify-between mb-8">
-                <div className="flex items-center gap-5">
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg ${
-                    selectedDepartment.color === 'orange' ? 'bg-orange-600 text-white' : 
-                    selectedDepartment.color === 'amber' ? 'bg-amber-600 text-white' :
-                    selectedDepartment.color === 'red' ? 'bg-red-600 text-white' : 'bg-orange-600 text-white'
-                  }`}>
-                    {React.cloneElement(selectedDepartment.icon, { size: 28 })}
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-black text-slate-900 tracking-tight leading-tight">
-                      {selectedDepartment.name}
-                    </h3>
-                    <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
-                      Department Profile
-                    </span>
-                  </div>
-                </div>
-            <button
-  onClick={closeDepartmentModal}
-  className="p-2.5 sm:p-2 bg-white sm:bg-slate-100 text-slate-600 sm:text-slate-500 rounded-full 
-             hover:bg-slate-200 transition-all active:scale-90 shadow-sm sm:shadow-none 
-             border border-slate-200 sm:border-transparent"
-  aria-label="Close modal"
->
-  <X className="w-6 h-6 sm:w-5 sm:h-5" />
-</button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={closeDepartmentModal}></div>
+          <div className="relative bg-white rounded-2xl w-full max-w-md shadow-2xl animate-in fade-in zoom-in-95 duration-300">
+            <div className={`p-6 bg-${selectedDepartment.color}-500 text-white rounded-t-2xl`}>
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold flex items-center gap-3">
+                  {React.cloneElement(selectedDepartment.icon, { className: "w-6 h-6" })}
+                  {selectedDepartment.name}
+                </h3>
+                <button onClick={closeDepartmentModal} className="p-2 rounded-full hover:bg-white/20 transition-colors">
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-
-              {/* Content Body */}
-              <div className="space-y-8">
-                {/* Quick Info Grid */}
-                <div className="grid grid-cols-2 gap-6 p-6 bg-slate-50 rounded-3xl border border-slate-100">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">
-                      Department Head
-                    </p>
-                    <p className="text-slate-900 font-bold">{selectedDepartment.head}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">
-                      Office Hours
-                    </p>
-                    <p className="text-slate-900 font-bold">{selectedDepartment.hours}</p>
-                  </div>
-                </div>
-
-                {/* Detailed Description */}
-                <div className="px-1">
-                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">
-                    About the Department
-                  </p>
-                  <p className="text-slate-600 leading-relaxed">
-                    {selectedDepartment.description}
-                  </p>
-                </div>
-
-                {/* Action Buttons */}
-<div className="flex flex-row gap-3 sm:gap-4 pt-2">
-  <a
-    href={`mailto:${selectedDepartment.email}`}
-    className="flex items-center justify-center gap-2 sm:gap-3 flex-1 bg-slate-900 text-white py-3.5 sm:py-4 rounded-2xl text-sm sm:text-base font-bold shadow-lg shadow-slate-900/10 hover:shadow-slate-900/20 transition-all text-center"
-  >
-    <Mail className="w-4 h-4 text-orange-400 shrink-0" />
-    <span className="truncate">Email Us</span>
-  </a>
-  
-  <a
-    href={`tel:${selectedDepartment.phone.replace(/\s+/g, '')}`}
-    className="flex items-center justify-center gap-2 sm:gap-3 flex-1 bg-gradient-to-r from-orange-600 to-amber-600 text-white py-3.5 sm:py-4 rounded-2xl text-sm sm:text-base font-bold shadow-lg shadow-orange-600/10 hover:shadow-orange-600/20 transition-all text-center"
-  >
-    <Phone className="w-4 h-4 shrink-0" />
-    <span className="truncate">Call Office</span>
-  </a>
-</div>
+            </div>
+            <div className="p-6 space-y-4">
+              <p className="text-slate-600">{selectedDepartment.description}</p>
+              <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-2">
+                <p><span className="font-semibold">Head:</span> {selectedDepartment.head}</p>
+                <p><span className="font-semibold">Hours:</span> {selectedDepartment.hours}</p>
+                <p><span className="font-semibold">Email:</span> <a href={`mailto:${selectedDepartment.email}`} className="text-amber-600 hover:underline">{selectedDepartment.email}</a></p>
+                <p><span className="font-semibold">Phone:</span> <a href={`tel:${selectedDepartment.phone}`} className="text-amber-600 hover:underline">{selectedDepartment.phone}</a></p>
               </div>
             </div>
           </div>
         </div>
       )}
-
-      {/* Mobile Navigation Footer */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-40 shadow-lg">
-        <div className="flex justify-around p-2">
-          <a href="/" className="flex flex-col items-center text-slate-600 hover:text-orange-600 transition-colors p-2">
-            <Home className="w-6 h-6" />
-            <span className="text-xs mt-1 font-medium">Home</span>
-          </a>
-          <a href="tel:+254720123456" className="flex flex-col items-center text-slate-600 hover:text-orange-600 transition-colors p-2">
-            <Phone className="w-6 h-6" />
-            <span className="text-xs mt-1 font-medium">Call</span>
-          </a>
-          <button 
-            onClick={() => document.querySelector('form')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex flex-col items-center text-slate-600 hover:text-orange-600 transition-colors p-2"
-          >
-            <MessageSquare className="w-6 h-6" />
-            <span className="text-xs mt-1 font-medium">Message</span>
-          </button>
-          <a href="mailto:kinyuiboys2015@gmail.com" className="flex flex-col items-center text-slate-600 hover:text-orange-600 transition-colors p-2">
-            <Mail className="w-6 h-6" />
-            <span className="text-xs mt-1 font-medium">Email</span>
-          </a>
-        </div>
-      </div>
-
-      {/* Global Styles for Mobile Optimization */}
-      <style jsx global>{`
-        /* Prevent zoom on iOS inputs */
-        input, select, textarea {
-          font-size: 16px !important;
-        }
-
-        /* Touch-friendly targets */
-        button, a {
-          min-height: 44px;
-          min-width: 44px;
-        }
-
-        /* Responsive typography */
-        @media (max-width: 640px) {
-          html {
-            font-size: 14px;
-          }
-          
-          h1 {
-            font-size: 2.5rem !important;
-            line-height: 1.2 !important;
-          }
-          
-          h2 {
-            font-size: 1.75rem !important;
-          }
-          
-          .rounded-3xl {
-            border-radius: 1rem !important;
-          }
-          
-          .p-10 {
-            padding: 1.5rem !important;
-          }
-        }
-
-        /* Tablet optimization */
-        @media (min-width: 641px) and (max-width: 1024px) {
-          html {
-            font-size: 15px;
-          }
-        }
-
-        /* Prevent content overflow */
-        body {
-          overflow-x: hidden;
-          width: 100%;
-        }
-
-        /* Smooth animations */
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-fade-in {
-          animation: fade-in 0.5s ease-out;
-        }
-
-        /* Tailwind animation utilities */
-        @keyframes zoom-in {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        
-        .animate-in {
-          animation-duration: 0.3s;
-          animation-fill-mode: both;
-        }
-        
-        .fade-in {
-          animation-name: fade-in;
-        }
-        
-        .zoom-in {
-          animation-name: zoom-in;
-        }
-      `}</style>
     </div>
   );
 }
