@@ -1186,177 +1186,212 @@ const handlePasswordAfterVerification = async () => {
       <main className="min-h-screen bg-slate-100 font-sans flex items-center justify-center">
         <div className="w-full h-screen grid md:grid-cols-2">
           
-          {/* Left Panel - Branding */}
-          <div className="relative hidden md:block bg-slate-900 text-white p-12">
-            <div 
-              className="absolute inset-0 bg-cover bg-center opacity-40"
-              style={{ backgroundImage: "url('/hero/kbss.png')" }}
-            ></div>
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 via-slate-900 to-black"></div>
-            
-            <div className="relative z-10 flex flex-col justify-between h-full">
-              <div>
-                <Link href="/" className="flex items-center gap-3 mb-8">
-                  <Image
-                    src="/kinyui.png"
-                    alt="Kinyui Logo"
-                    width={50}
-                    height={50}
-                    className="rounded-full"
-                  />
-                  <span className="text-2xl font-bold tracking-tighter">Kinyui Boys' Senior School </span>
-                </Link>
-                <h1 className="text-4xl font-bold leading-tight mb-4">
-                  Secure Admin Portal
-                </h1>
-                <p className="text-blue-200 text-lg">
-                  Access the central nervous system of our school's digital operations.
-                </p>
-              </div>
+     {/* Left Panel - Branding */}
+<div className="relative hidden md:block bg-slate-950 text-white p-16 overflow-hidden">
+  {/* Dynamic Background */}
+  <div 
+    className="absolute inset-0 bg-cover bg-center opacity-30 scale-105 transition-transform duration-1000 hover:scale-100"
+    style={{ backgroundImage: "url('/hero/kbss.png')" }}
+  ></div>
+  <div className="absolute inset-0 bg-gradient-to-br from-blue-900/60 via-slate-950 to-black"></div>
+  
+  <div className="relative z-10 flex flex-col justify-between h-full">
+    {/* Top Section: Identity */}
+    <div>
+      <Link href="/" className="flex items-center gap-4 mb-16 group inline-flex">
+        <div className="p-1 bg-white/10 rounded-full backdrop-blur-md border border-white/20 transition-all group-hover:bg-white/20">
+          <Image
+            src="/kinyui.png"
+            alt="Kinyui Logo"
+            width={64}
+            height={64}
+            className="rounded-full"
+          />
+        </div>
+        <div className="flex flex-col">
+          <span className="text-2xl font-black tracking-tighter leading-none uppercase">
+            Kinyui <span className="text-blue-400">Boys'</span>
+          </span>
+          <span className="text-sm font-bold tracking-[0.3em] text-slate-400 uppercase">
+            Senior School
+          </span>
+        </div>
+      </Link>
 
-              <div className="mt-8 text-sm text-slate-400">
-                <p className="font-semibold mb-2 text-slate-200">Motto:</p>
-                <p>"Soaring To Excellence"</p>
-                <div className="mt-6 border-t border-slate-700 pt-4">
-                  &copy; {new Date().getFullYear()} Kinyui Boys' Senior School. All Rights Reserved.
-                </div>
-              </div>
+      <div className="space-y-8 max-w-sm">
+        <h1 className="text-6xl font-black leading-[0.95] tracking-tighter">
+          Secure <br />
+          <span className="text-blue-500 italic">Admin</span> <br />
+          Portal
+        </h1>
+        <div className="h-1.5 w-20 bg-blue-600 rounded-full"></div>
+        <p className="text-xl text-slate-300 font-medium leading-relaxed">
+          The centralized administrative hub for managing school-wide digital operations and academic data.
+        </p>
+      </div>
+    </div>
+
+    {/* Bottom Section: Motto & Legal */}
+    <div className="mt-auto">
+      <div className="inline-block px-5 py-3 bg-blue-600/10 border-l-4 border-blue-500 backdrop-blur-sm mb-10">
+        <p className="text-xs font-black uppercase tracking-[0.25em] text-blue-400 mb-1">Our Motto</p>
+        <p className="text-2xl font-black italic tracking-tight text-white">"Soaring To Excellence"</p>
+      </div>
+
+      <div className="border-t border-white/10 pt-8 flex flex-col gap-1">
+        <p className="text-sm font-bold text-slate-400 tracking-wide">
+          &copy; {new Date().getFullYear()} Kinyui Boys' Senior School
+        </p>
+        <p className="text-[10px] font-black uppercase tracking-widest text-slate-600">
+          Digital Infrastructure & Systems
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+        {/* Right Panel - Form */}
+<div className="bg-white p-8 sm:p-12 flex flex-col justify-center">
+  <div className="w-full max-w-md mx-auto">
+    {/* Mobile Logo */}
+    <div className="md:hidden text-center mb-10">
+      <Image
+        src="/kinyui.png"
+        alt="Kinyui Logo"
+        width={70}
+        height={70}
+        className="rounded-full mx-auto mb-4 shadow-sm"
+      />
+    </div>
+
+    {/* Header Section */}
+    <div className="mb-10">
+      <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
+        {isForgotMode ? "Recover Access" : "Welcome Back"}
+      </h2>
+      <p className="text-lg text-slate-500 leading-relaxed">
+        {isForgotMode 
+          ? "Enter your email address below and we'll send you a secure recovery link." 
+          : "Please enter your official credentials to access your dashboard."}
+      </p>
+    </div>
+
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Email Field */}
+      <div>
+        <label className="text-sm font-bold uppercase tracking-wider text-slate-700 mb-2 block">
+          Email Address
+        </label>
+        <div className="relative">
+          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+          <input 
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+            placeholder="admin@kinyui.ac.ke"
+            className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm"
+          />
+        </div>
+      </div>
+
+      {!isForgotMode && (
+        <>
+          {/* Password Field */}
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <label className="text-sm font-bold uppercase tracking-wider text-slate-700">
+                Password
+              </label>
+              <button 
+                type="button"
+                onClick={() => (router.push("/pages/forgotpassword"))}
+                className="text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                Forgot password?
+              </button>
+            </div>
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <input 
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+                placeholder="••••••••"
+                className="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm"
+              />
+              <button 
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
           </div>
 
-          {/* Right Panel - Form */}
-          <div className="bg-white p-8 sm:p-12 flex flex-col justify-center">
-            <div className="w-full max-w-md mx-auto">
-              <div className="md:hidden text-center mb-8">
-                <Image
-                    src="/kinyui.png"
-                    alt="Kinyui Logo"
-                    width={60}
-                    height={60}
-                    className="rounded-full mx-auto mb-4"
-                  />
-              </div>
-              <h2 className="text-3xl font-bold text-slate-800 mb-2">
-                {isForgotMode ? "Recover Access" : "Welcome Back"}
-              </h2>
-              <p className="text-slate-500 mb-8">
-                {isForgotMode 
-                  ? "Enter your email to receive a recovery link." 
-                  : "Please enter your credentials to continue."}
-              </p>
-
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <label className="text-sm font-semibold text-slate-700 mb-2 block">
-                    Email Address
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-                    <input 
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="admin@kinyui.ac.ke"
-                      className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                    />
-                  </div>
-                </div>
-
-                {!isForgotMode && (
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <label className="text-sm font-semibold text-slate-700">
-                        Password
-                      </label>
-                      <button 
-                        type="button"
-                        onClick={() => (router.push("/pages/forgotpassword"))}
-                        className="text-sm font-semibold text-blue-600 hover:underline"
-                      >
-                        Forgot password?
-                      </button>
-                    </div>
-                    <div className="relative">
-                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-                      <input 
-                        type={showPassword ? "text" : "password"}
-                        name="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="••••••••"
-                        className="w-full pl-12 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                      />
-                      <button 
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800"
-                      >
-                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {!isForgotMode && (
-                  <div className="space-y-4">
-                     <label className="flex items-center gap-3 cursor-pointer">
-                        <input 
-                          type="checkbox" 
-                          checked={agreedToTerms}
-                          onChange={(e) => setAgreedToTerms(e.target.checked)}
-                          className="h-5 w-5 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="text-sm text-slate-600">
-                          I agree to the <Link href="/pages/OurSchoolPolicies" className="font-semibold text-blue-600 hover:underline">Terms & Conditions</Link>
-                        </span>
-                      </label>
-                      <label className="flex items-center gap-3 cursor-pointer">
-                        <input 
-                          type="checkbox" 
-                          checked={rememberDevice}
-                          onChange={(e) => setRememberDevice(e.target.checked)}
-                          className="h-5 w-5 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="text-sm text-slate-600">
-                          Remember me on this device
-                        </span>
-                      </label>
-                  </div>
-                )}
-
-                <button 
-                  type="submit"
-                  disabled={isLoading || (!isForgotMode && !agreedToTerms)}
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-base hover:bg-blue-700 transition-colors disabled:bg-blue-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                >
-                  {isLoading ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      <span>Authenticating...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>{isForgotMode ? "Send Recovery Link" : "Sign In"}</span>
-                      <ArrowRight className="w-5 h-5" />
-                    </>
-                  )}
-                </button>
-
-                {isForgotMode && (
-                  <button 
-                    type="button"
-                    onClick={() => setIsForgotMode(false)}
-                    className="w-full text-center text-sm font-semibold text-slate-600 hover:text-slate-900"
-                  >
-                    &larr; Back to Sign In
-                  </button>
-                )}
-              </form>
-            </div>
+          {/* Preferences */}
+          <div className="space-y-3 pt-2">
+            <label className="flex items-center gap-3 cursor-pointer group">
+              <input 
+                type="checkbox" 
+                checked={agreedToTerms}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                className="h-5 w-5 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500 transition"
+              />
+              <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">
+                I agree to the <Link href="/pages/OurSchoolPolicies" className="font-bold text-blue-600 hover:underline">Terms & Conditions</Link>
+              </span>
+            </label>
+            <label className="flex items-center gap-3 cursor-pointer group">
+              <input 
+                type="checkbox" 
+                checked={rememberDevice}
+                onChange={(e) => setRememberDevice(e.target.checked)}
+                className="h-5 w-5 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500 transition"
+              />
+              <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">
+                Keep me logged in on this device
+              </span>
+            </label>
           </div>
+        </>
+      )}
+
+      {/* Submit Button */}
+      <button 
+        type="submit"
+        disabled={isLoading || (!isForgotMode && !agreedToTerms)}
+        className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-blue-700 active:scale-[0.98] transition-all disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed shadow-lg shadow-blue-200 flex items-center justify-center gap-3 mt-4"
+      >
+        {isLoading ? (
+          <>
+            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            <span>Verifying...</span>
+          </>
+        ) : (
+          <>
+            <span>{isForgotMode ? "Send Reset Link" : "Sign In to Portal"}</span>
+            <ArrowRight className="w-5 h-5" />
+          </>
+        )}
+      </button>
+
+      {isForgotMode && (
+        <button 
+          type="button"
+          onClick={() => setIsForgotMode(false)}
+          className="w-full text-center text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors pt-2"
+        >
+          &larr; Return to login
+        </button>
+      )}
+    </form>
+  </div>
+</div>
         </div>
       </main>
     </>
