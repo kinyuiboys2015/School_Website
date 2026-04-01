@@ -1235,7 +1235,7 @@ const handlePasswordAfterVerification = async () => {
         Portal
       </h1>
       
-      <p className="text-xl text-slate-400 font-medium leading-relaxed max-w-sm">
+      <p className="text-xl text-slate-600 font-medium leading-relaxed max-w-sm">
         Enter your credentials to access the school's central nervous system and digital operations.
       </p>
     </div>
@@ -1278,10 +1278,10 @@ const handlePasswordAfterVerification = async () => {
 
     {/* Header Section */}
     <div className="mb-10">
-      <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
+      <h2 className="text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
         {isForgotMode ? "Recover Access" : "Welcome Back"}
       </h2>
-      <p className="text-lg text-slate-500 leading-relaxed">
+      <p className="text-lg text-slate-900 leading-relaxed">
         {isForgotMode 
           ? "Enter your email address below and we'll send you a secure recovery link." 
           : "Please enter your official credentials to access your dashboard."}
@@ -1303,7 +1303,7 @@ const handlePasswordAfterVerification = async () => {
             onChange={handleInputChange}
             required
             placeholder="admin@kinyui.ac.ke"
-            className="w-full pl-12 pr-4 py-4 bg-slate-50 border font-bold border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm"
+            className="w-full pl-12 pr-4 py-4 bg-slate-50 border text-slate-900 font-bold border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm"
           />
         </div>
       </div>
@@ -1333,7 +1333,7 @@ const handlePasswordAfterVerification = async () => {
                 onChange={handleInputChange}
                 required
                 placeholder="••••••••"
-                className="w-full pl-12 pr-12 py-4 font-bold bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm"
+                className="w-full pl-12 pr-12 py-4 text-slate-900 font-bold bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm"
               />
               <button 
                 type="button"
