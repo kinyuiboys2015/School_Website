@@ -1217,26 +1217,23 @@ const handlePasswordAfterVerification = async () => {
         </div>
       </Link>
     </div>
+{/* Center Section: Main Message (Responsive Improved) */}
+<div className="my-auto py-10 sm:py-12 px-4 max-w-md mx-auto text-center">
+  
+  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-5 sm:mb-6">
+    <ShieldCheck size={14} />
+    Authorized Personnel Only
+  </div>
+  
+  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-5 sm:mb-6">
+    Secure Admin Portal
+  </h1>
+  
+  <p className="text-base sm:text-lg text-slate-200 font-medium leading-relaxed max-w-xs sm:max-w-sm mx-auto">
+    Enter your credentials to securely access the school's administrative system, manage operations, and oversee essential academic and institutional activities.
+  </p>
 
-    {/* Center Section: Main Message (Centered Fix Applied) */}
-    <div className="my-auto py-12 max-w-md mx-auto text-center">
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
-        <ShieldCheck size={14} />
-        Authorized Personnel Only
-      </div>
-      
-      <h1 className="text-6xl lg:text-7xl font-black leading-[0.9] tracking-tighter mb-8">
-        Secure <br />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">
-          Admin
-        </span> <br />
-        Portal
-      </h1>
-      
-      <p className="text-xl text-slate-600 font-medium leading-relaxed max-w-sm mx-auto">
-        Enter your credentials to access the school's central nervous system and digital operations.
-      </p>
-    </div>
+</div>
 
     {/* Bottom Section: Footer Info */}
     <div className="mt-auto pt-12 border-t border-white/5">
