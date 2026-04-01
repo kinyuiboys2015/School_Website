@@ -71,7 +71,7 @@ export default function ContactPage() {
     {
       id: 'admissions',
       name: 'Admissions Office',
-      email: 'kinyui boyshighschool.yahoo.com',
+      email: 'kinyuiboys2015@gmail.com',
       phone: '+254 720 123 456',
       description: 'For enrollment, applications, and admission inquiries. We guide students through the admission process.',
       icon: <User className="w-4 h-4" />,
@@ -82,7 +82,7 @@ export default function ContactPage() {
     {
       id: 'academics',
       name: 'Academic Office',
-      email: 'katzict@gamail.com',
+      email: 'kinyuiboys2015@gmail.com',
       phone: '+254 720 123 457',
       description: 'Curriculum, academic programs, examinations, and teacher coordination. Ensuring academic excellence.',
       icon: <Book className="w-4 h-4" />,
@@ -266,7 +266,7 @@ export default function ContactPage() {
             Connect With Us
           </span>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-4 text-shadow-lg">
-            Kinyui Boys High School
+            Kinyui Boys Senior School
           </h1>
           <p className="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto">
             We're here to help. Reach out with any questions or inquiries, and our team will get back to you promptly.
@@ -290,7 +290,7 @@ export default function ContactPage() {
                   <MapPin className="w-5 h-5 mt-1 text-amber-500 shrink-0" />
                   <div>
                     <h3 className="font-semibold text-slate-800">Our Address</h3>
-                    <p>Kinyui Boys High School, Matungulu, Machakos County, Kenya</p>
+                    <p>Kinyui Boys Senior School, Matungulu, Machakos County, Kenya</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -331,7 +331,7 @@ export default function ContactPage() {
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Kinyui Boys High School Location"
+                    title="Kinyui Boys Senior School Location"
                   ></iframe>
                </div>
                 <div className="p-4 text-center bg-slate-50">
