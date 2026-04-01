@@ -1214,7 +1214,7 @@ const handlePasswordAfterVerification = async () => {
 
               <div className="mt-8 text-sm text-slate-400">
                 <p className="font-semibold mb-2 text-slate-200">Motto:</p>
-                <p>"Prayer, Discipline and Hardwork"</p>
+                <p>"Soaring To Excellence"</p>
                 <div className="mt-6 border-t border-slate-700 pt-4">
                   &copy; {new Date().getFullYear()} Kinyui Academy. All Rights Reserved.
                 </div>
