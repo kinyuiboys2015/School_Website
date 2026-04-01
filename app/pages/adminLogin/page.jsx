@@ -1183,8 +1183,8 @@ const handlePasswordAfterVerification = async () => {
       )}
 
       {/* NEW LOGIN PAGE LAYOUT */}
-      <main className="min-h-screen bg-slate-100 font-sans flex items-center justify-center p-4">
-        <div className="w-full max-w-6xl mx-auto grid md:grid-cols-2 shadow-2xl rounded-2xl overflow-hidden">
+      <main className="min-h-screen bg-slate-100 font-sans flex items-center justify-center">
+        <div className="w-full h-screen grid md:grid-cols-2">
           
           {/* Left Panel - Branding */}
           <div className="relative hidden md:block bg-slate-900 text-white p-12">
