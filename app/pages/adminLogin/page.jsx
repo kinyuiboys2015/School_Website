@@ -28,6 +28,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { Toaster, toast } from 'sonner';
 import Link from 'next/link';
+import Image from "next/image";
+
 export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
