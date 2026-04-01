@@ -1186,17 +1186,15 @@ const handlePasswordAfterVerification = async () => {
       <main className="min-h-screen bg-slate-100 font-sans flex items-center justify-center">
         <div className="w-full h-screen grid md:grid-cols-2">
           
-{/* Left Panel - Branding */}
 <div className="relative hidden md:flex flex-col justify-between bg-slate-950 text-white px-16 py-20 lg:px-24 overflow-hidden border-r border-white/5">
   {/* Background Layers */}
   <div 
-    className="absolute inset-0 bg-cover bg-center opacity-25 scale-110 transition-transform duration-1000"
+    className="absolute inset-0 bg-cover bg-center opacity-25 transition-transform duration-100"
     style={{ backgroundImage: "url('/hero/kbss.png')" }}
   ></div>
   <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-slate-950 to-black"></div>
   
-  <div className="relative z-10 flex flex-col h-full">
-    {/* Top Section: Identity - Balanced with more horizontal breathing room */}
+  <div className="relative z-10 flex flex-col h-full w-full">
     <div className="mb-auto">
       <Link href="/" className="flex items-center gap-5 group transition-transform hover:translate-x-1">
         <div className="relative p-1 bg-white/10 rounded-full backdrop-blur-xl border border-white/20 shadow-2xl">
@@ -1220,8 +1218,8 @@ const handlePasswordAfterVerification = async () => {
       </Link>
     </div>
 
-    {/* Center Section: Main Message - Shifted slightly right to balance the void */}
-    <div className="my-auto py-12 max-w-md lg:ml-4">
+    {/* Center Section: Main Message (Centered Fix Applied) */}
+    <div className="my-auto py-12 max-w-md mx-auto text-center">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
         <ShieldCheck size={14} />
         Authorized Personnel Only
@@ -1235,7 +1233,7 @@ const handlePasswordAfterVerification = async () => {
         Portal
       </h1>
       
-      <p className="text-xl text-slate-600 font-medium leading-relaxed max-w-sm">
+      <p className="text-xl text-slate-600 font-medium leading-relaxed max-w-sm mx-auto">
         Enter your credentials to access the school's central nervous system and digital operations.
       </p>
     </div>
@@ -1261,7 +1259,6 @@ const handlePasswordAfterVerification = async () => {
     </div>
   </div>
 </div>
-
         {/* Right Panel - Form */}
 <div className="bg-white p-8 sm:p-12 flex flex-col justify-center">
   <div className="w-full max-w-md mx-auto">
