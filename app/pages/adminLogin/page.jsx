@@ -139,7 +139,7 @@ static checkAdminTokenValidity() {
             return { isValid: false, reason: 'expired' };
         }
         
-        return { isValid: true, expiresAt: new Date(tokenData.exp * 1000) };
+        return { isValid: true, expiresAt: new Date(tokenData.exp * 10000) };
     } catch (error) {
         console.error('Error checking admin token:', error);
         return { isValid: false, reason: 'parse_error' };
@@ -1274,14 +1274,19 @@ const handlePasswordAfterVerification = async () => {
             disabled={verificationLoading || (!requiresPasswordAfterVerification && verificationCode.join('').length !== 6)}
             className="w-full flex items-center justify-center gap-3 py-4 bg-blue-900 text-white rounded-xl font-bold text-sm tracking-widest shadow-xl hover:bg-blue-950 active:scale-[0.98] transition-all disabled:bg-slate-300"
           >
-            {verificationLoading ? (
-              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            ) : (
-              <>
-                <CheckCircle className="w-4 h-4 text-amber-400" />
-                <span className="uppercase">{requiresPasswordAfterVerification ? 'Grant Access' : 'Authorize Device'}</span>
-              </>
-            )}
+  {verificationLoading ? (
+  <div className="flex items-center gap-2">
+    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+    <span className="capitalize text-sm font-medium">Verifying...</span>
+  </div>
+) : (
+  <>
+    <CheckCircle className="w-4 h-4 text-amber-400" />
+    <span className="uppercase tracking-widest">
+      {requiresPasswordAfterVerification ? 'Grant Access' : 'Authorize Device'}
+    </span>
+  </>
+)}
           </button>
 
           {!requiresPasswordAfterVerification && (
