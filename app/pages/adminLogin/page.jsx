@@ -1224,19 +1224,22 @@ const handlePasswordAfterVerification = async () => {
     <ShieldCheck size={14} />
     Authorized Personnel Only
   </div>
+<h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight mb-5 sm:mb-6">
+  Secure{" "}
+  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">
+    Admin
+  </span>{" "}
+  Portal
+</h1>
   
-  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-5 sm:mb-6">
-    Secure Admin Portal
-  </h1>
-  
-  <p className="text-base sm:text-lg text-slate-200 font-medium leading-relaxed max-w-xs sm:max-w-sm mx-auto">
+  <p className="text-sm sm:text-md text-slate-50 font-medium leading-relaxed max-w-xs sm:max-w-sm mx-auto">
     Enter your credentials to securely access the school's administrative system, manage operations, and oversee essential academic and institutional activities.
   </p>
 
 </div>
 
     {/* Bottom Section: Footer Info */}
-    <div className="mt-auto pt-12 border-t border-white/5">
+    <div className="mt-auto pt-8 mb-[10%] border-t border-white/5">
       <div className="flex flex-col gap-6">
         <div className="space-y-1">
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">School Motto</p>
@@ -1257,35 +1260,35 @@ const handlePasswordAfterVerification = async () => {
   </div>
 </div>
         {/* Right Panel - Form */}
-<div className="bg-white p-8 sm:p-12 flex flex-col justify-center">
+<div className="min-h-screen bg-white p-6 sm:p-12 flex flex-col justify-center">
   <div className="w-full max-w-md mx-auto">
     {/* Mobile Logo */}
-    <div className="md:hidden text-center mb-10">
+    <div className="md:hidden text-center mb-8">
       <Image
         src="/kinyui.png"
         alt="Kinyui Logo"
-        width={70}
-        height={70}
+        width={60}
+        height={60}
         className="rounded-full mx-auto mb-4 shadow-sm"
       />
     </div>
 
     {/* Header Section */}
-    <div className="mb-10">
-      <h2 className="text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
+    <div className="mb-8 sm:mb-10 text-left">
+      <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
         {isForgotMode ? "Recover Access" : "Welcome Back"}
       </h2>
-      <p className="text-lg text-slate-900 leading-relaxed">
+      <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
         {isForgotMode 
           ? "Enter your email address below and we'll send you a secure recovery link." 
           : "Please enter your official credentials to access your dashboard."}
       </p>
     </div>
 
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
       {/* Email Field */}
       <div>
-        <label className="text-sm font-bold uppercase tracking-wider text-slate-700 mb-2 block">
+        <label className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700 mb-2 block">
           Email Address
         </label>
         <div className="relative">
@@ -1297,7 +1300,7 @@ const handlePasswordAfterVerification = async () => {
             onChange={handleInputChange}
             required
             placeholder="admin@kinyui.ac.ke"
-            className="w-full pl-12 pr-4 py-4 bg-slate-50 border text-slate-900 font-bold border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm"
+            className="w-full pl-12 pr-4 py-3.5 sm:py-4 bg-slate-50 border text-slate-900 font-semibold border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm text-base"
           />
         </div>
       </div>
@@ -1307,13 +1310,13 @@ const handlePasswordAfterVerification = async () => {
           {/* Password Field */}
           <div>
             <div className="flex justify-between items-center mb-2">
-              <label className="text-sm font-bold uppercase tracking-wider text-slate-700">
+              <label className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700">
                 Password
               </label>
               <button 
                 type="button"
                 onClick={() => (router.push("/pages/forgotpassword"))}
-                className="text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors"
+                className="text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors"
               >
                 Forgot password?
               </button>
@@ -1327,12 +1330,12 @@ const handlePasswordAfterVerification = async () => {
                 onChange={handleInputChange}
                 required
                 placeholder="••••••••"
-                className="w-full pl-12 pr-12 py-4 text-slate-900 font-bold bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm"
+                className="w-full pl-12 pr-12 py-3.5 sm:py-4 text-slate-900 font-semibold bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm text-base"
               />
               <button 
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
@@ -1340,26 +1343,26 @@ const handlePasswordAfterVerification = async () => {
           </div>
 
           {/* Preferences */}
-          <div className="space-y-3 pt-2">
-            <label className="flex items-center gap-3 cursor-pointer group">
+          <div className="space-y-4 pt-2">
+            <label className="flex items-start gap-3 cursor-pointer group">
               <input 
                 type="checkbox" 
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="h-5 w-5 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500 transition"
+                className="mt-0.5 h-5 w-5 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500 transition"
               />
-              <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">
+              <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors leading-tight">
                 I agree to the <Link href="/pages/OurSchoolPolicies" className="font-bold text-blue-600 hover:underline">Terms & Conditions</Link>
               </span>
             </label>
-            <label className="flex items-center gap-3 cursor-pointer group">
+            <label className="flex items-start gap-3 cursor-pointer group">
               <input 
                 type="checkbox" 
                 checked={rememberDevice}
                 onChange={(e) => setRememberDevice(e.target.checked)}
-                className="h-5 w-5 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500 transition"
+                className="mt-0.5 h-5 w-5 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500 transition"
               />
-              <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">
+              <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors leading-tight">
                 Keep me logged in on this device
               </span>
             </label>
@@ -1371,7 +1374,7 @@ const handlePasswordAfterVerification = async () => {
       <button 
         type="submit"
         disabled={isLoading || (!isForgotMode && !agreedToTerms)}
-        className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-blue-700 active:scale-[0.98] transition-all disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed shadow-lg shadow-blue-200 flex items-center justify-center gap-3 mt-4"
+        className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-blue-700 active:scale-[0.98] transition-all disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed shadow-lg shadow-blue-100 flex items-center justify-center gap-3 mt-4"
       >
         {isLoading ? (
           <>
@@ -1390,15 +1393,14 @@ const handlePasswordAfterVerification = async () => {
         <button 
           type="button"
           onClick={() => setIsForgotMode(false)}
-          className="w-full text-center text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors pt-2"
+          className="w-full text-center text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors pt-4"
         >
           &larr; Return to login
         </button>
       )}
     </form>
   </div>
-</div>
-        </div>
+</div>        </div>
       </main>
     </>
   );
