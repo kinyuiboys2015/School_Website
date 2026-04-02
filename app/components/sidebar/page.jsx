@@ -200,107 +200,106 @@ const handleLogout = () => {
     setShowSupportModal(true);
   };
 
-  // Define default tabs if none provided
-  const defaultTabs = [
-    { 
-      id: 'overview', 
-      label: 'Dashboard Overview', 
-      icon: FiUser,
-      badge: 'primary'
-    },
-    { 
-      id: 'school-info', 
-      label: 'School Information', 
-      icon: FiInfo,
-      badge: 'info'
-    },
-    { 
-      id: 'guidance-counseling', 
-      label: 'Guidance Counseling', 
-      icon: FiMessageCircle,
-      badge: 'purple'
-    },
-    {
-      id: 'schooldocuments',
-      label: 'School Documents',
-      icon: FiArchive, 
-      badge: 'indigo'
-    },
-    { 
-      id: 'assignments', 
-      label: 'Assignments', 
-      icon: FiBook,
-      badge: 'red'
-    },
-    {
-      id: 'careers',
-      label: 'Careers',
-      icon: FiCalendar,
-      badge: 'lime'
-    },
-
-   { 
-      id: 'sms',
-      label: 'SMS Management',
-      icon: FiMessageSquare,
-      badge: 'orange'
-    },
-    { 
-      id: 'resources', 
-      label: 'Learning Resources', 
-      icon: FiFolder,
-      badge: 'emerald',
-    },
-    {
-      id: 'feebalances',
-      label: 'Fee Balances',
-      icon: FiDollarSign,
-      badge: 'yellow'
-    },
-    {
-      id: 'student',
-      label: 'Student Records',
-      icon: FiInfo,
-      badge: 'cyan'
-    },
-    { 
-      id: 'admissions', 
-      label: 'Admission Applications', 
-      icon: FiClipboard,
-      badge: 'purple',
-    },
-    { 
-      id: 'newsevents', 
-      label: 'News & Events', 
-      icon: IoNewspaper,
-      badge: 'yellow'
-    },
-    { 
-      id: 'gallery', 
-      label: 'Media Gallery', 
-      icon: FiImage,
-      badge: 'pink'
-    },
-    { 
-      id: 'subscribers', 
-      label: 'Subscribers', 
-      icon: IoPeopleCircle,
-      badge: 'teal'
-    },
-    { 
-      id: 'email', 
-      label: 'Email Manager', 
-      icon: FiMail,
-      badge: 'indigo'
-    },
-    { 
-      id: 'admins-profile', 
-      label: 'Admins & Profile', 
-      icon: MdAdminPanelSettings,
-      badge: 'gray'
-    }
-  ];
-
+ const defaultTabs = [
+  { 
+    id: 'overview', 
+    label: 'Dashboard Overview', 
+    icon: FiUser,
+    badge: 'primary'
+  },
+  { 
+    id: 'school-info', 
+    label: 'School Information', 
+    icon: FiInfo,
+    badge: 'info'
+  },
+  // Shuffled operational tabs
+  { 
+    id: 'newsevents', 
+    label: 'News & Events', 
+    icon: IoNewspaper,
+    badge: 'yellow'
+  },
+  {
+    id: 'feebalances',
+    label: 'Fee Balances',
+    icon: FiDollarSign,
+    badge: 'yellow'
+  },
+  { 
+    id: 'resources', 
+    label: 'Learning Resources', 
+    icon: FiFolder,
+    badge: 'emerald',
+  },
+  { 
+    id: 'admissions', 
+    label: 'Admission Applications', 
+    icon: FiClipboard,
+    badge: 'purple',
+  },
+  { 
+    id: 'sms',
+    label: 'SMS Management',
+    icon: FiMessageSquare,
+    badge: 'orange'
+  },
+  { 
+    id: 'assignments', 
+    label: 'Assignments', 
+    icon: FiBook,
+    badge: 'red'
+  },
+  { 
+    id: 'subscribers', 
+    label: 'Subscribers', 
+    icon: IoPeopleCircle,
+    badge: 'teal'
+  },
+  {
+    id: 'careers',
+    label: 'Careers',
+    icon: FiCalendar,
+    badge: 'lime'
+  },
+  {
+    id: 'student',
+    label: 'Student Records',
+    icon: FiInfo,
+    badge: 'cyan'
+  },
+  { 
+    id: 'guidance-counseling', 
+    label: 'Guidance Counseling', 
+    icon: FiMessageCircle,
+    badge: 'purple'
+  },
+  { 
+    id: 'email', 
+    label: 'Email Manager', 
+    icon: FiMail,
+    badge: 'indigo'
+  },
+  { 
+    id: 'gallery', 
+    label: 'Media Gallery', 
+    icon: FiImage,
+    badge: 'pink'
+  },
+  {
+    id: 'schooldocuments',
+    label: 'School Documents',
+    icon: FiArchive, 
+    badge: 'indigo'
+  },
+  // Admin locked to last
+  { 
+    id: 'admins-profile', 
+    label: 'Admins & Profile', 
+    icon: MdAdminPanelSettings,
+    badge: 'gray'
+  }
+];
   // Use provided tabs if non-empty, otherwise fall back to defaults
   const safeTabs = Array.isArray(tabs) && tabs.length > 0 ? tabs : defaultTabs;
 
@@ -429,7 +428,7 @@ const handleLogout = () => {
           <div className="flex items-center justify-between p-4 lg:p-5 border-b border-gray-200 flex-shrink-0">
             <div className="flex items-center gap-3">
               <div className="relative">
-<div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-maroon-700 via-amber-600 to-maroon-800 rounded-2xl flex items-center justify-center shadow-2xl shadow-maroon-900/30">                  <img 
+<div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-maroon-700 via-amber-900 to-maroon-800 rounded-2xl flex items-center justify-center shadow-2xl shadow-maroon-900/30">                  <img 
                     src="/kinyui.png" 
                     alt="School Logo" 
                     className="w-full h-full object-contain p-2"
@@ -479,7 +478,7 @@ const handleLogout = () => {
         {/* Icon Container */}
         <div className={`relative p-2 rounded-xl transition-all duration-200 ${
           activeTab === tab.id 
-            ? 'bg-gradient-to-br from-maroon-700 to-amber-600 text-white shadow-lg shadow-maroon-900/30' 
+            ? 'bg-gradient-to-br from-rose-700 to-amber-600 text-white shadow-lg shadow-maroon-900/30' 
             : 'bg-gray-100 text-gray-600 group-hover:bg-maroon-100 group-hover:text-maroon-700'
         }`}>
           <TabIcon className="text-sm lg:text-lg relative z-10" />
