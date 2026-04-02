@@ -460,7 +460,7 @@ const ModernLoadingScreen = () => {
 
         {/* School Name - Kinyui Branding */}
         <div className="text-center mb-5 md:mb-6">
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-wider text-gray-800">
+          <h1 className="text-2xl md:text-3xl lg:text-3xl font-black tracking-wider text-gray-800">
             {schoolName.split("'").map((part, i) => (
               <span key={i}>
                 {part}
@@ -481,7 +481,7 @@ const ModernLoadingScreen = () => {
 
         {/* Motto - School Motto */}
         <div className="text-center mb-8 md:mb-10">
-          <p className="text-lg md:text-2xl lg:text-3xl font-bold italic tracking-wide text-gray-700">
+          <p className="text-md md:text-xl lg:text-2xl font-bold italic tracking-wide text-gray-700">
             "{motto}"
           </p>
         </div>
