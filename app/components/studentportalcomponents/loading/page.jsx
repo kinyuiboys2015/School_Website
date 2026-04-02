@@ -1,42 +1,50 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from "react";
 
-// Modern Loading Screen with Kinyui School Colors (Dark Maroon & Amber)
-export default function LoadingScreen() {
+// Modern Loading Screen Component for Kinyui Boys' Senior School
+// School Colors: Maroon (#800020) and Amber/Gold (#D4AF37)
+export default function ModernLoadingScreen() {
   const [textIndex, setTextIndex] = useState(0);
   const [glowIntensity, setGlowIntensity] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [mounted, setMounted] = useState(false);
   
   const motto = "Soaring to Excellence";
   const schoolName = "KINYUI BOYS' SENIOR SCHOOL";
   const loadingMessages = [
     "Preparing an exceptional learning experience",
-    "Loading Admin Dashboard",
+    "Loading Student Dashboard",
     "Securing your session",
     "Almost ready..."
   ];
 
-  // Rest of your component code remains the same...
+  // Handle mounting to avoid hydration issues
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Animated text effect
   useEffect(() => {
+    if (!mounted) return;
     const interval = setInterval(() => {
       setTextIndex((prev) => (prev + 1) % loadingMessages.length);
     }, 2000);
     return () => clearInterval(interval);
-  }, []);
+  }, [mounted]);
 
   // Pulsing glow effect
   useEffect(() => {
+    if (!mounted) return;
     const glowInterval = setInterval(() => {
       setGlowIntensity((prev) => (prev + 1) % 100);
     }, 50);
     return () => clearInterval(glowInterval);
-  }, []);
+  }, [mounted]);
 
   // Progress animation
   useEffect(() => {
+    if (!mounted) return;
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -47,39 +55,49 @@ export default function LoadingScreen() {
       });
     }, 80);
     return () => clearInterval(progressInterval);
-  }, []);
+  }, [mounted]);
+
+  if (!mounted) {
+    return (
+      <div className="fixed inset-0 bg-gradient-to-br from-maroon-50 via-white to-amber-50 z-50 flex items-center justify-center">
+        <div className="text-maroon-800 text-center font-semibold">Loading Kinyui Boys' Portal...</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-maroon-950 via-maroon-900 to-amber-900 z-50 flex flex-col items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 bg-gradient-to-br from-maroon-50 via-white to-amber-50 z-50 flex items-center justify-center overflow-hidden">
       
       {/* Dynamic Background Effect */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Animated Gradient Orbs - Maroon & Amber Colors */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-maroon-600/20 to-amber-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-maroon-700/20 to-amber-600/20 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-maroon-500/10 to-amber-500/10 rounded-full blur-3xl animate-spin-slow"></div>
+        {/* Animated Gradient Orbs - Kinyui School Colors (Maroon & Amber) */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-maroon-600/10 to-amber-600/10 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-maroon-700/10 to-amber-500/10 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-maroon-500/5 to-amber-500/5 rounded-full blur-3xl animate-spin-slow"></div>
         
-        {/* Moving Light Beams - Maroon & Amber */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent animate-beam"></div>
-          <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-maroon-500 to-transparent animate-beam animation-delay-500"></div>
-          <div className="absolute left-0 top-0 w-px h-full bg-gradient-to-b from-transparent via-amber-600 to-transparent animate-beam-vertical"></div>
-          <div className="absolute right-0 top-0 w-px h-full bg-gradient-to-b from-transparent via-maroon-600 to-transparent animate-beam-vertical animation-delay-300"></div>
+        {/* Moving Light Beams - Professional Style */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-maroon-600 to-transparent animate-beam"></div>
+          <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-600 to-transparent animate-beam animation-delay-500"></div>
+          <div className="absolute left-0 top-0 w-px h-full bg-gradient-to-b from-transparent via-maroon-600 to-transparent animate-beam-vertical"></div>
+          <div className="absolute right-0 top-0 w-px h-full bg-gradient-to-b from-transparent via-amber-600 to-transparent animate-beam-vertical animation-delay-300"></div>
         </div>
 
         {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(128,0,32,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(128,0,32,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
         
-        {/* Floating Particles - Amber & Gold */}
+        {/* Floating Particles - Maroon & Amber */}
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-amber-400/40 rounded-full animate-float"
+            className="absolute w-1 h-1 rounded-full animate-float"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${i * 0.2}s`,
-              animationDuration: `${3 + Math.random() * 4}s`
+              animationDuration: `${3 + Math.random() * 4}s`,
+              backgroundColor: i % 2 === 0 ? '#800020' : '#D4AF37',
+              opacity: 0.3
             }}
           />
         ))}
@@ -88,23 +106,23 @@ export default function LoadingScreen() {
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-2xl px-6">
         
-        {/* Logo Container - Enhanced with Maroon & Amber */}
+        {/* Logo Container - Enhanced with School Colors */}
         <div className="relative mb-8 md:mb-10">
-          {/* Glowing Background - School Colors */}
+          {/* Glowing Background - Maroon & Amber Gradient */}
           <div 
             className="absolute inset-0 bg-gradient-to-r from-maroon-600 via-amber-500 to-maroon-700 rounded-full blur-2xl transition-all duration-300"
             style={{ 
-              opacity: 0.3 + (glowIntensity / 100) * 0.3,
+              opacity: 0.2 + (glowIntensity / 100) * 0.3,
               transform: `scale(${1 + (glowIntensity / 100) * 0.1})`
             }}
           ></div>
           
-          {/* Outer Ring Animation - Maroon & Amber */}
-          <div className="absolute inset-0 rounded-full border-2 border-amber-500/30 animate-ping-slow"></div>
-          <div className="absolute inset-2 rounded-full border-2 border-maroon-500/20 animate-spin-slow"></div>
+          {/* Outer Ring Animation - School Colors */}
+          <div className="absolute inset-0 rounded-full border-2 border-maroon-500/30 animate-ping-slow"></div>
+          <div className="absolute inset-2 rounded-full border-2 border-amber-500/20 animate-spin-slow"></div>
           
           {/* Logo Container with Maroon/Amber Gradient */}
-          <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-br from-maroon-800 to-amber-700 p-1 shadow-2xl">
+          <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-br from-maroon-700 to-amber-600 p-1 shadow-2xl">
             <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/10 pointer-events-none"></div>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
@@ -113,6 +131,9 @@ export default function LoadingScreen() {
                 src="/kinyui.png" 
                 alt="Kinyui Boys Senior School Logo" 
                 className="w-20 h-20 md:w-28 md:h-28 object-contain p-2 relative z-10"
+                onError={(e) => {
+                  e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23800020'/%3E%3Ctext x='50' y='65' text-anchor='middle' fill='%23D4AF37' font-size='40' font-weight='bold' font-family='Arial'%3EKB%3C/text%3E%3C/svg%3E";
+                }}
               />
             </div>
           </div>
@@ -120,7 +141,7 @@ export default function LoadingScreen() {
 
         {/* School Name - Kinyui Branding */}
         <div className="text-center mb-5 md:mb-6">
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-wider text-slate-600 drop-shadow-lg">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-wider text-maroon-900">
             {schoolName.split("'").map((part, i) => (
               <span key={i}>
                 {part}
@@ -131,17 +152,17 @@ export default function LoadingScreen() {
           
           {/* Animated Gradient Underline - Amber */}
           <div className="relative mt-2">
-            <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-800 to-transparent animate-underline"></div>
+            <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-600 to-transparent animate-underline"></div>
           </div>
           
-          <p className="text-amber-800 text-xs md:text-sm mt-3 tracking-wider font-semibold">
+          <p className="text-maroon-600 text-xs md:text-sm mt-3 tracking-wider font-semibold">
             EST. 1976 | CENTRE OF EXCELLENCE
           </p>
         </div>
 
         {/* Motto - School Motto */}
         <div className="text-center mb-8 md:mb-10">
-          <p className="text-lg md:text-2xl lg:text-3xl font-bold italic tracking-wide text-amber-800">
+          <p className="text-md md:text-xl lg:text-2xl font-bold italic tracking-wide text-maroon-700">
             "{motto}"
           </p>
         </div>
@@ -151,7 +172,7 @@ export default function LoadingScreen() {
           
           {/* Progress Bar - Maroon & Amber Gradient */}
           <div className="w-full">
-            <div className="relative h-1.5 bg-maroon-950/50 rounded-full overflow-hidden">
+            <div className="relative h-1.5 bg-maroon-100 rounded-full overflow-hidden">
               <div 
                 className="absolute top-0 left-0 h-full bg-gradient-to-r from-maroon-600 via-amber-500 to-maroon-700 rounded-full transition-all duration-300 ease-out"
                 style={{ width: `${progress}%` }}
@@ -159,13 +180,13 @@ export default function LoadingScreen() {
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
               </div>
             </div>
-            <p className="text-right text-xs text-amber-300 mt-1 font-mono">
+            <p className="text-right text-xs text-maroon-500 mt-1 font-mono">
               {progress}%
             </p>
           </div>
 
           {/* Loading Message */}
-          <div className="flex items-center gap-2 text-amber-100 text-sm md:text-base font-medium">
+          <div className="flex items-center gap-2 text-maroon-600 text-sm md:text-base font-medium">
             <span>{loadingMessages[textIndex]}</span>
             <span className="flex gap-0.5">
               <span className="animate-bounce-dot" style={{ animationDelay: '0s' }}>.</span>
@@ -182,9 +203,9 @@ export default function LoadingScreen() {
                 cy="50%"
                 r="45%"
                 fill="none"
-                stroke="#5C0010"
+                stroke="#fde8e8"
                 strokeWidth="2"
-                className="opacity-30"
+                className="opacity-50"
               />
               <circle
                 cx="50%"
@@ -211,12 +232,12 @@ export default function LoadingScreen() {
           </div>
         </div>
 
-        {/* Decorative Bottom Bar - Maroon & Amber */}
+        {/* Decorative Bottom Bar - School Colors */}
         <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
           {[...Array(5)].map((_, i) => (
             <div
               key={i}
-              className="w-1 h-1 rounded-full bg-gradient-to-r from-amber-500 to-maroon-600 animate-pulse"
+              className="w-1 h-1 rounded-full bg-gradient-to-r from-maroon-500 to-amber-500 animate-pulse"
               style={{ animationDelay: `${i * 0.15}s` }}
             />
           ))}
@@ -224,7 +245,7 @@ export default function LoadingScreen() {
       </div>
 
       {/* Custom Animations */}
-     <style>{`
+      <style jsx global>{`
         @keyframes pulse-slow {
           0%, 100% { opacity: 0.3; transform: scale(1); }
           50% { opacity: 0.6; transform: scale(1.1); }
@@ -331,6 +352,13 @@ export default function LoadingScreen() {
         
         .animate-bounce-dot {
           animation: bounce-dot 0.6s ease-in-out infinite;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+          .animate-float {
+            animation-duration: 4s;
+          }
         }
       `}</style>
     </div>
