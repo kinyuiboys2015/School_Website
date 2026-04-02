@@ -12,7 +12,7 @@ import FeesView from '../../components/studentportalcomponents/feebalance/page';
 
 /// Font Awesome 6 - Modern versions
 import { 
-   FaBell, FaBars, FaCalendar, FaBook, FaAward, FaDollarSign, 
+  FaBell, FaBars, FaCalendar, FaBook, FaAward, FaDollarSign, 
   FaClock, FaChartLine, FaChartBar, FaFolder, FaComments,
   FaRocket, FaPalette, FaGem, FaChartPie, FaTrendingUp, FaCrown,
   FaLightbulb, FaBrain, FaHandshake, FaHeart, FaLock, FaGlobe, 
@@ -22,37 +22,28 @@ import {
 } from 'react-icons/fa6';
 
 import { useRouter } from 'next/navigation';
- 
 import Image from 'next/image';
 
 // Font Awesome 5 (Legacy)
 import { 
-  FaHome, 
-  FaSearch,
-  FaTimes, 
-  FaSync, 
-  FaExclamationCircle, 
-  FaCircleExclamation, 
-  FaSparkles,
-  FaCloudUpload,
-  FaUserFriends,
+  FaHome, FaSearch, FaTimes, FaSync, FaExclamationCircle, 
+  FaCircleExclamation, FaSparkles, FaCloudUpload, FaUserFriends,
   FaQuestionCircle
 } from 'react-icons/fa';
 import { HiSparkles } from "react-icons/hi2";
-
 import { FaCheckCircle } from "react-icons/fa6";
 
 // Feather icons
 import { 
-  FiMenu, FiX, FiRefreshCw, FiBookOpen,
-  FiExternalLink, FiShield, FiExpand, FiCompress,
-  FiMapPin, FiSmartphone, FiTablet
+  FiMenu, FiX, FiRefreshCw, FiBookOpen, FiExternalLink, 
+  FiShield, FiExpand, FiCompress, FiMapPin, FiSmartphone, FiTablet
 } from 'react-icons/fi';
-
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
-// Add responsive styles for small screens
+// ==================== RESPONSIVE STYLES ====================
+// Description: Mobile-first responsive styles ensuring proper display across all device sizes
+// from smartphones (320px) to desktops (1920px+)
 const responsiveStyles = `
 @media (max-width: 768px) {
   .mobile-scroll-hide {
@@ -114,7 +105,10 @@ const responsiveStyles = `
 }
 `;
 
-// ==================== MODERN STUDENT HEADER - KINYUI THEME ====================
+// ==================== MODERN STUDENT HEADER ====================
+// Description: Top navigation header displaying student information, school branding,
+// and mobile menu toggle. Features Kinyui Boys' School theme with maroon and amber colors.
+// Includes responsive design that adapts from mobile to desktop views.
 function ModernStudentHeader({ 
   student, 
   searchTerm, 
@@ -125,6 +119,8 @@ function ModernStudentHeader({
   currentView 
 }) {
   
+  // Description: Generates initials from student's full name (max 2 characters)
+  // Used for avatar display when no profile image is available
   const getInitials = (name) => {
     if (!name) return 'KB';
     return name
@@ -134,9 +130,10 @@ function ModernStudentHeader({
       .join('');
   };
 
+  // Description: Returns gradient color scheme based on first letter of student's name
+  // Creates personalized color combinations using school's maroon and amber theme
   const getGradientColor = (name) => {
     const char = name.trim().charAt(0).toUpperCase();
-    // Maroon and Amber gradients for Kinyui
     const gradients = {
       A: "bg-gradient-to-r from-maroon-700 to-amber-600",
       B: "bg-gradient-to-r from-amber-600 to-maroon-700",
@@ -168,6 +165,8 @@ function ModernStudentHeader({
     return gradients[char] || "bg-gradient-to-r from-maroon-700 to-amber-600";
   };
 
+  // Description: Returns appropriate icon based on current view selection
+  // Helps users quickly identify which section they're currently viewing
   const getViewIcon = (view) => {
     switch(view) {
       case 'home': return <FaHome className="text-amber-500" />;
@@ -187,7 +186,7 @@ function ModernStudentHeader({
           <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
             {/* Left Section: Student Info + Mobile Menu */}
             <div className="flex items-center gap-2 sm:gap-3 md:gap-5">
-              {/* Mobile Menu Button */}
+              {/* Mobile Menu Button - Description: Toggles sidebar navigation on mobile devices */}
               <button
                 onClick={onMenuToggle}
                 className="lg:hidden p-2 sm:p-3 rounded-xl bg-white/10 backdrop-blur-sm shadow-sm hover:bg-white/20 transition-all mobile-touch-friendly"
@@ -199,10 +198,10 @@ function ModernStudentHeader({
                 }
               </button>
 
-              {/* Student Info */}
+              {/* Student Info Section - Description: Displays student avatar, name, form, and stream */}
               {student && (
                 <div className="flex items-center gap-2 sm:gap-3">
-                  {/* Avatar */}
+                  {/* Avatar with gradient background based on student name */}
                   <div className="relative group">
                     <div
                       className={`absolute inset-0 ${getGradientColor(student.fullName)} rounded-full blur opacity-70 group-hover:opacity-100 transition-opacity`}
@@ -212,7 +211,7 @@ function ModernStudentHeader({
                     </div>
                   </div>
 
-                  {/* Name & Form/Stream */}
+                  {/* Name & Form/Stream - Description: Shows student's full name and class details */}
                   <div className="hidden xs:flex flex-col">
                     <p className="text-sm sm:text-base md:text-lg font-bold text-white mobile-text-truncate max-w-[120px] sm:max-w-[160px] md:max-w-none">
                       {student.fullName}
@@ -228,7 +227,7 @@ function ModernStudentHeader({
               )}
             </div>
 
-            {/* Current View (Mobile Only) */}
+            {/* Current View Display - Description: Shows active section title on mobile devices */}
             <div className="lg:hidden flex items-center gap-2 sm:gap-3">
               <div className="p-2 sm:p-2.5 bg-white/10 backdrop-blur-sm rounded-xl shadow-sm">
                 {getViewIcon(currentView)}
@@ -245,7 +244,7 @@ function ModernStudentHeader({
               </div>
             </div>
 
-            {/* School Badge - Desktop */}
+            {/* School Badge - Description: Desktop-only display of school name and branding */}
             <div className="hidden lg:flex items-center gap-2">
               <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 rounded-full border border-amber-500/30">
                 <div className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
@@ -260,10 +259,15 @@ function ModernStudentHeader({
   );
 }
 
-// ==================== MODERN HOME VIEW - KINYUI THEME ====================
+// ==================== MODERN HOME VIEW ====================
+// Description: Main dashboard view displaying student statistics, fee balance,
+// quick action cards, and personalized welcome message. Serves as the landing page
+// after successful login, providing an overview of all portal features.
 function ModernHomeView({ student, feeBalance, feeLoading, token }) {
   const [showFeeDetails, setShowFeeDetails] = useState(false);
 
+  // Description: Student information cards showing key academic details
+  // Includes form, stream, admission number, and current academic year
   const stats = [
     { 
       label: 'Current Form', 
@@ -295,6 +299,8 @@ function ModernHomeView({ student, feeBalance, feeLoading, token }) {
     },
   ];
 
+  // Description: Quick action modules providing access to main portal features
+  // Each card describes the purpose and available actions for different sections
   const quickActions = [
     {
       tab: 'learning',
@@ -307,17 +313,17 @@ function ModernHomeView({ student, feeBalance, feeLoading, token }) {
     },
     {
       tab: 'results',
-      title: 'Results',
-      description: 'Review your academic performance in detail by accessing both class-wide results and your personal examination results, allowing you to track progress, identify strengths, and understand areas that need improvement.',
+      title: 'Academic Results Center',
+      description: 'Review your academic performance in detail by accessing both class-wide results and your personal examination results, allowing you to track progress, identify strengths, and understand areas that need improvement for better performance.',
       icon: <FaChartLine className="text-lg sm:text-xl md:text-2xl" />,
       gradient: 'from-amber-600 to-maroon-600',
       bgGradient: 'from-amber-50 to-maroon-100',
-      actions: ['Class Results', 'My Results']
+      actions: ['View Class Results', 'Access Personal Results']
     },
     {
       tab: 'support',
-      title: 'Student Support',
-      description: 'Stay informed and supported through access to guidance and counselling services, important school announcements, upcoming events, and news updates designed to support your academic, personal, and social wellbeing.',
+      title: 'Student Support Services',
+      description: 'Stay informed and supported through access to guidance and counselling services, important school announcements, upcoming events, and news updates designed to support your academic, personal, and social wellbeing throughout your journey at Kinyui Boys.',
       icon: <FaUserFriends className="text-lg sm:text-xl md:text-2xl" />,
       gradient: 'from-maroon-700 to-amber-500',
       bgGradient: 'from-maroon-50 to-amber-100',
@@ -327,7 +333,7 @@ function ModernHomeView({ student, feeBalance, feeLoading, token }) {
 
   return (
     <div className="space-y-4 sm:space-y-6 md:space-y-8 mobile-scroll-hide">
-      {/* Welcome Section - Kinyui Theme */}
+      {/* Welcome Section - Description: Personalized greeting with school branding */}
       <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl">
         <div className="absolute inset-0 bg-gradient-to-r from-maroon-800 via-maroon-700 to-amber-700 opacity-100"></div>
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black opacity-20"></div>
@@ -341,11 +347,12 @@ function ModernHomeView({ student, feeBalance, feeLoading, token }) {
                 Welcome back, {student?.fullName?.split(" ")[0] || "Student"}! 🚀
               </h2>
               <p className="text-amber-100 text-xs sm:text-sm md:text-base lg:text-lg mt-1 sm:mt-2 max-w-2xl">
-                Ready to continue your learning journey at Kinyui Boys' Senior School?
+                Ready to continue your learning journey at Kinyui Boys' Senior School? Access all your academic resources, track performance, and stay connected with school updates.
               </p>
             </div>
           </div>
 
+          {/* Status Badges - Description: Shows student status and school affiliation */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mt-3 sm:mt-4 md:mt-6">
             <span className="inline-flex items-center gap-1 sm:gap-2 bg-white bg-opacity-20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm text-xs sm:text-sm font-bold">
               <HiSparkles className="text-amber-300 text-xs sm:text-sm md:text-base" />
@@ -353,13 +360,13 @@ function ModernHomeView({ student, feeBalance, feeLoading, token }) {
             </span>
             <span className="inline-flex items-center gap-1 sm:gap-2 bg-white bg-opacity-20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm text-xs sm:text-sm font-bold">
               <FaCalendarCheck className="text-amber-200 text-xs sm:text-sm md:text-base" />
-              Kinyui Boys'
+              Kinyui Boys' Senior School
             </span>
           </div>
         </div>
       </div>
 
-      {/* Quick Stats Grid */}
+      {/* Quick Stats Grid - Description: Displays key student information in card format */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
         {stats.map((stat, index) => (
           <div key={index} className="group relative w-full">
@@ -402,20 +409,22 @@ function ModernHomeView({ student, feeBalance, feeLoading, token }) {
         ))}
       </div>
       
+      {/* Fee Balance Component - Description: Displays student's fee status and payment history */}
       <FeesView student={student} token={token} />   
       
-      {/* Dashboard Overview */}
+      {/* Dashboard Overview Section - Description: Main content area with quick action cards */}
       <section className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
         <div className="mb-3 sm:mb-4 md:mb-6">
           <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-maroon-900">
-            Student Dashboard
+            Student Dashboard Overview
           </h2>
           <p className="mt-1 text-xs sm:text-sm md:text-base text-maroon-600 max-w-3xl">
-            Your hub for learning resources, assignments, academic results, and student support services at Kinyui Boys' Senior School.
+            Your central hub for accessing learning resources, completing assignments, reviewing academic results, 
+            and connecting with student support services at Kinyui Boys' Senior School.
           </p>
         </div>
 
-        {/* Quick Actions Grid */}
+        {/* Quick Actions Grid - Description: Interactive cards for main portal features */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-5 lg:gap-6">
           {quickActions.map((action, index) => (
             <div key={index} className="relative group mobile-full-width">
@@ -430,17 +439,23 @@ function ModernHomeView({ student, feeBalance, feeLoading, token }) {
                       {action.title}
                     </h4>
                     <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-maroon-500 mobile-text-truncate">
-                      {action.tab === 'learning' && 'Assignments & materials'}
-                      {action.tab === 'results' && 'Class & personal results'}
-                      {action.tab === 'support' && 'Guidance, news & events'}
+                      {action.tab === 'learning' && 'Access assignments & study materials'}
+                      {action.tab === 'results' && 'View class & personal performance'}
+                      {action.tab === 'support' && 'Get guidance & school updates'}
                     </p>
                   </div>
                 </div>
                 <p className="text-xs sm:text-sm text-maroon-600 leading-relaxed flex-1 mb-3 sm:mb-4 md:mb-5 line-clamp-3 sm:line-clamp-4">
                   {action.description}
                 </p>
-                <button className="mt-auto inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-amber-600 hover:text-amber-800 transition-colors mobile-touch-friendly">
-                  <span>Explore</span>
+                <button 
+                  onClick={() => {
+                    // This would navigate to the respective section
+                    toast.info(`Navigating to ${action.title}`);
+                  }}
+                  className="mt-auto inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-amber-600 hover:text-amber-800 transition-colors mobile-touch-friendly"
+                >
+                  <span>Access {action.title}</span>
                   <FaArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
@@ -453,8 +468,11 @@ function ModernHomeView({ student, feeBalance, feeLoading, token }) {
 }
 
 // ==================== MAIN MODERN COMPONENT ====================
+// Description: Primary portal component managing authentication, state, data fetching,
+// and rendering of the main student interface. Handles login/logout flows, session management,
+// and coordinates all sub-components.
 export default function ModernStudentPortalPage() {
-  // Authentication State
+  // Authentication State - Description: Manages user login status and session data
   const [student, setStudent] = useState(null);
   const [token, setToken] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(true);
@@ -463,32 +481,33 @@ export default function ModernStudentPortalPage() {
   const [requiresContact, setRequiresContact] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // View State
+  // View State - Description: Controls which section of the portal is currently displayed
   const [currentView, setCurrentView] = useState('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
   const router = useRouter();
 
-  // Data State
+  // Data State - Description: Stores fetched data from various API endpoints
   const [assignments, setAssignments] = useState([]);
   const [resources, setResources] = useState([]);
   const [studentResults, setStudentResults] = useState([]);
   const [feeBalance, setFeeBalance] = useState(null);
   
-  // Loading States
+  // Loading States - Description: Tracks loading status for each data fetch operation
   const [assignmentsLoading, setAssignmentsLoading] = useState(false);
   const [resourcesLoading, setResourcesLoading] = useState(false);
   const [resultsLoading, setResultsLoading] = useState(false);
   const [feeLoading, setFeeLoading] = useState(false);
 
-  // Error States
+  // Error States - Description: Stores error messages for failed data operations
   const [assignmentsError, setAssignmentsError] = useState(null);
   const [resourcesError, setResourcesError] = useState(null);
   const [resultsError, setResultsError] = useState(null);
   const [feeError, setFeeError] = useState(null);
 
-  // Check authentication on mount
+  // Description: Checks for existing authentication token on component mount
+  // Verifies token validity with backend and restores user session if valid
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -510,6 +529,7 @@ export default function ModernStudentPortalPage() {
           setToken(savedToken);
           setShowLoginModal(false);
           
+          // Description: Sets up automatic logout after 2 hours for security
           const logoutTimer = setTimeout(() => {
             toast.success('Your 2-hour session has expired. Please log in again.');
             handleLogout();
@@ -530,14 +550,14 @@ export default function ModernStudentPortalPage() {
     checkAuth();
   }, []);
 
-  // Load data when authenticated
+  // Description: Fetches all student data when authentication is successful
   useEffect(() => {
     if (student && token) {
       fetchAllData();
     }
   }, [student, token]);
 
-  // Close sidebar when switching views on mobile
+  // Description: Handles responsive sidebar behavior on window resize and view changes
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
@@ -553,7 +573,7 @@ export default function ModernStudentPortalPage() {
     return () => window.removeEventListener('resize', handleResize);
   }, [currentView]);
 
-  // Fetch all data
+  // Description: Parallel data fetching function that loads all student-related information
   const fetchAllData = useCallback(async () => {
     if (!token) return;
 
@@ -566,11 +586,11 @@ export default function ModernStudentPortalPage() {
       ]);
     } catch (error) {
       console.error('Error fetching data:', error);
-      toast.error('Failed to load some data');
+      toast.error('Failed to load some data. Please refresh the page.');
     }
   }, [token]);
 
-  // Individual fetch functions
+  // Description: Fetches student assignments from the API
   const fetchAssignments = async () => {
     setAssignmentsLoading(true);
     setAssignmentsError(null);
@@ -589,12 +609,13 @@ export default function ModernStudentPortalPage() {
       }
     } catch (error) {
       setAssignmentsError(error.message);
-      toast.error('Failed to load assignments');
+      toast.error('Unable to load assignments. Please try again.');
     } finally {
       setAssignmentsLoading(false);
     }
   };
 
+  // Description: Fetches learning resources from the API
   const fetchResources = async () => {
     setResourcesLoading(true);
     setResourcesError(null);
@@ -613,12 +634,13 @@ export default function ModernStudentPortalPage() {
       }
     } catch (error) {
       setResourcesError(error.message);
-      toast.error('Failed to load resources');
+      toast.error('Unable to load learning resources. Please try again.');
     } finally {
       setResourcesLoading(false);
     }
   };
 
+  // Description: Fetches student's academic results using admission number
   const fetchStudentResults = async () => {
     if (!student?.admissionNumber) return;
     
@@ -639,11 +661,13 @@ export default function ModernStudentPortalPage() {
       }
     } catch (error) {
       setResultsError(error.message);
+      toast.error('Unable to load academic results. Please try again.');
     } finally {
       setResultsLoading(false);
     }
   };
 
+  // Description: Fetches student's fee balance and payment history
   const fetchFeeBalance = async () => {
     if (!student?.admissionNumber) return;
     
@@ -664,13 +688,13 @@ export default function ModernStudentPortalPage() {
       }
     } catch (error) {
       setFeeError(error.message);
-      toast.error('Could not load fee balance');
+      toast.error('Unable to load fee balance. Please contact accounts office.');
     } finally {
       setFeeLoading(false);
     }
   };
 
-  // Handle login
+  // Description: Handles student login authentication with the backend
   const handleStudentLogin = async (fullName, admissionNumber) => {
     setLoginLoading(true);
     setLoginError(null);
@@ -691,7 +715,7 @@ export default function ModernStudentPortalPage() {
         setToken(data.token);
         setShowLoginModal(false);
         
-        toast.success('🎉 Login successful!', {
+        toast.success('Login Successful!', {
           description: `Welcome to Kinyui Boys' Portal, ${data.student.fullName}`
         });
 
@@ -701,23 +725,25 @@ export default function ModernStudentPortalPage() {
         setRequiresContact(data.requiresContact || false);
         
         if (data.requiresContact) {
-          toast.error('Student record not found', {
-            description: 'Please contact your class teacher or school administrator'
+          toast.error('Student Record Not Found', {
+            description: 'Please contact your class teacher or school administrator for assistance.'
           });
         } else {
-          toast.error(data.error || 'Login failed');
+          toast.error(data.error || 'Login failed. Please check your credentials.');
         }
       }
     } catch (error) {
       console.error('Login error:', error);
-      setLoginError('Network error. Please try again.');
-      toast.error('Network error. Please try again.');
+      setLoginError('Network error. Please check your connection and try again.');
+      toast.error('Connection Error', {
+        description: 'Unable to connect to the server. Please try again later.'
+      });
     } finally {
       setLoginLoading(false);
     }
   };
 
-  // Handle logout
+  // Description: Handles user logout, clears session, and resets application state
   const handleLogout = async () => {
     try {
       await fetch('/api/studentlogin', { method: 'DELETE' });
@@ -733,11 +759,13 @@ export default function ModernStudentPortalPage() {
       setStudentResults([]);
       setFeeBalance(null);
       
-      toast.success('👋 You have been logged out');
+      toast.success('Logged Out Successfully', {
+        description: 'You have been securely logged out of the portal.'
+      });
     }
   };
 
-  // Handle refresh
+  // Description: Manually refreshes all portal data
   const handleRefresh = () => {
     if (!token) {
       setShowLoginModal(true);
@@ -745,74 +773,80 @@ export default function ModernStudentPortalPage() {
     }
     
     fetchAllData();
-    toast.success('🔄 Refreshing data...');
+    toast.success('Refreshing Data', {
+      description: 'Your portal data is being updated.'
+    });
   };
 
-  // Handle download
+  // Description: Handles file downloads from resources and assignments
   const handleDownload = (item) => {
-    toast.success(`📥 Downloading ${item.title || 'file'}...`);
+    toast.success('Download Started', {
+      description: `Downloading ${item.title || 'file'}...`
+    });
   };
 
-  // Handle view details
+  // Description: Handles viewing detailed information for resources/assignments
   const handleViewDetails = (item) => {
-    toast.success(`🔍 Viewing details for ${item.title}`);
+    toast.info('Viewing Details', {
+      description: `Opening details for ${item.title}`
+    });
   };
 
-  // Toggle menu function
+  // Description: Toggles mobile sidebar menu visibility
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Close menu function for mobile
+  // Description: Closes mobile menu after navigation on small screens
   const closeMenuOnMobile = () => {
     if (window.innerWidth < 1024) {
       setIsMenuOpen(false);
     }
   };
 
-  // Handle view change with mobile consideration
+  // Description: Changes the current view and handles mobile menu closure
   const handleViewChange = (view) => {
     setCurrentView(view);
     closeMenuOnMobile();
   };
 
-  // Use your LoadingScreen component
+  // Description: Shows loading screen while initial authentication is in progress
   if (isLoading) {
     return <LoadingScreen />;
   }
 
-  // Show login modal if not authenticated
+  // Description: Renders login interface for unauthenticated users
   if (!student || !token) {
     const features = [
       { 
         icon: <FaBook className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />, 
-        title: "Learning Resources", 
-        desc: "Access digital notes, revision e-books, and past papers." 
+        title: "Digital Learning Resources", 
+        desc: "Access comprehensive digital notes, revision e-books, past examination papers, and supplementary learning materials to enhance your understanding of various subjects." 
       },
       { 
         icon: <FaAward className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />, 
-        title: "Assignments", 
-        desc: "View and submit your subject tasks and holiday projects." 
+        title: "Assignments & Projects", 
+        desc: "View and submit your subject-specific tasks, holiday assignments, and academic projects. Track submission deadlines and receive feedback from teachers." 
       },
       { 
         icon: <FaChartBar className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />, 
-        title: "Academic Results", 
-        desc: "Personalized performance tracking vs class & KCSE targets." 
+        title: "Performance Analytics", 
+        desc: "Access personalized performance reports comparing your results with class averages and KCSE targets. Identify strengths and areas needing improvement." 
       },
       { 
         icon: <FaDollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />, 
-        title: "Fee Structures", 
-        desc: "Check balance, download statements, and payment slips." 
+        title: "Fee Management System", 
+        desc: "Check current fee balance, download detailed statements, view payment history, and access fee structures and payment deadlines." 
       },
       { 
         icon: <FaCalendar className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />, 
-        title: "School Events", 
-        desc: "Academic calendar, sports days, and parent-teacher meets." 
+        title: "School Calendar", 
+        desc: "Stay updated with academic term dates, examination schedules, sports fixtures, co-curricular activities, and parent-teacher meeting dates." 
       },
       { 
         icon: <FaComments className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />, 
-        title: "School News", 
-        desc: "Latest updates from the administration and student body." 
+        title: "Communication Hub", 
+        desc: "Receive important announcements from the administration, school news updates, and notifications about upcoming events and deadlines." 
       }
     ];
 
@@ -824,7 +858,7 @@ export default function ModernStudentPortalPage() {
         <Toaster position="top-right" expand={true} richColors theme="light" />
         
         <main className="relative z-10 flex flex-col min-h-screen">
-          {/* Navigation Bar - Kinyui Theme */}
+          {/* Navigation Bar - Description: Top navigation for unauthenticated users */}
           <nav className="sticky top-0 z-50 bg-gradient-to-r from-maroon-900 via-maroon-800 to-amber-800 backdrop-blur-lg border-b border-amber-600/30 px-3 py-2.5 sm:px-4 sm:py-3 md:px-6 md:py-4 lg:px-12">
             <div className="max-w-7xl mx-auto flex justify-between items-center">
               <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
@@ -853,10 +887,10 @@ export default function ModernStudentPortalPage() {
               <div className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8">
                 <div className="flex items-center gap-1.5 px-2.5 py-1 bg-white/10 rounded-full border border-amber-500/30">
                   <div className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
-                  <span className="text-[10px] font-black text-amber-200 uppercase tracking-wider">Secure Login</span>
+                  <span className="text-[10px] font-black text-amber-200 uppercase tracking-wider">Secure Access</span>
                   <FaShieldAlt className="w-3 h-3 text-amber-400" />
                 </div>
-                <button className="text-sm font-bold text-amber-200 hover:text-white transition-colors">Help Desk</button>
+                <button className="text-sm font-bold text-amber-200 hover:text-white transition-colors">Support Center</button>
               </div>
 
               <button onClick={router.back} className="md:hidden flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg 
@@ -866,14 +900,14 @@ export default function ModernStudentPortalPage() {
             </div>
           </nav>
 
-          {/* Hero Section with Login - Kinyui Theme */}
+          {/* Hero Section - Description: Landing page content with login button */}
           <section className="px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-12 lg:py-20 max-w-7xl mx-auto w-full">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xs:gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
               <div className="space-y-4 xs:space-y-5 sm:space-y-6 md:space-y-8">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-maroon-100 rounded-lg border border-amber-200 
                   text-[8px] xs:text-[9px] sm:text-[10px] font-bold tracking-widest uppercase text-maroon-700 whitespace-nowrap">
                   <HiSparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-600" />
-                  Empowering Excellence Since 1976
+                  Excellence in Education Since 1976
                 </div>
                 <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 
                   font-black tracking-tighter leading-[0.85] xs:leading-[0.9] text-maroon-950">
@@ -882,7 +916,7 @@ export default function ModernStudentPortalPage() {
                 </h1>
                 <p className="text-sm xs:text-base sm:text-lg md:text-xl text-maroon-600 font-medium 
                   max-w-full xs:max-w-xs sm:max-w-md leading-relaxed xs:leading-snug">
-                  Welcome to the Kinyui Boys' Senior School Digital Student Portal. Your unified hub for academics, finance, and communication.
+                  Welcome to the Kinyui Boys' Senior School Digital Student Portal. Your centralized platform for academic resources, financial management, and school communication.
                 </p>
                 
                 <div className="flex flex-row items-center gap-2 sm:gap-4 w-full max-w-full">
@@ -890,7 +924,7 @@ export default function ModernStudentPortalPage() {
                     onClick={() => setShowLoginModal(true)}
                     className="flex-[2] sm:flex-none flex items-center justify-center gap-1.5 sm:gap-3 px-3 sm:px-8 py-2.5 sm:py-4 bg-maroon-800 text-white rounded-xl sm:rounded-2xl font-black sm:font-bold text-[10px] sm:text-base uppercase sm:capitalize tracking-wider sm:tracking-normal hover:bg-amber-700 transition-all duration-300 active:scale-95 shadow-md sm:shadow-xl group"
                   >
-                    <span>Access Portal</span>
+                    <span>Access Your Portal</span>
                     <FaArrowRight className="w-3 h-3 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
                   
@@ -898,12 +932,12 @@ export default function ModernStudentPortalPage() {
                     onClick={() => router.push("/pages/contact")}
                     className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-7 py-2.5 sm:py-4 bg-white border border-amber-300 text-maroon-700 rounded-xl sm:rounded-2xl font-black sm:font-bold text-[10px] sm:text-base uppercase sm:capitalize tracking-wider sm:tracking-normal hover:bg-amber-50 transition-all active:scale-95"
                   >
-                    Help Desk
+                    Get Help
                   </button>
                 </div>
               </div>
 
-              {/* Quick Status / Communication Box */}
+              {/* Features Preview - Description: Shows key portal features to visitors */}
               <div className="relative group mt-4 xs:mt-6 sm:mt-0">
                 <div className="absolute -inset-2 xs:-inset-3 sm:-inset-4 bg-amber-100/40 rounded-[2rem] xs:rounded-[2.5rem] blur-xl xs:blur-2xl sm:blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
                 <div className="relative bg-white border border-amber-200 shadow-lg xs:shadow-xl rounded-[1.5rem] xs:rounded-[2rem] sm:rounded-[2.5rem] p-4 xs:p-5 sm:p-6 md:p-8 space-y-4 xs:space-y-5 sm:space-y-6">
@@ -915,41 +949,41 @@ export default function ModernStudentPortalPage() {
                   </div>
                   <div className="space-y-3 xs:space-y-4">
                     <div className="p-3 xs:p-4 bg-gradient-to-r from-maroon-50 to-amber-50 rounded-xl xs:rounded-2xl border border-amber-100">
-                      <p className="text-[10px] xs:text-xs font-bold text-maroon-700 mb-0.5 xs:mb-1">Academic Resources</p>
+                      <p className="text-[10px] xs:text-xs font-bold text-maroon-700 mb-0.5 xs:mb-1">Digital Library</p>
                       <p className="text-xs xs:text-sm font-semibold text-maroon-800 leading-tight">
-                        Digital notes, e-books, and past papers available.
+                        Access e-books, revision materials, and past papers.
                       </p>
                     </div>
                     <div className="p-3 xs:p-4 bg-gradient-to-r from-amber-50 to-maroon-50 rounded-xl xs:rounded-2xl border border-amber-100">
-                      <p className="text-[10px] xs:text-xs font-bold text-maroon-700 mb-0.5 xs:mb-1">Performance Tracking</p>
+                      <p className="text-[10px] xs:text-xs font-bold text-maroon-700 mb-0.5 xs:mb-1">Performance Dashboard</p>
                       <p className="text-xs xs:text-sm font-semibold text-maroon-800 leading-tight">
-                        Monitor your progress vs KCSE targets.
+                        Track your academic progress and KCSE preparedness.
                       </p>
                     </div>
                     <div className="p-3 xs:p-4 bg-gradient-to-r from-maroon-50 to-amber-50 rounded-xl xs:rounded-2xl border border-amber-100">
-                      <p className="text-[10px] xs:text-xs font-bold text-maroon-700 mb-0.5 xs:mb-1">Fee Management</p>
+                      <p className="text-[10px] xs:text-xs font-bold text-maroon-700 mb-0.5 xs:mb-1">Financial Dashboard</p>
                       <p className="text-xs xs:text-sm font-semibold text-maroon-800 leading-tight">
-                        Check balance and download payment slips.
+                        View balances, statements, and payment records.
                       </p>
                     </div>
                   </div>
                   <button className="w-full py-2.5 xs:py-3 text-center text-[10px] xs:text-xs font-black uppercase tracking-widest text-maroon-400 hover:text-amber-600 transition-colors duration-300">
-                    View All Features
+                    Explore All Features
                   </button>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Feature Grid - Kinyui Theme */}
+          {/* Feature Grid - Description: Detailed feature showcase for visitors */}
           <section className="bg-gradient-to-r from-maroon-50 to-amber-50 border-y border-amber-200 py-8 xs:py-12 sm:py-16 md:py-20 px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12">
             <div className="max-w-7xl mx-auto">
               <div className="mb-6 xs:mb-8 sm:mb-10 md:mb-12 px-2">
                 <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-1 xs:mb-2 text-maroon-900">
-                  Portal Modules
+                  Complete Portal Modules
                 </h2>
                 <p className="text-maroon-600 font-medium text-sm xs:text-base">
-                  Everything you need to navigate your school journey at Kinyui Boys'.
+                  Everything you need to excel in your academic journey at Kinyui Boys'.
                 </p>
               </div>
               
@@ -975,7 +1009,7 @@ export default function ModernStudentPortalPage() {
             </div>
           </section>
 
-          {/* Footer - Kinyui Theme */}
+          {/* Footer - Description: Copyright and policy links */}
           <footer className="px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 py-6 xs:py-8 sm:py-10 md:py-12 bg-gradient-to-r from-maroon-900 to-amber-900">
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 xs:gap-8 sm:gap-10 md:gap-12">
               <div className="flex flex-col items-center lg:items-start gap-3 xs:gap-4 text-center lg:text-left">
@@ -993,7 +1027,7 @@ export default function ModernStudentPortalPage() {
               <div className="flex flex-wrap justify-center gap-4 xs:gap-6 sm:gap-8 md:gap-10">
                 <div className="space-y-1 xs:space-y-2 text-center">
                   <p className="text-[9px] xs:text-[10px] font-black text-amber-300 uppercase tracking-widest">
-                    Academic Hub
+                    Academics
                   </p>
                   <p className="text-xs font-bold text-white hover:text-amber-300 cursor-pointer transition-colors duration-300">
                     KNEC Portal
@@ -1001,10 +1035,10 @@ export default function ModernStudentPortalPage() {
                 </div>
                 <div className="space-y-1 xs:space-y-2 text-center">
                   <p className="text-[9px] xs:text-[10px] font-black text-amber-300 uppercase tracking-widest">
-                    Financials
+                    Finance
                   </p>
                   <p className="text-xs font-bold text-white hover:text-amber-300 cursor-pointer transition-colors duration-300">
-                    Payment Gateways
+                    Payment Options
                   </p>
                 </div>
                 <div className="space-y-1 xs:space-y-2 text-center">
@@ -1012,7 +1046,7 @@ export default function ModernStudentPortalPage() {
                     Support
                   </p>
                   <p className="text-xs font-bold text-white hover:text-amber-300 cursor-pointer transition-colors duration-300">
-                    IT Service Desk
+                    IT Help Desk
                   </p>
                 </div>
               </div>
@@ -1020,7 +1054,7 @@ export default function ModernStudentPortalPage() {
           </footer>
         </main>
 
-        {/* Login Modal */}
+        {/* Login Modal - Description: Authentication dialog for student access */}
         <StudentLoginModal
           isOpen={showLoginModal}
           onClose={() => setShowLoginModal(false)}
@@ -1033,12 +1067,12 @@ export default function ModernStudentPortalPage() {
     );
   }
 
-  // Main portal layout
+  // Description: Renders the main authenticated portal interface
   return (
     <div className="min-h-screen bg-gradient-to-br from-maroon-50 via-amber-50 to-white">
       <Toaster position="top-right" expand={true} richColors theme="light" />
       
-      {/* Login Modal */}
+      {/* Login Modal - Description: Shown when session expires or user logs out */}
       <StudentLoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
@@ -1048,7 +1082,7 @@ export default function ModernStudentPortalPage() {
         requiresContact={requiresContact}
       />
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - Description: Dark background when sidebar is open on mobile */}
       {isMenuOpen && (
         <div 
           className="fixed inset-0 bg-maroon-950/70 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300 animate-fadeIn"
@@ -1056,9 +1090,9 @@ export default function ModernStudentPortalPage() {
         />
       )}
 
-      {/* Main Layout Container */}
+      {/* Main Layout Container - Description: Flex layout with sidebar and content area */}
       <div className="flex">
-        {/* Navigation Sidebar */}
+        {/* Navigation Sidebar - Description: Persistent navigation menu */}
         <div className={`
           ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
           lg:translate-x-0
@@ -1081,9 +1115,9 @@ export default function ModernStudentPortalPage() {
           />
         </div>
 
-        {/* Main Content Area */}
+        {/* Main Content Area - Description: Dynamic content based on selected view */}
         <div className="flex-1 flex flex-col min-h-screen w-full lg:w-[calc(100%-18rem)] xl:w-[calc(100%-20rem)] transition-all duration-300">
-          {/* Header */}
+          {/* Header - Description: Top bar with student info and controls */}
           <ModernStudentHeader
             student={student}
             searchTerm={searchTerm}
@@ -1094,7 +1128,7 @@ export default function ModernStudentPortalPage() {
             currentView={currentView}
           />
 
-          {/* Content Area */}
+          {/* Dynamic Content Area - Description: Renders different components based on navigation */}
           <main className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 container mx-auto max-w-7xl mobile-scroll-hide sm:overflow-y-auto">
             {currentView === 'home' && (
               <ModernHomeView
@@ -1138,7 +1172,7 @@ export default function ModernStudentPortalPage() {
             )}
           </main>
 
-          {/* Modern Footer - Kinyui Theme */}
+          {/* Footer - Description: Copyright and policy information */}
           <footer className="border-t border-amber-200 bg-gradient-to-r from-maroon-900 via-maroon-800 to-amber-800 py-4 sm:py-6 md:py-8">
             <div className="container mx-auto px-3 sm:px-4 md:px-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
@@ -1147,11 +1181,11 @@ export default function ModernStudentPortalPage() {
                     © {new Date().getFullYear()} Kinyui Boys' Senior School
                   </p>
                   <p className="text-amber-300 text-xs mt-1 sm:mt-2">
-                    Student Portal v3.0 • Soaring to Excellence
+                    Digital Student Portal • Empowering Excellence Through Technology
                   </p>
                   <div className="flex items-center gap-2 sm:gap-3 mt-2 sm:mt-3">
                     <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-amber-300">Session Active</span>
+                    <span className="text-xs text-amber-300">Secure Session Active</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
@@ -1159,27 +1193,27 @@ export default function ModernStudentPortalPage() {
                     onClick={() => router.push('/pages/OurSchoolPolicies')}
                     className="text-amber-200 hover:text-white text-xs sm:text-sm font-medium transition-colors mobile-touch-friendly"
                   >
-                    Privacy
+                    Privacy Policy
                   </button>
 
                   <button
                     onClick={() => router.push('/pages/OurSchoolPolicies')}
                     className="text-amber-200 hover:text-white text-xs sm:text-sm font-medium transition-colors mobile-touch-friendly"
                   >
-                    Terms
+                    Terms of Service
                   </button>
 
                   <button
                     onClick={() => router.push('/pages/OurSchoolPolicies')}
                     className="text-amber-200 hover:text-white text-xs sm:text-sm font-medium transition-colors mobile-touch-friendly"
                   >
-                    Help
+                    Help Center
                   </button>
 
                   <button
                     onClick={() => router.push('/pages/OurSchoolPolicies')}
                     className="text-amber-200 hover:text-white transition-colors mobile-touch-friendly"
-                    aria-label="Language & Policies"
+                    aria-label="Language & Accessibility"
                   >
                     <FaGlobe className="w-3 h-3 sm:w-4 sm:h-4" />
                   </button>

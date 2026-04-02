@@ -120,7 +120,7 @@ export default function LoadingScreen() {
 
         {/* School Name - Kinyui Branding */}
         <div className="text-center mb-5 md:mb-6">
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-wider text-white drop-shadow-lg">
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-wider text-slate-600 drop-shadow-lg">
             {schoolName.split("'").map((part, i) => (
               <span key={i}>
                 {part}
@@ -131,17 +131,17 @@ export default function LoadingScreen() {
           
           {/* Animated Gradient Underline - Amber */}
           <div className="relative mt-2">
-            <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent animate-underline"></div>
+            <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-800 to-transparent animate-underline"></div>
           </div>
           
-          <p className="text-amber-200 text-xs md:text-sm mt-3 tracking-wider font-semibold">
+          <p className="text-amber-800 text-xs md:text-sm mt-3 tracking-wider font-semibold">
             EST. 1976 | CENTRE OF EXCELLENCE
           </p>
         </div>
 
         {/* Motto - School Motto */}
         <div className="text-center mb-8 md:mb-10">
-          <p className="text-lg md:text-2xl lg:text-3xl font-bold italic tracking-wide text-amber-100">
+          <p className="text-lg md:text-2xl lg:text-3xl font-bold italic tracking-wide text-amber-800">
             "{motto}"
           </p>
         </div>
