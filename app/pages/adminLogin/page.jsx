@@ -1276,10 +1276,10 @@ const handlePasswordAfterVerification = async () => {
 
     {/* Header Section */}
     <div className="mb-8 sm:mb-10 text-left">
-      <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
+      <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
         {isForgotMode ? "Recover Access" : "Welcome Back"}
       </h2>
-      <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+      <p className="text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed">
         {isForgotMode 
           ? "Enter your email address below and we'll send you a secure recovery link." 
           : "Please enter your official credentials to access your dashboard."}
@@ -1289,7 +1289,7 @@ const handlePasswordAfterVerification = async () => {
     <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
       {/* Email Field */}
       <div>
-        <label className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700 mb-2 block">
+        <label className="text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wider text-slate-700 mb-2 block">
           Email Address
         </label>
         <div className="relative">
@@ -1301,7 +1301,7 @@ const handlePasswordAfterVerification = async () => {
             onChange={handleInputChange}
             required
             placeholder="admin@kinyui.ac.ke"
-            className="w-full pl-12 pr-4 py-3.5 sm:py-4 bg-slate-50 border text-slate-900 font-semibold border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm text-base"
+            className="w-full pl-12 pr-4 py-3.5 sm:py-4 bg-slate-50 border text-slate-900 font-semibold border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm text-sm sm:text-base"
           />
         </div>
       </div>
@@ -1311,13 +1311,13 @@ const handlePasswordAfterVerification = async () => {
           {/* Password Field */}
           <div>
             <div className="flex justify-between items-center mb-2">
-              <label className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700">
+              <label className="text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wider text-slate-700">
                 Password
               </label>
               <button 
                 type="button"
                 onClick={() => (router.push("/pages/forgotpassword"))}
-                className="text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors"
+                className="text-[10px] sm:text-xs md:text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors"
               >
                 Forgot password?
               </button>
@@ -1331,7 +1331,7 @@ const handlePasswordAfterVerification = async () => {
                 onChange={handleInputChange}
                 required
                 placeholder="••••••••"
-                className="w-full pl-12 pr-12 py-3.5 sm:py-4 text-slate-900 font-semibold bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm text-base"
+                className="w-full pl-12 pr-12 py-3.5 sm:py-4 text-slate-900 font-semibold bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all shadow-sm text-sm sm:text-base"
               />
               <button 
                 type="button"
@@ -1352,7 +1352,7 @@ const handlePasswordAfterVerification = async () => {
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
                 className="mt-0.5 h-5 w-5 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500 transition"
               />
-              <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors leading-tight">
+              <span className="text-xs sm:text-sm text-slate-600 group-hover:text-slate-900 transition-colors leading-tight">
                 I agree to the <Link href="/pages/OurSchoolPolicies" className="font-bold text-blue-600 hover:underline">Terms & Conditions</Link>
               </span>
             </label>
@@ -1363,7 +1363,7 @@ const handlePasswordAfterVerification = async () => {
                 onChange={(e) => setRememberDevice(e.target.checked)}
                 className="mt-0.5 h-5 w-5 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500 transition"
               />
-              <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors leading-tight">
+              <span className="text-xs sm:text-sm text-slate-600 group-hover:text-slate-900 transition-colors leading-tight">
                 Keep me logged in on this device
               </span>
             </label>
@@ -1375,7 +1375,7 @@ const handlePasswordAfterVerification = async () => {
       <button 
         type="submit"
         disabled={isLoading || (!isForgotMode && !agreedToTerms)}
-        className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-blue-700 active:scale-[0.98] transition-all disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed shadow-lg shadow-blue-100 flex items-center justify-center gap-3 mt-4"
+        className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-blue-700 active:scale-[0.98] transition-all disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed shadow-lg shadow-blue-100 flex items-center justify-center gap-3 mt-4"
       >
         {isLoading ? (
           <>
@@ -1394,14 +1394,14 @@ const handlePasswordAfterVerification = async () => {
         <button 
           type="button"
           onClick={() => setIsForgotMode(false)}
-          className="w-full text-center text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors pt-4"
+          className="w-full text-center text-xs sm:text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors pt-4"
         >
           &larr; Return to login
         </button>
       )}
     </form>
   </div>
-</div>        </div>
+</div>      </div>
       </main>
     </>
   );
