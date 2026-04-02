@@ -1189,7 +1189,7 @@ const handlePasswordAfterVerification = async () => {
 <div className="relative hidden md:flex flex-col justify-between bg-slate-950 text-white px-16 py-20 lg:px-24 overflow-hidden border-r border-white/5">
   {/* Background Layers */}
   <div 
-    className="absolute inset-0 bg-cover bg-center opacity-25 transition-transform duration-100"
+    className="absolute inset-0 bg-cover bg-center opacity-40 transition-transform duration-100"
     style={{ backgroundImage: "url('/hero/kbss.png')" }}
   ></div>
   <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-slate-950 to-black"></div>
