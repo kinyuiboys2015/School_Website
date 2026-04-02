@@ -411,7 +411,7 @@ function ModernLoadingSpinner({ message = "Loading sessions from the database…
             />
             {/* Pulsing inner circle */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-gradient-to-r from-indigo-500 to-violet-600 rounded-full animate-ping opacity-25"
+              <div className="bg-gradient-to-br from-rose-700 to-amber-800 rounded-full animate-ping opacity-25"
                    style={{ width: inner, height: inner }}></div>
             </div>
           </div>
@@ -428,7 +428,7 @@ function ModernLoadingSpinner({ message = "Loading sessions from the database…
           {/* Bouncing dots */}
           <div className="flex justify-center space-x-1.5">
             {[0, 1, 2].map(i => (
-              <div key={i} className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" 
+              <div key={i} className="w-2 h-2 bg-gradient-to-br from-rose-700 to-amber-800 rounded-full animate-bounce" 
                    style={{ animationDelay: `${i * 0.15}s` }}></div>
             ))}
           </div>
