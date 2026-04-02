@@ -1239,7 +1239,7 @@ const handlePasswordAfterVerification = async () => {
 </div>
 
     {/* Bottom Section: Footer Info */}
-    <div className="mt-auto pt-8 mb-[10%] border-t border-white/5">
+    <div className="mt-auto pt-8 mb-[5%] border-t border-white/5">
       <div className="flex flex-col gap-6">
         <div className="space-y-1">
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">School Motto</p>
