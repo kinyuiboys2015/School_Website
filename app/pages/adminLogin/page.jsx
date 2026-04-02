@@ -1260,8 +1260,9 @@ const handlePasswordAfterVerification = async () => {
   </div>
 </div>
         {/* Right Panel - Form */}
-<div className="min-h-screen bg-white p-6 sm:p-12 flex flex-col justify-center">
-  <div className="w-full max-w-md mx-auto">
+<div className="min-h-screen bg-white p-6 sm:p-12 flex flex-col justify-start">
+  
+  <div className="w-full max-w-md ml-0 md:ml-[15%]">
     {/* Mobile Logo */}
     <div className="md:hidden text-center mb-8">
       <Image
