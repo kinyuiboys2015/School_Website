@@ -1175,12 +1175,142 @@ const handlePasswordAfterVerification = async () => {
         </div>
       )}
 
-      {/* Verification Modal (no changes) */}
-      {showVerificationModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-start sm:items-center justify-center p-2 sm:p-4 z-[9999] animate-fade-in overflow-y-auto">
-            {/* ... modal content ... */}
+{showVerificationModal && (
+  <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4 z-[9999] animate-fade-in overflow-y-auto">
+    {/* Institutional Gold Border and Navy Theme */}
+    <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md my-auto bg-white rounded-xl md:rounded-2xl shadow-2xl border-2 border-blue-900/10 overflow-hidden flex flex-col max-h-[95vh] sm:max-h-[90vh]">
+      
+      {/* Kinyui Header: Deep Navy to Royal Blue */}
+      <div className="relative p-5 sm:p-6 bg-[#002366] text-white shrink-0 border-b-4 border-amber-500">
+        <button
+          onClick={closeVerificationModal}
+          className="absolute top-3 right-3 p-2 hover:bg-white/10 rounded-lg transition-colors active:scale-90"
+        >
+          <X className="w-5 h-5 text-amber-400" />
+        </button>
+        
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-lg flex items-center justify-center shrink-0 border border-white/20">
+            <ShieldCheck className="w-6 h-6 md:w-7 md:h-7 text-amber-400" />
+          </div>
+          <div className="min-w-0">
+            <h3 className="text-lg sm:text-xl font-bold tracking-tight uppercase">
+              {requiresPasswordAfterVerification ? 'Final Access' : 'Identity Check'}
+            </h3>
+            <p className="text-blue-200 text-[10px] sm:text-xs font-semibold uppercase tracking-widest opacity-80">
+              {requiresPasswordAfterVerification ? 'Portal Authorization' : 'Secure Campus Network'}
+            </p>
+          </div>
         </div>
-      )}
+        
+        {/* Verification Badge */}
+        <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-amber-500 text-blue-950 rounded-md shadow-sm">
+          <AlertCircle className="w-3.5 h-3.5" />
+          <span className="text-[10px] font-black whitespace-nowrap uppercase tracking-tighter">
+            {verificationReason?.replace(/_/g, ' ') || 'SECURITY PROTOCOL'}
+          </span>
+        </div>
+      </div>
+      
+      <div className="p-5 sm:p-8 overflow-y-auto custom-scrollbar bg-slate-50/50">
+        {!requiresPasswordAfterVerification ? (
+          <>
+            <div className="mb-6 text-center">
+              <p className="text-slate-500 text-xs font-bold uppercase tracking-wide mb-3">
+                Authorization Code Sent To:
+              </p>
+              <div className="bg-white border-2 border-slate-200 rounded-lg p-3 shadow-inner">
+                <p className="text-blue-900 font-bold text-sm break-all">{verificationEmail}</p>
+              </div>
+            </div>
+            
+            <div className="mb-6">
+              <div className="grid grid-cols-6 gap-2 mb-5">
+                {verificationCode.map((digit, index) => (
+                  <input
+                    key={index}
+                    id={`verification-input-${index}`}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleVerificationCodeChange(index, e.target.value)}
+                    onKeyDown={(e) => handleVerificationKeyDown(index, e)}
+                    className="w-full aspect-square text-center text-xl font-bold bg-white border-2 border-slate-300 rounded-lg focus:border-blue-800 focus:ring-4 focus:ring-blue-800/5 outline-none transition-all text-blue-900"
+                    autoFocus={index === 0}
+                  />
+                ))}
+              </div>
+              
+              <div className="flex items-center justify-center gap-2 text-xs font-bold text-slate-400 bg-slate-100 py-2 rounded-full">
+                <Clock className="w-3.5 h-3.5 text-amber-600" />
+                <span>Expires in: <span className="text-blue-900 font-mono">{Math.floor(countdown / 60)}:{(countdown % 60).toString().padStart(2, '0')}</span></span>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="mb-6">
+            <p className="text-slate-700 text-sm mb-4 font-bold">
+              Identity Confirmed. Enter Portal Password:
+            </p>
+            <div className="relative group">
+              <input
+                type="password"
+                value={passwordAfterVerification}
+                onChange={(e) => setPasswordAfterVerification(e.target.value)}
+                placeholder="••••••••"
+                className="w-full p-4 pl-5 pr-12 bg-white border-2 border-slate-200 rounded-xl focus:border-blue-800 focus:ring-4 focus:ring-blue-800/5 outline-none transition-all text-blue-900 font-bold"
+                autoFocus
+              />
+              <Lock className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-blue-800 transition-colors w-5 h-5" />
+            </div>
+          </div>
+        )}
+        
+        <div className="flex flex-col gap-3">
+          <button
+            type="button"
+            onClick={requiresPasswordAfterVerification ? handlePasswordAfterVerification : handleVerifyCode}
+            disabled={verificationLoading || (!requiresPasswordAfterVerification && verificationCode.join('').length !== 6)}
+            className="w-full flex items-center justify-center gap-3 py-4 bg-blue-900 text-white rounded-xl font-bold text-sm tracking-widest shadow-xl hover:bg-blue-950 active:scale-[0.98] transition-all disabled:bg-slate-300"
+          >
+            {verificationLoading ? (
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : (
+              <>
+                <CheckCircle className="w-4 h-4 text-amber-400" />
+                <span className="uppercase">{requiresPasswordAfterVerification ? 'Grant Access' : 'Authorize Device'}</span>
+              </>
+            )}
+          </button>
+
+          {!requiresPasswordAfterVerification && (
+            <button
+              type="button"
+              onClick={handleResendCode}
+              disabled={resendLoading || countdown > 0}
+              className="w-full py-2 text-slate-500 font-black text-[10px] uppercase tracking-widest hover:text-blue-900 transition-colors disabled:opacity-30"
+            >
+              Didn't receive code? <span className="text-blue-700 underline underline-offset-4">Request New</span>
+            </button>
+          )}
+        </div>
+
+        {/* Footer info - Campus Security Branding */}
+        <div className="mt-8 pt-5 border-t-2 border-dashed border-slate-200">
+          <div className="flex gap-4 items-start">
+            <div className="p-2 bg-blue-50 rounded-lg">
+              <ShieldAlert className="w-4 h-4 text-blue-800" />
+            </div>
+            <p className="text-[10px] leading-relaxed text-slate-500 font-bold uppercase tracking-tight">
+              Institutional Security Protocol: This session is encrypted. Unauthorized access attempts are logged and reported to Kinyui ICT Staff.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* NEW LOGIN PAGE LAYOUT */}
       <main className="min-h-screen bg-slate-100 font-sans flex items-center justify-center">
