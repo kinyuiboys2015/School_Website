@@ -1376,14 +1376,14 @@ const handlePasswordAfterVerification = async () => {
     <div className="mt-auto pt-8 mb-[5%] border-t border-white/5">
       <div className="flex flex-col gap-6">
         <div className="space-y-1">
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">School Motto</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-100">School Motto</p>
           <p className="text-2xl font-black italic tracking-tight text-white drop-shadow-md">
             "Soaring To Excellence"
           </p>
         </div>
         
-        <div className="flex items-center justify-between text-[10px] font-bold text-slate-600 tracking-widest uppercase mt-4">
-          <span>&copy; {new Date().getFullYear()} KBSS</span>
+        <div className="flex items-center justify-between text-[10px] font-bold text-slate-200 tracking-widest uppercase mt-4">
+          <span>&copy; {new Date().getFullYear()} Kinyui Boys' Senior</span>
           <span className="flex items-center gap-2">
             <Server size={10} />
             Secure Node: 041
