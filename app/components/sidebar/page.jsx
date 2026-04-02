@@ -309,8 +309,7 @@ const handleLogout = () => {
     return (
       <div className="fixed lg:sticky lg:top-0 inset-y-0 left-0 z-50 w-full max-w-[320px] lg:max-w-[280px] xl:max-w-[320px] bg-white shadow-xl border-r border-gray-200 backdrop-blur-xl overflow-hidden flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4 animate-spin"></div>
-          <p className="text-gray-600 text-sm">Checking authentication...</p>
+<div className="w-8 h-8 border-4 border-red-800 border-t-amber-500 rounded-full mx-auto mb-4 animate-spin"></div>          <p className="text-gray-600 text-sm">Checking authentication...</p>
         </div>
       </div>
     );
@@ -430,8 +429,7 @@ const handleLogout = () => {
           <div className="flex items-center justify-between p-4 lg:p-5 border-b border-gray-200 flex-shrink-0">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-blue-500 via-purple-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-blue-500/30">
-                  <img 
+<div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-maroon-700 via-amber-600 to-maroon-800 rounded-2xl flex items-center justify-center shadow-2xl shadow-maroon-900/30">                  <img 
                     src="/kinyui.png" 
                     alt="School Logo" 
                     className="w-full h-full object-contain p-2"
@@ -441,7 +439,7 @@ const handleLogout = () => {
               </div>
               <div className="min-w-0">
                 <h1 className="text-sm lg:text-lg font-bold text-gray-800 truncate">
-                  Katz Senior School
+                  Kinyui Boys' Senior 
                 </h1>
                 <p className="text-gray-600 text-xs lg:text-sm font-medium truncate">Admin Portal</p>
               </div>
@@ -460,50 +458,54 @@ const handleLogout = () => {
 
           {/* Navigation */}
           <nav className="flex-1 p-4 lg:p-5 overflow-y-auto hide-scrollbar">
-            <div className="space-y-1 lg:space-y-2">
-              {safeTabs.map((tab) => {
-                const TabIcon = tab.icon || FiUser;
-                return (
-                 <button
-                   key={tab.id}
-                   onClick={() => handleTabClick(tab.id)}
-                   className={`w-full flex items-center gap-3 lg:gap-4 px-3 lg:px-4 py-3 lg:py-4 rounded-2xl transition-all duration-200 group relative overflow-hidden ${
-                     activeTab === tab.id
-                       ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 shadow-lg shadow-blue-500/10 backdrop-blur-sm border border-blue-200'
-                       : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-                   }`}
-                 >
-                  {/* Active indicator */}
-                  {activeTab === tab.id && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 lg:h-10 bg-gradient-to-b from-blue-500 to-purple-500 rounded-r-full shadow-lg shadow-blue-400/50"></div>
-                  )}
-                  
-                  {/* Icon */}
-                  <div className={`relative p-2 rounded-xl transition-all duration-200 ${
-                    activeTab === tab.id 
-                      ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg' 
-                      : 'bg-gray-100 text-gray-600 group-hover:bg-gray-200 group-hover:text-gray-800'
-                  }`}>
-                    <TabIcon className="text-sm lg:text-lg relative z-10" />
-                  </div>
+         <div className="space-y-1 lg:space-y-2">
+  {safeTabs.map((tab) => {
+    const TabIcon = tab.icon || FiUser;
+    return (
+      <button
+        key={tab.id}
+        onClick={() => handleTabClick(tab.id)}
+        className={`w-full flex items-center gap-3 lg:gap-4 px-3 lg:px-4 py-3 lg:py-4 rounded-2xl transition-all duration-200 group relative overflow-hidden ${
+          activeTab === tab.id
+            ? 'bg-gradient-to-r from-maroon-900/10 via-maroon-800/5 to-maroon-900/10 text-maroon-700 shadow-lg shadow-maroon-900/20 backdrop-blur-sm border border-maroon-200'
+            : 'text-gray-600 hover:text-maroon-700 hover:bg-maroon-50/50'
+        }`}
+      >
+        {/* Active indicator - Maroon gradient */}
+        {activeTab === tab.id && (
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 lg:h-10 bg-gradient-to-b from-maroon-700 to-amber-600 rounded-r-full shadow-lg shadow-maroon-900/30"></div>
+        )}
+        
+        {/* Icon Container */}
+        <div className={`relative p-2 rounded-xl transition-all duration-200 ${
+          activeTab === tab.id 
+            ? 'bg-gradient-to-br from-maroon-700 to-amber-600 text-white shadow-lg shadow-maroon-900/30' 
+            : 'bg-gray-100 text-gray-600 group-hover:bg-maroon-100 group-hover:text-maroon-700'
+        }`}>
+          <TabIcon className="text-sm lg:text-lg relative z-10" />
+        </div>
 
-                  {/* Label */}
-                  <div className="flex items-center justify-between flex-1 min-w-0">
-                    <span className="font-semibold text-xs lg:text-sm xl:text-base relative z-10 text-left truncate">
-                      {tab.label}
-                    </span>
-                  </div>
+        {/* Label */}
+        <div className="flex items-center justify-between flex-1 min-w-0">
+          <span className={`font-semibold text-xs lg:text-sm xl:text-base relative z-10 text-left truncate transition-colors ${
+            activeTab === tab.id 
+              ? 'text-maroon-800' 
+              : 'group-hover:text-maroon-700'
+          }`}>
+            {tab.label}
+          </span>
+        </div>
 
-                  {/* Active chevron */}
-                  {activeTab === tab.id && (
-                    <div className="text-blue-500">
-                      <FiChevronRight className="text-sm lg:text-lg" />
-                    </div>
-                  )}
-                </button>
-              );
-            })}
-            </div>
+        {/* Active chevron - Amber/Gold */}
+        {activeTab === tab.id && (
+          <div className="text-amber-600">
+            <FiChevronRight className="text-sm lg:text-lg" />
+          </div>
+        )}
+      </button>
+    );
+  })}
+</div>
           </nav>
 
           {/* Footer */}
