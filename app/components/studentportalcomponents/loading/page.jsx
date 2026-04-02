@@ -1,3 +1,7 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
 // Modern Loading Screen with Kinyui School Colors (Dark Maroon & Amber)
 export default function LoadingScreen() {
   const [textIndex, setTextIndex] = useState(0);
@@ -12,6 +16,8 @@ export default function LoadingScreen() {
     "Securing your session",
     "Almost ready..."
   ];
+
+  // Rest of your component code remains the same...
 
   // Animated text effect
   useEffect(() => {
