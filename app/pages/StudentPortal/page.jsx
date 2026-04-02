@@ -18,7 +18,7 @@ import {
   FaLightbulb, FaBrain, FaHandshake, FaHeart, FaLock, FaGlobe, 
   FaArrowRight, FaFire, FaBolt, FaCalendarCheck, FaUserPlus, 
   FaUserCheck, FaRoute, FaDirections, FaQrcode, FaFingerprint, 
-  FaIdCard, FaDesktop, FaWandMagic, FaUser, FaShieldAlt, FaSchool
+  FaIdCard, FaDesktop, FaWandMagic, FaUser, FaShieldHalved, FaSchool
 } from 'react-icons/fa6';
 
 import { useRouter } from 'next/navigation';
@@ -27,8 +27,7 @@ import Image from 'next/image';
 // Font Awesome 5 (Legacy)
 import { 
   FaHome, FaSearch, FaTimes, FaSync, FaExclamationCircle, 
-  FaCircleExclamation, FaSparkles, FaCloudUpload, FaUserFriends,
-  FaQuestionCircle
+  FaUserFriends, FaQuestionCircle
 } from 'react-icons/fa';
 import { HiSparkles } from "react-icons/hi2";
 import { FaCheckCircle } from "react-icons/fa6";
@@ -249,7 +248,7 @@ function ModernStudentHeader({
               <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 rounded-full border border-amber-500/30">
                 <div className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
                 <span className="text-[10px] font-black text-amber-200 uppercase tracking-wider">KINYUI BOYS'</span>
-                <FaShieldAlt className="w-3 h-3 text-amber-400" />
+                <FaShieldHalved className="w-3 h-3 text-amber-400" />
               </div>
             </div>
           </div>
@@ -888,7 +887,7 @@ export default function ModernStudentPortalPage() {
                 <div className="flex items-center gap-1.5 px-2.5 py-1 bg-white/10 rounded-full border border-amber-500/30">
                   <div className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
                   <span className="text-[10px] font-black text-amber-200 uppercase tracking-wider">Secure Access</span>
-                  <FaShieldAlt className="w-3 h-3 text-amber-400" />
+                  <FaShieldHalved className="w-3 h-3 text-amber-400" />
                 </div>
                 <button className="text-sm font-bold text-amber-200 hover:text-white transition-colors">Support Center</button>
               </div>

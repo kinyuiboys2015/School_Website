@@ -12,7 +12,7 @@ import {
   FiBell, FiBook, FiFileText, FiAward, FiMail,
   FiPhone, FiSave, FiPlus, FiTrash2, FiEdit,
   FiCheck, FiLoader, FiAlertTriangle, FiInfo,
-  FiPrinter, FiCopy, FiLink, FiGlobe,FiPhoneCall, FiArrowRight, FiHeart  
+  FiPrinter, FiCopy, FiLink, FiGlobe, FiArrowRight, FiHeart  
 } from 'react-icons/fi';
 import { IoClose, IoCalendarClearOutline } from "react-icons/io5"; // or /io for v4
 
@@ -513,7 +513,7 @@ function ModernDetailModal({ session, onClose, onContact }) {
       emotional: { gradient: 'from-purple-500 to-pink-500', icon: FiMessageSquare },
       devotion: { gradient: 'from-indigo-500 to-purple-500', icon: FiStar },
       worship: { gradient: 'from-amber-500 to-orange-500', icon: FiStar },
-      support: { gradient: 'from-emerald-500 to-green-500', icon: FiPhoneCall },
+      support: { gradient: 'from-emerald-500 to-green-500', icon: FiPhone },
       drugs: { gradient: 'from-red-500 to-rose-500', icon: FiAlertTriangle }
     };
     return styles[category] || { gradient: 'from-slate-500 to-slate-600', icon: FiBookOpen };
