@@ -770,7 +770,7 @@ const handleVerifyCode = async (e) => {
       // Redirect to dashboard
       setTimeout(() => {
         router.push('/MainDashboard');
-      }, 1000);
+      }, 500);
     } else {
       // Check if password is required after verification
       if (data.requiresPassword === true) {
