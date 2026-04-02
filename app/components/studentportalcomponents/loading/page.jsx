@@ -224,7 +224,7 @@ export default function LoadingScreen() {
       </div>
 
       {/* Custom Animations */}
-      <style jsx global>{`
+     <style>{`
         @keyframes pulse-slow {
           0%, 100% { opacity: 0.3; transform: scale(1); }
           50% { opacity: 0.6; transform: scale(1.1); }

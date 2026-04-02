@@ -180,7 +180,7 @@ function ModernStudentHeader({
 
   return (
     <>
-      <style jsx global>{responsiveStyles}</style>
+      <style>{responsiveStyles}</style>
       <header className="bg-gradient-to-r from-maroon-900 via-maroon-800 to-amber-800 border-b border-amber-600/30 shadow-xl sticky top-0 z-30">
         <div className="container mx-auto px-3 xs:px-4 sm:px-6">
           <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
