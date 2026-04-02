@@ -478,7 +478,7 @@ const handleLogout = () => {
         {/* Icon Container */}
         <div className={`relative p-2 rounded-xl transition-all duration-200 ${
           activeTab === tab.id 
-            ? 'bg-gradient-to-br from-rose-700 to-amber-600 text-white shadow-lg shadow-maroon-900/30' 
+            ? 'bg-gradient-to-br from-rose-700 to-amber-800 text-white shadow-lg' 
             : 'bg-gray-100 text-gray-600 group-hover:bg-maroon-100 group-hover:text-maroon-700'
         }`}>
           <TabIcon className="text-sm lg:text-lg relative z-10" />
