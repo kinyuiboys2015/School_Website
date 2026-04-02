@@ -1317,7 +1317,7 @@ const handlePasswordAfterVerification = async () => {
               <button 
                 type="button"
                 onClick={() => (router.push("/pages/forgotpassword"))}
-                className="text-[10px] sm:text-xs md:text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors"
+                className="text-[10px] sm:text-xs md:text-sm font-bold text-blue-600 hover:text-blue-700 hover:underline transition-colors"
               >
                 Forgot password?
               </button>
