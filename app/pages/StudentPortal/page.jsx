@@ -8,7 +8,7 @@ import ResultsView from '../../components/studentportalcomponents/result/page.js
 import ResourcesAssignmentsView from '../../components/studentportalcomponents/ass/page.jsx';
 import GuidanceEventsView from '../../components/studentportalcomponents/session/page';
 import LoadingScreen from '../../components/studentportalcomponents/loading/page';
-import FeesView from '../../components/studentportalcomponents/feebalance/page';
+import FeesView from '../../components/studentportalcomponents/feebalance/page'; // ADDED IMPORT
 
 /// Font Awesome 6 - Modern versions
 import { 
