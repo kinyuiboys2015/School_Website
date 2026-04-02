@@ -4,12 +4,11 @@ import { useState, useEffect } from 'react';
 import { 
   FiUser, FiLock, FiAlertCircle, FiX, 
   FiHelpCircle, FiBook, FiShield, FiClock,
-  FiLogIn, FiEdit2, FiCheckCircle
+  FiLogIn, FiEdit2, FiCheckCircle, FiStar, FiAward
 } from 'react-icons/fi';
 import { IoSchool } from 'react-icons/io5';
-
+import Image from 'next/image';
 import CircularProgress from "@mui/material/CircularProgress";
-
 
 export default function StudentLoginModal({ 
   isOpen, 
@@ -44,7 +43,7 @@ export default function StudentLoginModal({
   const validateInputs = () => {
     const errors = {};
     
-    // Name validation
+    // Male name validation for Kinyui Boys' School
     if (!formData.fullName.trim()) {
       errors.fullName = 'Please enter your name';
     } else {
@@ -52,9 +51,15 @@ export default function StudentLoginModal({
       if (nameParts.length < 1) {
         errors.fullName = 'Please enter at least your first name';
       }
+      
+      // Check for male name patterns (common Kamba male names)
+      const maleNamePatterns = /(Musau|Mutuku|Muthama|Mutinda|Mbuvi|Muendo|Mulei|Mutua|Kitheka|Kasimu|Munyao|Mwanzia|Maingi|Mutisya|Musingi|Mwendwa|Mulwa|Munyasya|Musyoka|Ndeti|Nzau|Kilonzo|Kioko|Kimeu|Kivuva|Munguti|Muthoka|Muteti|Mutonga|Mutuva|Ndambuki|Ndunda|Ngui|Nzioka|Wambua|Wayua)/i;
+      
+      if (!maleNamePatterns.test(formData.fullName.trim())) {
+        errors.fullName = 'Please enter a valid male student name for Kinyui Boys\' School';
+      }
     }
 
-    // Admission number validation
     if (!formData.admissionNumber.trim()) {
       errors.admissionNumber = 'Please enter your admission number';
     } else if (!/^[A-Z0-9]{2,10}$/i.test(formData.admissionNumber.trim())) {
@@ -92,20 +97,20 @@ export default function StudentLoginModal({
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    // Clear errors when user starts typing
     if (localError) setLocalError(null);
     if (validationErrors[field]) {
       setValidationErrors(prev => ({ ...prev, [field]: '' }));
     }
   };
 
-  // Updated with Kamba names
+  // Male student examples for Kinyui Boys' School
   const studentExamples = [
     { name: "Musau Mwanzia Mutuku", admission: "2903" },
-    { name: "Mwende Mumbua Kalondu", admission: "2902" },
-    { name: "Mwikali Kasimu", admission: "1234" },
-    { name: "Mutinda Kitheka", admission: "5678" },
-    { name: "Kalondu Mutua", admission: "9012" }
+    { name: "Mutinda Kitheka Mbuvi", admission: "2902" },
+    { name: "Kasimu Muendo Mulei", admission: "1234" },
+    { name: "Mutua Kilonzo Ndeti", admission: "5678" },
+    { name: "Musyoka Kioko Kimeu", admission: "9012" },
+    { name: "Muthama Mutisya Musingi", admission: "3456" }
   ];
 
   const nameFormats = [
@@ -115,62 +120,90 @@ export default function StudentLoginModal({
     "musau mutuku",
     "M. Mutuku",
     "Mutuku Musau",
-    "Mwanzia Mutuku",
-    "Mwende Mumbua",
-    "Mumbua Kalondu",
-    "Mwikali Kasimu"
+    "Mutinda Kitheka",
+    "Kasimu Muendo"
   ];
 
   return (
     <div 
-      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-1 sm:p-2 animate-fadeIn overflow-y-auto"
+      className="fixed inset-0 bg-maroon-950/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4 animate-fadeIn overflow-y-auto"
       role="dialog"
       aria-modal="true"
       aria-labelledby="login-modal-title"
-      aria-describedby="login-modal-description"
     >
-      <main className="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-2xl w-full max-w-3xl border-2 border-blue-200 overflow-hidden transform transition-all duration-300 scale-100 my-auto max-h-[85vh] flex flex-col">
-        {/* Header - Compact */}
-        <header className="bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-900 px-4 py-3 sm:px-5 sm:py-3 text-white flex-shrink-0">
+      <main className="bg-gradient-to-br from-white via-amber-50 to-maroon-50 rounded-2xl shadow-2xl w-full max-w-3xl border-2 border-amber-500/30 overflow-hidden transform transition-all duration-300 scale-100 my-auto max-h-[90vh] flex flex-col">
+        
+        {/* Header with School Logo - Kinyui Branding */}
+        <header className="bg-gradient-to-r from-maroon-900 via-maroon-800 to-amber-800 px-6 py-4 text-white flex-shrink-0">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <figure className="p-1.5 bg-white/20 rounded-xl backdrop-blur-sm">
-                <IoSchool className="text-lg sm:text-xl" aria-hidden="true" />
-              </figure>
+            <div className="flex items-center gap-3">
+              {/* School Logo Container */}
+              <div className="relative">
+                <div className="absolute inset-0 bg-amber-500/30 rounded-full blur-md"></div>
+                <div className="relative w-14 h-14 bg-gradient-to-br from-maroon-700 to-amber-600 rounded-full p-1 shadow-xl">
+                  <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
+                    <Image 
+                      src="/kinyui.png" 
+                      alt="Kinyui Boys' School Logo" 
+                      width={48}
+                      height={48}
+                      className="object-contain p-1.5"
+                    />
+                  </div>
+                </div>
+              </div>
+              
               <div>
-                <h1 id="login-modal-title" className="text-lg sm:text-xl font-bold">Student Login Portal</h1>
-                <p id="login-modal-description" className="text-blue-100/90 text-xs mt-0.5">Access kinyui boys Portal learning resources</p>
+                <h1 id="login-modal-title" className="text-xl font-black tracking-wide">
+                  KINYUI BOYS'
+                </h1>
+                <p className="text-amber-200 text-xs font-semibold tracking-wider">
+                  SENIOR SCHOOL • STUDENT PORTAL
+                </p>
               </div>
             </div>
+            
             <button 
               onClick={handleClose}
-              className="p-1 hover:bg-white/20 rounded-xl transition-colors"
+              className="p-2 hover:bg-white/10 rounded-xl transition-all duration-200 hover:scale-110"
               aria-label="Close login modal"
             >
-              <FiX className="text-lg" aria-hidden="true" />
+              <FiX className="text-xl" aria-hidden="true" />
             </button>
           </div>
         </header>
 
-        {/* Body - Compact Scrollable */}
-        <article className="p-3 sm:p-4 overflow-y-auto flex-grow">
-          {/* Flexible Name Instructions - Compact */}
-          <section className="mb-3 sm:mb-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-2.5 sm:p-3 border border-emerald-200">
-            <div className="flex items-start gap-2">
-              <FiCheckCircle className="text-emerald-600 text-sm mt-0.5 flex-shrink-0" aria-hidden="true" />
+        {/* Body - Scrollable */}
+        <article className="p-6 overflow-y-auto flex-grow">
+          
+          {/* School Motto Banner */}
+          <div className="mb-5 bg-gradient-to-r from-amber-500/10 to-maroon-500/10 rounded-xl p-3 border border-amber-500/20 text-center">
+            <p className="text-maroon-800 font-bold italic text-sm flex items-center justify-center gap-2">
+              <FiStar className="text-amber-600" />
+              "Soaring to Excellence"
+              <FiStar className="text-amber-600" />
+            </p>
+            <p className="text-maroon-600 text-xs mt-1">EST. 1976 | CENTRE OF EXCELLENCE</p>
+          </div>
+
+          {/* Flexible Name Instructions - Male Students Only */}
+          <section className="mb-5 bg-gradient-to-r from-amber-50 to-maroon-50 rounded-xl p-4 border border-amber-300">
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-maroon-100 rounded-lg">
+                <FiCheckCircle className="text-maroon-700 text-sm" aria-hidden="true" />
+              </div>
               <div className="flex-1">
-                <h2 className="text-xs font-bold text-emerald-800 mb-0.5">Flexible Name Entry</h2>
-                <p className="text-emerald-700 text-xs">
-                  Any format: uppercase, lowercase, 2 or 3 names, any order
+                <h2 className="text-sm font-bold text-maroon-900 mb-1">Male Student Name Entry</h2>
+                <p className="text-maroon-700 text-xs mb-2">
+                  Enter your name in any format (uppercase, lowercase, 2 or 3 names)
                 </p>
-                <div className="flex flex-wrap gap-1 mt-1.5">
-                  {nameFormats.slice(0, 4).map((format, idx) => (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {nameFormats.map((format, idx) => (
                     <button 
                       key={idx}
                       onClick={() => handleInputChange('fullName', format)}
-                      className="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs cursor-pointer hover:bg-emerald-200 transition-colors border border-emerald-300"
+                      className="px-2 py-1 bg-maroon-100 text-maroon-800 rounded-lg text-xs cursor-pointer hover:bg-maroon-200 transition-all duration-200 border border-maroon-300 hover:scale-105"
                       type="button"
-                      aria-label={`Use name format: ${format}`}
                     >
                       {format}
                     </button>
@@ -180,42 +213,31 @@ export default function StudentLoginModal({
             </div>
           </section>
 
-          {/* Error/Contact Info Section - Compact */}
+          {/* Error/Contact Info Section */}
           <aside>
             {(showContactInfo || localError) && (
-              <div className="mb-3 sm:mb-4 animate-slideDown">
-                <div className="flex items-start gap-2 mb-2">
-                  <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center flex-shrink-0 border ${showContactInfo ? 'bg-red-100 border-red-200' : 'bg-yellow-100 border-yellow-200'}`}>
-                    <FiAlertCircle className={`text-sm ${showContactInfo ? 'text-red-600' : 'text-yellow-600'}`} aria-hidden="true" />
+              <div className="mb-5 animate-slideDown">
+                <div className="flex items-start gap-3 p-3 bg-red-50 rounded-xl border border-red-300">
+                  <div className="p-1.5 bg-red-100 rounded-full">
+                    <FiAlertCircle className="text-red-600 text-sm" aria-hidden="true" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-sm font-bold text-gray-900 mb-0.5">
+                    <h3 className="text-sm font-bold text-red-900 mb-1">
                       {showContactInfo ? 'Record Verification Needed' : 'Login Issue'}
                     </h3>
-                    <p className="text-gray-600 text-xs">
-                      {localError}
-                    </p>
+                    <p className="text-red-700 text-xs">{localError}</p>
                     
                     {showContactInfo && (
-                      <div className="mt-2 space-y-1">
-                        <div className="flex items-center gap-1.5 text-xs text-blue-700">
-                          <FiHelpCircle className="text-blue-500 text-xs" aria-hidden="true" />
-                          <span className="font-medium">You can:</span>
+                      <div className="mt-3 space-y-2">
+                        <div className="flex items-center gap-2 text-xs text-maroon-800">
+                          <FiHelpCircle className="text-maroon-600" />
+                          <span className="font-bold">Next Steps:</span>
                         </div>
-                        <ol className="text-xs text-gray-700 space-y-0.5 pl-3">
-                          <li className="flex items-center gap-1.5">
-                            <span className="w-3.5 h-3.5 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-[10px]">1</span>
-                            <span>Re-enter details below</span>
-                          </li>
-                          <li className="flex items-center gap-1.5">
-                            <span className="w-3.5 h-3.5 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-[10px]">2</span>
-                            <span>Contact class teacher</span>
-                          </li>
-                          <li className="flex items-center gap-1.5">
-                            <span className="w-3.5 h-3.5 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-[10px]">3</span>
-                            <span>Visit school office</span>
-                          </li>
-                        </ol>
+                        <ul className="text-xs text-maroon-700 space-y-1 ml-5 list-decimal">
+                          <li>Re-enter your details below</li>
+                          <li>Contact your class teacher</li>
+                          <li>Visit the school administration office</li>
+                        </ul>
                       </div>
                     )}
                   </div>
@@ -224,76 +246,65 @@ export default function StudentLoginModal({
             )}
           </aside>
 
-          {/* Login Form - Compact */}
+          {/* Login Form */}
           <section>
-            <div className="mb-3 sm:mb-4">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="p-1 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg">
-                  <FiShield className="text-blue-700 text-sm" aria-hidden="true" />
+            <div className="mb-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2 bg-gradient-to-r from-maroon-100 to-amber-100 rounded-xl">
+                  <FiShield className="text-maroon-700 text-sm" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-gray-900">Secure Student Login</h3>
-                  <div className="flex items-center gap-1 text-gray-600 text-xs">
-                    <FiClock className="text-blue-500 text-xs" aria-hidden="true" />
-                    <time>Session: <strong>2 hours</strong></time>
+                  <h3 className="text-sm font-bold text-maroon-900">Secure Student Access</h3>
+                  <div className="flex items-center gap-2 text-maroon-600 text-xs">
+                    <FiClock className="text-amber-600" />
+                    <span>Session Duration: <strong className="text-maroon-800">2 Hours</strong></span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100/50 rounded-lg p-2.5 sm:p-3 border border-blue-200">
-                <p className="text-blue-700 text-xs">
-                  <strong>Note:</strong> Use official admission number. Names in any format to access kinyui boys Portal.
+              <div className="bg-gradient-to-r from-maroon-50 to-amber-50 rounded-xl p-3 border border-maroon-200">
+                <p className="text-maroon-800 text-xs font-medium">
+                  <strong>Note:</strong> Use your official admission number and name as registered for Kinyui Boys' Senior School.
                 </p>
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4" aria-label="Student login form">
-              {/* Name Input - Enhanced Border Visibility */}
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Name Input */}
               <fieldset>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
-                    <FiUser className="text-blue-600 text-xs" aria-hidden="true" />
-                    <span>Your Name (Any Format)</span>
-                  </label>
-                  <span className="text-[10px] text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded">
-                    Flexible
-                  </span>
-                </div>
+                <label className="text-xs font-bold text-maroon-900 flex items-center gap-2 mb-2">
+                  <FiUser className="text-amber-600 text-sm" />
+                  <span>Full Name (Male Student)</span>
+                  <span className="text-[10px] text-maroon-600 bg-maroon-100 px-2 py-0.5 rounded-full">Flexible Format</span>
+                </label>
                 <input
                   type="text"
                   value={formData.fullName}
                   onChange={(e) => handleInputChange('fullName', e.target.value)}
-                  placeholder="Examples: Musau Mutuku, MUSAU MUTUKU, M. Mutuku, Mutuku Musau"
+                  placeholder="e.g., Musau Mutuku, MUSAU MUTUKU, M. Mutuku"
                   className={`
-                    w-full px-3 py-2.5 sm:px-4 sm:py-3 
-                    border-[3px] rounded-xl
-                    focus:ring-2 focus:ring-blue-500/40 focus:border-blue-600 
-                  
-                    active:border-blue-700 active:ring-2 active:ring-blue-500/30
-                    text-sm sm:text-base placeholder:text-gray-400
-                    bg-white shadow-md
-                    font-medium tracking-wide
+                    w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500/40 
+                    focus:border-amber-600 transition-all duration-200 text-sm bg-white
                     ${validationErrors.fullName 
-                      ? 'border-red-500 focus:border-red-600 focus:ring-red-500/40' 
-                      : 'border-blue-400'
+                      ? 'border-red-500 focus:border-red-600' 
+                      : 'border-maroon-300 hover:border-maroon-400'
                     }
                   `}
                   disabled={isLoading}
                   autoComplete="name"
-                  aria-label="Full Name"
-                  aria-invalid={!!validationErrors.fullName}
-                  aria-describedby={validationErrors.fullName ? "name-error" : undefined}
                 />
                 {validationErrors.fullName && (
-                  <p id="name-error" className="text-red-600 text-[10px] mt-0.5 font-medium flex items-center gap-1">
+                  <p className="text-red-600 text-xs mt-1 flex items-center gap-1">
                     <FiAlertCircle className="text-xs" />
                     {validationErrors.fullName}
                   </p>
                 )}
-                <div className="mt-1.5">
-                  <p className="text-gray-500 text-[10px] mb-1">Click examples:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {studentExamples.slice(0, 3).map((student, idx) => (
+                
+                {/* Quick Select - Male Student Examples */}
+                <div className="mt-3">
+                  <p className="text-maroon-600 text-[10px] font-semibold mb-2">⬇️ Quick Select (Male Students):</p>
+                  <div className="flex flex-wrap gap-2">
+                    {studentExamples.map((student, idx) => (
                       <button
                         key={idx}
                         type="button"
@@ -301,86 +312,55 @@ export default function StudentLoginModal({
                           handleInputChange('fullName', student.name);
                           handleInputChange('admissionNumber', student.admission);
                         }}
-                        className="
-                          px-1.5 py-1 
-                          bg-gradient-to-r from-blue-100 to-blue-200 
-                          hover:from-blue-200 hover:to-blue-300
-                          active:from-blue-300 active:to-blue-400
-                          text-blue-700 rounded text-[10px] 
-                          border border-blue-400
-                          shadow-sm hover:shadow-md
-                          font-medium
-                        "
-                        aria-label={`Fill with student ${student.name}, admission ${student.admission}`}
+                        className="px-2 py-1 bg-gradient-to-r from-maroon-100 to-amber-100 hover:from-maroon-200 hover:to-amber-200 text-maroon-800 rounded-lg text-[10px] border border-maroon-300 shadow-sm hover:shadow-md transition-all duration-200 font-medium"
                       >
-                        {student.name.split(' ')[0]} - {student.admission}
+                        {student.name.split(' ')[0]} • {student.admission}
                       </button>
                     ))}
                   </div>
                 </div>
               </fieldset>
 
-              {/* Admission Number Input - Enhanced Border Visibility */}
+              {/* Admission Number Input */}
               <fieldset>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
-                    <FiLock className="text-blue-600 text-xs" aria-hidden="true" />
-                    <span>Admission Number</span>
-                  </label>
-                  <span className="text-[10px] text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded">
-                    Unique ID
-                  </span>
-                </div>
+                <label className="text-xs font-bold text-maroon-900 flex items-center gap-2 mb-2">
+                  <FiLock className="text-amber-600 text-sm" />
+                  <span>Admission Number</span>
+                  <span className="text-[10px] text-maroon-600 bg-maroon-100 px-2 py-0.5 rounded-full">Unique ID</span>
+                </label>
                 <input
                   type="text"
                   value={formData.admissionNumber}
                   onChange={(e) => handleInputChange('admissionNumber', e.target.value.toUpperCase())}
-                  placeholder="Enter your unique admission number"
+                  placeholder="e.g., 2903, AB12, 2023001"
                   className={`
-                    w-full px-3 py-2.5 sm:px-4 sm:py-3 
-                    border-[3px] rounded-xl
-                    focus:ring-2 focus:ring-blue-500/40 focus:border-blue-600 
-                    active:border-blue-700 active:ring-2 active:ring-blue-500/30
-                    text-sm sm:text-base placeholder:text-gray-400
-                    bg-white shadow-md
-                    font-medium tracking-wide
+                    w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500/40 
+                    focus:border-amber-600 transition-all duration-200 text-sm bg-white uppercase
                     ${validationErrors.admissionNumber 
-                      ? 'border-red-500 focus:border-red-600 focus:ring-red-500/40' 
-                      : 'border-blue-400'
+                      ? 'border-red-500 focus:border-red-600' 
+                      : 'border-maroon-300 hover:border-maroon-400'
                     }
                   `}
                   disabled={isLoading}
                   autoComplete="off"
-                  aria-label="Admission Number"
-                  aria-invalid={!!validationErrors.admissionNumber}
-                  aria-describedby={validationErrors.admissionNumber ? "admission-error" : undefined}
                 />
                 {validationErrors.admissionNumber && (
-                  <p id="admission-error" className="text-red-600 text-[10px] mt-0.5 font-medium flex items-center gap-1">
+                  <p className="text-red-600 text-xs mt-1 flex items-center gap-1">
                     <FiAlertCircle className="text-xs" />
                     {validationErrors.admissionNumber}
                   </p>
                 )}
-                <div className="mt-1.5">
-                  <p className="text-gray-500 text-[10px] mb-1">Format: 2-10 letters/numbers</p>
-                  <div className="flex flex-wrap gap-1">
-                    {['1234', 'AB12', '2023001', 'STU456', 'KM001'].map((example, idx) => (
+                
+                {/* Admission Number Examples */}
+                <div className="mt-3">
+                  <p className="text-maroon-600 text-[10px] font-semibold mb-2">⬇️ Example Formats:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {['2903', 'AB12', '2023001', 'STU456', 'KM001'].map((example, idx) => (
                       <button
                         key={idx}
                         type="button"
                         onClick={() => handleInputChange('admissionNumber', example)}
-                        className="
-                          px-1.5 py-1 
-                          bg-gradient-to-r from-green-100 to-emerald-200 
-                          hover:from-green-200 hover:to-emerald-300
-                          active:from-green-300 active:to-emerald-400
-                          text-green-700 rounded text-[10px] 
-                          transition-all duration-150 
-                          border border-green-400
-                          shadow-sm hover:shadow-md
-                          font-medium
-                        "
-                        aria-label={`Use admission number: ${example}`}
+                        className="px-2 py-1 bg-maroon-100 text-maroon-800 rounded-lg text-[10px] border border-maroon-300 hover:bg-maroon-200 transition-all duration-200 font-mono"
                       >
                         {example}
                       </button>
@@ -389,236 +369,106 @@ export default function StudentLoginModal({
                 </div>
               </fieldset>
 
-              {/* Modernized Buttons */}
-              <div className="flex gap-2 pt-1 flex-nowrap">
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-3">
                 <button
                   type="button"
                   onClick={handleClear}
                   disabled={isLoading}
-                  className="
-                    flex-1
-                    py-3
-                    px-4
-                    bg-gradient-to-r from-gray-200 to-gray-300
-                    hover:from-gray-300 hover:to-gray-400
-                    active:from-gray-400 active:to-gray-500
-                    text-gray-700
-                    rounded-xl
-                    font-bold
-                    text-sm
-                    disabled:opacity-50
-                    disabled:cursor-not-allowed
-                    flex items-center justify-center gap-2
-                    order-2 sm:order-1
-                    transition-all duration-200
-                    shadow-md hover:shadow-lg
-                    border-2 border-gray-400 hover:border-gray-500
-                    active:scale-[0.98]
-                  "
-                  aria-label="Clear all inputs"
+                  className="flex-1 py-3 px-4 bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-700 rounded-xl font-bold text-sm disabled:opacity-50 flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg border border-gray-400 active:scale-95"
                 >
-                  <FiX className="text-sm" aria-hidden="true" />
-                  <span>Clear All</span>
+                  <FiX className="text-sm" />
+                  <span>Clear</span>
                 </button>
 
                 <button
                   type="submit"
-                  disabled={
-                    isLoading ||
-                    !formData.fullName.trim() ||
-                    !formData.admissionNumber.trim()
-                  }
-                  className="
-                    flex-1
-                    py-3
-                    px-4
-                    bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700
-                    hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800
-                    active:from-blue-800 active:via-blue-900 active:to-indigo-900
-                    text-white
-                    rounded-xl
-                    font-bold
-                    text-sm
-                    disabled:opacity-70
-                    disabled:cursor-not-allowed
-                    flex items-center justify-center gap-2
-                    order-1 sm:order-2
-                    transition-all duration-200
-                    shadow-lg hover:shadow-xl
-                    border-2 border-blue-600 hover:border-blue-700
-                    active:scale-[0.98]
-                    transform hover:-translate-y-0.5
-                  "
-                  aria-label="Login to kinyui boys Portal"
+                  disabled={isLoading || !formData.fullName.trim() || !formData.admissionNumber.trim()}
+                  className="flex-1 py-3 px-4 bg-gradient-to-r from-maroon-700 via-maroon-800 to-amber-700 hover:from-maroon-800 hover:via-maroon-900 hover:to-amber-800 text-white rounded-xl font-bold text-sm disabled:opacity-70 flex items-center justify-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl border border-amber-600 active:scale-95"
                 >
                   {isLoading ? (
-                    <span className="flex items-center gap-2">
-                      <CircularProgress size={16} thickness={4} sx={{ color: "white" }} aria-label="Verifying" />
+                    <>
+                      <CircularProgress size={16} thickness={4} sx={{ color: "white" }} />
                       <span>Verifying...</span>
-                    </span>
+                    </>
                   ) : (
-                    <span className="flex items-center gap-2">
-                      <FiLogIn className="text-sm" aria-hidden="true" />
-                      <span>Login  o Portal</span>
-                    </span>
+                    <>
+                      <FiLogIn className="text-sm" />
+                      <span>Login to Portal</span>
+                    </>
                   )}
                 </button>
               </div>
             </form>
 
-            {/* Features - Compact */}
-            <section className="mt-3 sm:mt-4 pt-3 border-t border-gray-200">
-              <h3 className="sr-only">kinyui boys Portal Features</h3>
-              <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                <div className="text-center p-1.5 sm:p-2 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg">
-                  <FiBook className="text-blue-600 text-xs sm:text-sm mx-auto mb-1" aria-hidden="true" />
-                  <p className="text-[10px] font-semibold text-blue-800">Resources</p>
+            {/* Features Grid */}
+            <section className="mt-6 pt-4 border-t border-maroon-200">
+              <div className="grid grid-cols-3 gap-3">
+                <div className="text-center p-2 bg-gradient-to-r from-maroon-50 to-maroon-100 rounded-xl">
+                  <FiBook className="text-maroon-600 text-base mx-auto mb-1" />
+                  <p className="text-[10px] font-bold text-maroon-800">Learning Resources</p>
                 </div>
-                <div className="text-center p-1.5 sm:p-2 bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-lg">
-                  <FiShield className="text-emerald-600 text-xs sm:text-sm mx-auto mb-1" aria-hidden="true" />
-                  <p className="text-[10px] font-semibold text-emerald-800">Secure</p>
+                <div className="text-center p-2 bg-gradient-to-r from-amber-50 to-amber-100 rounded-xl">
+                  <FiShield className="text-amber-600 text-base mx-auto mb-1" />
+                  <p className="text-[10px] font-bold text-amber-800">Secure Access</p>
                 </div>
-                <div className="text-center p-1.5 sm:p-2 bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg">
-                  <FiClock className="text-purple-600 text-xs sm:text-sm mx-auto mb-1" aria-hidden="true" />
-                  <p className="text-[10px] font-semibold text-purple-800">2 Hours</p>
+                <div className="text-center p-2 bg-gradient-to-r from-maroon-50 to-amber-50 rounded-xl">
+                  <FiAward className="text-maroon-600 text-base mx-auto mb-1" />
+                  <p className="text-[10px] font-bold text-maroon-800">Excellence</p>
                 </div>
               </div>
             </section>
           </section>
         </article>
 
-        {/* Footer - Compact */}
-        <footer className="px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-gray-50 to-gray-100 border-t border-gray-200 flex-shrink-0">
-          <p className="text-center text-gray-600 text-[10px] sm:text-xs">
-            For assistance with kinyui boys Portal: Contact class teacher or school office
+        {/* Footer */}
+        <footer className="px-6 py-3 bg-gradient-to-r from-maroon-900 to-amber-900 flex-shrink-0">
+          <p className="text-center text-amber-200 text-xs">
+            © {new Date().getFullYear()} Kinyui Boys' Senior School | For assistance, contact school administration
           </p>
         </footer>
       </main>
 
-      {/* Global Styles for Responsiveness */}
+      {/* Global Styles */}
       <style jsx global>{`
-        @media (max-width: 640px) {
-          .text-xl { font-size: 1.125rem; }
-          .text-lg { font-size: 1rem; }
-          .text-base { font-size: 0.875rem; }
-        }
-        
-        @media (max-width: 480px) {
-          .text-xl { font-size: 1rem; }
-          .max-w-3xl { max-width: 95vw; }
-        }
-        
-        /* Prevent zoom issues */
-        html {
-          text-size-adjust: 100%;
-          -webkit-text-size-adjust: 100%;
-        }
-        
-        body {
-          overflow-x: hidden;
-        }
-        
-        /* Animation for error messages */
         @keyframes slideDown {
-          from { opacity: 0; transform: translateY(-8px); }
+          from { opacity: 0; transform: translateY(-10px); }
           to { opacity: 1; transform: translateY(0); }
         }
         
         .animate-slideDown {
-          animation: slideDown 0.2s ease-out;
+          animation: slideDown 0.3s ease-out;
         }
         
-        /* Prevent iOS zoom on input focus */
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        
+        .animate-fadeIn {
+          animation: fadeIn 0.2s ease-out;
+        }
+        
+        /* Custom scrollbar */
+        .overflow-y-auto::-webkit-scrollbar {
+          width: 6px;
+        }
+        
+        .overflow-y-auto::-webkit-scrollbar-track {
+          background: #fde68a;
+          border-radius: 3px;
+        }
+        
+        .overflow-y-auto::-webkit-scrollbar-thumb {
+          background: #800020;
+          border-radius: 3px;
+        }
+        
+        /* Prevent iOS zoom */
         @media screen and (max-width: 768px) {
           input, select, textarea {
             font-size: 16px !important;
           }
-        }
-        
-        /* Responsive handling for high zoom levels */
-        @media (min-width: 768px) and (max-width: 1200px) {
-          .max-w-3xl {
-            max-width: 85vw !important;
-          }
-        }
-        
-        /* For very small screens */
-        @media (max-width: 320px) {
-          .max-w-3xl {
-            max-width: 98vw !important;
-            margin: 0.25rem;
-          }
-        }
-        
-        /* Custom scrollbar for modal body */
-        .overflow-y-auto {
-          scrollbar-width: thin;
-          scrollbar-color: #cbd5e1 #f1f5f9;
-        }
-        
-        .overflow-y-auto::-webkit-scrollbar {
-          width: 4px;
-        }
-        
-        .overflow-y-auto::-webkit-scrollbar-track {
-          background: #f1f5f9;
-          border-radius: 2px;
-        }
-        
-        .overflow-y-auto::-webkit-scrollbar-thumb {
-          background: #cbd5e1;
-          border-radius: 2px;
-        }
-        
-        .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-          background: #94a3b8;
-        }
-        
-        /* Enhanced focus styles for better accessibility */
-        *:focus-visible {
-          outline: 3px solid #3b82f6;
-          outline-offset: 3px;
-        }
-        
-        /* Better input placeholder visibility */
-        ::placeholder {
-          color: #9ca3af;
-          opacity: 0.9;
-          font-weight: 500;
-        }
-        
-        /* Smooth transitions for interactive elements */
-        button, input, a {
-          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Enhanced border visibility for all inputs */
-        input {
-          border-width: 3px !important;
-        }
-        
-        /* Make focused inputs more prominent */
-        input:focus {
-          border-width: 3px !important;
-          transform: translateY(-1px);
-          box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2) !important;
-        }
-        
-        /* Error state enhancement */
-        input:invalid, input.error-border {
-          border-width: 3px !important;
-          animation: pulseError 0.5s ease-in-out;
-        }
-        
-        @keyframes pulseError {
-          0%, 100% { border-color: #ef4444; }
-          50% { border-color: #fca5a5; }
-        }
-        
-        /* Active state enhancement */
-        input:active {
-          border-width: 3px !important;
-          transform: translateY(0);
         }
       `}</style>
     </div>
