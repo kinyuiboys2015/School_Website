@@ -869,7 +869,7 @@ const handleSubmit = async (e) => {
 
   setIsLoading(true);
   
-  const loadingToast = toast.loading('Authenticating...');
+  const loadingToast = toast.loading('Checking please wait...');
 
   try {
     // FIRST: Check if device verification is required
