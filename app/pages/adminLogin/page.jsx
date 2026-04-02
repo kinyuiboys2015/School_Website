@@ -770,7 +770,7 @@ const handleVerifyCode = async (e) => {
       // Redirect to dashboard
       setTimeout(() => {
         router.push('/MainDashboard');
-      }, 500);
+      }, 1000);
     } else {
       // Check if password is required after verification
       if (data.requiresPassword === true) {
@@ -1296,14 +1296,13 @@ const handlePasswordAfterVerification = async () => {
           )}
         </div>
 
-        {/* Footer info - Campus Security Branding */}
         <div className="mt-8 pt-5 border-t-2 border-dashed border-slate-200">
           <div className="flex gap-4 items-start">
             <div className="p-2 bg-blue-50 rounded-lg">
               <ShieldAlert className="w-4 h-4 text-blue-800" />
             </div>
             <p className="text-[10px] leading-relaxed text-slate-500 font-bold uppercase tracking-tight">
-              Institutional Security Protocol: This session is encrypted. Unauthorized access attempts are logged and reported to Kinyui ICT Staff.
+              School Security Protocol: This session is encrypted. Unauthorized access attempts are logged and reported to Kinyui ICT Staff.
             </p>
           </div>
         </div>
@@ -1319,10 +1318,10 @@ const handlePasswordAfterVerification = async () => {
 <div className="relative hidden md:flex flex-col justify-between bg-slate-950 text-white px-16 py-20 lg:px-24 overflow-hidden border-r border-white/5">
   {/* Background Layers */}
   <div 
-    className="absolute inset-0 bg-cover bg-center opacity-40 transition-transform duration-100"
+    className="absolute inset-0 bg-cover bg-center opacity-60 transition-transform duration-100"
     style={{ backgroundImage: "url('/hero/kbss.png')" }}
   ></div>
-  <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-slate-950 to-black"></div>
+  <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-slate-950 to-black"></div>
   
   <div className="relative z-10 flex flex-col h-full w-full">
     <div className="mb-auto">
