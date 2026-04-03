@@ -10,7 +10,6 @@ import GuidanceEventsView from '../../components/studentportalcomponents/session
 import LoadingScreen from '../../components/studentportalcomponents/loading/page';
 import FeesView from '../../components/studentportalcomponents/feebalance/page'; // ADDED IMPORT
 
-/// Font Awesome 6 - Modern versions
 import { 
   FaBell, FaBars, FaCalendar, FaBook, FaAward, FaDollarSign, 
   FaClock, FaChartLine, FaChartBar, FaFolder, FaComments,
@@ -24,7 +23,6 @@ import {
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-// Font Awesome 5 (Legacy)
 import { 
   FaHome, FaSearch, FaTimes, FaSync, FaExclamationCircle, 
   FaUserFriends, FaQuestionCircle
@@ -32,7 +30,6 @@ import {
 import { HiSparkles } from "react-icons/hi2";
 import { FaCheckCircle } from "react-icons/fa6";
 
-// Feather icons
 import { 
   FiMenu, FiX, FiRefreshCw, FiBookOpen, FiExternalLink, 
   FiShield, FiExpand, FiCompress, FiMapPin, FiSmartphone, FiTablet
@@ -40,197 +37,105 @@ import {
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
-// ==================== RESPONSIVE STYLES ====================
-const responsiveStyles = `
-@media (max-width: 768px) {
-  .mobile-scroll-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .mobile-scroll-hide::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .mobile-touch-friendly {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  .mobile-text-truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  .mobile-stack {
-    flex-direction: column !important;
-  }
-  
-  .mobile-compact {
-    padding: 0.75rem !important;
-    margin: 0.5rem !important;
-  }
-  
-  .mobile-full-width {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  .mobile-modal-fix {
-    max-height: 80vh !important;
-    margin: 1rem !important;
-  }
-}
-
-@media (max-width: 640px) {
-  .xs-text-sm {
-    font-size: 0.875rem !important;
-  }
-  
-  .xs-p-2 {
-    padding: 0.5rem !important;
-  }
-  
-  .xs-gap-2 {
-    gap: 0.5rem !important;
-  }
-}
-
-.mobile-contain {
-  max-width: 100% !important;
-  height: auto !important;
-}
+// ==================== GLOBAL STYLES ====================
+const portalStyles = `
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+  @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes scaleIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
+  .anim-float { animation: float 4s ease-in-out infinite; }
+  .anim-shimmer { background-size: 200% 100%; animation: shimmer 3s ease-in-out infinite; }
+  .anim-fade-up { animation: fadeUp 0.5s ease-out both; }
+  .anim-scale-in { animation: scaleIn 0.4s ease-out both; }
+  .glass { background: rgba(255,255,255,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+  .glass-dark { background: rgba(80,10,30,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+  .hide-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+  .hide-scrollbar::-webkit-scrollbar { display:none; }
+  .touch-target { min-height:44px; min-width:44px; }
+  .text-truncate { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 `;
 
-// ==================== MODERN STUDENT HEADER ====================
-function ModernStudentHeader({ 
-  student, 
-  searchTerm, 
-  setSearchTerm, 
-  onRefresh,
-  onMenuToggle,
-  isMenuOpen,
-  currentView 
-}) {
-  
+// ==================== VIEW LABELS ====================
+const VIEW_LABELS = {
+  home: 'Dashboard',
+  results: 'Results',
+  resources: 'Resources',
+  guidance: 'Guidance',
+  fees: 'Fee Balance',
+};
+
+const VIEW_ICONS = {
+  home: FaHome,
+  results: FaChartBar,
+  resources: FaFolder,
+  guidance: FaComments,
+  fees: FaDollarSign,
+};
+
+// ==================== STUDENT HEADER ====================
+function StudentHeader({ student, onMenuToggle, isMenuOpen, currentView }) {
   const getInitials = (name) => {
     if (!name) return 'KB';
-    return name
-      .split(' ')
-      .map(part => part.charAt(0).toUpperCase())
-      .slice(0, 2)
-      .join('');
+    return name.split(' ').map(p => p[0]?.toUpperCase()).slice(0, 2).join('');
   };
 
-  const getGradientColor = (name) => {
-    const char = name.trim().charAt(0).toUpperCase();
-    const gradients = {
-      A: "bg-gradient-to-r from-maroon-700 to-amber-600",
-      B: "bg-gradient-to-r from-amber-600 to-maroon-700",
-      C: "bg-gradient-to-r from-maroon-800 to-amber-500",
-      D: "bg-gradient-to-r from-amber-700 to-maroon-600",
-      E: "bg-gradient-to-r from-maroon-600 to-amber-700",
-      F: "bg-gradient-to-r from-amber-500 to-maroon-800",
-      G: "bg-gradient-to-r from-maroon-900 to-amber-600",
-      H: "bg-gradient-to-r from-amber-600 to-maroon-900",
-      I: "bg-gradient-to-r from-maroon-700 to-amber-500",
-      J: "bg-gradient-to-r from-amber-500 to-maroon-700",
-      K: "bg-gradient-to-r from-maroon-800 to-amber-600",
-      L: "bg-gradient-to-r from-amber-600 to-maroon-800",
-      M: "bg-gradient-to-r from-maroon-600 to-amber-500",
-      N: "bg-gradient-to-r from-amber-500 to-maroon-600",
-      O: "bg-gradient-to-r from-maroon-900 to-amber-700",
-      P: "bg-gradient-to-r from-amber-700 to-maroon-900",
-      Q: "bg-gradient-to-r from-maroon-700 to-amber-600",
-      R: "bg-gradient-to-r from-amber-600 to-maroon-700",
-      S: "bg-gradient-to-r from-maroon-800 to-amber-500",
-      T: "bg-gradient-to-r from-amber-500 to-maroon-800",
-      U: "bg-gradient-to-r from-maroon-600 to-amber-700",
-      V: "bg-gradient-to-r from-amber-700 to-maroon-600",
-      W: "bg-gradient-to-r from-maroon-900 to-amber-600",
-      X: "bg-gradient-to-r from-amber-600 to-maroon-900",
-      Y: "bg-gradient-to-r from-maroon-700 to-amber-500",
-      Z: "bg-gradient-to-r from-amber-500 to-maroon-700",
-    };
-    return gradients[char] || "bg-gradient-to-r from-maroon-700 to-amber-600";
-  };
-
-  const getViewIcon = (view) => {
-    switch(view) {
-      case 'home': return <FaHome className="text-amber-700" />;
-      case 'results': return <FaChartBar className="text-amber-700" />;
-      case 'resources': return <FaFolder className="text-amber-700" />;
-      case 'guidance': return <FaComments className="text-amber-700" />;
-      case 'fees': return <FaDollarSign className="text-amber-700" />;
-      default: return <FaHome className="text-amber-700" />;
-    }
-  };
+  const ViewIcon = VIEW_ICONS[currentView] || FaHome;
 
   return (
     <>
-      <style>{responsiveStyles}</style>
-      <header className="bg-gradient-to-r from-maroon-900 via-maroon-800 to-amber-800 border-b border-amber-600/30 shadow-xl sticky top-0 z-30">
-        <div className="container mx-auto px-3 xs:px-4 sm:px-6">
-          <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
-            <div className="flex items-center gap-2 sm:gap-3 md:gap-5">
+      <style>{portalStyles}</style>
+      <header className="sticky top-0 z-30 glass-dark border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-16">
+            {/* Left: Menu + Avatar */}
+            <div className="flex items-center gap-2.5 sm:gap-4">
               <button
                 onClick={onMenuToggle}
-                className="lg:hidden p-2 sm:p-3 rounded-xl bg-white/10 backdrop-blur-sm shadow-sm hover:bg-white/20 transition-all mobile-touch-friendly"
-                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                className="lg:hidden p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors touch-target"
+                aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
               >
-                {isMenuOpen ? 
-                  <FaTimes className="text-amber-700 w-4 h-4 sm:w-5 sm:h-5" /> : 
-                  <FaBars className="text-amber-700 w-4 h-4 sm:w-5 sm:h-5" />
+                {isMenuOpen ?
+                  <FiX className="w-5 h-5 text-amber-300" /> :
+                  <FiMenu className="w-5 h-5 text-amber-300" />
                 }
               </button>
 
               {student && (
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="relative group">
-                    <div
-                      className={`absolute inset-0 ${getGradientColor(student.fullName)} rounded-full blur opacity-70 group-hover:opacity-100 transition-opacity`}
-                    />
-                    <div className="relative w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center font-bold text-black text-base sm:text-lg md:text-xl bg-gradient-to-br from-maroon-800 to-amber-700 border-2 border-amber-400 shadow-lg">
+                <div className="flex items-center gap-2.5">
+                  <div className="relative">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-amber-400 to-maroon-600 flex items-center justify-center text-white text-xs sm:text-sm font-bold ring-2 ring-amber-400/40">
                       {getInitials(student.fullName)}
                     </div>
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-maroon-900" />
                   </div>
-
-                  <div className="hidden xs:flex flex-col">
-                    <p className="text-sm sm:text-base md:text-lg font-bold text-black mobile-text-truncate max-w-[120px] sm:max-w-[160px] md:max-w-none">
+                  <div className="hidden sm:block">
+                    <p className="text-sm font-semibold text-white text-truncate max-w-[180px]">
                       {student.fullName}
                     </p>
-                    <div className="flex items-center gap-1 sm:gap-2">
-                      <span className="text-xs sm:text-sm text-black mobile-text-truncate max-w-[100px] sm:max-w-none">
-                        {student.form} • {student.stream}
-                      </span>
-                      <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full animate-pulse"></span>
-                    </div>
+                    <p className="text-[11px] text-amber-300/80">
+                      {student.form} &middot; {student.stream}
+                    </p>
                   </div>
                 </div>
               )}
             </div>
 
-            <div className="lg:hidden flex items-center gap-2 sm:gap-3">
-              <div className="p-2 sm:p-2.5 bg-white/10 backdrop-blur-sm rounded-xl shadow-sm">
-                {getViewIcon(currentView)}
+            {/* Center: Current View (mobile & tablet) */}
+            <div className="lg:hidden flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-white/10">
+                <ViewIcon className="w-4 h-4 text-amber-300" />
               </div>
-              <div className="max-w-[140px] sm:max-w-none">
-                <h1 className="text-sm sm:text-base md:text-lg font-bold text-black mobile-text-truncate">
-                  {currentView === 'home' && 'Dashboard'}
-                  {currentView === 'results' && 'Results'}
-                  {currentView === 'resources' && 'Resources'}
-                  {currentView === 'guidance' && 'Guidance'}
-                  {currentView === 'fees' && 'Fee Balance'}
-                </h1>
-                <p className="text-xs text-black hidden sm:block">Kinyui Boys' Portal</p>
-              </div>
+              <span className="text-sm font-semibold text-white text-truncate max-w-[120px] sm:max-w-none">
+                {VIEW_LABELS[currentView] || 'Dashboard'}
+              </span>
             </div>
 
-            <div className="hidden lg:flex items-center gap-2">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 rounded-full border border-amber-500/30">
-                <div className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
-                <span className="text-[10px] font-black text-black uppercase tracking-wider">KINYUI BOYS'</span>
-                <FaShieldHalved className="w-3 h-3 text-amber-700" />
+            {/* Right: School Badge */}
+            <div className="hidden lg:flex items-center gap-3">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/10">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-[11px] font-bold text-amber-200 uppercase tracking-wide">Kinyui Boys&apos;</span>
+                <FiShield className="w-3.5 h-3.5 text-amber-300" />
               </div>
             </div>
           </div>
@@ -240,203 +145,348 @@ function ModernStudentHeader({
   );
 }
 
-// ==================== MODERN HOME VIEW ====================
-function ModernHomeView({ student, feeBalance, feeLoading, token }) {
-  const [showFeeDetails, setShowFeeDetails] = useState(false);
+// ==================== HOME DASHBOARD VIEW ====================
+function HomeDashboardView({ student, token }) {
+  const firstName = student?.fullName?.split(' ')[0] || 'Student';
+  const currentDate = new Date();
+  const greeting = currentDate.getHours() < 12 ? 'Good morning' : currentDate.getHours() < 17 ? 'Good afternoon' : 'Good evening';
 
-  const stats = [
-    { 
-      label: 'Current Form', 
-      value: `${student?.form || 'N/A'}`, 
-      icon: <FaUser className="text-base sm:text-lg md:text-xl text-black" />, 
-      gradient: 'from-maroon-600 to-amber-600',
-      bgGradient: 'from-maroon-50 to-amber-50'
-    },
-    { 
-      label: 'Stream', 
-      value: student?.stream || 'N/A', 
-      icon: <FaBook className="text-base sm:text-lg md:text-xl text-black" />, 
-      gradient: 'from-amber-600 to-maroon-600',
-      bgGradient: 'from-amber-50 to-maroon-50'
-    },
-    { 
-      label: 'Admission No', 
-      value: student?.admissionNumber || 'N/A', 
-      icon: <FaAward className="text-base sm:text-lg md:text-xl text-black" />, 
-      gradient: 'from-maroon-700 to-amber-500',
-      bgGradient: 'from-maroon-50 to-amber-50'
-    },
-    { 
-      label: 'Academic Year', 
-      value: new Date().getFullYear().toString(),
-      icon: <FaCalendar className="text-base sm:text-lg md:text-xl text-black" />, 
-      gradient: 'from-amber-500 to-maroon-600',
-      bgGradient: 'from-amber-50 to-maroon-50'
-    },
+  const infoCards = [
+    { label: 'Form', value: student?.form || '—', icon: FaUser, color: 'from-maroon-500 to-maroon-700' },
+    { label: 'Stream', value: student?.stream || '—', icon: FaBook, color: 'from-amber-500 to-amber-700' },
+    { label: 'Admission No.', value: student?.admissionNumber || '—', icon: FaIdCard, color: 'from-maroon-600 to-amber-600' },
+    { label: 'Academic Year', value: currentDate.getFullYear().toString(), icon: FaCalendar, color: 'from-amber-600 to-maroon-500' },
   ];
 
-  const quickActions = [
+  const modules = [
     {
-      tab: 'learning',
+      key: 'learning',
       title: 'Learning Hub',
-      description: 'Access all your academic learning tools in one place, including assignments, revision materials, notes, and other essential learning resources provided by your teachers to support your daily studies and exam preparation.',
-      icon: <FiBookOpen className="text-lg sm:text-xl md:text-2xl text-black" />,
-      gradient: 'from-maroon-600 to-amber-600',
-      bgGradient: 'from-maroon-50 to-amber-100',
-      actions: ['View Assignments', 'Browse Learning Resources']
+      subtitle: 'Assignments & study materials',
+      description: 'Access assignments, revision materials, notes, and essential learning resources from your teachers.',
+      icon: FiBookOpen,
+      accent: 'amber',
     },
     {
-      tab: 'results',
-      title: 'Academic Results Center',
-      description: 'Review your academic performance in detail by accessing both class-wide results and your personal examination results, allowing you to track progress, identify strengths, and understand areas that need improvement for better performance.',
-      icon: <FaChartLine className="text-lg sm:text-xl md:text-2xl text-black" />,
-      gradient: 'from-amber-600 to-maroon-600',
-      bgGradient: 'from-amber-50 to-maroon-100',
-      actions: ['View Class Results', 'Access Personal Results']
+      key: 'results',
+      title: 'Results Center',
+      subtitle: 'Class & personal performance',
+      description: 'Review class-wide and personal examination results. Track progress and identify areas for improvement.',
+      icon: FaChartLine,
+      accent: 'maroon',
     },
     {
-      tab: 'support',
-      title: 'Student Support Services',
-      description: 'Stay informed and supported through access to guidance and counselling services, important school announcements, upcoming events, and news updates designed to support your academic, personal, and social wellbeing throughout your journey at Kinyui Boys.',
-      icon: <FaUserFriends className="text-lg sm:text-xl md:text-2xl text-black" />,
-      gradient: 'from-maroon-700 to-amber-500',
-      bgGradient: 'from-maroon-50 to-amber-100',
-      actions: ['Guidance & Counselling', 'School News & Events']
-    }
+      key: 'support',
+      title: 'Student Support',
+      subtitle: 'Guidance & school updates',
+      description: 'Access guidance & counselling services, school announcements, events, and important news updates.',
+      icon: FaUserFriends,
+      accent: 'amber',
+    },
   ];
+
+  const accentClasses = {
+    amber: {
+      badge: 'bg-amber-100 text-amber-800',
+      iconBg: 'bg-gradient-to-br from-amber-500 to-amber-700',
+      ring: 'group-hover:ring-amber-300',
+      arrow: 'text-amber-700',
+    },
+    maroon: {
+      badge: 'bg-maroon-100 text-maroon-800',
+      iconBg: 'bg-gradient-to-br from-maroon-600 to-maroon-800',
+      ring: 'group-hover:ring-maroon-300',
+      arrow: 'text-maroon-700',
+    },
+  };
 
   return (
-    <div className="space-y-4 sm:space-y-6 md:space-y-8 mobile-scroll-hide">
-      {/* Welcome Section */}
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl">
-        <div className="absolute inset-0 bg-gradient-to-r from-maroon-800 via-maroon-700 to-amber-700 opacity-100"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black opacity-20"></div>
-        <div className="relative p-4 sm:p-6 md:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 md:gap-5 mb-3 sm:mb-4 md:mb-6">
-            <div className="p-3 sm:p-4 bg-white bg-opacity-20 rounded-xl sm:rounded-2xl backdrop-blur-sm w-fit">
-              <FaRocket className="text-xl sm:text-2xl md:text-3xl text-amber-700" />
+    <div className="space-y-5 sm:space-y-7 hide-scrollbar">
+      {/* Greeting Banner */}
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl anim-fade-up">
+        <div className="absolute inset-0 bg-gradient-to-br from-maroon-800 via-maroon-700 to-amber-700" />
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 80% 20%, rgba(255,193,7,0.3) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(128,0,32,0.3) 0%, transparent 50%)' }} />
+        <div className="relative px-5 py-6 sm:px-8 sm:py-8 md:py-10">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center anim-float">
+              <HiSparkles className="w-6 h-6 sm:w-7 sm:h-7 text-amber-300" />
             </div>
             <div className="flex-1">
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold leading-tight text-black">
-                Welcome back, {student?.fullName?.split(" ")[0] || "Student"}! 🚀
-              </h2>
-              <p className="text-black text-xs sm:text-sm md:text-base lg:text-lg mt-1 sm:mt-2 max-w-2xl">
-                Ready to continue your learning journey at Kinyui Boys' Senior School? Access all your academic resources, track performance, and stay connected with school updates.
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+                {greeting}, {firstName}
+              </h1>
+              <p className="text-amber-200/80 text-sm sm:text-base mt-1 max-w-xl">
+                Your academic dashboard is ready. Access resources, check results, and stay updated with school activities.
               </p>
             </div>
           </div>
-
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mt-3 sm:mt-4 md:mt-6">
-            <span className="inline-flex items-center gap-1 sm:gap-2 bg-white bg-opacity-20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm text-xs sm:text-sm font-bold text-black">
-              <HiSparkles className="text-amber-700 text-xs sm:text-sm md:text-base" />
-              Active Student
+          <div className="flex flex-wrap gap-2 mt-5">
+            <span className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white">
+              <FaCheckCircle className="w-3 h-3 text-emerald-400" />
+              Active Session
             </span>
-            <span className="inline-flex items-center gap-1 sm:gap-2 bg-white bg-opacity-20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm text-xs sm:text-sm font-bold text-black">
-              <FaCalendarCheck className="text-amber-700 text-xs sm:text-sm md:text-base" />
-              Kinyui Boys' Senior School
+            <span className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white">
+              <FaSchool className="w-3 h-3 text-amber-300" />
+              Kinyui Boys&apos; Senior School
             </span>
           </div>
         </div>
       </div>
 
-      {/* Quick Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
-        {stats.map((stat, index) => (
-          <div key={index} className="group relative w-full">
-            <div 
-              className={`absolute inset-0 bg-gradient-to-r ${stat.gradient} rounded-lg sm:rounded-xl md:rounded-2xl blur-xl opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-            />
-            <div className="relative bg-white/95 backdrop-blur-xs rounded-lg sm:rounded-xl md:rounded-2xl p-2.5 sm:p-3 md:p-4 border border-amber-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden h-full">
-              <div className="absolute -right-1.5 -top-1.5 w-12 h-12 bg-gradient-to-br from-amber-50/30 to-transparent rounded-full opacity-40 group-hover:scale-100 transition-transform duration-500" />
-              <div className="flex flex-col h-full">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-1.5 sm:mb-2 md:mb-3">
-                  <div className={`flex justify-center sm:justify-start p-1.5 sm:p-2 bg-gradient-to-br ${stat.gradient} rounded-lg sm:rounded-xl text-white shadow-xs group-hover:scale-100 transition-transform duration-300 self-center sm:self-auto mb-1 sm:mb-0`}>
-                    <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6">
-                      {stat.icon}
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-0.5 sm:mt-1 md:mt-2 flex-grow text-center sm:text-left">
-                  <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-extrabold text-black tracking-tight leading-none">
-                    {stat.value}
-                  </h3>
-                  <p className="text-[9px] sm:text-[10px] md:text-xs font-medium text-black mt-0.5 sm:mt-1 line-clamp-2">
-                    {stat.label}
-                  </p>
-                </div>
-                <div className="mt-1.5 sm:mt-2 md:mt-3 pt-1.5 sm:pt-2 border-t border-amber-100">
-                  <div className="flex items-center justify-between">
-                    <div className="hidden xs:flex -space-x-1 sm:-space-x-1.5">
-                      {[1, 2, 3].map((i) => (
-                        <div key={i} className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border border-white bg-amber-200" />
-                      ))}
-                    </div>
-                    <span className="text-[7px] sm:text-[8px] md:text-[10px] font-medium text-black italic">
-                      {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </span>
-                  </div>
-                </div>
+      {/* Info Cards - Bento Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {infoCards.map((card, i) => {
+          const Icon = card.icon;
+          return (
+            <div
+              key={i}
+              className="group glass rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border border-white/60 hover:border-amber-300/60 shadow-sm hover:shadow-lg transition-all duration-300 anim-scale-in"
+              style={{ animationDelay: `${i * 80}ms` }}
+            >
+              <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center mb-3 shadow-sm group-hover:scale-105 transition-transform`}>
+                <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
+              <p className="text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">{card.label}</p>
+              <p className="text-lg sm:text-xl font-extrabold text-gray-900 mt-0.5 text-truncate">{card.value}</p>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
-      
-      <FeesView student={student} token={token} />   
-      
-      <section className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
-        <div className="mb-3 sm:mb-4 md:mb-6">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-black">
-            Student Dashboard Overview
-          </h2>
-          <p className="mt-1 text-xs sm:text-sm md:text-base text-black max-w-3xl">
-            Your central hub for accessing learning resources, completing assignments, reviewing academic results, 
-            and connecting with student support services at Kinyui Boys' Senior School.
-          </p>
+
+      {/* Fee Balance Section */}
+      <FeesView student={student} token={token} />
+
+      {/* Module Cards */}
+      <section>
+        <div className="mb-4 sm:mb-5">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900">Quick Access</h2>
+          <p className="text-sm text-gray-500 mt-0.5">Explore your portal modules</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-5 lg:gap-6">
-          {quickActions.map((action, index) => (
-            <div key={index} className="relative group mobile-full-width">
-              <div className={`hidden sm:block absolute inset-0 bg-gradient-to-r ${action.gradient} rounded-2xl sm:rounded-3xl blur-2xl opacity-0 group-hover:opacity-20 transition-opacity`} />
-              <div className="relative h-full bg-white rounded-xl sm:rounded-2xl border border-amber-200 p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col">
-                <div className="flex items-start gap-2.5 sm:gap-3 md:gap-4 mb-2.5 sm:mb-3 md:mb-4">
-                  <div className={`p-2.5 sm:p-3 md:p-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-br ${action.gradient} text-white shadow-sm`}>
-                    {action.icon}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5">
+          {modules.map((mod, i) => {
+            const Icon = mod.icon;
+            const ac = accentClasses[mod.accent];
+            return (
+              <div
+                key={i}
+                className="group glass rounded-2xl border border-white/60 hover:border-amber-200 p-4 sm:p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col anim-fade-up"
+                style={{ animationDelay: `${(i + 4) * 80}ms` }}
+              >
+                <div className="flex items-start gap-3 mb-3">
+                  <div className={`p-2.5 rounded-xl ${ac.iconBg} text-white shadow-md ring-2 ring-transparent ${ac.ring} transition-all`}>
+                    <Icon className="w-5 h-5" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm sm:text-base md:text-lg font-bold text-black leading-tight mobile-text-truncate">
-                      {action.title}
-                    </h4>
-                    <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-black mobile-text-truncate">
-                      {action.tab === 'learning' && 'Access assignments & study materials'}
-                      {action.tab === 'results' && 'View class & personal performance'}
-                      {action.tab === 'support' && 'Get guidance & school updates'}
-                    </p>
+                    <h3 className="text-sm sm:text-base font-bold text-gray-900 text-truncate">{mod.title}</h3>
+                    <p className="text-xs text-gray-500 mt-0.5">{mod.subtitle}</p>
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-black leading-relaxed flex-1 mb-3 sm:mb-4 md:mb-5 line-clamp-3 sm:line-clamp-4">
-                  {action.description}
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed flex-1 mb-4 line-clamp-3">
+                  {mod.description}
                 </p>
-                <button 
-                  onClick={() => {
-                    toast.info(`Navigating to ${action.title}`);
-                  }}
-                  className="mt-auto inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-amber-800 hover:text-amber-900 transition-colors mobile-touch-friendly"
+                <button
+                  onClick={() => toast.info(`Opening ${mod.title}`)}
+                  className={`mt-auto inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold ${ac.arrow} hover:underline touch-target`}
                 >
-                  <span>Access {action.title}</span>
-                  <FaArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
+                  Open Module
+                  <FaArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
     </div>
   );
 }
 
-// ==================== MAIN MODERN COMPONENT ====================
+// ==================== LANDING PAGE (UNAUTHENTICATED) ====================
+function LandingPage({ onOpenLogin, router }) {
+  const features = [
+    { icon: FaBook, title: 'Digital Learning Resources', desc: 'Access digital notes, revision e-books, past papers, and supplementary materials for all subjects.' },
+    { icon: FaAward, title: 'Assignments & Projects', desc: 'View subject-specific tasks, holiday assignments, and projects. Track deadlines and get teacher feedback.' },
+    { icon: FaChartBar, title: 'Performance Analytics', desc: 'Personalized reports comparing your results with class averages and KCSE targets.' },
+    { icon: FaDollarSign, title: 'Fee Management', desc: 'Check balances, download statements, view payment history, and access fee structures.' },
+    { icon: FaCalendar, title: 'School Calendar', desc: 'Academic dates, exam schedules, sports fixtures, and parent-teacher meeting times.' },
+    { icon: FaComments, title: 'Communication Hub', desc: 'Announcements, school news, event notifications, and deadline reminders.' },
+  ];
+
+  const stats = [
+    { num: '1976', label: 'Established' },
+    { num: '6', label: 'Portal Modules' },
+    { num: '24/7', label: 'Access' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
+      <style>{portalStyles}</style>
+      <Toaster position="top-right" expand richColors theme="light" />
+
+      {/* Subtle background pattern */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.025]"
+        style={{ backgroundImage: 'radial-gradient(#800020 0.8px, transparent 0.8px)', backgroundSize: '32px 32px' }} />
+
+      {/* Nav */}
+      <nav className="sticky top-0 z-50 glass-dark border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between h-14 sm:h-16">
+          <div className="flex items-center gap-2.5">
+            <div className="relative">
+              <div className="absolute inset-0 bg-amber-400/20 rounded-lg blur-sm" />
+              <Image src="/kinyui.png" alt="Kinyui Boys Logo" width={36} height={36}
+                className="relative rounded-lg w-8 h-8 sm:w-9 sm:h-9" priority />
+            </div>
+            <div>
+              <span className="text-sm sm:text-base font-extrabold text-white tracking-tight block leading-none">
+                KINYUI BOYS&apos;
+              </span>
+              <span className="text-[8px] sm:text-[9px] font-semibold text-amber-300/70 uppercase tracking-[0.15em]">
+                Student Portal
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 sm:gap-5">
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/10">
+              <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+              <span className="text-[10px] font-bold text-amber-200 uppercase tracking-wide">Secure</span>
+              <FiShield className="w-3 h-3 text-amber-300" />
+            </div>
+            <button onClick={onOpenLogin}
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-maroon-900 text-xs sm:text-sm font-bold rounded-lg transition-colors touch-target">
+              Sign In
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pt-10 sm:pt-16 md:pt-20 pb-12 sm:pb-20">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="anim-fade-up">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-maroon-100 border border-maroon-200 text-[10px] sm:text-xs font-bold text-maroon-700 uppercase tracking-wider mb-5">
+              <HiSparkles className="w-3 h-3 text-amber-600" />
+              Excellence in Education Since 1976
+            </div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-[1.05]">
+              Your Academic
+              <span className="block bg-gradient-to-r from-maroon-700 to-amber-600 bg-clip-text text-transparent">
+                Journey Starts Here
+              </span>
+            </h1>
+            <p className="mt-4 sm:mt-5 text-base sm:text-lg text-gray-600 max-w-lg leading-relaxed">
+              The centralized digital platform for Kinyui Boys&apos; students. Access resources, track performance, manage fees, and stay connected.
+            </p>
+            <div className="flex flex-wrap gap-3 mt-6 sm:mt-8">
+              <button onClick={onOpenLogin}
+                className="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-maroon-800 hover:bg-maroon-700 text-white rounded-xl font-bold text-sm sm:text-base shadow-lg shadow-maroon-900/20 transition-all active:scale-[0.97] group">
+                Access Portal
+                <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+              <button onClick={() => router.push('/pages/contact')}
+                className="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-white hover:bg-gray-50 text-gray-800 rounded-xl font-bold text-sm sm:text-base border border-gray-200 shadow-sm transition-all active:scale-[0.97]">
+                Get Help
+              </button>
+            </div>
+            <div className="flex gap-6 sm:gap-10 mt-8 sm:mt-10 pt-6 border-t border-gray-200">
+              {stats.map((s, i) => (
+                <div key={i}>
+                  <p className="text-xl sm:text-2xl font-extrabold text-gray-900">{s.num}</p>
+                  <p className="text-xs text-gray-500 font-medium">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: Interactive Feature Preview */}
+          <div className="relative anim-fade-up" style={{ animationDelay: '150ms' }}>
+            <div className="absolute -inset-4 bg-gradient-to-br from-maroon-200/30 to-amber-200/30 rounded-[2.5rem] blur-2xl opacity-50" />
+            <div className="relative glass rounded-3xl border border-white/70 p-5 sm:p-7 shadow-xl">
+              <div className="flex items-center justify-between pb-4 border-b border-gray-200/60">
+                <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wider">Portal Preview</h3>
+                <FaBrain className="w-4 h-4 text-amber-600" />
+              </div>
+              <div className="space-y-3 mt-4">
+                {[
+                  { label: 'Digital Library', desc: 'E-books, revision materials, past papers', gradient: 'from-maroon-50 to-amber-50' },
+                  { label: 'Performance Dashboard', desc: 'Track progress and KCSE preparedness', gradient: 'from-amber-50 to-maroon-50' },
+                  { label: 'Financial Overview', desc: 'Balances, statements, payment records', gradient: 'from-maroon-50 to-amber-50' },
+                ].map((item, i) => (
+                  <div key={i} className={`p-3.5 rounded-xl bg-gradient-to-r ${item.gradient} border border-gray-100 anim-scale-in`}
+                    style={{ animationDelay: `${(i + 3) * 100}ms` }}>
+                    <p className="text-[11px] font-bold text-gray-800 mb-0.5">{item.label}</p>
+                    <p className="text-xs text-gray-600">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 pt-3 border-t border-gray-100 text-center">
+                <button onClick={onOpenLogin} className="text-xs font-bold text-maroon-700 hover:text-amber-700 uppercase tracking-wider transition-colors">
+                  Sign In to Explore &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="bg-white border-y border-gray-100 py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-10 sm:mb-14">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+              Everything You Need
+            </h2>
+            <p className="mt-2 text-sm sm:text-base text-gray-500 max-w-xl mx-auto">
+              Six powerful modules designed to support your academic journey at Kinyui Boys&apos;.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+            {features.map((f, i) => {
+              const Icon = f.icon;
+              return (
+                <div key={i} className="group p-5 sm:p-6 rounded-2xl border border-gray-100 bg-gray-50/50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/40 hover:-translate-y-0.5 transition-all duration-300 anim-fade-up"
+                  style={{ animationDelay: `${i * 60}ms` }}>
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-maroon-100 to-amber-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Icon className="w-5 h-5 text-maroon-700" />
+                  </div>
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1.5">{f.title}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">{f.desc}</p>
+                  <button onClick={onOpenLogin}
+                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-maroon-700 uppercase tracking-wider group-hover:text-amber-700 transition-colors">
+                    Login to Access <FaArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-maroon-900 text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-center md:text-left">
+            <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+              <FaSchool className="w-4 h-4 text-amber-400" />
+              <span className="text-sm font-bold">Kinyui Boys&apos; Senior School</span>
+            </div>
+            <p className="text-[10px] text-amber-300/60 uppercase tracking-widest font-semibold">
+              &copy; {new Date().getFullYear()} All Rights Reserved
+            </p>
+          </div>
+          <div className="flex gap-6 sm:gap-8 text-xs font-semibold">
+            {['Academics', 'Finance', 'Support'].map((item) => (
+              <span key={item} className="text-amber-300/70 hover:text-white cursor-pointer transition-colors">{item}</span>
+            ))}
+          </div>
+        </div>
+      </footer>
+
+      <StudentLoginModal isOpen={false} onClose={() => {}} onLogin={() => {}} isLoading={false} error={null} requiresContact={false} />
+    </div>
+  );
+}
+
+// ==================== MAIN COMPONENT ====================
 export default function ModernStudentPortalPage() {
   const [student, setStudent] = useState(null);
   const [token, setToken] = useState(null);
@@ -456,7 +506,7 @@ export default function ModernStudentPortalPage() {
   const [resources, setResources] = useState([]);
   const [studentResults, setStudentResults] = useState([]);
   const [feeBalance, setFeeBalance] = useState(null);
-  
+
   const [assignmentsLoading, setAssignmentsLoading] = useState(false);
   const [resourcesLoading, setResourcesLoading] = useState(false);
   const [resultsLoading, setResultsLoading] = useState(false);
@@ -487,7 +537,7 @@ export default function ModernStudentPortalPage() {
           setStudent(data.student);
           setToken(savedToken);
           setShowLoginModal(false);
-          
+
           const logoutTimer = setTimeout(() => {
             toast.success('Your 2-hour session has expired. Please log in again.');
             handleLogout();
@@ -595,7 +645,7 @@ export default function ModernStudentPortalPage() {
 
   const fetchStudentResults = async () => {
     if (!student?.admissionNumber) return;
-    
+
     setResultsLoading(true);
     setResultsError(null);
     try {
@@ -621,7 +671,7 @@ export default function ModernStudentPortalPage() {
 
   const fetchFeeBalance = async () => {
     if (!student?.admissionNumber) return;
-    
+
     setFeeLoading(true);
     setFeeError(null);
     try {
@@ -664,7 +714,7 @@ export default function ModernStudentPortalPage() {
         setStudent(data.student);
         setToken(data.token);
         setShowLoginModal(false);
-        
+
         toast.success('Login Successful!', {
           description: `Welcome to Kinyui Boys' Portal, ${data.student.fullName}`
         });
@@ -673,7 +723,7 @@ export default function ModernStudentPortalPage() {
       } else {
         setLoginError(data.error);
         setRequiresContact(data.requiresContact || false);
-        
+
         if (data.requiresContact) {
           toast.error('Student Record Not Found', {
             description: 'Please contact your class teacher or school administrator for assistance.'
@@ -707,7 +757,7 @@ export default function ModernStudentPortalPage() {
       setResources([]);
       setStudentResults([]);
       setFeeBalance(null);
-      
+
       toast.success('Logged Out Successfully', {
         description: 'You have been securely logged out of the portal.'
       });
@@ -719,7 +769,7 @@ export default function ModernStudentPortalPage() {
       setShowLoginModal(true);
       return;
     }
-    
+
     fetchAllData();
     toast.success('Refreshing Data', {
       description: 'Your portal data is being updated.'
@@ -738,14 +788,10 @@ export default function ModernStudentPortalPage() {
     });
   };
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const closeMenuOnMobile = () => {
-    if (window.innerWidth < 1024) {
-      setIsMenuOpen(false);
-    }
+    if (window.innerWidth < 1024) setIsMenuOpen(false);
   };
 
   const handleViewChange = (view) => {
@@ -753,243 +799,13 @@ export default function ModernStudentPortalPage() {
     closeMenuOnMobile();
   };
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+  if (isLoading) return <LoadingScreen />;
 
+  // ========== UNAUTHENTICATED LANDING ==========
   if (!student || !token) {
-    const features = [
-      { 
-        icon: <FaBook className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />, 
-        title: "Digital Learning Resources", 
-        desc: "Access comprehensive digital notes, revision e-books, past examination papers, and supplementary learning materials to enhance your understanding of various subjects." 
-      },
-      { 
-        icon: <FaAward className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />, 
-        title: "Assignments & Projects", 
-        desc: "View and submit your subject-specific tasks, holiday assignments, and academic projects. Track submission deadlines and receive feedback from teachers." 
-      },
-      { 
-        icon: <FaChartBar className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />, 
-        title: "Performance Analytics", 
-        desc: "Access personalized performance reports comparing your results with class averages and KCSE targets. Identify strengths and areas needing improvement." 
-      },
-      { 
-        icon: <FaDollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />, 
-        title: "Fee Management System", 
-        desc: "Check current fee balance, download detailed statements, view payment history, and access fee structures and payment deadlines." 
-      },
-      { 
-        icon: <FaCalendar className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />, 
-        title: "School Calendar", 
-        desc: "Stay updated with academic term dates, examination schedules, sports fixtures, co-curricular activities, and parent-teacher meeting dates." 
-      },
-      { 
-        icon: <FaComments className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />, 
-        title: "Communication Hub", 
-        desc: "Receive important announcements from the administration, school news updates, and notifications about upcoming events and deadlines." 
-      }
-    ];
-
     return (
-      <div className="min-h-screen bg-gradient-to-br from-maroon-50 via-amber-50 to-white font-sans overflow-x-hidden">
-        <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.03]" 
-             style={{ backgroundImage: 'radial-gradient(#800020 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-        
-        <Toaster position="top-right" expand={true} richColors theme="light" />
-        
-        <main className="relative z-10 flex flex-col min-h-screen">
-          <nav className="sticky top-0 z-50 bg-gradient-to-r from-maroon-900 via-maroon-800 to-amber-800 backdrop-blur-lg border-b border-amber-600/30 px-3 py-2.5 sm:px-4 sm:py-3 md:px-6 md:py-4 lg:px-12">
-            <div className="max-w-7xl mx-auto flex justify-between items-center">
-              <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-amber-500/30 rounded-md blur-sm"></div>
-                  <Image
-                    src="/kinyui.png"
-                    alt="Kinyui Boys Senior School Logo"
-                    width={32}
-                    height={32}
-                    className="rounded-md w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 relative"
-                    priority
-                  />
-                </div>
-                <div>
-                  <span className="text-sm xs:text-base sm:text-lg md:text-xl font-black tracking-tighter block leading-none text-black">
-                    KINYUI BOYS'
-                  </span>
-                  <span className="text-[7px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-bold text-black 
-                    tracking-[0.1em] xs:tracking-[0.15em] sm:tracking-[0.2em] uppercase">
-                    Student Portal
-                  </span>
-                </div>
-              </div>
-
-              <div className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8">
-                <div className="flex items-center gap-1.5 px-2.5 py-1 bg-white/10 rounded-full border border-amber-500/30">
-                  <div className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
-                  <span className="text-[10px] font-black text-black uppercase tracking-wider">Secure Access</span>
-                  <FaShieldHalved className="w-3 h-3 text-amber-700" />
-                </div>
-                <button className="text-sm font-bold text-black hover:text-gray-800 transition-colors">Support Center</button>
-              </div>
-
-              <button onClick={router.back} className="md:hidden flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg 
-                bg-white/10 hover:bg-white/20 transition-colors active:scale-95">
-                <FaBars className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />
-              </button>
-            </div>
-          </nav>
-
-          <section className="px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-12 lg:py-20 max-w-7xl mx-auto w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xs:gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
-              <div className="space-y-4 xs:space-y-5 sm:space-y-6 md:space-y-8">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-maroon-100 rounded-lg border border-amber-200 
-                  text-[8px] xs:text-[9px] sm:text-[10px] font-bold tracking-widest uppercase text-black whitespace-nowrap">
-                  <HiSparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-700" />
-                  Excellence in Education Since 1976
-                </div>
-                <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 
-                  font-black tracking-tighter leading-[0.85] xs:leading-[0.9] text-black">
-                  EDUCATION  
-                  <span className="block text-amber-700 italic mt-1 xs:mt-2">IS LIGHT.</span>
-                </h1>
-                <p className="text-sm xs:text-base sm:text-lg md:text-xl text-black font-medium 
-                  max-w-full xs:max-w-xs sm:max-w-md leading-relaxed xs:leading-snug">
-                  Welcome to the Kinyui Boys' Senior School Digital Student Portal. Your centralized platform for academic resources, financial management, and school communication.
-                </p>
-                
-                <div className="flex flex-row items-center gap-2 sm:gap-4 w-full max-w-full">
-                  <button
-                    onClick={() => setShowLoginModal(true)}
-                    className="flex-[2] sm:flex-none flex items-center justify-center gap-1.5 sm:gap-3 px-3 sm:px-8 py-2.5 sm:py-4 bg-maroon-800 text-white rounded-xl sm:rounded-2xl font-black sm:font-bold text-[10px] sm:text-base uppercase sm:capitalize tracking-wider sm:tracking-normal hover:bg-amber-700 transition-all duration-300 active:scale-95 shadow-md sm:shadow-xl group"
-                  >
-                    <span>Access Your Portal</span>
-                    <FaArrowRight className="w-3 h-3 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
-                  </button>
-                  
-                  <button
-                    onClick={() => router.push("/pages/contact")}
-                    className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-7 py-2.5 sm:py-4 bg-white border border-amber-300 text-black rounded-xl sm:rounded-2xl font-black sm:font-bold text-[10px] sm:text-base uppercase sm:capitalize tracking-wider sm:tracking-normal hover:bg-amber-50 transition-all active:scale-95"
-                  >
-                    Get Help
-                  </button>
-                </div>
-              </div>
-
-              <div className="relative group mt-4 xs:mt-6 sm:mt-0">
-                <div className="absolute -inset-2 xs:-inset-3 sm:-inset-4 bg-amber-100/40 rounded-[2rem] xs:rounded-[2.5rem] blur-xl xs:blur-2xl sm:blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
-                <div className="relative bg-white border border-amber-200 shadow-lg xs:shadow-xl rounded-[1.5rem] xs:rounded-[2rem] sm:rounded-[2.5rem] p-4 xs:p-5 sm:p-6 md:p-8 space-y-4 xs:space-y-5 sm:space-y-6">
-                  <div className="flex items-center justify-between border-b border-amber-100 pb-3 xs:pb-4">
-                    <h3 className="font-black text-xs xs:text-sm uppercase tracking-widest text-black whitespace-nowrap">
-                      Portal Features
-                    </h3>
-                    <FaBrain className="w-4 h-4 xs:w-5 xs:h-5 text-amber-700" />
-                  </div>
-                  <div className="space-y-3 xs:space-y-4">
-                    <div className="p-3 xs:p-4 bg-gradient-to-r from-maroon-50 to-amber-50 rounded-xl xs:rounded-2xl border border-amber-100">
-                      <p className="text-[10px] xs:text-xs font-bold text-black mb-0.5 xs:mb-1">Digital Library</p>
-                      <p className="text-xs xs:text-sm font-semibold text-black leading-tight">
-                        Access e-books, revision materials, and past papers.
-                      </p>
-                    </div>
-                    <div className="p-3 xs:p-4 bg-gradient-to-r from-amber-50 to-maroon-50 rounded-xl xs:rounded-2xl border border-amber-100">
-                      <p className="text-[10px] xs:text-xs font-bold text-black mb-0.5 xs:mb-1">Performance Dashboard</p>
-                      <p className="text-xs xs:text-sm font-semibold text-black leading-tight">
-                        Track your academic progress and KCSE preparedness.
-                      </p>
-                    </div>
-                    <div className="p-3 xs:p-4 bg-gradient-to-r from-maroon-50 to-amber-50 rounded-xl xs:rounded-2xl border border-amber-100">
-                      <p className="text-[10px] xs:text-xs font-bold text-black mb-0.5 xs:mb-1">Financial Dashboard</p>
-                      <p className="text-xs xs:text-sm font-semibold text-black leading-tight">
-                        View balances, statements, and payment records.
-                      </p>
-                    </div>
-                  </div>
-                  <button className="w-full py-2.5 xs:py-3 text-center text-[10px] xs:text-xs font-black uppercase tracking-widest text-black hover:text-amber-700 transition-colors duration-300">
-                    Explore All Features
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="bg-gradient-to-r from-maroon-50 to-amber-50 border-y border-amber-200 py-8 xs:py-12 sm:py-16 md:py-20 px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12">
-            <div className="max-w-7xl mx-auto">
-              <div className="mb-6 xs:mb-8 sm:mb-10 md:mb-12 px-2">
-                <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-1 xs:mb-2 text-black">
-                  Complete Portal Modules
-                </h2>
-                <p className="text-black font-medium text-sm xs:text-base">
-                  Everything you need to excel in your academic journey at Kinyui Boys'.
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 md:gap-6 px-2">
-                {features.map((feature, i) => (
-                  <div key={i} className="group p-4 xs:p-5 sm:p-6 md:p-8 bg-white border border-amber-200 rounded-[1.5rem] xs:rounded-[1.75rem] sm:rounded-[2rem] hover:shadow-xl hover:shadow-amber-200/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300">
-                    <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-gradient-to-r from-maroon-100 to-amber-100 rounded-lg xs:rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 xs:mb-4 sm:mb-6 group-hover:scale-105 transition-transform duration-300">
-                      {feature.icon}
-                    </div>
-                    <h3 className="text-base xs:text-lg sm:text-xl md:text-2xl font-bold text-black mb-1.5 xs:mb-2 sm:mb-3 leading-tight">
-                      {feature.title}
-                    </h3>
-                    <p className="text-black text-xs xs:text-sm leading-relaxed mb-3 xs:mb-4 sm:mb-6 line-clamp-2 xs:line-clamp-3">
-                      {feature.desc}
-                    </p>
-                    <div className="flex items-center gap-1.5 xs:gap-2 text-[10px] xs:text-xs font-black uppercase tracking-widest text-black group-hover:text-amber-700 transition-colors duration-300 cursor-pointer">
-                      Login to Access 
-                      <FaArrowRight className="w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <footer className="px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 py-6 xs:py-8 sm:py-10 md:py-12 bg-gradient-to-r from-maroon-900 to-amber-900">
-            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 xs:gap-8 sm:gap-10 md:gap-12">
-              <div className="flex flex-col items-center lg:items-start gap-3 xs:gap-4 text-center lg:text-left">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 bg-white/10 rounded-lg flex items-center justify-center">
-                    <FaSchool className="w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4 text-amber-400" />
-                  </div>
-                  <span className="text-sm xs:text-base font-bold tracking-tight text-white">Kinyui Boys' Senior School</span>
-                </div>
-                <p className="text-[9px] xs:text-[10px] font-bold text-black uppercase tracking-widest">
-                  © {new Date().getFullYear()} Kinyui Boys' Senior School. All Rights Reserved.
-                </p>
-              </div>
-              
-              <div className="flex flex-wrap justify-center gap-4 xs:gap-6 sm:gap-8 md:gap-10">
-                <div className="space-y-1 xs:space-y-2 text-center">
-                  <p className="text-[9px] xs:text-[10px] font-black text-black uppercase tracking-widest">
-                    Academics
-                  </p>
-                  <p className="text-xs font-bold text-white hover:text-amber-300 cursor-pointer transition-colors duration-300">
-                    KNEC Portal
-                  </p>
-                </div>
-                <div className="space-y-1 xs:space-y-2 text-center">
-                  <p className="text-[9px] xs:text-[10px] font-black text-black uppercase tracking-widest">
-                    Finance
-                  </p>
-                  <p className="text-xs font-bold text-white hover:text-amber-300 cursor-pointer transition-colors duration-300">
-                    Payment Options
-                  </p>
-                </div>
-                <div className="space-y-1 xs:space-y-2 text-center">
-                  <p className="text-[9px] xs:text-[10px] font-black text-black uppercase tracking-widest">
-                    Support
-                  </p>
-                  <p className="text-xs font-bold text-white hover:text-amber-300 cursor-pointer transition-colors duration-300">
-                    IT Help Desk
-                  </p>
-                </div>
-              </div>
-            </div>
-          </footer>
-        </main>
-
+      <>
+        <LandingPage onOpenLogin={() => setShowLoginModal(true)} router={router} />
         <StudentLoginModal
           isOpen={showLoginModal}
           onClose={() => setShowLoginModal(false)}
@@ -998,14 +814,16 @@ export default function ModernStudentPortalPage() {
           error={loginError}
           requiresContact={requiresContact}
         />
-      </div>
+      </>
     );
   }
 
+  // ========== AUTHENTICATED PORTAL ==========
   return (
-    <div className="min-h-screen bg-gradient-to-br from-maroon-50 via-amber-50 to-white">
-      <Toaster position="top-right" expand={true} richColors theme="light" />
-      
+    <div className="min-h-screen bg-gray-50">
+      <style>{portalStyles}</style>
+      <Toaster position="top-right" expand richColors theme="light" />
+
       <StudentLoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
@@ -1015,22 +833,18 @@ export default function ModernStudentPortalPage() {
         requiresContact={requiresContact}
       />
 
+      {/* Mobile overlay */}
       {isMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-maroon-950/70 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300 animate-fadeIn"
-          onClick={toggleMenu}
-        />
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden" onClick={toggleMenu} />
       )}
 
       <div className="flex">
+        {/* Sidebar */}
         <div className={`
           ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-          lg:translate-x-0
-          fixed lg:sticky lg:top-0
-          h-screen z-50 transition-transform duration-300 ease-in-out
-          flex-shrink-0
-          w-[85vw] sm:w-4/5 md:w-3/5 lg:w-72 xl:w-80
-          shadow-2xl mobile-scroll-hide
+          lg:translate-x-0 fixed lg:sticky lg:top-0
+          h-screen z-50 transition-transform duration-300 ease-in-out flex-shrink-0
+          w-[280px] sm:w-[300px] lg:w-72 xl:w-80 shadow-2xl hide-scrollbar
         `}>
           <NavigationSidebar
             student={student}
@@ -1045,25 +859,18 @@ export default function ModernStudentPortalPage() {
           />
         </div>
 
-        <div className="flex-1 flex flex-col min-h-screen w-full lg:w-[calc(100%-18rem)] xl:w-[calc(100%-20rem)] transition-all duration-300">
-          <ModernStudentHeader
+        {/* Main content */}
+        <div className="flex-1 flex flex-col min-h-screen">
+          <StudentHeader
             student={student}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            onRefresh={handleRefresh}
             onMenuToggle={toggleMenu}
             isMenuOpen={isMenuOpen}
             currentView={currentView}
           />
 
-          <main className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 container mx-auto max-w-7xl mobile-scroll-hide sm:overflow-y-auto">
+          <main className="flex-1 overflow-y-auto px-3 sm:px-5 lg:px-8 py-5 sm:py-6 lg:py-8 max-w-7xl mx-auto w-full hide-scrollbar">
             {currentView === 'home' && (
-              <ModernHomeView
-                student={student}
-                feeBalance={feeBalance}
-                feeLoading={feeLoading}
-                token={token}
-              />
+              <HomeDashboardView student={student} token={token} />
             )}
             {currentView === 'results' && (
               <ResultsView
@@ -1074,7 +881,6 @@ export default function ModernStudentPortalPage() {
                 onRefreshResults={fetchStudentResults}
               />
             )}
-
             {currentView === 'resources' && (
               <ResourcesAssignmentsView
                 student={student}
@@ -1086,62 +892,31 @@ export default function ModernStudentPortalPage() {
                 onViewDetails={handleViewDetails}
               />
             )}
-
-            {currentView === 'guidance' && (
-              <GuidanceEventsView />
-            )}
-
-            {currentView === 'fees' && (
-              <FeesView
-                student={student}
-                token={token}
-              />
-            )}
+            {currentView === 'guidance' && <GuidanceEventsView />}
+            {currentView === 'fees' && <FeesView student={student} token={token} />}
           </main>
 
-          <footer className="border-t border-amber-200 bg-gradient-to-r from-maroon-900 via-maroon-800 to-amber-800 py-4 sm:py-6 md:py-8">
-            <div className="container mx-auto px-3 sm:px-4 md:px-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
-                <div className="text-center md:text-left">
-                  <p className="text-black text-sm font-bold">
-                    © {new Date().getFullYear()} Kinyui Boys' Senior School
-                  </p>
-                  <p className="text-black text-xs mt-1 sm:mt-2">
-                    Digital Student Portal • Empowering Excellence Through Technology
-                  </p>
-                  <div className="flex items-center gap-2 sm:gap-3 mt-2 sm:mt-3">
-                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-black">Secure Session Active</span>
+          {/* Footer */}
+          <footer className="border-t border-gray-200 bg-maroon-900 py-5 sm:py-6">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <p className="text-white text-sm font-semibold">&copy; {new Date().getFullYear()} Kinyui Boys&apos; Senior School</p>
+                  <div className="flex items-center gap-2 mt-1.5">
+                    <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+                    <span className="text-xs text-amber-300/70">Secure Session Active</span>
                   </div>
                 </div>
-                <div className="flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
-                  <button
-                    onClick={() => router.push('/pages/OurSchoolPolicies')}
-                    className="text-black hover:text-gray-800 text-xs sm:text-sm font-medium transition-colors mobile-touch-friendly"
-                  >
-                    Privacy Policy
-                  </button>
-
-                  <button
-                    onClick={() => router.push('/pages/OurSchoolPolicies')}
-                    className="text-black hover:text-gray-800 text-xs sm:text-sm font-medium transition-colors mobile-touch-friendly"
-                  >
-                    Terms of Service
-                  </button>
-
-                  <button
-                    onClick={() => router.push('/pages/OurSchoolPolicies')}
-                    className="text-black hover:text-gray-800 text-xs sm:text-sm font-medium transition-colors mobile-touch-friendly"
-                  >
-                    Help Center
-                  </button>
-
-                  <button
-                    onClick={() => router.push('/pages/OurSchoolPolicies')}
-                    className="text-black hover:text-gray-800 transition-colors mobile-touch-friendly"
-                    aria-label="Language & Accessibility"
-                  >
-                    <FaGlobe className="w-3 h-3 sm:w-4 sm:h-4" />
+                <div className="flex items-center gap-5 flex-wrap">
+                  {['Privacy Policy', 'Terms of Service', 'Help Center'].map((label) => (
+                    <button key={label} onClick={() => router.push('/pages/OurSchoolPolicies')}
+                      className="text-amber-300/70 hover:text-white text-xs font-medium transition-colors touch-target">
+                      {label}
+                    </button>
+                  ))}
+                  <button onClick={() => router.push('/pages/OurSchoolPolicies')}
+                    className="text-amber-300/70 hover:text-white transition-colors touch-target" aria-label="Accessibility">
+                    <FaGlobe className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
