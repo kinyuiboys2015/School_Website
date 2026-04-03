@@ -28,7 +28,7 @@ import {
   FaUserFriends, FaQuestionCircle
 } from 'react-icons/fa';
 import { HiSparkles } from "react-icons/hi2";
-import { FaCheckCircle } from "react-icons/fa6";
+import { FaCircleCheck } from "react-icons/fa6";
 
 import { 
   FiMenu, FiX, FiRefreshCw, FiBookOpen, FiExternalLink, 
@@ -222,7 +222,7 @@ function HomeDashboardView({ student, token }) {
           </div>
           <div className="flex flex-wrap gap-2 mt-5">
             <span className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white">
-              <FaCheckCircle className="w-3 h-3 text-emerald-400" />
+              <FaCircleCheck className="w-3 h-3 text-emerald-400" />
               Active Session
             </span>
             <span className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white">
