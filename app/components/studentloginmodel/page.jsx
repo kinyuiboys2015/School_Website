@@ -131,7 +131,7 @@ export default function StudentLoginModal({
       aria-modal="true"
       aria-labelledby="login-modal-title"
     >
-      <main className="bg-gradient-to-br from-white via-amber-50 to-maroon-50 rounded-2xl shadow-2xl w-full max-w-3xl border-2 border-amber-500/30 overflow-hidden transform transition-all duration-300 scale-100 my-auto max-h-[90vh] flex flex-col">
+      <main className="bg-gradient-to-br from-gray-900 via-maroon-950 to-gray-950 rounded-2xl shadow-2xl w-full max-w-3xl border-2 border-amber-700/50 overflow-hidden transform transition-all duration-300 scale-100 my-auto max-h-[90vh] flex flex-col">
         
         {/* Header with School Logo - Kinyui Branding */}
         <header className="bg-gradient-to-r from-maroon-900 via-maroon-800 to-amber-800 px-6 py-4 text-white flex-shrink-0">
@@ -177,24 +177,24 @@ export default function StudentLoginModal({
         <article className="p-6 overflow-y-auto flex-grow">
           
           {/* School Motto Banner */}
-          <div className="mb-5 bg-gradient-to-r from-amber-500/10 to-maroon-500/10 rounded-xl p-3 border border-amber-500/20 text-center">
-            <p className="text-maroon-800 font-bold italic text-sm flex items-center justify-center gap-2">
-              <FiStar className="text-amber-600" />
+          <div className="mb-5 bg-gradient-to-r from-amber-900/30 to-maroon-900/30 rounded-xl p-3 border border-amber-700/40 text-center">
+            <p className="text-amber-300 font-bold italic text-sm flex items-center justify-center gap-2">
+              <FiStar className="text-amber-500" />
               "Soaring to Excellence"
-              <FiStar className="text-amber-600" />
+              <FiStar className="text-amber-500" />
             </p>
-            <p className="text-maroon-600 text-xs mt-1">EST. 1976 | CENTRE OF EXCELLENCE</p>
+            <p className="text-amber-400 text-xs mt-1">EST. 1976 | CENTRE OF EXCELLENCE</p>
           </div>
 
           {/* Flexible Name Instructions - Male Students Only */}
-          <section className="mb-5 bg-gradient-to-r from-amber-50 to-maroon-50 rounded-xl p-4 border border-amber-300">
+          <section className="mb-5 bg-gradient-to-r from-maroon-900/50 to-gray-800/50 rounded-xl p-4 border border-maroon-700">
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-maroon-100 rounded-lg">
-                <FiCheckCircle className="text-maroon-700 text-sm" aria-hidden="true" />
+              <div className="p-2 bg-maroon-800 rounded-lg">
+                <FiCheckCircle className="text-amber-400 text-sm" aria-hidden="true" />
               </div>
               <div className="flex-1">
-                <h2 className="text-sm font-bold text-maroon-900 mb-1">Male Student Name Entry</h2>
-                <p className="text-maroon-700 text-xs mb-2">
+                <h2 className="text-sm font-bold text-amber-300 mb-1">Male Student Name Entry</h2>
+                <p className="text-gray-300 text-xs mb-2">
                   Enter your name in any format (uppercase, lowercase, 2 or 3 names)
                 </p>
                 <div className="flex flex-wrap gap-2 mt-2">
@@ -202,7 +202,7 @@ export default function StudentLoginModal({
                     <button 
                       key={idx}
                       onClick={() => handleInputChange('fullName', format)}
-                      className="px-2 py-1 bg-maroon-100 text-maroon-800 rounded-lg text-xs cursor-pointer hover:bg-maroon-200 transition-all duration-200 border border-maroon-300 hover:scale-105"
+                      className="px-2 py-1 bg-maroon-800 text-amber-300 rounded-lg text-xs cursor-pointer hover:bg-maroon-700 transition-all duration-200 border border-maroon-600 hover:scale-105"
                       type="button"
                     >
                       {format}
@@ -217,23 +217,23 @@ export default function StudentLoginModal({
           <aside>
             {(showContactInfo || localError) && (
               <div className="mb-5 animate-slideDown">
-                <div className="flex items-start gap-3 p-3 bg-red-50 rounded-xl border border-red-300">
-                  <div className="p-1.5 bg-red-100 rounded-full">
-                    <FiAlertCircle className="text-red-600 text-sm" aria-hidden="true" />
+                <div className="flex items-start gap-3 p-3 bg-red-950/60 rounded-xl border border-red-800">
+                  <div className="p-1.5 bg-red-900 rounded-full">
+                    <FiAlertCircle className="text-red-400 text-sm" aria-hidden="true" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-sm font-bold text-red-900 mb-1">
+                    <h3 className="text-sm font-bold text-red-300 mb-1">
                       {showContactInfo ? 'Record Verification Needed' : 'Login Issue'}
                     </h3>
-                    <p className="text-red-700 text-xs">{localError}</p>
+                    <p className="text-red-400 text-xs">{localError}</p>
                     
                     {showContactInfo && (
                       <div className="mt-3 space-y-2">
-                        <div className="flex items-center gap-2 text-xs text-maroon-800">
-                          <FiHelpCircle className="text-maroon-600" />
+                        <div className="flex items-center gap-2 text-xs text-amber-300">
+                          <FiHelpCircle className="text-amber-400" />
                           <span className="font-bold">Next Steps:</span>
                         </div>
-                        <ul className="text-xs text-maroon-700 space-y-1 ml-5 list-decimal">
+                        <ul className="text-xs text-gray-300 space-y-1 ml-5 list-decimal">
                           <li>Re-enter your details below</li>
                           <li>Contact your class teacher</li>
                           <li>Visit the school administration office</li>
@@ -250,21 +250,21 @@ export default function StudentLoginModal({
           <section>
             <div className="mb-5">
               <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-gradient-to-r from-maroon-100 to-amber-100 rounded-xl">
-                  <FiShield className="text-maroon-700 text-sm" />
+                <div className="p-2 bg-gradient-to-r from-maroon-800 to-amber-900 rounded-xl">
+                  <FiShield className="text-amber-400 text-sm" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-maroon-900">Secure Student Access</h3>
-                  <div className="flex items-center gap-2 text-maroon-600 text-xs">
-                    <FiClock className="text-amber-600" />
-                    <span>Session Duration: <strong className="text-maroon-800">2 Hours</strong></span>
+                  <h3 className="text-sm font-bold text-amber-300">Secure Student Access</h3>
+                  <div className="flex items-center gap-2 text-gray-300 text-xs">
+                    <FiClock className="text-amber-500" />
+                    <span>Session Duration: <strong className="text-amber-300">2 Hours</strong></span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-maroon-50 to-amber-50 rounded-xl p-3 border border-maroon-200">
-                <p className="text-maroon-800 text-xs font-medium">
-                  <strong>Note:</strong> Use your official admission number and name as registered for Kinyui Boys' Senior School.
+              <div className="bg-gradient-to-r from-maroon-900/50 to-amber-900/30 rounded-xl p-3 border border-maroon-700">
+                <p className="text-gray-300 text-xs font-medium">
+                  <strong className="text-amber-300">Note:</strong> Use your official admission number and name as registered for Kinyui Boys' Senior School.
                 </p>
               </div>
             </div>
@@ -272,10 +272,10 @@ export default function StudentLoginModal({
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name Input */}
               <fieldset>
-                <label className="text-xs font-bold text-maroon-900 flex items-center gap-2 mb-2">
-                  <FiUser className="text-amber-600 text-sm" />
+                <label className="text-xs font-bold text-amber-300 flex items-center gap-2 mb-2">
+                  <FiUser className="text-amber-500 text-sm" />
                   <span>Full Name (Male Student)</span>
-                  <span className="text-[10px] text-maroon-600 bg-maroon-100 px-2 py-0.5 rounded-full">Flexible Format</span>
+                  <span className="text-[10px] text-amber-400 bg-maroon-800 px-2 py-0.5 rounded-full">Flexible Format</span>
                 </label>
                 <input
                   type="text"
@@ -284,17 +284,17 @@ export default function StudentLoginModal({
                   placeholder="e.g., Musau Mutuku, MUSAU MUTUKU, M. Mutuku"
                   className={`
                     w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500/40 
-                    focus:border-amber-600 transition-all duration-200 text-sm bg-white
+                    focus:border-amber-600 transition-all duration-200 text-sm bg-gray-800 text-gray-100 placeholder-gray-500
                     ${validationErrors.fullName 
-                      ? 'border-red-500 focus:border-red-600' 
-                      : 'border-maroon-300 hover:border-maroon-400'
+                      ? 'border-red-600 focus:border-red-500' 
+                      : 'border-maroon-700 hover:border-maroon-600'
                     }
                   `}
                   disabled={isLoading}
                   autoComplete="name"
                 />
                 {validationErrors.fullName && (
-                  <p className="text-red-600 text-xs mt-1 flex items-center gap-1">
+                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
                     <FiAlertCircle className="text-xs" />
                     {validationErrors.fullName}
                   </p>
@@ -302,7 +302,7 @@ export default function StudentLoginModal({
                 
                 {/* Quick Select - Male Student Examples */}
                 <div className="mt-3">
-                  <p className="text-maroon-600 text-[10px] font-semibold mb-2">⬇️ Quick Select (Male Students):</p>
+                  <p className="text-amber-400 text-[10px] font-semibold mb-2">⬇️ Quick Select (Male Students):</p>
                   <div className="flex flex-wrap gap-2">
                     {studentExamples.map((student, idx) => (
                       <button
@@ -312,7 +312,7 @@ export default function StudentLoginModal({
                           handleInputChange('fullName', student.name);
                           handleInputChange('admissionNumber', student.admission);
                         }}
-                        className="px-2 py-1 bg-gradient-to-r from-maroon-100 to-amber-100 hover:from-maroon-200 hover:to-amber-200 text-maroon-800 rounded-lg text-[10px] border border-maroon-300 shadow-sm hover:shadow-md transition-all duration-200 font-medium"
+                        className="px-2 py-1 bg-gradient-to-r from-maroon-800 to-amber-900 hover:from-maroon-700 hover:to-amber-800 text-amber-300 rounded-lg text-[10px] border border-maroon-600 shadow-sm hover:shadow-md transition-all duration-200 font-medium"
                       >
                         {student.name.split(' ')[0]} • {student.admission}
                       </button>
@@ -323,10 +323,10 @@ export default function StudentLoginModal({
 
               {/* Admission Number Input */}
               <fieldset>
-                <label className="text-xs font-bold text-maroon-900 flex items-center gap-2 mb-2">
-                  <FiLock className="text-amber-600 text-sm" />
+                <label className="text-xs font-bold text-amber-300 flex items-center gap-2 mb-2">
+                  <FiLock className="text-amber-500 text-sm" />
                   <span>Admission Number</span>
-                  <span className="text-[10px] text-maroon-600 bg-maroon-100 px-2 py-0.5 rounded-full">Unique ID</span>
+                  <span className="text-[10px] text-amber-400 bg-maroon-800 px-2 py-0.5 rounded-full">Unique ID</span>
                 </label>
                 <input
                   type="text"
@@ -335,17 +335,17 @@ export default function StudentLoginModal({
                   placeholder="e.g., 2903, AB12, 2023001"
                   className={`
                     w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500/40 
-                    focus:border-amber-600 transition-all duration-200 text-sm bg-white uppercase
+                    focus:border-amber-600 transition-all duration-200 text-sm bg-gray-800 text-gray-100 placeholder-gray-500 uppercase
                     ${validationErrors.admissionNumber 
-                      ? 'border-red-500 focus:border-red-600' 
-                      : 'border-maroon-300 hover:border-maroon-400'
+                      ? 'border-red-600 focus:border-red-500' 
+                      : 'border-maroon-700 hover:border-maroon-600'
                     }
                   `}
                   disabled={isLoading}
                   autoComplete="off"
                 />
                 {validationErrors.admissionNumber && (
-                  <p className="text-red-600 text-xs mt-1 flex items-center gap-1">
+                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
                     <FiAlertCircle className="text-xs" />
                     {validationErrors.admissionNumber}
                   </p>
@@ -353,14 +353,14 @@ export default function StudentLoginModal({
                 
                 {/* Admission Number Examples */}
                 <div className="mt-3">
-                  <p className="text-maroon-600 text-[10px] font-semibold mb-2">⬇️ Example Formats:</p>
+                  <p className="text-amber-400 text-[10px] font-semibold mb-2">⬇️ Example Formats:</p>
                   <div className="flex flex-wrap gap-2">
                     {['2903', 'AB12', '2023001', 'STU456', 'KM001'].map((example, idx) => (
                       <button
                         key={idx}
                         type="button"
                         onClick={() => handleInputChange('admissionNumber', example)}
-                        className="px-2 py-1 bg-maroon-100 text-maroon-800 rounded-lg text-[10px] border border-maroon-300 hover:bg-maroon-200 transition-all duration-200 font-mono"
+                        className="px-2 py-1 bg-maroon-800 text-amber-300 rounded-lg text-[10px] border border-maroon-600 hover:bg-maroon-700 transition-all duration-200 font-mono"
                       >
                         {example}
                       </button>
@@ -375,7 +375,7 @@ export default function StudentLoginModal({
                   type="button"
                   onClick={handleClear}
                   disabled={isLoading}
-                  className="flex-1 py-3 px-4 bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-700 rounded-xl font-bold text-sm disabled:opacity-50 flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg border border-gray-400 active:scale-95"
+                  className="flex-1 py-3 px-4 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-gray-200 rounded-xl font-bold text-sm disabled:opacity-50 flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg border border-gray-600 active:scale-95"
                 >
                   <FiX className="text-sm" />
                   <span>Clear</span>
@@ -402,19 +402,19 @@ export default function StudentLoginModal({
             </form>
 
             {/* Features Grid */}
-            <section className="mt-6 pt-4 border-t border-maroon-200">
+            <section className="mt-6 pt-4 border-t border-maroon-700">
               <div className="grid grid-cols-3 gap-3">
-                <div className="text-center p-2 bg-gradient-to-r from-maroon-50 to-maroon-100 rounded-xl">
-                  <FiBook className="text-maroon-600 text-base mx-auto mb-1" />
-                  <p className="text-[10px] font-bold text-maroon-800">Learning Resources</p>
+                <div className="text-center p-2 bg-gradient-to-r from-maroon-900 to-maroon-800 rounded-xl">
+                  <FiBook className="text-amber-400 text-base mx-auto mb-1" />
+                  <p className="text-[10px] font-bold text-gray-200">Learning Resources</p>
                 </div>
-                <div className="text-center p-2 bg-gradient-to-r from-amber-50 to-amber-100 rounded-xl">
-                  <FiShield className="text-amber-600 text-base mx-auto mb-1" />
-                  <p className="text-[10px] font-bold text-amber-800">Secure Access</p>
+                <div className="text-center p-2 bg-gradient-to-r from-amber-900 to-amber-800 rounded-xl">
+                  <FiShield className="text-amber-400 text-base mx-auto mb-1" />
+                  <p className="text-[10px] font-bold text-gray-200">Secure Access</p>
                 </div>
-                <div className="text-center p-2 bg-gradient-to-r from-maroon-50 to-amber-50 rounded-xl">
-                  <FiAward className="text-maroon-600 text-base mx-auto mb-1" />
-                  <p className="text-[10px] font-bold text-maroon-800">Excellence</p>
+                <div className="text-center p-2 bg-gradient-to-r from-maroon-900 to-amber-900 rounded-xl">
+                  <FiAward className="text-amber-400 text-base mx-auto mb-1" />
+                  <p className="text-[10px] font-bold text-gray-200">Excellence</p>
                 </div>
               </div>
             </section>
@@ -455,7 +455,7 @@ export default function StudentLoginModal({
         }
         
         .overflow-y-auto::-webkit-scrollbar-track {
-          background: #fde68a;
+          background: #1a0008;
           border-radius: 3px;
         }
         
