@@ -59,21 +59,21 @@ export default function ModernLoadingScreen() {
 
   if (!mounted) {
     return (
-      <div className="fixed inset-0 bg-gradient-to-br from-maroon-50 via-white to-amber-50 z-50 flex items-center justify-center">
+      <div className="fixed inset-0 bg-gradient-to-br from-maroon-950 via-gray-900 to-amber-950 z-50 flex items-center justify-center">
         <div className="text-maroon-800 text-center font-semibold">Loading Kinyui Boys' Portal...</div>
       </div>
     );
   }
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-maroon-50 via-white to-amber-50 z-50 flex items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 bg-gradient-to-br from-maroon-950 via-gray-900 to-amber-950 z-50 flex items-center justify-center overflow-hidden">
       
       {/* Dynamic Background Effect */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated Gradient Orbs - Kinyui School Colors (Maroon & Amber) */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-maroon-600/10 to-amber-600/10 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-maroon-700/10 to-amber-500/10 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-maroon-500/5 to-amber-500/5 rounded-full blur-3xl animate-spin-slow"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-maroon-600/30 to-amber-600/30 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-maroon-700/30 to-amber-500/30 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-maroon-500/20 to-amber-500/20 rounded-full blur-3xl animate-spin-slow"></div>
         
         {/* Moving Light Beams - Professional Style */}
         <div className="absolute inset-0 opacity-20">
@@ -84,7 +84,7 @@ export default function ModernLoadingScreen() {
         </div>
 
         {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(128,0,32,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(128,0,32,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(128,0,32,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(128,0,32,0.12)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
         
         {/* Floating Particles - Maroon & Amber */}
         {[...Array(20)].map((_, i) => (
@@ -118,14 +118,14 @@ export default function ModernLoadingScreen() {
           ></div>
           
           {/* Outer Ring Animation - School Colors */}
-          <div className="absolute inset-0 rounded-full border-2 border-maroon-500/30 animate-ping-slow"></div>
-          <div className="absolute inset-2 rounded-full border-2 border-amber-500/20 animate-spin-slow"></div>
+          <div className="absolute inset-0 rounded-full border-2 border-maroon-500/70 animate-ping-slow"></div>
+          <div className="absolute inset-2 rounded-full border-2 border-amber-500/60 animate-spin-slow"></div>
           
           {/* Logo Container with Maroon/Amber Gradient */}
           <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-br from-maroon-700 to-amber-600 p-1 shadow-2xl">
-            <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/10 pointer-events-none"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+            <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-b from-gray-800/40 via-transparent to-gray-800/10 pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-700/30 to-transparent animate-shimmer"></div>
               
               <img 
                 src="/kinyui.png" 
@@ -141,7 +141,7 @@ export default function ModernLoadingScreen() {
 
         {/* School Name - Kinyui Branding */}
         <div className="text-center mb-5 md:mb-6">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-wider text-maroon-900">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-wider text-black">
             {schoolName.split("'").map((part, i) => (
               <span key={i}>
                 {part}
@@ -155,14 +155,14 @@ export default function ModernLoadingScreen() {
             <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-600 to-transparent animate-underline"></div>
           </div>
           
-          <p className="text-maroon-600 text-xs md:text-sm mt-3 tracking-wider font-semibold">
+          <p className="text-gray-800 text-xs md:text-sm mt-3 tracking-wider font-semibold">
             EST. 1976 | CENTRE OF EXCELLENCE
           </p>
         </div>
 
         {/* Motto - School Motto */}
         <div className="text-center mb-8 md:mb-10">
-          <p className="text-md md:text-xl lg:text-2xl font-bold italic tracking-wide text-maroon-700">
+          <p className="text-md md:text-xl lg:text-2xl font-bold italic tracking-wide text-black">
             "{motto}"
           </p>
         </div>
@@ -172,21 +172,21 @@ export default function ModernLoadingScreen() {
           
           {/* Progress Bar - Maroon & Amber Gradient */}
           <div className="w-full">
-            <div className="relative h-1.5 bg-maroon-100 rounded-full overflow-hidden">
+            <div className="relative h-1.5 bg-maroon-800 rounded-full overflow-hidden">
               <div 
                 className="absolute top-0 left-0 h-full bg-gradient-to-r from-maroon-600 via-amber-500 to-maroon-700 rounded-full transition-all duration-300 ease-out"
                 style={{ width: `${progress}%` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-700/30 to-transparent animate-shimmer"></div>
               </div>
             </div>
-            <p className="text-right text-xs text-maroon-500 mt-1 font-mono">
+            <p className="text-right text-xs text-gray-800 mt-1 font-mono">
               {progress}%
             </p>
           </div>
 
           {/* Loading Message */}
-          <div className="flex items-center gap-2 text-maroon-600 text-sm md:text-base font-medium">
+          <div className="flex items-center gap-2 text-gray-900 text-sm md:text-base font-medium">
             <span>{loadingMessages[textIndex]}</span>
             <span className="flex gap-0.5">
               <span className="animate-bounce-dot" style={{ animationDelay: '0s' }}>.</span>
@@ -203,7 +203,7 @@ export default function ModernLoadingScreen() {
                 cy="50%"
                 r="45%"
                 fill="none"
-                stroke="#fde8e8"
+                stroke="#4a0010"
                 strokeWidth="2"
                 className="opacity-50"
               />
