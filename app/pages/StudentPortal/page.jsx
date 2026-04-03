@@ -1,481 +1,39 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'sonner';
-import StudentLoginModal from '../../components/studentloginmodel/page';
-import NavigationSidebar from '../../components/studentportalcomponents/aside/page.jsx';
-import ResultsView from '../../components/studentportalcomponents/result/page.jsx';
-import ResourcesAssignmentsView from '../../components/studentportalcomponents/ass/page.jsx';
-import GuidanceEventsView from '../../components/studentportalcomponents/session/page';
-import LoadingScreen from '../../components/studentportalcomponents/loading/page';
-import FeesView from '../../components/studentportalcomponents/feebalance/page'; // ADDED IMPORT
-
-/// Font Awesome 6 - Modern versions
-import { 
-  FaBell, FaBars, FaCalendar, FaBook, FaAward, FaDollarSign, 
-  FaClock, FaChartLine, FaChartBar, FaFolder, FaComments,
-  FaRocket, FaPalette, FaGem, FaChartPie, FaTrendingUp, FaCrown,
-  FaLightbulb, FaBrain, FaHandshake, FaHeart, FaLock, FaGlobe, 
-  FaArrowRight, FaFire, FaBolt, FaCalendarCheck, FaUserPlus, 
-  FaUserCheck, FaRoute, FaDirections, FaQrcode, FaFingerprint, 
-  FaIdCard, FaDesktop, FaWandMagic, FaUser, FaShieldHalved, FaSchool
-} from 'react-icons/fa6';
-
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-
-// Font Awesome 5 (Legacy)
+import CircularProgress from "@mui/material/CircularProgress";
 import { 
-  FaHome, FaSearch, FaTimes, FaSync, FaExclamationCircle, 
-  FaUserFriends, FaQuestionCircle
-} from 'react-icons/fa';
-import { HiSparkles } from "react-icons/hi2";
-import { FaCheckCircle } from "react-icons/fa6";
-
-// Feather icons
-import { 
-  FiMenu, FiX, FiRefreshCw, FiBookOpen, FiExternalLink, 
-  FiShield, FiExpand, FiCompress, FiMapPin, FiSmartphone, FiTablet
+  FiUser, FiLock, FiAlertCircle, FiHelpCircle, FiLogIn, 
+  FiCheckCircle, FiStar, FiAward, FiBook, FiShield, FiClock
 } from 'react-icons/fi';
+import { FaArrowRight } from 'react-icons/fa6';
+import { HiSparkles } from "react-icons/hi2";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
-// ==================== RESPONSIVE STYLES ====================
-const responsiveStyles = `
-@media (max-width: 768px) {
-  .mobile-scroll-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .mobile-scroll-hide::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .mobile-touch-friendly {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  .mobile-text-truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  .mobile-stack {
-    flex-direction: column !important;
-  }
-  
-  .mobile-compact {
-    padding: 0.75rem !important;
-    margin: 0.5rem !important;
-  }
-  
-  .mobile-full-width {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  .mobile-modal-fix {
-    max-height: 80vh !important;
-    margin: 1rem !important;
-  }
-}
-
-@media (max-width: 640px) {
-  .xs-text-sm {
-    font-size: 0.875rem !important;
-  }
-  
-  .xs-p-2 {
-    padding: 0.5rem !important;
-  }
-  
-  .xs-gap-2 {
-    gap: 0.5rem !important;
-  }
-}
-
-.mobile-contain {
-  max-width: 100% !important;
-  height: auto !important;
-}
-`;
-
-// ==================== MODERN STUDENT HEADER ====================
-function ModernStudentHeader({ 
-  student, 
-  searchTerm, 
-  setSearchTerm, 
-  onRefresh,
-  onMenuToggle,
-  isMenuOpen,
-  currentView 
-}) {
-  
-  const getInitials = (name) => {
-    if (!name) return 'KB';
-    return name
-      .split(' ')
-      .map(part => part.charAt(0).toUpperCase())
-      .slice(0, 2)
-      .join('');
-  };
-
-  const getGradientColor = (name) => {
-    const char = name.trim().charAt(0).toUpperCase();
-    const gradients = {
-      A: "bg-gradient-to-r from-maroon-700 to-amber-600",
-      B: "bg-gradient-to-r from-amber-600 to-maroon-700",
-      C: "bg-gradient-to-r from-maroon-800 to-amber-500",
-      D: "bg-gradient-to-r from-amber-700 to-maroon-600",
-      E: "bg-gradient-to-r from-maroon-600 to-amber-700",
-      F: "bg-gradient-to-r from-amber-500 to-maroon-800",
-      G: "bg-gradient-to-r from-maroon-900 to-amber-600",
-      H: "bg-gradient-to-r from-amber-600 to-maroon-900",
-      I: "bg-gradient-to-r from-maroon-700 to-amber-500",
-      J: "bg-gradient-to-r from-amber-500 to-maroon-700",
-      K: "bg-gradient-to-r from-maroon-800 to-amber-600",
-      L: "bg-gradient-to-r from-amber-600 to-maroon-800",
-      M: "bg-gradient-to-r from-maroon-600 to-amber-500",
-      N: "bg-gradient-to-r from-amber-500 to-maroon-600",
-      O: "bg-gradient-to-r from-maroon-900 to-amber-700",
-      P: "bg-gradient-to-r from-amber-700 to-maroon-900",
-      Q: "bg-gradient-to-r from-maroon-700 to-amber-600",
-      R: "bg-gradient-to-r from-amber-600 to-maroon-700",
-      S: "bg-gradient-to-r from-maroon-800 to-amber-500",
-      T: "bg-gradient-to-r from-amber-500 to-maroon-800",
-      U: "bg-gradient-to-r from-maroon-600 to-amber-700",
-      V: "bg-gradient-to-r from-amber-700 to-maroon-600",
-      W: "bg-gradient-to-r from-maroon-900 to-amber-600",
-      X: "bg-gradient-to-r from-amber-600 to-maroon-900",
-      Y: "bg-gradient-to-r from-maroon-700 to-amber-500",
-      Z: "bg-gradient-to-r from-amber-500 to-maroon-700",
-    };
-    return gradients[char] || "bg-gradient-to-r from-maroon-700 to-amber-600";
-  };
-
-  const getViewIcon = (view) => {
-    switch(view) {
-      case 'home': return <FaHome className="text-amber-700" />;
-      case 'results': return <FaChartBar className="text-amber-700" />;
-      case 'resources': return <FaFolder className="text-amber-700" />;
-      case 'guidance': return <FaComments className="text-amber-700" />;
-      case 'fees': return <FaDollarSign className="text-amber-700" />;
-      default: return <FaHome className="text-amber-700" />;
-    }
-  };
-
-  return (
-    <>
-      <style>{responsiveStyles}</style>
-      <header className="bg-gradient-to-r from-maroon-900 via-maroon-800 to-amber-800 border-b border-amber-600/30 shadow-xl sticky top-0 z-30">
-        <div className="container mx-auto px-3 xs:px-4 sm:px-6">
-          <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
-            <div className="flex items-center gap-2 sm:gap-3 md:gap-5">
-              <button
-                onClick={onMenuToggle}
-                className="lg:hidden p-2 sm:p-3 rounded-xl bg-white/10 backdrop-blur-sm shadow-sm hover:bg-white/20 transition-all mobile-touch-friendly"
-                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              >
-                {isMenuOpen ? 
-                  <FaTimes className="text-amber-700 w-4 h-4 sm:w-5 sm:h-5" /> : 
-                  <FaBars className="text-amber-700 w-4 h-4 sm:w-5 sm:h-5" />
-                }
-              </button>
-
-              {student && (
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="relative group">
-                    <div
-                      className={`absolute inset-0 ${getGradientColor(student.fullName)} rounded-full blur opacity-70 group-hover:opacity-100 transition-opacity`}
-                    />
-                    <div className="relative w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center font-bold text-black text-base sm:text-lg md:text-xl bg-gradient-to-br from-maroon-800 to-amber-700 border-2 border-amber-400 shadow-lg">
-                      {getInitials(student.fullName)}
-                    </div>
-                  </div>
-
-                  <div className="hidden xs:flex flex-col">
-                    <p className="text-sm sm:text-base md:text-lg font-bold text-black mobile-text-truncate max-w-[120px] sm:max-w-[160px] md:max-w-none">
-                      {student.fullName}
-                    </p>
-                    <div className="flex items-center gap-1 sm:gap-2">
-                      <span className="text-xs sm:text-sm text-black mobile-text-truncate max-w-[100px] sm:max-w-none">
-                        {student.form} • {student.stream}
-                      </span>
-                      <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full animate-pulse"></span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="lg:hidden flex items-center gap-2 sm:gap-3">
-              <div className="p-2 sm:p-2.5 bg-white/10 backdrop-blur-sm rounded-xl shadow-sm">
-                {getViewIcon(currentView)}
-              </div>
-              <div className="max-w-[140px] sm:max-w-none">
-                <h1 className="text-sm sm:text-base md:text-lg font-bold text-black mobile-text-truncate">
-                  {currentView === 'home' && 'Dashboard'}
-                  {currentView === 'results' && 'Results'}
-                  {currentView === 'resources' && 'Resources'}
-                  {currentView === 'guidance' && 'Guidance'}
-                  {currentView === 'fees' && 'Fee Balance'}
-                </h1>
-                <p className="text-xs text-black hidden sm:block">Kinyui Boys' Portal</p>
-              </div>
-            </div>
-
-            <div className="hidden lg:flex items-center gap-2">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 rounded-full border border-amber-500/30">
-                <div className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
-                <span className="text-[10px] font-black text-black uppercase tracking-wider">KINYUI BOYS'</span>
-                <FaShieldHalved className="w-3 h-3 text-amber-700" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-    </>
-  );
-}
-
-// ==================== MODERN HOME VIEW ====================
-function ModernHomeView({ student, feeBalance, feeLoading, token }) {
-  const [showFeeDetails, setShowFeeDetails] = useState(false);
-
-  const stats = [
-    { 
-      label: 'Current Form', 
-      value: `${student?.form || 'N/A'}`, 
-      icon: <FaUser className="text-base sm:text-lg md:text-xl text-black" />, 
-      gradient: 'from-maroon-600 to-amber-600',
-      bgGradient: 'from-maroon-50 to-amber-50'
-    },
-    { 
-      label: 'Stream', 
-      value: student?.stream || 'N/A', 
-      icon: <FaBook className="text-base sm:text-lg md:text-xl text-black" />, 
-      gradient: 'from-amber-600 to-maroon-600',
-      bgGradient: 'from-amber-50 to-maroon-50'
-    },
-    { 
-      label: 'Admission No', 
-      value: student?.admissionNumber || 'N/A', 
-      icon: <FaAward className="text-base sm:text-lg md:text-xl text-black" />, 
-      gradient: 'from-maroon-700 to-amber-500',
-      bgGradient: 'from-maroon-50 to-amber-50'
-    },
-    { 
-      label: 'Academic Year', 
-      value: new Date().getFullYear().toString(),
-      icon: <FaCalendar className="text-base sm:text-lg md:text-xl text-black" />, 
-      gradient: 'from-amber-500 to-maroon-600',
-      bgGradient: 'from-amber-50 to-maroon-50'
-    },
-  ];
-
-  const quickActions = [
-    {
-      tab: 'learning',
-      title: 'Learning Hub',
-      description: 'Access all your academic learning tools in one place, including assignments, revision materials, notes, and other essential learning resources provided by your teachers to support your daily studies and exam preparation.',
-      icon: <FiBookOpen className="text-lg sm:text-xl md:text-2xl text-black" />,
-      gradient: 'from-maroon-600 to-amber-600',
-      bgGradient: 'from-maroon-50 to-amber-100',
-      actions: ['View Assignments', 'Browse Learning Resources']
-    },
-    {
-      tab: 'results',
-      title: 'Academic Results Center',
-      description: 'Review your academic performance in detail by accessing both class-wide results and your personal examination results, allowing you to track progress, identify strengths, and understand areas that need improvement for better performance.',
-      icon: <FaChartLine className="text-lg sm:text-xl md:text-2xl text-black" />,
-      gradient: 'from-amber-600 to-maroon-600',
-      bgGradient: 'from-amber-50 to-maroon-100',
-      actions: ['View Class Results', 'Access Personal Results']
-    },
-    {
-      tab: 'support',
-      title: 'Student Support Services',
-      description: 'Stay informed and supported through access to guidance and counselling services, important school announcements, upcoming events, and news updates designed to support your academic, personal, and social wellbeing throughout your journey at Kinyui Boys.',
-      icon: <FaUserFriends className="text-lg sm:text-xl md:text-2xl text-black" />,
-      gradient: 'from-maroon-700 to-amber-500',
-      bgGradient: 'from-maroon-50 to-amber-100',
-      actions: ['Guidance & Counselling', 'School News & Events']
-    }
-  ];
-
-  return (
-    <div className="space-y-4 sm:space-y-6 md:space-y-8 mobile-scroll-hide">
-      {/* Welcome Section */}
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl">
-        <div className="absolute inset-0 bg-gradient-to-r from-maroon-800 via-maroon-700 to-amber-700 opacity-100"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black opacity-20"></div>
-        <div className="relative p-4 sm:p-6 md:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 md:gap-5 mb-3 sm:mb-4 md:mb-6">
-            <div className="p-3 sm:p-4 bg-white bg-opacity-20 rounded-xl sm:rounded-2xl backdrop-blur-sm w-fit">
-              <FaRocket className="text-xl sm:text-2xl md:text-3xl text-amber-700" />
-            </div>
-            <div className="flex-1">
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold leading-tight text-black">
-                Welcome back, {student?.fullName?.split(" ")[0] || "Student"}! 🚀
-              </h2>
-              <p className="text-black text-xs sm:text-sm md:text-base lg:text-lg mt-1 sm:mt-2 max-w-2xl">
-                Ready to continue your learning journey at Kinyui Boys' Senior School? Access all your academic resources, track performance, and stay connected with school updates.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mt-3 sm:mt-4 md:mt-6">
-            <span className="inline-flex items-center gap-1 sm:gap-2 bg-white bg-opacity-20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm text-xs sm:text-sm font-bold text-black">
-              <HiSparkles className="text-amber-700 text-xs sm:text-sm md:text-base" />
-              Active Student
-            </span>
-            <span className="inline-flex items-center gap-1 sm:gap-2 bg-white bg-opacity-20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm text-xs sm:text-sm font-bold text-black">
-              <FaCalendarCheck className="text-amber-700 text-xs sm:text-sm md:text-base" />
-              Kinyui Boys' Senior School
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Quick Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
-        {stats.map((stat, index) => (
-          <div key={index} className="group relative w-full">
-            <div 
-              className={`absolute inset-0 bg-gradient-to-r ${stat.gradient} rounded-lg sm:rounded-xl md:rounded-2xl blur-xl opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-            />
-            <div className="relative bg-white/95 backdrop-blur-xs rounded-lg sm:rounded-xl md:rounded-2xl p-2.5 sm:p-3 md:p-4 border border-amber-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden h-full">
-              <div className="absolute -right-1.5 -top-1.5 w-12 h-12 bg-gradient-to-br from-amber-50/30 to-transparent rounded-full opacity-40 group-hover:scale-100 transition-transform duration-500" />
-              <div className="flex flex-col h-full">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-1.5 sm:mb-2 md:mb-3">
-                  <div className={`flex justify-center sm:justify-start p-1.5 sm:p-2 bg-gradient-to-br ${stat.gradient} rounded-lg sm:rounded-xl text-white shadow-xs group-hover:scale-100 transition-transform duration-300 self-center sm:self-auto mb-1 sm:mb-0`}>
-                    <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6">
-                      {stat.icon}
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-0.5 sm:mt-1 md:mt-2 flex-grow text-center sm:text-left">
-                  <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-extrabold text-black tracking-tight leading-none">
-                    {stat.value}
-                  </h3>
-                  <p className="text-[9px] sm:text-[10px] md:text-xs font-medium text-black mt-0.5 sm:mt-1 line-clamp-2">
-                    {stat.label}
-                  </p>
-                </div>
-                <div className="mt-1.5 sm:mt-2 md:mt-3 pt-1.5 sm:pt-2 border-t border-amber-100">
-                  <div className="flex items-center justify-between">
-                    <div className="hidden xs:flex -space-x-1 sm:-space-x-1.5">
-                      {[1, 2, 3].map((i) => (
-                        <div key={i} className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border border-white bg-amber-200" />
-                      ))}
-                    </div>
-                    <span className="text-[7px] sm:text-[8px] md:text-[10px] font-medium text-black italic">
-                      {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      
-      <FeesView student={student} token={token} />   
-      
-      <section className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
-        <div className="mb-3 sm:mb-4 md:mb-6">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-black">
-            Student Dashboard Overview
-          </h2>
-          <p className="mt-1 text-xs sm:text-sm md:text-base text-black max-w-3xl">
-            Your central hub for accessing learning resources, completing assignments, reviewing academic results, 
-            and connecting with student support services at Kinyui Boys' Senior School.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-5 lg:gap-6">
-          {quickActions.map((action, index) => (
-            <div key={index} className="relative group mobile-full-width">
-              <div className={`hidden sm:block absolute inset-0 bg-gradient-to-r ${action.gradient} rounded-2xl sm:rounded-3xl blur-2xl opacity-0 group-hover:opacity-20 transition-opacity`} />
-              <div className="relative h-full bg-white rounded-xl sm:rounded-2xl border border-amber-200 p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col">
-                <div className="flex items-start gap-2.5 sm:gap-3 md:gap-4 mb-2.5 sm:mb-3 md:mb-4">
-                  <div className={`p-2.5 sm:p-3 md:p-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-br ${action.gradient} text-white shadow-sm`}>
-                    {action.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-sm sm:text-base md:text-lg font-bold text-black leading-tight mobile-text-truncate">
-                      {action.title}
-                    </h4>
-                    <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-black mobile-text-truncate">
-                      {action.tab === 'learning' && 'Access assignments & study materials'}
-                      {action.tab === 'results' && 'View class & personal performance'}
-                      {action.tab === 'support' && 'Get guidance & school updates'}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-xs sm:text-sm text-black leading-relaxed flex-1 mb-3 sm:mb-4 md:mb-5 line-clamp-3 sm:line-clamp-4">
-                  {action.description}
-                </p>
-                <button 
-                  onClick={() => {
-                    toast.info(`Navigating to ${action.title}`);
-                  }}
-                  className="mt-auto inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-amber-800 hover:text-amber-900 transition-colors mobile-touch-friendly"
-                >
-                  <span>Access {action.title}</span>
-                  <FaArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    </div>
-  );
-}
-
-// ==================== MAIN MODERN COMPONENT ====================
-export default function ModernStudentPortalPage() {
+export default function StudentLoginPage() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    fullName: '',
+    admissionNumber: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [requiresContact, setRequiresContact] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [student, setStudent] = useState(null);
   const [token, setToken] = useState(null);
-  const [showLoginModal, setShowLoginModal] = useState(true);
-  const [loginLoading, setLoginLoading] = useState(false);
-  const [loginError, setLoginError] = useState(null);
-  const [requiresContact, setRequiresContact] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const [currentView, setCurrentView] = useState('home');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const router = useRouter();
-
-  const [assignments, setAssignments] = useState([]);
-  const [resources, setResources] = useState([]);
-  const [studentResults, setStudentResults] = useState([]);
-  const [feeBalance, setFeeBalance] = useState(null);
-  
-  const [assignmentsLoading, setAssignmentsLoading] = useState(false);
-  const [resourcesLoading, setResourcesLoading] = useState(false);
-  const [resultsLoading, setResultsLoading] = useState(false);
-  const [feeLoading, setFeeLoading] = useState(false);
-
-  const [assignmentsError, setAssignmentsError] = useState(null);
-  const [resourcesError, setResourcesError] = useState(null);
-  const [resultsError, setResultsError] = useState(null);
-  const [feeError, setFeeError] = useState(null);
-
+  // Check for existing session
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const savedToken = localStorage.getItem('student_token');
-        if (!savedToken) {
-          setShowLoginModal(true);
-          setIsLoading(false);
-          return;
-        }
+        if (!savedToken) return;
 
         const response = await fetch('/api/studentlogin', {
           headers: { 'Authorization': `Bearer ${savedToken}` }
@@ -486,175 +44,65 @@ export default function ModernStudentPortalPage() {
         if (data.success && data.authenticated) {
           setStudent(data.student);
           setToken(savedToken);
-          setShowLoginModal(false);
-          
-          const logoutTimer = setTimeout(() => {
-            toast.success('Your 2-hour session has expired. Please log in again.');
-            handleLogout();
-          }, 2 * 60 * 60 * 1000);
-
-          return () => clearTimeout(logoutTimer);
-        } else {
-          handleLogout();
+          setIsAuthenticated(true);
+          router.push('/dashboard');
         }
       } catch (error) {
         console.error('Auth check failed:', error);
-        handleLogout();
-      } finally {
-        setIsLoading(false);
       }
     };
 
     checkAuth();
-  }, []);
+  }, [router]);
 
-  useEffect(() => {
-    if (student && token) {
-      fetchAllData();
-    }
-  }, [student, token]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    if (window.innerWidth < 1024) {
-      setIsMenuOpen(false);
-    }
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [currentView]);
-
-  const fetchAllData = useCallback(async () => {
-    if (!token) return;
-
-    try {
-      await Promise.all([
-        fetchAssignments(),
-        fetchResources(),
-        fetchStudentResults(),
-        fetchFeeBalance()
-      ]);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      toast.error('Failed to load some data. Please refresh the page.');
-    }
-  }, [token]);
-
-  const fetchAssignments = async () => {
-    setAssignmentsLoading(true);
-    setAssignmentsError(null);
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/assignment?limit=100`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Cache-Control': 'no-cache'
-        }
-      });
-      const data = await response.json();
-      if (data.success) {
-        setAssignments(data.assignments || []);
-      } else {
-        throw new Error(data.error || 'Failed to fetch assignments');
-      }
-    } catch (error) {
-      setAssignmentsError(error.message);
-      toast.error('Unable to load assignments. Please try again.');
-    } finally {
-      setAssignmentsLoading(false);
-    }
-  };
-
-  const fetchResources = async () => {
-    setResourcesLoading(true);
-    setResourcesError(null);
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/resources?limit=100`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Cache-Control': 'no-cache'
-        }
-      });
-      const data = await response.json();
-      if (data.success) {
-        setResources(data.resources || []);
-      } else {
-        throw new Error(data.error || 'Failed to fetch resources');
-      }
-    } catch (error) {
-      setResourcesError(error.message);
-      toast.error('Unable to load learning resources. Please try again.');
-    } finally {
-      setResourcesLoading(false);
-    }
-  };
-
-  const fetchStudentResults = async () => {
-    if (!student?.admissionNumber) return;
+  const validateInputs = () => {
+    const errors = {};
     
-    setResultsLoading(true);
-    setResultsError(null);
-    try {
-      const response = await fetch(`/api/results?action=student-results&admissionNumber=${encodeURIComponent(student.admissionNumber)}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Cache-Control': 'no-cache'
-        }
-      });
-      const data = await response.json();
-      if (data.success) {
-        setStudentResults(data.results || []);
-      } else {
-        throw new Error(data.error || 'Failed to fetch results');
+    if (!formData.fullName.trim()) {
+      errors.fullName = 'Please enter your name';
+    } else {
+      const nameParts = formData.fullName.trim().split(/\s+/).filter(part => part.length > 0);
+      if (nameParts.length < 1) {
+        errors.fullName = 'Please enter at least your first name';
       }
-    } catch (error) {
-      setResultsError(error.message);
-      toast.error('Unable to load academic results. Please try again.');
-    } finally {
-      setResultsLoading(false);
+      
+      const maleNamePatterns = /(Musau|Mutuku|Muthama|Mutinda|Mbuvi|Muendo|Mulei|Mutua|Kitheka|Kasimu|Munyao|Mwanzia|Maingi|Mutisya|Musingi|Mwendwa|Mulwa|Munyasya|Musyoka|Ndeti|Nzau|Kilonzo|Kioko|Kimeu|Kivuva|Munguti|Muthoka|Muteti|Mutonga|Mutuva|Ndambuki|Ndunda|Ngui|Nzioka|Wambua|Wayua)/i;
+      
+      if (!maleNamePatterns.test(formData.fullName.trim())) {
+        errors.fullName = 'Please enter a valid male student name for Kinyui Boys\' School';
+      }
     }
+
+    if (!formData.admissionNumber.trim()) {
+      errors.admissionNumber = 'Please enter your admission number';
+    } else if (!/^[A-Z0-9]{2,10}$/i.test(formData.admissionNumber.trim())) {
+      errors.admissionNumber = 'Admission number should be 2-10 letters or numbers';
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
-  const fetchFeeBalance = async () => {
-    if (!student?.admissionNumber) return;
-    
-    setFeeLoading(true);
-    setFeeError(null);
-    try {
-      const response = await fetch(`/api/feebalances/${student.admissionNumber}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Cache-Control': 'no-cache'
-        }
-      });
-      const data = await response.json();
-      if (data.success) {
-        setFeeBalance(data.data);
-      } else {
-        throw new Error(data.error || 'Failed to fetch fee balance');
-      }
-    } catch (error) {
-      setFeeError(error.message);
-      toast.error('Unable to load fee balance. Please contact accounts office.');
-    } finally {
-      setFeeLoading(false);
-    }
-  };
-
-  const handleStudentLogin = async (fullName, admissionNumber) => {
-    setLoginLoading(true);
-    setLoginError(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
     setRequiresContact(false);
+    setValidationErrors({});
+    
+    if (!validateInputs()) {
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const response = await fetch('/api/studentlogin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fullName, admissionNumber })
+        body: JSON.stringify({ 
+          fullName: formData.fullName.trim(), 
+          admissionNumber: formData.admissionNumber.trim() 
+        })
       });
 
       const data = await response.json();
@@ -663,15 +111,15 @@ export default function ModernStudentPortalPage() {
         localStorage.setItem('student_token', data.token);
         setStudent(data.student);
         setToken(data.token);
-        setShowLoginModal(false);
+        setIsAuthenticated(true);
         
         toast.success('Login Successful!', {
           description: `Welcome to Kinyui Boys' Portal, ${data.student.fullName}`
         });
 
-        fetchAllData();
+        router.push('/dashboard');
       } else {
-        setLoginError(data.error);
+        setError(data.error);
         setRequiresContact(data.requiresContact || false);
         
         if (data.requiresContact) {
@@ -684,471 +132,417 @@ export default function ModernStudentPortalPage() {
       }
     } catch (error) {
       console.error('Login error:', error);
-      setLoginError('Network error. Please check your connection and try again.');
+      setError('Network error. Please check your connection and try again.');
       toast.error('Connection Error', {
         description: 'Unable to connect to the server. Please try again later.'
       });
     } finally {
-      setLoginLoading(false);
+      setLoading(false);
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/studentlogin', { method: 'DELETE' });
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
-      localStorage.removeItem('student_token');
-      setStudent(null);
-      setToken(null);
-      setShowLoginModal(true);
-      setAssignments([]);
-      setResources([]);
-      setStudentResults([]);
-      setFeeBalance(null);
-      
-      toast.success('Logged Out Successfully', {
-        description: 'You have been securely logged out of the portal.'
-      });
+  const handleClear = () => {
+    setFormData({ fullName: '', admissionNumber: '' });
+    setError(null);
+    setRequiresContact(false);
+    setValidationErrors({});
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (error) setError(null);
+    if (validationErrors[field]) {
+      setValidationErrors(prev => ({ ...prev, [field]: '' }));
     }
   };
 
-  const handleRefresh = () => {
-    if (!token) {
-      setShowLoginModal(true);
-      return;
-    }
-    
-    fetchAllData();
-    toast.success('Refreshing Data', {
-      description: 'Your portal data is being updated.'
-    });
-  };
+  const studentExamples = [
+    { name: "Musau Mwanzia Mutuku", admission: "2903" },
+    { name: "Mutinda Kitheka Mbuvi", admission: "2902" },
+    { name: "Kasimu Muendo Mulei", admission: "1234" },
+    { name: "Mutua Kilonzo Ndeti", admission: "5678" },
+    { name: "Musyoka Kioko Kimeu", admission: "9012" },
+    { name: "Muthama Mutisya Musingi", admission: "3456" }
+  ];
 
-  const handleDownload = (item) => {
-    toast.success('Download Started', {
-      description: `Downloading ${item.title || 'file'}...`
-    });
-  };
-
-  const handleViewDetails = (item) => {
-    toast.info('Viewing Details', {
-      description: `Opening details for ${item.title}`
-    });
-  };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenuOnMobile = () => {
-    if (window.innerWidth < 1024) {
-      setIsMenuOpen(false);
-    }
-  };
-
-  const handleViewChange = (view) => {
-    setCurrentView(view);
-    closeMenuOnMobile();
-  };
-
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
-
-  if (!student || !token) {
-    const features = [
-      { 
-        icon: <FaBook className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />, 
-        title: "Digital Learning Resources", 
-        desc: "Access comprehensive digital notes, revision e-books, past examination papers, and supplementary learning materials to enhance your understanding of various subjects." 
-      },
-      { 
-        icon: <FaAward className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />, 
-        title: "Assignments & Projects", 
-        desc: "View and submit your subject-specific tasks, holiday assignments, and academic projects. Track submission deadlines and receive feedback from teachers." 
-      },
-      { 
-        icon: <FaChartBar className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />, 
-        title: "Performance Analytics", 
-        desc: "Access personalized performance reports comparing your results with class averages and KCSE targets. Identify strengths and areas needing improvement." 
-      },
-      { 
-        icon: <FaDollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />, 
-        title: "Fee Management System", 
-        desc: "Check current fee balance, download detailed statements, view payment history, and access fee structures and payment deadlines." 
-      },
-      { 
-        icon: <FaCalendar className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />, 
-        title: "School Calendar", 
-        desc: "Stay updated with academic term dates, examination schedules, sports fixtures, co-curricular activities, and parent-teacher meeting dates." 
-      },
-      { 
-        icon: <FaComments className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />, 
-        title: "Communication Hub", 
-        desc: "Receive important announcements from the administration, school news updates, and notifications about upcoming events and deadlines." 
-      }
-    ];
-
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-maroon-50 via-amber-50 to-white font-sans overflow-x-hidden">
-        <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.03]" 
-             style={{ backgroundImage: 'radial-gradient(#800020 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-        
-        <Toaster position="top-right" expand={true} richColors theme="light" />
-        
-        <main className="relative z-10 flex flex-col min-h-screen">
-          <nav className="sticky top-0 z-50 bg-gradient-to-r from-maroon-900 via-maroon-800 to-amber-800 backdrop-blur-lg border-b border-amber-600/30 px-3 py-2.5 sm:px-4 sm:py-3 md:px-6 md:py-4 lg:px-12">
-            <div className="max-w-7xl mx-auto flex justify-between items-center">
-              <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-amber-500/30 rounded-md blur-sm"></div>
-                  <Image
-                    src="/kinyui.png"
-                    alt="Kinyui Boys Senior School Logo"
-                    width={32}
-                    height={32}
-                    className="rounded-md w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 relative"
-                    priority
-                  />
-                </div>
-                <div>
-                  <span className="text-sm xs:text-base sm:text-lg md:text-xl font-black tracking-tighter block leading-none text-black">
-                    KINYUI BOYS'
-                  </span>
-                  <span className="text-[7px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-bold text-black 
-                    tracking-[0.1em] xs:tracking-[0.15em] sm:tracking-[0.2em] uppercase">
-                    Student Portal
-                  </span>
-                </div>
-              </div>
-
-              <div className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8">
-                <div className="flex items-center gap-1.5 px-2.5 py-1 bg-white/10 rounded-full border border-amber-500/30">
-                  <div className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
-                  <span className="text-[10px] font-black text-black uppercase tracking-wider">Secure Access</span>
-                  <FaShieldHalved className="w-3 h-3 text-amber-700" />
-                </div>
-                <button className="text-sm font-bold text-black hover:text-gray-800 transition-colors">Support Center</button>
-              </div>
-
-              <button onClick={router.back} className="md:hidden flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg 
-                bg-white/10 hover:bg-white/20 transition-colors active:scale-95">
-                <FaBars className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />
-              </button>
-            </div>
-          </nav>
-
-          <section className="px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-12 lg:py-20 max-w-7xl mx-auto w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xs:gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
-              <div className="space-y-4 xs:space-y-5 sm:space-y-6 md:space-y-8">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-maroon-100 rounded-lg border border-amber-200 
-                  text-[8px] xs:text-[9px] sm:text-[10px] font-bold tracking-widest uppercase text-black whitespace-nowrap">
-                  <HiSparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-700" />
-                  Excellence in Education Since 1976
-                </div>
-                <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 
-                  font-black tracking-tighter leading-[0.85] xs:leading-[0.9] text-black">
-                  EDUCATION  
-                  <span className="block text-amber-700 italic mt-1 xs:mt-2">IS LIGHT.</span>
-                </h1>
-                <p className="text-sm xs:text-base sm:text-lg md:text-xl text-black font-medium 
-                  max-w-full xs:max-w-xs sm:max-w-md leading-relaxed xs:leading-snug">
-                  Welcome to the Kinyui Boys' Senior School Digital Student Portal. Your centralized platform for academic resources, financial management, and school communication.
-                </p>
-                
-                <div className="flex flex-row items-center gap-2 sm:gap-4 w-full max-w-full">
-                  <button
-                    onClick={() => setShowLoginModal(true)}
-                    className="flex-[2] sm:flex-none flex items-center justify-center gap-1.5 sm:gap-3 px-3 sm:px-8 py-2.5 sm:py-4 bg-maroon-800 text-white rounded-xl sm:rounded-2xl font-black sm:font-bold text-[10px] sm:text-base uppercase sm:capitalize tracking-wider sm:tracking-normal hover:bg-amber-700 transition-all duration-300 active:scale-95 shadow-md sm:shadow-xl group"
-                  >
-                    <span>Access Your Portal</span>
-                    <FaArrowRight className="w-3 h-3 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
-                  </button>
-                  
-                  <button
-                    onClick={() => router.push("/pages/contact")}
-                    className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-7 py-2.5 sm:py-4 bg-white border border-amber-300 text-black rounded-xl sm:rounded-2xl font-black sm:font-bold text-[10px] sm:text-base uppercase sm:capitalize tracking-wider sm:tracking-normal hover:bg-amber-50 transition-all active:scale-95"
-                  >
-                    Get Help
-                  </button>
-                </div>
-              </div>
-
-              <div className="relative group mt-4 xs:mt-6 sm:mt-0">
-                <div className="absolute -inset-2 xs:-inset-3 sm:-inset-4 bg-amber-100/40 rounded-[2rem] xs:rounded-[2.5rem] blur-xl xs:blur-2xl sm:blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
-                <div className="relative bg-white border border-amber-200 shadow-lg xs:shadow-xl rounded-[1.5rem] xs:rounded-[2rem] sm:rounded-[2.5rem] p-4 xs:p-5 sm:p-6 md:p-8 space-y-4 xs:space-y-5 sm:space-y-6">
-                  <div className="flex items-center justify-between border-b border-amber-100 pb-3 xs:pb-4">
-                    <h3 className="font-black text-xs xs:text-sm uppercase tracking-widest text-black whitespace-nowrap">
-                      Portal Features
-                    </h3>
-                    <FaBrain className="w-4 h-4 xs:w-5 xs:h-5 text-amber-700" />
-                  </div>
-                  <div className="space-y-3 xs:space-y-4">
-                    <div className="p-3 xs:p-4 bg-gradient-to-r from-maroon-50 to-amber-50 rounded-xl xs:rounded-2xl border border-amber-100">
-                      <p className="text-[10px] xs:text-xs font-bold text-black mb-0.5 xs:mb-1">Digital Library</p>
-                      <p className="text-xs xs:text-sm font-semibold text-black leading-tight">
-                        Access e-books, revision materials, and past papers.
-                      </p>
-                    </div>
-                    <div className="p-3 xs:p-4 bg-gradient-to-r from-amber-50 to-maroon-50 rounded-xl xs:rounded-2xl border border-amber-100">
-                      <p className="text-[10px] xs:text-xs font-bold text-black mb-0.5 xs:mb-1">Performance Dashboard</p>
-                      <p className="text-xs xs:text-sm font-semibold text-black leading-tight">
-                        Track your academic progress and KCSE preparedness.
-                      </p>
-                    </div>
-                    <div className="p-3 xs:p-4 bg-gradient-to-r from-maroon-50 to-amber-50 rounded-xl xs:rounded-2xl border border-amber-100">
-                      <p className="text-[10px] xs:text-xs font-bold text-black mb-0.5 xs:mb-1">Financial Dashboard</p>
-                      <p className="text-xs xs:text-sm font-semibold text-black leading-tight">
-                        View balances, statements, and payment records.
-                      </p>
-                    </div>
-                  </div>
-                  <button className="w-full py-2.5 xs:py-3 text-center text-[10px] xs:text-xs font-black uppercase tracking-widest text-black hover:text-amber-700 transition-colors duration-300">
-                    Explore All Features
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="bg-gradient-to-r from-maroon-50 to-amber-50 border-y border-amber-200 py-8 xs:py-12 sm:py-16 md:py-20 px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12">
-            <div className="max-w-7xl mx-auto">
-              <div className="mb-6 xs:mb-8 sm:mb-10 md:mb-12 px-2">
-                <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-1 xs:mb-2 text-black">
-                  Complete Portal Modules
-                </h2>
-                <p className="text-black font-medium text-sm xs:text-base">
-                  Everything you need to excel in your academic journey at Kinyui Boys'.
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 md:gap-6 px-2">
-                {features.map((feature, i) => (
-                  <div key={i} className="group p-4 xs:p-5 sm:p-6 md:p-8 bg-white border border-amber-200 rounded-[1.5rem] xs:rounded-[1.75rem] sm:rounded-[2rem] hover:shadow-xl hover:shadow-amber-200/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300">
-                    <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-gradient-to-r from-maroon-100 to-amber-100 rounded-lg xs:rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 xs:mb-4 sm:mb-6 group-hover:scale-105 transition-transform duration-300">
-                      {feature.icon}
-                    </div>
-                    <h3 className="text-base xs:text-lg sm:text-xl md:text-2xl font-bold text-black mb-1.5 xs:mb-2 sm:mb-3 leading-tight">
-                      {feature.title}
-                    </h3>
-                    <p className="text-black text-xs xs:text-sm leading-relaxed mb-3 xs:mb-4 sm:mb-6 line-clamp-2 xs:line-clamp-3">
-                      {feature.desc}
-                    </p>
-                    <div className="flex items-center gap-1.5 xs:gap-2 text-[10px] xs:text-xs font-black uppercase tracking-widest text-black group-hover:text-amber-700 transition-colors duration-300 cursor-pointer">
-                      Login to Access 
-                      <FaArrowRight className="w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <footer className="px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 py-6 xs:py-8 sm:py-10 md:py-12 bg-gradient-to-r from-maroon-900 to-amber-900">
-            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 xs:gap-8 sm:gap-10 md:gap-12">
-              <div className="flex flex-col items-center lg:items-start gap-3 xs:gap-4 text-center lg:text-left">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 bg-white/10 rounded-lg flex items-center justify-center">
-                    <FaSchool className="w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4 text-amber-400" />
-                  </div>
-                  <span className="text-sm xs:text-base font-bold tracking-tight text-white">Kinyui Boys' Senior School</span>
-                </div>
-                <p className="text-[9px] xs:text-[10px] font-bold text-black uppercase tracking-widest">
-                  © {new Date().getFullYear()} Kinyui Boys' Senior School. All Rights Reserved.
-                </p>
-              </div>
-              
-              <div className="flex flex-wrap justify-center gap-4 xs:gap-6 sm:gap-8 md:gap-10">
-                <div className="space-y-1 xs:space-y-2 text-center">
-                  <p className="text-[9px] xs:text-[10px] font-black text-black uppercase tracking-widest">
-                    Academics
-                  </p>
-                  <p className="text-xs font-bold text-white hover:text-amber-300 cursor-pointer transition-colors duration-300">
-                    KNEC Portal
-                  </p>
-                </div>
-                <div className="space-y-1 xs:space-y-2 text-center">
-                  <p className="text-[9px] xs:text-[10px] font-black text-black uppercase tracking-widest">
-                    Finance
-                  </p>
-                  <p className="text-xs font-bold text-white hover:text-amber-300 cursor-pointer transition-colors duration-300">
-                    Payment Options
-                  </p>
-                </div>
-                <div className="space-y-1 xs:space-y-2 text-center">
-                  <p className="text-[9px] xs:text-[10px] font-black text-black uppercase tracking-widest">
-                    Support
-                  </p>
-                  <p className="text-xs font-bold text-white hover:text-amber-300 cursor-pointer transition-colors duration-300">
-                    IT Help Desk
-                  </p>
-                </div>
-              </div>
-            </div>
-          </footer>
-        </main>
-
-        <StudentLoginModal
-          isOpen={showLoginModal}
-          onClose={() => setShowLoginModal(false)}
-          onLogin={handleStudentLogin}
-          isLoading={loginLoading}
-          error={loginError}
-          requiresContact={requiresContact}
-        />
-      </div>
-    );
-  }
+  const nameFormats = [
+    "Musau Mutuku",
+    "Musau Mwanzia Mutuku", 
+    "MUSAU MUTUKU",
+    "musau mutuku",
+    "M. Mutuku",
+    "Mutuku Musau"
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-maroon-50 via-amber-50 to-white">
+    <div className="min-h-screen bg-white font-sans">
       <Toaster position="top-right" expand={true} richColors theme="light" />
       
-      <StudentLoginModal
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onLogin={handleStudentLogin}
-        isLoading={loginLoading}
-        error={loginError}
-        requiresContact={requiresContact}
-      />
+      {/* Background Pattern */}
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.02]" 
+           style={{ backgroundImage: 'radial-gradient(#000000 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      
+      <main className="relative z-10 flex flex-col min-h-screen">
+        {/* Navigation Bar */}
+        <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm px-3 py-2.5 sm:px-4 sm:py-3 md:px-6 md:py-4 lg:px-12">
+          <div className="max-w-7xl mx-auto flex justify-between items-center">
+            <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gray-900/10 rounded-md blur-sm"></div>
+                <Image
+                  src="/kinyui.png"
+                  alt="Kinyui Boys Senior School Logo"
+                  width={32}
+                  height={32}
+                  className="rounded-md w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 relative"
+                  priority
+                />
+              </div>
+              <div>
+                <span className="text-sm xs:text-base sm:text-lg md:text-xl font-black tracking-tighter block leading-none text-gray-900">
+                  KINYUI BOYS'
+                </span>
+                <span className="text-[7px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-bold text-gray-600 
+                  tracking-[0.1em] xs:tracking-[0.15em] sm:tracking-[0.2em] uppercase">
+                  Student Portal
+                </span>
+              </div>
+            </div>
 
-      {isMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-maroon-950/70 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300 animate-fadeIn"
-          onClick={toggleMenu}
-        />
-      )}
+            <div className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-gray-100 rounded-full border border-gray-200">
+                <div className="w-1.5 h-1.5 bg-gray-900 rounded-full animate-pulse" />
+                <span className="text-[10px] font-black text-gray-700 uppercase tracking-wider">Secure Access</span>
+                <FiShield className="w-3 h-3 text-gray-700" />
+              </div>
+              <button className="text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors">Support Center</button>
+            </div>
+          </div>
+        </nav>
 
-      <div className="flex">
-        <div className={`
-          ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-          lg:translate-x-0
-          fixed lg:sticky lg:top-0
-          h-screen z-50 transition-transform duration-300 ease-in-out
-          flex-shrink-0
-          w-[85vw] sm:w-4/5 md:w-3/5 lg:w-72 xl:w-80
-          shadow-2xl mobile-scroll-hide
-        `}>
-          <NavigationSidebar
-            student={student}
-            feeBalance={feeBalance}
-            feeLoading={feeLoading}
-            feeError={feeError}
-            onLogout={handleLogout}
-            currentView={currentView}
-            setCurrentView={handleViewChange}
-            onRefresh={handleRefresh}
-            onMenuClose={closeMenuOnMobile}
-          />
-        </div>
+        {/* Main Login Section */}
+        <section className="px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16 lg:py-20 max-w-7xl mx-auto w-full flex-1">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
+            
+            {/* Left Column - Welcome Message */}
+            <div className="space-y-4 xs:space-y-5 sm:space-y-6 md:space-y-8">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gray-100 rounded-lg border border-gray-200 
+                text-[8px] xs:text-[9px] sm:text-[10px] font-bold tracking-widest uppercase text-gray-700 whitespace-nowrap">
+                <HiSparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-700" />
+                Excellence in Education Since 1976
+              </div>
+              <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 
+                font-black tracking-tighter leading-[0.85] xs:leading-[0.9] text-gray-900">
+                EDUCATION  
+                <span className="block text-gray-600 italic mt-1 xs:mt-2">IS LIGHT.</span>
+              </h1>
+              <p className="text-sm xs:text-base sm:text-lg md:text-xl text-gray-600 font-medium 
+                max-w-full xs:max-w-xs sm:max-w-md leading-relaxed xs:leading-snug">
+                Welcome to the Kinyui Boys' Senior School Digital Student Portal. Login to access your academic resources, track performance, and stay connected.
+              </p>
+            </div>
 
-        <div className="flex-1 flex flex-col min-h-screen w-full lg:w-[calc(100%-18rem)] xl:w-[calc(100%-20rem)] transition-all duration-300">
-          <ModernStudentHeader
-            student={student}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            onRefresh={handleRefresh}
-            onMenuToggle={toggleMenu}
-            isMenuOpen={isMenuOpen}
-            currentView={currentView}
-          />
+            {/* Right Column - Login Form */}
+            <div className="bg-white border border-gray-200 shadow-xl rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8">
+              {/* School Motto Banner */}
+              <div className="mb-5 bg-gray-50 rounded-xl p-3 border border-gray-200 text-center">
+                <p className="text-gray-700 font-bold italic text-sm flex items-center justify-center gap-2">
+                  <FiStar className="text-gray-500" />
+                  "Soaring to Excellence"
+                  <FiStar className="text-gray-500" />
+                </p>
+                <p className="text-gray-500 text-xs mt-1">EST. 1976 | CENTRE OF EXCELLENCE</p>
+              </div>
 
-          <main className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 container mx-auto max-w-7xl mobile-scroll-hide sm:overflow-y-auto">
-            {currentView === 'home' && (
-              <ModernHomeView
-                student={student}
-                feeBalance={feeBalance}
-                feeLoading={feeLoading}
-                token={token}
-              />
-            )}
-            {currentView === 'results' && (
-              <ResultsView
-                student={student}
-                studentResults={studentResults}
-                resultsLoading={resultsLoading}
-                resultsError={resultsError}
-                onRefreshResults={fetchStudentResults}
-              />
-            )}
-
-            {currentView === 'resources' && (
-              <ResourcesAssignmentsView
-                student={student}
-                assignments={assignments}
-                resources={resources}
-                assignmentsLoading={assignmentsLoading}
-                resourcesLoading={resourcesLoading}
-                onDownload={handleDownload}
-                onViewDetails={handleViewDetails}
-              />
-            )}
-
-            {currentView === 'guidance' && (
-              <GuidanceEventsView />
-            )}
-
-            {currentView === 'fees' && (
-              <FeesView
-                student={student}
-                token={token}
-              />
-            )}
-          </main>
-
-          <footer className="border-t border-amber-200 bg-gradient-to-r from-maroon-900 via-maroon-800 to-amber-800 py-4 sm:py-6 md:py-8">
-            <div className="container mx-auto px-3 sm:px-4 md:px-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
-                <div className="text-center md:text-left">
-                  <p className="text-black text-sm font-bold">
-                    © {new Date().getFullYear()} Kinyui Boys' Senior School
-                  </p>
-                  <p className="text-black text-xs mt-1 sm:mt-2">
-                    Digital Student Portal • Empowering Excellence Through Technology
-                  </p>
-                  <div className="flex items-center gap-2 sm:gap-3 mt-2 sm:mt-3">
-                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-black">Secure Session Active</span>
+              {/* Name Format Instructions */}
+              <div className="mb-5 bg-gray-50 rounded-xl p-4 border border-gray-200">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-gray-200 rounded-lg">
+                    <FiCheckCircle className="text-gray-700 text-sm" />
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="text-sm font-bold text-gray-900 mb-1">Student Name Entry</h2>
+                    <p className="text-gray-600 text-xs mb-2">
+                      Enter your name in any format (uppercase, lowercase, 2 or 3 names)
+                    </p>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {nameFormats.map((format, idx) => (
+                        <button 
+                          key={idx}
+                          onClick={() => handleInputChange('fullName', format)}
+                          className="px-2 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs cursor-pointer hover:bg-gray-200 transition-all duration-200 border border-gray-200"
+                          type="button"
+                        >
+                          {format}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
+              </div>
+
+              {/* Error/Contact Info */}
+              {(requiresContact || error) && (
+                <div className="mb-5 animate-slideDown">
+                  <div className="flex items-start gap-3 p-3 bg-red-50 rounded-xl border border-red-200">
+                    <div className="p-1.5 bg-red-100 rounded-full">
+                      <FiAlertCircle className="text-red-600 text-sm" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-sm font-bold text-red-800 mb-1">
+                        {requiresContact ? 'Record Verification Needed' : 'Login Issue'}
+                      </h3>
+                      <p className="text-red-600 text-xs">{error}</p>
+                      
+                      {requiresContact && (
+                        <div className="mt-3 space-y-2">
+                          <div className="flex items-center gap-2 text-xs text-gray-700">
+                            <FiHelpCircle className="text-gray-600" />
+                            <span className="font-bold">Next Steps:</span>
+                          </div>
+                          <ul className="text-xs text-gray-600 space-y-1 ml-5 list-decimal">
+                            <li>Re-enter your details below</li>
+                            <li>Contact your class teacher</li>
+                            <li>Visit the school administration office</li>
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Login Form */}
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Secure Access Info */}
+                <div className="mb-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 bg-gray-100 rounded-xl">
+                      <FiShield className="text-gray-700 text-sm" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-gray-900">Secure Student Access</h3>
+                      <div className="flex items-center gap-2 text-gray-600 text-xs">
+                        <FiClock className="text-gray-500" />
+                        <span>Session Duration: <strong className="text-gray-900">2 Hours</strong></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 rounded-xl p-3 border border-gray-200">
+                    <p className="text-gray-600 text-xs font-medium">
+                      <strong className="text-gray-900">Note:</strong> Use your official admission number and name as registered for Kinyui Boys' Senior School.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Name Input */}
+                <div>
+                  <label className="text-xs font-bold text-gray-700 flex items-center gap-2 mb-2">
+                    <FiUser className="text-gray-600 text-sm" />
+                    <span>Full Name (Male Student)</span>
+                    <span className="text-[10px] text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full">Flexible Format</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.fullName}
+                    onChange={(e) => handleInputChange('fullName', e.target.value)}
+                    placeholder="e.g., Musau Mutuku, MUSAU MUTUKU, M. Mutuku"
+                    className={`
+                      w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-gray-900/20 
+                      focus:border-gray-900 transition-all duration-200 text-sm bg-white text-gray-900 placeholder-gray-400
+                      ${validationErrors.fullName 
+                        ? 'border-red-500 focus:border-red-500' 
+                        : 'border-gray-300 hover:border-gray-400'
+                      }
+                    `}
+                    disabled={loading}
+                    autoComplete="name"
+                  />
+                  {validationErrors.fullName && (
+                    <p className="text-red-600 text-xs mt-1 flex items-center gap-1">
+                      <FiAlertCircle className="text-xs" />
+                      {validationErrors.fullName}
+                    </p>
+                  )}
+                  
+                  {/* Quick Select Examples */}
+                  <div className="mt-3">
+                    <p className="text-gray-600 text-[10px] font-semibold mb-2">⬇️ Quick Select (Male Students):</p>
+                    <div className="flex flex-wrap gap-2">
+                      {studentExamples.map((student, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => {
+                            handleInputChange('fullName', student.name);
+                            handleInputChange('admissionNumber', student.admission);
+                          }}
+                          className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-[10px] border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 font-medium"
+                        >
+                          {student.name.split(' ')[0]} • {student.admission}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Admission Number Input */}
+                <div>
+                  <label className="text-xs font-bold text-gray-700 flex items-center gap-2 mb-2">
+                    <FiLock className="text-gray-600 text-sm" />
+                    <span>Admission Number</span>
+                    <span className="text-[10px] text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full">Unique ID</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.admissionNumber}
+                    onChange={(e) => handleInputChange('admissionNumber', e.target.value.toUpperCase())}
+                    placeholder="e.g., 2903, AB12, 2023001"
+                    className={`
+                      w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-gray-900/20 
+                      focus:border-gray-900 transition-all duration-200 text-sm bg-white text-gray-900 placeholder-gray-400 uppercase
+                      ${validationErrors.admissionNumber 
+                        ? 'border-red-500 focus:border-red-500' 
+                        : 'border-gray-300 hover:border-gray-400'
+                      }
+                    `}
+                    disabled={loading}
+                    autoComplete="off"
+                  />
+                  {validationErrors.admissionNumber && (
+                    <p className="text-red-600 text-xs mt-1 flex items-center gap-1">
+                      <FiAlertCircle className="text-xs" />
+                      {validationErrors.admissionNumber}
+                    </p>
+                  )}
+                  
+                  {/* Admission Number Examples */}
+                  <div className="mt-3">
+                    <p className="text-gray-600 text-[10px] font-semibold mb-2">⬇️ Example Formats:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {['2903', 'AB12', '2023001', 'STU456', 'KM001'].map((example, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => handleInputChange('admissionNumber', example)}
+                          className="px-2 py-1 bg-gray-100 text-gray-700 rounded-lg text-[10px] border border-gray-200 hover:bg-gray-200 transition-all duration-200 font-mono"
+                        >
+                          {example}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3 pt-3">
                   <button
-                    onClick={() => router.push('/pages/OurSchoolPolicies')}
-                    className="text-black hover:text-gray-800 text-xs sm:text-sm font-medium transition-colors mobile-touch-friendly"
+                    type="button"
+                    onClick={handleClear}
+                    disabled={loading}
+                    className="flex-1 py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-bold text-sm disabled:opacity-50 flex items-center justify-center gap-2 transition-all duration-200 shadow-sm hover:shadow-md border border-gray-200 active:scale-95"
                   >
-                    Privacy Policy
+                    <FiLogIn className="text-sm rotate-180" />
+                    <span>Clear</span>
                   </button>
 
                   <button
-                    onClick={() => router.push('/pages/OurSchoolPolicies')}
-                    className="text-black hover:text-gray-800 text-xs sm:text-sm font-medium transition-colors mobile-touch-friendly"
+                    type="submit"
+                    disabled={loading || !formData.fullName.trim() || !formData.admissionNumber.trim()}
+                    className="flex-1 py-3 px-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-sm disabled:opacity-70 flex items-center justify-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl border border-gray-800 active:scale-95"
                   >
-                    Terms of Service
+                    {loading ? (
+                      <>
+                        <CircularProgress size={16} thickness={4} sx={{ color: "white" }} />
+                        <span>Verifying...</span>
+                      </>
+                    ) : (
+                      <>
+                        <FiLogIn className="text-sm" />
+                        <span>Login to Portal</span>
+                      </>
+                    )}
                   </button>
+                </div>
+              </form>
 
-                  <button
-                    onClick={() => router.push('/pages/OurSchoolPolicies')}
-                    className="text-black hover:text-gray-800 text-xs sm:text-sm font-medium transition-colors mobile-touch-friendly"
-                  >
-                    Help Center
-                  </button>
-
-                  <button
-                    onClick={() => router.push('/pages/OurSchoolPolicies')}
-                    className="text-black hover:text-gray-800 transition-colors mobile-touch-friendly"
-                    aria-label="Language & Accessibility"
-                  >
-                    <FaGlobe className="w-3 h-3 sm:w-4 sm:h-4" />
-                  </button>
+              {/* Features Grid */}
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="text-center p-2 bg-gray-50 rounded-xl">
+                    <FiBook className="text-gray-700 text-base mx-auto mb-1" />
+                    <p className="text-[10px] font-bold text-gray-600">Learning Resources</p>
+                  </div>
+                  <div className="text-center p-2 bg-gray-50 rounded-xl">
+                    <FiShield className="text-gray-700 text-base mx-auto mb-1" />
+                    <p className="text-[10px] font-bold text-gray-600">Secure Access</p>
+                  </div>
+                  <div className="text-center p-2 bg-gray-50 rounded-xl">
+                    <FiAward className="text-gray-700 text-base mx-auto mb-1" />
+                    <p className="text-[10px] font-bold text-gray-600">Excellence</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </footer>
-        </div>
-      </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 py-6 xs:py-8 sm:py-10 md:py-12 bg-gray-900">
+          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 xs:gap-8 sm:gap-10 md:gap-12">
+            <div className="flex flex-col items-center lg:items-start gap-3 xs:gap-4 text-center lg:text-left">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 bg-white/10 rounded-lg flex items-center justify-center">
+                  <FiBook className="w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4 text-gray-400" />
+                </div>
+                <span className="text-sm xs:text-base font-bold tracking-tight text-white">Kinyui Boys' Senior School</span>
+              </div>
+              <p className="text-[9px] xs:text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                © {new Date().getFullYear()} Kinyui Boys' Senior School. All Rights Reserved.
+              </p>
+            </div>
+            
+            <div className="flex flex-wrap justify-center gap-4 xs:gap-6 sm:gap-8 md:gap-10">
+              <div className="space-y-1 xs:space-y-2 text-center">
+                <p className="text-[9px] xs:text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                  Academics
+                </p>
+                <p className="text-xs font-bold text-white hover:text-gray-300 cursor-pointer transition-colors duration-300">
+                  KNEC Portal
+                </p>
+              </div>
+              <div className="space-y-1 xs:space-y-2 text-center">
+                <p className="text-[9px] xs:text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                  Finance
+                </p>
+                <p className="text-xs font-bold text-white hover:text-gray-300 cursor-pointer transition-colors duration-300">
+                  Payment Options
+                </p>
+              </div>
+              <div className="space-y-1 xs:space-y-2 text-center">
+                <p className="text-[9px] xs:text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                  Support
+                </p>
+                <p className="text-xs font-bold text-white hover:text-gray-300 cursor-pointer transition-colors duration-300">
+                  IT Help Desk
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </main>
+
+      <style>{`
+        @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-slideDown {
+          animation: slideDown 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 }
