@@ -95,8 +95,8 @@ function StudentHeader({ student, onMenuToggle, isMenuOpen, currentView }) {
                 aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
               >
                 {isMenuOpen ?
-                  <FiX className="w-5 h-5 text-amber-300" /> :
-                  <FiMenu className="w-5 h-5 text-amber-300" />
+                  <FiX className="w-5 h-5 text-black" /> :
+                  <FiMenu className="w-5 h-5 text-black" />
                 }
               </button>
 
@@ -112,7 +112,7 @@ function StudentHeader({ student, onMenuToggle, isMenuOpen, currentView }) {
                     <p className="text-sm font-semibold text-white text-truncate max-w-[180px]">
                       {student.fullName}
                     </p>
-                    <p className="text-[11px] text-amber-300/80">
+                    <p className="text-[11px] text-black/80">
                       {student.form} &middot; {student.stream}
                     </p>
                   </div>
@@ -123,7 +123,7 @@ function StudentHeader({ student, onMenuToggle, isMenuOpen, currentView }) {
             {/* Center: Current View (mobile & tablet) */}
             <div className="lg:hidden flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-white/10">
-                <ViewIcon className="w-4 h-4 text-amber-300" />
+                <ViewIcon className="w-4 h-4 text-black" />
               </div>
               <span className="text-sm font-semibold text-white text-truncate max-w-[120px] sm:max-w-none">
                 {VIEW_LABELS[currentView] || 'Dashboard'}
@@ -135,7 +135,7 @@ function StudentHeader({ student, onMenuToggle, isMenuOpen, currentView }) {
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/10">
                 <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="text-[11px] font-bold text-amber-200 uppercase tracking-wide">Kinyui Boys&apos;</span>
-                <FiShield className="w-3.5 h-3.5 text-amber-300" />
+                <FiShield className="w-3.5 h-3.5 text-black" />
               </div>
             </div>
           </div>
@@ -209,13 +209,13 @@ function HomeDashboardView({ student, token }) {
         <div className="relative px-5 py-6 sm:px-8 sm:py-8 md:py-10">
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center anim-float">
-              <HiSparkles className="w-6 h-6 sm:w-7 sm:h-7 text-amber-300" />
+              <HiSparkles className="w-6 h-6 sm:w-7 sm:h-7 text-black" />
             </div>
             <div className="flex-1">
               <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
                 {greeting}, {firstName}
               </h1>
-              <p className="text-amber-200/80 text-sm sm:text-base mt-1 max-w-xl">
+              <p className="text-black text-sm sm:text-base mt-1 max-w-xl">
                 Your academic dashboard is ready. Access resources, check results, and stay updated with school activities.
               </p>
             </div>
@@ -226,7 +226,7 @@ function HomeDashboardView({ student, token }) {
               Active Session
             </span>
             <span className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white">
-              <FaSchool className="w-3 h-3 text-amber-300" />
+              <FaSchool className="w-3 h-3 text-black" />
               Kinyui Boys&apos; Senior School
             </span>
           </div>
@@ -340,7 +340,7 @@ function LandingPage({ onOpenLogin, router }) {
               <span className="text-sm sm:text-base font-extrabold text-white tracking-tight block leading-none">
                 KINYUI BOYS&apos;
               </span>
-              <span className="text-[8px] sm:text-[9px] font-semibold text-amber-300/70 uppercase tracking-[0.15em]">
+              <span className="text-[8px] sm:text-[9px] font-semibold text-black/70 uppercase tracking-[0.15em]">
                 Student Portal
               </span>
             </div>
@@ -349,7 +349,7 @@ function LandingPage({ onOpenLogin, router }) {
             <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/10">
               <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
               <span className="text-[10px] font-bold text-amber-200 uppercase tracking-wide">Secure</span>
-              <FiShield className="w-3 h-3 text-amber-300" />
+              <FiShield className="w-3 h-3 text-black" />
             </div>
             <button onClick={onOpenLogin}
               className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-maroon-900 text-xs sm:text-sm font-bold rounded-lg transition-colors touch-target">
@@ -364,7 +364,7 @@ function LandingPage({ onOpenLogin, router }) {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="anim-fade-up">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-maroon-100 border border-maroon-200 text-[10px] sm:text-xs font-bold text-maroon-700 uppercase tracking-wider mb-5">
-              <HiSparkles className="w-3 h-3 text-amber-600" />
+              <HiSparkles className="w-3 h-3 text-black" />
               Excellence in Education Since 1976
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-[1.05]">
@@ -403,7 +403,7 @@ function LandingPage({ onOpenLogin, router }) {
             <div className="relative glass rounded-3xl border border-white/70 p-5 sm:p-7 shadow-xl">
               <div className="flex items-center justify-between pb-4 border-b border-gray-200/60">
                 <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wider">Portal Preview</h3>
-                <FaBrain className="w-4 h-4 text-amber-600" />
+                <FaBrain className="w-4 h-4 text-black" />
               </div>
               <div className="space-y-3 mt-4">
                 {[
@@ -466,16 +466,16 @@ function LandingPage({ onOpenLogin, router }) {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-              <FaSchool className="w-4 h-4 text-amber-400" />
+              <FaSchool className="w-4 h-4 text-black" />
               <span className="text-sm font-bold">Kinyui Boys&apos; Senior School</span>
             </div>
-            <p className="text-[10px] text-amber-300/60 uppercase tracking-widest font-semibold">
+            <p className="text-[10px] text-black/60 uppercase tracking-widest font-semibold">
               &copy; {new Date().getFullYear()} All Rights Reserved
             </p>
           </div>
           <div className="flex gap-6 sm:gap-8 text-xs font-semibold">
             {['Academics', 'Finance', 'Support'].map((item) => (
-              <span key={item} className="text-amber-300/70 hover:text-white cursor-pointer transition-colors">{item}</span>
+              <span key={item} className="text-black/70 hover:text-white cursor-pointer transition-colors">{item}</span>
             ))}
           </div>
         </div>
@@ -904,18 +904,18 @@ export default function ModernStudentPortalPage() {
                   <p className="text-white text-sm font-semibold">&copy; {new Date().getFullYear()} Kinyui Boys&apos; Senior School</p>
                   <div className="flex items-center gap-2 mt-1.5">
                     <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-                    <span className="text-xs text-amber-300/70">Secure Session Active</span>
+                    <span className="text-xs text-black/70">Secure Session Active</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-5 flex-wrap">
                   {['Privacy Policy', 'Terms of Service', 'Help Center'].map((label) => (
                     <button key={label} onClick={() => router.push('/pages/OurSchoolPolicies')}
-                      className="text-amber-300/70 hover:text-white text-xs font-medium transition-colors touch-target">
+                      className="text-black/70 hover:text-white text-xs font-medium transition-colors touch-target">
                       {label}
                     </button>
                   ))}
                   <button onClick={() => router.push('/pages/OurSchoolPolicies')}
-                    className="text-amber-300/70 hover:text-white transition-colors touch-target" aria-label="Accessibility">
+                    className="text-black/70 hover:text-white transition-colors touch-target" aria-label="Accessibility">
                     <FaGlobe className="w-3.5 h-3.5" />
                   </button>
                 </div>
