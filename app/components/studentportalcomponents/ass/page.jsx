@@ -236,16 +236,7 @@ function StatsCard({ title, value, icon: Icon, color, trend, unit = '', descript
         <div className={`p-2 rounded-xl bg-gradient-to-br ${color} shadow-md`}>
           <Icon className={`text-white ${compact ? 'text-lg' : 'text-xl'}`} />
         </div>
-        <div className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full ${
-          trend > 0 
-            ? 'bg-green-100 text-green-800' 
-            : trend < 0 
-            ? 'bg-red-100 text-red-800' 
-            : 'bg-gray-100 text-gray-800'
-        }`}>
-          {trend > 0 ? <IoArrowUp className="text-xs" /> : <IoArrowDown className="text-xs" />}
-          {Math.abs(trend)}%
-        </div>
+     
       </div>
       <div className="space-y-1">
         <div className={`font-bold text-gray-900 ${compact ? 'text-2xl' : 'text-3xl'}`}>
@@ -1117,7 +1108,6 @@ export default function ModernResourcesAssignmentsView({
           value={stats.totalAssignments}
           icon={IoDocument}
           color="from-purple-500 to-purple-600"
-          trend={5}
           description={`${stats.pendingAssignments} pending`}
         />
         
@@ -1126,7 +1116,6 @@ export default function ModernResourcesAssignmentsView({
           value={stats.totalResources}
           icon={IoDocumentsOutline}
           color="from-blue-500 to-blue-600"
-          trend={12}
           description="Available files"
         />
         
@@ -1135,7 +1124,6 @@ export default function ModernResourcesAssignmentsView({
           value={stats.averageCompletion}
           icon={IoCheckmarkCircle}
           color="from-emerald-500 to-emerald-600"
-          trend={stats.averageCompletion > 75 ? 8 : -3}
           unit="%"
           description="Completed"
         />
@@ -1145,7 +1133,6 @@ export default function ModernResourcesAssignmentsView({
           value={bookmarkedItems.size}
           icon={IoStar}
           color="from-amber-500 to-amber-600"
-          trend={bookmarkedItems.size > 0 ? 15 : 0}
           description="Saved items"
         />
       </div>
