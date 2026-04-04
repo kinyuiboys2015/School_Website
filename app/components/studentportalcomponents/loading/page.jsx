@@ -11,9 +11,9 @@ const ModernLoadingScreen = () => {
   const motto = "Soaring to Excellence";
   const schoolName = "KINYUI BOYS' SENIOR SCHOOL";
   const loadingMessages = [
-    "Preparing an exceptional learning experience",
-    "Loading Admin Dashboard",
-    "Securing your session",
+    "Preparing an Exceptional Experience..",
+    "Loading Student Dashboard",
+    "Securing your Student Portal",
     "Almost ready..."
   ];
 
