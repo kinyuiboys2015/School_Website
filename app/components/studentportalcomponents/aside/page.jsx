@@ -65,7 +65,7 @@ export default function NavigationSidebar({
                 <h2 className="font-black text-white text-base sm:text-lg lg:text-xl tracking-tight">
                   KINYUI BOYS'
                 </h2>
-                <p className="text-rose-200 text-[10px] sm:text-xs font-bold tracking-wider">
+                <p className="text-slate-800 text-[10px] sm:text-xs font-bold tracking-wider">
                   STUDENT PORTAL
                 </p>
               </div>
@@ -77,13 +77,13 @@ export default function NavigationSidebar({
               className="lg:hidden p-2 hover:bg-white/10 rounded-xl transition-all duration-200 hover:scale-110"
               aria-label="Close sidebar"
             >
-              <FiX size={20} className="text-rose-300" />
+              <FiX size={20} className="text-rose-900" />
             </button>
           </div>
           
           {/* School Motto */}
           <div className="mt-3 text-center">
-            <p className="text-rose-300 text-[10px] font-bold italic flex items-center justify-center gap-1">
+            <p className="text-rose-600 text-[10px] font-bold italic flex items-center justify-center gap-1">
               <FiAward className="text-rose-900 text-xs" />
               "Soaring to Excellence"
               <FiAward className="text-rose-900 text-xs" />
