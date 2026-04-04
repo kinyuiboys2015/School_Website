@@ -170,7 +170,7 @@ export default function StudentLoginModal({
           
           {/* School Motto Banner */}
           <div className="mb-5 bg-gray-50 rounded-xl p-3 border border-gray-200 text-center">
-            <p className="text-gray-700 font-bold italic text-sm flex items-center justify-center gap-2">
+            <p className="text-gray-900 font-bold italic text-sm flex items-center justify-center gap-2">
               <FiStar className="text-gray-500" />
               "Soaring to Excellence"
               <FiStar className="text-gray-500" />
@@ -182,11 +182,11 @@ export default function StudentLoginModal({
           <section className="mb-5 bg-gray-50 rounded-xl p-4 border border-gray-200">
             <div className="flex items-start gap-3">
               <div className="p-2 bg-gray-200 rounded-lg">
-                <FiCheckCircle className="text-gray-700 text-sm" aria-hidden="true" />
+                <FiCheckCircle className="text-gray-900 text-sm" aria-hidden="true" />
               </div>
               <div className="flex-1">
                 <h2 className="text-sm font-bold text-gray-900 mb-1">Student Name Entry</h2>
-                <p className="text-gray-600 text-xs mb-2">
+                <p className="text-gray-900 text-xs mb-2">
                   Enter your name in any format (uppercase, lowercase, 2 or 3 names)
                 </p>
                 <div className="flex flex-wrap gap-2 mt-2">
@@ -194,7 +194,7 @@ export default function StudentLoginModal({
                     <button 
                       key={idx}
                       onClick={() => handleInputChange('fullName', format)}
-                      className="px-2 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs cursor-pointer hover:bg-gray-200 transition-all duration-200 border border-gray-200 hover:scale-105"
+                      className="px-2 py-1 bg-gray-100 text-gray-900 rounded-lg text-xs cursor-pointer hover:bg-gray-200 transition-all duration-200 border border-gray-200 hover:scale-105"
                       type="button"
                     >
                       {format}
@@ -221,11 +221,11 @@ export default function StudentLoginModal({
                     
                     {showContactInfo && (
                       <div className="mt-3 space-y-2">
-                        <div className="flex items-center gap-2 text-xs text-gray-700">
-                          <FiHelpCircle className="text-gray-600" />
+                        <div className="flex items-center gap-2 text-xs text-gray-900">
+                          <FiHelpCircle className="text-gray-900" />
                           <span className="font-bold">Next Steps:</span>
                         </div>
-                        <ul className="text-xs text-gray-600 space-y-1 ml-5 list-decimal">
+                        <ul className="text-xs text-gray-900 space-y-1 ml-5 list-decimal">
                           <li>Re-enter your details below</li>
                           <li>Contact your class teacher</li>
                           <li>Visit the school administration office</li>
@@ -243,11 +243,11 @@ export default function StudentLoginModal({
             <div className="mb-5">
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-2 bg-gray-100 rounded-xl">
-                  <FiShield className="text-gray-700 text-sm" />
+                  <FiShield className="text-gray-900 text-sm" />
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900">Secure Student Access</h3>
-                  <div className="flex items-center gap-2 text-gray-600 text-xs">
+                  <div className="flex items-center gap-2 text-gray-900 text-xs">
                     <FiClock className="text-gray-500" />
                     <span>Session Duration: <strong className="text-gray-900">2 Hours</strong></span>
                   </div>
@@ -255,7 +255,7 @@ export default function StudentLoginModal({
               </div>
 
               <div className="bg-gray-50 rounded-xl p-3 border border-gray-200">
-                <p className="text-gray-600 text-xs font-medium">
+                <p className="text-gray-900 text-xs font-medium">
                   <strong className="text-gray-900">Note:</strong> Use your official admission number and name as registered for Kinyui Boys' Senior School.
                 </p>
               </div>
@@ -264,10 +264,10 @@ export default function StudentLoginModal({
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name Input */}
               <fieldset>
-                <label className="text-xs font-bold text-gray-700 flex items-center gap-2 mb-2">
-                  <FiUser className="text-gray-600 text-sm" />
+                <label className="text-xs font-bold text-gray-900 flex items-center gap-2 mb-2">
+                  <FiUser className="text-gray-900 text-sm" />
                   <span>Full Name</span>
-                  <span className="text-[10px] text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full">Flexible Format</span>
+                  <span className="text-[10px] text-gray-900 bg-gray-100 px-2 py-0.5 rounded-full">Flexible Format</span>
                 </label>
                 <input
                   type="text"
@@ -294,7 +294,7 @@ export default function StudentLoginModal({
                 
                 {/* Quick Select - Student Examples */}
                 <div className="mt-3">
-                  <p className="text-gray-600 text-[10px] font-semibold mb-2">⬇️ Quick Select:</p>
+                  <p className="text-gray-900 text-[10px] font-semibold mb-2">⬇️ Quick Select:</p>
                   <div className="flex flex-wrap gap-2">
                     {studentExamples.map((student, idx) => (
                       <button
@@ -304,7 +304,7 @@ export default function StudentLoginModal({
                           handleInputChange('fullName', student.name);
                           handleInputChange('admissionNumber', student.admission);
                         }}
-                        className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-[10px] border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 font-medium"
+                        className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg text-[10px] border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 font-medium"
                       >
                         {student.name.split(' ')[0]} • {student.admission}
                       </button>
@@ -315,10 +315,10 @@ export default function StudentLoginModal({
 
               {/* Admission Number Input */}
               <fieldset>
-                <label className="text-xs font-bold text-gray-700 flex items-center gap-2 mb-2">
-                  <FiLock className="text-gray-600 text-sm" />
+                <label className="text-xs font-bold text-gray-900 flex items-center gap-2 mb-2">
+                  <FiLock className="text-gray-900 text-sm" />
                   <span>Admission Number</span>
-                  <span className="text-[10px] text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full">Unique ID</span>
+                  <span className="text-[10px] text-gray-900 bg-gray-100 px-2 py-0.5 rounded-full">Unique ID</span>
                 </label>
                 <input
                   type="text"
@@ -345,14 +345,14 @@ export default function StudentLoginModal({
                 
                 {/* Admission Number Examples */}
                 <div className="mt-3">
-                  <p className="text-gray-600 text-[10px] font-semibold mb-2">⬇️ Example Formats:</p>
+                  <p className="text-gray-900 text-[10px] font-semibold mb-2">⬇️ Example Formats:</p>
                   <div className="flex flex-wrap gap-2">
                     {['2903', 'AB12', '2023001', 'STU456', 'KM001'].map((example, idx) => (
                       <button
                         key={idx}
                         type="button"
                         onClick={() => handleInputChange('admissionNumber', example)}
-                        className="px-2 py-1 bg-gray-100 text-gray-700 rounded-lg text-[10px] border border-gray-200 hover:bg-gray-200 transition-all duration-200 font-mono"
+                        className="px-2 py-1 bg-gray-100 text-gray-900 rounded-lg text-[10px] border border-gray-200 hover:bg-gray-200 transition-all duration-200 font-mono"
                       >
                         {example}
                       </button>
@@ -360,53 +360,58 @@ export default function StudentLoginModal({
                   </div>
                 </div>
               </fieldset>
+{/* Action Buttons */}
+<div className="flex flex-wrap sm:flex-nowrap gap-2 sm:gap-3 pt-3">
+  <button
+    type="button"
+    onClick={handleClear}
+    disabled={isLoading}
+    /* Reduced py-2.5 and px-3 for mobile, text-xs for extra small screens */
+    className="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-xl font-bold text-xs sm:text-sm disabled:opacity-50 flex items-center justify-center gap-1.5 sm:gap-2 transition-all duration-200 shadow-md hover:shadow-lg border border-gray-200 active:scale-95"
+  >
+    <FiX className="text-xs sm:text-sm" />
+    <span>Clear</span>
+  </button>
 
-              {/* Action Buttons */}
-              <div className="flex gap-3 pt-3">
-                <button
-                  type="button"
-                  onClick={handleClear}
-                  disabled={isLoading}
-                  className="flex-1 py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-bold text-sm disabled:opacity-50 flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg border border-gray-200 active:scale-95"
-                >
-                  <FiX className="text-sm" />
-                  <span>Clear</span>
-                </button>
-
-                <button
-                  type="submit"
-                  disabled={isLoading || !formData.fullName.trim() || !formData.admissionNumber.trim()}
-                  className="flex-1 py-3 px-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-sm disabled:opacity-70 flex items-center justify-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl border border-gray-800 active:scale-95"
-                >
-                  {isLoading ? (
-                    <>
-                      <CircularProgress size={16} thickness={4} sx={{ color: "white" }} />
-                      <span>Verifying...</span>
-                    </>
-                  ) : (
-                    <>
-                      <FiLogIn className="text-sm" />
-                      <span>Login to Portal</span>
-                    </>
-                  )}
-                </button>
-              </div>
+  <button
+    type="submit"
+    disabled={isLoading || !formData.fullName.trim() || !formData.admissionNumber.trim()}
+    /* Reduced padding and font size for better fit on small mobile */
+    className="flex-[2] sm:flex-1 py-2.5 sm:py-3 px-3 sm:px-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-xs sm:text-sm disabled:opacity-70 flex items-center justify-center gap-1.5 sm:gap-2 transition-all duration-200 shadow-lg hover:shadow-xl border border-gray-800 active:scale-95"
+  >
+    {isLoading ? (
+      <>
+        <CircularProgress size={14} thickness={4} sx={{ color: "white" }} />
+        <span>Verifying...</span>
+      </>
+    ) : (
+      <>
+        <FiLogIn className="text-xs sm:text-sm" />
+        {/* Shorter text for tiny screens, full text for larger ones */}
+        <span className="whitespace-nowrap">
+            <span className="inline sm:hidden">Login</span>
+            <span className="hidden sm:inline">Login to Portal</span>
+        </span>
+      </>
+    )}
+  </button>
+</div>
             </form>
 
             {/* Features Grid */}
             <section className="mt-6 pt-4 border-t border-gray-200">
               <div className="grid grid-cols-3 gap-3">
                 <div className="text-center p-2 bg-gray-50 rounded-xl">
-                  <FiBook className="text-gray-700 text-base mx-auto mb-1" />
-                  <p className="text-[10px] font-bold text-gray-600">Learning Resources</p>
+                  <FiBook className="text-gray-900 text-base mx-auto mb-1" />
+                  <p className="text-[10px] font-bold text-gray-900">Learning Resources</p>
                 </div>
                 <div className="text-center p-2 bg-gray-50 rounded-xl">
-                  <FiShield className="text-gray-700 text-base mx-auto mb-1" />
-                  <p className="text-[10px] font-bold text-gray-600">Secure Access</p>
+                  <FiShield className="text-gray-900 text-base mx-auto mb-1" />
+                  <p className="text-[10px] font-bold text-gray-900">Secure Access</p>
                 </div>
                 <div className="text-center p-2 bg-gray-50 rounded-xl">
-                  <FiAward className="text-gray-700 text-base mx-auto mb-1" />
-                  <p className="text-[10px] font-bold text-gray-600">Excellence</p>
+                  <FiAward className="text-gray-900 text-base mx-auto mb-1" />
+                  <p className="text-[10px] font-bold text-gray-900">Excellence</p>
                 </div>
               </div>
             </section>
