@@ -8,7 +8,7 @@ import ResultsView from '../../components/studentportalcomponents/result/page.js
 import ResourcesAssignmentsView from '../../components/studentportalcomponents/ass/page.jsx';
 import GuidanceEventsView from '../../components/studentportalcomponents/session/page';
 import LoadingScreen from '../../components/studentportalcomponents/loading/page';
-import FeesView from '../../components/studentportalcomponents/feebalance/page'; // ADDED IMPORT
+import FeesView from '../../components/studentportalcomponents/feebalance/page';
 
 import { 
   FaBell, FaBars, FaCalendar, FaBook, FaAward, FaDollarSign, 
@@ -81,13 +81,14 @@ function StudentHeader({ student, onMenuToggle, isMenuOpen, currentView }) {
 
   const ViewIcon = VIEW_ICONS[currentView] || FaHome;
 
+  if (!student) return null;
+
   return (
     <>
       <style>{portalStyles}</style>
       <header className="sticky top-0 z-30 glass-dark border-b border-white/10">
         <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16">
-            {/* Left: Menu + Avatar */}
             <div className="flex items-center gap-2.5 sm:gap-4">
               <button
                 onClick={onMenuToggle}
@@ -95,47 +96,43 @@ function StudentHeader({ student, onMenuToggle, isMenuOpen, currentView }) {
                 aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
               >
                 {isMenuOpen ?
-                  <FiX className="w-5 h-5 text-black" /> :
-                  <FiMenu className="w-5 h-5 text-black" />
+                  <FiX className="w-5 h-5 text-white" /> :
+                  <FiMenu className="w-5 h-5 text-white" />
                 }
               </button>
 
-              {student && (
-                <div className="flex items-center gap-2.5">
-                  <div className="relative">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-amber-400 to-maroon-600 flex items-center justify-center text-white text-xs sm:text-sm font-bold ring-2 ring-amber-400/40">
-                      {getInitials(student.fullName)}
-                    </div>
-                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-maroon-900" />
+              <div className="flex items-center gap-2.5">
+                <div className="relative">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-amber-400 to-maroon-600 flex items-center justify-center text-white text-xs sm:text-sm font-bold ring-2 ring-amber-400/40">
+                    {getInitials(student.fullName)}
                   </div>
-                  <div className="hidden sm:block">
-                    <p className="text-sm font-semibold text-white text-truncate max-w-[180px]">
-                      {student.fullName}
-                    </p>
-                    <p className="text-[11px] text-black/80">
-                      {student.form} &middot; {student.stream}
-                    </p>
-                  </div>
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-maroon-900" />
                 </div>
-              )}
+                <div className="hidden sm:block">
+                  <p className="text-sm font-semibold text-white text-truncate max-w-[180px]">
+                    {student.fullName}
+                  </p>
+                  <p className="text-[11px] text-white/80">
+                    {student.form} • {student.stream}
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* Center: Current View (mobile & tablet) */}
             <div className="lg:hidden flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-white/10">
-                <ViewIcon className="w-4 h-4 text-black" />
+                <ViewIcon className="w-4 h-4 text-white" />
               </div>
               <span className="text-sm font-semibold text-white text-truncate max-w-[120px] sm:max-w-none">
                 {VIEW_LABELS[currentView] || 'Dashboard'}
               </span>
             </div>
 
-            {/* Right: School Badge */}
             <div className="hidden lg:flex items-center gap-3">
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/10">
                 <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[11px] font-bold text-amber-200 uppercase tracking-wide">Kinyui Boys&apos;</span>
-                <FiShield className="w-3.5 h-3.5 text-black" />
+                <span className="text-[11px] font-bold text-amber-200 uppercase tracking-wide">Kinyui Boys'</span>
+                <FiShield className="w-3.5 h-3.5 text-amber-300" />
               </div>
             </div>
           </div>
@@ -147,6 +144,8 @@ function StudentHeader({ student, onMenuToggle, isMenuOpen, currentView }) {
 
 // ==================== HOME DASHBOARD VIEW ====================
 function HomeDashboardView({ student, token }) {
+  if (!student) return null;
+
   const firstName = student?.fullName?.split(' ')[0] || 'Student';
   const currentDate = new Date();
   const greeting = currentDate.getHours() < 12 ? 'Good morning' : currentDate.getHours() < 17 ? 'Good afternoon' : 'Good evening';
@@ -202,20 +201,19 @@ function HomeDashboardView({ student, token }) {
 
   return (
     <div className="space-y-5 sm:space-y-7 hide-scrollbar">
-      {/* Greeting Banner */}
       <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl anim-fade-up">
         <div className="absolute inset-0 bg-gradient-to-br from-maroon-800 via-maroon-700 to-amber-700" />
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 80% 20%, rgba(255,193,7,0.3) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(128,0,32,0.3) 0%, transparent 50%)' }} />
         <div className="relative px-5 py-6 sm:px-8 sm:py-8 md:py-10">
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center anim-float">
-              <HiSparkles className="w-6 h-6 sm:w-7 sm:h-7 text-black" />
+              <HiSparkles className="w-6 h-6 sm:w-7 sm:h-7 text-amber-300" />
             </div>
             <div className="flex-1">
               <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-                {greeting}, {firstName}
+                {greeting}, {firstName}!
               </h1>
-              <p className="text-black text-sm sm:text-base mt-1 max-w-xl">
+              <p className="text-amber-100 text-sm sm:text-base mt-1 max-w-xl">
                 Your academic dashboard is ready. Access resources, check results, and stay updated with school activities.
               </p>
             </div>
@@ -226,21 +224,20 @@ function HomeDashboardView({ student, token }) {
               Active Session
             </span>
             <span className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white">
-              <FaSchool className="w-3 h-3 text-black" />
-              Kinyui Boys&apos; Senior School
+              <FaSchool className="w-3 h-3 text-amber-300" />
+              Kinyui Boys' Senior School
             </span>
           </div>
         </div>
       </div>
 
-      {/* Info Cards - Bento Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {infoCards.map((card, i) => {
           const Icon = card.icon;
           return (
             <div
               key={i}
-              className="group glass rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border border-white/60 hover:border-amber-300/60 shadow-sm hover:shadow-lg transition-all duration-300 anim-scale-in"
+              className="group bg-white rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border border-gray-200 hover:border-amber-300/60 shadow-sm hover:shadow-lg transition-all duration-300 anim-scale-in"
               style={{ animationDelay: `${i * 80}ms` }}
             >
               <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center mb-3 shadow-sm group-hover:scale-105 transition-transform`}>
@@ -253,10 +250,8 @@ function HomeDashboardView({ student, token }) {
         })}
       </div>
 
-      {/* Fee Balance Section */}
-      <FeesView student={student} token={token} />
+      {token && <FeesView student={student} token={token} />}
 
-      {/* Module Cards */}
       <section>
         <div className="mb-4 sm:mb-5">
           <h2 className="text-lg sm:text-xl font-bold text-gray-900">Quick Access</h2>
@@ -270,7 +265,7 @@ function HomeDashboardView({ student, token }) {
             return (
               <div
                 key={i}
-                className="group glass rounded-2xl border border-white/60 hover:border-amber-200 p-4 sm:p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col anim-fade-up"
+                className="group bg-white rounded-2xl border border-gray-200 hover:border-amber-200 p-4 sm:p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col anim-fade-up"
                 style={{ animationDelay: `${(i + 4) * 80}ms` }}
               >
                 <div className="flex items-start gap-3 mb-3">
@@ -323,11 +318,9 @@ function LandingPage({ onOpenLogin, router }) {
       <style>{portalStyles}</style>
       <Toaster position="top-right" expand richColors theme="light" />
 
-      {/* Subtle background pattern */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.025]"
         style={{ backgroundImage: 'radial-gradient(#800020 0.8px, transparent 0.8px)', backgroundSize: '32px 32px' }} />
 
-      {/* Nav */}
       <nav className="sticky top-0 z-50 glass-dark border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between h-14 sm:h-16">
           <div className="flex items-center gap-2.5">
@@ -338,9 +331,9 @@ function LandingPage({ onOpenLogin, router }) {
             </div>
             <div>
               <span className="text-sm sm:text-base font-extrabold text-white tracking-tight block leading-none">
-                KINYUI BOYS&apos;
+                KINYUI BOYS'
               </span>
-              <span className="text-[8px] sm:text-[9px] font-semibold text-black/70 uppercase tracking-[0.15em]">
+              <span className="text-[8px] sm:text-[9px] font-semibold text-amber-200 uppercase tracking-[0.15em]">
                 Student Portal
               </span>
             </div>
@@ -349,7 +342,7 @@ function LandingPage({ onOpenLogin, router }) {
             <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/10">
               <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
               <span className="text-[10px] font-bold text-amber-200 uppercase tracking-wide">Secure</span>
-              <FiShield className="w-3 h-3 text-black" />
+              <FiShield className="w-3 h-3 text-amber-300" />
             </div>
             <button onClick={onOpenLogin}
               className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-maroon-900 text-xs sm:text-sm font-bold rounded-lg transition-colors touch-target">
@@ -359,26 +352,25 @@ function LandingPage({ onOpenLogin, router }) {
         </div>
       </nav>
 
-      {/* Hero */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pt-10 sm:pt-16 md:pt-20 pb-12 sm:pb-20">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="anim-fade-up">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-maroon-100 border border-maroon-200 text-[10px] sm:text-xs font-bold text-maroon-700 uppercase tracking-wider mb-5">
-              <HiSparkles className="w-3 h-3 text-black" />
+              <HiSparkles className="w-3 h-3 text-maroon-700" />
               Excellence in Education Since 1976
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-[1.05]">
               Your Academic
-              <span className="block bg-gradient-to-r from-maroon-700 to-amber-600 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-rose-700 to-amber-600 bg-clip-text text-transparent">
                 Journey Starts Here
               </span>
             </h1>
             <p className="mt-4 sm:mt-5 text-base sm:text-lg text-gray-600 max-w-lg leading-relaxed">
-              The centralized digital platform for Kinyui Boys&apos; students. Access resources, track performance, manage fees, and stay connected.
+              The centralized digital platform for Kinyui Boys' students. Access resources, track performance, manage fees, and stay connected.
             </p>
             <div className="flex flex-wrap gap-3 mt-6 sm:mt-8">
               <button onClick={onOpenLogin}
-                className="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-maroon-800 hover:bg-maroon-700 text-white rounded-xl font-bold text-sm sm:text-base shadow-lg shadow-maroon-900/20 transition-all active:scale-[0.97] group">
+                className="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-rose-800 hover:bg-maroon-700 text-white rounded-xl font-bold text-sm sm:text-base shadow-lg shadow-maroon-900/20 transition-all active:scale-[0.97] group">
                 Access Portal
                 <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -397,13 +389,12 @@ function LandingPage({ onOpenLogin, router }) {
             </div>
           </div>
 
-          {/* Right: Interactive Feature Preview */}
           <div className="relative anim-fade-up" style={{ animationDelay: '150ms' }}>
             <div className="absolute -inset-4 bg-gradient-to-br from-maroon-200/30 to-amber-200/30 rounded-[2.5rem] blur-2xl opacity-50" />
-            <div className="relative glass rounded-3xl border border-white/70 p-5 sm:p-7 shadow-xl">
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl border border-white/70 p-5 sm:p-7 shadow-xl">
               <div className="flex items-center justify-between pb-4 border-b border-gray-200/60">
                 <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wider">Portal Preview</h3>
-                <FaBrain className="w-4 h-4 text-black" />
+                <FaBrain className="w-4 h-4 text-maroon-600" />
               </div>
               <div className="space-y-3 mt-4">
                 {[
@@ -420,7 +411,7 @@ function LandingPage({ onOpenLogin, router }) {
               </div>
               <div className="mt-4 pt-3 border-t border-gray-100 text-center">
                 <button onClick={onOpenLogin} className="text-xs font-bold text-maroon-700 hover:text-amber-700 uppercase tracking-wider transition-colors">
-                  Sign In to Explore &rarr;
+                  Sign In to Explore →
                 </button>
               </div>
             </div>
@@ -428,7 +419,6 @@ function LandingPage({ onOpenLogin, router }) {
         </div>
       </section>
 
-      {/* Features Grid */}
       <section className="bg-white border-y border-gray-100 py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10 sm:mb-14">
@@ -436,7 +426,7 @@ function LandingPage({ onOpenLogin, router }) {
               Everything You Need
             </h2>
             <p className="mt-2 text-sm sm:text-base text-gray-500 max-w-xl mx-auto">
-              Six powerful modules designed to support your academic journey at Kinyui Boys&apos;.
+              Six powerful modules designed to support your academic journey at Kinyui Boys'.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
@@ -461,27 +451,24 @@ function LandingPage({ onOpenLogin, router }) {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="bg-maroon-900 text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-              <FaSchool className="w-4 h-4 text-black" />
-              <span className="text-sm font-bold">Kinyui Boys&apos; Senior School</span>
+              <FaSchool className="w-4 h-4 text-amber-400" />
+              <span className="text-sm font-bold">Kinyui Boys' Senior School</span>
             </div>
-            <p className="text-[10px] text-black/60 uppercase tracking-widest font-semibold">
-              &copy; {new Date().getFullYear()} All Rights Reserved
+            <p className="text-[10px] text-amber-200/60 uppercase tracking-widest font-semibold">
+              © {new Date().getFullYear()} All Rights Reserved
             </p>
           </div>
           <div className="flex gap-6 sm:gap-8 text-xs font-semibold">
             {['Academics', 'Finance', 'Support'].map((item) => (
-              <span key={item} className="text-black/70 hover:text-white cursor-pointer transition-colors">{item}</span>
+              <span key={item} className="text-amber-200/70 hover:text-white cursor-pointer transition-colors">{item}</span>
             ))}
           </div>
         </div>
       </footer>
-
-      <StudentLoginModal isOpen={false} onClose={() => {}} onLogin={() => {}} isLoading={false} error={null} requiresContact={false} />
     </div>
   );
 }
@@ -577,7 +564,7 @@ export default function ModernStudentPortalPage() {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [currentView]);
+  }, []);
 
   const fetchAllData = useCallback(async () => {
     if (!token) return;
@@ -801,7 +788,6 @@ export default function ModernStudentPortalPage() {
 
   if (isLoading) return <LoadingScreen />;
 
-  // ========== UNAUTHENTICATED LANDING ==========
   if (!student || !token) {
     return (
       <>
@@ -818,7 +804,6 @@ export default function ModernStudentPortalPage() {
     );
   }
 
-  // ========== AUTHENTICATED PORTAL ==========
   return (
     <div className="min-h-screen bg-gray-50">
       <style>{portalStyles}</style>
@@ -833,13 +818,11 @@ export default function ModernStudentPortalPage() {
         requiresContact={requiresContact}
       />
 
-      {/* Mobile overlay */}
       {isMenuOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden" onClick={toggleMenu} />
       )}
 
       <div className="flex">
-        {/* Sidebar */}
         <div className={`
           ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
           lg:translate-x-0 fixed lg:sticky lg:top-0
@@ -859,7 +842,6 @@ export default function ModernStudentPortalPage() {
           />
         </div>
 
-        {/* Main content */}
         <div className="flex-1 flex flex-col min-h-screen">
           <StudentHeader
             student={student}
@@ -896,26 +878,25 @@ export default function ModernStudentPortalPage() {
             {currentView === 'fees' && <FeesView student={student} token={token} />}
           </main>
 
-          {/* Footer */}
           <footer className="border-t border-gray-200 bg-maroon-900 py-5 sm:py-6">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <p className="text-white text-sm font-semibold">&copy; {new Date().getFullYear()} Kinyui Boys&apos; Senior School</p>
+                  <p className="text-white text-sm font-semibold">© {new Date().getFullYear()} Kinyui Boys' Senior School</p>
                   <div className="flex items-center gap-2 mt-1.5">
                     <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-                    <span className="text-xs text-black/70">Secure Session Active</span>
+                    <span className="text-xs text-amber-200/70">Secure Session Active</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-5 flex-wrap">
                   {['Privacy Policy', 'Terms of Service', 'Help Center'].map((label) => (
                     <button key={label} onClick={() => router.push('/pages/OurSchoolPolicies')}
-                      className="text-black/70 hover:text-white text-xs font-medium transition-colors touch-target">
+                      className="text-amber-200/70 hover:text-white text-xs font-medium transition-colors touch-target">
                       {label}
                     </button>
                   ))}
                   <button onClick={() => router.push('/pages/OurSchoolPolicies')}
-                    className="text-black/70 hover:text-white transition-colors touch-target" aria-label="Accessibility">
+                    className="text-amber-200/70 hover:text-white transition-colors touch-target" aria-label="Accessibility">
                     <FaGlobe className="w-3.5 h-3.5" />
                   </button>
                 </div>
