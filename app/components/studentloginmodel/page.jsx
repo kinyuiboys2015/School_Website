@@ -402,15 +402,15 @@ export default function StudentLoginModal({
             <section className="mt-6 pt-4 border-t border-gray-200">
               <div className="grid grid-cols-3 gap-3">
                 <div className="text-center p-2 bg-gray-50 rounded-xl">
-                  <FiBook className="text-gray-900 text-base mx-auto mb-1" />
+                  <FiBook className="text-green-900 text-base mx-auto mb-1" />
                   <p className="text-[10px] font-bold text-gray-900">Learning Resources</p>
                 </div>
                 <div className="text-center p-2 bg-gray-50 rounded-xl">
-                  <FiShield className="text-gray-900 text-base mx-auto mb-1" />
+                  <FiShield className="text-blue-900 text-base mx-auto mb-1" />
                   <p className="text-[10px] font-bold text-gray-900">Secure Access</p>
                 </div>
                 <div className="text-center p-2 bg-gray-50 rounded-xl">
-                  <FiAward className="text-gray-900 text-base mx-auto mb-1" />
+                  <FiAward className="text-rose-900 text-base mx-auto mb-1" />
                   <p className="text-[10px] font-bold text-gray-900">Excellence</p>
                 </div>
               </div>
