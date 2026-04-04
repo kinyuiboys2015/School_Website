@@ -108,11 +108,8 @@ export default function StudentLoginModal({
   ];
 
   const nameFormats = [
-    "John Mutuku",
     "John Musau Mutuku", 
     "JOHN MUTUKU",
-    "john mutuku",
-    "J. Mutuku",
     "Mutuku John"
   ];
 
