@@ -103,10 +103,10 @@ function StudentHeader({ student, onMenuToggle, isMenuOpen, currentView }) {
 
               <div className="flex items-center gap-2.5">
                 <div className="relative">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-amber-400 to-maroon-600 flex items-center justify-center text-white text-xs sm:text-sm font-bold ring-2 ring-amber-400/40">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-amber-400 to-rose-600 flex items-center justify-center text-white text-xs sm:text-sm font-bold ring-2 ring-amber-400/40">
                     {getInitials(student.fullName)}
                   </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-maroon-900" />
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-rose-900" />
                 </div>
                 <div className="hidden sm:block">
                   <p className="text-sm font-semibold text-white text-truncate max-w-[180px]">
@@ -151,10 +151,10 @@ function HomeDashboardView({ student, token }) {
   const greeting = currentDate.getHours() < 12 ? 'Good morning' : currentDate.getHours() < 17 ? 'Good afternoon' : 'Good evening';
 
   const infoCards = [
-    { label: 'Form', value: student?.form || '—', icon: FaUser, color: 'from-maroon-500 to-maroon-700' },
+    { label: 'Form', value: student?.form || '—', icon: FaUser, color: 'from-rose-500 to-rose-700' },
     { label: 'Stream', value: student?.stream || '—', icon: FaBook, color: 'from-amber-500 to-amber-700' },
-    { label: 'Admission No.', value: student?.admissionNumber || '—', icon: FaIdCard, color: 'from-maroon-600 to-amber-600' },
-    { label: 'Academic Year', value: currentDate.getFullYear().toString(), icon: FaCalendar, color: 'from-amber-600 to-maroon-500' },
+    { label: 'Admission No.', value: student?.admissionNumber || '—', icon: FaIdCard, color: 'from-rose-600 to-amber-600' },
+    { label: 'Academic Year', value: currentDate.getFullYear().toString(), icon: FaCalendar, color: 'from-amber-600 to-rose-500' },
   ];
 
   const modules = [
@@ -172,7 +172,7 @@ function HomeDashboardView({ student, token }) {
       subtitle: 'Class & personal performance',
       description: 'Review class-wide and personal examination results. Track progress and identify areas for improvement.',
       icon: FaChartLine,
-      accent: 'maroon',
+      accent: 'rose',
     },
     {
       key: 'support',
@@ -191,18 +191,18 @@ function HomeDashboardView({ student, token }) {
       ring: 'group-hover:ring-amber-300',
       arrow: 'text-amber-700',
     },
-    maroon: {
-      badge: 'bg-maroon-100 text-maroon-800',
-      iconBg: 'bg-gradient-to-br from-maroon-600 to-maroon-800',
-      ring: 'group-hover:ring-maroon-300',
-      arrow: 'text-maroon-700',
+    rose: {
+      badge: 'bg-rose-100 text-rose-800',
+      iconBg: 'bg-gradient-to-br from-rose-600 to-rose-800',
+      ring: 'group-hover:ring-rose-300',
+      arrow: 'text-rose-700',
     },
   };
 
   return (
     <div className="space-y-5 sm:space-y-7 hide-scrollbar">
       <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl anim-fade-up">
-        <div className="absolute inset-0 bg-gradient-to-br from-maroon-800 via-maroon-700 to-amber-700" />
+        <div className="absolute inset-0 bg-gradient-to-br from-rose-800 via-rose-700 to-amber-700" />
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 80% 20%, rgba(255,193,7,0.3) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(128,0,32,0.3) 0%, transparent 50%)' }} />
         <div className="relative px-5 py-6 sm:px-8 sm:py-8 md:py-10">
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
@@ -345,7 +345,7 @@ function LandingPage({ onOpenLogin, router }) {
               <FiShield className="w-3 h-3 text-amber-300" />
             </div>
             <button onClick={onOpenLogin}
-              className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-maroon-900 text-xs sm:text-sm font-bold rounded-lg transition-colors touch-target">
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-rose-900 text-xs sm:text-sm font-bold rounded-lg transition-colors touch-target">
               Sign In
             </button>
           </div>
@@ -355,8 +355,8 @@ function LandingPage({ onOpenLogin, router }) {
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pt-10 sm:pt-16 md:pt-20 pb-12 sm:pb-20">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="anim-fade-up">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-maroon-100 border border-maroon-200 text-[10px] sm:text-xs font-bold text-maroon-700 uppercase tracking-wider mb-5">
-              <HiSparkles className="w-3 h-3 text-maroon-700" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 border border-rose-200 text-[10px] sm:text-xs font-bold text-rose-700 uppercase tracking-wider mb-5">
+              <HiSparkles className="w-3 h-3 text-rose-700" />
               Excellence in Education Since 1976
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-[1.05]">
@@ -370,7 +370,7 @@ function LandingPage({ onOpenLogin, router }) {
             </p>
             <div className="flex flex-wrap gap-3 mt-6 sm:mt-8">
               <button onClick={onOpenLogin}
-                className="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-rose-800 hover:bg-maroon-700 text-white rounded-xl font-bold text-sm sm:text-base shadow-lg shadow-maroon-900/20 transition-all active:scale-[0.97] group">
+                className="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-rose-800 hover:bg-rose-700 text-white rounded-xl font-bold text-sm sm:text-base shadow-lg shadow-rose-900/20 transition-all active:scale-[0.97] group">
                 Access Portal
                 <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -390,17 +390,17 @@ function LandingPage({ onOpenLogin, router }) {
           </div>
 
           <div className="relative anim-fade-up" style={{ animationDelay: '150ms' }}>
-            <div className="absolute -inset-4 bg-gradient-to-br from-maroon-200/30 to-amber-200/30 rounded-[2.5rem] blur-2xl opacity-50" />
+            <div className="absolute -inset-4 bg-gradient-to-br from-rose-200/30 to-amber-200/30 rounded-[2.5rem] blur-2xl opacity-50" />
             <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl border border-white/70 p-5 sm:p-7 shadow-xl">
               <div className="flex items-center justify-between pb-4 border-b border-gray-200/60">
                 <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wider">Portal Preview</h3>
-                <FaBrain className="w-4 h-4 text-maroon-600" />
+                <FaBrain className="w-4 h-4 text-rose-600" />
               </div>
               <div className="space-y-3 mt-4">
                 {[
-                  { label: 'Digital Library', desc: 'E-books, revision materials, past papers', gradient: 'from-maroon-50 to-amber-50' },
-                  { label: 'Performance Dashboard', desc: 'Track progress and KCSE preparedness', gradient: 'from-amber-50 to-maroon-50' },
-                  { label: 'Financial Overview', desc: 'Balances, statements, payment records', gradient: 'from-maroon-50 to-amber-50' },
+                  { label: 'Digital Library', desc: 'E-books, revision materials, past papers', gradient: 'from-rose-50 to-amber-50' },
+                  { label: 'Performance Dashboard', desc: 'Track progress and KCSE preparedness', gradient: 'from-amber-50 to-rose-50' },
+                  { label: 'Financial Overview', desc: 'Balances, statements, payment records', gradient: 'from-rose-50 to-amber-50' },
                 ].map((item, i) => (
                   <div key={i} className={`p-3.5 rounded-xl bg-gradient-to-r ${item.gradient} border border-gray-100 anim-scale-in`}
                     style={{ animationDelay: `${(i + 3) * 100}ms` }}>
@@ -410,7 +410,7 @@ function LandingPage({ onOpenLogin, router }) {
                 ))}
               </div>
               <div className="mt-4 pt-3 border-t border-gray-100 text-center">
-                <button onClick={onOpenLogin} className="text-xs font-bold text-maroon-700 hover:text-amber-700 uppercase tracking-wider transition-colors">
+                <button onClick={onOpenLogin} className="text-xs font-bold text-rose-700 hover:text-amber-700 uppercase tracking-wider transition-colors">
                   Sign In to Explore →
                 </button>
               </div>
@@ -435,13 +435,13 @@ function LandingPage({ onOpenLogin, router }) {
               return (
                 <div key={i} className="group p-5 sm:p-6 rounded-2xl border border-gray-100 bg-gray-50/50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/40 hover:-translate-y-0.5 transition-all duration-300 anim-fade-up"
                   style={{ animationDelay: `${i * 60}ms` }}>
-                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-maroon-100 to-amber-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <Icon className="w-5 h-5 text-maroon-700" />
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-rose-100 to-amber-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Icon className="w-5 h-5 text-rose-700" />
                   </div>
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1.5">{f.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">{f.desc}</p>
+                  <h3 className="text-base sm:text-lg font-bold text-black mb-1.5">{f.title}</h3>
+                  <p className="text-sm text-gray-800 leading-relaxed line-clamp-3">{f.desc}</p>
                   <button onClick={onOpenLogin}
-                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-maroon-700 uppercase tracking-wider group-hover:text-amber-700 transition-colors">
+                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-rose-700 uppercase tracking-wider group-hover:text-amber-700 transition-colors">
                     Login to Access <FaArrowRight className="w-3 h-3" />
                   </button>
                 </div>
@@ -451,7 +451,7 @@ function LandingPage({ onOpenLogin, router }) {
         </div>
       </section>
 
-      <footer className="bg-maroon-900 text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-10">
+      <footer className="bg-rose-900 text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
@@ -878,7 +878,7 @@ export default function ModernStudentPortalPage() {
             {currentView === 'fees' && <FeesView student={student} token={token} />}
           </main>
 
-          <footer className="border-t border-gray-200 bg-maroon-900 py-5 sm:py-6">
+          <footer className="border-t border-gray-200 bg-rose-900 py-5 sm:py-6">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
