@@ -202,7 +202,7 @@ function HomeDashboardView({ student, token }) {
   return (
     <div className="space-y-5 sm:space-y-7 hide-scrollbar">
       <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl anim-fade-up">
-        <div className="absolute inset-0 bg-gradient-to-br from-rose-800 via-rose-700 to-amber-700" />
+        <div className="absolute inset-0 bg-gradient-to-br from-rose-900 via-rose-800 to-amber-900" />
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 80% 20%, rgba(255,193,7,0.3) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(128,0,32,0.3) 0%, transparent 50%)' }} />
         <div className="relative px-5 py-6 sm:px-8 sm:py-8 md:py-10">
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
@@ -213,7 +213,7 @@ function HomeDashboardView({ student, token }) {
               <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
                 {greeting}, {firstName}!
               </h1>
-              <p className="text-amber-100 text-sm sm:text-base mt-1 max-w-xl">
+              <p className="text-white text-sm sm:text-base mt-1 max-w-xl">
                 Your academic dashboard is ready. Access resources, check results, and stay updated with school activities.
               </p>
             </div>
@@ -885,18 +885,18 @@ export default function ModernStudentPortalPage() {
                   <p className="text-white text-sm font-semibold">© {new Date().getFullYear()} Kinyui Boys' Senior School</p>
                   <div className="flex items-center gap-2 mt-1.5">
                     <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-                    <span className="text-xs text-amber-200/70">Secure Session Active</span>
+                    <span className="text-xs text-white">Secure Session Active</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-5 flex-wrap">
                   {['Privacy Policy', 'Terms of Service', 'Help Center'].map((label) => (
                     <button key={label} onClick={() => router.push('/pages/OurSchoolPolicies')}
-                      className="text-amber-200/70 hover:text-white text-xs font-medium transition-colors touch-target">
+                      className="text-white hover:text-white text-xs font-medium transition-colors touch-target">
                       {label}
                     </button>
                   ))}
                   <button onClick={() => router.push('/pages/OurSchoolPolicies')}
-                    className="text-amber-200/70 hover:text-white transition-colors touch-target" aria-label="Accessibility">
+                    className="text-white hover:text-white transition-colors touch-target" aria-label="Accessibility">
                     <FaGlobe className="w-3.5 h-3.5" />
                   </button>
                 </div>
