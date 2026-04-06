@@ -149,7 +149,7 @@ export default function ModernNavbar() {
     },
     {
       name: 'Magazine',
-      href: '/pages/magazine',
+      href: '/pages/Magazine',
       icon: FiBookOpen,
       description: 'School publications & newsletters'
     },
@@ -169,25 +169,28 @@ export default function ModernNavbar() {
 
   // Resources dropdown items - WITH DESCRIPTIONS ADDED
   const resourcesDropdownItems = [
-    {
-      name: 'Staff Directory',
-      href: '/pages/staff',
-      icon: FiUsers,
-      description: 'Find staff contacts & departments'
-    },
-    {
-      name: 'Careers',
-      href: '/pages/careers',
-      icon: FiBriefcase,
-      description: 'Job opportunities at Kinyui Boys'
-    },
-    {
+
+      {
       name: 'Admin Login',
       href: '/pages/adminLogin',
       icon: FiLock,
       description: 'Secure portal for administrators',
       isHighlighted: true
+    },
+    ,
+    {
+      name: 'Careers',
+      href: '/pages/careers',
+      icon: FiBriefcase,
+      description: 'Job opportunities at Kinyui Boys'
     }
+    {
+      name: 'Staff Directory',
+      href: '/pages/staff',
+      icon: FiUsers,
+      description: 'Find staff contacts & departments'
+    }
+  
   ];
 
   // Function to check if a link is active
