@@ -102,7 +102,7 @@ export default function AboutPage() {
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-[1.05] tracking-tight mb-5">
               Kinyui Boys{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-orange-700">
                 Senior School
               </span>
             </h1>
