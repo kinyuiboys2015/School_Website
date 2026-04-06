@@ -405,9 +405,9 @@ export default function ModernNavbar() {
                   <button
                     className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.85rem] xs:text-[0.9rem] tracking-wide whitespace-nowrap px-1.5 xs:px-2 py-2 relative ${
                       isResourcesDropdownOpen || 
-                      isActiveLink('/pages/staff') || 
                       isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/adminLogin')
+                      isActiveLink('/pages/adminLogin')||
+                      isActiveLink('/pages/staff') 
                         ? 'text-amber-200' 
                         : 'text-white/80 hover:text-amber-200'
                     }`}
@@ -421,9 +421,11 @@ export default function ModernNavbar() {
                     }`} />
                     
                     {(isResourcesDropdownOpen || 
-                      isActiveLink('/pages/staff') || 
+                       isActiveLink('/pages/adminLogin')||
                       isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/adminLogin')) && (
+                      isActiveLink('/pages/staff')  
+
+            ) && (
                       <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-amber-400 rounded-full"></span>
                     )}
                   </button>
