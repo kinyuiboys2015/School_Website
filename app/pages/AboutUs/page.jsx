@@ -585,7 +585,7 @@ Our school Location
             </button>
           </Link>
 
-          <div className="flex gap-8 ml-auto hidden xl:flex">
+          <div className="flex gap-8 ml-auto  xl:flex">
              <div className="text-right">
                 <p className="text-2xl font-black text-slate-900">24/7</p>
                 <p className="text-[9px] uppercase font-bold text-slate-400">Support</p>
