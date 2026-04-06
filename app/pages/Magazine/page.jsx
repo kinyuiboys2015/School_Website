@@ -16,8 +16,7 @@ import Image from "next/image";
 // This prevents DOMMatrix error during server-side rendering
 // ============================================================
 const BookReader = dynamic(
-  () => import("../../components/book/page.jsx"),
-  { 
+() => import("../../components/book/BookReader.jsx"),  { 
     ssr: false,
     loading: () => (
       <div className="fixed inset-0 z-50 bg-[#1a1a2e] flex items-center justify-center">
