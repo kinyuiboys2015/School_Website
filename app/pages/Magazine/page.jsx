@@ -10,7 +10,6 @@ import {
   Search
 } from "lucide-react";
 import Image from "next/image";
-import BookReader  from "../../components/book/page.jsx";
 
 // ============================================================
 // Dynamically import BookReader with NO SSR
