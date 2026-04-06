@@ -1,15 +1,20 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
-  BookOpen, Calendar, Filter, X, ChevronLeft, ChevronRight,
-  Download, Eye, Share2, Search, TrendingUp, Award, Users, Trophy,
-  ArrowRight, Sparkles, Clock, Bookmark, Heart, ZoomIn,
-  Grid3x3, LayoutGrid, List, FileText, Image as ImageIcon,
-  ExternalLink, ArrowUp, CheckCircle, Star, Newspaper,
-  ZoomOut, Maximize, Minimize
+  BookOpen, Calendar, X, ChevronLeft, ChevronRight,
+  Download, Eye, Users, Trophy,
+  Sparkles, Clock, FileText,
+  ArrowUp, Star, Newspaper,
+  Maximize, Minimize, ZoomIn, ZoomOut,
+  Search
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { Document, Page, pdfjs } from "react-pdf";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import "react-pdf/dist/esm/Page/TextLayer.css";
+import { motion, AnimatePresence } from "framer-motion";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 // ============================================================
 // Scroll to Top Button
@@ -34,7 +39,7 @@ const ScrollToTop = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 left-6 p-3 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full shadow-lg z-50 hover:shadow-xl transition-all active:scale-95"
+      className="fixed bottom-6 left-6 p-3 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full shadow-lg z-50 active:scale-95 transition-all"
     >
       <ArrowUp className="text-white text-xl" />
     </button>
@@ -42,7 +47,7 @@ const ScrollToTop = () => {
 };
 
 // ============================================================
-// Magazine Data - ANNUAL ONLY (2 magazines)
+// Magazine Data - Expanded with more editions
 // ============================================================
 const magazineData = [
   {
@@ -52,7 +57,7 @@ const magazineData = [
     coverImage: "/magazine/kbss.png",
     description: "Celebrating a year of academic excellence, sports achievements, and infrastructural growth. This edition highlights the KCSE top performers, new classroom blocks, and the successful inter-school sports gala.",
     featured: true,
-    pdfUrl: "/Magazine/Kinyui.pdf",
+    pdfUrl: "/Magazines/kinyui.pdf",
     pageCount: 48,
     highlights: [
       "KCSE 2023 - 98% Pass Rate",
@@ -68,7 +73,7 @@ const magazineData = [
     coverImage: "/magazine/kbss.png",
     description: "A look back at a transformative year featuring the inauguration of the new computer lab, cultural day celebrations, and remarkable student achievements in science congress competitions.",
     featured: false,
-    pdfUrl: "/Magazine/Kinyui.pdf",
+    pdfUrl: "/Magazines/kinyui.pdf",
     pageCount: 44,
     highlights: [
       "Computer Lab Inauguration",
@@ -76,17 +81,100 @@ const magazineData = [
       "Cultural Day Highlights",
       "Alumni Reunion 2023"
     ]
+  },
+  {
+    id: "2022-annual",
+    title: "The Kinyui Echo",
+    year: 2022,
+    coverImage: "/magazine/kbss.png",
+    description: "This edition covers the resilient comeback after the pandemic — students returning to full learning, sports resumption, and the remarkable KCSE results that defined the year.",
+    featured: false,
+    pdfUrl: "/Magazines/kinyui.pdf",
+    pageCount: 40,
+    highlights: [
+      "Post-COVID Academic Recovery",
+      "KCSE 2021 Results Analysis",
+      "Sports Resumption Highlights",
+      "Infrastructure Upgrades"
+    ]
+  },
+  {
+    id: "2021-annual",
+    title: "The Kinyui Echo",
+    year: 2021,
+    coverImage: "/magazine/kbss.png",
+    description: "A special pandemic edition documenting the resilience of students and staff during unprecedented times, online learning innovations, and the spirit that kept the Kinyui community together.",
+    featured: false,
+    pdfUrl: "/Magazines/kinyui.pdf",
+    pageCount: 36,
+    highlights: [
+      "Online Learning Innovation",
+      "Community Resilience Stories",
+      "Health & Safety Protocols",
+      "Virtual Events Coverage"
+    ]
   }
 ];
 
 // ============================================================
-// PDF Viewer Component (Full-screen with navigation)
+// Book-style PDF Reader with page-by-page navigation
 // ============================================================
-const PDFViewer = ({ issue, onClose }) => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+const BookReader = ({ issue, onClose }) => {
+  const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(issue.pageCount);
-  const iframeRef = useRef(null);
+  const [scale, setScale] = useState(1.0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [direction, setDirection] = useState(0);
+  const [pageWidth, setPageWidth] = useState(600);
+  const containerRef = useRef(null);
+
+  // Responsive page width
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        const w = containerRef.current.clientWidth;
+        setPageWidth(Math.min(w - 40, 800));
+      }
+    };
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "ArrowRight" || e.key === " ") {
+        e.preventDefault();
+        goNext();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goPrev();
+      } else if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  });
+
+  const onDocumentLoadSuccess = ({ numPages: total }) => {
+    setNumPages(total);
+  };
+
+  const goNext = () => {
+    if (numPages && currentPage < numPages) {
+      setDirection(1);
+      setCurrentPage((p) => p + 1);
+    }
+  };
+
+  const goPrev = () => {
+    if (currentPage > 1) {
+      setDirection(-1);
+      setCurrentPage((p) => p - 1);
+    }
+  };
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -99,96 +187,212 @@ const PDFViewer = ({ issue, onClose }) => {
   };
 
   useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    const handler = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", handler);
+    return () => document.removeEventListener("fullscreenchange", handler);
   }, []);
 
+  // Lock body scroll when reader is open
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  const pageVariants = {
+    enter: (dir) => ({
+      x: dir > 0 ? 300 : -300,
+      opacity: 0,
+      rotateY: dir > 0 ? -15 : 15,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      rotateY: 0,
+    },
+    exit: (dir) => ({
+      x: dir > 0 ? -300 : 300,
+      opacity: 0,
+      rotateY: dir > 0 ? 15 : -15,
+    }),
+  };
+
+  const progress = numPages ? (currentPage / numPages) * 100 : 0;
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col">
-      {/* Header Bar */}
-      <div className="bg-black/50 backdrop-blur-md border-b border-white/10 px-4 py-3 flex items-center justify-between">
+    <div className="fixed inset-0 z-50 bg-[#1a1a2e] flex flex-col">
+      {/* Top Bar */}
+      <div className="bg-[#16213e]/90 backdrop-blur-lg border-b border-white/10 px-4 py-3 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-          >
+          <button onClick={onClose} className="p-2 rounded-lg bg-white/10 transition-colors">
             <X className="text-white" size={20} />
           </button>
           <div className="h-6 w-px bg-white/20" />
           <BookOpen className="text-amber-400" size={18} />
-          <span className="text-white font-bold">
-            {issue.title} {issue.year}
-          </span>
-          <span className="text-white/50 text-sm">
-            • {issue.pageCount} pages
+          <span className="text-white font-bold text-sm sm:text-base truncate max-w-[200px] sm:max-w-none">
+            {issue.title} — {issue.year}
           </span>
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Zoom Controls */}
+          <div className="hidden sm:flex items-center gap-1 bg-white/10 rounded-lg px-2 py-1">
+            <button
+              onClick={() => setScale((s) => Math.max(0.5, s - 0.15))}
+              className="p-1 rounded transition-colors"
+            >
+              <ZoomOut size={16} className="text-white/70" />
+            </button>
+            <span className="text-white/70 text-xs w-10 text-center">{Math.round(scale * 100)}%</span>
+            <button
+              onClick={() => setScale((s) => Math.min(2, s + 0.15))}
+              className="p-1 rounded transition-colors"
+            >
+              <ZoomIn size={16} className="text-white/70" />
+            </button>
+          </div>
+
           <a
             href={issue.pdfUrl}
             download
-            className="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold rounded-lg flex items-center gap-2 hover:shadow-lg transition-all"
+            className="px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs sm:text-sm font-bold rounded-lg flex items-center gap-2 transition-all"
           >
             <Download size={14} />
-            Download PDF
+            <span className="hidden sm:inline">Download</span>
           </a>
-          <button
-            onClick={toggleFullscreen}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-          >
+          <button onClick={toggleFullscreen} className="p-2 rounded-lg bg-white/10 transition-colors">
             {isFullscreen ? <Minimize size={18} className="text-white" /> : <Maximize size={18} className="text-white" />}
           </button>
         </div>
       </div>
 
-      {/* PDF Viewer */}
-      <div className="flex-1 relative">
-        <iframe
-          ref={iframeRef}
-          src={`${issue.pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
-          className="w-full h-full"
-          title={`${issue.title} ${issue.year}`}
+      {/* Reading Progress Bar */}
+      <div className="h-1 bg-white/5 shrink-0">
+        <motion.div
+          className="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-r-full"
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
         />
       </div>
 
-      {/* Page Navigation Bar */}
-      <div className="bg-black/50 backdrop-blur-md border-t border-white/10 px-4 py-2 flex items-center justify-center gap-4">
+      {/* Main Reading Area */}
+      <div ref={containerRef} className="flex-1 flex items-center justify-center relative overflow-hidden">
+        {/* Left Arrow */}
         <button
-          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-          className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
+          onClick={goPrev}
+          disabled={currentPage <= 1}
+          className={`absolute left-2 sm:left-6 z-20 p-2 sm:p-3 rounded-full bg-white/10 backdrop-blur-sm transition-all ${
+            currentPage <= 1 ? "opacity-20 cursor-not-allowed" : "opacity-70 active:scale-90"
+          }`}
         >
-          <ChevronLeft size={18} className="text-white" />
+          <ChevronLeft size={24} className="text-white" />
         </button>
-        <span className="text-white text-sm">
-          Page <span className="font-bold">{currentPage}</span> of <span className="font-bold">{totalPages}</span>
-        </span>
+
+        {/* Page Display with animation */}
+        <div className="flex items-center justify-center" style={{ perspective: 1200 }}>
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentPage}
+              custom={direction}
+              variants={pageVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                duration: 0.45,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+              className="bg-white rounded-lg shadow-2xl shadow-black/50 overflow-hidden"
+            >
+              <Document
+                file={issue.pdfUrl}
+                onLoadSuccess={onDocumentLoadSuccess}
+                loading={
+                  <div className="flex flex-col items-center justify-center py-32 px-20">
+                    <div className="w-10 h-10 border-3 border-amber-400/30 border-t-amber-400 rounded-full animate-spin mb-4" />
+                    <p className="text-slate-500 text-sm">Loading magazine...</p>
+                  </div>
+                }
+                error={
+                  <div className="flex flex-col items-center justify-center py-32 px-20">
+                    <p className="text-red-400 text-sm">Failed to load PDF</p>
+                  </div>
+                }
+              >
+                <Page
+                  pageNumber={currentPage}
+                  width={pageWidth * scale}
+                  renderTextLayer={true}
+                  renderAnnotationLayer={true}
+                />
+              </Document>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Right Arrow */}
         <button
-          onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-          className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
+          onClick={goNext}
+          disabled={!numPages || currentPage >= numPages}
+          className={`absolute right-2 sm:right-6 z-20 p-2 sm:p-3 rounded-full bg-white/10 backdrop-blur-sm transition-all ${
+            !numPages || currentPage >= numPages ? "opacity-20 cursor-not-allowed" : "opacity-70 active:scale-90"
+          }`}
         >
-          <ChevronRight size={18} className="text-white" />
+          <ChevronRight size={24} className="text-white" />
         </button>
+      </div>
+
+      {/* Bottom Navigation Bar */}
+      <div className="bg-[#16213e]/90 backdrop-blur-lg border-t border-white/10 px-4 py-3 flex items-center justify-center gap-4 shrink-0">
+        {/* Page input for quick jump */}
+        <div className="flex items-center gap-2">
+          <span className="text-white/60 text-sm">Page</span>
+          <input
+            type="number"
+            min={1}
+            max={numPages || 1}
+            value={currentPage}
+            onChange={(e) => {
+              const val = parseInt(e.target.value);
+              if (val >= 1 && val <= (numPages || 1)) {
+                setDirection(val > currentPage ? 1 : -1);
+                setCurrentPage(val);
+              }
+            }}
+            className="w-14 text-center bg-white/10 border border-white/20 rounded-lg text-white text-sm py-1 focus:outline-none focus:border-amber-400"
+          />
+          <span className="text-white/60 text-sm">of {numPages || "..."}</span>
+        </div>
+
+        {/* Page dots for quick navigation (show max 20) */}
+        {numPages && numPages <= 20 && (
+          <div className="hidden md:flex items-center gap-1">
+            {Array.from({ length: numPages }, (_, i) => i + 1).map((p) => (
+              <button
+                key={p}
+                onClick={() => {
+                  setDirection(p > currentPage ? 1 : -1);
+                  setCurrentPage(p);
+                }}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  p === currentPage
+                    ? "w-6 bg-amber-400"
+                    : "bg-white/20"
+                }`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 // ============================================================
-// Magazine Card Component
+// Magazine Card Component — No hover effects
 // ============================================================
 const MagazineCard = ({ issue, onOpen }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
-    <div
-      className="group relative bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="relative bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200">
       {/* Featured Badge */}
       {issue.featured && (
         <div className="absolute top-5 left-5 z-10">
@@ -199,7 +403,7 @@ const MagazineCard = ({ issue, onOpen }) => {
         </div>
       )}
 
-      {/* Cover Image with Book Mockup Effect */}
+      {/* Cover Image */}
       <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-amber-100 to-orange-100">
         {/* Book Spine Shadow */}
         <div className="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-black/30 to-transparent z-10" />
@@ -208,9 +412,7 @@ const MagazineCard = ({ issue, onOpen }) => {
           src={issue.coverImage}
           alt={`${issue.title} ${issue.year}`}
           fill
-          className={`object-cover transition-transform duration-700 ${
-            isHovered ? 'scale-110' : 'scale-100'
-          }`}
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         
@@ -263,7 +465,7 @@ const MagazineCard = ({ issue, onOpen }) => {
         <div className="flex gap-3">
           <button
             onClick={() => onOpen(issue)}
-            className="flex-1 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 hover:shadow-lg transition-all"
+            className="flex-1 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all"
           >
             <Eye size={16} />
             Read Magazine
@@ -271,7 +473,7 @@ const MagazineCard = ({ issue, onOpen }) => {
           <a
             href={issue.pdfUrl}
             download
-            className="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition-colors"
+            className="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl transition-colors"
             title="Download PDF"
           >
             <Download size={18} />
@@ -401,7 +603,7 @@ export default function MagazinePage() {
             <p className="text-slate-500">Try adjusting your search or filter criteria</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {filteredMagazines.map(issue => (
               <MagazineCard key={issue.id} issue={issue} onOpen={setSelectedIssue} />
             ))}
@@ -457,9 +659,9 @@ export default function MagazinePage() {
         </div>
       </section>
 
-      {/* PDF Viewer Modal */}
+      {/* Book Reader Modal */}
       {selectedIssue && (
-        <PDFViewer issue={selectedIssue} onClose={() => setSelectedIssue(null)} />
+        <BookReader issue={selectedIssue} onClose={() => setSelectedIssue(null)} />
       )}
 
       {/* Scroll to Top */}
