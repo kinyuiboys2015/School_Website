@@ -86,7 +86,7 @@ export default function AboutPage() {
       <section className="relative min-h-[90vh] flex items-end overflow-hidden">
         <Image
           src="/hero/katz8.jpeg"
-          alt="Kinyui Boys Senior School campus"
+          alt="Kinyui Boys Senior School School"
           fill
           className="object-cover"
           priority
@@ -285,7 +285,7 @@ export default function AboutPage() {
         <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] border-4 border-white shadow-xl">
           <Image
             src="/bg/1.jpeg"
-            alt="Kinyui Boys Campus"
+            alt="Kinyui Boys School"
             fill
             className="object-cover transition-transform duration-1000 group-hover:scale-110"
           />
