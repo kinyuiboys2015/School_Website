@@ -288,7 +288,7 @@ export default function MagazinePage() {
             />
           </div>
           
-          <div className="flex gap-8 px-4 border-l border-slate-100 hidden lg:flex">
+          <div className="flex gap-8 px-4 border-l border-slate-100 lg:flex">
              <div className="text-center">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Issues</p>
                 <p className="text-2xl font-black text-slate-900">{magazineData.length}</p>
