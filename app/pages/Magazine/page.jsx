@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import dynamic from "next/dynamic";
 import {
   BookOpen, Calendar, X, ChevronLeft, ChevronRight,
   Download, Eye, Users, Trophy,
@@ -9,10 +10,25 @@ import {
   Search
 } from "lucide-react";
 import Image from "next/image";
-import dynamic from "next/dynamic";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
+// ============================================================
+// Dynamically import BookReader with NO SSR
+// This prevents DOMMatrix error during server-side rendering
+// ============================================================
+const BookReader = dynamic(
+  () => import("./components/book/page.jsx"),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="fixed inset-0 z-50 bg-[#1a1a2e] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-white">Loading magazine reader...</p>
+        </div>
+      </div>
+    )
+  }
+);
 
 // ============================================================
 // Scroll to Top Button
@@ -113,11 +129,6 @@ const magazineData = [
     ]
   }
 ];
-
-// ============================================================
-// Book-style PDF Reader with page-by-page navigation
-// ============================================================
-const BookReader = dynamic(() => import("./BookReader"), { ssr: false });
 
 // ============================================================
 // Magazine Card Component — No hover effects
@@ -391,7 +402,7 @@ export default function MagazinePage() {
         </div>
       </section>
 
-      {/* Book Reader Modal */}
+      {/* Book Reader Modal - Dynamically imported, only loads on client */}
       {selectedIssue && (
         <BookReader issue={selectedIssue} onClose={() => setSelectedIssue(null)} />
       )}
