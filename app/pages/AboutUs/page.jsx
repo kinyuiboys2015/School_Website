@@ -536,8 +536,8 @@ export default function AboutPage() {
           </div>
           <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-[0.9] mb-6">
             The <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-500 to-orange-700">Kinyui</span> <br />
-            Standard.
+            <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-500 to-orange-700">Kinyui             Standard.
+ </span> <br />
           </h2>
           <p className="text-slate-700 font-medium leading-relaxed">
             Building men of integrity through structured discipline and mental resilience.
@@ -547,7 +547,7 @@ export default function AboutPage() {
         <div className="mt-12 space-y-6">
           {([
             { label: 'Safety Rating', val: '100%' },
-            { label: 'Ethics Standard', val: 'Gold' }
+            { label: 'Ethics Standard', val: 'Best' }
           ]).map((stat, i) => (
             <div key={i} className="flex flex-col">
               <span className="text-3xl font-black text-slate-900">{stat.val}</span>
