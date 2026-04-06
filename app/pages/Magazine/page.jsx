@@ -1,14 +1,18 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import {
-  BookOpen, Calendar, X, ChevronLeft, ChevronRight,
-  Download, Eye, Search, TrendingUp, Users, Trophy,
-  Sparkles, Clock, Maximize, Minimize, ArrowUp, Star, Newspaper, FileText, Compass, Target, Zap
+  BookOpen, Calendar, Filter, X, ChevronLeft, ChevronRight,
+  Download, Eye, Share2, Search, TrendingUp, Award, Users, Trophy,
+  ArrowRight, Sparkles, Clock, Bookmark, Heart, ZoomIn,
+  Grid3x3, LayoutGrid, List, FileText, Image as ImageIcon,
+  ExternalLink, ArrowUp, CheckCircle, Star, Newspaper,
+  ZoomOut, Maximize, Minimize
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 // ============================================================
-// 1. SCROLL TO TOP COMPONENT
+// Scroll to Top Button
 // ============================================================
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -30,15 +34,15 @@ const ScrollToTop = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 right-6 p-3 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full shadow-lg z-[60] hover:shadow-xl transition-all active:scale-95"
+      className="fixed bottom-6 left-6 p-3 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full shadow-lg z-50 hover:shadow-xl transition-all active:scale-95"
     >
-      <ArrowUp className="text-white" size={24} />
+      <ArrowUp className="text-white text-xl" />
     </button>
   );
 };
 
 // ============================================================
-// 2. MAGAZINE DATA (ANNUAL ARCHIVE)
+// Magazine Data - ANNUAL ONLY (2 magazines)
 // ============================================================
 const magazineData = [
   {
@@ -46,30 +50,42 @@ const magazineData = [
     title: "The Kinyui Echo",
     year: 2024,
     coverImage: "/magazine/kbss.png",
-    description: "Celebrating a year of academic excellence, sports achievements, and infrastructural growth. This edition highlights the KCSE top performers, new science labs, and the school's journey toward greatness.",
+    description: "Celebrating a year of academic excellence, sports achievements, and infrastructural growth. This edition highlights the KCSE top performers, new classroom blocks, and the successful inter-school sports gala.",
     featured: true,
-    pdfUrl: "/magazine/kinyui.pdf", // LOWERCASE PATH TO PREVENT 404
+    pdfUrl: "/Magazine/Kinyui.pdf",
     pageCount: 48,
-    highlights: ["KCSE Excellence", "New Lab Launch", "Sports Gala"]
+    highlights: [
+      "KCSE 2023 - 98% Pass Rate",
+      "New Science Laboratory Launch",
+      "Sports Day Champions",
+      "Principal's Excellence Awards"
+    ]
   },
   {
     id: "2023-annual",
     title: "The Kinyui Echo",
     year: 2023,
     coverImage: "/magazine/kbss.png",
-    description: "A look back at a transformative year featuring the inauguration of the new computer lab, cultural day celebrations, and student achievements in science congress competitions.",
+    description: "A look back at a transformative year featuring the inauguration of the new computer lab, cultural day celebrations, and remarkable student achievements in science congress competitions.",
     featured: false,
-    pdfUrl: "/magazine/kinyui.pdf", // LOWERCASE PATH TO PREVENT 404
+    pdfUrl: "/Magazine/Kinyui.pdf",
     pageCount: 44,
-    highlights: ["Computer Lab", "Cultural Day", "Science Congress"]
+    highlights: [
+      "Computer Lab Inauguration",
+      "Science Congress Winners",
+      "Cultural Day Highlights",
+      "Alumni Reunion 2023"
+    ]
   }
 ];
 
 // ============================================================
-// 3. PDF VIEWER MODAL COMPONENT
+// PDF Viewer Component (Full-screen with navigation)
 // ============================================================
 const PDFViewer = ({ issue, onClose }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(issue.pageCount);
   const iframeRef = useRef(null);
 
   const toggleFullscreen = () => {
@@ -83,150 +99,182 @@ const PDFViewer = ({ issue, onClose }) => {
   };
 
   useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') onClose();
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
     };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [onClose]);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-slate-950 flex flex-col animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col">
       {/* Header Bar */}
-      <div className="bg-slate-900 border-b border-white/10 px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={onClose} 
-            className="p-2 hover:bg-white/10 rounded-full text-white transition-colors"
-            title="Close Reader"
+      <div className="bg-black/50 backdrop-blur-md border-b border-white/10 px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
           >
-            <X size={24} />
+            <X className="text-white" size={20} />
           </button>
-          <div className="h-8 w-px bg-white/10" />
-          <div>
-            <h2 className="text-white font-black text-sm md:text-base leading-none">
-              {issue.title} {issue.year}
-            </h2>
-            <p className="text-slate-400 text-[10px] uppercase tracking-widest mt-1">
-              Annual Edition • {issue.pageCount} Pages
-            </p>
-          </div>
+          <div className="h-6 w-px bg-white/20" />
+          <BookOpen className="text-amber-400" size={18} />
+          <span className="text-white font-bold">
+            {issue.title} {issue.year}
+          </span>
+          <span className="text-white/50 text-sm">
+            • {issue.pageCount} pages
+          </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <a
             href={issue.pdfUrl}
             download
-            className="hidden sm:flex items-center gap-2 px-5 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-black rounded-xl transition-all shadow-lg shadow-amber-500/20"
+            className="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold rounded-lg flex items-center gap-2 hover:shadow-lg transition-all"
           >
-            <Download size={14} /> DOWNLOAD PDF
+            <Download size={14} />
+            Download PDF
           </a>
-          <button 
-            onClick={toggleFullscreen} 
-            className="p-2 hover:bg-white/10 rounded-lg text-white transition-colors"
+          <button
+            onClick={toggleFullscreen}
+            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
           >
-            {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
+            {isFullscreen ? <Minimize size={18} className="text-white" /> : <Maximize size={18} className="text-white" />}
           </button>
         </div>
       </div>
 
-      {/* Actual Iframe Viewer */}
-      <div className="flex-1 bg-slate-800 overflow-hidden relative">
+      {/* PDF Viewer */}
+      <div className="flex-1 relative">
         <iframe
           ref={iframeRef}
-          src={`${issue.pdfUrl}#toolbar=1&navpanes=0`}
-          className="w-full h-full border-none shadow-2xl"
+          src={`${issue.pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+          className="w-full h-full"
           title={`${issue.title} ${issue.year}`}
         />
       </div>
-      
-      {/* Mobile Download Bar */}
-      <div className="sm:hidden p-4 bg-slate-900 border-t border-white/10">
-        <a
-          href={issue.pdfUrl}
-          download
-          className="w-full flex items-center justify-center gap-2 py-3 bg-amber-500 text-white text-sm font-black rounded-xl"
+
+      {/* Page Navigation Bar */}
+      <div className="bg-black/50 backdrop-blur-md border-t border-white/10 px-4 py-2 flex items-center justify-center gap-4">
+        <button
+          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+          className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
         >
-          <Download size={16} /> DOWNLOAD MAGAZINE
-        </a>
+          <ChevronLeft size={18} className="text-white" />
+        </button>
+        <span className="text-white text-sm">
+          Page <span className="font-bold">{currentPage}</span> of <span className="font-bold">{totalPages}</span>
+        </span>
+        <button
+          onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+          className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
+        >
+          <ChevronRight size={18} className="text-white" />
+        </button>
       </div>
     </div>
   );
 };
 
 // ============================================================
-// 4. MAGAZINE CARD COMPONENT
+// Magazine Card Component
 // ============================================================
 const MagazineCard = ({ issue, onOpen }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div className="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-slate-100 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
-      {/* Cover Image Section */}
-      <div className="relative aspect-[3/4] overflow-hidden">
+    <div
+      className="group relative bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Featured Badge */}
+      {issue.featured && (
+        <div className="absolute top-5 left-5 z-10">
+          <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-1.5 rounded-full text-xs font-black flex items-center gap-1.5 shadow-lg">
+            <Star size={12} fill="currentColor" />
+            Latest Edition
+          </div>
+        </div>
+      )}
+
+      {/* Cover Image with Book Mockup Effect */}
+      <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-amber-100 to-orange-100">
+        {/* Book Spine Shadow */}
+        <div className="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-black/30 to-transparent z-10" />
+        
         <Image
           src={issue.coverImage}
-          alt={issue.title}
+          alt={`${issue.title} ${issue.year}`}
           fill
-          className="object-cover transition-transform duration-1000 group-hover:scale-110"
+          className={`object-cover transition-transform duration-700 ${
+            isHovered ? 'scale-110' : 'scale-100'
+          }`}
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         
-        {/* Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />
-        
-        {/* Latest Badge */}
-        {issue.featured && (
-          <div className="absolute top-6 left-6">
-            <span className="bg-amber-500 text-white text-[10px] font-black px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-xl">
-              <Star size={10} fill="currentColor" /> LATEST ISSUE
-            </span>
-          </div>
-        )}
-
         {/* Year Badge */}
-        <div className="absolute top-6 right-6 bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl shadow-xl">
-          <span className="text-slate-900 font-black text-xl">{issue.year}</span>
+        <div className="absolute top-5 right-5 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-xl text-xl font-black text-slate-900 shadow-lg">
+          {issue.year}
         </div>
 
-        {/* Bottom Text */}
-        <div className="absolute bottom-8 left-8 right-8">
-          <p className="text-amber-400 text-[10px] font-black uppercase tracking-[0.3em] mb-2">The Kinyui Way</p>
-          <h3 className="text-white font-black text-3xl leading-none tracking-tighter mb-2 italic">
-            {issue.title}
-          </h3>
-          <div className="flex items-center gap-4 text-white/60 text-xs font-bold">
-             <span className="flex items-center gap-1"><FileText size={12}/> {issue.pageCount} Pages</span>
-             <span className="flex items-center gap-1"><Clock size={12}/> Annual Archive</span>
-          </div>
+        {/* Title Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black to-transparent">
+          <p className="text-amber-400 text-xs font-black uppercase tracking-wider mb-1">Annual Publication</p>
+          <h3 className="text-white font-black text-2xl leading-tight">{issue.title}</h3>
         </div>
       </div>
 
-      {/* Content Section */}
-      <div className="p-8">
-        <p className="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-3 font-medium">
+      {/* Content */}
+      <div className="p-6">
+        <div className="flex items-center gap-4 mb-3 text-sm">
+          <span className="flex items-center gap-1.5 text-amber-600 font-bold">
+            <Calendar size={14} />
+            {issue.year}
+          </span>
+          <span className="flex items-center gap-1.5 text-slate-500">
+            <FileText size={14} />
+            {issue.pageCount} pages
+          </span>
+        </div>
+        
+        <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
           {issue.description}
         </p>
-        
-        <div className="flex flex-wrap gap-2 mb-8">
-          {issue.highlights.map((h, i) => (
-            <span key={i} className="px-3 py-1 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-black text-slate-400 uppercase tracking-wider">
-              {h}
-            </span>
-          ))}
-        </div>
 
+        {/* Highlights */}
+        <div className="mb-5">
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Highlights</p>
+          <div className="flex flex-wrap gap-1.5">
+            {issue.highlights.slice(0, 2).map((highlight, idx) => (
+              <span key={idx} className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded-full">
+                {highlight}
+              </span>
+            ))}
+            {issue.highlights.length > 2 && (
+              <span className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded-full">
+                +{issue.highlights.length - 2} more
+              </span>
+            )}
+          </div>
+        </div>
+        
         <div className="flex gap-3">
           <button
             onClick={() => onOpen(issue)}
-            className="flex-1 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-amber-600 transition-all shadow-lg active:scale-95"
+            className="flex-1 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 hover:shadow-lg transition-all"
           >
-            <Eye size={18} /> Read Online
+            <Eye size={16} />
+            Read Magazine
           </button>
           <a
             href={issue.pdfUrl}
             download
-            className="w-14 h-14 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center hover:bg-amber-50 hover:text-amber-600 transition-all border border-slate-100"
+            className="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition-colors"
             title="Download PDF"
           >
-            <Download size={20} />
+            <Download size={18} />
           </a>
         </div>
       </div>
@@ -235,125 +283,186 @@ const MagazineCard = ({ issue, onOpen }) => {
 };
 
 // ============================================================
-// 5. MAIN PAGE COMPONENT
+// Main Magazine Page Component
 // ============================================================
 export default function MagazinePage() {
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedYear, setSelectedYear] = useState('all');
 
-  const filteredMagazines = magazineData.filter(issue => 
-    issue.year.toString().includes(searchQuery) || 
-    issue.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    issue.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Get unique years from data
+  const years = [...new Set(magazineData.map(m => m.year))].sort((a, b) => b - a);
+
+  // Filter magazines
+  const filteredMagazines = magazineData.filter(issue => {
+    const matchesYear = selectedYear === 'all' || issue.year === selectedYear;
+    const matchesSearch = issue.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          issue.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          issue.year.toString().includes(searchQuery);
+    return matchesYear && matchesSearch;
+  });
+
+  // Total stats
+  const totalIssues = magazineData.length;
+  const totalPages = magazineData.reduce((sum, m) => sum + m.pageCount, 0);
+  const earliestYear = Math.min(...magazineData.map(m => m.year));
+  const latestYear = Math.max(...magazineData.map(m => m.year));
 
   return (
-    <div className="bg-white min-h-screen font-sans selection:bg-amber-100 selection:text-amber-900">
+    <div className="bg-slate-50 min-h-screen">
       
-      {/* Hero Section */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-slate-950">
-        <Image 
-          src="/hero/katz8.jpeg" 
-          alt="School Archive" 
-          fill 
-          className="object-cover opacity-50 scale-105" 
+      {/* ═══════════════════════ HERO SECTION ═══════════════════════ */}
+      <section className="relative min-h-[55vh] flex items-center overflow-hidden">
+        <Image
+          src="/hero/katz8.jpeg"
+          alt="School Magazine Archive"
+          fill
+          className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/30" />
         
-        <div className="relative z-10 text-center px-4 max-w-4xl">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-[10px] font-black uppercase tracking-[0.4em] mb-8">
-            <Newspaper size={14} className="text-amber-400" /> Kinyui Boys Archive
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/20 backdrop-blur-sm border border-amber-400/30 mb-6">
+              <Newspaper className="text-amber-400" size={14} />
+              <span className="text-xs font-bold text-amber-300 uppercase tracking-wider">Annual Publication</span>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-5">
+              The Kinyui Echo
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
+                Magazine Archive
+              </span>
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl leading-relaxed">
+              Our annual school magazine captures the spirit, achievements, and memories 
+              of Kinyui Boys Senior School — celebrating excellence year after year.
+            </p>
           </div>
-          <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter leading-[0.85] mb-6">
-            THE <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">KINYUI ECHO</span>
-          </h1>
-          <p className="text-slate-300 font-medium text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Preserving our history, celebrating our growth, and documenting the journey of every student since inception.
-          </p>
         </div>
       </section>
 
-      {/* Control Bar (Search & Stats) */}
-      <div className="max-w-7xl mx-auto px-4 -translate-y-12 relative z-30">
-        <div className="bg-white p-6 md:p-8 rounded-[3rem] shadow-2xl border border-slate-100 flex flex-col md:flex-row gap-6 items-center">
-          <div className="relative flex-1 w-full">
-            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
-            <input 
-              type="text"
-              placeholder="Search archives (e.g., '2024' or 'sports')..."
-              className="w-full pl-16 pr-8 py-5 bg-slate-50 rounded-[2rem] focus:outline-none focus:ring-4 focus:ring-amber-500/10 border-2 border-transparent focus:border-amber-500 transition-all font-medium text-slate-700"
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          
-          <div className="flex gap-8 px-4 border-l border-slate-100 lg:flex">
-             <div className="text-center">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Issues</p>
-                <p className="text-2xl font-black text-slate-900">{magazineData.length}</p>
-             </div>
-             <div className="text-center">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Pages</p>
-                <p className="text-2xl font-black text-slate-900">92+</p>
-             </div>
+      {/* ═══════════════════════ STATS BAR ═══════════════════════ */}
+      <div className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            {/* Stats */}
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <BookOpen className="text-amber-500" size={18} />
+                <span className="text-slate-700 font-bold">{totalIssues} Issues</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <FileText className="text-amber-500" size={18} />
+                <span className="text-slate-700 font-bold">{totalPages}+ Pages</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="text-amber-500" size={18} />
+                <span className="text-slate-700 font-bold">{earliestYear} - {latestYear}</span>
+              </div>
+            </div>
+
+            {/* Search & Filter */}
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <div className="relative flex-1 sm:w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                <input
+                  type="text"
+                  placeholder="Search by year or keyword..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 bg-slate-100 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all"
+                />
+              </div>
+              
+              {/* Year Filter Dropdown */}
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+                className="px-4 py-2 bg-slate-100 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-amber-400 cursor-pointer"
+              >
+                <option value="all">All Years</option>
+                {years.map(year => (
+                  <option key={year} value={year}>{year}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Magazine Grid */}
-      <section className="max-w-7xl mx-auto py-12 md:py-24 px-4 sm:px-6">
-        {filteredMagazines.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+      {/* ═══════════════════════ MAGAZINE GRID ═══════════════════════ */}
+      <section className="py-16 px-4 sm:px-6 max-w-7xl mx-auto">
+        {filteredMagazines.length === 0 ? (
+          <div className="text-center py-20">
+            <BookOpen className="mx-auto text-slate-300 mb-4" size={64} />
+            <h3 className="text-xl font-bold text-slate-700 mb-2">No magazines found</h3>
+            <p className="text-slate-500">Try adjusting your search or filter criteria</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {filteredMagazines.map(issue => (
               <MagazineCard key={issue.id} issue={issue} onOpen={setSelectedIssue} />
             ))}
           </div>
-        ) : (
-          <div className="text-center py-32 bg-slate-50 rounded-[4rem] border-2 border-dashed border-slate-200">
-            <Compass size={64} className="mx-auto text-slate-200 mb-6 animate-spin-slow" />
-            <h3 className="text-2xl font-black text-slate-900">Archive Not Found</h3>
-            <p className="text-slate-500 mt-2 font-medium">We couldn't find an edition matching "{searchQuery}"</p>
-            <button 
-              onClick={() => setSearchQuery('')}
-              className="mt-6 text-amber-600 font-bold underline"
-            >
-              Show all editions
-            </button>
-          </div>
         )}
       </section>
 
-      {/* Features Info Section */}
-      <section className="py-24 bg-slate-950 rounded-t-[4rem] md:rounded-t-[6rem] text-white overflow-hidden relative">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent opacity-30" />
-        
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-16 text-center">
-           {[
-             { icon: Trophy, title: "Academic Glory", desc: "Recognizing the top minds and KCSE champions of every year." },
-             { icon: Users, title: "Community", desc: "Stories from teachers, students, and our distinguished alumni." },
-             { icon: Target, title: "Our Mission", desc: "How we continue to lead in Machakos County and beyond." }
-           ].map((item, i) => (
-             <div key={i} className="flex flex-col items-center">
-               <div className="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 text-amber-500">
-                  <item.icon size={32} />
-               </div>
-               <h4 className="text-xl font-black mb-4 uppercase tracking-tighter">{item.title}</h4>
-               <p className="text-slate-400 leading-relaxed font-medium">{item.desc}</p>
-             </div>
-           ))}
+      {/* ═══════════════════════ FEATURE SECTION ═══════════════════════ */}
+      <section className="py-16 px-4 sm:px-6 bg-gradient-to-br from-amber-50 to-orange-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Why Read Our Magazine?</h2>
+            <p className="text-slate-600 mt-2">Every edition captures the essence of Kinyui Boys</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { icon: Trophy, title: "Achievements", desc: "Academic and sports excellence recognized" },
+              { icon: Users, title: "Student Stories", desc: "Inspiring journeys of our young men" },
+              { icon: Calendar, title: "Events Coverage", desc: "Memorable moments from school events" }
+            ].map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div key={i} className="bg-white rounded-2xl p-6 text-center shadow-md">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mx-auto mb-4">
+                    <Icon className="text-white" size={24} />
+                  </div>
+                  <h3 className="font-black text-slate-900 mb-2">{item.title}</h3>
+                  <p className="text-slate-600 text-sm">{item.desc}</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      {/* PDF Viewer Overlay */}
+      {/* ═══════════════════════ CTA SECTION ═══════════════════════ */}
+      <section className="py-16 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="bg-gradient-to-br from-amber-600 to-orange-600 rounded-3xl p-10 shadow-2xl">
+            <Sparkles className="text-white mx-auto mb-4" size={32} />
+            <h2 className="text-2xl sm:text-3xl font-black text-white mb-3">
+              Missing an Edition?
+            </h2>
+            <p className="text-amber-100 mb-6">
+              Past magazines are being digitized. Check back soon for more issues!
+            </p>
+            <div className="inline-flex items-center gap-2 text-white/80 text-sm">
+              <Clock size={14} />
+              <span>New issues added annually after publication</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PDF Viewer Modal */}
       {selectedIssue && (
-        <PDFViewer 
-          issue={selectedIssue} 
-          onClose={() => setSelectedIssue(null)} 
-        />
+        <PDFViewer issue={selectedIssue} onClose={() => setSelectedIssue(null)} />
       )}
 
-      {/* Utilities */}
+      {/* Scroll to Top */}
       <ScrollToTop />
     </div>
   );
