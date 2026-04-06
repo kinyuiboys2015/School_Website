@@ -252,13 +252,13 @@ export default function ContactPage() {
         ></div>
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/50 to-transparent"></div>
         <div className="relative z-10 text-center px-4 py-6 max-w-4xl mx-auto">
-          <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 mb-3 sm:mb-4 text-[10px] sm:text-xs font-bold tracking-widest text-amber-300 uppercase bg-black/20 backdrop-blur-sm rounded-full border border-amber-300/30">
+          <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 mb-3 sm:mb-4 text-xs sm:text-xs font-bold tracking-widest text-amber-300 uppercase bg-black/20 backdrop-blur-sm rounded-full border border-amber-300/30">
             Connect With Us
           </span>
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tighter mb-2 sm:mb-4">
             Kinyui Boys Senior School
           </h1>
-          <p className="text-xs sm:text-sm md:text-lg text-slate-200 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg text-slate-200 max-w-2xl mx-auto">
             We're here to help. Reach out with any questions or inquiries, and our team will get back to you promptly.
           </p>
         </div>
@@ -271,36 +271,36 @@ export default function ContactPage() {
           {/* --- Left Column: Contact Info & Map --- */}
           <div className="lg:col-span-1 space-y-6 sm:space-y-8 lg:space-y-12">
             <div className="p-5 sm:p-8 bg-white rounded-xl sm:rounded-2xl shadow-lg border border-slate-200/80">
-              <h2 className="text-base sm:text-lg md:text-xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+              <h2 className="text-lg sm:text-xl md:text-2xl font-extrabold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
                 <MapPin className="text-amber-500 w-5 h-5 sm:w-6 sm:h-6" />
                 Contact Information
               </h2>
-              <div className="space-y-3 sm:space-y-5 text-slate-600 text-xs sm:text-sm">
+              <div className="space-y-4 sm:space-y-5 text-slate-700 text-sm sm:text-sm">
                 <div className="flex items-start gap-3 sm:gap-4">
                   <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mt-0.5 text-amber-500 shrink-0" />
                   <div>
-                    <h3 className="font-semibold text-slate-800 text-xs sm:text-sm">Our Address</h3>
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-sm">Our Address</h3>
                     <p>Kinyui Boys Senior School, Matungulu, Machakos County, Kenya</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 sm:gap-4">
                   <Mail className="w-4 h-4 sm:w-5 sm:h-5 mt-0.5 text-amber-500 shrink-0" />
                   <div>
-                    <h3 className="font-semibold text-slate-800 text-xs sm:text-sm">Email Us</h3>
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-sm">Email Us</h3>
                     <a href="mailto:kinyuiboys2015@gmail.com" className="hover:text-amber-600 transition-colors break-all">kinyuiboys2015@gmail.com</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 sm:gap-4">
                   <Phone className="w-4 h-4 sm:w-5 sm:h-5 mt-0.5 text-amber-500 shrink-0" />
                   <div>
-                    <h3 className="font-semibold text-slate-800 text-xs sm:text-sm">Call Us</h3>
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-sm">Call Us</h3>
                     <a href="tel:+254720123456" className="hover:text-amber-600 transition-colors">+254 720 123 456</a>
                   </div>
                 </div>
                  <div className="flex items-start gap-3 sm:gap-4">
                   <Clock className="w-4 h-4 sm:w-5 sm:h-5 mt-0.5 text-amber-500 shrink-0" />
                   <div>
-                    <h3 className="font-semibold text-slate-800 text-xs sm:text-sm">Office Hours</h3>
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-sm">Office Hours</h3>
                     <p>Mon - Fri: 8:00 AM - 5:00 PM</p>
                     <p>Sat: 9:00 AM - 1:00 PM</p>
                   </div>
@@ -310,7 +310,7 @@ export default function ContactPage() {
             
             <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-slate-200/80 overflow-hidden">
                <div className="p-5 sm:p-8">
-                 <h3 className="text-sm sm:text-base md:text-lg font-bold mb-2 sm:mb-4">Find Us on the Map</h3>
+                 <h3 className="text-base sm:text-lg md:text-xl font-extrabold mb-2 sm:mb-4">Find Us on the Map</h3>
                </div>
                <div className="h-48 sm:h-64 bg-slate-200">
                  <iframe
@@ -329,19 +329,19 @@ export default function ContactPage() {
                       href="https://maps.app.goo.gl/q6ubZsEk5KWxzAUv9"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors"
+                      className="inline-flex items-center gap-2 text-sm sm:text-sm font-bold text-amber-600 hover:text-amber-700 transition-colors"
                     >
                       Get Directions
-                      <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      <ExternalLink className="w-4 h-4" />
                     </a>
                 </div>
             </div>
           </div>
 
           {/* --- Right Column: Contact Form --- */}
-          <div className="lg:col-span-2 bg-white p-4 sm:p-8 md:p-12 rounded-xl sm:rounded-2xl shadow-xl border border-slate-200/80">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-1 sm:mb-2">Send Us a Message</h2>
-            <p className="text-slate-500 mb-4 sm:mb-6 md:mb-8 text-xs sm:text-sm">
+          <div className="lg:col-span-2 bg-white p-5 sm:p-8 md:p-12 rounded-xl sm:rounded-2xl shadow-xl border border-slate-200/80">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 mb-1 sm:mb-2">Send Us a Message</h2>
+            <p className="text-slate-600 mb-4 sm:mb-6 md:mb-8 text-sm sm:text-sm">
               Have a question or need assistance? Fill out the form and our team will respond within 24 hours.
             </p>
 
@@ -349,10 +349,10 @@ export default function ContactPage() {
             {submitStatus === 'success' && (
               <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg">
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
                   <div>
-                    <p className="text-green-800 font-semibold text-xs sm:text-sm">Success!</p>
-                    <p className="text-green-700 text-[10px] sm:text-xs">{statusMessage}</p>
+                    <p className="text-green-800 font-bold text-sm">Success!</p>
+                    <p className="text-green-700 text-xs sm:text-sm">{statusMessage}</p>
                   </div>
                 </div>
               </div>
@@ -360,34 +360,34 @@ export default function ContactPage() {
             {submitStatus === 'error' && (
               <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <X className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 shrink-0" />
+                  <X className="w-5 h-5 text-red-600 shrink-0" />
                   <div>
-                    <p className="text-red-800 font-semibold text-xs sm:text-sm">Error</p>
-                    <p className="text-red-700 text-[10px] sm:text-xs">{statusMessage}</p>
+                    <p className="text-red-800 font-bold text-sm">Error</p>
+                    <p className="text-red-700 text-xs sm:text-sm">{statusMessage}</p>
                   </div>
                 </div>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 md:space-y-6">
-              <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
+              <div className="grid sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
                 <div>
-                  <label className="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-700 mb-1 sm:mb-2 block">Full Name <span className="text-red-500">*</span></label>
-                  <input type="text" name="name" required value={formData.name} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2 sm:py-2.5 md:py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition text-xs sm:text-sm" placeholder="e.g. John Doe" />
+                  <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">Full Name <span className="text-red-500">*</span></label>
+                  <input type="text" name="name" required value={formData.name} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition text-sm font-semibold text-slate-900 placeholder:font-normal placeholder:text-slate-400" placeholder="e.g. John Doe" />
                 </div>
                 <div>
-                  <label className="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-700 mb-1 sm:mb-2 block">Email Address <span className="text-red-500">*</span></label>
-                  <input type="email" name="email" required value={formData.email} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2 sm:py-2.5 md:py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition text-xs sm:text-sm" placeholder="e.g. john.doe@example.com" />
+                  <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">Email Address <span className="text-red-500">*</span></label>
+                  <input type="email" name="email" required value={formData.email} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition text-sm font-semibold text-slate-900 placeholder:font-normal placeholder:text-slate-400" placeholder="e.g. john.doe@example.com" />
                 </div>
               </div>
-              <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+              <div className="grid sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
                 <div>
-                  <label className="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-700 mb-1 sm:mb-2 block">Phone Number <span className="text-red-500">*</span></label>
-                  <input type="tel" name="phone" required value={formData.phone} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2 sm:py-2.5 md:py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition text-xs sm:text-sm" placeholder="0712 345 678" />
+                  <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">Phone Number <span className="text-red-500">*</span></label>
+                  <input type="tel" name="phone" required value={formData.phone} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition text-sm font-semibold text-slate-900 placeholder:font-normal placeholder:text-slate-400" placeholder="0712 345 678" />
                 </div>
                 <div>
-                  <label className="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-700 mb-1 sm:mb-2 block">Student Grade</label>
-                  <select name="studentGrade" value={formData.studentGrade} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2 sm:py-2.5 md:py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition appearance-none text-xs sm:text-sm">
+                  <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">Student Grade</label>
+                  <select name="studentGrade" value={formData.studentGrade} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition appearance-none text-sm font-semibold text-slate-900">
                     <option value="">Select Grade (Optional)</option>
                     <option value="Form 1">Form 1</option>
                     <option value="Form 2">Form 2</option>
@@ -397,10 +397,10 @@ export default function ContactPage() {
                   </select>
                 </div>
               </div>
-               <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+               <div className="grid sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
                 <div>
-                  <label className="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-700 mb-1 sm:mb-2 block">Inquiry Type <span className="text-red-500">*</span></label>
-                  <select name="inquiryType" required value={formData.inquiryType} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2 sm:py-2.5 md:py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition appearance-none text-xs sm:text-sm">
+                  <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">Inquiry Type <span className="text-red-500">*</span></label>
+                  <select name="inquiryType" required value={formData.inquiryType} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition appearance-none text-sm font-semibold text-slate-900">
                     <option value="general">General Inquiry</option>
                     <option value="admissions">Admissions</option>
                     <option value="academics">Academics</option>
@@ -408,23 +408,23 @@ export default function ContactPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-700 mb-1 sm:mb-2 block">Preferred Contact Method</label>
-                  <select name="contactMethod" value={formData.contactMethod} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2 sm:py-2.5 md:py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition appearance-none text-xs sm:text-sm">
+                  <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">Preferred Contact Method</label>
+                  <select name="contactMethod" value={formData.contactMethod} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition appearance-none text-sm font-semibold text-slate-900">
                     <option value="email">Email</option>
                     <option value="phone">Phone Call</option>
                   </select>
                 </div>
               </div>
               <div>
-                <label className="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-700 mb-1 sm:mb-2 block">Subject <span className="text-red-500">*</span></label>
-                <input type="text" name="subject" required value={formData.subject} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2 sm:py-2.5 md:py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition text-xs sm:text-sm" placeholder="What is your message about?" />
+                <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">Subject <span className="text-red-500">*</span></label>
+                <input type="text" name="subject" required value={formData.subject} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition text-sm font-semibold text-slate-900 placeholder:font-normal placeholder:text-slate-400" placeholder="What is your message about?" />
               </div>
               <div>
-                <label className="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-700 mb-1 sm:mb-2 block">Your Message <span className="text-red-500">*</span></label>
-                <textarea name="message" required rows={rows} value={formData.message} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2 sm:py-2.5 md:py-3 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white transition resize-none text-xs sm:text-sm" placeholder="Please describe your inquiry in detail..."></textarea>
+                <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">Your Message <span className="text-red-500">*</span></label>
+                <textarea name="message" required rows={rows} value={formData.message} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition resize-none text-sm font-semibold text-slate-900 placeholder:font-normal placeholder:text-slate-400" placeholder="Please describe your inquiry in detail..."></textarea>
               </div>
               <div>
-                <button type="submit" disabled={isSubmitting} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 bg-slate-900 text-white font-semibold text-xs sm:text-sm rounded-lg hover:bg-slate-800 transition-colors disabled:bg-slate-400 disabled:cursor-not-allowed">
+                <button type="submit" disabled={isSubmitting} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 md:py-4 bg-slate-900 text-white font-bold text-sm rounded-lg hover:bg-slate-800 transition-colors disabled:bg-slate-400 disabled:cursor-not-allowed">
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
@@ -450,7 +450,7 @@ export default function ContactPage() {
           <div className="relative bg-white rounded-xl sm:rounded-2xl w-full max-w-md shadow-2xl animate-in fade-in zoom-in-95 duration-300">
             <div className={`p-4 sm:p-6 bg-${selectedDepartment.color}-500 text-white rounded-t-xl sm:rounded-t-2xl`}>
               <div className="flex items-center justify-between">
-                <h3 className="text-sm sm:text-base md:text-lg font-bold flex items-center gap-2 sm:gap-3">
+                <h3 className="text-base sm:text-lg font-extrabold flex items-center gap-2 sm:gap-3">
                   {React.cloneElement(selectedDepartment.icon, { className: "w-5 h-5 sm:w-6 sm:h-6" })}
                   {selectedDepartment.name}
                 </h3>
@@ -460,12 +460,12 @@ export default function ContactPage() {
               </div>
             </div>
             <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
-              <p className="text-slate-600 text-xs sm:text-sm">{selectedDepartment.description}</p>
-              <div className="p-3 sm:p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
-                <p><span className="font-semibold">Head:</span> {selectedDepartment.head}</p>
-                <p><span className="font-semibold">Hours:</span> {selectedDepartment.hours}</p>
-                <p><span className="font-semibold">Email:</span> <a href={`mailto:${selectedDepartment.email}`} className="text-amber-600 hover:underline break-all">{selectedDepartment.email}</a></p>
-                <p><span className="font-semibold">Phone:</span> <a href={`tel:${selectedDepartment.phone}`} className="text-amber-600 hover:underline">{selectedDepartment.phone}</a></p>
+              <p className="text-slate-700 text-sm">{selectedDepartment.description}</p>
+              <div className="p-3 sm:p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-2 text-sm">
+                <p><span className="font-bold">Head:</span> {selectedDepartment.head}</p>
+                <p><span className="font-bold">Hours:</span> {selectedDepartment.hours}</p>
+                <p><span className="font-bold">Email:</span> <a href={`mailto:${selectedDepartment.email}`} className="text-amber-600 hover:underline break-all">{selectedDepartment.email}</a></p>
+                <p><span className="font-bold">Phone:</span> <a href={`tel:${selectedDepartment.phone}`} className="text-amber-600 hover:underline">{selectedDepartment.phone}</a></p>
               </div>
             </div>
           </div>
