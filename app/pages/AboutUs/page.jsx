@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
+
 
 // ============================================================
 // Animated Stat Counter Component
@@ -71,6 +73,9 @@ const ScrollToTop = () => {
 // ============================================================
 // Main About Page Component
 // ============================================================
+
+
+const router = useRouter();
 export default function AboutPage() {
   const topRef = useRef(null);
 
@@ -495,7 +500,7 @@ export default function AboutPage() {
           {/* Map Footer with directions button */}
           <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-slate-600 flex items-center gap-2">
-              <Navigation className="w-4 h-4 text-orange-600" />
+              <div className="w-4 h-4 text-orange-600" />
               S.A Kinyui Boys Senior school, Matungulu, Machakos County
             </p>
             <a
