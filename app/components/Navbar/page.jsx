@@ -18,7 +18,9 @@ import {
   FiChevronRight,
   FiLock,
   FiDollarSign,
-  FiGrid
+  FiGrid,
+  FiBookOpen,
+  FiAward
 } from 'react-icons/fi';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -85,7 +87,7 @@ export default function ModernNavbar() {
     };
   }, []);
 
-  // Main navigation
+  // Main navigation - RESHUFFLED ORDER (Home first, then About, Admissions, Gallery, News & Events, Fees, Contact)
   const mainNavigation = [
     { 
       name: 'Home', 
@@ -94,7 +96,7 @@ export default function ModernNavbar() {
       exact: true
     },
     { 
-      name: 'About', 
+      name: 'About Us', 
       href: '/pages/AboutUs',
       icon: FiInfo
     },
@@ -120,41 +122,52 @@ export default function ModernNavbar() {
       icon: FiCalendar 
     },
     { 
-      name: 'Contact', 
-      href: '/pages/contact', 
-      icon: FiMail 
-    },
-    { 
       name: 'Fees', 
       href: '/pages/fees', 
       icon: FiDollarSign 
     },
+    { 
+      name: 'Contact', 
+      href: '/pages/contact', 
+      icon: FiMail 
+    },
   ];
 
+  // Academic dropdown items - ADDED MAGAZINE
   const academicDropdownItems = [
     {
       name: 'Student Portal',
       href: '/pages/StudentPortal',
-      icon: FiFileText
+      icon: FiFileText,
+      description: 'Access your academic records'
     },
     {
       name: 'Guidance & Counselling',
       href: '/pages/Guidance-and-Councelling',
-      icon: FiUsers
+      icon: FiUsers,
+      description: 'Student support services'
+    },
+    {
+      name: 'Magazine',
+      href: '/pages/magazine',
+      icon: FiBookOpen,
+      description: 'School publications & newsletters'
     },
     {
       name: 'Apply Now',
       href: '/pages/apply-for-admissions',
-      icon: FiUserPlus
+      icon: FiUserPlus,
+      description: 'Start your application'
     },
-     {
+    {
       name: 'School Rules',
       href: '/pages/OurSchoolPolicies',
-      icon: FiUserPlus
+      icon: FiAward,
+      description: 'Policies & regulations'
     }
   ];
 
-  // Resources dropdown items - INCLUDES ADMIN LOGIN
+  // Resources dropdown items
   const resourcesDropdownItems = [
     {
       name: 'Staff Directory',
@@ -241,7 +254,7 @@ export default function ModernNavbar() {
               </div>
             </div>
 
-            {/* Desktop Navigation - Centered */}
+            {/* Desktop Navigation - Centered (NO UPPERCASE) */}
             <div className="hidden lg:flex items-center justify-center flex-1 mx-8 min-w-0">
               <div className="flex items-center justify-between w-full max-w-7xl gap-1">
                 {mainNavigation.map((item) => {
@@ -257,7 +270,7 @@ export default function ModernNavbar() {
                         onMouseLeave={() => setIsAcademicDropdownOpen(false)}
                       >
                         <button
-                          className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.78rem] xs:text-[0.85rem] uppercase tracking-wide whitespace-nowrap px-2 xs:px-2.5 py-2 relative ${
+                          className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.78rem] xs:text-[0.85rem] tracking-wide whitespace-nowrap px-2 xs:px-2.5 py-2 relative ${
                             isActive || isAcademicDropdownOpen
                               ? 'text-amber-200' 
                               : 'text-white/80 hover:text-amber-200'
@@ -277,50 +290,81 @@ export default function ModernNavbar() {
                           )}
                         </button>
 
-                        {/* Academic Dropdown Menu */}
+                        {/* NEW ACADEMIC DROPDOWN LAYOUT - Different design */}
                         {isAcademicDropdownOpen && (
-                          <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 z-50">
-                            <div className="px-3 py-2 border-b border-gray-100 bg-gradient-to-r from-amber-50 to-orange-50 rounded-t-xl">
-                              <h3 className="font-bold text-gray-800 text-[0.7rem] uppercase tracking-wider flex items-center gap-1.5">
-                                <FiBook className="text-amber-600 text-xs" />
+                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+                            {/* Header with gradient */}
+                            <div className="bg-gradient-to-r from-amber-600 to-orange-600 px-5 py-3">
+                              <h3 className="font-bold text-white text-sm flex items-center gap-2">
+                                <FiBook className="text-amber-200" />
                                 Academic Resources
                               </h3>
+                              <p className="text-amber-100 text-xs mt-0.5">Everything you need for your academic journey</p>
                             </div>
                             
-                            {academicDropdownItems.map((dropdownItem) => (
-                              <a
-                                key={dropdownItem.name}
-                                href={dropdownItem.href}
-                                className={`group flex items-center gap-2 px-3 py-2.5 text-xs font-medium transition-all hover:pl-3.5 ${
-                                  isActiveLink(dropdownItem.href)
-                                    ? 'text-amber-700 bg-amber-50 border-l-3 border-amber-600'
-                                    : 'text-gray-700 hover:text-amber-700 hover:bg-amber-50/50'
-                                }`}
-                                onClick={() => setIsAcademicDropdownOpen(false)}
-                              >
-                                <dropdownItem.icon className="text-xs flex-shrink-0" />
-                                <span className="flex-1 truncate">{dropdownItem.name}</span>
-                                <FiChevronRight className="text-gray-400 text-xs group-hover:text-amber-600 opacity-0 group-hover:opacity-100 transition-all" />
-                              </a>
-                            ))}
+                            {/* Menu items with grid layout */}
+                            <div className="p-2">
+                              {academicDropdownItems.map((dropdownItem, idx) => (
+                                <a
+                                  key={dropdownItem.name}
+                                  href={dropdownItem.href}
+                                  className={`group flex items-start gap-3 px-3 py-3 rounded-xl transition-all duration-200 ${
+                                    isActiveLink(dropdownItem.href)
+                                      ? 'bg-amber-50'
+                                      : 'hover:bg-gray-50'
+                                  }`}
+                                  onClick={() => setIsAcademicDropdownOpen(false)}
+                                >
+                                  <div className={`p-2 rounded-lg ${
+                                    isActiveLink(dropdownItem.href)
+                                      ? 'bg-amber-100 text-amber-700'
+                                      : 'bg-gray-100 text-gray-600 group-hover:bg-amber-100 group-hover:text-amber-700'
+                                  } transition-colors`}>
+                                    <dropdownItem.icon className="text-sm" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <div className={`font-semibold text-sm ${
+                                      isActiveLink(dropdownItem.href)
+                                        ? 'text-amber-800'
+                                        : 'text-gray-800 group-hover:text-amber-800'
+                                    }`}>
+                                      {dropdownItem.name}
+                                    </div>
+                                    {dropdownItem.description && (
+                                      <p className="text-xs text-gray-500 mt-0.5">{dropdownItem.description}</p>
+                                    )}
+                                  </div>
+                                  <FiChevronRight className={`text-xs mt-2 transition-all ${
+                                    isActiveLink(dropdownItem.href)
+                                      ? 'text-amber-600 opacity-100'
+                                      : 'text-gray-400 opacity-0 group-hover:opacity-100 group-hover:text-amber-600'
+                                  }`} />
+                                </a>
+                              ))}
+                            </div>
                             
-                            <a 
-                              href="https://analytics.zeraki.app/" 
-                              className="group flex items-center gap-2 px-3 py-2.5 text-xs font-medium text-gray-700 hover:text-amber-700 hover:bg-amber-50/50 transition-all hover:pl-3.5"
-                              onClick={() => setIsAcademicDropdownOpen(false)}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <div className="w-4 h-4 flex-shrink-0">
-                                <img 
-                                  src="/zeraki.jpg" 
-                                  alt="Zeraki Analytics" 
-                                  className="w-full h-full object-cover rounded-md border border-gray-200 group-hover:border-amber-300 transition-colors"
-                                />
-                              </div>
-                              <span className="flex-1 truncate">Zeraki Analytics</span>
-                              <FiChevronRight className="text-gray-400 text-xs group-hover:text-amber-600 opacity-0 group-hover:opacity-100 transition-all" />
-                            </a>
+                            {/* Footer with external link */}
+                            <div className="border-t border-gray-100 bg-gray-50 px-4 py-2">
+                              <a 
+                                href="https://analytics.zeraki.app/" 
+                                className="flex items-center justify-between group py-1.5"
+                                onClick={() => setIsAcademicDropdownOpen(false)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <div className="w-5 h-5">
+                                    <img 
+                                      src="/zeraki.jpg" 
+                                      alt="Zeraki Analytics" 
+                                      className="w-full h-full object-cover rounded"
+                                    />
+                                  </div>
+                                  <span className="text-xs font-medium text-gray-600 group-hover:text-amber-700">Zeraki Analytics</span>
+                                </div>
+                                <span className="text-xs text-gray-400 group-hover:text-amber-600">External →</span>
+                              </a>
+                            </div>
                           </div>
                         )}
                       </div>
@@ -331,7 +375,7 @@ export default function ModernNavbar() {
                     <a
                       key={item.name}
                       href={item.href}
-                      className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.78rem] xs:text-[0.85rem] uppercase tracking-wide whitespace-nowrap px-2 xs:px-2.5 py-2 relative ${
+                      className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.78rem] xs:text-[0.85rem] tracking-wide whitespace-nowrap px-2 xs:px-2.5 py-2 relative ${
                         isActive 
                           ? 'text-amber-200' 
                           : 'text-white/80 hover:text-amber-200'
@@ -351,7 +395,7 @@ export default function ModernNavbar() {
                   );
                 })}
                 
-                {/* Resources Dropdown (Staff, Careers & Admin Login) - ALWAYS SHOWN */}
+                {/* Resources Dropdown */}
                 <div 
                   className="relative"
                   ref={resourcesDropdownRef}
@@ -359,7 +403,7 @@ export default function ModernNavbar() {
                   onMouseLeave={() => setIsResourcesDropdownOpen(false)}
                 >
                   <button
-                    className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.78rem] xs:text-[0.85rem] uppercase tracking-wide whitespace-nowrap px-2 xs:px-2.5 py-2 relative ${
+                    className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.78rem] xs:text-[0.85rem] tracking-wide whitespace-nowrap px-2 xs:px-2.5 py-2 relative ${
                       isResourcesDropdownOpen || 
                       isActiveLink('/pages/staff') || 
                       isActiveLink('/pages/career') ||
@@ -385,11 +429,11 @@ export default function ModernNavbar() {
                     )}
                   </button>
 
-                  {/* Resources Dropdown Menu - INCLUDES ADMIN LOGIN */}
+                  {/* Resources Dropdown Menu */}
                   {isResourcesDropdownOpen && (
                     <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 z-50">
                       <div className="px-3 py-2 border-b border-gray-100 bg-gradient-to-r from-amber-50 to-orange-50 rounded-t-xl">
-                        <h3 className="font-bold text-gray-800 text-[0.7rem] uppercase tracking-wider flex items-center gap-1.5">
+                        <h3 className="font-bold text-gray-800 text-[0.7rem] tracking-wider flex items-center gap-1.5">
                           <FiGrid className="text-amber-600 text-xs" />
                           Resources & Admin
                         </h3>
@@ -427,7 +471,7 @@ export default function ModernNavbar() {
               </div>
             </div>
 
-            {/* Mobile Menu Button - Responsive */}
+            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="lg:hidden p-2.5 xs:p-3 rounded-lg xs:rounded-xl text-white 
@@ -444,7 +488,7 @@ export default function ModernNavbar() {
           </div>
         </div>
 
-        {/* Mobile Menu - Responsive */}
+        {/* Mobile Menu - Responsive (NO UPPERCASE) */}
         {isOpen && (
           <div className="lg:hidden bg-gradient-to-b from-[#2a0a0a] to-[#1a0505] border-t border-white/10">
             <div className="px-3 xs:px-4 sm:px-6 py-6 xs:py-8 max-w-2xl mx-auto">
@@ -467,7 +511,7 @@ export default function ModernNavbar() {
                         >
                           <div className="flex items-center gap-2 xs:gap-3">
                             <item.icon className="text-lg xs:text-xl" />
-                            <span className="font-bold text-base xs:text-lg uppercase tracking-wide">{item.name}</span>
+                            <span className="font-bold text-base xs:text-lg tracking-wide">{item.name}</span>
                           </div>
                           <FiChevronDown className={`text-lg xs:text-xl transition-transform duration-200 ${
                             isMobileDropdownOpen ? 'rotate-180' : ''
@@ -492,7 +536,12 @@ export default function ModernNavbar() {
                                 }}
                               >
                                 <dropdownItem.icon className="text-base xs:text-lg" />
-                                <span className="font-medium text-sm xs:text-base">{dropdownItem.name}</span>
+                                <div>
+                                  <span className="font-medium text-sm xs:text-base">{dropdownItem.name}</span>
+                                  {dropdownItem.description && (
+                                    <p className="text-xs text-white/60 mt-0.5">{dropdownItem.description}</p>
+                                  )}
+                                </div>
                               </a>
                             ))}
                             
@@ -534,12 +583,12 @@ export default function ModernNavbar() {
                       onClick={() => setIsOpen(false)}
                     >
                       <item.icon className="text-lg xs:text-xl" />
-                      <span className="font-bold text-base xs:text-lg uppercase tracking-wide">{item.name}</span>
+                      <span className="font-bold text-base xs:text-lg tracking-wide">{item.name}</span>
                     </a>
                   );
                 })}
 
-                {/* Mobile Resources Dropdown (Staff, Careers & Admin Login) */}
+                {/* Mobile Resources Dropdown */}
                 <div className="space-y-1.5 xs:space-y-2" ref={mobileResourcesDropdownRef}>
                   <button
                     onClick={() => setIsMobileResourcesDropdownOpen(!isMobileResourcesDropdownOpen)}
@@ -555,7 +604,7 @@ export default function ModernNavbar() {
                   >
                     <div className="flex items-center gap-2 xs:gap-3">
                       <FiGrid className="text-lg xs:text-xl" />
-                      <span className="font-bold text-base xs:text-lg uppercase tracking-wide">Resources</span>
+                      <span className="font-bold text-base xs:text-lg tracking-wide">Resources</span>
                     </div>
                     <FiChevronDown className={`text-lg xs:text-xl transition-transform duration-200 ${
                       isMobileResourcesDropdownOpen ? 'rotate-180' : ''
@@ -596,10 +645,10 @@ export default function ModernNavbar() {
                 </div>
               </div>
 
-              {/* Mobile Footer - Responsive */}
+              {/* Mobile Footer - Responsive (CAPITALIZED "The" now "The Engles") */}
               <div className="mt-6 xs:mt-8 pt-4 xs:pt-6 border-t border-white/20 text-center">
                 <p className="text-white/70 text-xs xs:text-sm font-medium">
-          The Engles 🦅🦅       
+                  The Engles 🦅🦅       
                 </p>
               </div>
             </div>
@@ -607,7 +656,7 @@ export default function ModernNavbar() {
         )}
       </nav>
 
-      {/* Spacer for fixed nav - Responsive */}
+      {/* Spacer for fixed nav */}
       <div className="h-[4.5rem] xs:h-20 sm:h-22 lg:h-24 transition-all duration-300"></div>
     </>
   );
