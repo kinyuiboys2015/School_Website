@@ -53,7 +53,6 @@ import {
   IoSchoolOutline,
   IoBusinessOutline
 } from 'react-icons/io5';
-import { FiGrid, FiList } from 'react-icons/fi';
 import { CircularProgress, Box, Typography, Stack } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
