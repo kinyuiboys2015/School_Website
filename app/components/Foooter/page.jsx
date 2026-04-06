@@ -194,7 +194,7 @@ const BrandSection = () => (
     </div>
     
     <p className="text-gray-200 text-sm leading-relaxed">
-      A County learning institution in Matungulu Machakos, dedicated to academic
+      A Extra County learning institution in Matungulu Machakos, dedicated to academic
       excellence, holistic development, and nurturing future leaders since 1976.
     </p>
   </div>
