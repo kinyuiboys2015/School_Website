@@ -4,7 +4,7 @@ import {
   MapPin, Users, BookOpen, Mail, Trophy, Target, Globe, Clock,
   TrendingUp, Lightbulb, ExternalLink, ShieldCheck, ArrowRight,
   Phone, Sparkles, Heart, Zap, GraduationCap, Building2, Award,
-  ChevronRight, Star, Check, ArrowUp, Eye
+  ChevronRight, Star, Check, ArrowUp, Eye, Compass 
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -126,7 +126,7 @@ export default function AboutPage() {
 
           {/* Stats Bar - Modern Cards on Light BG */}
           <div className="mt-10 sm:mt-14 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-            <AnimatedCounter value="400" label="Students" icon={Users} />
+            <AnimatedCounter value="400+" label="Students" icon={Users} />
             <AnimatedCounter value="88" label="Completion Rate" icon={TrendingUp} suffix="%" />
             <AnimatedCounter value="45" label="Awards Won" icon={Trophy} />
             <AnimatedCounter value="12" label="Curriculums" icon={BookOpen} />
