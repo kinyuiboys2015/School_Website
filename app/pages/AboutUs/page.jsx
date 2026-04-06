@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
 
 
 // ============================================================
@@ -75,7 +74,6 @@ const ScrollToTop = () => {
 // ============================================================
 
 
-const router = useRouter();
 export default function AboutPage() {
   const topRef = useRef(null);
 
