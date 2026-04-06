@@ -515,7 +515,7 @@ const handleLogout = () => {
               onClick={() => handleTabClick('admins-profile')}
             >
               <div className="relative">
-                <div className="w-8 h-8 lg:w-12 lg:h-12 bg-gradient-to-br from-emerald-400 to-blue-500 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg">
+                <div className="w-8 h-8 lg:w-12 lg:h-12 bg-gradient-to-br from-rose-800 to-amber-900 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg">
                   {user.name?.charAt(0) || 'A'}
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-2 h-2 lg:w-3 lg:h-3 bg-emerald-400 rounded-full border-2 border-white animate-pulse"></div>
