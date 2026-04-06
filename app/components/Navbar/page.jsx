@@ -96,7 +96,7 @@ export default function ModernNavbar() {
       exact: true
     },
     { 
-      name: 'About', 
+      name: 'About Us', 
       href: '/pages/AboutUs',
       icon: FiInfo
     },
@@ -259,7 +259,7 @@ export default function ModernNavbar() {
 
             {/* Desktop Navigation - NO UPPERCASE */}
             <div className="hidden lg:flex items-center justify-center flex-1 mx-8 min-w-0">
-              <div className="flex items-center justify-between w-full max-w-7xl gap-1">
+              <div className="flex items-center justify-between w-full max-w-7xl gap-0.5">
                 {mainNavigation.map((item) => {
                   const isActive = isActiveLink(item.href, item.exact);
                   
@@ -273,7 +273,7 @@ export default function ModernNavbar() {
                         onMouseLeave={() => setIsAcademicDropdownOpen(false)}
                       >
                         <button
-                          className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.78rem] xs:text-[0.85rem] tracking-wide whitespace-nowrap px-2 xs:px-2.5 py-2 relative ${
+                          className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.85rem] xs:text-[0.9rem] tracking-wide whitespace-nowrap px-1.5 xs:px-2 py-2 relative ${
                             isActive || isAcademicDropdownOpen
                               ? 'text-amber-200' 
                               : 'text-white/80 hover:text-amber-200'
@@ -374,7 +374,7 @@ export default function ModernNavbar() {
                     <a
                       key={item.name}
                       href={item.href}
-                      className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.78rem] xs:text-[0.85rem] tracking-wide whitespace-nowrap px-2 xs:px-2.5 py-2 relative ${
+                      className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.85rem] xs:text-[0.9rem] tracking-wide whitespace-nowrap px-1.5 xs:px-2 py-2 relative ${
                         isActive 
                           ? 'text-amber-200' 
                           : 'text-white/80 hover:text-amber-200'
@@ -400,7 +400,7 @@ export default function ModernNavbar() {
                   onMouseLeave={() => setIsResourcesDropdownOpen(false)}
                 >
                   <button
-                    className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.78rem] xs:text-[0.85rem] tracking-wide whitespace-nowrap px-2 xs:px-2.5 py-2 relative ${
+                    className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.85rem] xs:text-[0.9rem] tracking-wide whitespace-nowrap px-1.5 xs:px-2 py-2 relative ${
                       isResourcesDropdownOpen || 
                       isActiveLink('/pages/staff') || 
                       isActiveLink('/pages/careers') ||
