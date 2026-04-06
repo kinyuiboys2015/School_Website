@@ -206,350 +206,285 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════ MISSION SECTION ═══════════════════════ */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-16 border border-amber-100 shadow-xl">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
-            
-            {/* Left Side: Image */}
-            <div className="relative group">
-              <div className="absolute -inset-2 bg-gradient-to-br from-amber-200 to-orange-200 rounded-[2rem] -rotate-1 -z-10 transition-transform group-hover:rotate-1 duration-500"></div>
-              <div className="relative overflow-hidden aspect-square sm:aspect-video lg:aspect-square rounded-2xl shadow-2xl border border-amber-100">
-                <Image
-                  src="/bg/1.jpeg"
-                  alt="School Mission"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute bottom-3 left-3 right-3 z-20">
-                  <div className="bg-white/90 backdrop-blur-md px-3 py-2 rounded-xl shadow-lg border border-white/50 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-                        <BookOpen className="text-white" size={16} />
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-medium text-amber-600">Our Focus</p>
-                        <p className="text-xs font-bold text-slate-800">Education Excellence</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                      </span>
-                      <span className="text-[10px] font-medium text-green-600">400+ students</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute top-3 right-3 z-20">
-                  <div className="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-2 py-1 rounded-full text-[10px] font-bold shadow-md">
-                    New
-                  </div>
-                </div>
-              </div>
-            </div>
+{/* ═══════════════════════ MISSION, VISION & MOTTO SECTION ═══════════════════════ */}
+<section className="py-16 sm:py-28 px-4 sm:px-6 bg-white overflow-hidden">
+  <div className="max-w-7xl mx-auto">
+    
+    {/* MOTTO: The Top Statement */}
+    <div className="text-center mb-16 md:mb-24 relative">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-32 bg-amber-50/50 blur-3xl -z-10" />
+      <span className="text-amber-600 font-black text-[10px] uppercase tracking-[0.4em] mb-4 block">Our School Motto</span>
+      <h2 className="text-5xl md:text-8xl font-black text-slate-900 tracking-tighter leading-none italic uppercase">
+        Non Sibi Sed <br />
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-600">Omnibus</span>
+      </h2>
+      <p className="mt-6 text-slate-400 font-bold text-sm md:text-base tracking-[0.2em] uppercase">
+        "Not for self, but for all"
+      </p>
+    </div>
 
-            {/* Right Side: Content */}
-            <div className="flex flex-col text-center lg:text-left items-center lg:items-start">
-              <h2 className="text-amber-600 font-black uppercase text-[9px] sm:text-xs tracking-[0.2em] mb-4 bg-white/80 border border-amber-200 w-fit px-3 py-1 rounded-full shadow-sm">
-                Our Mission
-              </h2>
-              <h3 className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 mb-4 sm:mb-6 leading-[1.2]">
-                Fostering Excellence <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">Through Innovation.</span>
-              </h3>
-              <p className="text-slate-600 text-sm sm:text-lg mb-8 sm:mb-10 leading-relaxed font-medium">
-                We provide a supportive environment where students lead with integrity.
-              </p>
-
-              <div className="grid gap-3 w-full text-left">
-                {[
-                  { title: "Global Perspective", icon: <Globe size={20} />, text: "Preparing for a borderless future." },
-                  { title: "Agile Learning", icon: <Zap size={20} />, text: "Adapting to new technologies." }
-                ].map((item, i) => (
-                  <div key={i} className="group flex gap-4 p-4 rounded-xl sm:rounded-2xl transition-all bg-white border border-slate-100 shadow-md hover:shadow-xl hover:border-amber-200">
-                    <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-                      {item.icon}
-                    </div>
-                    <div>
-                      <h4 className="font-black text-slate-900 text-sm sm:text-lg">{item.title}</h4>
-                      <p className="text-slate-500 text-xs sm:text-sm">{item.text}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+    <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+      
+      {/* LEFT: Vision & Mission Content */}
+      <div className="lg:col-span-7 flex flex-col gap-6">
+        
+        {/* Vision Card */}
+        <div className="group bg-slate-50 p-8 md:p-12 rounded-[2.5rem] border border-slate-100 transition-all hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-all">
+              <Eye size={24} strokeWidth={2.5} />
             </div>
+            <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tight">Our Vision</h3>
           </div>
+          <p className="text-slate-600 text-lg md:text-xl font-medium leading-relaxed italic">
+            "To be a leading center of excellence in academic performance and holistic development of a boy child."
+          </p>
         </div>
-      </section>
 
-      {/* ═══════════════════════ VALUES SECTION ═══════════════════════ */}
-      <section className="py-12 sm:py-24 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 items-center">
+        {/* Mission Card */}
+        <div className="group bg-slate-50 p-8 md:p-12 rounded-[2.5rem] border border-slate-100 transition-all hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+              <Target size={24} strokeWidth={2.5} />
+            </div>
+            <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tight">Our Mission</h3>
+          </div>
+          <p className="text-slate-600 text-lg md:text-xl font-medium leading-relaxed">
+            "To provide a conducive environment for quality teaching and learning through teamwork and effective utilization of resources to produce upright and dependable citizens."
+          </p>
+        </div>
+      </div>
+
+      {/* RIGHT: Visual Anchor (Image) */}
+      <div className="lg:col-span-5 relative group min-h-[400px]">
+        <div className="absolute inset-0 bg-amber-100 rounded-[2.5rem] rotate-3 transition-transform group-hover:rotate-0" />
+        <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] border-4 border-white shadow-xl">
+          <Image
+            src="/bg/1.jpeg"
+            alt="Kinyui Boys Campus"
+            fill
+            className="object-cover transition-transform duration-1000 group-hover:scale-110"
+          />
           
-          {/* Left Side: Content */}
-          <div className="order-2 lg:order-1">
-            <div className="mb-8 sm:mb-10 text-center lg:text-left">
-              <span className="inline-block px-3 py-1 sm:px-4 sm:py-1.5 mb-4 text-[9px] sm:text-[10px] font-black tracking-[0.2em] text-amber-600 uppercase bg-amber-50 rounded-full border border-amber-200">
-                Our Foundation
-              </span>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 mb-4 sm:mb-6 leading-[1.1]">
-                Character Over <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600 italic">Everything.</span>
-              </h3>
-              <p className="text-sm sm:text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium">
-                Integrity, Discipline, and Resilience aren't just words here—they are the pillars of our community's DNA.
-              </p>
-            </div>
-
-            {/* Values Grid - Modern Cards */}
-            <div className="grid grid-cols-1 xs:grid-cols-2 gap-3 sm:gap-4">
-              {[
-                { title: "Integrity", icon: <ShieldCheck size={18} />, desc: "Doing right always." },
-                { title: "Discipline", icon: <Clock size={18} />, desc: "Consistency in effort." },
-                { title: "Resilience", icon: <TrendingUp size={18} />, desc: "Bouncing back stronger." },
-                { title: "Empathy", icon: <Heart size={18} />, desc: "Understanding others." },
-                { title: "Innovation", icon: <Lightbulb size={18} />, desc: "Thinking beyond limits." },
-                { title: "Leadership", icon: <Users size={18} />, desc: "Inspiring the collective." }
-              ].map((val, i) => (
-                <div 
-                  key={i} 
-                  className="group flex flex-col p-3 sm:p-4 bg-white border border-slate-100 rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:shadow-xl hover:border-amber-200 hover:-translate-y-1"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 text-white group-hover:scale-110 transition-transform shadow-md">
-                      {val.icon}
-                    </div>
-                    <span className="font-black text-xs sm:text-sm text-slate-800 tracking-tight">{val.title}</span>
-                  </div>
-                  <p className="hidden xs:block text-[10px] sm:text-xs text-slate-500 mt-2 ml-11 leading-tight">{val.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Side: Image */}
-          <div className="relative order-1 lg:order-2 group">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] h-[100%] bg-amber-100 rounded-full blur-3xl opacity-50 -z-10"></div>
-            <div className="relative">
-              <div className="absolute -inset-2 bg-gradient-to-br from-amber-200 to-orange-200 rounded-[2rem] -rotate-1 -z-10 transition-transform group-hover:rotate-1 duration-500"></div>
-              <div className="relative overflow-hidden aspect-square sm:aspect-video lg:aspect-square rounded-2xl shadow-2xl border border-amber-100">
-                <Image
-                  src="/bg/14.jpeg"
-                  alt="School Values"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 right-2 sm:right-3 z-20">
-                  <div className="bg-white/90 backdrop-blur-md px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl shadow-lg border border-white/50 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-md sm:rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-                        <Star className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-[8px] sm:text-[10px] font-medium text-amber-600">Event Status</p>
-                        <p className="text-[10px] sm:text-xs font-bold text-slate-800">Registration Open</p>
-                      </div>
-                    </div>
-                    <div className="text-[8px] sm:text-[10px] font-bold bg-emerald-100 text-emerald-700 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full">
-                      Join Now
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute top-2 sm:top-3 right-2 sm:right-3 z-20">
-                  <div className="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold shadow-md flex items-center gap-1 sm:gap-1.5">
-                    <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-200 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-full w-full bg-white"></span>
-                    </span>
-                    <span className="hidden xs:inline">Featured</span>
-                    <span className="xs:hidden">⭐</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          {/* Stats Overlay */}
+          <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-white/50 shadow-lg">
+             <div className="flex justify-between items-center mb-2">
+                <span className="text-xs font-black text-amber-600 uppercase tracking-widest">Enrollment</span>
+                <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Active</span>
+             </div>
+             <div className="flex items-end gap-2">
+                <span className="text-4xl font-black text-slate-900">400+</span>
+                <span className="text-sm font-medium text-slate-500 mb-1.5">Future Leaders</span>
+             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ═══════════════════════ LOCATION & SCHOOL INFO SECTION ═══════════════════════ */}
-      <section className="py-12 sm:py-24 px-4 sm:px-6 bg-gradient-to-br from-amber-50 to-orange-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
+    </div>
+
+    {/* Bottom Key Pillars Tag Cloud */}
+    <div className="mt-12 flex flex-wrap justify-center gap-3">
+       {['Quality Teaching', 'Teamwork', 'Holistic Growth', 'Dependable Citizens'].map((tag, i) => (
+         <span key={i} className="px-5 py-2 rounded-full border border-slate-100 bg-white text-[10px] font-black uppercase tracking-widest text-slate-400">
+           {tag}
+         </span>
+       ))}
+    </div>
+  </div>
+</section>
+
+{/* ═══════════════════════ VALUES SECTION (ALTERNATIVE DESIGN) ═══════════════════════ */}
+<section className="py-16 sm:py-28 px-4 sm:px-6 bg-white overflow-hidden">
+  <div className="max-w-7xl mx-auto">
+    <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+      
+      {/* LEFT SIDE: The Visual Foundation */}
+      <div className="lg:col-span-5 relative order-2 lg:order-1">
+        <div className="relative z-10 group">
+          {/* Decorative Backing */}
+          <div className="absolute -inset-4 bg-slate-50 rounded-[3rem] rotate-2 -z-10 group-hover:rotate-0 transition-transform duration-700" />
+          
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border-[12px] border-white shadow-2xl">
+            <Image
+              src="/bg/14.jpeg"
+              alt="Kinyui Boys Excellence"
+              fill
+              className="object-cover transition-transform duration-1000 group-hover:scale-110"
+            />
+            {/* Overlay Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
             
-            {/* Contact Card - Gradient but keeping light theme */}
-            <div className="lg:col-span-4 group relative overflow-hidden bg-gradient-to-br from-amber-600 to-orange-600 p-6 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl shadow-amber-200/50 flex flex-col justify-between transition-all duration-500 hover:-translate-y-2">
-              <div className="absolute -top-10 -right-10 w-40 h-40 sm:w-64 sm:h-64 bg-amber-500 rounded-full opacity-40 transition-transform duration-700 group-hover:scale-110"></div>
-              
-              <div className="relative z-10">
-                <span className="inline-block px-3 py-1 mb-4 sm:mb-6 text-[9px] sm:text-[10px] font-black tracking-widest text-amber-100 uppercase bg-amber-700/50 rounded-full border border-amber-400/30">
-                  Find Us
-                </span>
-                <h4 className="text-2xl sm:text-3xl font-black text-white mb-6 sm:mb-10 tracking-tight leading-tight">
-                  Get in <br className="hidden sm:block" /> Touch
-                </h4>
-                
-                <div className="space-y-6 sm:space-y-8">
-                  <div className="flex gap-4 sm:gap-5 group/item items-start">
-                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-amber-500/50 flex items-center justify-center text-white border border-amber-400/30 group-hover/item:bg-white group-hover/item:text-amber-600 transition-all shadow-lg">
-                      <MapPin size={20} className="sm:w-[24px] sm:h-[24px]" />
-                    </div>
-                    <div>
-                      <p className="text-amber-100 text-[9px] sm:text-xs uppercase font-black tracking-tighter mb-0.5 sm:mb-1 opacity-80">School Address</p>
-                      <p className="text-white text-sm sm:text-base font-bold leading-snug sm:leading-relaxed">
-                        Kinyui Boys Senior School, Matungulu, Machakos County
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4 sm:gap-5 group/item items-start">
-                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-amber-500/50 flex items-center justify-center text-white border border-amber-400/30 group-hover/item:bg-white group-hover/item:text-amber-600 transition-all shadow-lg">
-                      <Phone size={20} className="sm:w-[24px] sm:h-[24px]" />
-                    </div>
-                    <div>
-                      <p className="text-amber-100 text-[9px] sm:text-xs uppercase font-black tracking-tighter mb-0.5 sm:mb-1 opacity-80">Direct Line</p>
-                      <p className="text-white text-sm sm:text-base font-bold">+254 710 894 145</p>
-                      <p className="text-white/80 text-xs mt-1">+254 710 894 145</p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4 sm:gap-5 group/item items-start">
-                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-amber-500/50 flex items-center justify-center text-white border border-amber-400/30 group-hover/item:bg-white group-hover/item:text-amber-600 transition-all shadow-lg">
-                      <Mail size={20} className="sm:w-[24px] sm:h-[24px]" />
-                    </div>
-                    <div>
-                      <p className="text-amber-100 text-[9px] sm:text-xs uppercase font-black tracking-tighter mb-0.5 sm:mb-1 opacity-80">Email</p>
-                      <p className="text-white text-sm sm:text-base font-bold">kinyuiboys2015@gmail.com</p>
-                      <p className="text-white/80 text-xs">kinyuiboys2015@gmail.com</p>
-                    </div>
-                  </div>
+            {/* Floating Achievement Tag */}
+            <div className="absolute bottom-6 left-6 right-6">
+              <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-4 rounded-2xl flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-amber-500 flex items-center justify-center shadow-lg">
+                  <Star className="text-white w-6 h-6 fill-current" />
                 </div>
-              </div>
-              
-              <div className="relative z-10 mt-8 sm:mt-12">
-                <a 
-                  href="https://www.google.com/maps/search/?api=1&query=kinyui+boys+High+School" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-full py-3 sm:py-4 bg-white text-amber-600 font-black text-xs sm:text-sm rounded-xl sm:rounded-2xl shadow-xl transition-all hover:bg-amber-50 hover:scale-105 flex items-center justify-center gap-2 uppercase tracking-wider"
-                >
-                  Google Maps
-                  <ExternalLink size={16} />
-                </a>
-              </div>
-            </div>
-
-            {/* School Information Panel - Light theme card */}
-            <div className="lg:col-span-8 group relative bg-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 border border-slate-200 shadow-xl shadow-slate-200/40 transition-all duration-500 hover:border-amber-200">
-              
-              <div className="flex items-center justify-between mb-6 sm:mb-8">
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 flex items-center gap-3 tracking-tight">
-                  <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
-                  About Kinyui Boys Senior School
-                </h3>
-              </div>
-              
-              <div className="space-y-6 sm:space-y-8">
-                {/* Overview */}
-                <div className="bg-amber-50/50 rounded-2xl p-5 sm:p-6 border border-amber-100">
-                  <h4 className="text-sm sm:text-base font-black text-amber-600 uppercase tracking-wider mb-3">Overview</h4>
-                  <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
-                    Kinyui Boys Senior School is a reputable public secondary school located in Matungulu Sub-county, Machakos County. The institution is committed to academic excellence and holistic student development in a conducive learning environment.
-                  </p>
-                </div>
-
-                {/* Key Details Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">📚</span>
-                      </div>
-                      <h5 className="font-black text-slate-900 text-sm uppercase">Category</h5>
-                    </div>
-                    <p className="text-slate-700 font-medium text-sm sm:text-base">Boarding</p>
-                    <p className="text-xs text-slate-500 mt-1">Public Secondary School</p>
-                  </div>
-
-                  <div className="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">🎓</span>
-                      </div>
-                      <h5 className="font-black text-slate-900 text-sm uppercase">Curriculum</h5>
-                    </div>
-                    <p className="text-slate-700 font-medium text-sm sm:text-base">8-4-4 & CBC</p>
-                    <p className="text-xs text-slate-500 mt-1">Form 1-4</p>
-                  </div>
-
-                  <div className="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">⏰</span>
-                      </div>
-                      <h5 className="font-black text-slate-900 text-sm uppercase">School Hours</h5>
-                    </div>
-                    <p className="text-slate-700 font-medium text-sm sm:text-base">Mon - Fri: 7:45 AM - 4:30 PM</p>
-                    <p className="text-xs text-slate-500 mt-1">Weekend: Closed</p>
-                  </div>
-
-                  <div className="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">📅</span>
-                      </div>
-                      <h5 className="font-black text-slate-900 text-sm uppercase">Founded</h5>
-                    </div>
-                    <p className="text-slate-700 font-medium text-sm sm:text-base">Est. 1976</p>
-                    <p className="text-xs text-slate-500 mt-1">35+ Years of Excellence</p>
-                  </div>
-                </div>
-
-                {/* Facilities & Achievements */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-200">
-                    <h5 className="font-black text-slate-900 text-sm uppercase mb-3 flex items-center gap-2">
-                      <span className="w-1 h-4 bg-amber-500 rounded-full"></span>
-                      Key Facilities
-                    </h5>
-                    <ul className="space-y-2">
-                      {['Modern Science Labs', 'Computer Lab', 'Library', 'Sports Fields'].map((item, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-slate-700">
-                          <span className="text-amber-500">✓</span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-200">
-                    <h5 className="font-black text-slate-900 text-sm uppercase mb-3 flex items-center gap-2">
-                      <span className="w-1 h-4 bg-amber-500 rounded-full"></span>
-                      Achievements
-                    </h5>
-                    <ul className="space-y-2">
-                      {['Good KCSE Performance', 'Sports Champions', 'Science And Mathematics Congress Winners'].map((item, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-slate-700">
-                          <span className="text-amber-500">★</span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Admission Notice */}
-                <div className="bg-amber-600/5 rounded-xl p-4 border border-amber-200/50">
-                  <p className="text-xs sm:text-sm text-slate-600 italic">
-                    For admission inquiries and school fees structure, please contact the school administration during office hours or visit during scheduled open days.
-                  </p>
+                <div>
+                  <p className="text-white font-black text-sm uppercase tracking-wider">The Kinyui Way</p>
+                  <p className="text-white/80 text-xs">Forging leaders since 1976</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+
+        {/* Abstract shapes for flair */}
+        <div className="absolute -top-10 -left-10 w-32 h-32 bg-amber-200/30 rounded-full blur-3xl" />
+        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-orange-200/30 rounded-full blur-3xl" />
+      </div>
+
+      {/* RIGHT SIDE: The Pillars (Vertical Layout) */}
+      <div className="lg:col-span-7 order-1 lg:order-2">
+        <div className="mb-12">
+          <h4 className="text-amber-600 font-black text-xs uppercase tracking-[0.3em] mb-4">Our Foundation</h4>
+          <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-[0.9] tracking-tighter mb-6">
+            Character Over <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">Everything.</span>
+          </h2>
+          <p className="text-slate-500 text-lg font-medium max-w-xl">
+            Integrity, Discipline, and Resilience aren't just words here—they are the pillars of our community's DNA.
+          </p>
+        </div>
+
+        {/* Vertical Values Path */}
+        <div className="relative space-y-8 before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
+          {[
+            { title: "Integrity", icon: <ShieldCheck size={20} />, desc: "Doing right, even when no one is watching." },
+            { title: "Discipline", icon: <Clock size={20} />, desc: "Mastery over self is the first step to leadership." },
+            { title: "Resilience", icon: <TrendingUp size={20} />, desc: "We don't break; we bounce back stronger." },
+            { title: "Leadership", icon: <Users size={20} />, desc: "To lead others, one must first serve the collective." }
+          ].map((val, i) => (
+            <div key={i} className="relative pl-12 group">
+              {/* Icon Marker */}
+              <div className="absolute left-0 top-0 w-10 h-10 bg-white border-2 border-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:border-amber-500 group-hover:text-amber-600 transition-all duration-300 shadow-sm z-10">
+                {val.icon}
+              </div>
+              
+              <div className="pb-2">
+                <h5 className="font-black text-slate-900 text-lg uppercase tracking-tight group-hover:text-amber-600 transition-colors">
+                  {val.title}
+                </h5>
+                <p className="text-slate-500 text-sm leading-relaxed mt-1">
+                  {val.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 flex items-center gap-6">
+            <div className="h-[1px] flex-1 bg-slate-100" />
+            <span className="text-[10px] font-black uppercase text-slate-300 tracking-[0.4em]">Non Sibi Sed Omnibus</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+   {/* ═══════════════════════ LOCATION & SCHOOL INFO SECTION ═══════════════════════ */}
+<section className="py-16 sm:py-24 px-4 sm:px-6 bg-slate-50/50">
+  <div className="max-w-7xl mx-auto">
+    <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+      
+      {/* LEFT COLUMN: School Information & Contacts */}
+      <div className="lg:col-span-7 space-y-8">
+        
+        {/* Main Info Card */}
+        <div className="bg-white rounded-[2.5rem] p-8 md:p-12 border border-slate-200 shadow-sm transition-all hover:shadow-md">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-2 h-8 bg-amber-500 rounded-full" />
+            <h3 className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight">
+              Kinyui Boys Senior School
+            </h3>
+          </div>
+
+          <div className="prose prose-slate max-w-none mb-10">
+            <p className="text-slate-600 text-base md:text-lg leading-relaxed font-medium">
+              A premier public boarding institution in Matungulu, Machakos County. We are dedicated to forging the next generation of leaders through academic rigor and character development.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { icon: '📚', label: 'Category', val: 'Public Boarding' },
+              { icon: '🎓', label: 'Curriculum', val: '8-4-4 & CBC' },
+              { icon: '⏰', label: 'Hours', val: '7:45 AM - 4:30 PM' },
+              { icon: '📅', label: 'Legacy', val: 'Est. 1976' }
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 bg-slate-50/30">
+                <span className="text-2xl">{item.icon}</span>
+                <div>
+                  <p className="text-[10px] uppercase font-black text-amber-600 tracking-widest">{item.label}</p>
+                  <p className="text-slate-900 font-bold text-sm">{item.val}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Contact Strip */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col gap-2">
+            <Phone className="text-amber-600 w-5 h-5" />
+            <p className="text-[10px] font-black uppercase text-slate-400 tracking-tighter">Call Us</p>
+            <p className="text-slate-900 font-bold text-sm">+254 710 894 145</p>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col gap-2">
+            <Mail className="text-amber-600 w-5 h-5" />
+            <p className="text-[10px] font-black uppercase text-slate-400 tracking-tighter">Email</p>
+            <p className="text-slate-900 font-bold text-sm truncate">kinyuiboys2015@gmail.com</p>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col gap-2">
+            <MapPin className="text-amber-600 w-5 h-5" />
+            <p className="text-[10px] font-black uppercase text-slate-400 tracking-tighter">Location</p>
+            <p className="text-slate-900 font-bold text-sm leading-tight">Matungulu, Machakos</p>
+          </div>
+        </div>
+      </div>
+
+      {/* RIGHT COLUMN: The Map (White background style) */}
+      <div className="lg:col-span-5 relative group">
+        <div className="sticky top-8 h-full min-h-[450px] bg-white rounded-[2.5rem] border border-slate-200 p-3 shadow-xl overflow-hidden transition-all duration-500 hover:border-amber-400/50">
+          
+          {/* Map Header Overlay */}
+          <div className="absolute top-8 left-8 right-8 z-10 flex items-center justify-between">
+             <div className="bg-white/90 backdrop-blur px-4 py-2 rounded-full border border-slate-100 shadow-sm">
+                <p className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em] flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+Our school Location
+                </p>
+             </div>
+             <a 
+               href="https://maps.google.com" 
+               target="_blank" 
+               className="p-2 bg-slate-900 text-white rounded-full hover:bg-amber-600 transition-colors shadow-lg"
+             >
+               <ExternalLink size={18} />
+             </a>
+          </div>
+
+          {/* Placeholder for Google Map Embed */}
+          <div className="w-full h-full bg-slate-100 rounded-[1.8rem] overflow-hidden">
+             {/* Replace with <iframe src="..."> */}
+             <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 opacity-50">
+                <Map size={48} strokeWidth={1} className="mb-2" />
+                <p className="text-xs font-medium">Google Maps Integration</p>
+             </div>
+          </div>
+
+          {/* Bottom Floating Card */}
+          <div className="absolute bottom-8 left-8 right-8 bg-white p-5 rounded-2xl border border-slate-100 shadow-2xl">
+             <p className="text-xs text-slate-500 italic mb-0">
+               "Providing a conducive learning environment for 35+ years."
+             </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
     {/* ═══════════════════════ KINYUI BOYS INSTITUTIONAL SECTION ═══════════════════════ */}
 <section className="py-16 sm:py-24 px-4 sm:px-6">
@@ -624,7 +559,7 @@ export default function AboutPage() {
           
           <Link href="/pages/Guidance-and-Councelling" className="w-full sm:w-auto">
             <button className="w-full px-8 py-4 bg-white text-slate-900 border border-slate-200 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-slate-50 transition-colors">
-              Book a Session
+             Sessions
             </button>
           </Link>
 
