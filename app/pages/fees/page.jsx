@@ -345,13 +345,12 @@ export default function ModernFeesPage() {
   const [documentData, setDocumentData] = useState(null);
   const [selectedFeeItem, setSelectedFeeItem] = useState(null);
   const [showInfoModal, setShowInfoModal] = useState(false);
-  const [activeTab, setActiveTab] = useState('day');
+  const [activeTab, setActiveTab] = useState('boarding'); // Changed to boarding as default
   const [searchTerm, setSearchTerm] = useState('');
   const [showTableView, setShowTableView] = useState(true);
 
-  // Tabs configuration
+  // Tabs configuration - Day fees removed
   const tabs = [
-    { id: 'day', name: 'Day Fees', icon: IoBusinessOutline, color: 'blue' },
     { id: 'boarding', name: 'Boarding Fees', icon: IoBedOutline, color: 'purple' },
     { id: 'admission', name: 'Admission Fees', icon: MdOutlineAdUnits, color: 'amber' }
   ];
@@ -434,8 +433,6 @@ export default function ModernFeesPage() {
     if (!documentData) return [];
     
     switch(activeTab) {
-      case 'day':
-        return documentData.feesDayDistributionJson || [];
       case 'boarding':
         return documentData.feesBoardingDistributionJson || [];
       case 'admission':
@@ -456,14 +453,6 @@ export default function ModernFeesPage() {
     if (!documentData) return null;
     
     switch(activeTab) {
-      case 'day':
-        return {
-          url: documentData.feesDayDistributionPdf,
-          name: documentData.feesDayPdfName,
-          size: documentData.feesDayPdfSize,
-          date: documentData.feesDayPdfUploadDate,
-          description: documentData.feesDayDescription
-        };
       case 'boarding':
         return {
           url: documentData.feesBoardingDistributionPdf,
@@ -557,7 +546,7 @@ export default function ModernFeesPage() {
                   Loading fee structure...
                 </p>
                 <p className="text-slate-700 text-[10px] sm:text-xs uppercase tracking-widest mt-1 font-bold">
-                  S.A kinyui boys Senior School
+                  S.A Kinyui Boys Senior School
                 </p>
               </div>
             </Stack>
@@ -576,156 +565,127 @@ export default function ModernFeesPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
       <Toaster position="top-right" richColors />
 
-{/* Hero Section */}
-<div className="relative bg-slate-950 p-6 sm:p-10 overflow-hidden">
-  {/* Glow Effects */}
-  <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-600/20 rounded-full blur-[120px]" />
-  <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-purple-600/10 rounded-full blur-[120px]" />
+      {/* Hero Section */}
+      <div className="relative bg-slate-950 p-6 sm:p-10 overflow-hidden">
+        {/* Glow Effects */}
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-600/20 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-purple-600/10 rounded-full blur-[120px]" />
 
-  <div className="max-w-7xl mx-auto relative z-10">
-    <div className="space-y-6">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="space-y-6">
 
-      {/* Badge */}
-      <div className="inline-flex items-center gap-2 px-3 py-1.5 
-                      bg-white/10 backdrop-blur-xl rounded-full border border-white/20">
-        <IoWalletOutline className="text-blue-400 text-xs sm:text-sm animate-pulse" />
-        <span className="text-blue-100 font-black text-[10px] sm:text-xs uppercase tracking-[0.2em]">
-          Fee Structure {year}
-        </span>
-      </div>
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 
+                            bg-white/10 backdrop-blur-xl rounded-full border border-white/20">
+              <IoWalletOutline className="text-blue-400 text-xs sm:text-sm animate-pulse" />
+              <span className="text-blue-100 font-black text-[10px] sm:text-xs uppercase tracking-[0.2em]">
+                Fee Structure {year}
+              </span>
+            </div>
 
-      {/* Top Row */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            {/* Top Row */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
 
-        {/* LEFT */}
-        <div className="max-w-2xl">
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.1]">
-          Our School Fees
-            </span>
-          </h1>
+              {/* LEFT */}
+              <div className="max-w-2xl">
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.1]">
+                  Our School Fees
+                </h1>
+                <p className="text-slate-400 text-sm sm:text-lg mt-3 font-medium">
+                  Transparent fee structure for all boarders at 
+                  <span className="text-white font-semibold"> Kinyui Boys Senior School</span>.
+                </p>
 
-          <p className="text-slate-400 text-sm sm:text-lg mt-3 font-medium">
-            Transparent fee structure for all boarders at 
-            <span className="text-white font-semibold"> Kinyui Boys Senior School</span>.
-          </p>
-
-          {/* Mini Highlights */}
-          <div className="flex flex-wrap items-center gap-4 mt-4 text-xs sm:text-sm text-slate-300">
-            <span className="flex items-center gap-1">
-              <FiCheckCircle className="text-blue-400" /> Updated {year}
-            </span>
-            <span className="flex items-center gap-1">
-              <FiShield className="text-emerald-400" /> Verified data
-            </span>
-            <span className="flex items-center gap-1">
-              <FiDownload className="text-purple-400" /> PDF available
-            </span>
-          </div>
-        </div>
-
-        {/* RIGHT ACTIONS */}
-        <div className="flex flex-nowrap sm:flex-row gap-3 w-full sm:w-auto">
-
-          {/* Primary */}
-          <button
-            onClick={refreshData}
-            disabled={refreshing}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 
-                       px-5 py-3 sm:px-7 sm:py-4 
-                       rounded-xl sm:rounded-2xl 
-                       bg-white hover:bg-blue-50 
-                       text-slate-950 font-black 
-                       text-xs sm:text-sm 
-                       uppercase tracking-widest 
-                       transition-all active:scale-95 
-                       disabled:opacity-50
-                       shadow-[0_0_20px_rgba(255,255,255,0.1)]"
-          >
-            {refreshing && (
-              <CircularProgress size={18} thickness={5} sx={{ color: "#0f172a" }} />
-            )}
-            <span>
-              {refreshing ? "Fetching..." : "Refresh"}
-            </span>
-          </button>
-
-          {/* Secondary */}
-          {pdfInfo?.url && (
-            <button
-              onClick={() => handleViewPDF(pdfInfo.url)}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 
-                         px-5 py-3 sm:px-7 sm:py-4 
-                         rounded-xl sm:rounded-2xl 
-                         border border-white/20 
-                         text-white font-black 
-                         text-xs sm:text-sm 
-                         uppercase tracking-widest 
-                         hover:bg-white/10 transition-all"
-            >
-              <IoEyeOutline />
-              Preview
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Bottom Stats Strip (VERY MODERN TOUCH) */}
-      <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-4 border-t border-white/10">
-        <div>
-          <p className="text-lg sm:text-2xl font-black text-white">
-            {getCurrentTotal().toLocaleString()}
-          </p>
-          <p className="text-[10px] sm:text-xs text-slate-400 uppercase">Total Fees (KSh)</p>
-        </div>
-
-        <div>
-          <p className="text-lg sm:text-2xl font-black text-white">
-            {getCurrentFeeItems().length}
-          </p>
-          <p className="text-[10px] sm:text-xs text-slate-400 uppercase">Fee Items</p>
-        </div>
-
-        <div>
-          <p className="text-lg sm:text-2xl font-black text-white">
-            {tabs.find(t => t.id === activeTab)?.name.split(" ")[0]}
-          </p>
-          <p className="text-[10px] sm:text-xs text-slate-400 uppercase">Category</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-8">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-          <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-100 p-4 sm:p-5 md:p-6 shadow-sm">
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <div className="p-2 sm:p-2.5 md:p-3 rounded-lg sm:rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
-                <IoBusinessOutline size={18} className="sm:w-6 sm:h-6 md:w-6 md:h-6" />
+                {/* Mini Highlights */}
+                <div className="flex flex-wrap items-center gap-4 mt-4 text-xs sm:text-sm text-slate-300">
+                  <span className="flex items-center gap-1">
+                    <FiCheckCircle className="text-blue-400" /> Updated {year}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <FiShield className="text-emerald-400" /> Verified data
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <FiDownload className="text-purple-400" /> PDF available
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[8px] sm:text-xs md:text-xs font-bold text-slate-400 uppercase">Day</span>
-                {documentData?.feesDayDistributionPdf && (
+
+              {/* RIGHT ACTIONS - Always in flex display */}
+              <div className="flex flex-row gap-3 w-full sm:w-auto flex-shrink-0">
+                {/* Refresh Button */}
+                <button
+                  onClick={refreshData}
+                  disabled={refreshing}
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 
+                             px-5 py-3 sm:px-7 sm:py-4 
+                             rounded-xl sm:rounded-2xl 
+                             bg-white hover:bg-blue-50 
+                             text-slate-950 font-black 
+                             text-xs sm:text-sm 
+                             uppercase tracking-widest 
+                             transition-all active:scale-95 
+                             disabled:opacity-50
+                             shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                >
+                  {refreshing && (
+                    <CircularProgress size={18} thickness={5} sx={{ color: "#0f172a" }} />
+                  )}
+                  <span>
+                    {refreshing ? "Refreshing..." : "Refresh"}
+                  </span>
+                </button>
+
+                {/* Preview Button */}
+                {pdfInfo?.url && (
                   <button
-                    onClick={() => handleDownloadPDF(documentData.feesDayDistributionPdf, documentData.feesDayPdfName)}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 text-sm font-bold transition-colors"
-                    title="Download Day Fees Document"
+                    onClick={() => handleViewPDF(pdfInfo.url)}
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 
+                               px-5 py-3 sm:px-7 sm:py-4 
+                               rounded-xl sm:rounded-2xl 
+                               border border-white/20 
+                               text-white font-black 
+                               text-xs sm:text-sm 
+                               uppercase tracking-widest 
+                               hover:bg-white/10 transition-all"
                   >
-                    <FiDownload className="w-4 h-4" />
-                    <span className="text-xs sm:text-sm">Download</span>
+                    <IoEyeOutline />
+                    Preview
                   </button>
                 )}
               </div>
             </div>
-            <h3 className="text-sm sm:text-base md:text-lg font-bold text-slate-900 mb-1">Day Scholars</h3>
-            <p className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 mb-2 leading-tight">
-              KSh {documentData?.feesDayDistributionJson?.reduce((sum, item) => sum + item.amount, 0)?.toLocaleString() || '0'}
-            </p>
-            <p className="text-[10px] sm:text-xs md:text-sm text-slate-500">{documentData?.feesDayDistributionJson?.length || 0} fee items</p>
-          </div>
 
+            {/* Bottom Stats Strip */}
+            <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-4 border-t border-white/10">
+              <div>
+                <p className="text-lg sm:text-2xl font-black text-white">
+                  {getCurrentTotal().toLocaleString()}
+                </p>
+                <p className="text-[10px] sm:text-xs text-slate-400 uppercase">Total Fees (KSh)</p>
+              </div>
+
+              <div>
+                <p className="text-lg sm:text-2xl font-black text-white">
+                  {getCurrentFeeItems().length}
+                </p>
+                <p className="text-[10px] sm:text-xs text-slate-400 uppercase">Fee Items</p>
+              </div>
+
+              <div>
+                <p className="text-lg sm:text-2xl font-black text-white">
+                  {tabs.find(t => t.id === activeTab)?.name.split(" ")[0]}
+                </p>
+                <p className="text-[10px] sm:text-xs text-slate-400 uppercase">Category</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-8">
+        {/* Stats Cards - Day scholars card removed */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
           <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-100 p-4 sm:p-5 md:p-6 shadow-sm">
             <div className="flex items-center justify-between mb-3 sm:mb-4">
               <div className="p-2 sm:p-2.5 md:p-3 rounded-lg sm:rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
@@ -753,7 +713,7 @@ export default function ModernFeesPage() {
             <p className="text-[10px] sm:text-xs md:text-sm text-slate-500">{documentData?.feesBoardingDistributionJson?.length || 0} fee items</p>
           </div>
 
-          <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-100 p-4 sm:p-5 md:p-6 shadow-sm sm:col-span-2 lg:col-span-1">
+          <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-100 p-4 sm:p-5 md:p-6 shadow-sm">
             <div className="flex items-center justify-between mb-3 sm:mb-4">
               <div className="p-2 sm:p-2.5 md:p-3 rounded-lg sm:rounded-xl bg-amber-50 text-amber-600 border border-amber-100">
                 <MdOutlineAdUnits size={18} className="sm:w-6 sm:h-6 md:w-6 md:h-6" />
@@ -963,7 +923,7 @@ export default function ModernFeesPage() {
                   <IoReceiptOutline className="text-purple-600 flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" />
                   <div className="min-w-0">
                     <p className="text-[8px] sm:text-xs font-bold text-slate-400">Account Name</p>
-                    <p className="text-[10px] sm:text-xs md:text-sm font-bold text-slate-900 truncate">kinyui boys Senior School</p>
+                    <p className="text-[10px] sm:text-xs md:text-sm font-bold text-slate-900 truncate">Kinyui Boys Senior School</p>
                   </div>
                 </div>
               </div>
