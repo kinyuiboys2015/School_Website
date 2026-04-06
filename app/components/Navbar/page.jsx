@@ -177,13 +177,13 @@ export default function ModernNavbar() {
       description: 'Secure portal for administrators',
       isHighlighted: true
     },
-    ,
+  
     {
       name: 'Careers',
       href: '/pages/careers',
       icon: FiBriefcase,
       description: 'Job opportunities at Kinyui Boys'
-    }
+    },
     {
       name: 'Staff Directory',
       href: '/pages/staff',
