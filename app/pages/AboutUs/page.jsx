@@ -551,80 +551,99 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════ INSTITUTIONAL SECTION ═══════════════════════ */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto relative bg-white rounded-[2rem] md:rounded-[3.5rem] p-8 sm:p-6 md:p-16 text-center border border-slate-200 shadow-xl">
-          
-          <div className="flex justify-center mb-6 md:mb-8">
-            <div className="relative p-4 bg-amber-50 border border-amber-200 rounded-2xl">
-              <ShieldCheck className="text-amber-600 w-6 h-6 md:w-7 md:h-7" />
+    {/* ═══════════════════════ KINYUI BOYS INSTITUTIONAL SECTION ═══════════════════════ */}
+<section className="py-16 sm:py-24 px-4 sm:px-6">
+  <div className="max-w-7xl mx-auto bg-white rounded-[2.5rem] md:rounded-[4rem] border border-slate-100 shadow-2xl shadow-slate-200/50 overflow-hidden">
+    <div className="flex flex-col lg:flex-row">
+      
+      {/* Sidebar: The Brand/Identity */}
+      <div className="lg:w-1/3 bg-slate-50 p-10 md:p-16 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-100">
+        <div>
+          <div className="inline-flex p-3 bg-white shadow-sm border border-amber-100 rounded-2xl mb-8">
+            <ShieldCheck className="text-amber-600 w-8 h-8" />
+          </div>
+          <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-[0.9] mb-6">
+            The <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-500 to-orange-700">Kinyui</span> <br />
+            Standard.
+          </h2>
+          <p className="text-slate-500 font-medium leading-relaxed">
+            Building men of integrity through structured discipline and mental resilience.
+          </p>
+        </div>
+
+        <div className="mt-12 space-y-6">
+          {[
+            { label: 'Safety Rating', val: '100%' },
+            { label: 'Ethics Standard', val: 'Gold' }
+          ].map((stat, i) => (
+            <div key={i} className="flex flex-col">
+              <span className="text-3xl font-black text-slate-900">{stat.val}</span>
+              <span className="text-[10px] uppercase tracking-widest text-amber-600 font-bold">{stat.label}</span>
             </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Main Content: The Details */}
+      <div className="lg:w-2/3 p-10 md:p-16 flex flex-col justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+          
+          {/* Policy */}
+          <div className="group">
+            <div className="w-12 h-1 bg-amber-500 mb-6 transition-all group-hover:w-20" />
+            <h4 className="text-amber-600 font-black text-xs uppercase tracking-[0.2em] mb-3">Code of Conduct</h4>
+            <h3 className="text-xl font-bold text-slate-900 mb-4 leading-tight">
+              Standardizing Excellence through Discipline.
+            </h3>
+            <p className="text-slate-500 text-sm leading-relaxed">
+              Our policies are designed to sharpen character. We uphold a strict code that transforms boys into responsible gentlemen, prioritizing academic focus and mutual respect.
+            </p>
           </div>
 
-          <div className="relative z-10 w-full">
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-black text-slate-900 mb-6 md:mb-10 tracking-tighter leading-[1.1] md:leading-[0.95] max-w-4xl mx-auto">
-              Integrity & <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">Wellbeing.</span>
-            </h2>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 mb-10 md:mb-16 max-w-5xl mx-auto text-left items-start border-t border-slate-100 pt-8 md:pt-12">
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                  <h4 className="text-amber-600 font-black text-[10px] uppercase tracking-[0.2em]">Institutional Policy</h4>
-                </div>
-                <p className="text-slate-800 text-base md:text-lg leading-tight font-bold">
-                  Standardizing excellence through discipline.
-                </p>
-                <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-light">
-                  Our institutional policies ensure a focused environment. We uphold a strict code of conduct that prioritizes academic integrity and mutual respect as the bedrock of our School culture.
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                  <h4 className="text-amber-600 font-black text-[10px] uppercase tracking-[0.2em]">Guidance & Counselling</h4>
-                </div>
-                <p className="text-slate-800 text-base md:text-lg leading-tight font-bold">
-                  Nurturing the mind beyond the classroom.
-                </p>
-                <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-light">
-                  Through professional Guidance and Counselling, we provide students with the emotional tools and support necessary to navigate the challenges of global leadership and personal growth.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-row gap-3 sm:gap-6 justify-center items-center w-full px-4 mt-6">
-              <Link href="/pages/OurSchoolPolicies" className="w-auto">
-                <button className="px-5 sm:px-10 py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-black text-[9px] sm:text-[11px] uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-amber-500/25 active:scale-95 flex items-center justify-center gap-2 transition-all hover:shadow-lg whitespace-nowrap">
-                  School Rules <ArrowRight size={14} className="shrink-0" />
-                </button>
-              </Link>
-              <Link href="/pages/Guidance-and-Councelling" className="w-auto">
-                <button className="px-5 sm:px-10 py-3.5 bg-slate-100 text-slate-800 font-black text-[9px] sm:text-[11px] uppercase tracking-[0.2em] rounded-2xl border border-slate-200 active:scale-95 transition-all hover:bg-slate-200 whitespace-nowrap">
-                  Sessions
-                </button>
-              </Link>
-            </div>
-
-            <div className="pt-8 border-t border-slate-100 grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mt-8">
-              {[
-                { label: 'Safety Rating', val: '100%' },
-                { label: 'Student Support', val: '24/7' },
-                { label: 'Certified Mentors', val: '15+' },
-                { label: 'Ethics Standard', val: 'Gold' }
-              ].map((stat, i) => (
-                <div key={i} className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                  <span className="text-xl md:text-3xl font-black text-slate-900 tracking-tighter">{stat.val}</span>
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-amber-600 font-bold mt-1">
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
-            </div>
+          {/* Counselling */}
+          <div className="group">
+            <div className="w-12 h-1 bg-orange-500 mb-6 transition-all group-hover:w-20" />
+            <h4 className="text-orange-600 font-black text-xs uppercase tracking-[0.2em] mb-3">Brotherhood Support</h4>
+            <h3 className="text-xl font-bold text-slate-900 mb-4 leading-tight">
+              Nurturing Minds for Global Leadership.
+            </h3>
+            <p className="text-slate-500 text-sm leading-relaxed">
+              Beyond the books, we offer professional Guidance and Counselling to help every student navigate personal growth and emotional strength.
+            </p>
           </div>
         </div>
-      </section>
+
+        {/* Actions & Secondary Stats */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 pt-10 border-t border-slate-100">
+          <Link href="/pages/OurSchoolPolicies" className="w-full sm:w-auto">
+            <button className="w-full px-8 py-4 bg-slate-900 text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-amber-600 transition-colors flex items-center justify-center gap-3">
+              View School Rules <ArrowRight size={16} />
+            </button>
+          </Link>
+          
+          <Link href="/pages/Guidance-and-Councelling" className="w-full sm:w-auto">
+            <button className="w-full px-8 py-4 bg-white text-slate-900 border border-slate-200 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-slate-50 transition-colors">
+              Book a Session
+            </button>
+          </Link>
+
+          <div className="flex gap-8 ml-auto hidden xl:flex">
+             <div className="text-right">
+                <p className="text-2xl font-black text-slate-900">24/7</p>
+                <p className="text-[9px] uppercase font-bold text-slate-400">Support</p>
+             </div>
+             <div className="text-right">
+                <p className="text-2xl font-black text-slate-900">15+</p>
+                <p className="text-[9px] uppercase font-bold text-slate-400">Mentors</p>
+             </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
       {/* Scroll to Top Button */}
       <ScrollToTop />
