@@ -607,7 +607,7 @@ export default function ModernFeesPage() {
           </h1>
 
           <p className="text-slate-400 text-sm sm:text-lg mt-3 font-medium">
-            Transparent fee structure for all boarders and day scholars at 
+            Transparent fee structure for all boarders at 
             <span className="text-white font-semibold"> Kinyui Boys Senior School</span>.
           </p>
 
