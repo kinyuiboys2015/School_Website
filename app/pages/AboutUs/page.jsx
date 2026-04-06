@@ -4,7 +4,7 @@ import {
   MapPin, Users, BookOpen, Mail, Trophy, Target, Globe, Clock,
   TrendingUp, Lightbulb, ExternalLink, ShieldCheck, ArrowRight,
   Phone, Sparkles, Heart, Zap, GraduationCap, Building2, Award,
-  ChevronRight, Star, Check, ArrowUp, Eye, Compass, Map, Trophy 
+  ChevronRight, Star, Check, ArrowUp, Eye, Compass, Map, Navigation
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
