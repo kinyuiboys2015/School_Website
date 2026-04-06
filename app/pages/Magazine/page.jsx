@@ -39,7 +39,7 @@ const ScrollToTop = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 left-6 p-3 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full shadow-lg z-50 active:scale-95 transition-all"
+      className="fixed bottom-6 left-6 p-3 bg-gradient-to-r from-amber-900 to-orange-600 rounded-full shadow-lg z-50 active:scale-95 transition-all"
     >
       <ArrowUp className="text-white text-xl" />
     </button>
@@ -227,7 +227,7 @@ const BookReader = ({ issue, onClose }) => {
             <X className="text-white" size={20} />
           </button>
           <div className="h-6 w-px bg-white/20" />
-          <BookOpen className="text-amber-400" size={18} />
+          <BookOpen className="text-amber-900" size={18} />
           <span className="text-white font-bold text-sm sm:text-base truncate max-w-[200px] sm:max-w-none">
             {issue.title} — {issue.year}
           </span>
@@ -254,7 +254,7 @@ const BookReader = ({ issue, onClose }) => {
           <a
             href={issue.pdfUrl}
             download
-            className="px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs sm:text-sm font-bold rounded-lg flex items-center gap-2 transition-all"
+            className="px-3 py-1.5 bg-gradient-to-r from-amber-900 to-orange-900 text-white text-xs sm:text-sm font-bold rounded-lg flex items-center gap-2 transition-all"
           >
             <Download size={14} />
             <span className="hidden sm:inline">Download</span>
@@ -268,7 +268,7 @@ const BookReader = ({ issue, onClose }) => {
       {/* Reading Progress Bar */}
       <div className="h-1 bg-white/5 shrink-0">
         <motion.div
-          className="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-r-full"
+          className="h-full bg-gradient-to-r from-amber-900 to-orange-900 rounded-r-full"
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         />
@@ -308,13 +308,13 @@ const BookReader = ({ issue, onClose }) => {
                 onLoadSuccess={onDocumentLoadSuccess}
                 loading={
                   <div className="flex flex-col items-center justify-center py-32 px-20">
-                    <div className="w-10 h-10 border-3 border-amber-400/30 border-t-amber-400 rounded-full animate-spin mb-4" />
+                    <div className="w-10 h-10 border-3 border-amber-900/30 border-t-amber-900 rounded-full animate-spin mb-4" />
                     <p className="text-slate-500 text-sm">Loading magazine...</p>
                   </div>
                 }
                 error={
                   <div className="flex flex-col items-center justify-center py-32 px-20">
-                    <p className="text-red-400 text-sm">Failed to load PDF</p>
+                    <p className="text-red-700 text-sm">Failed to load PDF</p>
                   </div>
                 }
               >
@@ -358,7 +358,7 @@ const BookReader = ({ issue, onClose }) => {
                 setCurrentPage(val);
               }
             }}
-            className="w-14 text-center bg-white/10 border border-white/20 rounded-lg text-white text-sm py-1 focus:outline-none focus:border-amber-400"
+            className="w-14 text-center bg-white/10 border border-white/20 rounded-lg text-white text-sm py-1 focus:outline-none focus:border-amber-900"
           />
           <span className="text-white/60 text-sm">of {numPages || "..."}</span>
         </div>
@@ -375,7 +375,7 @@ const BookReader = ({ issue, onClose }) => {
                 }}
                 className={`w-2 h-2 rounded-full transition-all ${
                   p === currentPage
-                    ? "w-6 bg-amber-400"
+                    ? "w-6 bg-amber-900"
                     : "bg-white/20"
                 }`}
               />
@@ -396,7 +396,7 @@ const MagazineCard = ({ issue, onOpen }) => {
       {/* Featured Badge */}
       {issue.featured && (
         <div className="absolute top-5 left-5 z-10">
-          <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-1.5 rounded-full text-xs font-black flex items-center gap-1.5 shadow-lg">
+          <div className="bg-gradient-to-r from-amber-900 to-orange-900 text-white px-3 py-1.5 rounded-full text-xs font-black flex items-center gap-1.5 shadow-lg">
             <Star size={12} fill="currentColor" />
             Latest Edition
           </div>
@@ -423,7 +423,7 @@ const MagazineCard = ({ issue, onOpen }) => {
 
         {/* Title Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black to-transparent">
-          <p className="text-amber-400 text-xs font-black uppercase tracking-wider mb-1">Annual Publication</p>
+          <p className="text-amber-900 text-xs font-black uppercase tracking-wider mb-1">Annual Publication</p>
           <h3 className="text-white font-black text-2xl leading-tight">{issue.title}</h3>
         </div>
       </div>
@@ -465,7 +465,7 @@ const MagazineCard = ({ issue, onOpen }) => {
         <div className="flex gap-3">
           <button
             onClick={() => onOpen(issue)}
-            className="flex-1 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all"
+            className="flex-1 px-5 py-2.5 bg-gradient-to-r from-amber-900 to-orange-900 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all"
           >
             <Eye size={16} />
             Read Magazine
@@ -526,14 +526,14 @@ export default function MagazinePage() {
         
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/20 backdrop-blur-sm border border-amber-400/30 mb-6">
-              <Newspaper className="text-amber-400" size={14} />
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-900/20 backdrop-blur-sm border border-amber-900/30 mb-6">
+              <Newspaper className="text-amber-900" size={14} />
               <span className="text-xs font-bold text-amber-300 uppercase tracking-wider">Annual Publication</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-5">
               The Kinyui Echo
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-900 to-orange-400">
                 Magazine Archive
               </span>
             </h1>
@@ -552,15 +552,15 @@ export default function MagazinePage() {
             {/* Stats */}
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
-                <BookOpen className="text-amber-500" size={18} />
+                <BookOpen className="text-amber-900" size={18} />
                 <span className="text-slate-700 font-bold">{totalIssues} Issues</span>
               </div>
               <div className="flex items-center gap-2">
-                <FileText className="text-amber-500" size={18} />
+                <FileText className="text-amber-900" size={18} />
                 <span className="text-slate-700 font-bold">{totalPages}+ Pages</span>
               </div>
               <div className="flex items-center gap-2">
-                <Calendar className="text-amber-500" size={18} />
+                <Calendar className="text-amber-900" size={18} />
                 <span className="text-slate-700 font-bold">{earliestYear} - {latestYear}</span>
               </div>
             </div>
@@ -574,7 +574,7 @@ export default function MagazinePage() {
                   placeholder="Search by year or keyword..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 bg-slate-100 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all"
+                  className="w-full pl-9 pr-4 py-2 bg-slate-100 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-amber-900 focus:ring-1 focus:ring-amber-900 transition-all"
                 />
               </div>
               
@@ -582,7 +582,7 @@ export default function MagazinePage() {
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(e.target.value)}
-                className="px-4 py-2 bg-slate-100 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-amber-400 cursor-pointer"
+                className="px-4 py-2 bg-slate-100 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-amber-900 cursor-pointer"
               >
                 <option value="all">All Years</option>
                 {years.map(year => (
@@ -628,7 +628,7 @@ export default function MagazinePage() {
               const Icon = item.icon;
               return (
                 <div key={i} className="bg-white rounded-2xl p-6 text-center shadow-md">
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mx-auto mb-4">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-900 to-orange-600 flex items-center justify-center mx-auto mb-4">
                     <Icon className="text-white" size={24} />
                   </div>
                   <h3 className="font-black text-slate-900 mb-2">{item.title}</h3>
