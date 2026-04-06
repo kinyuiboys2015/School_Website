@@ -4,7 +4,7 @@ import {
   MapPin, Users, BookOpen, Mail, Trophy, Target, Globe, Clock,
   TrendingUp, Lightbulb, ExternalLink, ShieldCheck, ArrowRight,
   Phone, Sparkles, Heart, Zap, GraduationCap, Building2, Award,
-  ChevronRight, Star, Check, ArrowUp, Eye, Compass 
+  ChevronRight, Star, Check, ArrowUp, Eye, Compass, Map
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -194,7 +194,7 @@ export default function AboutPage() {
 
         {/* Vision Pillars - Minimalist Row Design */}
         <div className="space-y-4">
-          {[
+          {([
             { 
               title: "Holistic Mastery", 
               icon: <Zap className="w-5 h-5" />, 
@@ -210,7 +210,7 @@ export default function AboutPage() {
               icon: <Globe className="w-5 h-5" />, 
               desc: "Smart environments that foster collaboration and digital literacy." 
             }
-          ].map((item, i) => (
+          ]).map((item, i) => (
             <div key={i} className="group flex items-start gap-6 p-5 rounded-3xl transition-all duration-300 hover:bg-slate-50 border border-transparent hover:border-slate-100">
               <div className="shrink-0 w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-amber-600 group-hover:scale-110 transition-all">
                 {item.icon}
@@ -371,12 +371,12 @@ export default function AboutPage() {
 
         {/* Vertical Values Path */}
         <div className="relative space-y-8 before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
-          {[
+          {([
             { title: "Integrity", icon: <ShieldCheck size={20} />, desc: "Doing right, even when no one is watching." },
             { title: "Discipline", icon: <Clock size={20} />, desc: "Mastery over self is the first step to leadership." },
             { title: "Resilience", icon: <TrendingUp size={20} />, desc: "We don't break; we bounce back stronger." },
             { title: "Leadership", icon: <Users size={20} />, desc: "To lead others, one must first serve the collective." }
-          ].map((val, i) => (
+          ]).map((val, i) => (
             <div key={i} className="relative pl-12 group">
               {/* Icon Marker */}
               <div className="absolute left-0 top-0 w-10 h-10 bg-white border-2 border-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:border-amber-500 group-hover:text-amber-600 transition-all duration-300 shadow-sm z-10">
@@ -428,12 +428,12 @@ export default function AboutPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
+            {([
               { icon: '📚', label: 'Category', val: 'Public Boarding' },
               { icon: '🎓', label: 'Curriculum', val: '8-4-4 & CBC' },
               { icon: '⏰', label: 'Hours', val: '7:45 AM - 4:30 PM' },
               { icon: '📅', label: 'Legacy', val: 'Est. 1976' }
-            ].map((item, i) => (
+            ]).map((item, i) => (
               <div key={i} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 bg-slate-50/30">
                 <span className="text-2xl">{item.icon}</span>
                 <div>
@@ -530,10 +530,10 @@ Our school Location
         </div>
 
         <div className="mt-12 space-y-6">
-          {[
+          {([
             { label: 'Safety Rating', val: '100%' },
             { label: 'Ethics Standard', val: 'Gold' }
-          ].map((stat, i) => (
+          ]).map((stat, i) => (
             <div key={i} className="flex flex-col">
               <span className="text-3xl font-black text-slate-900">{stat.val}</span>
               <span className="text-[10px] uppercase tracking-widest text-amber-600 font-bold">{stat.label}</span>
