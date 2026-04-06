@@ -600,9 +600,7 @@ export default function ModernFeesPage() {
         {/* LEFT */}
         <div className="max-w-2xl">
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.1]">
-            School{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-200 to-purple-400">
-              Fees
+          Our School Fees
             </span>
           </h1>
 
