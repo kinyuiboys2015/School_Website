@@ -10,13 +10,14 @@ import {
   Search
 } from "lucide-react";
 import Image from "next/image";
+import BookReader  from "../../components/book/page.jsx";
 
 // ============================================================
 // Dynamically import BookReader with NO SSR
 // This prevents DOMMatrix error during server-side rendering
 // ============================================================
 const BookReader = dynamic(
-  () => import("./components/book/page.jsx"),
+  () => import("../../components/book/page.jsx"),
   { 
     ssr: false,
     loading: () => (
