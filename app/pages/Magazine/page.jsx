@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   BookOpen, Calendar, Filter, X, ChevronLeft, ChevronRight,
-  Download, Eye, Share2, Search, TrendingUp, Award, Users,
+  Download, Eye, Share2, Search, TrendingUp, Award, Users, Trophy,
   ArrowRight, Sparkles, Clock, Bookmark, Heart, ZoomIn,
   Grid3x3, LayoutGrid, List, FileText, Image as ImageIcon,
   ExternalLink, ArrowUp, CheckCircle, Star, Newspaper,
