@@ -1,4 +1,5 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import { toast, Toaster } from 'sonner';
 import { 
@@ -30,7 +31,8 @@ import {
   FiShield,
   FiWifi,
   FiCoffee,
-  FiAward
+  FiAward,
+  FiAlertTriangle
 } from 'react-icons/fi';
 import { 
   IoNewspaperOutline,
@@ -96,7 +98,7 @@ const ModernModal = ({ children, open, onClose, maxWidth = '800px' }) => {
   );
 };
 
-// Fee Breakdown Card Component - FIXED: Better responsive text sizing
+// Fee Breakdown Card Component
 const FeeBreakdownCard = ({ item, onInfo }) => {
   const getCategoryIcon = (name) => {
     const icons = {
@@ -226,42 +228,112 @@ const PDFCard = ({ title, pdfUrl, fileName, fileSize, uploadDate, description, o
   );
 };
 
-// Fee Summary Card
-const FeeSummaryCard = ({ title, total, items, icon: Icon, color = 'blue' }) => {
-  const colorClasses = {
-    blue: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-100' },
-    purple: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'border-purple-100' },
-    emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-100' },
-    amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-100' }
-  };
+// Table Distribution Component - Similar to School Policies page
+const TableDistribution = ({ title, data, totalAmount, year, onDownload }) => {
+  const [expanded, setExpanded] = useState(true);
 
-  const classes = colorClasses[color] || colorClasses.blue;
+  if (!data || data.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-4">
-        <div className={`p-3 rounded-xl ${classes.bg} ${classes.text} border ${classes.border}`}>
-          <Icon size={24} />
+    <div className="mb-8 sm:mb-12">
+      <button onClick={() => setExpanded(!expanded)} className="w-full text-left">
+        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-900 shadow-xl hover:shadow-2xl transition-shadow">
+          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "24px 24px" }} />
+          <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 sm:p-6 md:p-8 gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+                <FiDollarSign className="text-white" size={24} />
+              </div>
+              <div>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white">{title} {year}</h2>
+                <p className="text-blue-200/80 text-xs sm:text-sm mt-0.5">Tap to {expanded ? "collapse" : "view"} the full breakdown</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              {onDownload && (
+                <button
+                  onClick={(e) => { e.stopPropagation(); onDownload(); }}
+                  className="px-3 py-1.5 bg-white/20 rounded-lg text-white text-xs font-bold flex items-center gap-1 hover:bg-white/30 transition-colors"
+                >
+                  <FiDownload size={12} />
+                  Export
+                </button>
+              )}
+              <div className={`w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center transition-transform ${expanded ? "rotate-180" : ""}`}>
+                <FiChevronRight className="text-white" size={20} style={{ transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)' }} />
+              </div>
+            </div>
+          </div>
         </div>
-        <span className="text-xs font-bold text-slate-400 uppercase">Total</span>
-      </div>
-      
-      <h3 className="text-lg font-bold text-slate-900 mb-1">{title}</h3>
-      <p className="text-3xl font-black text-slate-900 mb-4">
-        KSh {total?.toLocaleString()}
-      </p>
-      
-      <div className="space-y-2 mb-4">
-        <div className="flex justify-between text-sm">
-          <span className="text-slate-500">Items</span>
-          <span className="font-bold text-slate-900">{items || 0}</span>
-        </div>
-      </div>
-      
-      <button className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-slate-800 active:scale-95 transition-all">
-        View Breakdown
-        <FiChevronRight size={16} />
       </button>
+
+      {expanded && (
+        <div className="bg-white rounded-b-2xl border border-t-0 border-slate-200 shadow-lg overflow-hidden">
+          <div className="p-4 sm:p-6 md:p-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+              {data.map((item, idx) => (
+                <div key={idx} className="relative rounded-xl bg-gradient-to-br from-slate-700 to-slate-800 p-4 sm:p-5 text-white overflow-hidden">
+                  <div className="absolute top-1 right-1 text-3xl opacity-20">
+                    {idx === 0 ? '📚' : idx === 1 ? '✏️' : idx === 2 ? '🎓' : '💰'}
+                  </div>
+                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-white/70">{item.term}</span>
+                  <div className="mt-1 flex items-baseline gap-1">
+                    <span className="text-[10px] sm:text-xs font-semibold opacity-80">KES</span>
+                    <span className="text-lg sm:text-2xl md:text-3xl font-black">{item.amount.toLocaleString()}</span>
+                  </div>
+                  <span className="inline-block mt-2 text-[10px] px-2 py-0.5 bg-white/20 rounded-full font-medium">{item.tag}</span>
+                </div>
+              ))}
+            </div>
+
+            <h3 className="text-sm sm:text-base font-extrabold text-slate-900 mb-3">Detailed Breakdown</h3>
+            <div className="overflow-x-auto -mx-4 sm:mx-0 rounded-xl border border-slate-200">
+              <table className="min-w-full text-left">
+                <thead>
+                  <tr className="bg-slate-900 text-white text-xs sm:text-sm">
+                    <th className="px-3 sm:px-4 py-3 font-bold">Vote Head</th>
+                    {data.map((term, idx) => (
+                      <th key={idx} className="px-3 sm:px-4 py-3 text-right font-bold">{term.term}</th>
+                    ))}
+                    <th className="px-3 sm:px-4 py-3 text-right font-bold">Total</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {data[0]?.breakdown?.map((row, i) => (
+                    <tr key={i} className="hover:bg-blue-50/40 transition-colors text-xs sm:text-sm">
+                      <td className="px-3 sm:px-4 py-2.5 font-semibold text-slate-800">{row.voteHead}</td>
+                      {data.map((term, idx) => (
+                        <td key={idx} className="px-3 sm:px-4 py-2.5 text-right text-slate-600">
+                          {term.breakdown?.[i]?.amount?.toLocaleString() || '-'}
+                        </td>
+                      ))}
+                      <td className="px-3 sm:px-4 py-2.5 text-right font-bold text-slate-900">
+                        {row.total?.toLocaleString() || '-'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr className="bg-blue-600 text-white font-black text-xs sm:text-sm">
+                    <td className="px-3 sm:px-4 py-3">TOTAL</td>
+                    {data.map((term, idx) => (
+                      <td key={idx} className="px-3 sm:px-4 py-3 text-right">{term.amount.toLocaleString()}</td>
+                    ))}
+                    <td className="px-3 sm:px-4 py-3 text-right">{totalAmount?.toLocaleString() || data.reduce((sum, t) => sum + t.amount, 0).toLocaleString()}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl">
+              <p className="text-amber-800 text-xs sm:text-sm flex items-start gap-2">
+                <FiAlertTriangle className="flex-shrink-0 mt-0.5" size={14} />
+                <span><strong>Late payment penalty:</strong> KES 500 per week. Students with fee balances will not receive end-term reports or sit for exams.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -275,6 +347,7 @@ export default function ModernFeesPage() {
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [activeTab, setActiveTab] = useState('day');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showTableView, setShowTableView] = useState(true);
 
   // Tabs configuration
   const tabs = [
@@ -283,8 +356,51 @@ export default function ModernFeesPage() {
     { id: 'admission', name: 'Admission Fees', icon: MdOutlineAdUnits, color: 'amber' }
   ];
 
+  const router = useRouter();
+  const year = new Date().getFullYear();
 
-const router = useRouter();
+  // Table data for fee distribution (like school policies page)
+  const getTableDataForTab = () => {
+    const items = getCurrentFeeItems();
+    if (!items.length) return null;
+
+    // Transform fee items into table format
+    const terms = [
+      { term: "Term 1", tag: "Opening", amount: 0, breakdown: [] },
+      { term: "Term 2", tag: "Mid Year", amount: 0, breakdown: [] },
+      { term: "Term 3", tag: "Final", amount: 0, breakdown: [] }
+    ];
+
+    // Distribute amounts across terms (example distribution logic)
+    items.forEach(item => {
+      const perTermAmount = Math.round(item.amount / 3);
+      terms.forEach((term, idx) => {
+        term.amount += perTermAmount;
+        term.breakdown.push({
+          voteHead: item.name,
+          amount: perTermAmount
+        });
+      });
+    });
+
+    // Add total for each breakdown item
+    terms.forEach(term => {
+      term.breakdown = term.breakdown.map((item, idx) => ({
+        ...item,
+        total: item.amount * 3
+      }));
+    });
+
+    return {
+      terms,
+      total: terms.reduce((sum, t) => sum + t.amount, 0),
+      items: items.map(item => ({
+        voteHead: item.name,
+        total: item.amount,
+        ...terms.reduce((acc, term, idx) => ({ ...acc, [`term${idx + 1}`]: Math.round(item.amount / 3) }), {})
+      }))
+    };
+  };
 
   // Fetch document data
   const fetchDocuments = async (showRefresh = false) => {
@@ -440,8 +556,8 @@ const router = useRouter();
                 <p className="text-slate-900 font-medium text-sm sm:text-base tracking-tight">
                   Loading fee structure...
                 </p>
-                <p className="text-slate-400 text-[10px] sm:text-xs uppercase tracking-widest mt-1 font-bold">
-                  kinyui boys Senior School
+                <p className="text-slate-700 text-[10px] sm:text-xs uppercase tracking-widest mt-1 font-bold">
+                  S.A kinyui boys Senior School
                 </p>
               </div>
             </Stack>
@@ -454,6 +570,7 @@ const router = useRouter();
   const pdfInfo = getCurrentPDFInfo();
   const currentItems = getCurrentFeeItems();
   const totalAmount = getCurrentTotal();
+  const tableData = getTableDataForTab();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
@@ -469,7 +586,7 @@ const router = useRouter();
             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 backdrop-blur-xl rounded-full border border-white/20">
               <IoWalletOutline className="text-blue-400 text-[10px] sm:text-sm animate-pulse" />
               <span className="text-blue-100 font-black text-[8px] sm:text-xs uppercase tracking-[0.2em]">
-                Fee Structure
+                Fee Structure {year}
               </span>
             </div>
             
@@ -483,32 +600,32 @@ const router = useRouter();
                 </p>
               </div>
               
-        <button
-  onClick={refreshData}
-  disabled={refreshing}
-  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 
-             px-5 py-3 sm:px-8 sm:py-4 
-             rounded-xl sm:rounded-2xl 
-             bg-white hover:bg-blue-50 
-             text-slate-950 font-black 
-             text-xs sm:text-sm 
-             uppercase tracking-widest 
-             transition-all active:scale-95 
-             disabled:opacity-50 disabled:cursor-not-allowed
-             shadow-[0_0_20px_rgba(255,255,255,0.1)]"
->
-  {refreshing && (
-    <CircularProgress 
-      size={18} 
-      thickness={5} 
-      sx={{ color: "#0f172a" }} 
-    />
-  )}
-  
-  <span>
-    {refreshing ? "Fetching fees..." : "Refresh"}
-  </span>
-</button>
+              <button
+                onClick={refreshData}
+                disabled={refreshing}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 
+                           px-5 py-3 sm:px-8 sm:py-4 
+                           rounded-xl sm:rounded-2xl 
+                           bg-white hover:bg-blue-50 
+                           text-slate-950 font-black 
+                           text-xs sm:text-sm 
+                           uppercase tracking-widest 
+                           transition-all active:scale-95 
+                           disabled:opacity-50 disabled:cursor-not-allowed
+                           shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+              >
+                {refreshing && (
+                  <CircularProgress 
+                    size={18} 
+                    thickness={5} 
+                    sx={{ color: "#0f172a" }} 
+                  />
+                )}
+                
+                <span>
+                  {refreshing ? "Fetching fees..." : "Refresh"}
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -522,21 +639,19 @@ const router = useRouter();
               <div className="p-2 sm:p-2.5 md:p-3 rounded-lg sm:rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
                 <IoBusinessOutline size={18} className="sm:w-6 sm:h-6 md:w-6 md:h-6" />
               </div>
-
-{/* Visible Download Button (Day Fees) */}
-<div className="flex items-center gap-2">
-  <span className="text-[8px] sm:text-xs md:text-xs font-bold text-slate-400 uppercase">Day</span>
-  {documentData?.feesDayDistributionPdf && (
-    <button
-      onClick={() => handleDownloadPDF(documentData.feesDayDistributionPdf, documentData.feesDayPdfName)}
-      className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 text-sm font-bold transition-colors"
-      title="Download Day Fees Document"
-    >
-      <FiDownload className="w-4 h-4" />
-      <span className="text-xs sm:text-sm">Download</span>
-    </button>
-  )}
-</div>
+              <div className="flex items-center gap-2">
+                <span className="text-[8px] sm:text-xs md:text-xs font-bold text-slate-400 uppercase">Day</span>
+                {documentData?.feesDayDistributionPdf && (
+                  <button
+                    onClick={() => handleDownloadPDF(documentData.feesDayDistributionPdf, documentData.feesDayPdfName)}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 text-sm font-bold transition-colors"
+                    title="Download Day Fees Document"
+                  >
+                    <FiDownload className="w-4 h-4" />
+                    <span className="text-xs sm:text-sm">Download</span>
+                  </button>
+                )}
+              </div>
             </div>
             <h3 className="text-sm sm:text-base md:text-lg font-bold text-slate-900 mb-1">Day Scholars</h3>
             <p className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 mb-2 leading-tight">
@@ -550,8 +665,6 @@ const router = useRouter();
               <div className="p-2 sm:p-2.5 md:p-3 rounded-lg sm:rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
                 <IoBedOutline size={18} className="sm:w-6 sm:h-6 md:w-6 md:h-6" />
               </div>
-
-              {/* Visible Download Button (Boarding Fees) */}
               <div className="flex items-center gap-2">
                 <span className="text-[8px] sm:text-xs md:text-xs font-bold text-slate-400 uppercase">Boarding</span>
                 {documentData?.feesBoardingDistributionPdf && (
@@ -615,84 +728,130 @@ const router = useRouter();
           })}
         </div>
 
-        {/* Search Bar - Responsive */}
-        <div className="bg-white/80 backdrop-blur-md border border-slate-200/60 p-2 sm:p-3 rounded-xl sm:rounded-2xl shadow-lg">
-          <div className="relative flex items-center">
-            <div className="pl-2 sm:pl-3 md:pl-4 pr-2">
-              <FiSearch className="text-slate-400 w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
-            <input
-              type="text"
-              placeholder={`Search ${activeTab} fees...`}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full py-2 sm:py-3 bg-transparent text-slate-900 placeholder:text-slate-400 font-medium text-xs sm:text-sm focus:outline-none"
-            />
-            {searchTerm && (
-              <button
-                onClick={() => setSearchTerm('')}
-                className="mr-1 sm:mr-2 p-1.5 sm:p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200"
-              >
-                <FiX size={14} className="sm:w-4 sm:h-4" />
-              </button>
-            )}
+        {/* View Toggle Buttons */}
+        <div className="flex items-center justify-between">
+          <div className="flex gap-2 bg-slate-100 p-1 rounded-xl">
+            <button
+              onClick={() => setShowTableView(false)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                !showTableView 
+                  ? 'bg-white text-slate-900 shadow-sm' 
+                  : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              <FiGrid size={14} />
+              Card View
+            </button>
+            <button
+              onClick={() => setShowTableView(true)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                showTableView 
+                  ? 'bg-white text-slate-900 shadow-sm' 
+                  : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              <FiList size={14} />
+              Table View
+            </button>
           </div>
+          <p className="text-xs text-slate-400">
+            {filteredItems.length} items found
+          </p>
         </div>
+
+        {/* Table Distribution View - Like School Policies Page */}
+        {showTableView && tableData && (
+          <TableDistribution 
+            title={`${tabs.find(t => t.id === activeTab)?.name} Structure`}
+            data={tableData.terms}
+            totalAmount={totalAmount}
+            year={year}
+            onDownload={() => pdfInfo?.url && handleDownloadPDF(pdfInfo.url, pdfInfo.name)}
+          />
+        )}
+
+        {/* Search Bar - Only show in Card View */}
+        {!showTableView && (
+          <div className="bg-white/80 backdrop-blur-md border border-slate-200/60 p-2 sm:p-3 rounded-xl sm:rounded-2xl shadow-lg">
+            <div className="relative flex items-center">
+              <div className="pl-2 sm:pl-3 md:pl-4 pr-2">
+                <FiSearch className="text-slate-400 w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <input
+                type="text"
+                placeholder={`Search ${activeTab} fees...`}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full py-2 sm:py-3 bg-transparent text-slate-900 placeholder:text-slate-400 font-medium text-xs sm:text-sm focus:outline-none"
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="mr-1 sm:mr-2 p-1.5 sm:p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200"
+                >
+                  <FiX size={14} className="sm:w-4 sm:h-4" />
+                </button>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-          {/* Fee Breakdown - Left Column */}
-          <div className="lg:col-span-2 space-y-3 sm:space-y-4">
-            <div className="flex items-center justify-between gap-2">
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900">
-                {tabs.find(t => t.id === activeTab)?.name} Breakdown
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-500 whitespace-nowrap">
-                {filteredItems.length} items
-              </p>
-            </div>
+          {/* Fee Breakdown - Left Column (only in Card View) */}
+          {!showTableView && (
+            <div className="lg:col-span-2 space-y-3 sm:space-y-4">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900">
+                  {tabs.find(t => t.id === activeTab)?.name} Breakdown
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500 whitespace-nowrap">
+                  {filteredItems.length} items
+                </p>
+              </div>
 
-            {filteredItems.length === 0 ? (
-              <div className="bg-slate-50 rounded-2xl sm:rounded-3xl border-2 border-dashed border-slate-200 py-8 sm:py-12 px-4 text-center">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
-                  <FiDollarSign className="text-slate-300 text-lg sm:text-2xl" />
+              {filteredItems.length === 0 ? (
+                <div className="bg-slate-50 rounded-2xl sm:rounded-3xl border-2 border-dashed border-slate-200 py-8 sm:py-12 px-4 text-center">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
+                    <FiDollarSign className="text-slate-300 text-lg sm:text-2xl" />
+                  </div>
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900">No fee items found</h3>
+                  <p className="text-slate-500 text-xs sm:text-sm mt-1">Try adjusting your search.</p>
                 </div>
-                <h3 className="text-base sm:text-lg font-bold text-slate-900">No fee items found</h3>
-                <p className="text-slate-500 text-xs sm:text-sm mt-1">Try adjusting your search.</p>
-              </div>
-            ) : (
-              <div className="space-y-2 sm:space-y-3">
-                {filteredItems.map((item, index) => (
-                  <FeeBreakdownCard
-                    key={item.id || index}
-                    item={item}
-                    onInfo={(item) => {
-                      setSelectedFeeItem(item);
-                      setShowInfoModal(true);
-                    }}
-                  />
-                ))}
-              </div>
-            )}
+              ) : (
+                <div className="space-y-2 sm:space-y-3">
+                  {filteredItems.map((item, index) => (
+                    <FeeBreakdownCard
+                      key={item.id || index}
+                      item={item}
+                      onInfo={(item) => {
+                        setSelectedFeeItem(item);
+                        setShowInfoModal(true);
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
 
-            {/* Total Card - Responsive */}
-            <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 text-white mt-3 sm:mt-4">
-              <div className="flex items-center justify-between mb-3 sm:mb-4 gap-2">
-                <div className="p-2 sm:p-3 bg-white/10 rounded-lg sm:rounded-xl border border-white/20 flex-shrink-0">
-                  <IoWalletOutline size={20} className="sm:w-6 sm:h-6" />
+              {/* Total Card - Responsive */}
+              <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 text-white mt-3 sm:mt-4">
+                <div className="flex items-center justify-between mb-3 sm:mb-4 gap-2">
+                  <div className="p-2 sm:p-3 bg-white/10 rounded-lg sm:rounded-xl border border-white/20 flex-shrink-0">
+                    <IoWalletOutline size={20} className="sm:w-6 sm:h-6" />
+                  </div>
+                  <span className="text-[8px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Total</span>
                 </div>
-                <span className="text-[8px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Total</span>
+                <p className="text-[10px] sm:text-xs text-slate-300 mb-1">Total {tabs.find(t => t.id === activeTab)?.name}</p>
+                <p className="text-2xl sm:text-3xl md:text-4xl font-black mb-3 sm:mb-4 leading-tight">
+                  KSh {totalAmount.toLocaleString()}
+                </p>
+                <p className="text-[8px] sm:text-xs text-slate-400">* Inclusive of all applicable fees</p>
               </div>
-              <p className="text-[10px] sm:text-xs text-slate-300 mb-1">Total {tabs.find(t => t.id === activeTab)?.name}</p>
-              <p className="text-2xl sm:text-3xl md:text-4xl font-black mb-3 sm:mb-4 leading-tight">
-                KSh {totalAmount.toLocaleString()}
-              </p>
-              <p className="text-[8px] sm:text-xs text-slate-400">* Inclusive of all applicable fees</p>
             </div>
-          </div>
+          )}
 
           {/* PDF Documents - Right Column */}
-          <div className="space-y-3 sm:space-y-4">
+          <div className={`${!showTableView ? 'lg:col-span-1' : 'lg:col-span-3'} space-y-3 sm:space-y-4`}>
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900">Documents</h2>
             
             {pdfInfo?.url ? (
@@ -765,7 +924,7 @@ const router = useRouter();
                 Contact our finance office for payment plans and financial aid information.
               </p>
             </div>
-            <button onclick={() => (router.push("/pages/contact"))} className="px-4 sm:px-6 py-2 sm:py-3 bg-white text-slate-900 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm hover:bg-slate-100 transition-all active:scale-95 flex-shrink-0">
+            <button onClick={() => router.push("/pages/contact")} className="px-4 sm:px-6 py-2 sm:py-3 bg-white text-slate-900 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm hover:bg-slate-100 transition-all active:scale-95 flex-shrink-0">
               Contact
             </button>
           </div>
@@ -811,7 +970,7 @@ const router = useRouter();
 
               {selectedFeeItem.boardingOnly && (
                 <div className="p-3 bg-purple-50 rounded-xl border border-purple-200">
-                  <p className="text-xs font-bold text-purple-800">Boarding students only</p>
+                  <p className="text-xs font-bold text-amber-800">Boarding students only</p>
                 </div>
               )}
             </div>
