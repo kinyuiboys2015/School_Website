@@ -508,37 +508,60 @@ export default function StudentCounseling() {
           </div></div>
         </div>
 
-        {/* Feature Banner - Your Well-being Matters */}
-        <div className="relative overflow-hidden bg-white rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8 md:p-12 shadow-2xl shadow-slate-200/50">
-          <div className="absolute top-0 right-0 w-40 sm:w-64 h-40 sm:h-64 bg-purple-50/40 blur-[80px] sm:blur-[100px] rounded-full -mr-20 sm:-mr-32 -mt-20 sm:-mt-32" />
-          <div className="absolute bottom-0 left-0 w-40 sm:w-64 h-40 sm:h-64 bg-pink-50/40 blur-[80px] sm:blur-[100px] rounded-full -ml-20 sm:-ml-32 -mb-20 sm:-mb-32" />
-          <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 sm:gap-8 md:gap-12">
-            <div className="shrink-0">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-[2rem] bg-slate-50 flex items-center justify-center text-slate-900 shadow-sm">
-                <FiHeart className="text-3xl sm:text-4xl md:text-5xl" />
-              </div>
+{/* Feature Banner */}
+<div className="relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 shadow-xl shadow-slate-200/40">
+  
+  {/* Background Blurs */}
+  <div className="absolute top-0 right-0 w-32 sm:w-48 h-32 sm:h-48 bg-purple-50 blur-[70px] rounded-full -mr-16 -mt-16" />
+  <div className="absolute bottom-0 left-0 w-32 sm:w-48 h-32 sm:h-48 bg-pink-50 blur-[70px] rounded-full -ml-16 -mb-16" />
+
+  <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
+    
+    {/* Icon */}
+    <div className="shrink-0">
+      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-slate-50 flex items-center justify-center shadow-sm">
+        <FiHeart className="text-xl sm:text-2xl text-slate-800" />
+      </div>
+    </div>
+
+    {/* Content */}
+    <div className="flex-1 text-center md:text-left">
+      
+      {/* Title */}
+      <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-2">
+        Your Well-being Matters
+      </h3>
+
+      {/* Description */}
+      <p className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto md:mx-0">
+        We focus on the complete student — supporting mental, emotional, and personal growth beyond academics.
+      </p>
+
+      {/* Features */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-5">
+        {[
+          { label: 'Confidential', icon: FiShield, color: 'text-blue-600', bg: 'bg-blue-50' },
+          { label: '24/7 Support', icon: FiPhoneCall, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+          { label: 'Professional', icon: FiUser, color: 'text-purple-600', bg: 'bg-purple-50' },
+          { label: 'Holistic', icon: FiHeart, color: 'text-pink-600', bg: 'bg-pink-50' }
+        ].map((f, idx) => (
+          <div 
+            key={idx} 
+            className="flex items-center gap-2 p-2.5 bg-slate-50 rounded-lg hover:bg-white hover:shadow-md transition"
+          >
+            <div className={`p-2 rounded-md ${f.bg} ${f.color}`}>
+              <f.icon size={16} />
             </div>
-            <div className="flex-1 text-center md:text-left">
-              <h3 className="text-2xl sm:text-3xl md:text-5xl font-black text-slate-900 mb-3 sm:mb-4 tracking-tight">Your Well-being Matters.</h3>
-              <p className="text-slate-500 text-sm sm:text-base md:text-xl font-medium leading-relaxed max-w-2xl mx-auto md:mx-0">
-                At Kinyui Boys Senior School, we believe that true education extends beyond academics. Our Guidance and Counseling Department is dedicated to nurturing the complete student — mind, body, and spirit.
-              </p>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6 sm:mt-10">
-                {[
-                  { label: 'Confidential', icon: FiShield, color: 'text-blue-600', bg: 'bg-blue-50' },
-                  { label: '24/7 Support', icon: FiPhoneCall, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-                  { label: 'Professional', icon: FiUser, color: 'text-purple-600', bg: 'bg-purple-50' },
-                  { label: 'Holistic', icon: FiHeart, color: 'text-pink-600', bg: 'bg-pink-50' }
-                ].map((f, idx) => (
-                  <div key={idx} className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-slate-50/40 rounded-xl sm:rounded-[1.5rem] group hover:bg-white hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-500">
-                    <div className={`p-2 sm:p-2.5 rounded-lg sm:rounded-xl ${f.bg} ${f.color} shrink-0 shadow-sm`}><f.icon size={18} className="sm:w-5 sm:h-5" /></div>
-                    <span className="text-[10px] sm:text-[11px] md:text-xs font-black uppercase tracking-widest text-slate-800">{f.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <span className="text-[11px] font-semibold text-slate-700">
+              {f.label}
+            </span>
           </div>
-        </div>
+        ))}
+      </div>
+
+    </div>
+  </div>
+</div>
       </div>
 
       {/* Modals */}
