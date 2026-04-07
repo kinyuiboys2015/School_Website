@@ -910,12 +910,15 @@ export default function ModernCareersPage() {
             <IoSparkles className="text-blue-500 w-3.5 h-3.5" />
             <span className="text-xs font-medium text-slate-700">Career Opportunities</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-3">
-            Join Our Academic Team
-          </h1>
-          <p className="text-slate-500">
-            Shape the future of education at kinyui boys Senior School
-          </p>
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 mb-6 leading-tight">
+  Join Our <span className="block sm:inline">Academic Team</span> 
+  <span className="block mt-2 text-2xl sm:text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#5D4037] via-[#880E4F] to-[#FFB300] animate-gradient-x">
+    at Kinyui Boys Senior School
+  </span>
+</h1>
+     <p className="text-slate-600 text-lg leading-relaxed max-w-2xl mx-auto">
+  At <span className="font-semibold text-slate-900">Kinyui Boys Senior School</span>, we believe that educators are the architects of the future. Join a community dedicated to academic excellence, where your passion for teaching inspires the next generation of Kenyan leaders, innovators, and thinkers.
+</p>
         </div>
 
         {/* Stats Row */}
