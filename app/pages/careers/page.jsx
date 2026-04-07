@@ -34,7 +34,8 @@ import {
   FiList,
   FiMapPin,
   FiFileText,
-  FiSend
+  FiSend,
+  FiRefreshCw
 } from 'react-icons/fi';
 import { FaGraduationCap, FaBuilding as FiBuilding, FaWhatsapp } from 'react-icons/fa';
 import {
@@ -95,6 +96,12 @@ const ModernJobCard = ({ job, onView, onBookmark, onShare, viewMode = 'grid' }) 
     const url = window.location.href;
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
     window.open(whatsappUrl, '_blank');
+  };
+
+  const handleCopyLink = (e) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(window.location.href);
+    toast.success('Link copied to clipboard!');
   };
 
   const getJobTypeStyle = (type) => {
@@ -196,6 +203,13 @@ const ModernJobCard = ({ job, onView, onBookmark, onShare, viewMode = 'grid' }) 
                 <FaWhatsapp size={14} />
               </button>
               <button
+                onClick={handleCopyLink}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                title="Copy link"
+              >
+                <FiCopy size={14} />
+              </button>
+              <button
                 onClick={(e) => {
                   e.stopPropagation();
                   onBookmark(job);
@@ -286,8 +300,16 @@ const ModernJobCard = ({ job, onView, onBookmark, onShare, viewMode = 'grid' }) 
                 <button
                   onClick={handleWhatsAppShare}
                   className="p-1.5 rounded-lg text-green-500 hover:text-green-600 hover:bg-green-50"
+                  title="Share on WhatsApp"
                 >
                   <FaWhatsapp size={14} />
+                </button>
+                <button
+                  onClick={handleCopyLink}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                  title="Copy link"
+                >
+                  <FiCopy size={14} />
                 </button>
                 <button
                   onClick={(e) => {
@@ -355,6 +377,11 @@ const ModernJobDetailModal = ({ job, onClose, onApply }) => {
     window.open(whatsappUrl, '_blank');
   };
 
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    toast.success('Link copied to clipboard!');
+  };
+
   const getJobTypeStyle = (type) => {
     const styles = {
       'full-time': { gradient: 'from-emerald-500 to-green-500' },
@@ -417,13 +444,32 @@ const ModernJobDetailModal = ({ job, onClose, onApply }) => {
           <div className="space-y-6">
             {/* Title & Basic Info */}
             <div>
-              <div className="flex items-start gap-3 mb-4">
-                <div className={`p-2 rounded-xl bg-gradient-to-r ${theme.gradient}`}>
-                  <FiBriefcase className="text-white text-xl" />
+              <div className="flex items-start justify-between gap-3 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className={`p-2 rounded-xl bg-gradient-to-r ${theme.gradient}`}>
+                    <FiBriefcase className="text-white text-xl" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-slate-900">{job.jobTitle}</h2>
+                    <p className="text-slate-600">{job.department || 'School Department'}</p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-slate-900">{job.jobTitle}</h2>
-                  <p className="text-slate-600">{job.department || 'School Department'}</p>
+                {/* Share buttons in modal */}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleWhatsAppShare}
+                    className="p-2 rounded-lg text-green-500 hover:text-green-600 hover:bg-green-50"
+                    title="Share on WhatsApp"
+                  >
+                    <FaWhatsapp size={18} />
+                  </button>
+                  <button
+                    onClick={handleCopyLink}
+                    className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                    title="Copy link"
+                  >
+                    <FiCopy size={18} />
+                  </button>
                 </div>
               </div>
 
@@ -677,6 +723,18 @@ export default function ModernCareersPage() {
     }
   };
 
+  const handleShareAllJobs = () => {
+    const text = `Check out current job openings at kinyui boys Senior School! ${filteredJobs.length} positions available.`;
+    const url = window.location.href;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleCopyAllJobsLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    toast.success('Link copied to clipboard!');
+  };
+
   const handleApply = (job) => {
     toast.success(`Application process for ${job.jobTitle} will open soon!`);
   };
@@ -705,13 +763,6 @@ export default function ModernCareersPage() {
     setActiveTab('all');
   };
 
-  const handleShareAllJobs = () => {
-    const text = `Check out current job openings at kinyui boys Senior School! ${filteredJobs.length} positions available.`;
-    const url = window.location.href;
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
-    window.open(whatsappUrl, '_blank');
-  };
-
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
@@ -727,7 +778,7 @@ export default function ModernCareersPage() {
     <div className="min-h-screen bg-white">
       {/* Background Logo - Low Opacity */}
       <div
-        className="fixed inset-0 pointer-events-none z-0 bg-no-repeat bg-center bg-contain opacity-[0.03]"
+        className="fixed inset-0 pointer-events-none z-0 bg-no-repeat bg-center bg-contain opacity-[0.06]"
         style={{
           backgroundImage: "url('/kinyui.png')",
           backgroundSize: 'min(80%, 600px)',
@@ -821,7 +872,7 @@ export default function ModernCareersPage() {
 
           {/* Main Content */}
           <div className="lg:w-3/4">
-            {/* Search and Filters */}
+            {/* Search and Filters Bar with Refresh and Share */}
             <div className="bg-white border border-slate-100 rounded-xl p-4 mb-6 shadow-sm">
               <div className="flex flex-col sm:flex-row gap-3">
                 {/* Search */}
@@ -860,6 +911,34 @@ export default function ModernCareersPage() {
                     className={`px-3 py-2 ${viewMode === 'list' ? 'bg-slate-100 text-slate-900' : 'bg-white text-slate-500'}`}
                   >
                     <FiList size={16} />
+                  </button>
+                </div>
+
+                {/* Refresh Button */}
+                <button
+                  onClick={refreshData}
+                  disabled={refreshing}
+                  className="px-3 py-2.5 text-slate-600 hover:text-slate-900 transition-colors disabled:opacity-50"
+                  title="Refresh jobs"
+                >
+                  <FiRefreshCw size={16} className={refreshing ? 'animate-spin' : ''} />
+                </button>
+
+                {/* Share All Jobs Button */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleShareAllJobs}
+                    className="px-3 py-2.5 text-green-600 hover:text-green-700 transition-colors"
+                    title="Share all jobs on WhatsApp"
+                  >
+                    <FaWhatsapp size={16} />
+                  </button>
+                  <button
+                    onClick={handleCopyAllJobsLink}
+                    className="px-3 py-2.5 text-slate-600 hover:text-slate-900 transition-colors"
+                    title="Copy link to all jobs"
+                  >
+                    <FiCopy size={16} />
                   </button>
                 </div>
 
