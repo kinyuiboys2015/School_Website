@@ -1129,27 +1129,30 @@ Loading for Opportunities at Kinyui Senior School
               </div>
             </div>
 
-            {/* Category Pills */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {categories.map(cat => {
-                const Icon = cat.icon;
-                const isActive = activeTab === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => setActiveTab(cat.id)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                      isActive
-                        ? 'bg-slate-900 text-white'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                    }`}
-                  >
-                    <Icon size={12} />
-                    {cat.name}
-                  </button>
-                );
-              })}
-            </div>
+    {/* Category Pills */}
+<div className="flex flex-wrap gap-2 mb-8 w-full">
+  {categories.map(cat => {
+    const Icon = cat.icon;
+    const isActive = activeTab === cat.id;
+    return (
+      <button
+        key={cat.id}
+        onClick={() => setActiveTab(cat.id)}
+        /* Added 'flex-1' and 'sm:flex-none' 
+           This makes them fill the width on mobile but stay compact on desktop 
+        */
+        className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex-1 sm:flex-none min-w-[calc(50%-8px)] sm:min-w-0 border ${
+          isActive
+            ? 'bg-slate-900 text-white border-slate-900 shadow-md shadow-slate-200 scale-[1.02]'
+            : 'bg-white text-slate-600 border-slate-100 hover:bg-slate-50 hover:border-slate-200'
+        }`}
+      >
+        <Icon size={14} className={isActive ? "text-blue-400" : "text-slate-400"} />
+        <span className="whitespace-nowrap">{cat.name}</span>
+      </button>
+    );
+  })}
+</div>
 
             {/* Job Listings */}
             {filteredJobs.length === 0 ? (
