@@ -683,162 +683,146 @@ const ModernShareModal = ({ item, type = 'event', onClose }) => {
   );
 };
 
-// Modern Detail Modal
-const ModernDetailModal = ({ item, type = 'event', onClose, onAddToCalendar, onShare }) => {
-  if (!item) return null;
+const ModernShareModal = ({ item, type = 'event', onClose }) => {
+  const [copied, setCopied] = useState(false);
 
-  const formatFullDate = (dateString) => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-      });
-    } catch { return dateString || 'Date not set'; }
+  const socialPlatforms = [
+    {
+      name: 'WhatsApp',
+      icon: FaWhatsapp,
+      color: 'bg-[#25D366]',
+      glow: 'shadow-[#25D366]/20',
+      action: () => {
+        const text = `${item.title}\n\n${type === 'event' ? '🎉 Event Details:' : '📰 News:'}\n${item.description}\n\n${window.location.href}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+      }
+    },
+    {
+      name: 'Facebook',
+      icon: FaFacebookF,
+      color: 'bg-[#1877F2]',
+      glow: 'shadow-[#1877F2]/20',
+      action: () => {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank');
+      }
+    },
+    {
+      name: 'X',
+      icon: FaTwitter,
+      color: 'bg-black',
+      glow: 'shadow-black/10',
+      action: () => {
+        const text = `${item.title} - Check out this ${type === 'event' ? 'event' : 'news'}!`;
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`, '_blank');
+      }
+    },
+    {
+      name: 'Telegram',
+      icon: FaTelegram,
+      color: 'bg-[#0088cc]',
+      glow: 'shadow-[#0088cc]/20',
+      action: () => {
+        const text = `${item.title}\n\n${item.description}`;
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`, '_blank');
+      }
+    },
+    {
+      name: 'Email',
+      icon: FaEnvelope,
+      color: 'bg-rose-700',
+      glow: 'shadow-rose-700/20',
+      action: () => {
+        const subject = `${item.title} - ${type === 'event' ? 'Event' : 'News'}`;
+        const body = `${item.description}\n\n${window.location.href}`;
+        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      }
+    }
+  ];
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
   };
 
-return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 bg-slate-900/90 backdrop-blur-sm">
-      {/* Modal Container */}
-      <div className="relative w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-3xl bg-white sm:rounded-[40px] shadow-2xl overflow-hidden flex flex-col">
+  return (
+    <ModernModal open={true} onClose={onClose} maxWidth="460px">
+      {/* 1. Enhanced Dark Brown Gradient Header */}
+      <div className="bg-gradient-to-br from-[#2D1B14] via-[#3d2a22] to-[#1a0f0a] p-10 text-white relative overflow-hidden">
+        {/* Animated Background Orbs */}
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-amber-600/20 blur-[60px] rounded-full" />
+        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-rose-900/30 blur-[50px] rounded-full" />
         
-        {/* Close Button - Floating & Premium */}
-        <button 
-          onClick={onClose}
-          className="absolute top-4 right-4 sm:top-5 sm:right-5 z-50 p-2 bg-black/20 backdrop-blur-md text-white rounded-full border border-white/20 transition-all active:scale-90"
-        >
-          <IoClose size={20}  />
-        </button>
-
-        {/* 1. Full-Bleed Hero Image */}
-        <div className="relative h-[30vh] sm:h-[350px] w-full shrink-0">
-          <img
-            src={item.image || (type === 'event' ? '/default-event.jpg' : '/default-news.jpg')}
-            alt={item.title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-black/20" />
+        <div className="relative z-10 flex flex-col items-center text-center">
+          <div className="relative group">
+            <div className="absolute inset-0 bg-amber-400/20 blur-xl group-hover:bg-amber-400/40 transition-all rounded-full" />
+            <div className="relative w-16 h-16 bg-white/10 backdrop-blur-2xl rounded-3xl flex items-center justify-center mb-5 border border-white/20 shadow-2xl transform -rotate-3">
+              <IoShareSocialOutline className="text-3xl text-amber-300" />
+            </div>
+          </div>
           
-          {/* Badge Overlays */}
-          <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 flex gap-2">
-            <span className="px-3 py-1 sm:px-4 sm:py-1.5 bg-white shadow-xl rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest text-blue-600">
-              {item.category || type}
-            </span>
-            {item.featured && (
-              <span className="px-3 py-1 sm:px-4 sm:py-1.5 bg-slate-900 text-white rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest flex items-center gap-1">
-                <IoSparkles className="text-amber-400 w-3 h-3 sm:w-4 sm:h-4" /> 
-                <span className="hidden sm:inline">Featured</span>
-                <span className="sm:hidden">★</span>
-              </span>
-            )}
-          </div>
+          <h2 className="text-3xl font-black tracking-tight leading-none">
+            Spread the <span className="text-amber-400 italic">{type === 'event' ? 'Vibe' : 'Word'}</span>
+          </h2>
+          <p className="text-stone-400 text-[10px] mt-3 uppercase tracking-[0.3em] font-bold">
+            Shared from Kinyui Boys Senior
+          </p>
         </div>
-
-        {/* 2. Content Area - Scrollable */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 custom-scrollbar bg-white">
-          <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8">
-            
-            {/* Title & Metadata */}
-            <section className="space-y-3 sm:space-y-4">
-              <h2 className="text-xl sm:text-3xl md:text-4xl font-black text-slate-900 leading-tight tracking-tight">
-                {item.title}
-              </h2>
-              
-              {/* Quick Info Bar */}
-              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-y-2 sm:gap-y-3 gap-x-6 text-xs sm:text-sm font-semibold text-slate-500">
-                <div className="flex items-center gap-2">
-                  <IoCalendarClearOutline className="text-blue-500 text-base sm:text-lg" />
-                  {formatFullDate(item.date)}
-                </div>
-                {type === 'event' && item.location && (
-                  <div className="flex items-center gap-2">
-                    <IoLocationOutline className="text-rose-500 text-base sm:text-lg" />
-                    {item.location}
-                  </div>
-                )}
-                {type === 'news' && (
-                  <div className="flex items-center gap-2">
-                    <IoPersonOutline className="text-purple-500 text-base sm:text-lg" />
-                    By {item.author || 'School Admin'}
-                  </div>
-                )}
-              </div>
-            </section>
-
-            {/* Description Block */}
-            <section className="space-y-3 sm:space-y-4">
-              <h3 className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-slate-400">
-                About this {type}
-              </h3>
-              <div className="text-slate-700 leading-relaxed text-sm sm:text-base md:text-lg">
-                {item.description || item.excerpt || 'No description available.'}
-              </div>
-              
-              {/* If news has full content, show it here without tabs */}
-              {type === 'news' && item.fullContent && (
-                <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-slate-100 text-slate-600 text-xs sm:text-sm md:text-base whitespace-pre-line italic">
-                  {item.fullContent}
-                </div>
-              )}
-            </section>
-
-            {/* Event Specific Specs (Stats grid style) */}
-            {type === 'event' && (
-              <section className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 pt-4">
-                <div className="p-3 sm:p-4 bg-slate-50 rounded-2xl sm:rounded-3xl border border-slate-100">
-                  <IoTimeOutline className="text-blue-600 mb-1 sm:mb-2 w-4 h-4 sm:w-5 sm:h-5" />
-                  <p className="text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 mb-0.5 sm:mb-1">Time</p>
-                  <p className="font-bold text-slate-900 text-xs sm:text-sm md:text-base truncate">{item.time || 'All Day'}</p>
-                </div>
-                <div className="p-3 sm:p-4 bg-slate-50 rounded-2xl sm:rounded-3xl border border-slate-100">
-                  <IoPersonOutline className="text-purple-600 mb-1 sm:mb-2 w-4 h-4 sm:w-5 sm:h-5" />
-                  <p className="text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 mb-0.5 sm:mb-1">Attendees</p>
-                  <p className="font-bold text-slate-900 text-xs sm:text-sm md:text-base truncate">{item.attendees || 'Open'}</p>
-                </div>
-                {item.speaker && (
-                  <div className="p-3 sm:p-4 bg-slate-50 rounded-2xl sm:rounded-3xl border border-slate-100 col-span-2 sm:col-span-1">
-                    <IoSparkles className="text-amber-500 mb-1 sm:mb-2 w-4 h-4 sm:w-5 sm:h-5" />
-                    <p className="text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 mb-0.5 sm:mb-1">Special Guest</p>
-                    <p className="font-bold text-slate-900 text-xs sm:text-sm md:text-base truncate">{item.speaker}</p>
-                  </div>
-                )}
-              </section>
-            )}
-          </div>
-        </div>
-
-{/* 3. Action Footer - Sticky at bottom */}
-<div className="shrink-0 p-4 sm:p-6 bg-slate-50/80 backdrop-blur-md border-t border-slate-100">
-  <div className="max-w-2xl mx-auto flex flex-row items-center gap-2 sm:gap-3">
-    {type === 'event' ? (
-      <button
-        onClick={onAddToCalendar}
-        className="flex-[2] min-w-0 h-11 sm:h-14 bg-slate-900 text-white rounded-xl sm:rounded-2xl font-bold text-[11px] sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all"
-      >
-        <IoCalendarClearOutline size={16} className="shrink-0 sm:size-[20px]" />
-        <span className="truncate">Add to Calendar</span>
-      </button>
-    ) : (
-      <button
-        className="flex-[2] min-w-0 h-11 sm:h-14 bg-slate-900 text-white rounded-xl sm:rounded-2xl font-bold text-[11px] sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all"
-        onClick={onClose}
-      >
-        <IoNewspaperOutline size={16} className="shrink-0 sm:size-[20px]" />
-        <span className="truncate">See articles</span>
-      </button>
-    )}
-    
-    <button
-      onClick={onShare}
-      className="flex-1 min-w-0 h-11 sm:h-14 bg-white border-2 border-slate-200 text-slate-900 rounded-xl sm:rounded-2xl font-bold text-[11px] sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all"
-    >
-      <IoShareOutline size={16} className="shrink-0 sm:size-[20px]" />
-      <span className="truncate">Share</span>
-    </button>
-  </div>
-</div>
-
       </div>
-    </div>
+
+      {/* 2. Content Area */}
+      <div className="p-8 bg-[#fdfcfb]">
+        {/* Social Platforms - Balanced Horizontal List */}
+        <div className="flex justify-between items-center px-2 mb-12">
+          {socialPlatforms.map((platform, index) => {
+            const Icon = platform.icon;
+            return (
+              <button
+                key={index}
+                onClick={platform.action}
+                className="flex flex-col items-center gap-3 group transition-all"
+              >
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-xl transition-all duration-500 ${platform.color} ${platform.glow} group-hover:scale-110 group-hover:-rotate-6 group-active:scale-95`}>
+                  <Icon className="text-2xl" />
+                </div>
+                <span className="text-[10px] font-black text-stone-500 uppercase tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">
+                  {platform.name}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* 3. Refined Link Section */}
+        <div className="relative">
+          <div className="absolute -top-3 left-4 px-2 bg-[#fdfcfb] text-[10px] font-bold text-stone-400 uppercase tracking-widest z-10">
+            Quick Copy Link
+          </div>
+          
+          <div className="group relative flex items-center p-1.5 bg-white rounded-[24px] border-2 border-stone-100 focus-within:border-amber-900/20 transition-all shadow-sm">
+            <div className="flex-1 px-4 text-xs font-semibold text-stone-600 truncate opacity-60">
+              {window.location.href}
+            </div>
+            
+            <button
+              onClick={copyToClipboard}
+              className={`px-8 py-3.5 rounded-[18px] font-black text-[11px] uppercase tracking-wider transition-all flex items-center gap-2 ${
+                copied 
+                ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-200' 
+                : 'bg-[#2D1B14] text-white hover:bg-black shadow-lg shadow-stone-300 active:scale-95'
+              }`}
+            >
+              {copied ? 'Success!' : <><FiCopy className="text-base" /> Copy</>}
+            </button>
+          </div>
+        </div>
+
+        <p className="text-center text-[9px] text-stone-400 mt-6 font-medium">
+          Secure encrypted sharing enabled
+        </p>
+      </div>
+    </ModernModal>
   );
 };
 
