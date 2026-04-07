@@ -564,15 +564,19 @@ const ModernGalleryDetailModal = ({ gallery, onClose, onShare }) => {
         
         try {
           toast.loading(`Downloading ${i + 1}/${files.length}: ${fileName}`, { id: toastId });
+          const response = await fetch(fileUrl);
+          const blob = await response.blob();
+          const blobUrl = URL.createObjectURL(blob);
           const link = document.createElement('a');
-          link.href = fileUrl;
+          link.href = blobUrl;
           link.download = fileName;
           link.style.display = 'none';
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
+          URL.revokeObjectURL(blobUrl);
           downloadedCount++;
-          if (i < files.length - 1) await new Promise(resolve => setTimeout(resolve, 500));
+          if (i < files.length - 1) await new Promise(resolve => setTimeout(resolve, 700));
         } catch (error) {
           console.error(`Failed to download ${fileName}:`, error);
         }
@@ -691,8 +695,8 @@ const ModernGalleryDetailModal = ({ gallery, onClose, onShare }) => {
               <section className="space-y-3 sm:space-y-4">
                 <h3 className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-slate-400">Gallery Preview</h3>
                 {gallery.files && gallery.files.length > 0 && (
-                  <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-4 sm:mt-6">
-                    {gallery.files.slice(0, 6).map((file, index) => (
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-4 sm:mt-6 max-h-[50vh] overflow-y-auto pr-1">
+                    {gallery.files.map((file, index) => (
                       <div
                         key={index}
                         onClick={() => setSelectedIndex(index)}
@@ -1098,22 +1102,7 @@ export default function ModernGallery() {
             </div>
           </div>
 
-          {/* Feature Banner */}
-          <div className="relative overflow-hidden bg-white rounded-[2.5rem] p-6 md:p-12 shadow-2xl shadow-slate-200/50">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-purple-50/40 blur-[100px] rounded-full -mr-32 -mt-32" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-50/40 blur-[100px] rounded-full -ml-32 -mb-32" />
-            <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
-              <div className="shrink-0"><div className="w-20 h-20 md:w-24 md:h-24 rounded-[2rem] bg-slate-50 flex items-center justify-center text-slate-900 shadow-sm"><FiMessageCircle className="text-4xl md:text-5xl" /></div></div>
-              <div className="flex-1 text-center md:text-left"><h3 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight">Preserving History.</h3><p className="text-slate-500 text-base md:text-xl font-medium leading-relaxed max-w-2xl mx-auto md:mx-0">Every photo tells a story. Explore decades of academic excellence, achievements, and memories at Kinyui Boys Senior School.</p>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-10">{[
-                  { label: 'High Quality', icon: FiStar, color: 'text-blue-600', bg: 'bg-blue-50' },
-                  { label: 'Organized', icon: FiFolder, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-                  { label: 'Downloadable', icon: FiDownload, color: 'text-purple-600', bg: 'bg-purple-50' },
-                  { label: 'Shareable', icon: FiShare2, color: 'text-pink-600', bg: 'bg-pink-50' }
-                ].map((feature, idx) => (<div key={idx} className="flex items-center gap-3 p-4 bg-slate-50/40 rounded-[1.5rem] group hover:bg-white hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-500"><div className={`p-2.5 rounded-xl ${feature.bg} ${feature.color} shrink-0 shadow-sm`}><feature.icon size={20} /></div><span className="text-[11px] md:text-xs font-black uppercase tracking-widest text-slate-800">{feature.label}</span></div>))}</div>
-              </div>
-            </div>
-          </div>
+     
         </div>
 
         {/* Modals */}
