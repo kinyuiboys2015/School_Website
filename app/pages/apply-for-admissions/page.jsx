@@ -753,7 +753,7 @@ kjseaGrade: '',         // Changed from meanGrade
   <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
     
     {/* --- 1. CORE IDENTITY CARD --- */}
-    <div className="bg-white rounded-[2.5rem] p-6 md:p-10 border border-slate-100 shadow-xl shadow-slate-200/40 relative overflow-hidden">
+    <div className="bg-white rounded-2xl sm:rounded-[2.5rem] p-3 sm:p-6 md:p-10 border border-slate-100 shadow-xl shadow-slate-200/40 relative overflow-hidden">
       {/* Decorative background element */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-[5rem] -mr-10 -mt-10 opacity-50" />
       
@@ -872,8 +872,8 @@ kjseaGrade: '',         // Changed from meanGrade
       </div>
 
       {/* Input Group */}
-      <div className="bg-slate-900 rounded-[2.5rem] p-6 md:p-10 shadow-2xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="bg-slate-900 rounded-2xl sm:rounded-[2.5rem] p-3 sm:p-6 md:p-10 shadow-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div className="space-y-2">
             <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Citizenship *</label>
             <input
@@ -959,7 +959,7 @@ kjseaGrade: '',         // Changed from meanGrade
   <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
     
     {/* --- PRIMARY CONTACT SECTION --- */}
-    <div className="bg-white rounded-[2rem] p-6 md:p-8 border border-slate-100 shadow-xl shadow-slate-200/40">
+    <div className="bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-6 md:p-8 border border-slate-100 shadow-xl shadow-slate-200/40">
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2.5 bg-blue-600 rounded-xl text-white">
           <FiMail size={20} />
@@ -1132,7 +1132,7 @@ kjseaGrade: '',         // Changed from meanGrade
   <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
     
     {/* 1. ACADEMIC DOSSIER */}
-    <div className="bg-white rounded-[2.5rem] p-6 md:p-10 border border-slate-100 shadow-xl shadow-slate-200/40">
+    <div className="bg-white rounded-2xl sm:rounded-[2.5rem] p-3 sm:p-6 md:p-10 border border-slate-100 shadow-xl shadow-slate-200/40">
       <div className="flex items-center gap-4 mb-8">
         <div className="p-3 bg-blue-600 rounded-2xl text-white shadow-lg shadow-blue-200">
           <FiBookOpen size={24} />
