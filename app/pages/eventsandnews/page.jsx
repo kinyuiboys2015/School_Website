@@ -1257,44 +1257,42 @@ if (loading) {
 </div>
 
        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 mb-10">
-  {stats.map((stat, index) => {
-    const Icon = stat.icon;
-    
-    return (
-      <div 
-        key={index} 
-        className="relative flex flex-col justify-between overflow-hidden bg-white border border-slate-100 p-4 md:p-6 rounded-[24px] md:rounded-[32px] shadow-sm"
-      >
-        {/* Top Section: Icon & Badge */}
-        <div className="flex items-start justify-between mb-4 md:mb-8">
-          <div className={`p-2 md:p-3 rounded-xl md:rounded-2xl bg-gradient-to-br ${stat.gradient} bg-opacity-[0.08] text-slate-700`}>
-            {/* Responsive Icon size: Smaller on mobile, larger on desktop */}
-            <Icon className="text-lg md:text-2xl" />
-          </div>
-          
-          {/* Status Dot (Hidden on very small screens to save space) */}
-          <div className="hidden xs:block h-2 w-2 rounded-full bg-slate-200" />
-        </div>
+{stats.map((stat, index) => {
+  const Icon = stat.icon;
 
-        {/* Content Section */}
-        <div className="space-y-1">
-          {/* Label: Smaller text on mobile */}
-          <p className="text-[9px] md:text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400">
+  return (
+    <div
+      key={index}
+      className="group relative overflow-hidden bg-white hover:bg-slate-50 transition-all duration-300 border border-slate-200/60 p-5 rounded-[2rem] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]"
+    >
+      {/* Decorative Accent Line at the top */}
+      <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${stat.gradient} opacity-0 group-hover:opacity-100 transition-opacity`} />
+
+      <div className="flex items-center gap-4 mb-4">
+        {/* Icon with a solid-to-soft background */}
+        <div className={`flex-shrink-0 p-3 rounded-2xl bg-gradient-to-br ${stat.gradient} text-white shadow-lg shadow-rose-500/20`}>
+          <Icon className="text-xl" />
+        </div>
+        
+        <div className="flex flex-col">
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
             {stat.label}
           </p>
-          
-
-          {/* Sublabel: Truncate on mobile to prevent layout breaking */}
-          <p className="text-[10px] md:text-sm font-medium text-slate-500 leading-tight line-clamp-1 md:line-clamp-none">
-            {stat.sublabel}
-          </p>
+          {/* Main big number or title could go here if added */}
         </div>
-
-        {/* Decorative Background Element (Desktop only for cleanliness) */}
-        <div className={`absolute -bottom-2 -right-2 w-12 h-12 md:w-20 md:h-20 opacity-[0.03] rounded-full bg-gradient-to-br ${stat.gradient} hidden md:block`} />
       </div>
-    );
-  })}
+
+      <div className="relative z-10">
+        <p className="text-sm font-semibold text-slate-700 leading-snug">
+          {stat.sublabel}
+        </p>
+      </div>
+
+      {/* Subtle background glow that follows the theme color */}
+      <div className={`absolute -bottom-6 -right-6 w-24 h-24 blur-3xl opacity-10 rounded-full bg-gradient-to-br ${stat.gradient}`} />
+    </div>
+  );
+})}
 </div>
 
 <div className="relative mb-6 sm:mb-8">
