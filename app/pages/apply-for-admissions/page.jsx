@@ -7,7 +7,7 @@ import {
   FiCheckCircle, FiUpload, FiArrowRight, FiSearch,
   FiChevronDown, FiChevronUp, FiDownload, FiPrinter,
   FiShare2, FiCopy, FiExternalLink, FiEye, FiX,
-  FiChevronRight, FiShield 
+  FiChevronRight, FiShield , FiClock 
 } from 'react-icons/fi';
 import { toast, Toaster } from 'react-hot-toast';
 import Header from "../../components/apply/page.jsx";
@@ -677,900 +677,769 @@ kjseaGrade: '',         // Changed from meanGrade
   onSubmit={handleSubmit}
   className="w-full mx-auto bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-gray-100 relative z-10"
 >
-  {/* Form Header with Step Indicator */}
-  <div className="bg-gradient-to-r from-blue-50 via-emerald-50 to-blue-50 p-4 sm:p-6 md:p-8 border-b border-gray-200">
-    <div className="flex items-center justify-between">
-      <div>
-        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-1 sm:mb-2">
-          {step === 1 && '👤 Personal Information'}
-          {step === 2 && '📱 Contact Details'}
-          {step === 3 && '🎓 Academic Information'}
-          {step === 4 && '📝 Review & Submit'}
+<div className="relative overflow-hidden bg-white border-b border-slate-100 p-6 sm:p-10 md:p-12">
+  {/* Abstract Background Accents */}
+  <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50/50 rounded-full -mr-20 -mt-20 blur-3xl" />
+  <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-50/50 rounded-full -ml-10 -mb-10 blur-2xl" />
+
+  <div className="relative flex items-center justify-between">
+    <div className="space-y-2">
+      <div className="flex items-center gap-3">
+        {/* Step Indicator Badge */}
+        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-900 text-white text-[10px] font-black tracking-tighter">
+          0{step}
+        </span>
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
+          {step === 1 && 'Personal Identity'}
+          {step === 2 && 'Communication Hub'}
+          {step === 3 && 'Academic History'}
+          {step === 4 && 'Final Validation'}
         </h2>
-        <p className="text-xs sm:text-sm md:text-base text-gray-600 font-bold">
-          {step === 1 && 'Tell us about the prospective student'}
-          {step === 2 && 'How can we reach you? Provide contact details'}
-          {step === 3 && 'Educational background and academic preferences'}
-          {step === 4 && 'Final review before submission'}
-        </p>
       </div>
-      <div className="hidden lg:block">
-        <div className="text-sm font-semibold text-gray-500">Progress</div>
-        <div className="text-2xl font-bold text-blue-600">{step}/4</div>
-      </div>
-    </div>
-  </div>
-
-  {/* Form Content */}
-  <div className="p-4 sm:p-6 md:p-8">
-    {step === 1 && (
-      <div className="space-y-6 sm:space-y-8">
-        {/* Personal Information Section */}
-        <div className="space-y-4 sm:space-y-6">
-          <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 flex items-center">
-            <FiUser className="mr-2 text-blue-600" /> Personal Details
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            {['firstName', 'middleName', 'lastName'].map((field) => (
-              <div key={field} className="space-y-1 sm:space-y-2">
-                <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                  {field === 'firstName' && 'First Name *'}
-                  {field === 'middleName' && 'Middle Name'}
-                  {field === 'lastName' && 'Last Name *'}
-                </label>
-                <div className="relative">
-                  <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="text"
-                    name={field}
-                    value={formData[field]}
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-                    placeholder={
-                      field === 'firstName' ? 'Mercy' :
-                      field === 'middleName' ? 'Mutindi' : 'Wambua'
-                    }
-                    required={field !== 'middleName'}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                Gender *
-              </label>
-              <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-                required
-              >
-                <option value="" className="text-gray-400">Select Gender</option>
-                <option value="MALE" className="text-gray-800">Male</option>
-                <option value="FEMALE" className="text-gray-800">Female</option>
-              </select>
-            </div>
-
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                Date of Birth *
-              </label>
-              <div className="relative">
-                <FiCalendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="date"
-                  name="dateOfBirth"
-                  value={formData.dateOfBirth}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-                  required
-                  max={new Date().toISOString().split('T')[0]}
-                />
-              </div>
-              {formData.dateOfBirth && (
-                <p className="text-xs sm:text-sm text-gray-600 mt-1 font-semibold">
-                  Age: {calculateAge(formData.dateOfBirth)} years
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Location Information Section at TOP */}
-        <div className="space-y-4 sm:space-y-6">
-          <div className="flex items-center justify-between mb-1 sm:mb-2">
-            <h3 className="text-base sm:text-md md:text-xl font-semibold text-gray-800 flex items-center">
-              <FiMapPin className="mr-2 text-green-600" /> Location Information
-            </h3>
-            <div className="text-xs text-slate-900 px-2 sm:px-3 py-1 ">
-              Select your location step-by-step
-            </div>
-          </div>
-          
-          {/* Location Selection Cards - Stacked on mobile, horizontal on desktop */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-blue-200">
-              <div className="flex items-center mb-2">
-                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
-                  <FiMapPin className="text-blue-600" />
-                </div>
-                <span className="text-xs sm:text-sm font-semibold text-blue-800">County</span>
-              </div>
-              <div className="text-xs text-gray-600 font-bold">Required</div>
-            </div>
-            
-            <div className={`bg-gradient-to-br ${formData.county ? 'from-emerald-50 to-emerald-100 border-emerald-200' : 'from-gray-50 to-gray-100 border-gray-200'} rounded-lg sm:rounded-xl p-3 sm:p-4 border`}>
-              <div className="flex items-center mb-2">
-                <div className={`w-6 h-6 sm:w-8 sm:h-8 ${formData.county ? 'bg-emerald-100' : 'bg-gray-100'} rounded-lg flex items-center justify-center mr-2 sm:mr-3`}>
-                  <FiMapPin className={`${formData.county ? 'text-emerald-600' : 'text-gray-400'}`} />
-                </div>
-                <span className={`text-xs sm:text-sm font-semibold ${formData.county ? 'text-emerald-800' : 'text-gray-400'}`}>Constituency</span>
-              </div>
-              <div className="text-xs text-gray-500 font-bold">{formData.county ? 'Now select' : 'Select county first'}</div>
-            </div>
-            
-            <div className={`bg-gradient-to-br ${formData.constituency ? 'from-purple-50 to-purple-100 border-purple-200' : 'from-gray-50 to-gray-100 border-gray-200'} rounded-lg sm:rounded-xl p-3 sm:p-4 border`}>
-              <div className="flex items-center mb-2">
-                <div className={`w-6 h-6 sm:w-8 sm:h-8 ${formData.constituency ? 'bg-purple-100' : 'bg-gray-100'} rounded-lg flex items-center justify-center mr-2 sm:mr-3`}>
-                  <FiMapPin className={`${formData.constituency ? 'text-purple-600' : 'text-gray-400'}`} />
-                </div>
-                <span className={`text-xs sm:text-sm font-semibold ${formData.constituency ? 'text-purple-800' : 'text-gray-400'}`}>Ward</span>
-              </div>
-              <div className="text-xs text-gray-500 font-bold">{formData.constituency ? 'Now select' : 'Select constituency first'}</div>
-            </div>
-            
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-gray-200">
-              <div className="flex items-center mb-2">
-                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
-                  <FiHome className="text-gray-400" />
-                </div>
-                <span className="text-xs sm:text-sm font-semibold text-gray-400">Village</span>
-              </div>
-              <div className="text-xs text-gray-500 font-bold">Optional</div>
-            </div>
-          </div>
-
-          {/* Location Inputs */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                Nationality *
-              </label>
-              <input
-                type="text"
-                name="nationality"
-                value={formData.nationality}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-                required
-              />
-            </div>
-
-            {/* County Selection with Modal */}
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                County *
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={formData.county}
-                  readOnly
-                  onClick={() => openLocationModal('county')}
-                  className="w-full pl-10 pr-10 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold cursor-pointer bg-white"
-                  placeholder="Click to select county..."
-                  required
-                />
-                <FiMapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <FiChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-            </div>
-          </div>
-
-          {/* Constituency Selection with Modal */}
-          {formData.county && (
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-emerald-800">
-                Constituency *
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={formData.constituency}
-                  readOnly
-                  onClick={() => openLocationModal('constituency')}
-                  className="w-full pl-10 pr-10 py-2.5 sm:py-3 text-sm sm:text-base border border-emerald-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-gray-800 font-bold cursor-pointer bg-white"
-                  placeholder="Click to select constituency..."
-                  required
-                />
-                <FiMapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-400" />
-                <FiChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400" />
-              </div>
-            </div>
-          )}
-
-          {/* Ward Selection with Modal */}
-          {formData.constituency && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-              <div className="space-y-1 sm:space-y-2">
-                <label className="block text-sm sm:text-base font-semibold text-purple-800">
-                  Ward *
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={formData.ward}
-                    readOnly
-                    onClick={() => openLocationModal('ward')}
-                    className="w-full pl-10 pr-10 py-2.5 sm:py-3 text-sm sm:text-base border border-purple-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all text-gray-800 font-bold cursor-pointer bg-white"
-                    placeholder="Click to select ward..."
-                    required
-                  />
-                  <FiMapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-400" />
-                  <FiChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-purple-400" />
-                </div>
-              </div>
-
-              <div className="space-y-1 sm:space-y-2">
-                <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                  Village / Estate
-                </label>
-                <input
-                  type="text"
-                  name="village"
-                  value={formData.village}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all text-gray-800 font-bold"
-                  placeholder="Enter village or estate name"
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    )}
-
-    {step === 2 && (
-      <div className="space-y-6 sm:space-y-8">
-        {/* Contact Information */}
-        <div className="space-y-4 sm:space-y-6">
-          <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 flex items-center">
-            <FiMail className="mr-2 text-blue-600" /> Contact Information
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                Email Address (For Parent) *
-              </label>
-              <div className="relative">
-                <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-                  placeholder="student@example.com"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                Phone Number (Optional)
-              </label>
-              <div className="relative">
-                <FiPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-                  placeholder="Optional - 0712 345 678"
-                />
-              </div>
-              <p className="text-xs sm:text-sm text-gray-600 mt-1 font-bold">Format: 07XXXXXXXX or 01XXXXXXXX</p>
-            </div>
-          </div>
-
-          <div className="space-y-1 sm:space-y-2">
-            <label className="block text-sm sm:text-base font-semibold text-gray-800">
-              Alternative Phone
-            </label>
-            <input
-              type="tel"
-              name="alternativePhone"
-              value={formData.alternativePhone}
-              onChange={handleChange}
-              className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-              placeholder="Optional alternative number"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                Postal Address *
-              </label>
-              <div className="relative">
-                <FiHome className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  name="postalAddress"
-                  value={formData.postalAddress}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-                  placeholder="P.O. Box 142-90131, TALA"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                Postal Code
-              </label>
-              <input
-                type="text"
-                name="postalCode"
-                value={formData.postalCode}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-                placeholder="10100"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Parent/Guardian Information */}
-        <div className="space-y-4 sm:space-y-6">
-          <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 flex items-center">
-            <FiUsers className="mr-2 text-blue-600" /> Parent/Guardian Information
-          </h3>
-          
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-blue-200">
-            <h4 className="font-semibold text-blue-800 mb-3 sm:mb-4 flex items-center text-base sm:text-lg">
-              <FiUser className="mr-2" /> Father's Information
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              <div className="space-y-1 sm:space-y-2">
-                <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  name="fatherName"
-                  value={formData.fatherName}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-                  placeholder="Father's full name"
-                />
-              </div>
-              <div className="space-y-1 sm:space-y-2">
-                <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  name="fatherPhone"
-                  value={formData.fatherPhone}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-                  placeholder="Father's phone"
-                />
-              </div>
-              <div className="space-y-1 sm:space-y-2">
-                <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="fatherEmail"
-                  value={formData.fatherEmail}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-                  placeholder="father@example.com"
-                />
-              </div>
-              <div className="space-y-1 sm:space-y-2">
-                <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                  Occupation
-                </label>
-                <input
-                  type="text"
-                  name="fatherOccupation"
-                  value={formData.fatherOccupation}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold"
-                  placeholder="Father's occupation"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-pink-200">
-            <h4 className="font-semibold text-pink-800 mb-3 sm:mb-4 flex items-center text-base sm:text-lg">
-              <FiUser className="mr-2" /> Mother's Information
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              {['motherName', 'motherPhone', 'motherEmail', 'motherOccupation'].map((field) => (
-                <div key={field} className="space-y-1 sm:space-y-2">
-                  <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                    {field === 'motherName' && 'Full Name'}
-                    {field === 'motherPhone' && 'Phone Number'}
-                    {field === 'motherEmail' && 'Email'}
-                    {field === 'motherOccupation' && 'Occupation'}
-                  </label>
-                  <input
-                    type={field.includes('Email') ? 'email' : field.includes('Phone') ? 'tel' : 'text'}
-                    name={field}
-                    value={formData[field]}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all text-gray-800 font-bold"
-                    placeholder={
-                      field === 'motherName' ? "Mother's full name" :
-                      field === 'motherPhone' ? "Mother's phone" :
-                      field === 'motherEmail' ? "mother@example.com" :
-                      "Mother's occupation"
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-emerald-200">
-            <h4 className="font-semibold text-emerald-800 mb-3 sm:mb-4 flex items-center text-base sm:text-lg">
-              <FiUser className="mr-2" /> Guardian Information (If applicable)
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              {['guardianName', 'guardianPhone', 'guardianEmail', 'guardianOccupation'].map((field) => (
-                <div key={field} className="space-y-1 sm:space-y-2">
-                  <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                    {field === 'guardianName' && 'Full Name'}
-                    {field === 'guardianPhone' && 'Phone Number'}
-                    {field === 'guardianEmail' && 'Email'}
-                    {field === 'guardianOccupation' && 'Occupation'}
-                  </label>
-                  <input
-                    type={field.includes('Email') ? 'email' : field.includes('Phone') ? 'tel' : 'text'}
-                    name={field}
-                    value={formData[field]}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2.5 sm:py-3 font-bold text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-gray-800 "
-                    placeholder="Optional"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    )}
-
-    {step === 3 && (
-      <div className="space-y-6 sm:space-y-8">
-        {/* Academic Information */}
-        <div className="space-y-4 sm:space-y-6">
-          <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 flex items-center">
-            <FiBook className="mr-2 text-blue-600" /> Academic Background
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                Previous School *
-              </label>
-              <div className="relative">
-                <FiBook className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  name="previousSchool"
-                  value={formData.previousSchool}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2.5 font-bold sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 "
-                  placeholder="Name of previous school"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                Previous Class *
-              </label>
-              <input
-                type="text"
-                name="previousClass"
-                value={formData.previousClass}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 sm:py-3 font-bold text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800"
-                placeholder="e.g., Class 8, Form 2"
-                required
-              />
-            </div>
-          </div>
-        </div>
-
-{/* CBC Assessment Results */}
-<div className="space-y-4 sm:space-y-6">
-  <div className="bg-gradient-to-br from-emerald-50 to-teal-100 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-emerald-200">
-    <h3 className="text-base sm:text-lg md:text-xl font-semibold text-emerald-800 mb-3 sm:mb-4 flex items-center">
-      <FiAward className="mr-2" /> CBC Assessment Results
-    </h3>
-    
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-      <div className="space-y-1 sm:space-y-2">
-        <label className="block text-sm sm:text-base font-semibold text-gray-800">
-          KPSEA Year
-        </label>
-        <input
-          type="number"
-          name="kpseaYear"
-          value={formData.kpseaYear}
-          onChange={handleChange}
-          className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-gray-800 font-bold"
-          placeholder="2025"
-          min="2020"
-          max="2030"
-        />
-      </div>
-
-      <div className="space-y-1 sm:space-y-2">
-        <label className="block text-sm sm:text-base font-semibold text-gray-800">
-          Assessment Number
-        </label>
-        <input
-          type="text"
-          name="kpseaIndex"
-          value={formData.kpseaIndex}
-          onChange={handleChange}
-          className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-gray-800 font-bold"
-          placeholder="CBC/2025/001"
-        />
-      </div>
-
-      <div className="space-y-1 sm:space-y-2">
-        <label className="block text-sm sm:text-base font-semibold text-gray-800">
-          KPSEA Score (0-100)
-        </label>
-        <input
-          type="number"
-          name="kpseaMarks"
-          value={formData.kpseaMarks}
-          onChange={handleChange}
-          className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-gray-800 font-bold"
-          placeholder="0-100"
-          min="0"
-          max="100"
-          step="0.1"
-        />
-        {formData.kpseaMarks && (
-          <div className="mt-2">
-            <div className="flex justify-between text-[9px] font-bold text-gray-500 mb-1">
-              <span>Below (0-27)</span>
-              <span>Approaching (28-51)</span>
-              <span>Meeting (52-75)</span>
-              <span>Exceeding (76-100)</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className={`h-2 rounded-full ${
-                  formData.kpseaMarks >= 76 ? 'bg-emerald-500' :
-                  formData.kpseaMarks >= 52 ? 'bg-blue-500' :
-                  formData.kpseaMarks >= 28 ? 'bg-yellow-500' :
-                  'bg-red-500'
-                }`}
-                style={{ width: `${formData.kpseaMarks}%` }}
-              ></div>
-            </div>
-            <p className="text-xs sm:text-sm text-gray-600 mt-1 text-right font-semibold">
-              {formData.kpseaMarks}/100 points
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-    
-    <div className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-      <div className="space-y-1 sm:space-y-2">
-        <label className="block text-sm sm:text-base font-semibold text-gray-800">
-          KJSEA Grade (Junior Secondary)
-        </label>
-        <select
-          name="kjseaGrade"
-          value={formData.kjseaGrade}
-          onChange={handleChange}
-          className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-gray-800 font-bold"
-        >
-          <option value="">Select Grade Level</option>
-          <option value="7 - ADV">Level 7 - Advanced (81-100%)</option>
-          <option value="6 - PRF">Level 6 - Proficient (71-80%)</option>
-          <option value="5 - DEV">Level 5 - Developing (61-70%)</option>
-          <option value="4 - APR">Level 4 - Approaching (51-60%)</option>
-          <option value="3 - NOV">Level 3 - Novice (40-50%)</option>
-          <option value="2 - BEG">Level 2 - Beginning (30-39%)</option>
-          <option value="1 - N/A">Level 1 - Needs Improvement (0-29%)</option>
-        </select>
-      </div>
+      
+      <p className="text-[11px] sm:text-xs md:text-sm text-slate-500 font-black uppercase tracking-[0.2em] pl-11">
+        {step === 1 && 'Student demographics & core identification'}
+        {step === 2 && 'Primary contact & parental connectivity'}
+        {step === 3 && 'Previous schooling & assessment records'}
+        {step === 4 && 'Verify all entry points for accuracy'}
+      </p>
     </div>
 
-    {/* Grade Scale Reference */}
-    <div className="mt-4 bg-white/80 rounded-lg p-3 border border-emerald-100">
-      <p className="text-xs font-bold text-emerald-700 mb-2 uppercase tracking-wider">CBC Grade Scale Reference</p>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-[9px]">
-        <div className="bg-emerald-100 text-emerald-800 p-2 rounded text-center font-bold">
-          <div>Level 7 - ADV</div>
-          <div className="text-[8px]">81-100%</div>
+    {/* Modern Progress Radial/Counter */}
+    <div className="hidden sm:flex items-center gap-4">
+      <div className="text-right">
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Completion</p>
+        <div className="flex items-baseline gap-1">
+          <span className="text-3xl font-black text-blue-600">{(step / 4) * 100}%</span>
         </div>
-        <div className="bg-emerald-100 text-emerald-800 p-2 rounded text-center font-bold">
-          <div>Level 6 - PRF</div>
-          <div className="text-[8px]">71-80%</div>
-        </div>
-        <div className="bg-emerald-100 text-emerald-800 p-2 rounded text-center font-bold">
-          <div>Level 5 - DEV</div>
-          <div className="text-[8px]">61-70%</div>
-        </div>
-        <div className="bg-emerald-100 text-emerald-800 p-2 rounded text-center font-bold">
-          <div>Level 4 - APR</div>
-          <div className="text-[8px]">51-60%</div>
-        </div>
-        <div className="bg-amber-100 text-amber-800 p-2 rounded text-center font-bold">
-          <div>Level 3 - NOV</div>
-          <div className="text-[8px]">40-50%</div>
-        </div>
-        <div className="bg-amber-100 text-amber-800 p-2 rounded text-center font-bold">
-          <div>Level 2 - BEG</div>
-          <div className="text-[8px]">30-39%</div>
-        </div>
-        <div className="bg-red-100 text-red-800 p-2 rounded text-center font-bold md:col-span-2">
-          <div>Level 1 - Needs Improvement</div>
-          <div className="text-[8px]">0-29%</div>
+      </div>
+      
+      {/* Dynamic Progress Ring */}
+      <div className="relative w-14 h-14">
+        <svg className="w-full h-full transform -rotate-90">
+          <circle
+            cx="28"
+            cy="28"
+            r="24"
+            stroke="currentColor"
+            strokeWidth="6"
+            fill="transparent"
+            className="text-slate-100"
+          />
+          <circle
+            cx="28"
+            cy="28"
+            r="24"
+            stroke="currentColor"
+            strokeWidth="6"
+            strokeDasharray={150}
+            strokeDashoffset={150 - (150 * (step / 4))}
+            strokeLinecap="round"
+            fill="transparent"
+            className="text-blue-600 transition-all duration-700 ease-out"
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center text-[10px] font-black text-slate-900">
+          {step}/4
         </div>
       </div>
     </div>
   </div>
 </div>
 
-        {/* Medical and Interests - Stacked on mobile, 3 columns on desktop */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-          <div className="space-y-4 sm:space-y-6 lg:col-span-2">
-            <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 flex items-center">
-              <FiActivity className="mr-2 text-blue-600" /> Medical Information
-            </h3>
-            
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                Medical Conditions
-              </label>
-              <textarea
-                name="medicalCondition"
-                value={formData.medicalCondition}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold min-h-[100px] sm:min-h-[120px]"
-                placeholder="Any medical conditions we should be aware of..."
-              />
-            </div>
-            
-            <div className="space-y-1 sm:space-y-2">
-              <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                Allergies
-              </label>
-              <textarea
-                name="allergies"
-                value={formData.allergies}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 font-bold min-h-[80px] sm:min-h-[80px]"
-                placeholder="Food, drug allergies..."
-              />
-            </div>
-          </div>
-
-          <div className="space-y-4 sm:space-y-6">
-            <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 flex items-center">
-              <FiHeart className="mr-2 text-red-600" /> Talents & Interests
-            </h3>
-            
-            <div className="space-y-3 sm:space-y-4">
-              <div className="space-y-1 sm:space-y-2">
-                <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                  Sports Interests
-                </label>
-                <textarea
-                  name="sportsInterests"
-                  value={formData.sportsInterests}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-800 font-bold min-h-[60px] sm:min-h-[80px]"
-                  placeholder="Football, Basketball, Athletics..."
-                />
-              </div>
-              
-              <div className="space-y-1 sm:space-y-2">
-                <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                  Club Interests
-                </label>
-                <textarea
-                  name="clubsInterests"
-                  value={formData.clubsInterests}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-800 font-bold min-h-[60px] sm:min-h-[80px]"
-                  placeholder="Debate, Science Club, Drama..."
-                />
-              </div>
-              
-              <div className="space-y-1 sm:space-y-2">
-                <label className="block text-sm sm:text-base font-semibold text-gray-800">
-                  Special Talents
-                </label>
-                <textarea
-                  name="talents"
-                  value={formData.talents}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 font-bold sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-800  min-h-[60px] sm:min-h-[80px]"
-                  placeholder="Music, Art, Public Speaking..."
-                />
-              </div>
-            </div>
-          </div>
+  {/* Form Content */}
+  <div className="p-4 sm:p-6 md:p-8">
+{step === 1 && (
+  <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
+    
+    {/* --- 1. CORE IDENTITY CARD --- */}
+    <div className="bg-white rounded-[2.5rem] p-6 md:p-10 border border-slate-100 shadow-xl shadow-slate-200/40 relative overflow-hidden">
+      {/* Decorative background element */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-[5rem] -mr-10 -mt-10 opacity-50" />
+      
+      <div className="flex items-center gap-4 mb-8 relative">
+        <div className="p-3 bg-blue-600 rounded-2xl text-white shadow-lg shadow-blue-200">
+          <FiUser size={24} />
+        </div>
+        <div>
+          <h3 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Personal Identity</h3>
+          <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">Legal Name & Demographics</p>
         </div>
       </div>
-    )}
 
-    {step === 4 && (
-      <div className="space-y-6 sm:space-y-8">
-        {/* Review Header */}
-        <div className="bg-gradient-to-r from-green-50 to-emerald-100 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 border border-green-200">
-          <div className="flex items-center">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-green-100 rounded-full flex items-center justify-center mr-3 sm:mr-4">
-              <FiEye className="text-lg sm:text-xl md:text-2xl text-green-600" />
-            </div>
-            <div>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-green-800 mb-1 sm:mb-2">
-                Review Your Application
-              </h3>
-              <p className="text-green-700 text-sm sm:text-base font-semibold">
-                Please verify all information carefully. Once submitted, changes cannot be made.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Review Sections */}
-        {[
-          {
-            title: '👤 Personal Information',
-            icon: FiUser,
-            color: 'blue',
-            fields: [
-              { label: 'Full Name', value: `${formData.firstName} ${formData.middleName || ''} ${formData.lastName}`.trim() },
-              { label: 'Gender', value: formData.gender },
-              { label: 'Date of Birth', value: formData.dateOfBirth, extra: formData.dateOfBirth ? `(Age: ${calculateAge(formData.dateOfBirth)} years)` : '' },
-              { label: 'Nationality', value: formData.nationality },
-              { label: 'County', value: formData.county },
-              { label: 'Constituency', value: formData.constituency },
-              { label: 'Ward', value: formData.ward },
-              { label: 'Village', value: formData.village || 'Not provided' },
-            ]
-          },
-          {
-            title: '📱 Contact Information',
-            icon: FiPhone,
-            color: 'purple',
-            fields: [
-              { label: 'Email', value: formData.email },
-              { label: 'Phone', value: formData.phone || 'Not provided' },
-              { label: 'Alternative Phone', value: formData.alternativePhone || 'Not provided' },
-              { label: 'Postal Address', value: formData.postalAddress },
-              { label: 'Postal Code', value: formData.postalCode || 'Not provided' },
-            ]
-          },
-          {
-            title: '👨‍👩‍👧‍👦 Parent/Guardian Information',
-            icon: FiUsers,
-            color: 'pink',
-            fields: [
-              { label: "Father's Name", value: formData.fatherName || 'Not provided' },
-              { label: "Father's Phone", value: formData.fatherPhone || 'Not provided' },
-              { label: "Mother's Name", value: formData.motherName || 'Not provided' },
-              { label: "Mother's Phone", value: formData.motherPhone || 'Not provided' },
-            ]
-          },
-          {
-            title: '🎓 Academic Information',
-            icon: FiBook,
-            color: 'yellow',
-            fields: [
-              { label: 'Previous School', value: formData.previousSchool },
-              { label: 'Previous Class', value: formData.previousClass },
-              ...(formData.kcpeYear ? [{ label: 'KCPE Year', value: formData.kcpeYear }] : []),
-              ...(formData.kcpeMarks ? [{ label: 'KCPE Marks', value: formData.kcpeMarks }] : []),
-              ...(formData.meanGrade ? [{ label: 'Mean Grade', value: formData.meanGrade }] : []),
-            ]
-          },
-          {
-            title: '⚕️ Health & Interests',
-            icon: FiActivity,
-            color: 'green',
-            fields: [
-              { label: 'Medical Conditions', value: formData.medicalCondition || 'None reported' },
-              { label: 'Allergies', value: formData.allergies || 'None reported' },
-              { label: 'Sports Interests', value: formData.sportsInterests || 'Not specified' },
-              { label: 'Clubs Interests', value: formData.clubsInterests || 'Not specified' },
-              { label: 'Special Talents', value: formData.talents || 'Not specified' },
-            ]
-          }
-        ].map((section, sectionIndex) => (
-          <div 
-            key={section.title}
-            className="border-2 border-gray-200 rounded-xl sm:rounded-2xl overflow-hidden"
-          >
-            <div className={`bg-gradient-to-r from-${section.color}-50 to-${section.color}-100 px-4 sm:px-6 py-3 sm:py-4 border-b border-${section.color}-200`}>
-              <h4 className="font-bold text-gray-800 text-base sm:text-lg flex items-center">
-                <section.icon className={`mr-2 sm:mr-3 text-${section.color}-600`} />
-                {section.title}
-              </h4>
-            </div>
-            <div className="p-4 sm:p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                {section.fields.map((field, fieldIndex) => (
-                  <div key={fieldIndex} className="space-y-1">
-                    <div className="text-xs sm:text-sm text-gray-700 font-semibold">{field.label}</div>
-                    <div className="font-semibold text-gray-900 text-sm sm:text-base md:text-lg">
-                      {field.value}
-                      {field.extra && (
-                        <span className="text-xs sm:text-sm text-gray-600 ml-2">{field.extra}</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {['firstName', 'middleName', 'lastName'].map((field) => (
+          <div key={field} className="space-y-2">
+            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              {field.replace(/([A-Z])/g, ' $1')} {field !== 'middleName' && '*'}
+            </label>
+            <div className="relative">
+              <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
+              <input
+                type="text"
+                name={field}
+                value={formData[field]}
+                onChange={handleChange}
+                className="w-full pl-11 pr-4 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 font-bold text-slate-800 shadow-inner transition-all"
+                placeholder={field === 'firstName' ? 'Mercy' : field === 'middleName' ? 'Mutindi' : 'Wambua'}
+                required={field !== 'middleName'}
+              />
             </div>
           </div>
         ))}
+      </div>
 
-        {/* Terms and Conditions */}
-        <div className="space-y-4 sm:space-y-6">
-          <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800">📜 Terms & Conditions</h3>
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg sm:rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 border border-gray-200">
-            <label className="flex items-start space-x-2 sm:space-x-3 cursor-pointer">
-              <input
-                type="checkbox"
-                required
-                className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 rounded focus:ring-blue-500 mt-0.5 sm:mt-1"
-              />
-              <span className="text-xs sm:text-sm md:text-base text-gray-800 font-semibold">
-                I certify that all information provided is accurate to the best of my knowledge and belief.
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Biological Gender *</label>
+          <select
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+            className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 font-bold text-slate-800 shadow-inner appearance-none cursor-pointer"
+            required
+          >
+            <option value="">Select Gender</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Birth Date *</label>
+          <div className="relative">
+            <FiCalendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
+            <input
+              type="date"
+              name="dateOfBirth"
+              value={formData.dateOfBirth}
+              onChange={handleChange}
+              className="w-full pl-11 pr-4 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 font-bold text-slate-800 shadow-inner"
+              required
+              max={new Date().toISOString().split('T')[0]}
+            />
+          </div>
+          {formData.dateOfBirth && (
+            <div className="flex justify-end px-2">
+              <span className="text-[10px] font-black text-blue-600 bg-blue-50 px-2 py-1 rounded-md uppercase">
+                {calculateAge(formData.dateOfBirth)} Years Old
               </span>
-            </label>
-            <label className="flex items-start space-x-2 sm:space-x-3 cursor-pointer">
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/* --- 2. GEOGRAPHIC ORIGIN SECTION --- */}
+    <div className="space-y-6">
+      <div className="flex items-center justify-between px-2">
+        <div className="flex items-center gap-3">
+          <FiMapPin className="text-emerald-500" size={24} />
+          <h3 className="text-xl font-black text-slate-800 tracking-tight">Residential Origin</h3>
+        </div>
+        <span className="hidden md:block text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-100 px-3 py-1 rounded-full">
+          Guided Location Selection
+        </span>
+      </div>
+
+      {/* Modern Horizontal Location Steps */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {[
+          { id: 'county', label: 'County', icon: FiMapPin, active: true, color: 'blue' },
+          { id: 'constituency', label: 'Constituency', icon: FiMapPin, active: !!formData.county, color: 'emerald' },
+          { id: 'ward', label: 'Ward', icon: FiMapPin, active: !!formData.constituency, color: 'purple' },
+          { id: 'village', label: 'Village', icon: FiHome, active: !!formData.ward, color: 'slate' }
+        ].map((step, index) => (
+          <div 
+            key={step.id}
+            className={`p-4 rounded-3xl border transition-all duration-300 ${
+              step.active 
+              ? `bg-white border-${step.color}-100 shadow-lg shadow-${step.color}-100/50` 
+              : 'bg-slate-50/50 border-slate-100 opacity-60'
+            }`}
+          >
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center mb-3 ${
+              step.active ? `bg-${step.color}-500 text-white shadow-md shadow-${step.color}-200` : 'bg-slate-200 text-slate-400'
+            }`}>
+              <step.icon size={16} />
+            </div>
+            <p className={`text-[10px] font-black uppercase tracking-tighter ${step.active ? `text-${step.color}-600` : 'text-slate-400'}`}>
+              Step 0{index + 1}
+            </p>
+            <p className={`text-sm font-black ${step.active ? 'text-slate-800' : 'text-slate-300'}`}>{step.label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Input Group */}
+      <div className="bg-slate-900 rounded-[2.5rem] p-6 md:p-10 shadow-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Citizenship *</label>
+            <input
+              type="text"
+              name="nationality"
+              value={formData.nationality}
+              onChange={handleChange}
+              className="w-full px-6 py-4 bg-slate-800/50 border border-slate-700 rounded-2xl focus:ring-2 focus:ring-blue-500 font-bold text-white transition-all"
+              placeholder="e.g. Kenyan"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">County of Residence *</label>
+            <div className="relative group" onClick={() => openLocationModal('county')}>
               <input
-                type="checkbox"
+                type="text"
+                value={formData.county}
+                readOnly
+                className="w-full pl-6 pr-12 py-4 bg-slate-800/50 border border-slate-700 rounded-2xl group-hover:border-blue-500 transition-all font-bold text-white cursor-pointer"
+                placeholder="Select County..."
                 required
-                className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 rounded focus:ring-blue-500 mt-0.5 sm:mt-1"
               />
-              <span className="text-xs sm:text-sm md:text-base text-gray-800 font-semibold">
-                I agree to the terms and conditions of kinyui boys  High School's admission process.
-              </span>
-            </label>
-            <label className="flex items-start space-x-2 sm:space-x-3 cursor-pointer">
-              <input
-                type="checkbox"
-                required
-                className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 rounded focus:ring-blue-500 mt-0.5 sm:mt-1"
+              <FiChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 group-hover:text-blue-500" />
+            </div>
+          </div>
+
+          {formData.county && (
+            <div className="space-y-2 animate-in zoom-in-95 duration-300">
+              <label className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.2em] ml-1">Constituency *</label>
+              <div className="relative group" onClick={() => openLocationModal('constituency')}>
+                <input
+                  type="text"
+                  value={formData.constituency}
+                  readOnly
+                  className="w-full pl-6 pr-12 py-4 bg-slate-800/50 border border-emerald-900/50 rounded-2xl group-hover:border-emerald-500 transition-all font-bold text-white cursor-pointer"
+                  placeholder="Select Constituency..."
+                  required
+                />
+                <FiChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-500" />
+              </div>
+            </div>
+          )}
+
+          {formData.constituency && (
+             <div className="space-y-2 animate-in zoom-in-95 duration-300">
+               <label className="text-[10px] font-black text-purple-500 uppercase tracking-[0.2em] ml-1">Specific Ward *</label>
+               <div className="relative group" onClick={() => openLocationModal('ward')}>
+                 <input
+                   type="text"
+                   value={formData.ward}
+                   readOnly
+                   className="w-full pl-6 pr-12 py-4 bg-slate-800/50 border border-purple-900/50 rounded-2xl group-hover:border-purple-500 transition-all font-bold text-white cursor-pointer"
+                   placeholder="Select Ward..."
+                   required
+                 />
+                 <FiChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-purple-500" />
+               </div>
+             </div>
+          )}
+
+          {formData.ward && (
+             <div className="space-y-2 animate-in zoom-in-95 duration-300 md:col-span-2 lg:col-span-1">
+               <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Village / Estate</label>
+               <input
+                 type="text"
+                 name="village"
+                 value={formData.village}
+                 onChange={handleChange}
+                 className="w-full px-6 py-4 bg-slate-800/50 border border-slate-700 rounded-2xl focus:ring-2 focus:ring-slate-500 font-bold text-white"
+                 placeholder="Enter village name..."
+               />
+             </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+{step === 2 && (
+  <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
+    
+    {/* --- PRIMARY CONTACT SECTION --- */}
+    <div className="bg-white rounded-[2rem] p-6 md:p-8 border border-slate-100 shadow-xl shadow-slate-200/40">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2.5 bg-blue-600 rounded-xl text-white">
+          <FiMail size={20} />
+        </div>
+        <h3 className="text-xl font-black text-slate-800 tracking-tight">Contact Channels</h3>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="space-y-2">
+          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Parental Email *</label>
+          <div className="relative">
+            <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 font-bold text-slate-800 shadow-inner"
+              placeholder="parent@example.com"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Primary Phone</label>
+          <div className="relative">
+            <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 font-bold text-slate-800 shadow-inner"
+              placeholder="0712 345 678"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2 lg:col-span-1 md:col-span-2">
+          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Alternative Phone</label>
+          <input
+            type="tel"
+            name="alternativePhone"
+            value={formData.alternativePhone}
+            onChange={handleChange}
+            className="w-full px-5 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 font-bold text-slate-800 shadow-inner"
+            placeholder="Second number"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5 pt-5 border-t border-slate-50">
+        <div className="space-y-2">
+          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Postal Address *</label>
+          <div className="relative">
+            <FiHome className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
+            <input
+              type="text"
+              name="postalAddress"
+              value={formData.postalAddress}
+              onChange={handleChange}
+              className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 font-bold text-slate-800 shadow-inner"
+              placeholder="P.O. Box..."
+              required
+            />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Postal Code</label>
+          <input
+            type="text"
+            name="postalCode"
+            value={formData.postalCode}
+            onChange={handleChange}
+            className="w-full px-5 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 font-bold text-slate-800 shadow-inner"
+            placeholder="10100"
+          />
+        </div>
+      </div>
+    </div>
+
+    {/* --- FAMILY & GUARDIAN SECTION --- */}
+    <div className="space-y-6">
+      <div className="flex items-center gap-3 ml-2">
+        <FiUsers className="text-blue-600" size={24} />
+        <h3 className="text-xl font-black text-slate-800 tracking-tight">Parental Details</h3>
+      </div>
+
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        
+        {/* Father's Card */}
+        <div className="bg-blue-50/40 rounded-[2rem] p-6 border border-blue-100/50 hover:bg-blue-50 transition-colors">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+              <FiUser size={16} />
+            </div>
+            <h4 className="font-black text-blue-900 text-sm uppercase tracking-wider">Father</h4>
+          </div>
+          <div className="space-y-4">
+            {['fatherName', 'fatherPhone', 'fatherEmail', 'fatherOccupation'].map((f) => (
+              <div key={f} className="space-y-1">
+                <label className="text-[10px] font-black text-blue-400 uppercase ml-1">{f.replace('father', '')}</label>
+                <input
+                  name={f}
+                  value={formData[f]}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 bg-white border-none rounded-xl focus:ring-2 focus:ring-blue-400 font-bold text-slate-800 shadow-sm text-sm"
+                  placeholder={f.includes('Email') ? 'email@...' : '...'}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mother's Card */}
+        <div className="bg-pink-50/40 rounded-[2rem] p-6 border border-pink-100/50 hover:bg-pink-50 transition-colors">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 rounded-lg bg-pink-500 flex items-center justify-center text-white">
+              <FiUser size={16} />
+            </div>
+            <h4 className="font-black text-pink-900 text-sm uppercase tracking-wider">Mother</h4>
+          </div>
+          <div className="space-y-4">
+            {['motherName', 'motherPhone', 'motherEmail', 'motherOccupation'].map((f) => (
+              <div key={f} className="space-y-1">
+                <label className="text-[10px] font-black text-pink-400 uppercase ml-1">{f.replace('mother', '')}</label>
+                <input
+                  name={f}
+                  value={formData[f]}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 bg-white border-none rounded-xl focus:ring-2 focus:ring-pink-400 font-bold text-slate-800 shadow-sm text-sm"
+                  placeholder="..."
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Guardian Card */}
+        <div className="bg-emerald-50/40 rounded-[2rem] p-6 border border-emerald-100/50 hover:bg-emerald-50 transition-colors">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white">
+              <FiUser size={16} />
+            </div>
+            <h4 className="font-black text-emerald-900 text-sm uppercase tracking-wider">Guardian</h4>
+          </div>
+          <div className="space-y-4">
+            {['guardianName', 'guardianPhone', 'guardianEmail', 'guardianOccupation'].map((f) => (
+              <div key={f} className="space-y-1">
+                <label className="text-[10px] font-black text-emerald-400 uppercase ml-1">{f.replace('guardian', '')}</label>
+                <input
+                  name={f}
+                  value={formData[f]}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 bg-white border-none rounded-xl focus:ring-2 focus:ring-emerald-400 font-bold text-slate-800 shadow-sm text-sm"
+                  placeholder="Optional"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+)}
+
+{step === 3 && (
+  <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
+    
+    {/* 1. ACADEMIC DOSSIER */}
+    <div className="bg-white rounded-[2.5rem] p-6 md:p-10 border border-slate-100 shadow-xl shadow-slate-200/40">
+      <div className="flex items-center gap-4 mb-8">
+        <div className="p-3 bg-blue-600 rounded-2xl text-white shadow-lg shadow-blue-200">
+          <FiBookOpen size={24} />
+        </div>
+        <div>
+          <h3 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Academic Profile</h3>
+          <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">Previous Schooling & Performance</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        <div className="space-y-2">
+          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Previous School *</label>
+          <div className="relative">
+            <FiBook className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
+            <input
+              type="text"
+              name="previousSchool"
+              value={formData.previousSchool}
+              onChange={handleChange}
+              className="w-full pl-12 pr-5 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 transition-all font-bold text-slate-800 placeholder:text-slate-300 shadow-inner"
+              placeholder="Full School Name"
+              required
+            />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Current Class/Form *</label>
+          <input
+            type="text"
+            name="previousClass"
+            value={formData.previousClass}
+            onChange={handleChange}
+            className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 transition-all font-bold text-slate-800 placeholder:text-slate-300 shadow-inner"
+            placeholder="e.g. Class 8 / Form 2"
+            required
+          />
+        </div>
+      </div>
+
+      {/* CBC / KPSEA SECTION */}
+      <div className="bg-emerald-50/50 rounded-[2rem] p-6 md:p-8 border border-emerald-100/50">
+        <div className="flex items-center gap-3 mb-8">
+          <FiAward className="text-emerald-600" size={20} />
+          <h4 className="font-black text-emerald-900 text-xs md:text-sm uppercase tracking-widest">CBC Assessment Results</h4>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-emerald-700/60 uppercase ml-1">KPSEA Year</label>
+            <input
+              type="number"
+              name="kpseaYear"
+              value={formData.kpseaYear}
+              onChange={handleChange}
+              className="w-full px-5 py-3 bg-white border-none rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800"
+              placeholder="2025"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-emerald-700/60 uppercase ml-1">Assessment Index</label>
+            <input
+              type="text"
+              name="kpseaIndex"
+              value={formData.kpseaIndex}
+              onChange={handleChange}
+              className="w-full px-5 py-3 bg-white border-none rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800"
+              placeholder="Index Number"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-emerald-700/60 uppercase ml-1">KPSEA Marks (0-100)</label>
+            <input
+              type="number"
+              name="kpseaMarks"
+              value={formData.kpseaMarks}
+              onChange={handleChange}
+              className="w-full px-5 py-3 bg-white border-none rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800"
+              placeholder="Marks"
+              min="0" max="100"
+            />
+          </div>
+        </div>
+
+        {/* Dynamic Progress Bar */}
+        {formData.kpseaMarks && (
+          <div className="mt-8 pt-6 border-t border-emerald-100/50">
+            <div className="w-full bg-slate-200/50 rounded-full h-2 overflow-hidden">
+              <div 
+                className={`h-full rounded-full transition-all duration-1000 ${
+                  formData.kpseaMarks >= 76 ? 'bg-emerald-500' :
+                  formData.kpseaMarks >= 52 ? 'bg-blue-500' :
+                  formData.kpseaMarks >= 28 ? 'bg-amber-500' : 'bg-rose-500'
+                }`}
+                style={{ width: `${formData.kpseaMarks}%` }}
               />
-              <span className="text-xs sm:text-sm md:text-base text-gray-800 font-semibold">
-                I consent to the school processing my personal data for admission purposes.
-              </span>
-            </label>
+            </div>
+            <div className="flex justify-between mt-3 px-1 text-[10px] font-black text-emerald-700 uppercase">
+               <span>Performance Meter</span>
+               <span>{formData.kpseaMarks}/100 Points</span>
+            </div>
+          </div>
+        )}
+
+        {/* KJSEA Select */}
+        <div className="mt-8 space-y-2">
+          <label className="text-[10px] font-black text-emerald-700/60 uppercase ml-1">KJSEA Grade Level</label>
+          <select
+            name="kjseaGrade"
+            value={formData.kjseaGrade}
+            onChange={handleChange}
+            className="w-full px-5 py-4 bg-white border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800 appearance-none cursor-pointer"
+          >
+            <option value="">Select Level</option>
+            <option value="7 - ADV">Level 7 - Advanced (81-100%)</option>
+            <option value="6 - PRF">Level 6 - Proficient (71-80%)</option>
+            <option value="5 - DEV">Level 5 - Developing (61-70%)</option>
+            <option value="4 - APR">Level 4 - Approaching (51-60%)</option>
+            <option value="3 - NOV">Level 3 - Novice (40-50%)</option>
+            <option value="2 - BEG">Level 2 - Beginning (30-39%)</option>
+            <option value="1 - N/A">Level 1 - Needs Improvement (0-29%)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    {/* 2. HEALTH & WELLNESS (L-Shaped Layout) */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="bg-rose-50/50 rounded-[2.5rem] p-6 md:p-10 border border-rose-100">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="p-3 bg-rose-500 rounded-xl text-white shadow-lg shadow-rose-100">
+            <FiActivity size={20} />
+          </div>
+          <h3 className="text-xl font-black text-slate-800 tracking-tight">Health Record</h3>
+        </div>
+        
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-rose-400 uppercase tracking-widest ml-1">Conditions</label>
+            <textarea
+              name="medicalCondition"
+              value={formData.medicalCondition}
+              onChange={handleChange}
+              className="w-full px-6 py-4 bg-white border-none rounded-2xl focus:ring-2 focus:ring-rose-400 transition-all font-bold text-slate-800 min-h-[120px] shadow-sm"
+              placeholder="Medical history..."
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-rose-400 uppercase tracking-widest ml-1">Allergies</label>
+            <textarea
+              name="allergies"
+              value={formData.allergies}
+              onChange={handleChange}
+              className="w-full px-6 py-4 bg-white border-none rounded-2xl focus:ring-2 focus:ring-rose-400 transition-all font-bold text-slate-800 min-h-[80px] shadow-sm"
+              placeholder="Allergies..."
+            />
           </div>
         </div>
       </div>
-    )}
+
+      {/* 3. INTERESTS (Modern List Layout) */}
+      <div className="bg-indigo-50/50 rounded-[2.5rem] p-6 md:p-10 border border-indigo-100">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="p-3 bg-indigo-500 rounded-xl text-white shadow-lg shadow-indigo-100">
+            <FiHeart size={20} />
+          </div>
+          <h3 className="text-xl font-black text-slate-800 tracking-tight">Interests</h3>
+        </div>
+
+        <div className="space-y-5">
+          {[
+            { label: 'Sports', name: 'sportsInterests', color: 'indigo' },
+            { label: 'Clubs', name: 'clubsInterests', color: 'indigo' },
+            { label: 'Talents', name: 'talents', color: 'indigo' }
+          ].map((item) => (
+            <div key={item.name} className="space-y-2">
+              <label className="text-[10px] font-black text-indigo-400 uppercase tracking-widest ml-1">{item.label}</label>
+              <textarea
+                name={item.name}
+                value={formData[item.name]}
+                onChange={handleChange}
+                className="w-full px-6 py-4 bg-white border-none rounded-2xl focus:ring-2 focus:ring-indigo-400 transition-all font-bold text-slate-800 min-h-[80px] shadow-sm"
+                placeholder={`Your ${item.label.toLowerCase()}...`}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+{step === 4 && (
+  <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    
+    {/* 1. Dynamic Review Banner */}
+    <div className="relative overflow-hidden bg-slate-900 rounded-[2rem] p-6 md:p-10 shadow-2xl">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 blur-[80px] rounded-full -mr-32 -mt-32" />
+      <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+        <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/30">
+          <FiEye size={32} />
+        </div>
+        <div className="flex-1">
+          <h3 className="text-2xl md:text-3xl font-black text-white mb-2 tracking-tight">
+            Final Verification.
+          </h3>
+          <p className="text-slate-400 text-sm md:text-base font-medium max-w-xl">
+            Please confirm all details below are accurate. This information will be used for your official Kinyui Boys student record.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {/* 2. Simplified Review Sections */}
+    <div className="space-y-6">
+      {[
+        {
+          title: 'Identity Profile',
+          icon: FiUser,
+          theme: 'blue',
+          fields: [
+            { label: 'Full Legal Name', value: `${formData.firstName} ${formData.middleName || ''} ${formData.lastName}`.trim() },
+            { label: 'Gender', value: formData.gender },
+            { label: 'Date of Birth', value: formData.dateOfBirth, extra: formData.dateOfBirth ? `Age: ${calculateAge(formData.dateOfBirth)}` : '' },
+            { label: 'Nationality', value: formData.nationality },
+            { label: 'County / Home', value: `${formData.county}, ${formData.village || 'N/A'}` },
+          ]
+        },
+        {
+          title: 'Contact & Family',
+          icon: FiUsers,
+          theme: 'purple',
+          fields: [
+            { label: 'Primary Email', value: formData.email },
+            { label: 'Father / Phone', value: `${formData.fatherName || 'N/A'} — ${formData.fatherPhone || 'N/A'}` },
+            { label: 'Mother / Phone', value: `${formData.motherName || 'N/A'} — ${formData.motherPhone || 'N/A'}` },
+          ]
+        },
+        {
+          title: 'Academic Standing',
+          icon: FiBookOpen,
+          theme: 'amber',
+          fields: [
+            { label: 'Former School', value: formData.previousSchool },
+            { label: 'Target Class', value: formData.previousClass },
+            { label: 'KCPE Score', value: formData.kcpeMarks || 'N/A' },
+            { label: 'Grade Mean', value: formData.meanGrade || 'N/A' },
+          ]
+        }
+      ].map((section, idx) => (
+        <div key={idx} className="group bg-white rounded-[2rem] p-6 md:p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500">
+          <div className="flex items-center gap-4 mb-8">
+            <div className={`p-3 rounded-xl bg-${section.theme}-50 text-${section.theme}-600`}>
+              <section.icon size={22} />
+            </div>
+            <h4 className="font-black text-slate-800 uppercase tracking-[0.2em] text-[10px] md:text-xs">
+              {section.title}
+            </h4>
+            <div className="flex-1 h-px bg-slate-50" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-12">
+            {section.fields.map((field, fIdx) => (
+              <div key={fIdx} className="space-y-1">
+                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{field.label}</p>
+                <p className="text-sm md:text-base font-bold text-slate-900 leading-tight">
+                  {field.value}
+                  {field.extra && <span className="ml-2 text-[10px] text-blue-600 font-black px-2 py-0.5 bg-blue-50 rounded-full">{field.extra}</span>}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* 3. Final Legal Consent - "Clean Checklist" Style */}
+    <div className="bg-slate-50 rounded-[2.5rem] p-8 md:p-12 border border-slate-100">
+      <h3 className="text-xl font-black text-slate-900 mb-8 flex items-center gap-3">
+        <FiShield className="text-blue-600" />
+        Official Declaration
+      </h3>
+      
+      <div className="grid grid-cols-1 gap-4">
+        {[
+          "I certify that all information provided is accurate and truthful.",
+          "I agree to adhere to all Kinyui Boys High School terms of admission.",
+          "I consent to the school processing my personal data for academic use."
+        ].map((text, cIdx) => (
+          <label key={cIdx} className="relative flex items-center gap-4 p-5 bg-white rounded-2xl cursor-pointer hover:bg-blue-50 transition-colors shadow-sm group">
+            <div className="relative flex items-center justify-center shrink-0">
+              <input 
+                type="checkbox" 
+                required 
+                className="peer appearance-none w-6 h-6 border-2 border-slate-200 rounded-lg checked:bg-blue-600 checked:border-blue-600 transition-all" 
+              />
+              <FiCheck className="absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" />
+            </div>
+            <span className="text-xs md:text-sm font-bold text-slate-700 leading-snug group-hover:text-slate-900">
+              {text}
+            </span>
+          </label>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
   </div>
 
   {/* Form Footer with Navigation */}
