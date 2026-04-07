@@ -555,8 +555,8 @@ const ModernShareModal = ({ item, type = 'event', onClose }) => {
     {
       name: 'WhatsApp',
       icon: FaWhatsapp,
-      color: 'bg-green-500',
-      hoverColor: 'hover:bg-green-600',
+      color: 'bg-[#25D366]',
+      hoverColor: 'hover:bg-[#128C7E]',
       action: () => {
         const text = `${item.title}\n\n${type === 'event' ? '🎉 Event Details:' : '📰 News:'}\n${item.description}\n\n${window.location.href}`;
         window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
@@ -565,8 +565,8 @@ const ModernShareModal = ({ item, type = 'event', onClose }) => {
     {
       name: 'Facebook',
       icon: FaFacebookF,
-      color: 'bg-blue-600',
-      hoverColor: 'hover:bg-blue-700',
+      color: 'bg-[#1877F2]',
+      hoverColor: 'hover:bg-[#0d65d9]',
       action: () => {
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank');
       }
@@ -574,8 +574,8 @@ const ModernShareModal = ({ item, type = 'event', onClose }) => {
     {
       name: 'Twitter',
       icon: FaTwitter,
-      color: 'bg-sky-500',
-      hoverColor: 'hover:bg-sky-600',
+      color: 'bg-[#1DA1F2]',
+      hoverColor: 'hover:bg-[#0c85d0]',
       action: () => {
         const text = `${item.title} - Check out this ${type === 'event' ? 'event' : 'news'}!`;
         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`, '_blank');
@@ -584,8 +584,8 @@ const ModernShareModal = ({ item, type = 'event', onClose }) => {
     {
       name: 'Telegram',
       icon: FaTelegram,
-      color: 'bg-blue-500',
-      hoverColor: 'hover:bg-blue-600',
+      color: 'bg-[#0088cc]',
+      hoverColor: 'hover:bg-[#0077b5]',
       action: () => {
         const text = `${item.title}\n\n${item.description}`;
         window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`, '_blank');
@@ -594,8 +594,8 @@ const ModernShareModal = ({ item, type = 'event', onClose }) => {
     {
       name: 'Email',
       icon: FaEnvelope,
-      color: 'bg-gray-600',
-      hoverColor: 'hover:bg-gray-700',
+      color: 'bg-slate-600',
+      hoverColor: 'hover:bg-slate-700',
       action: () => {
         const subject = `${item.title} - ${type === 'event' ? 'Event' : 'News'}`;
         const body = `${item.description}\n\n${window.location.href}`;
@@ -607,92 +607,79 @@ const ModernShareModal = ({ item, type = 'event', onClose }) => {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
       setCopied(true);
-      toast.success('Link copied to clipboard!');
       setTimeout(() => setCopied(false), 2000);
     });
   };
 
-  const getShareTitle = () => {
-    return type === 'event' ? 'Share Event' : 'Share News';
-  };
-
   return (
-<ModernModal open={true} onClose={onClose} maxWidth="480px">
-  {/* 1. Refined Header */}
-  <div className="bg-slate-900 p-8 text-white relative overflow-hidden">
-    {/* Background Detail */}
-    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-3xl rounded-full -mr-16 -mt-16" />
-    
-    <div className="relative z-10 flex flex-col items-center text-center">
-      <div className="w-14 h-14 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-4 border border-white/10">
-        <IoShareSocialOutline className="text-2xl text-white" />
-      </div>
-      <h2 className="text-2xl font-black tracking-tight">{getShareTitle()}</h2>
-      <p className="text-slate-400 text-sm mt-1">
-        Invite others to join the conversation
-      </p>
-    </div>
-  </div>
-
-  {/* 2. Content Area */}
-  <div className="p-8 bg-white">
-    {/* Social Platforms - Clean Grid */}
-    <div className="grid grid-cols-4 gap-4 mb-8">
-      {socialPlatforms.map((platform, index) => {
-        const Icon = platform.icon;
-        return (
-          <button
-            key={index}
-            onClick={platform.action}
-            className="flex flex-col items-center gap-2 group"
-          >
-            {/* Minimalist Icon Circle */}
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors bg-slate-50 text-slate-600 border border-slate-100 active:bg-slate-200`}>
-              <Icon className="text-xl" />
-            </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-              {platform.name}
-            </span>
-          </button>
-        );
-      })}
-    </div>
-
-    {/* 3. Modern Copy Section */}
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <label className="text-[11px] font-black uppercase tracking-widest text-slate-400">
-          Direct Access Link
-        </label>
-      </div>
-      
-      <div className="relative group">
-        <div className="w-full p-4 bg-slate-50 rounded-2xl border border-slate-100 pr-32">
-          <p className="text-xs font-mono text-slate-500 truncate">
-            {window.location.href}
+    <ModernModal open={true} onClose={onClose} maxWidth="480px">
+      {/* 1. Dark Brown Header */}
+      <div className="bg-[#2D1B14] p-8 text-white relative overflow-hidden">
+        {/* Subtle Warm Glow for the Brown theme */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 blur-3xl rounded-full -mr-16 -mt-16" />
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-rose-500/5 blur-2xl rounded-full -ml-12 -mb-12" />
+        
+        <div className="relative z-10 flex flex-col items-center text-center">
+          <div className="w-14 h-14 bg-white/5 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-4 border border-white/10 shadow-2xl">
+            <IoShareSocialOutline className="text-2xl text-amber-200" />
+          </div>
+          <h2 className="text-2xl font-black tracking-tight italic">
+            Share {type === 'event' ? 'Event' : 'News'}
+          </h2>
+          <p className="text-amber-100/50 text-xs mt-1 uppercase tracking-[0.2em] font-medium">
+            Spread the word
           </p>
         </div>
-        
-        <button
-          onClick={copyToClipboard}
-          className={`absolute right-1.5 top-1.5 bottom-1.5 px-5 rounded-xl font-bold text-xs transition-all shadow-sm flex items-center gap-2 ${
-            copied 
-            ? 'bg-emerald-500 text-white' 
-            : 'bg-slate-900 text-white active:scale-95'
-          }`}
-        >
-          {copied ? (
-            <>Done!</>
-          ) : (
-            <>
-              <FiCopy /> Copy
-            </>
-          )}
-        </button>
       </div>
-    </div>
-  </div>
-</ModernModal>
+
+      {/* 2. Content Area */}
+      <div className="p-8 bg-white">
+        {/* Social Platforms - Colored Icons */}
+        <div className="flex flex-wrap justify-center gap-6 mb-10">
+          {socialPlatforms.map((platform, index) => {
+            const Icon = platform.icon;
+            return (
+              <button
+                key={index}
+                onClick={platform.action}
+                className="flex flex-col items-center gap-2.5 group transition-transform active:scale-90"
+              >
+                <div className={`w-14 h-14 rounded-[20px] flex items-center justify-center text-white shadow-lg transition-all duration-300 ${platform.color} ${platform.hoverColor} group-hover:shadow-xl group-hover:-translate-y-1`}>
+                  <Icon className="text-2xl" />
+                </div>
+                <span className="text-[10px] font-bold text-slate-500">
+                  {platform.name}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* 3. Link Section */}
+        <div className="space-y-3">
+          <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">
+            Page Link
+          </label>
+          
+          <div className="relative flex items-center">
+            <div className="w-full p-4 bg-slate-50 rounded-2xl border border-slate-100 text-xs font-medium text-slate-400 truncate pr-28">
+              {window.location.href}
+            </div>
+            
+            <button
+              onClick={copyToClipboard}
+              className={`absolute right-1.5 px-6 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 ${
+                copied 
+                ? 'bg-emerald-500 text-white shadow-emerald-200' 
+                : 'bg-[#2D1B14] text-white hover:bg-[#3d2a22] shadow-lg shadow-stone-200'
+              }`}
+            >
+              {copied ? 'Copied!' : <><FiCopy /> Copy</>}
+            </button>
+          </div>
+        </div>
+      </div>
+    </ModernModal>
   );
 };
 
