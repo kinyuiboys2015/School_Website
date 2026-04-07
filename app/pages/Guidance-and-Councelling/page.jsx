@@ -462,7 +462,7 @@ export default function StudentCounseling() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-10">{stats.map((stat, idx) => <ModernStatCard key={idx} stat={stat} />)}</div>
 
         {/* 24/7 Support Team Section */}
-        <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-3xl p-6 md:p-8 border border-emerald-100 shadow-sm mb-8">
+        <div className="bg-gradient-to-r from-amber-50 to-rose-50 rounded-3xl p-6 md:p-8 border border-emerald-100 shadow-sm mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-8"><div className="flex items-center gap-4 mb-4 lg:mb-0"><div className="p-3 bg-emerald-500 rounded-2xl shadow-lg"><FiPhoneCall className="text-white text-2xl" /></div><div><h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">Guidance & Counseling Team</h2><p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{teamMembers.length} Dedicated Professionals</p></div></div></div>
           {teamMembers.length === 0 ? <div className="bg-white rounded-2xl p-8 text-center border border-emerald-100"><FiUsers className="text-emerald-300 text-4xl mx-auto mb-4" /><h3 className="text-lg font-bold text-slate-900 mb-2">No Team Members Available</h3><p className="text-slate-500 text-sm">Team information will be loaded soon.</p></div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{teamMembers.map(member => <ModernSupportTeamCard key={member.id} member={member} onView={() => { setSelectedMember(member); setIsTeamModalOpen(true); }} onContact={() => toast.success('Contact info coming soon')} viewMode={viewMode} />)}</div>}
         </div>

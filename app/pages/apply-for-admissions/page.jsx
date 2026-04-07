@@ -15,7 +15,7 @@ import Header from "../../components/apply/page.jsx";
 // Kenya administrative data
 import kenyaData from '../../../public/data.json';
 
-const MatunguluGirlAdmission = () => {
+const KinyuiBoysAdmission = () => {
   const [formData, setFormData] = useState({
     // Personal Information
     firstName: '',
@@ -1636,77 +1636,81 @@ kjseaGrade: '',         // Changed from meanGrade
           )}
         </div>
 
-{/* --- kinyui boys  MODERN RESPONSIVE FOOTER --- */}
-<div className="mt-8 md:mt-16 text-center relative z-10 px-4 mb-6">
-  <div className="max-w-4xl mx-auto bg-white/40 backdrop-blur-lg rounded-[1.5rem] md:rounded-[2.5rem] p-4 md:p-10 border border-white/60 shadow-xl shadow-blue-900/5 mb-6 transition-all duration-500">
+{/* --- KINYUI BOYS: MINIMALIST SERVICE BAR FOOTER --- */}
+<div className="mt-12 md:mt-24 pb-12 relative z-10 px-6">
+  <div className="max-w-6xl mx-auto">
     
-    {/* Floating Header - Compacted for Mobile */}
-    <div className="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full shadow-sm border border-gray-100 mb-6 -mt-10 md:-mt-16 transition-transform">
-      <FiPhone size={12} className="text-blue-600" />
-      <h3 className="text-[10px] md:text-sm font-bold text-gray-900 uppercase tracking-widest">
-        Need Assistance?
-      </h3>
-    </div>
-
-    {/* Contact Info: Compact Grid */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-6">
+    {/* Main Service Row: Horizontal & Bold */}
+    <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-8 md:gap-4 bg-slate-50/50 rounded-[2rem] p-2 md:p-3 mb-12">
       
-      {/* Admissions Card */}
-      <div className="group flex flex-row md:flex-col items-center gap-3 p-3 rounded-xl bg-white/30 hover:bg-white transition-all duration-300 active:scale-95">
-        <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
-          <FiPhone size={14} />
-        </div>
-        <div className="text-left md:text-center min-w-0">
-          <p className="text-[8px] font-bold text-gray-400 uppercase tracking-tight">Admissions</p>
-          <p className="text-[11px] md:text-xs font-semibold text-gray-900">0710 894 145</p>
-        </div>
+      {/* Brand & Motto Section */}
+      <div className="flex-1 p-6 md:p-8">
+        <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tighter mb-1">
+          Kinyui Boys.
+        </h2>
+        <p className="text-blue-600 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] opacity-70">
+          Excellence Through Discipline
+        </p>
       </div>
 
-      {/* Email Card */}
-      <div className="group flex flex-row md:flex-col items-center gap-3 p-3 rounded-xl bg-white/30 hover:bg-white transition-all duration-300 active:scale-95">
-        <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center text-green-600 shrink-0">
-          <FiMail size={14} />
-        </div>
-        <div className="text-left md:text-center min-w-0 overflow-hidden">
-          <p className="text-[8px] font-bold text-gray-400 uppercase tracking-tight">Email Support</p>
-          <p className="text-[11px] md:text-xs font-semibold text-gray-900 truncate">kinyuiboys2015@gmail.com</p>
-        </div>
-      </div>
+      {/* Vertical Dividers (Hidden on Mobile) */}
+      <div className="hidden md:block w-px h-16 bg-slate-200" />
 
-      {/* Office Hours Card */}
-      <div className="group flex flex-row md:flex-col items-center gap-3 p-3 rounded-xl bg-white/30 hover:bg-white transition-all duration-300 active:scale-95">
-        <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600 shrink-0">
-          <FiHome size={14} />
-        </div>
-        <div className="text-left md:text-center min-w-0">
-          <p className="text-[8px] font-bold text-gray-400 uppercase tracking-tight">Working Hours</p>
-          <p className="text-[11px] md:text-xs font-semibold text-gray-900">Mon-Fri, 8AM - 5PM</p>
-        </div>
-      </div>
+      {/* Quick Contact Links - Flex Row No Wrap on Mobile */}
+      <div className="flex-[2] flex flex-row items-center justify-around md:justify-end gap-2 md:gap-12 px-4 md:px-10">
+        
+        {/* Phone Link */}
+        <a href="tel:0710894145" className="group flex flex-col items-center md:items-start gap-1">
+          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Call Us</span>
+          <div className="flex items-center gap-2">
+            <FiPhone size={14} className="text-slate-900 group-hover:scale-110 transition-transform" />
+            <span className="text-xs md:text-sm font-bold text-slate-900">0710 894 145</span>
+          </div>
+        </a>
 
+        {/* Email Link */}
+        <a href="mailto:kinyuiboys2015@gmail.com" className="group flex flex-col items-center md:items-start gap-1">
+          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Support</span>
+          <div className="flex items-center gap-2">
+            <FiMail size={14} className="text-slate-900 group-hover:scale-110 transition-transform" />
+            <span className="text-xs md:text-sm font-bold text-slate-900 hidden sm:block">kinyuiboys2015@gmail.com</span>
+            <span className="text-xs font-bold text-slate-900 sm:hidden">Email</span>
+          </div>
+        </a>
+
+        {/* Schedule Link */}
+        <div className="flex flex-col items-center md:items-start gap-1">
+          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Office</span>
+          <div className="flex items-center gap-2">
+            <FiClock size={14} className="text-slate-900" />
+            <span className="text-xs md:text-sm font-bold text-slate-900">8AM - 5PM</span>
+          </div>
+        </div>
+
+      </div>
     </div>
-  </div>
-  
-  {/* Copyright & Legal Section - Clean & Tiny */}
-  <div className="max-w-2xl mx-auto space-y-3 opacity-80">
-    <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-4">
-      <p className="text-gray-800 text-[9px] md:text-xs font-bold uppercase tracking-wider">
-        © {new Date().getFullYear()} kinyui boys  High School
-      </p>
-      <p className="text-blue-600 text-[9px] md:text-xs font-medium italic">
-        "Excellence Through Discipline"
-      </p>
-    </div>
-    
-    <div className="flex items-center justify-center gap-4 opacity-50">
-      <div className="flex items-center gap-1 text-[8px] font-bold text-gray-500 uppercase">
-        <FiShield size={10} className="text-blue-500" />
-        Data Protection
+
+    {/* Bottom Legal Tier: Split Layout */}
+    <div className="flex flex-col md:flex-row items-center justify-between gap-6 px-4">
+      
+      {/* Copyright */}
+      <div className="flex items-center gap-4">
+        <p className="text-slate-400 text-[10px] md:text-xs font-medium">
+          &copy; {new Date().getFullYear()} Kinyui Boys High School. All rights reserved.
+        </p>
       </div>
-      <div className="flex items-center gap-1 text-[8px] font-bold text-gray-500 uppercase">
-        <FiCheckCircle size={10} className="text-green-500" />
-        Privacy Policy
+
+      {/* Privacy & Social Icons */}
+      <div className="flex items-center gap-8">
+        <a href="#" className="text-[10px] font-black text-slate-800 uppercase tracking-widest hover:text-blue-600 transition-colors">Privacy</a>
+        <a href="#" className="text-[10px] font-black text-slate-800 uppercase tracking-widest hover:text-blue-600 transition-colors">Terms</a>
+        <div className="flex items-center gap-3 ml-4">
+          <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-blue-600 hover:text-white transition-all cursor-pointer">
+            <FiShield size={14} />
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -1715,4 +1719,4 @@ kjseaGrade: '',         // Changed from meanGrade
   );
 };
 
-export default MatunguluGirlAdmission;
+export default KinyuiBoysAdmission;
