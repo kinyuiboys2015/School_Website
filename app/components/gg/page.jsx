@@ -11,7 +11,7 @@ import {
   FiFacebook, FiTwitter, FiFileText, FiInfo, FiRefreshCw, FiEye,
   FiBookmark, FiExternalLink, FiZap, FiTrendingUp, FiCopy, FiBell,
   FiUserPlus, FiArrowRight, FiPlus, FiRotateCw, FiEdit3, FiTrash2,
-  FiSave, FiUpload, FiMapPin, FiAlertTriangle, FiMail, FiPhone, FiFolder, FiLock , FiMessageCircle 
+  FiSave, FiUpload, FiMapPin, FiAlertTriangle, FiMail, FiPhone, FiFolder, FiLock, FiMessageCircle 
 } from 'react-icons/fi';
 import { FaWhatsapp, FaFacebookF, FaTwitter, FaTelegram, FaEnvelope } from 'react-icons/fa';
 import { 
@@ -332,7 +332,7 @@ const ModernGalleryCard = ({ gallery, onView, onFavorite, viewMode = 'grid', onS
             {/* Badges */}
             <div className="absolute top-4 left-4 flex flex-col gap-2">
               <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm border ${theme.bg} ${theme.text} ${theme.border}`}>
-                {gallery.category.replace(/_/g, ' ') || 'Gallery'}
+                {gallery.category.replace(/_/g, ' ')}
               </span>
               {gallery.year && (
                 <span className="px-3 py-1 bg-slate-900/90 backdrop-blur-md text-white rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1 shadow-sm">
@@ -970,7 +970,7 @@ export default function ModernGallery() {
                 <div className="space-y-4">
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-md border border-white/20">
                     <IoSparkles className="text-amber-400 text-sm" />
-                    <span className="text-slate-200 font-normal text-xs uppercase tracking-wider">Visual Chronicles</span>
+                    <span className="text-slate-200 font-normal text-xs uppercase tracking-widest">Visual Chronicles</span>
                   </div>
                   <div className="flex flex-col gap-2">
                     <div className="max-w-full">
