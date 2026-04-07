@@ -781,7 +781,7 @@ kjseaGrade: '',         // Changed from meanGrade
                 value={formData[field]}
                 onChange={handleChange}
                 className="w-full pl-11 pr-4 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 font-bold text-slate-800 shadow-inner transition-all"
-                placeholder={field === 'firstName' ? 'Mercy' : field === 'middleName' ? 'Mutindi' : 'Wambua'}
+                placeholder={field === 'firstName' ? 'John' : field === 'middleName' ? 'Mutinda' : 'Wambua'}
                 required={field !== 'middleName'}
               />
             </div>
@@ -801,7 +801,6 @@ kjseaGrade: '',         // Changed from meanGrade
           >
             <option value="">Select Gender</option>
             <option value="MALE">Male</option>
-            <option value="FEMALE">Female</option>
           </select>
         </div>
 
