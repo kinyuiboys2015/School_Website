@@ -204,7 +204,7 @@ const ModernJobCard = ({ job, onView, onBookmark, onShare, viewMode = 'grid' }) 
               </button>
               <button
                 onClick={handleCopyLink}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                className="p-1.5 rounded-lg text-slate-800 hover:text-slate-800 hover:bg-slate-50"
                 title="Copy link"
               >
                 <FiCopy size={14} />
@@ -214,7 +214,7 @@ const ModernJobCard = ({ job, onView, onBookmark, onShare, viewMode = 'grid' }) 
                   e.stopPropagation();
                   onBookmark(job);
                 }}
-                className={`p-1.5 rounded-lg ${isBookmarked ? 'text-amber-500 bg-amber-50' : 'text-slate-300 hover:text-slate-500'}`}
+                className={`p-1.5 rounded-lg ${isBookmarked ? 'text-amber-500 bg-amber-50' : 'text-slate-300 hover:text-slate-800'}`}
               >
                 <FiBookmark className={isBookmarked ? 'fill-current' : ''} size={14} />
               </button>
@@ -228,19 +228,19 @@ const ModernJobCard = ({ job, onView, onBookmark, onShare, viewMode = 'grid' }) 
 
           {/* Department */}
           <div className="flex items-center gap-2 mb-4">
-            <FiBuilding className="text-slate-400" size={14} />
-            <span className="text-sm text-slate-600">
+            <FiBuilding className="text-slate-800" size={14} />
+            <span className="text-sm text-slate-800">
               {job?.department || 'School Department'}
             </span>
           </div>
 
           {/* Description */}
-          <p className="text-slate-500 text-sm mb-6 line-clamp-2">
+          <p className="text-slate-800 text-sm mb-6 line-clamp-2">
             {job?.jobDescription || 'Join our dedicated team at kinyui boys Senior School. We are looking for passionate individuals to contribute to our educational mission.'}
           </p>
 
           {/* Info Row - Compact */}
-          <div className="flex flex-wrap items-center gap-4 mb-6 text-sm text-slate-500">
+          <div className="flex flex-wrap items-center gap-4 mb-6 text-sm text-slate-800">
             <div className="flex items-center gap-1.5">
               <FiCalendar className={theme.text} size={14} />
               <span>{daysLeft}</span>
@@ -256,7 +256,7 @@ const ModernJobCard = ({ job, onView, onBookmark, onShare, viewMode = 'grid' }) 
           </div>
 
           {/* Experience Badge */}
-          <div className="mb-6 inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-50 rounded-lg text-xs text-slate-600">
+          <div className="mb-6 inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-50 rounded-lg text-xs text-slate-800">
             <FiAward size={12} className="text-amber-500" />
             <span>{job?.experience || 'Not specified'}</span>
           </div>
@@ -290,7 +290,7 @@ const ModernJobCard = ({ job, onView, onBookmark, onShare, viewMode = 'grid' }) 
               <h3 className="text-lg font-bold text-slate-900 line-clamp-1">
                 {job?.jobTitle || 'Position Available'}
               </h3>
-              <p className="text-sm text-slate-500">{job?.department || 'Department'}</p>
+              <p className="text-sm text-slate-800">{job?.department || 'Department'}</p>
             </div>
             <div className="flex items-center gap-2">
               <span className={`px-2 py-0.5 rounded-md text-xs font-medium ${getJobTypeStyle(job?.jobType).bg} ${getJobTypeStyle(job?.jobType).text}`}>
@@ -306,7 +306,7 @@ const ModernJobCard = ({ job, onView, onBookmark, onShare, viewMode = 'grid' }) 
                 </button>
                 <button
                   onClick={handleCopyLink}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                  className="p-1.5 rounded-lg text-slate-800 hover:text-slate-800 hover:bg-slate-50"
                   title="Copy link"
                 >
                   <FiCopy size={14} />
@@ -316,7 +316,7 @@ const ModernJobCard = ({ job, onView, onBookmark, onShare, viewMode = 'grid' }) 
                     e.stopPropagation();
                     onBookmark(job);
                   }}
-                  className={`p-1.5 rounded-lg ${isBookmarked ? 'text-amber-500 bg-amber-50' : 'text-slate-300 hover:text-slate-500'}`}
+                  className={`p-1.5 rounded-lg ${isBookmarked ? 'text-amber-500 bg-amber-50' : 'text-slate-300 hover:text-slate-800'}`}
                 >
                   <FiBookmark className={isBookmarked ? 'fill-current' : ''} size={14} />
                 </button>
@@ -324,11 +324,11 @@ const ModernJobCard = ({ job, onView, onBookmark, onShare, viewMode = 'grid' }) 
             </div>
           </div>
 
-          <p className="text-slate-500 text-sm line-clamp-2 mb-3">
+          <p className="text-slate-800 text-sm line-clamp-2 mb-3">
             {job?.jobDescription || 'Join our dedicated team at kinyui boys Senior School.'}
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500">
+          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-800">
             <div className="flex items-center gap-1.5">
               <FiCalendar size={12} />
               <span>{formatDate(job?.applicationDeadline)}</span>
@@ -361,7 +361,7 @@ const ModernStatCard = ({ stat }) => {
         <h3 className="text-2xl font-bold text-slate-900">{stat.number}</h3>
       </div>
       <p className="text-sm font-semibold text-slate-800">{stat.label}</p>
-      <p className="text-xs text-slate-500 mt-0.5">{stat.sublabel}</p>
+      <p className="text-xs text-slate-800 mt-0.5">{stat.sublabel}</p>
     </div>
   );
 };
@@ -451,7 +451,7 @@ const ModernJobDetailModal = ({ job, onClose, onApply }) => {
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900">{job.jobTitle}</h2>
-                    <p className="text-slate-600">{job.department || 'School Department'}</p>
+                    <p className="text-slate-800">{job.department || 'School Department'}</p>
                   </div>
                 </div>
                 {/* Share buttons in modal */}
@@ -465,7 +465,7 @@ const ModernJobDetailModal = ({ job, onClose, onApply }) => {
                   </button>
                   <button
                     onClick={handleCopyLink}
-                    className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                    className="p-2 rounded-lg text-slate-800 hover:text-slate-800 hover:bg-slate-50"
                     title="Copy link"
                   >
                     <FiCopy size={18} />
@@ -475,19 +475,19 @@ const ModernJobDetailModal = ({ job, onClose, onApply }) => {
 
               {/* Quick Info */}
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="flex items-center gap-2 text-slate-600">
+                <div className="flex items-center gap-2 text-slate-800">
                   <IoCalendarClearOutline className="text-blue-500" />
                   <span>{formatFullDate(job.applicationDeadline)}</span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-600">
+                <div className="flex items-center gap-2 text-slate-800">
                   <IoTimeOutline className="text-emerald-500" />
                   <span>{daysLeft(job.applicationDeadline)}</span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-600">
+                <div className="flex items-center gap-2 text-slate-800">
                   <IoBusinessOutline className="text-purple-500" />
                   <span className="capitalize">{job.jobType?.replace('-', ' ') || 'Full-time'}</span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-600">
+                <div className="flex items-center gap-2 text-slate-800">
                   <FiUsers className="text-blue-500" />
                   <span>{job.positionsAvailable || 1} position(s)</span>
                 </div>
@@ -497,7 +497,7 @@ const ModernJobDetailModal = ({ job, onClose, onApply }) => {
             {/* Description */}
             <div>
               <h3 className="text-sm font-semibold text-slate-900 mb-2">Job Description</h3>
-              <div className="text-slate-600 text-sm leading-relaxed bg-slate-50 p-4 rounded-xl">
+              <div className="text-slate-800 text-sm leading-relaxed bg-slate-50 p-4 rounded-xl">
                 {job.jobDescription || 'Join our dedicated team at kinyui boys Senior School. We are looking for passionate individuals to contribute to our educational mission.'}
               </div>
             </div>
@@ -506,7 +506,7 @@ const ModernJobDetailModal = ({ job, onClose, onApply }) => {
             {job.requirements && (
               <div>
                 <h3 className="text-sm font-semibold text-slate-900 mb-2">Requirements</h3>
-                <div className="text-slate-600 text-sm bg-emerald-50 p-4 rounded-xl">
+                <div className="text-slate-800 text-sm bg-emerald-50 p-4 rounded-xl">
                   {job.requirements}
                 </div>
               </div>
@@ -516,7 +516,7 @@ const ModernJobDetailModal = ({ job, onClose, onApply }) => {
             {job.qualifications && (
               <div>
                 <h3 className="text-sm font-semibold text-slate-900 mb-2">Qualifications</h3>
-                <div className="text-slate-600 text-sm bg-purple-50 p-4 rounded-xl">
+                <div className="text-slate-800 text-sm bg-purple-50 p-4 rounded-xl">
                   {job.qualifications}
                 </div>
               </div>
@@ -530,18 +530,18 @@ const ModernJobDetailModal = ({ job, onClose, onApply }) => {
               </div>
               <div className="space-y-3 text-sm">
                 <div>
-                  <p className="text-slate-600 mb-1">Send your application to:</p>
+                  <p className="text-slate-800 mb-1">Send your application to:</p>
                   <a href={`mailto:${job.contactEmail || 'kinyuiboys2015@gmail.com'}`} className="text-blue-600 font-medium">
                     {job.contactEmail || 'kinyuiboys2015@gmail.com'}
                   </a>
                 </div>
                 <div>
-                  <p className="text-slate-600 mb-1">Or call for inquiries:</p>
+                  <p className="text-slate-800 mb-1">Or call for inquiries:</p>
                   <a href={`tel:${job.contactPhone || '+254712345678'}`} className="text-green-600 font-medium">
                     {job.contactPhone || '+254 712 345 678'}
                   </a>
                 </div>
-                <p className="text-xs text-slate-500 mt-2">Please include your CV, certificates, and cover letter.</p>
+                <p className="text-xs text-slate-800 mt-2">Please include your CV, certificates, and cover letter.</p>
               </div>
             </div>
           </div>
@@ -568,10 +568,10 @@ const ModernEmptyState = ({ onClearFilters }) => {
   return (
     <div className="bg-white rounded-2xl border border-dashed border-slate-200 py-12 px-6 text-center">
       <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <FiBriefcase className="text-slate-400 text-2xl" />
+        <FiBriefcase className="text-slate-800 text-2xl" />
       </div>
       <h3 className="text-xl font-semibold text-slate-900 mb-2">No Openings</h3>
-      <p className="text-slate-500 mb-6 max-w-sm mx-auto">
+      <p className="text-slate-800 mb-6 max-w-sm mx-auto">
         Currently no opportunities available at kinyui boys Senior School.
       </p>
       <button
@@ -768,7 +768,7 @@ export default function ModernCareersPage() {
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-600">Loading opportunities...</p>
+          <p className="text-slate-800">Loading opportunities...</p>
         </div>
       </div>
     );
@@ -790,14 +790,14 @@ export default function ModernCareersPage() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Header Section */}
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-50 rounded-full mb-4">
             <IoSparkles className="text-blue-500 w-3.5 h-3.5" />
             <span className="text-xs font-medium text-slate-700">Career Opportunities</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-3">
             Join Our Academic Team
           </h1>
-          <p className="text-slate-500">
+          <p className="text-slate-800">
             Shape the future of education at kinyui boys Senior School
           </p>
         </div>
@@ -828,17 +828,17 @@ export default function ModernCareersPage() {
 
               <div className="space-y-3">
                 <div className="flex items-start gap-2 text-sm">
-                  <FiMapPin className="text-slate-400 mt-0.5" />
-                  <span className="text-slate-600">Matungulu Sub County, Machakos, Kenya</span>
+                  <FiMapPin className="text-slate-800 mt-0.5" />
+                  <span className="text-slate-800">Matungulu Sub County, Machakos, Kenya</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <FiMail className="text-slate-400" />
+                  <FiMail className="text-slate-800" />
                   <a href="mailto:kinyuiboys2015@gmail.com" className="text-blue-600 hover:underline">
                     kinyuiboys2015@gmail.com
                   </a>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <FiPhone className="text-slate-400" />
+                  <FiPhone className="text-slate-800" />
                   <a href="tel:+254710894145" className="text-green-600 hover:underline">
                     +254 710 894 145
                   </a>
@@ -846,7 +846,7 @@ export default function ModernCareersPage() {
               </div>
 
               <div className="mt-4 pt-4 border-t border-slate-100">
-                <p className="text-xs text-slate-500 italic">
+                <p className="text-xs text-slate-800 italic">
                   "Excellence Through Discipline and Hard Work"
                 </p>
               </div>
@@ -877,7 +877,7 @@ export default function ModernCareersPage() {
               <div className="flex flex-col sm:flex-row gap-3">
                 {/* Search */}
                 <div className="flex-1 relative">
-                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-800" size={16} />
                   <input
                     type="text"
                     placeholder="Search positions..."
@@ -902,13 +902,13 @@ export default function ModernCareersPage() {
                 <div className="flex border border-slate-200 rounded-lg overflow-hidden">
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`px-3 py-2 ${viewMode === 'grid' ? 'bg-slate-100 text-slate-900' : 'bg-white text-slate-500'}`}
+                    className={`px-3 py-2 ${viewMode === 'grid' ? 'bg-slate-100 text-slate-900' : 'bg-white text-slate-800'}`}
                   >
                     <FiTrendingUp size={16} />
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
-                    className={`px-3 py-2 ${viewMode === 'list' ? 'bg-slate-100 text-slate-900' : 'bg-white text-slate-500'}`}
+                    className={`px-3 py-2 ${viewMode === 'list' ? 'bg-slate-100 text-slate-900' : 'bg-white text-slate-800'}`}
                   >
                     <FiList size={16} />
                   </button>
@@ -918,7 +918,7 @@ export default function ModernCareersPage() {
                 <button
                   onClick={refreshData}
                   disabled={refreshing}
-                  className="px-3 py-2.5 text-slate-600 hover:text-slate-900 transition-colors disabled:opacity-50"
+                  className="px-3 py-2.5 text-slate-800 hover:text-slate-900 transition-colors disabled:opacity-50"
                   title="Refresh jobs"
                 >
                   <FiRefreshCw size={16} className={refreshing ? 'animate-spin' : ''} />
@@ -935,7 +935,7 @@ export default function ModernCareersPage() {
                   </button>
                   <button
                     onClick={handleCopyAllJobsLink}
-                    className="px-3 py-2.5 text-slate-600 hover:text-slate-900 transition-colors"
+                    className="px-3 py-2.5 text-slate-800 hover:text-slate-900 transition-colors"
                     title="Copy link to all jobs"
                   >
                     <FiCopy size={16} />
@@ -945,7 +945,7 @@ export default function ModernCareersPage() {
                 {/* Reset */}
                 <button
                   onClick={clearFilters}
-                  className="px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+                  className="px-4 py-2.5 text-sm font-medium text-slate-800 hover:text-slate-900 transition-colors"
                 >
                   Reset
                 </button>
@@ -964,7 +964,7 @@ export default function ModernCareersPage() {
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                       isActive
                         ? 'bg-slate-900 text-white'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        : 'bg-slate-100 text-slate-800 hover:bg-slate-200'
                     }`}
                   >
                     <Icon size={12} />
@@ -995,7 +995,7 @@ export default function ModernCareersPage() {
             {/* CTA Banner */}
             <div className="mt-10 bg-slate-100 rounded-xl p-6 text-center">
               <h3 className="text-xl font-semibold text-slate-900 mb-2">Don't see the right fit?</h3>
-              <p className="text-slate-600 mb-4">Submit your CV for future opportunities.</p>
+              <p className="text-slate-800 mb-4">Submit your CV for future opportunities.</p>
               <button
                 onClick={() => toast.info('CV submission feature coming soon')}
                 className="px-6 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors"
