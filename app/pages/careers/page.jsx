@@ -894,7 +894,7 @@ export default function ModernCareersPage() {
     <div className="min-h-screen bg-white">
       {/* Background Logo - Low Opacity */}
      <div
-  className="fixed inset-0 pointer-events-none z-0 bg-no-repeat bg-center bg-contain opacity-[0.12] mix-blend-multiply transition-opacity duration-700"
+  className="fixed inset-0 pointer-events-none z-0 bg-no-repeat bg-center bg-contain opacity-[0.12] "
   style={{
     backgroundImage: "url('/kinyui.png')",
     backgroundSize: 'min(80%, 600px)',
