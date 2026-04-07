@@ -1056,14 +1056,22 @@ Loading for Opportunities at Kinyui Senior School
 
   {/* 2. Action Buttons: 2 columns on mobile, 5 on desktop */}
   <div className="grid grid-cols-2 md:grid-cols-5 gap-2 sm:gap-3 mb-8">
-    <button
-      onClick={refreshData}
-      disabled={refreshing}
-      className="flex items-center justify-center gap-2 px-3 py-3 bg-white border border-slate-200 rounded-xl text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-50 transition-all"
-    >
-      <FiRefreshCw size={16} className={refreshing ? 'animate-spin' : ''} />
-      <span className="truncate">Refresh</span>
-    </button>
+<button
+  onClick={refreshData}
+  disabled={refreshing}
+  className={`flex items-center justify-center gap-2 px-3 py-3 border rounded-xl font-bold text-xs sm:text-sm transition-all min-w-[120px] ${
+    refreshing 
+      ? "bg-slate-50 border-slate-300 text-slate-400 animate-pulse cursor-not-allowed" 
+      : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50 active:scale-95"
+  }`}
+>
+  {/* Hide the icon entirely when refreshing */}
+  {!refreshing && <FiRefreshCw size={16} />}
+  
+  <span className="truncate">
+    {refreshing ? "Refreshing..." : "Refresh Jobs"}
+  </span>
+</button>
 
     <button
       onClick={handleShareAllJobs}
