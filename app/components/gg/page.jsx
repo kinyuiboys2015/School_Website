@@ -1091,7 +1091,7 @@ export default function ModernGallery() {
                     <h4 className="font-bold text-slate-900">About Our Gallery</h4>
                   </div>
                   <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                    Welcome to the official Kinyui Boys Senior School photo gallery — a visual journey through our school&apos;s vibrant life in Matungulu, Machakos County.
+                    Welcome to the official Kinyui Boys Senior School photo gallery. A visual journey through our school&apos;s vibrant life in Matungulu, Machakos County.
                   </p>
                   <p className="text-slate-500 text-sm leading-relaxed mb-4">
                     From spirited sports days and proud graduation ceremonies to everyday classroom moments and hands-on laboratory sessions, these photos capture the heart of what makes Kinyui special.
