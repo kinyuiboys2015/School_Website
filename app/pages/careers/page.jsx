@@ -64,7 +64,7 @@ const CVSubmissionModal = ({ open, onClose }) => {
     const subject = encodeURIComponent('Job Application / CV Submission');
     const body = encodeURIComponent(
       'Dear Hiring Manager,\n\n' +
-      'I am writing to submit my application for any suitable position at kinyui boys Senior School.\n\n' +
+      'I am writing to submit my application for any suitable position at Kinyui Boys Senior School.\n\n' +
       'Please find attached my CV and relevant documents.\n\n' +
       'Thank you for your consideration.\n\n' +
       'Sincerely,\n' +
@@ -74,91 +74,103 @@ const CVSubmissionModal = ({ open, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
-        {/* Header */}
-        <div className="h-2 bg-gradient-to-r from-blue-600 to-indigo-600" />
+    /* 1. Overlay: added overflow-y-auto to allow scrolling when zoomed */
+    <div className="fixed inset-0 z-[200] flex justify-center sm:items-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+      
+      {/* 2. Modal: increased width to max-w-2xl and added max-h constraint */}
+      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl my-auto overflow-hidden border border-slate-100">
         
-        {/* Close Button */}
+        {/* Accent Header */}
+        <div className="h-2.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600" />
+        
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-slate-50 transition-colors z-10"
+          className="absolute top-5 right-5 p-2 bg-slate-50 hover:bg-slate-100 text-slate-500 rounded-full transition-all z-10"
         >
-          <IoClose size={18} />
+          <IoClose size={20} />
         </button>
 
-        {/* Content */}
-        <div className="p-6">
-          <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FiFileText className="text-blue-600 text-2xl" />
+        {/* 3. Scrollable Content Area */}
+        <div className="p-6 sm:p-10 max-h-[calc(100vh-100px)] overflow-y-auto">
+          <div className="text-center mb-8">
+            <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4 rotate-3">
+              <FiFileText className="text-blue-600 text-3xl -rotate-3" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">Submit Your CV</h2>
-            <p className="text-slate-600 text-sm">
-              Take the first step towards joining our academic team
+            <h2 className="text-3xl font-extrabold text-slate-900 mb-2">Join Our Team</h2>
+            <p className="text-slate-500 text-base max-w-md mx-auto">
+              Ready to make an impact? Choose your preferred method to submit your credentials.
             </p>
           </div>
 
-          <div className="space-y-4 mb-6">
-            <div className="bg-blue-50 rounded-xl p-4">
-              <h3 className="font-semibold text-slate-900 mb-2 flex items-center gap-2">
-                <FiMail className="text-blue-600" />
-                Email Submission
-              </h3>
-              <p className="text-slate-700 text-sm mb-3">
-                Send your CV, cover letter, and academic certificates to:
-              </p>
-              <button
-                onClick={handleEmailClick}
-                className="w-full py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
-              >
-                <FiMail size={18} />
-                kinyuiboys2015@gmail.com
-              </button>
+          {/* 4. Responsive Grid Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div className="space-y-4">
+              <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 hover:border-blue-200 transition-colors">
+                <h3 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
+                  <FiMail className="text-blue-600" />
+                  Email Submission
+                </h3>
+                <p className="text-slate-600 text-sm mb-4">
+                  Digital applications are processed within 3-5 business days.
+                </p>
+                <button
+                  onClick={handleEmailClick}
+                  className="w-full py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 transition-all flex items-center justify-center gap-2 text-sm"
+                >
+                  <FiMail size={16} />
+                  Send to kinyuiboys2015
+                </button>
+              </div>
+
+              <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5">
+                <h3 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
+                  <FiPhone className="text-green-600" />
+                  Physical Submission
+                </h3>
+                <address className="text-slate-600 not-italic text-sm leading-relaxed">
+                  <span className="font-semibold text-slate-800">Kinyui Boys Senior School</span><br />
+                  Matungulu Sub County<br />
+                  Machakos, Kenya
+                </address>
+              </div>
             </div>
 
-            <div className="bg-green-50 rounded-xl p-4">
-              <h3 className="font-semibold text-slate-900 mb-2 flex items-center gap-2">
-                <FiPhone className="text-green-600" />
-                Physical Submission
-              </h3>
-              <p className="text-slate-700 text-sm">
-                Drop off your hard copy application at:
-              </p>
-              <p className="text-slate-800 font-medium text-sm mt-2">
-                kinyui boys Senior School<br />
-                Matungulu Sub County<br />
-                Machakos, Kenya
-              </p>
-            </div>
-
-            <div className="bg-amber-50 rounded-xl p-4">
-              <h3 className="font-semibold text-slate-900 mb-2 flex items-center gap-2">
-                <FiInfo className="text-amber-600" />
+            <div className="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-5">
+              <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <FiInfo className="text-indigo-600" />
                 Required Documents
               </h3>
-              <ul className="text-slate-700 text-sm space-y-1 list-disc list-inside">
-                <li>Updated CV/Resume</li>
-                <li>Cover Letter</li>
-                <li>Academic Certificates</li>
-                <li>Professional Certifications (if any)</li>
-                <li>Recommendation Letters (if available)</li>
+              <ul className="space-y-3">
+                {[
+                  "Updated CV/Resume",
+                  "Detailed Cover Letter",
+                  "Academic Certificates",
+                  "Professional Certs",
+                  "Recommendation Letters"
+                ].map((item, idx) => (
+                  <li key={idx} className="flex items-center gap-3 text-sm text-slate-700">
+                    <div className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                    {item}
+                  </li>
+                ))}
               </ul>
+              <div className="mt-6 p-3 bg-white/60 rounded-lg border border-indigo-100 text-[11px] text-indigo-600 font-medium">
+                Note: All digital documents should be in PDF format for better compatibility.
+              </div>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="w-full py-2.5 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition-colors"
+            className="w-full py-3 text-slate-500 font-semibold hover:text-slate-800 transition-colors"
           >
-            Close
+            Go Back
           </button>
         </div>
       </div>
     </div>
   );
 };
-
 // Modern Modal Component with Glass Morphism
 const ModernModal = ({ children, open, onClose, maxWidth = '800px', blur = true }) => {
   if (!open) return null;
