@@ -115,7 +115,7 @@ const ModernEventCard = ({ event, onView, onShare, onCalendar, onBookmark, viewM
           <img
             src={event.image || '/default-event.jpg'}
             alt={event.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-101"
           />
           
           {/* Floating Date Leaf */}
@@ -157,7 +157,7 @@ const ModernEventCard = ({ event, onView, onShare, onCalendar, onBookmark, viewM
                 ))}
              </div>
              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">
-             Students Attending
+             All
              </span>
           </div>
 
@@ -249,7 +249,7 @@ const ModernNewsCard = ({ news, onView, onShare, onBookmark, viewMode = 'grid' }
           <img
             src={news.image || '/default-news.jpg'}
             alt={news.title}
-            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 group-hover:rotate-1"
+            className="w-full h-full object-cover transition-transform duration-100 group-hover:scale-101 "
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
           
