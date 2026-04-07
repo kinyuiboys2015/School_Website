@@ -44,6 +44,7 @@ import {
   IoClose,
   IoLocationOutline,
   IoTimeOutline,
+  IoCloseOutline,
   IoPersonOutline,
   IoShareOutline
 } from 'react-icons/io5';
