@@ -697,7 +697,7 @@ kjseaGrade: '',         // Changed from meanGrade
         </h2>
       </div>
       
-      <p className="text-[11px] sm:text-xs md:text-sm text-slate-500 font-black uppercase tracking-[0.2em] pl-11">
+      <p className="text-[11px] sm:text-xs md:text-sm text-slate-800 font-black uppercase tracking-[0.2em] pl-11">
         {step === 1 && 'Student demographics & core identification'}
         {step === 2 && 'Primary contact & parental connectivity'}
         {step === 3 && 'Previous schooling & assessment records'}
@@ -708,7 +708,7 @@ kjseaGrade: '',         // Changed from meanGrade
     {/* Modern Progress Radial/Counter */}
     <div className="hidden sm:flex items-center gap-4">
       <div className="text-right">
-        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Completion</p>
+        <p className="text-[10px] font-black text-slate-800 uppercase tracking-widest">Completion</p>
         <div className="flex items-baseline gap-1">
           <span className="text-3xl font-black text-blue-600">{(step / 4) * 100}%</span>
         </div>
@@ -763,14 +763,14 @@ kjseaGrade: '',         // Changed from meanGrade
         </div>
         <div>
           <h3 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Personal Identity</h3>
-          <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">Legal Name & Demographics</p>
+          <p className="text-slate-800 text-[10px] font-black uppercase tracking-[0.2em]">Legal Name & Demographics</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {['firstName', 'middleName', 'lastName'].map((field) => (
           <div key={field} className="space-y-2">
-            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">
+            <label className="text-[11px] font-black text-slate-800 uppercase tracking-widest ml-1">
               {field.replace(/([A-Z])/g, ' $1')} {field !== 'middleName' && '*'}
             </label>
             <div className="relative">
@@ -791,7 +791,7 @@ kjseaGrade: '',         // Changed from meanGrade
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Biological Gender *</label>
+          <label className="text-[11px] font-black text-slate-800 uppercase tracking-widest ml-1">Biological Gender *</label>
           <select
             name="gender"
             value={formData.gender}
@@ -805,7 +805,7 @@ kjseaGrade: '',         // Changed from meanGrade
         </div>
 
         <div className="space-y-2">
-          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Birth Date *</label>
+          <label className="text-[11px] font-black text-slate-800 uppercase tracking-widest ml-1">Birth Date *</label>
           <div className="relative">
             <FiCalendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
             <input
@@ -836,7 +836,7 @@ kjseaGrade: '',         // Changed from meanGrade
           <FiMapPin className="text-emerald-500" size={24} />
           <h3 className="text-xl font-black text-slate-800 tracking-tight">Residential Origin</h3>
         </div>
-        <span className="hidden md:block text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-100 px-3 py-1 rounded-full">
+        <span className="hidden md:block text-[10px] font-bold text-slate-800 uppercase tracking-widest bg-slate-100 px-3 py-1 rounded-full">
           Guided Location Selection
         </span>
       </div>
@@ -858,11 +858,11 @@ kjseaGrade: '',         // Changed from meanGrade
             }`}
           >
             <div className={`w-8 h-8 rounded-xl flex items-center justify-center mb-3 ${
-              step.active ? `bg-${step.color}-500 text-white shadow-md shadow-${step.color}-200` : 'bg-slate-200 text-slate-400'
+              step.active ? `bg-${step.color}-500 text-white shadow-md shadow-${step.color}-200` : 'bg-slate-200 text-slate-800'
             }`}>
               <step.icon size={16} />
             </div>
-            <p className={`text-[10px] font-black uppercase tracking-tighter ${step.active ? `text-${step.color}-600` : 'text-slate-400'}`}>
+            <p className={`text-[10px] font-black uppercase tracking-tighter ${step.active ? `text-${step.color}-600` : 'text-slate-800'}`}>
               Step 0{index + 1}
             </p>
             <p className={`text-sm font-black ${step.active ? 'text-slate-800' : 'text-slate-300'}`}>{step.label}</p>
@@ -874,7 +874,7 @@ kjseaGrade: '',         // Changed from meanGrade
       <div className="bg-slate-900 rounded-2xl sm:rounded-[2.5rem] p-3 sm:p-6 md:p-10 shadow-2xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Citizenship *</label>
+            <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] ml-1">Citizenship *</label>
             <input
               type="text"
               name="nationality"
@@ -888,7 +888,7 @@ kjseaGrade: '',         // Changed from meanGrade
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">County of Residence *</label>
+            <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] ml-1">County of Residence *</label>
             <div className="relative group" onClick={() => openLocationModal('county')}>
               <input
                 type="text"
@@ -898,7 +898,7 @@ kjseaGrade: '',         // Changed from meanGrade
                 placeholder="Select County..."
                 required
               />
-              <FiChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 group-hover:text-blue-500" />
+              <FiChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-800 group-hover:text-blue-500" />
             </div>
           </div>
 
@@ -938,7 +938,7 @@ kjseaGrade: '',         // Changed from meanGrade
 
           {formData.ward && (
              <div className="space-y-2 animate-in zoom-in-95 duration-300 md:col-span-2 lg:col-span-1">
-               <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Village / Estate</label>
+               <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] ml-1">Village / Estate</label>
                <input
                  type="text"
                  name="village"
@@ -969,7 +969,7 @@ kjseaGrade: '',         // Changed from meanGrade
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         <div className="space-y-2">
-          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Parental Email *</label>
+          <label className="text-[11px] font-black text-slate-800 uppercase tracking-widest ml-1">Parental Email *</label>
           <div className="relative">
             <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
             <input
@@ -985,7 +985,7 @@ kjseaGrade: '',         // Changed from meanGrade
         </div>
 
         <div className="space-y-2">
-          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Primary Phone</label>
+          <label className="text-[11px] font-black text-slate-800 uppercase tracking-widest ml-1">Primary Phone</label>
           <div className="relative">
             <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
             <input
@@ -1000,7 +1000,7 @@ kjseaGrade: '',         // Changed from meanGrade
         </div>
 
         <div className="space-y-2 lg:col-span-1 md:col-span-2">
-          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Alternative Phone</label>
+          <label className="text-[11px] font-black text-slate-800 uppercase tracking-widest ml-1">Alternative Phone</label>
           <input
             type="tel"
             name="alternativePhone"
@@ -1014,7 +1014,7 @@ kjseaGrade: '',         // Changed from meanGrade
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5 pt-5 border-t border-slate-50">
         <div className="space-y-2">
-          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Postal Address *</label>
+          <label className="text-[11px] font-black text-slate-800 uppercase tracking-widest ml-1">Postal Address *</label>
           <div className="relative">
             <FiHome className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
             <input
@@ -1029,7 +1029,7 @@ kjseaGrade: '',         // Changed from meanGrade
           </div>
         </div>
         <div className="space-y-2">
-          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Postal Code</label>
+          <label className="text-[11px] font-black text-slate-800 uppercase tracking-widest ml-1">Postal Code</label>
           <input
             type="text"
             name="postalCode"
@@ -1139,13 +1139,13 @@ kjseaGrade: '',         // Changed from meanGrade
         </div>
         <div>
           <h3 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Academic Profile</h3>
-          <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">Previous Schooling & Performance</p>
+          <p className="text-slate-800 text-[10px] font-black uppercase tracking-[0.2em]">Previous Schooling & Performance</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
         <div className="space-y-2">
-          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Previous School *</label>
+          <label className="text-[11px] font-black text-slate-800 uppercase tracking-widest ml-1">Previous School *</label>
           <div className="relative">
             <FiBook className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
             <input
@@ -1160,7 +1160,7 @@ kjseaGrade: '',         // Changed from meanGrade
           </div>
         </div>
         <div className="space-y-2">
-          <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Current Class/Form *</label>
+          <label className="text-[11px] font-black text-slate-800 uppercase tracking-widest ml-1">Current Class/Form *</label>
           <input
             type="text"
             name="previousClass"
@@ -1339,7 +1339,7 @@ kjseaGrade: '',         // Changed from meanGrade
           <h3 className="text-2xl md:text-3xl font-black text-white mb-2 tracking-tight">
             Final Verification.
           </h3>
-          <p className="text-slate-400 text-sm md:text-base font-medium max-w-xl">
+          <p className="text-slate-800 text-sm md:text-base font-medium max-w-xl">
             Please confirm all details below are accurate. This information will be used for your official Kinyui Boys student record.
           </p>
         </div>
@@ -1397,7 +1397,7 @@ kjseaGrade: '',         // Changed from meanGrade
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-12">
             {section.fields.map((field, fIdx) => (
               <div key={fIdx} className="space-y-1">
-                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{field.label}</p>
+                <p className="text-[9px] font-black text-slate-800 uppercase tracking-widest">{field.label}</p>
                 <p className="text-sm md:text-base font-bold text-slate-900 leading-tight">
                   {field.value}
                   {field.extra && <span className="ml-2 text-[10px] text-blue-600 font-black px-2 py-0.5 bg-blue-50 rounded-full">{field.extra}</span>}
@@ -1530,7 +1530,7 @@ kjseaGrade: '',         // Changed from meanGrade
         
         {/* Phone Link */}
         <a href="tel:0710894145" className="group flex flex-col items-center md:items-start gap-1">
-          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Call Us</span>
+          <span className="text-[9px] font-black text-slate-800 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Call Us</span>
           <div className="flex items-center gap-2">
             <FiPhone size={14} className="text-slate-900 group-hover:scale-110 transition-transform" />
             <span className="text-xs md:text-sm font-bold text-slate-900">0710 894 145</span>
@@ -1539,7 +1539,7 @@ kjseaGrade: '',         // Changed from meanGrade
 
         {/* Email Link */}
         <a href="mailto:kinyuiboys2015@gmail.com" className="group flex flex-col items-center md:items-start gap-1">
-          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Support</span>
+          <span className="text-[9px] font-black text-slate-800 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Support</span>
           <div className="flex items-center gap-2">
             <FiMail size={14} className="text-slate-900 group-hover:scale-110 transition-transform" />
             <span className="text-xs md:text-sm font-bold text-slate-900 hidden sm:block">kinyuiboys2015@gmail.com</span>
@@ -1549,7 +1549,7 @@ kjseaGrade: '',         // Changed from meanGrade
 
         {/* Schedule Link */}
         <div className="flex flex-col items-center md:items-start gap-1">
-          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Office</span>
+          <span className="text-[9px] font-black text-slate-800 uppercase tracking-widest">Office</span>
           <div className="flex items-center gap-2">
             <FiClock size={14} className="text-slate-900" />
             <span className="text-xs md:text-sm font-bold text-slate-900">8AM - 5PM</span>
@@ -1564,7 +1564,7 @@ kjseaGrade: '',         // Changed from meanGrade
       
       {/* Copyright */}
       <div className="flex items-center gap-4">
-        <p className="text-slate-400 text-[10px] md:text-xs font-medium">
+        <p className="text-slate-800 text-[10px] md:text-xs font-medium">
           &copy; {new Date().getFullYear()} Kinyui Boys High School. All rights reserved.
         </p>
       </div>
