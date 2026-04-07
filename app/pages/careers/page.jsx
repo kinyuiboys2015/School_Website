@@ -788,19 +788,21 @@ export default function ModernCareersPage() {
       <Toaster position="top-right" richColors />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* Header Section */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-50 rounded-full mb-4">
-            <IoSparkles className="text-blue-500 w-3.5 h-3.5" />
-            <span className="text-xs font-medium text-slate-700">Career Opportunities</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-3">
-            Join Our Academic Team
-          </h1>
-          <p className="text-slate-800">
-            Shape the future of education at kinyui boys Senior School
-          </p>
-        </div>
+{/* Header Section */}
+<div className="text-center max-w-2xl mx-auto mb-16">
+  <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 border border-indigo-100 rounded-full mb-6">
+    <IoSparkles className="text-indigo-600 w-3.5 h-3.5" />
+    <span className="text-xs font-bold tracking-widest uppercase text-indigo-700">Open Positions</span>
+  </div>
+  
+  <h1 className="text-4xl sm:text-5xl font-black text-slate-900 mb-4 tracking-tight">
+    Empower the Next <span className="text-blue-600">Generation</span>
+  </h1>
+  
+  <p className="text-slate-600 text-lg leading-relaxed">
+    Be a part of a legacy of excellence. Join the faculty at <span className="font-semibold text-slate-900">Kinyui Boys Senior School</span> and help us shape the leaders of tomorrow.
+  </p>
+</div>
 
         {/* Stats Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
