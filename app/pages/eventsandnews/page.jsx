@@ -1177,80 +1177,82 @@ if (loading) {
   <div className="max-w-7xl mx-auto relative z-10">
     <div className="flex flex-col gap-4 mb-6 sm:mb-10">
       {/* Header Section */}
-      <div className="space-y-3">
-        
-        {/* Minimalist Badge - Increased opacity for visibility */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 backdrop-blur-xl rounded-full border border-white/20 shadow-2xl">
-          <IoSparkles className="text-blue-400 text-[10px] sm:text-sm animate-pulse" />
-          <span className="text-blue-100 font-black text-[8px] sm:text-xs uppercase tracking-[0.2em]">
-            Latest Updates
-          </span>
-        </div>
-        
-        <div className="flex flex-col gap-3">
-          {/* Title & Subtitle */}
-          <div className="max-w-full">
-            <h1 className="text-xl sm:text-2xl lg:text-4xl font-black text-white tracking-tighter leading-[1.1]">
-              School <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-200 to-purple-400">Events & News</span>
-            </h1>
-            <p className="text-slate-100 text-xs sm:text-lg mt-2 font-medium leading-relaxed max-w-2xl opacity-80">
-              Stay updated with the heartbeat and happenings at kinyui boys Senior school.
-            </p>
-          </div>
+<div className="space-y-4">
+  {/* Minimalist Badge */}
+  <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-2xl rounded-full border border-white/10 shadow-2xl">
+    <IoSparkles className="text-amber-400 text-[10px] sm:text-sm animate-pulse" />
+    <span className="text-slate-200 font-bold text-[9px] sm:text-xs uppercase tracking-[0.25em]">
+      School Events and News
+    </span>
+  </div>
 
-          {/* MOBILE UTILITY ROW */}
-          <div className="flex items-center gap-3 w-full sm:w-auto mt-2">
-            
-            {/* Refresh Button - High Contrast Dark/Light Toggle */}
-            <button
-              onClick={refreshData}
-              disabled={refreshing}
-              className="
-                flex-1 sm:flex-none
-                inline-flex items-center justify-center gap-2
-                px-4 py-3 sm:px-8 sm:py-4
-                rounded-xl sm:rounded-2xl
-                bg-white hover:bg-blue-50 text-slate-950
-                font-black text-[10px] sm:text-xs
-                uppercase tracking-widest
-                transition-all active:scale-95
-                disabled:opacity-50 shadow-[0_0_20px_rgba(255,255,255,0.1)]
-              "
-            >
-              {refreshing ? (
-                <div className="w-3 h-3 border-2 border-slate-900/20 border-t-slate-900 rounded-full animate-spin" />
-              ) : (
-                <FiRotateCw className="text-[12px] sm:text-base" />
-              )}
-              <span>{refreshing ? "Updating..." : "REFRESH"}</span>
-            </button>
+  <div className="flex flex-col gap-4">
+    {/* Title & Subtitle */}
+    <div className="max-w-full">
+      <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tighter leading-tight">
+        Kinyui Boys <br className="sm:hidden" />
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-amber-500 to-rose-400">
+          Events & Insights
+        </span>
+      </h1>
+      <p className="text-slate-300 text-sm sm:text-lg mt-3 font-medium leading-relaxed max-w-2xl opacity-90">
+        From championship rugby highlights to academic milestones, stay connected with the vibrant pulse of life and excellence at <span className="text-white font-bold">Kinyui Boys Senior School</span>.
+      </p>
+    </div>
 
-            {/* View Toggle - Darker Glass for better visibility */}
-            <div className="flex bg-slate-900/80 backdrop-blur-2xl rounded-xl sm:rounded-2xl p-1 border border-white/10 shadow-2xl">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`p-2 sm:p-3 rounded-lg sm:rounded-xl transition-all ${
-                  viewMode === 'grid' 
-                  ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]' 
-                  : 'text-slate-500 hover:text-slate-300'
-                }`}
-              >
-                <FiGrid size={16} className="sm:w-[22px] sm:h-[22px]" />
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`p-2 sm:p-3 rounded-lg sm:rounded-xl transition-all ${
-                  viewMode === 'list' 
-                  ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]' 
-                  : 'text-slate-500 hover:text-slate-300'
-                }`}
-              >
-                <FiList size={16} className="sm:w-[22px] sm:h-[22px]" />
-              </button>
-            </div>
-          </div>
-        </div>
+    {/* MOBILE UTILITY ROW */}
+    <div className="flex items-center gap-3 w-full sm:w-auto mt-4">
+      
+      {/* Refresh Button - Seamless loading state */}
+      <button
+        onClick={refreshData}
+        disabled={refreshing}
+        className="
+          flex-1 sm:flex-none
+          inline-flex items-center justify-center gap-3
+          px-5 py-3.5 sm:px-10 sm:py-4
+          rounded-2xl
+          bg-white hover:bg-amber-50 text-slate-950
+          font-black text-[11px] sm:text-xs
+          uppercase tracking-widest
+          transition-all active:scale-95
+          disabled:opacity-70 shadow-xl
+        "
+      >
+        {refreshing ? (
+          <div className="w-4 h-4 border-2 border-slate-900/20 border-t-slate-900 rounded-full animate-spin" />
+        ) : (
+          <FiRotateCw className="text-[14px] sm:text-lg" />
+        )}
+        <span>{refreshing ? "Updating Content..." : "Refresh Feed"}</span>
+      </button>
+
+      {/* View Toggle - High-End Dark Glass */}
+      <div className="flex bg-black/40 backdrop-blur-3xl rounded-2xl p-1.5 border border-white/5 shadow-2xl">
+        <button
+          onClick={() => setViewMode('grid')}
+          className={`p-2.5 sm:p-3.5 rounded-xl transition-all duration-300 ${
+            viewMode === 'grid' 
+            ? 'bg-gradient-to-br from-rose-600 to-rose-800 text-white shadow-lg shadow-rose-900/40 scale-105' 
+            : 'text-slate-500 hover:text-slate-200'
+          }`}
+        >
+          <FiGrid size={18} className="sm:w-[24px] sm:h-[24px]" />
+        </button>
+        <button
+          onClick={() => setViewMode('list')}
+          className={`p-2.5 sm:p-3.5 rounded-xl transition-all duration-300 ${
+            viewMode === 'list' 
+            ? 'bg-gradient-to-br from-rose-600 to-rose-800 text-white shadow-lg shadow-rose-900/40 scale-105' 
+            : 'text-slate-500 hover:text-slate-200'
+          }`}
+        >
+          <FiList size={18} className="sm:w-[24px] sm:h-[24px]" />
+        </button>
       </div>
+    </div>
+  </div>
+</div>
     </div>
   </div>
 </div>
@@ -1441,7 +1443,7 @@ if (loading) {
           <IoCalendarClearOutline className="text-slate-300 text-xl sm:text-2xl" />
         </div>
         <h3 className="text-lg font-bold text-slate-900">No events found</h3>
-        <p className="text-slate-500 text-xs mt-1 mb-4">Try adjusting filters.</p>
+        <p className="text-slate-900 text-xs mt-1 mb-4">Try adjusting filters.</p>
         <button 
           onClick={() => { setSearchTerm(''); setActiveTab('all'); }}
           className="px-4 py-2 bg-white border border-slate-200 rounded-full font-bold text-slate-700 text-xs"
@@ -1503,27 +1505,6 @@ if (loading) {
         </div>
       </div>
 
-      {/* Analytics "Bento" Stats */}
-      <div className="bg-slate-900 rounded-[32px] p-6 text-white overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/20 blur-[50px]" />
-        <h4 className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] mb-4">Stats At A Glance</h4>
-        <div className="grid grid-cols-2 gap-4 relative z-10">
-          <div>
-            <p className="text-2xl font-bold">{eventsData?.length || 0}</p>
-            <p className="text-[10px] text-slate-400 uppercase font-bold">Events</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold">{newsData?.length || 0}</p>
-            <p className="text-[10px] text-slate-400 uppercase font-bold">Articles</p>
-          </div>
-          <div className="col-span-2 pt-2 border-t border-slate-800">
-            <p className="text-sm font-bold text-blue-400">
-              {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-            </p>
-            <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Last Updated</p>
-          </div>
-        </div>
-      </div>
 
 
     </div>
