@@ -359,8 +359,8 @@ function getNextThursday() { const today = new Date(); const daysUntilThursday =
 function getNextSunday() { const today = new Date(); const daysUntilSunday = (0 - today.getDay() + 7) % 7 || 7; const next = new Date(today); next.setDate(today.getDate() + daysUntilSunday); return next.toISOString().split('T')[0]; }
 
 const DEFAULT_SESSIONS = [
-  { id: 'devotion-thursday', title: 'Thursday Devotion Session', counselor: 'School Chaplain', date: getNextThursday(), time: '10:00 AM - 11:00 AM', type: 'Spiritual Session', category: 'devotion', status: 'scheduled', description: 'Weekly devotion session to strengthen students in religious study and worship.', priority: 'high', image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80', featured: true, location: 'Kinyui Boys', isSupport: false },
-  { id: 'devotion-sunday', title: 'Sunday Youth Worship', counselor: 'Youth Leaders & CU', date: getNextSunday(), time: '2:00 PM - 4:00 PM', type: 'Youth Worship', category: 'worship', status: 'scheduled', description: 'Youth worship session with CU and YCS active worship groups.', priority: 'high', image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80', featured: true, location: 'Kinyui Boys', isSupport: false }
+  { id: 'devotion-thursday', title: 'Thursday Devotion Session', counselor: 'School Chaplain', date: getNextThursday(), time: '10:00 AM - 11:00 AM', type: 'Spiritual Session', category: 'devotion', status: 'scheduled', description: 'Weekly devotion session to strengthen students in religious study and worship.', priority: 'high', image: 'https://images.unsplash.com/photo-1507692049790-de58290a4334?w=800&q=80', featured: true, location: 'Kinyui Boys', isSupport: false },
+  { id: 'devotion-sunday', title: 'Sunday Youth Worship', counselor: 'Youth Leaders & CU', date: getNextSunday(), time: '2:00 PM - 4:00 PM', type: 'Youth Worship', category: 'worship', status: 'scheduled', description: 'Youth worship session with CU and YCS active worship groups.', priority: 'high', image: 'https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=800&q=80', featured: true, location: 'Kinyui Boys', isSupport: false }
 ];
 
 const fetchGuidanceSessions = async () => { try { const res = await fetch('/api/guidance'); if (!res.ok) throw new Error(); const data = await res.json(); return data.success && data.events ? data.events : []; } catch (error) { toast.error('Failed to load guidance sessions'); return []; } };
@@ -490,25 +490,55 @@ export default function StudentCounseling() {
             <div className="relative">{filteredSessions.length === 0 ? <div className="bg-slate-50 rounded-[24px] sm:rounded-[32px] border-2 border-dashed border-slate-200 py-8 sm:py-16 text-center"><div className="w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm"><FiHeart className="text-slate-300 text-xl sm:text-2xl" /></div><h3 className="text-lg font-bold text-slate-900">No sessions found</h3><p className="text-slate-500 text-xs sm:text-sm mt-1 mb-4">Try adjusting your filters or search terms.</p><button onClick={() => { setSearchTerm(''); setActiveTab('all'); }} className="px-4 sm:px-6 py-2 sm:py-2.5 bg-white border border-slate-200 rounded-full font-bold text-slate-700 hover:bg-slate-50 transition-all text-xs sm:text-sm">Reset Filters</button></div> : <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6' : 'space-y-3 sm:space-y-4'}>{filteredSessions.map((s, idx) => <ModernCounselingCard key={s.id || idx} session={s} onView={setSelectedSession} onBookmark={handleBookmark} viewMode={viewMode} />)}</div>}</div>
           </div>
 
-          {/* Right Column: Quick Actions */}
+          {/* Right Column: Well-being Info */}
           <div className="lg:w-[380px] space-y-6"><div className="lg:sticky lg:top-24 space-y-6">
-            <div className="bg-white border border-slate-100 rounded-[32px] p-6 shadow-sm"><div className="flex items-center gap-3 mb-6"><div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center"><FiZap className="text-purple-600 text-xl" /></div><h2 className="text-xl font-bold text-slate-900">Quick Actions</h2></div><div className="space-y-3">
-              <button onClick={() => toast.info('Emergency contacts are available via the Student Portal.')} className="w-full p-4 bg-red-50 text-red-700 rounded-2xl border border-red-100 flex items-center justify-between hover:bg-red-100 transition-colors"><div className="flex items-center gap-3"><div className="p-2 bg-red-100 rounded-xl"><FiPhoneCall className="text-red-600" /></div><div><p className="font-bold">Emergency Contact</p><p className="text-xs text-red-600">Immediate assistance</p></div></div><FiArrowRight className="text-red-400" /></button>
-              <button onClick={() => toast.info('Schedule a session via the Student Portal.')} className="w-full p-4 bg-blue-50 text-blue-700 rounded-2xl border border-blue-100 flex items-center justify-between hover:bg-blue-100 transition-colors"><div className="flex items-center gap-3"><div className="p-2 bg-blue-100 rounded-xl"><FiCalendar className="text-blue-600" /></div><div><p className="font-bold">Schedule Session</p><p className="text-xs text-blue-600">Book appointment</p></div></div><FiArrowRight className="text-blue-400" /></button>
-              <button onClick={() => toast.info('Self-help resources are available.')} className="w-full p-4 bg-emerald-50 text-emerald-700 rounded-2xl border border-emerald-100 flex items-center justify-between hover:bg-emerald-100 transition-colors"><div className="flex items-center gap-3"><div className="p-2 bg-emerald-100 rounded-xl"><FiBookOpen className="text-emerald-600" /></div><div><p className="font-bold">Resources</p><p className="text-xs text-emerald-600">Self-help guides</p></div></div><FiArrowRight className="text-emerald-400" /></button>
-            </div></div>
-            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-[32px] p-6 border border-blue-100"><div className="flex items-center gap-3 mb-4"><div className="p-2.5 bg-blue-100 rounded-xl"><FiBookOpen className="text-blue-600" /></div><div><h4 className="font-bold text-slate-900">Session Types</h4><p className="text-sm text-slate-600">Loaded from different sources</p></div></div><div className="space-y-3"><div className="flex items-center justify-between p-3 bg-white rounded-xl border border-blue-100"><div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-purple-500"></div><span className="text-sm font-medium text-slate-700">Devotion Sessions</span></div><span className="text-xs font-bold text-blue-600">Static</span></div><div className="flex items-center justify-between p-3 bg-white rounded-xl border border-blue-100"><div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500"></div><span className="text-sm font-medium text-slate-700">24/7 Support</span></div><span className="text-xs font-bold text-blue-600">Static</span></div><div className="flex items-center justify-between p-3 bg-white rounded-xl border border-blue-100"><div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-amber-500"></div><span className="text-sm font-medium text-slate-700">Guidance Sessions</span></div><span className="text-xs font-bold text-blue-600">API ({guidanceSessions.length})</span></div><div className="flex items-center justify-between p-3 bg-white rounded-xl border border-blue-100"><div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-blue-500"></div><span className="text-sm font-medium text-slate-700">Team Members</span></div><span className="text-xs font-bold text-blue-600">API ({teamMembers.length})</span></div></div></div>
-            <div className="bg-gradient-to-r from-purple-900 to-indigo-900 rounded-[32px] p-6 text-white overflow-hidden relative"><div className="absolute top-0 right-0 w-24 h-24 bg-white/10 blur-[40px]" /><div className="relative z-10"><div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-4"><FiShield className="text-white text-xl" /></div><h4 className="text-xl font-bold mb-2">100% Confidential</h4><p className="text-purple-200 text-sm mb-4">All sessions are private and secure. Your information is protected.</p><div className="space-y-2 text-sm"><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-400"></div><span>Secure conversations</span></div><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-400"></div><span>No judgment policy</span></div><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-400"></div><span>Professional ethics</span></div></div></div></div>
+            {/* About Our Counseling */}
+            <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-purple-50 rounded-xl"><FiShield className="text-purple-600 text-lg" /></div>
+                <h4 className="font-bold text-slate-900">Confidential & Safe</h4>
+              </div>
+              <p className="text-slate-500 text-sm leading-relaxed mb-3">
+                All counseling sessions at Kinyui Boys Senior School are 100% confidential. Our trained professionals follow strict ethical guidelines to protect every student&apos;s privacy.
+              </p>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                Whether you need academic guidance, emotional support, or spiritual counsel, our team is here for you — no judgment, just care.
+              </p>
+            </div>
           </div></div>
         </div>
 
-        {/* Feature Banner */}
-        <div className="relative overflow-hidden bg-white rounded-[2.5rem] p-6 md:p-12 shadow-2xl shadow-slate-200/50"><div className="absolute top-0 right-0 w-64 h-64 bg-purple-50/40 blur-[100px] rounded-full -mr-32 -mt-32" /><div className="absolute bottom-0 left-0 w-64 h-64 bg-pink-50/40 blur-[100px] rounded-full -ml-32 -mb-32" /><div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12"><div className="shrink-0"><div className="w-20 h-20 md:w-24 md:h-24 rounded-[2rem] bg-slate-50 flex items-center justify-center text-slate-900 shadow-sm"><FiHeart className="text-4xl md:text-5xl" /></div></div><div className="flex-1 text-center md:text-left"><h3 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight">Your Well-being Matters.</h3><p className="text-slate-500 text-base md:text-xl font-medium leading-relaxed max-w-2xl mx-auto md:mx-0">At Kinyui Boys Senior School, we believe that true education extends beyond academics. Our Guidance and Counseling Department is dedicated to nurturing the complete student—mind, body, and spirit.</p><div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-10">{[
-          { label: 'Confidential', icon: FiShield, color: 'text-blue-600', bg: 'bg-blue-50' },
-          { label: '24/7 Support', icon: FiPhoneCall, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-          { label: 'Professional', icon: FiUser, color: 'text-purple-600', bg: 'bg-purple-50' },
-          { label: 'Holistic', icon: FiHeart, color: 'text-pink-600', bg: 'bg-pink-50' }
-        ].map((f, idx) => (<div key={idx} className="flex items-center gap-3 p-4 bg-slate-50/40 rounded-[1.5rem] group hover:bg-white hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-500"><div className={`p-2.5 rounded-xl ${f.bg} ${f.color} shrink-0 shadow-sm`}><f.icon size={20} /></div><span className="text-[11px] md:text-xs font-black uppercase tracking-widest text-slate-800">{f.label}</span></div>))}</div></div></div></div>
+        {/* Feature Banner - Your Well-being Matters */}
+        <div className="relative overflow-hidden bg-white rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8 md:p-12 shadow-2xl shadow-slate-200/50">
+          <div className="absolute top-0 right-0 w-40 sm:w-64 h-40 sm:h-64 bg-purple-50/40 blur-[80px] sm:blur-[100px] rounded-full -mr-20 sm:-mr-32 -mt-20 sm:-mt-32" />
+          <div className="absolute bottom-0 left-0 w-40 sm:w-64 h-40 sm:h-64 bg-pink-50/40 blur-[80px] sm:blur-[100px] rounded-full -ml-20 sm:-ml-32 -mb-20 sm:-mb-32" />
+          <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 sm:gap-8 md:gap-12">
+            <div className="shrink-0">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-[2rem] bg-slate-50 flex items-center justify-center text-slate-900 shadow-sm">
+                <FiHeart className="text-3xl sm:text-4xl md:text-5xl" />
+              </div>
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-2xl sm:text-3xl md:text-5xl font-black text-slate-900 mb-3 sm:mb-4 tracking-tight">Your Well-being Matters.</h3>
+              <p className="text-slate-500 text-sm sm:text-base md:text-xl font-medium leading-relaxed max-w-2xl mx-auto md:mx-0">
+                At Kinyui Boys Senior School, we believe that true education extends beyond academics. Our Guidance and Counseling Department is dedicated to nurturing the complete student — mind, body, and spirit.
+              </p>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6 sm:mt-10">
+                {[
+                  { label: 'Confidential', icon: FiShield, color: 'text-blue-600', bg: 'bg-blue-50' },
+                  { label: '24/7 Support', icon: FiPhoneCall, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                  { label: 'Professional', icon: FiUser, color: 'text-purple-600', bg: 'bg-purple-50' },
+                  { label: 'Holistic', icon: FiHeart, color: 'text-pink-600', bg: 'bg-pink-50' }
+                ].map((f, idx) => (
+                  <div key={idx} className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-slate-50/40 rounded-xl sm:rounded-[1.5rem] group hover:bg-white hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-500">
+                    <div className={`p-2 sm:p-2.5 rounded-lg sm:rounded-xl ${f.bg} ${f.color} shrink-0 shadow-sm`}><f.icon size={18} className="sm:w-5 sm:h-5" /></div>
+                    <span className="text-[10px] sm:text-[11px] md:text-xs font-black uppercase tracking-widest text-slate-800">{f.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Modals */}
