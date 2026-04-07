@@ -1077,32 +1077,33 @@ export default function ModernGallery() {
             {/* Right Column: Sidebar */}
             <div className="lg:w-[380px] space-y-6">
               <div className="lg:sticky lg:top-24 space-y-6">
-                
-                {/* Quick Actions Card */}
-                <div className="bg-white border border-slate-100 rounded-[32px] p-6 shadow-sm">
-                  <div className="flex items-center gap-3 mb-6"><div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center"><FiZap className="text-purple-600 text-xl" /></div><h2 className="text-xl font-bold text-slate-900">Quick Actions</h2></div>
-                  <div className="space-y-3">
-                    <button onClick={() => { const mostRecent = filteredGalleries[0]; if (mostRecent) setSelectedGallery(mostRecent); }} className="w-full p-4 bg-emerald-50 text-emerald-700 rounded-2xl border border-emerald-100 flex items-center justify-between hover:bg-emerald-100 transition-colors"><div className="flex items-center gap-3"><div className="p-2 bg-emerald-100 rounded-xl"><FiEye className="text-emerald-600" /></div><div className="text-left"><p className="font-bold">Latest Gallery</p><p className="text-xs text-emerald-600">View most recent</p></div></div><FiArrowRight className="text-emerald-400" /></button>
-                    <button onClick={() => toast.info('Favorites feature coming soon!')} className="w-full p-4 bg-amber-50 text-amber-700 rounded-2xl border border-amber-100 flex items-center justify-between hover:bg-amber-100 transition-colors"><div className="flex items-center gap-3"><div className="p-2 bg-amber-100 rounded-xl"><FiHeart className="text-amber-600" /></div><div className="text-left"><p className="font-bold">My Favorites</p><p className="text-xs text-amber-600">{favorites.size} saved</p></div></div><FiArrowRight className="text-amber-400" /></button>
-                  </div>
-                </div>
 
                 {/* Year Info Banner */}
-                <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-[32px] p-6 border border-blue-100">
-                  <div className="flex items-center gap-3 mb-4"><div className="p-2 bg-blue-100 rounded-xl"><FiCalendar className="text-blue-600" /></div><div><h4 className="font-bold text-slate-900">Gallery Years</h4><p className="text-xs text-slate-600">Browse by year</p></div></div>
-                  <div className="space-y-3"><div className="flex items-center justify-between p-3 bg-white rounded-xl border border-blue-100"><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div><span className="text-sm font-medium text-slate-700">All Years</span></div><span className="text-xs font-bold text-blue-600">{transformedGalleries.length}</span></div>{years.slice(0, 3).map(year => (<div key={year} className="flex items-center justify-between p-3 bg-white rounded-xl border border-blue-100"><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div><span className="text-sm font-medium text-slate-700">{year}</span></div><span className="text-xs font-bold text-blue-600">{transformedGalleries.filter(g => g.year === year).length}</span></div>))}</div>
+                <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
+                  <div className="flex items-center gap-3 mb-4"><div className="p-2 bg-blue-50 rounded-xl"><FiCalendar className="text-blue-600" /></div><div><h4 className="font-bold text-slate-900">Gallery Years</h4><p className="text-xs text-slate-500">Browse by year</p></div></div>
+                  <div className="space-y-3"><div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100"><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div><span className="text-sm font-medium text-slate-700">All Years</span></div><span className="text-xs font-bold text-blue-600">{transformedGalleries.length}</span></div>{years.slice(0, 3).map(year => (<div key={year} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100"><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div><span className="text-sm font-medium text-slate-700">{year}</span></div><span className="text-xs font-bold text-blue-600">{transformedGalleries.filter(g => g.year === year).length}</span></div>))}</div>
                 </div>
 
-                {/* Confidentiality Banner */}
-                <div className="bg-gradient-to-r from-purple-900 to-indigo-900 rounded-[32px] p-6 text-white overflow-hidden relative">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 blur-[40px]" />
-                  <div className="relative z-10"><div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-4"><FiLock className="text-white text-xl" /></div><h4 className="text-xl font-bold mb-2">School Memories</h4><p className="text-purple-200 text-sm mb-4">Preserving our school's legacy through photos and videos.</p><div className="space-y-2 text-sm"><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-400"></div><span>High quality media</span></div><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-400"></div><span>Organized by category</span></div><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-400"></div><span>Easy to download & share</span></div></div></div>
+                {/* About Our Gallery */}
+                <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-slate-50 rounded-xl"><FiCamera className="text-slate-700 text-lg" /></div>
+                    <h4 className="font-bold text-slate-900">About Our Gallery</h4>
+                  </div>
+                  <p className="text-slate-600 text-sm leading-relaxed mb-4">
+                    Welcome to the official Kinyui Boys Senior School photo gallery — a visual journey through our school&apos;s vibrant life in Matungulu, Machakos County.
+                  </p>
+                  <p className="text-slate-500 text-sm leading-relaxed mb-4">
+                    From spirited sports days and proud graduation ceremonies to everyday classroom moments and hands-on laboratory sessions, these photos capture the heart of what makes Kinyui special.
+                  </p>
+                  <p className="text-slate-500 text-sm leading-relaxed">
+                    Browse through our collections, download your favourite memories, and share them with family and friends. Every image tells the story of academic excellence, discipline, and community.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-     
         </div>
 
         {/* Modals */}
