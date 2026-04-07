@@ -1315,52 +1315,53 @@ if (loading) {
   </div>
 </div>
 
-<div className="relative overflow-hidden bg-slate-900 rounded-3xl p-5 md:p-8 shadow-xl">
-  {/* Abstract Background Decoration - Reduced Opacity for better text legibility when zoomed */}
-  <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/5 blur-[80px] rounded-full -mr-24 -mt-24" />
-  <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/5 blur-[80px] rounded-full -ml-24 -mb-24" />
-
-<div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-10 p-6 md:p-10 bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-100/50">
+<div className="relative overflow-hidden bg-white rounded-[2.5rem] p-6 md:p-12 shadow-2xl shadow-slate-200/50">
   
-  {/* Left Side: Soft Floating Icon */}
-  <div className="shrink-0">
-    <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.5rem] bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-inner">
-      <FiMessageCircle className="text-3xl md:text-4xl" />
+  {/* Soft Ambient Glows (Very subtle to keep it "White") */}
+  <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50/40 blur-[100px] rounded-full -mr-32 -mt-32" />
+  <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-50/40 blur-[100px] rounded-full -ml-32 -mb-32" />
+
+  <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+    
+    {/* Left Side: The "Hero" Icon */}
+    <div className="shrink-0">
+      <div className="w-20 h-20 md:w-24 md:h-24 rounded-[2rem] bg-slate-50 flex items-center justify-center text-slate-900 shadow-sm">
+        <FiMessageCircle className="text-4xl md:text-5xl" />
+      </div>
     </div>
-  </div>
 
-  {/* Right Side: Simple & Clean Content */}
-  <div className="flex-1 text-center md:text-left">
-    <h3 className="text-2xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight leading-none">
-      Stay Connected.
-    </h3>
-    <p className="text-slate-500 text-sm md:text-lg font-medium leading-relaxed max-w-2xl mx-auto md:mx-0">
-      The central hub for all school updates. Sync your schedules, collaborate with peers, and never miss a beat.
-    </p>
+    {/* Right Side: Typography & Features */}
+    <div className="flex-1 text-center md:text-left">
+      <h3 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight">
+        Stay Connected.
+      </h3>
+      <p className="text-slate-500 text-base md:text-xl font-medium leading-relaxed max-w-2xl mx-auto md:mx-0">
+        The central hub for school updates. Sync schedules, collaborate with peers, and stay on track with ease.
+      </p>
 
-    {/* Feature Grid - Clean Pastel Style */}
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
-      {[
-        { label: 'Sharing', icon: FiShare2, color: 'text-blue-600', bg: 'bg-blue-50' },
-        { label: 'Sync', icon: FiCalendar, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-        { label: 'Save', icon: FiBookmark, color: 'text-amber-600', bg: 'bg-amber-50' },
-        { label: 'Alerts', icon: FiBell, color: 'text-purple-600', bg: 'bg-purple-50' }
-      ].map((feature, idx) => (
-        <div 
-          key={idx} 
-          className="flex items-center gap-3 p-3 bg-slate-50/50 rounded-2xl border border-slate-100 group hover:bg-white hover:shadow-md transition-all duration-300"
-        >
-          <div className={`p-2 rounded-xl ${feature.bg} ${feature.color} shrink-0`}>
-            <feature.icon size={18} />
+      {/* Feature Grid: Borderless & Minimalist */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+        {[
+          { label: 'Sharing', icon: FiShare2, color: 'text-blue-600', bg: 'bg-blue-50' },
+          { label: 'Sync', icon: FiCalendar, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+          { label: 'Save', icon: FiBookmark, color: 'text-amber-600', bg: 'bg-amber-50' },
+          { label: 'Alerts', icon: FiBell, color: 'text-purple-600', bg: 'bg-purple-50' }
+        ].map((feature, idx) => (
+          <div 
+            key={idx} 
+            className="flex items-center gap-3 p-4 bg-slate-50/40 rounded-[1.5rem] group hover:bg-white hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-500"
+          >
+            <div className={`p-2.5 rounded-xl ${feature.bg} ${feature.color} shrink-0 shadow-sm`}>
+              <feature.icon size={20} />
+            </div>
+            <span className="text-[11px] md:text-xs font-black uppercase tracking-widest text-slate-800">
+              {feature.label}
+            </span>
           </div>
-          <span className="text-[11px] font-black uppercase tracking-wider text-slate-700">
-            {feature.label}
-          </span>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   </div>
-</div>
 </div>
 
       </div>
