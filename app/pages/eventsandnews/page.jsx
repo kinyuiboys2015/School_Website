@@ -107,7 +107,7 @@ const ModernEventCard = ({ event, onView, onShare, onCalendar, onBookmark, viewM
     return (
       <div 
         onClick={() => onView(event)}
-        className="group relative bg-white rounded-[2.5rem] border border-slate-100 p-3 pb-6 transition-all duration-500 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.1)] hover:-translate-y-2 cursor-pointer"
+        className="group relative bg-white rounded-[2.5rem] border border-slate-100 p-3 pb-6 transition-all duration-200 cursor-pointer"
       >
         {/* 1. Image Container with Floating Date */}
         <div className="relative h-56 w-full rounded-[2rem] overflow-hidden mb-6">
@@ -156,7 +156,7 @@ const ModernEventCard = ({ event, onView, onShare, onCalendar, onBookmark, viewM
                 ))}
              </div>
              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">
-               +42 Students Attending
+             Students Attending
              </span>
           </div>
 
@@ -178,14 +178,7 @@ const ModernEventCard = ({ event, onView, onShare, onCalendar, onBookmark, viewM
           {/* 3. Integrated Action Row */}
           <div className="flex gap-2">
             <button className="flex-1 py-4 bg-slate-900 text-white rounded-[1.25rem] text-xs font-black uppercase tracking-widest hover:bg-black transition-colors active:scale-95">
-              Get Your Ticket
-            </button>
-            <button 
-              onClick={(e) => { e.stopPropagation(); onShare(event); }}
-              className="p-4 bg-slate-100 text-slate-900 rounded-[1.25rem] hover:bg-slate-200 transition-colors"
-            >
-              <FiShare2 />
-            </button>
+View the Event            </button>
           </div>
         </div>
       </div>
@@ -248,7 +241,7 @@ const ModernNewsCard = ({ news, onView, onShare, onBookmark, viewMode = 'grid' }
     return (
       <div 
         onClick={() => onView(news)}
-        className="group relative bg-white rounded-[2rem] overflow-hidden border border-slate-100 transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] cursor-pointer"
+        className="group relative bg-white rounded-[2rem] overflow-hidden border border-slate-100 transition-all duration-200  cursor-pointer"
       >
         {/* 1. Image Section with "New" Badge */}
         <div className="relative h-52 overflow-hidden">
