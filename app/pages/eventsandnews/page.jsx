@@ -89,239 +89,140 @@ const GlassCard = ({ children, className = '' }) => (
 
 // Modern Event Card with Enhanced Design
 const ModernEventCard = ({ event, onView, onShare, onCalendar, onBookmark, viewMode = 'grid' }) => {
-  const [isHovered, setIsHovered] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
 
-const getCategoryStyle = (category) => {
-  const styles = {
-    academic: { 
-      gradient: 'from-blue-500 to-cyan-500', 
-      bg: 'bg-blue-50', 
-      text: 'text-blue-700',
-      border: 'border-blue-200', // Add this
-      iconBg: 'bg-blue-100',
-      iconColor: 'text-blue-600'
-    },
-    cultural: { 
-      gradient: 'from-purple-500 to-pink-500', 
-      bg: 'bg-purple-50', 
-      text: 'text-purple-700',
-      border: 'border-purple-200', // Add this
-      iconBg: 'bg-purple-100',
-      iconColor: 'text-purple-600'
-    },
-    sports: { 
-      gradient: 'from-emerald-500 to-green-500', 
-      bg: 'bg-emerald-50', 
-      text: 'text-emerald-700',
-      border: 'border-emerald-200', // Add this
-      iconBg: 'bg-emerald-100',
-      iconColor: 'text-emerald-600'
-    },
-    workshop: { 
-      gradient: 'from-orange-500 to-amber-500', 
-      bg: 'bg-orange-50', 
-      text: 'text-orange-700',
-      border: 'border-orange-200', // Add this
-      iconBg: 'bg-orange-100',
-      iconColor: 'text-orange-600'
-    }
-  };
-  return styles[category] || styles.academic;
-};
-
-  const formatDate = (dateString) => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric'
-      });
-    } catch {
-      return 'TBD';
-    }
+  const getCategoryStyle = (category) => {
+    const styles = {
+      academic: { gradient: 'from-blue-600 to-indigo-600', shadow: 'shadow-blue-500/20', text: 'text-blue-700', bg: 'bg-blue-50' },
+      cultural: { gradient: 'from-rose-600 to-amber-600', shadow: 'shadow-rose-500/20', text: 'text-rose-700', bg: 'bg-rose-50' },
+      sports: { gradient: 'from-emerald-600 to-teal-600', shadow: 'shadow-emerald-500/20', text: 'text-emerald-700', bg: 'bg-emerald-50' },
+      workshop: { gradient: 'from-orange-600 to-amber-600', shadow: 'shadow-orange-500/20', text: 'text-orange-700', bg: 'bg-orange-50' }
+    };
+    return styles[category] || styles.academic;
   };
 
-  const formatTime = (timeString) => {
-    if (!timeString) return 'All Day';
-    return timeString;
-  };
+  const theme = getCategoryStyle(event.category);
 
-  const categoryStyle = getCategoryStyle(event.category);
-
-  // Modern Event Card - Grid View (Modernized & Responsive)
   if (viewMode === 'grid') {
-    const theme = getCategoryStyle(event.category);
-    
     return (
       <div 
         onClick={() => onView(event)}
-        className="relative bg-white rounded-2xl sm:rounded-[28px] md:rounded-[32px] border border-slate-100 shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
+        className="group relative bg-white rounded-[2.5rem] border border-slate-100 p-3 pb-6 transition-all duration-500 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.1)] hover:-translate-y-2 cursor-pointer"
       >
-        {/* 1. Static Image Header */}
-        <div className="relative h-40 sm:h-48 md:h-52 w-full shrink-0">
+        {/* 1. Image Container with Floating Date */}
+        <div className="relative h-56 w-full rounded-[2rem] overflow-hidden mb-6">
           <img
             src={event.image || '/default-event.jpg'}
             alt={event.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
           
-          {/* Permanent Badges (Top Left) */}
-          <div className="absolute top-3 sm:top-4 left-3 sm:left-4 flex flex-col gap-1.5 sm:gap-2">
-            <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest shadow-sm border ${theme.bg} ${theme.text} ${theme.border}`}>
-              {event.category || 'Event'}
+          {/* Floating Date Leaf */}
+          <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md rounded-2xl p-2 min-w-[55px] flex flex-col items-center shadow-xl border border-white/20">
+            <span className="text-[10px] font-black uppercase tracking-tighter text-slate-400">
+              {new Date(event.date).toLocaleDateString('en-US', { month: 'short' })}
             </span>
-            {event.featured && (
-              <span className="px-2 sm:px-3 py-0.5 sm:py-1 bg-slate-900/90 backdrop-blur-md text-white rounded-full text-[7px] sm:text-[8px] md:text-[10px] font-black uppercase tracking-widest flex items-center gap-1 shadow-sm">
-                <IoSparkles className="text-amber-400 text-[10px] sm:text-[12px]" /> Featured
-              </span>
-            )}
+            <span className="text-xl font-black text-slate-900 leading-none">
+              {new Date(event.date).getDate()}
+            </span>
           </div>
 
-          {/* Permanent Bookmark Button (Top Right) */}
-          <div className="absolute top-3 sm:top-4 right-3 sm:right-4">
+          {/* Action Buttons Overlay */}
+          <div className="absolute top-4 right-4 flex flex-col gap-2">
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onBookmark(event);
-              }}
-              className={`p-1.5 sm:p-2  rounded-lg sm:rounded-xl backdrop-blur-md border shadow-sm transition-all ${
-                isBookmarked 
-                  ? 'bg-amber-500 border-amber-500 text-white' 
-                  : 'bg-white/90 border-white/10 text-slate-700'
-              }`}
+              onClick={(e) => { e.stopPropagation(); onBookmark(event); setIsBookmarked(!isBookmarked); }}
+              className={`p-3 rounded-2xl backdrop-blur-md transition-all ${isBookmarked ? 'bg-amber-500 text-white' : 'bg-black/20 text-white hover:bg-black/40'}`}
             >
-              <FiBookmark className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isBookmarked ? 'fill-current' : ''}`} />
+              <FiBookmark className={isBookmarked ? 'fill-current' : ''} />
             </button>
+          </div>
+
+          {/* Bottom Gradient Overlay for Category */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+             <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-white bg-gradient-to-r ${theme.gradient} ${theme.shadow} shadow-lg`}>
+                {event.category || 'Event'}
+             </span>
           </div>
         </div>
 
-        {/* 2. Content Area */}
-        <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-1">
-          <h3 className="text-base sm:text-lg md:text-xl font-bold text-slate-900 mb-1.5 sm:mb-2 line-clamp-2 leading-tight">
+        {/* 2. Content Section */}
+        <div className="px-3">
+          <div className="flex items-center gap-2 mb-3">
+             <div className="flex -space-x-2">
+                {[1,2,3].map(i => (
+                  <div key={i} className="w-6 h-6 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center overflow-hidden">
+                    <div className="w-full h-full bg-slate-400 opacity-50" />
+                  </div>
+                ))}
+             </div>
+             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">
+               +42 Students Attending
+             </span>
+          </div>
+
+          <h3 className="text-xl font-black text-slate-900 mb-3 leading-tight group-hover:text-rose-900 transition-colors">
             {event.title}
           </h3>
-          
-          <p className="text-slate-500 text-xs sm:text-sm md:text-sm mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-3 leading-relaxed">
-            {event.description || 'Join us for this upcoming school event and explore new opportunities.'}
-          </p>
 
-          {/* 3. Bento-Style Info Grid - Responsive sizing */}
-          <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
-            <div className="flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-lg sm:rounded-2xl bg-slate-50 border border-slate-100/50">
-              <div className={`p-1 sm:p-1.5 rounded-lg sm:rounded-lg ${theme.iconBg}`}>
-                <FiCalendar className={`${theme.iconColor} w-3 h-3 sm:w-4 sm:h-4`} />
-              </div>
-              <span className="text-[9px] sm:text-[10px] md:text-[11px] font-bold text-slate-700 uppercase tracking-tight">
-                {formatDate(event.date)}
-              </span>
+          <div className="flex flex-wrap gap-4 mb-6">
+            <div className="flex items-center gap-1.5 text-slate-500">
+              <FiClock className="text-amber-500" />
+              <span className="text-xs font-bold">{event.time || 'TBD'}</span>
             </div>
-
-            <div className="flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-lg sm:rounded-2xl bg-slate-50 border border-slate-100/50">
-              <div className={`p-1 sm:p-1.5 rounded-lg sm:rounded-lg ${theme.iconBg}`}>
-                <FiClock className={`${theme.iconColor} w-3 h-3 sm:w-4 sm:h-4`} />
-              </div>
-              <span className="text-[9px] sm:text-[10px] md:text-[11px] font-bold text-slate-700 uppercase tracking-tight truncate">
-                {event.time || 'TBD'}
-              </span>
-            </div>
-
-            <div className="col-span-2 flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-lg sm:rounded-2xl bg-slate-50 border border-slate-100/50">
-              <div className={`p-1 sm:p-1.5 rounded-lg sm:rounded-lg ${theme.iconBg} flex-shrink-0`}>
-                <FiMapPin className={`${theme.iconColor} w-3 h-3 sm:w-4 sm:h-4`} />
-              </div>
-              <span className="text-[9px] sm:text-[10px] md:text-[11px] font-bold text-slate-700 uppercase tracking-tight truncate">
-                {event.location || 'Main Campus Hall'}
-              </span>
+            <div className="flex items-center gap-1.5 text-slate-500">
+              <FiMapPin className="text-rose-500" />
+              <span className="text-xs font-bold truncate max-w-[120px]">{event.location || 'Campus'}</span>
             </div>
           </div>
 
-          <button
-            className="
-              w-full
-              px-3 sm:px-4
-              py-2 sm:py-3
-              bg-slate-900
-              text-white
-              rounded-lg sm:rounded-xl
-              text-xs sm:text-sm md:text-sm
-              font-bold
-              flex items-center justify-center gap-1.5
-              transition-all
-              active:scale-95
-              hover:bg-slate-800
-            "
-          >
-            View details
-          </button>
+          {/* 3. Integrated Action Row */}
+          <div className="flex gap-2">
+            <button className="flex-1 py-4 bg-slate-900 text-white rounded-[1.25rem] text-xs font-black uppercase tracking-widest hover:bg-black transition-colors active:scale-95">
+              Get Your Ticket
+            </button>
+            <button 
+              onClick={(e) => { e.stopPropagation(); onShare(event); }}
+              className="p-4 bg-slate-100 text-slate-900 rounded-[1.25rem] hover:bg-slate-200 transition-colors"
+            >
+              <FiShare2 />
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
-  // List View - Responsive
+  // List View Redesign
   return (
     <div 
-      className="group relative bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-gray-200/60 p-3 sm:p-5 transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-blue-200"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onClick={() => onView(event)}
+      className="group flex flex-col sm:flex-row items-center gap-6 bg-white p-4 rounded-[2rem] border border-slate-100 hover:shadow-xl transition-all cursor-pointer"
     >
-      <div className="flex items-start gap-2.5 sm:gap-4">
-        {/* Image */}
-        <div className="relative w-16 h-16 sm:w-24 sm:h-24 rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0">
-          <img
-            src={event.image || '/default-event.jpg'}
-            alt={event.title}
-            className="w-full h-full object-cover"
-          />
-          {event.featured && (
-            <div className="absolute top-1 right-1">
-              <IoSparkles className="text-amber-500 w-2.5 h-2.5 sm:w-3 sm:h-3" />
-            </div>
-          )}
+      <div className="relative w-full sm:w-40 h-32 rounded-2xl overflow-hidden shrink-0">
+        <img src={event.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+        <div className={`absolute top-2 left-2 px-3 py-1 rounded-lg text-[9px] font-black text-white bg-gradient-to-r ${theme.gradient}`}>
+          {event.category}
         </div>
+      </div>
 
-        {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between mb-1 sm:mb-2 gap-2">
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-1.5 mb-1 sm:mb-2 flex-wrap">
-                <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[7px] sm:text-xs font-bold text-white bg-gradient-to-r ${categoryStyle.gradient}`}>
-                  {event.category || 'Event'}
-                </span>
-                {event.featured && (
-                  <span className="px-1.5 sm:px-2 py-0.5 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 text-[7px] sm:text-xs font-bold rounded-full">
-                    Featured
-                  </span>
-                )}
-              </div>
-              <h3 className="text-sm sm:text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
-                {event.title}
-              </h3>
-            </div>
-          </div>
-
-          <p className="text-gray-600 text-[11px] sm:text-sm mb-2 sm:mb-3 line-clamp-2">
-            {event.description || 'Join us for an exciting event!'}
-          </p>
-
-          <div className="flex items-center gap-2 sm:gap-4 text-[10px] sm:text-sm text-gray-700 flex-wrap">
-            <div className="flex items-center gap-0.5 sm:gap-1">
-              <FiCalendar className="text-blue-500 w-3 h-3 sm:w-4 sm:h-4" />
-              <span className="font-medium truncate">{formatDate(event.date)}</span>
-            </div>
-            <div className="flex items-center gap-0.5 sm:gap-1">
-              <FiClock className="text-emerald-500 w-3 h-3 sm:w-4 sm:h-4" />
-              <span className="font-medium truncate max-w-[80px] sm:max-w-[120px]">{formatTime(event.time)}</span>
-            </div>
-            <div className="flex items-center gap-0.5 sm:gap-1">
-              <FiMapPin className="text-rose-500 w-3 h-3 sm:w-4 sm:h-4" />
-              <span className="font-medium truncate max-w-[80px] sm:max-w-[120px]">{event.location || 'TBD'}</span>
-            </div>
-          </div>
+      <div className="flex-1">
+        <h3 className="text-lg font-black text-slate-900 mb-2">{event.title}</h3>
+        <p className="text-sm text-slate-500 line-clamp-1 mb-4">{event.description}</p>
+        
+        <div className="flex items-center gap-4">
+           <div className={`px-3 py-1.5 rounded-xl ${theme.bg} ${theme.text} text-[10px] font-bold`}>
+             {new Date(event.date).toDateString()}
+           </div>
+           <div className="flex items-center gap-1.5 text-slate-400 text-xs font-bold">
+             <FiMapPin /> {event.location}
+           </div>
         </div>
+      </div>
+
+      <div className="hidden md:block pr-4">
+         <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-all">
+            <FiArrowRight className="text-xl" />
+         </div>
       </div>
     </div>
   );
@@ -329,224 +230,125 @@ const getCategoryStyle = (category) => {
 
 // Modern News Card - Responsive
 const ModernNewsCard = ({ news, onView, onShare, onBookmark, viewMode = 'grid' }) => {
-  const [isHovered, setIsHovered] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   const getCategoryStyle = (category) => {
     const styles = {
-      achievement: { 
-        gradient: 'from-emerald-500 to-green-500', 
-        bg: 'bg-emerald-50', 
-        text: 'text-emerald-700',
-        border: 'border-emerald-200',
-        icon: <FiAward className="w-4 h-4" />
-      },
-      announcement: { 
-        gradient: 'from-blue-500 to-cyan-500', 
-        bg: 'bg-blue-50', 
-        text: 'text-blue-700',
-        border: 'border-blue-200',
-        icon: <FiBell className="w-4 h-4" />
-      },
-      development: { 
-        gradient: 'from-purple-500 to-pink-500', 
-        bg: 'bg-purple-50', 
-        text: 'text-purple-700',
-        border: 'border-purple-200',
-        icon: <FiTrendingUp className="w-4 h-4" />
-      },
-      sports: { 
-        gradient: 'from-orange-500 to-amber-500', 
-        bg: 'bg-orange-50', 
-        text: 'text-orange-700',
-        border: 'border-orange-200',
-        icon: <FiZap className="w-4 h-4" />
-      }
+      achievement: { color: 'text-emerald-600', bg: 'bg-emerald-50', dot: 'bg-emerald-500' },
+      announcement: { color: 'text-blue-600', bg: 'bg-blue-50', dot: 'bg-blue-500' },
+      development: { color: 'text-purple-600', bg: 'bg-purple-50', dot: 'bg-purple-500' },
+      sports: { color: 'text-rose-600', bg: 'bg-rose-50', dot: 'bg-rose-500' }
     };
     return styles[category] || styles.announcement;
   };
 
-  const formatDate = (dateString) => {
-    try {
-      const date = new Date(dateString);
-      const now = new Date();
-      const diff = Math.floor((now - date) / (1000 * 60 * 60 * 24));
-      
-      if (diff === 0) return 'Today';
-      if (diff === 1) return 'Yesterday';
-      if (diff < 7) return `${diff}d ago`;
-      
-      return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric'
-      });
-    } catch {
-      return 'Recently';
-    }
-  };
-
-  const categoryStyle = getCategoryStyle(news.category);
+  const theme = getCategoryStyle(news.category);
 
   if (viewMode === 'grid') {
-    const theme = getCategoryStyle(news.category);
-    
     return (
       <div 
         onClick={() => onView(news)}
-        className="flex flex-col bg-white rounded-2xl sm:rounded-[28px] md:rounded-[32px] border border-slate-100 shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
+        className="group relative bg-white rounded-[2rem] overflow-hidden border border-slate-100 transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] cursor-pointer"
       >
-        {/* 1. Full-Bleed Image Section */}
-        <div className="relative h-36 sm:h-44 md:h-48 w-full shrink-0">
+        {/* 1. Image Section with "New" Badge */}
+        <div className="relative h-52 overflow-hidden">
           <img
             src={news.image || '/default-news.jpg'}
             alt={news.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 group-hover:rotate-1"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
           
-          {/* Static Category Tag (Top Left) */}
-          <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
-            <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest border shadow-sm ${theme.bg} ${theme.text} ${theme.border}`}>
-              {news.category || 'Announcement'}
-            </span>
+          {/* Floating Category Tag */}
+          <div className="absolute top-4 left-4">
+            <div className="backdrop-blur-md bg-white/10 border border-white/20 px-4 py-1.5 rounded-full flex items-center gap-2">
+              <div className={`w-2 h-2 rounded-full animate-pulse ${theme.dot}`} />
+              <span className="text-[10px] font-black text-white uppercase tracking-widest">
+                {news.category || 'News'}
+              </span>
+            </div>
           </div>
 
-          {/* Static Bookmark (Top Right) */}
-          <div className="absolute top-3 sm:top-4 right-3 sm:right-4">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onBookmark(news);
-              }}
-              className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl backdrop-blur-md bg-white/90 border border-white/20 text-slate-700 shadow-sm transition-all"
-            >
-              <FiBookmark className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            </button>
-          </div>
+          {/* Bookmark Overlay */}
+          <button
+            onClick={(e) => { e.stopPropagation(); setIsBookmarked(!isBookmarked); onBookmark(news); }}
+            className="absolute top-4 right-4 p-3 rounded-2xl bg-white/10 backdrop-blur-md text-white hover:bg-white/20 transition-all"
+          >
+            <FiBookmark className={isBookmarked ? 'fill-amber-400 text-amber-400' : ''} />
+          </button>
 
-          {/* Gradient Scrim for Date (Bottom) */}
-          <div className="absolute bottom-0 inset-x-0 h-10 sm:h-12 bg-gradient-to-t from-black/40 to-transparent flex items-end p-2 sm:p-4">
-            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-bold text-white uppercase tracking-widest">
-              {formatDate(news.date)}
-            </span>
+          {/* Date Overlay */}
+          <div className="absolute bottom-4 left-6">
+             <p className="text-white/70 text-[10px] font-bold uppercase tracking-[0.2em]">
+               {new Date(news.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+             </p>
           </div>
         </div>
 
         {/* 2. Content Area */}
-        <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-1">
-          <h3 className="text-base sm:text-lg md:text-xl font-bold text-slate-900 mb-2 sm:mb-3 line-clamp-2 leading-tight tracking-tight">
+        <div className="p-7">
+          <h3 className="text-xl font-black text-slate-900 leading-[1.2] mb-4 group-hover:text-rose-950 transition-colors line-clamp-2">
             {news.title}
           </h3>
           
-          <p className="text-slate-500 text-xs sm:text-sm mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-3 leading-relaxed">
-            {news.excerpt || news.description || 'Explore the latest updates and stories from our school community.'}
+          <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-6 font-medium">
+            {news.excerpt || news.description}
           </p>
 
-          {/* 3. Author & Social Bar */}
-          <div className="flex items-center justify-between mt-auto pt-3 sm:pt-4 border-t border-slate-50 gap-2">
-            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-              <div className="w-5 h-5 sm:w-7 sm:h-7 rounded-full bg-slate-900 flex items-center justify-center text-white border border-slate-100 shadow-sm flex-shrink-0">
-                <span className="text-[8px] sm:text-[10px] font-black">{news.author?.charAt(0) || 'A'}</span>
+          <div className="flex items-center justify-between pt-6 border-t border-slate-50">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-slate-200 to-slate-100 border-2 border-white shadow-sm overflow-hidden">
+                 <div className="w-full h-full bg-slate-400 opacity-20" />
               </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-[9px] sm:text-[11px] font-bold text-slate-900 leading-none mb-0.5 truncate">
-                  {news.author || 'School Admin'}
-                </span>
-                <span className="text-[8px] text-slate-400 font-medium">Contributor</span>
-              </div>
+              <span className="text-xs font-black text-slate-800 uppercase tracking-tighter">
+                {news.author || 'Admin'}
+              </span>
             </div>
-
-            {/* Static Engagement Icon */}
-            <div className="flex items-center gap-0.5 sm:gap-1 px-2 sm:px-3 py-0.5 sm:py-1 bg-slate-50 rounded-lg border border-slate-100 flex-shrink-0">
-              <FiHeart className="text-rose-500 w-3 h-3 sm:w-4 sm:h-4" />
-              <span className="text-[9px] sm:text-[11px] font-bold text-slate-600">{news.likes || 0}</span>
+            
+            <div className="flex items-center gap-1.5 text-rose-600">
+               <FiHeart className="fill-rose-100" />
+               <span className="text-xs font-black">{news.likes || 12}</span>
             </div>
           </div>
-
-          {/* 4. Action Button */}
-          <button className="mt-3 sm:mt-5 w-full py-2.5 sm:py-3.5 bg-slate-50 text-slate-900 rounded-lg sm:rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 border border-slate-100 active:bg-slate-100 transition-colors">
-            Read Full Story
-            <FiArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-          </button>
         </div>
       </div>
     );
   }
 
-  // List View - Responsive
+  // 3. List View - Clean & Minimalist
   return (
     <div 
       onClick={() => onView(news)}
-      className="relative bg-white rounded-lg sm:rounded-[20px] border border-slate-100 p-3 sm:p-4 shadow-sm cursor-pointer transition-colors active:bg-slate-50"
+      className="group flex items-center gap-6 p-4 bg-white rounded-3xl border border-transparent hover:border-slate-100 hover:shadow-lg transition-all cursor-pointer"
     >
-      <div className="flex gap-3 sm:gap-5">
-        
-        {/* 1. Image Container - Responsive */}
-        <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg sm:rounded-2xl overflow-hidden shrink-0 shadow-sm">
-          <img
-            src={news.image || '/default-news.jpg'}
-            alt={news.title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-lg sm:rounded-2xl"></div>
+      <div className="relative w-32 h-32 rounded-2xl overflow-hidden shrink-0">
+        <img src={news.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+      </div>
+
+      <div className="flex-1 space-y-2">
+        <div className="flex items-center gap-3">
+          <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-lg ${theme.bg} ${theme.color}`}>
+            {news.category}
+          </span>
+          <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">
+            5 min read
+          </span>
         </div>
-
-        {/* 2. Content Area - Responsive */}
-        <div className="flex-1 min-w-0 flex flex-col justify-between">
-          <div>
-            {/* Metadata Row */}
-            <div className="flex items-center justify-between mb-1.5 sm:mb-2 gap-2">
-              <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                <span className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg sm:rounded-lg text-[7px] sm:text-[10px] font-black uppercase tracking-widest border ${categoryStyle.bg} ${categoryStyle.text} ${categoryStyle.border}`}>
-                  {news.category || 'Insights'}
-                </span>
-                <span className="text-[8px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
-                  {formatDate(news.date)}
-                </span>
-              </div>
-              
-              {/* Action Buttons - Responsive */}
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onBookmark(news);
-                  }}
-                  className={`p-1 sm:p-1.5 rounded-lg transition-colors ${isBookmarked ? 'text-amber-500 bg-amber-50' : 'text-slate-300 hover:text-slate-500'}`}
-                >
-                  <FiBookmark className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${isBookmarked ? 'fill-current' : ''}`} />
-                </button>
-              </div>
-            </div>
-
-            <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-snug line-clamp-2 mb-1.5 sm:mb-2">
-              {news.title}
-            </h3>
-          </div>
-
-          {/* 3. Footer: Author & Interaction */}
-          <div className="flex items-center justify-between mt-auto">
-            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-slate-900 flex items-center justify-center border border-white shadow-sm shrink-0">
-                <span className="text-[8px] text-white font-black leading-none">
-                  {news.author?.charAt(0) || 'S'}
-                </span>
-              </div>
-              <span className="text-[9px] sm:text-[11px] font-bold text-slate-600 truncate max-w-[80px] sm:max-w-[100px]">
-                {news.author || 'School Admin'}
-              </span>
-            </div>
-            
-            <div className="flex items-center gap-0.5 sm:gap-1 text-blue-600 font-bold text-[9px] sm:text-[11px] uppercase tracking-wider flex-shrink-0">
-              Read More
-              <FiArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-            </div>
-          </div>
+        
+        <h3 className="text-lg font-black text-slate-900 leading-tight group-hover:underline decoration-rose-500 underline-offset-4">
+          {news.title}
+        </h3>
+        
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-slate-500 font-medium line-clamp-1 max-w-md">
+            {news.excerpt}
+          </p>
+          <FiArrowRight className="text-slate-300 group-hover:text-slate-900 group-hover:translate-x-2 transition-all" />
         </div>
       </div>
     </div>
   );
 };
-
 // Modern Share Modal
 const ModernShareModal = ({ item, type = 'event', onClose }) => {
   const [copied, setCopied] = useState(false);
@@ -683,146 +485,162 @@ const ModernShareModal = ({ item, type = 'event', onClose }) => {
   );
 };
 
-const ModernShareModal = ({ item, type = 'event', onClose }) => {
-  const [copied, setCopied] = useState(false);
+// Modern Detail Modal
+const ModernDetailModal = ({ item, type = 'event', onClose, onAddToCalendar, onShare }) => {
+  if (!item) return null;
 
-  const socialPlatforms = [
-    {
-      name: 'WhatsApp',
-      icon: FaWhatsapp,
-      color: 'bg-[#25D366]',
-      glow: 'shadow-[#25D366]/20',
-      action: () => {
-        const text = `${item.title}\n\n${type === 'event' ? '🎉 Event Details:' : '📰 News:'}\n${item.description}\n\n${window.location.href}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-      }
-    },
-    {
-      name: 'Facebook',
-      icon: FaFacebookF,
-      color: 'bg-[#1877F2]',
-      glow: 'shadow-[#1877F2]/20',
-      action: () => {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank');
-      }
-    },
-    {
-      name: 'X',
-      icon: FaTwitter,
-      color: 'bg-black',
-      glow: 'shadow-black/10',
-      action: () => {
-        const text = `${item.title} - Check out this ${type === 'event' ? 'event' : 'news'}!`;
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`, '_blank');
-      }
-    },
-    {
-      name: 'Telegram',
-      icon: FaTelegram,
-      color: 'bg-[#0088cc]',
-      glow: 'shadow-[#0088cc]/20',
-      action: () => {
-        const text = `${item.title}\n\n${item.description}`;
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`, '_blank');
-      }
-    },
-    {
-      name: 'Email',
-      icon: FaEnvelope,
-      color: 'bg-rose-700',
-      glow: 'shadow-rose-700/20',
-      action: () => {
-        const subject = `${item.title} - ${type === 'event' ? 'Event' : 'News'}`;
-        const body = `${item.description}\n\n${window.location.href}`;
-        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      }
-    }
-  ];
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+  const formatFullDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+    } catch { return dateString || 'Date not set'; }
   };
 
-  return (
-    <ModernModal open={true} onClose={onClose} maxWidth="460px">
-      {/* 1. Enhanced Dark Brown Gradient Header */}
-      <div className="bg-gradient-to-br from-[#2D1B14] via-[#3d2a22] to-[#1a0f0a] p-10 text-white relative overflow-hidden">
-        {/* Animated Background Orbs */}
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-amber-600/20 blur-[60px] rounded-full" />
-        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-rose-900/30 blur-[50px] rounded-full" />
+return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 bg-slate-900/90 backdrop-blur-sm">
+      {/* Modal Container */}
+      <div className="relative w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-3xl bg-white sm:rounded-[40px] shadow-2xl overflow-hidden flex flex-col">
         
-        <div className="relative z-10 flex flex-col items-center text-center">
-          <div className="relative group">
-            <div className="absolute inset-0 bg-amber-400/20 blur-xl group-hover:bg-amber-400/40 transition-all rounded-full" />
-            <div className="relative w-16 h-16 bg-white/10 backdrop-blur-2xl rounded-3xl flex items-center justify-center mb-5 border border-white/20 shadow-2xl transform -rotate-3">
-              <IoShareSocialOutline className="text-3xl text-amber-300" />
-            </div>
-          </div>
-          
-          <h2 className="text-3xl font-black tracking-tight leading-none">
-            Spread the <span className="text-amber-400 italic">{type === 'event' ? 'Vibe' : 'Word'}</span>
-          </h2>
-          <p className="text-stone-400 text-[10px] mt-3 uppercase tracking-[0.3em] font-bold">
-            Shared from Kinyui Boys Senior
-          </p>
-        </div>
-      </div>
+        {/* Close Button - Floating & Premium */}
+        <button 
+          onClick={onClose}
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 z-50 p-2 bg-black/20 backdrop-blur-md text-white rounded-full border border-white/20 transition-all active:scale-90"
+        >
+          <IoClose size={20}  />
+        </button>
 
-      {/* 2. Content Area */}
-      <div className="p-8 bg-[#fdfcfb]">
-        {/* Social Platforms - Balanced Horizontal List */}
-        <div className="flex justify-between items-center px-2 mb-12">
-          {socialPlatforms.map((platform, index) => {
-            const Icon = platform.icon;
-            return (
-              <button
-                key={index}
-                onClick={platform.action}
-                className="flex flex-col items-center gap-3 group transition-all"
-              >
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-xl transition-all duration-500 ${platform.color} ${platform.glow} group-hover:scale-110 group-hover:-rotate-6 group-active:scale-95`}>
-                  <Icon className="text-2xl" />
-                </div>
-                <span className="text-[10px] font-black text-stone-500 uppercase tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">
-                  {platform.name}
-                </span>
-              </button>
-            );
-          })}
+        {/* 1. Full-Bleed Hero Image */}
+        <div className="relative h-[30vh] sm:h-[350px] w-full shrink-0">
+          <img
+            src={item.image || (type === 'event' ? '/default-event.jpg' : '/default-news.jpg')}
+            alt={item.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-black/20" />
+          
+          {/* Badge Overlays */}
+          <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 flex gap-2">
+            <span className="px-3 py-1 sm:px-4 sm:py-1.5 bg-white shadow-xl rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest text-blue-600">
+              {item.category || type}
+            </span>
+            {item.featured && (
+              <span className="px-3 py-1 sm:px-4 sm:py-1.5 bg-slate-900 text-white rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest flex items-center gap-1">
+                <IoSparkles className="text-amber-400 w-3 h-3 sm:w-4 sm:h-4" /> 
+                <span className="hidden sm:inline">Featured</span>
+                <span className="sm:hidden">★</span>
+              </span>
+            )}
+          </div>
         </div>
 
-        {/* 3. Refined Link Section */}
-        <div className="relative">
-          <div className="absolute -top-3 left-4 px-2 bg-[#fdfcfb] text-[10px] font-bold text-stone-400 uppercase tracking-widest z-10">
-            Quick Copy Link
-          </div>
-          
-          <div className="group relative flex items-center p-1.5 bg-white rounded-[24px] border-2 border-stone-100 focus-within:border-amber-900/20 transition-all shadow-sm">
-            <div className="flex-1 px-4 text-xs font-semibold text-stone-600 truncate opacity-60">
-              {window.location.href}
-            </div>
+        {/* 2. Content Area - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 custom-scrollbar bg-white">
+          <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8">
             
-            <button
-              onClick={copyToClipboard}
-              className={`px-8 py-3.5 rounded-[18px] font-black text-[11px] uppercase tracking-wider transition-all flex items-center gap-2 ${
-                copied 
-                ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-200' 
-                : 'bg-[#2D1B14] text-white hover:bg-black shadow-lg shadow-stone-300 active:scale-95'
-              }`}
-            >
-              {copied ? 'Success!' : <><FiCopy className="text-base" /> Copy</>}
-            </button>
+            {/* Title & Metadata */}
+            <section className="space-y-3 sm:space-y-4">
+              <h2 className="text-xl sm:text-3xl md:text-4xl font-black text-slate-900 leading-tight tracking-tight">
+                {item.title}
+              </h2>
+              
+              {/* Quick Info Bar */}
+              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-y-2 sm:gap-y-3 gap-x-6 text-xs sm:text-sm font-semibold text-slate-500">
+                <div className="flex items-center gap-2">
+                  <IoCalendarClearOutline className="text-blue-500 text-base sm:text-lg" />
+                  {formatFullDate(item.date)}
+                </div>
+                {type === 'event' && item.location && (
+                  <div className="flex items-center gap-2">
+                    <IoLocationOutline className="text-rose-500 text-base sm:text-lg" />
+                    {item.location}
+                  </div>
+                )}
+                {type === 'news' && (
+                  <div className="flex items-center gap-2">
+                    <IoPersonOutline className="text-purple-500 text-base sm:text-lg" />
+                    By {item.author || 'School Admin'}
+                  </div>
+                )}
+              </div>
+            </section>
+
+            {/* Description Block */}
+            <section className="space-y-3 sm:space-y-4">
+              <h3 className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-slate-400">
+                About this {type}
+              </h3>
+              <div className="text-slate-700 leading-relaxed text-sm sm:text-base md:text-lg">
+                {item.description || item.excerpt || 'No description available.'}
+              </div>
+              
+              {/* If news has full content, show it here without tabs */}
+              {type === 'news' && item.fullContent && (
+                <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-slate-100 text-slate-600 text-xs sm:text-sm md:text-base whitespace-pre-line italic">
+                  {item.fullContent}
+                </div>
+              )}
+            </section>
+
+            {/* Event Specific Specs (Stats grid style) */}
+            {type === 'event' && (
+              <section className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 pt-4">
+                <div className="p-3 sm:p-4 bg-slate-50 rounded-2xl sm:rounded-3xl border border-slate-100">
+                  <IoTimeOutline className="text-blue-600 mb-1 sm:mb-2 w-4 h-4 sm:w-5 sm:h-5" />
+                  <p className="text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 mb-0.5 sm:mb-1">Time</p>
+                  <p className="font-bold text-slate-900 text-xs sm:text-sm md:text-base truncate">{item.time || 'All Day'}</p>
+                </div>
+                <div className="p-3 sm:p-4 bg-slate-50 rounded-2xl sm:rounded-3xl border border-slate-100">
+                  <IoPersonOutline className="text-purple-600 mb-1 sm:mb-2 w-4 h-4 sm:w-5 sm:h-5" />
+                  <p className="text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 mb-0.5 sm:mb-1">Attendees</p>
+                  <p className="font-bold text-slate-900 text-xs sm:text-sm md:text-base truncate">{item.attendees || 'Open'}</p>
+                </div>
+                {item.speaker && (
+                  <div className="p-3 sm:p-4 bg-slate-50 rounded-2xl sm:rounded-3xl border border-slate-100 col-span-2 sm:col-span-1">
+                    <IoSparkles className="text-amber-500 mb-1 sm:mb-2 w-4 h-4 sm:w-5 sm:h-5" />
+                    <p className="text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 mb-0.5 sm:mb-1">Special Guest</p>
+                    <p className="font-bold text-slate-900 text-xs sm:text-sm md:text-base truncate">{item.speaker}</p>
+                  </div>
+                )}
+              </section>
+            )}
           </div>
         </div>
 
-        <p className="text-center text-[9px] text-stone-400 mt-6 font-medium">
-          Secure encrypted sharing enabled
-        </p>
+{/* 3. Action Footer - Sticky at bottom */}
+<div className="shrink-0 p-4 sm:p-6 bg-slate-50/80 backdrop-blur-md border-t border-slate-100">
+  <div className="max-w-2xl mx-auto flex flex-row items-center gap-2 sm:gap-3">
+    {type === 'event' ? (
+      <button
+        onClick={onAddToCalendar}
+        className="flex-[2] min-w-0 h-11 sm:h-14 bg-slate-900 text-white rounded-xl sm:rounded-2xl font-bold text-[11px] sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+      >
+        <IoCalendarClearOutline size={16} className="shrink-0 sm:size-[20px]" />
+        <span className="truncate">Add to Calendar</span>
+      </button>
+    ) : (
+      <button
+        className="flex-[2] min-w-0 h-11 sm:h-14 bg-slate-900 text-white rounded-xl sm:rounded-2xl font-bold text-[11px] sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+        onClick={onClose}
+      >
+        <IoNewspaperOutline size={16} className="shrink-0 sm:size-[20px]" />
+        <span className="truncate">See articles</span>
+      </button>
+    )}
+    
+    <button
+      onClick={onShare}
+      className="flex-1 min-w-0 h-11 sm:h-14 bg-white border-2 border-slate-200 text-slate-900 rounded-xl sm:rounded-2xl font-bold text-[11px] sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+    >
+      <IoShareOutline size={16} className="shrink-0 sm:size-[20px]" />
+      <span className="truncate">Share</span>
+    </button>
+  </div>
+</div>
+
       </div>
-    </ModernModal>
+    </div>
   );
 };
 
