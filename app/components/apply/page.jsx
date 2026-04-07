@@ -94,34 +94,34 @@ const PortalHeader = ({
               </div>
             </div>
 
-      {/* ── Right ── */}
-<div className="flex flex-col sm:flex-col lg:flex-col gap-3 w-full lg:w-auto flex-shrink-0">
+{/* ── Right ── */}
+<div className="flex items-stretch gap-2 sm:gap-3 w-full flex-shrink-0">
   
   {/* Stats card */}
-  <div className="w-full bg-gray-50 border border-gray-100 rounded-xl p-3 sm:p-4 flex items-center gap-3">
-    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
+  <div className="flex-1 min-w-0 bg-gray-50 border border-gray-100 rounded-xl p-2.5 sm:p-3 flex items-center gap-2 sm:gap-3">
+    
+    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
       <FiCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
     </div>
 
     <div className="min-w-0">
-      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide truncate">
+      <p className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-wide truncate">
         Today&apos;s Applications
       </p>
-      <p className="text-lg sm:text-xl font-black text-gray-900 leading-none mt-0.5">
+      <p className="text-base sm:text-lg font-black text-gray-900 leading-none">
         {stats.today || 0}
       </p>
     </div>
   </div>
 
-  {/* Action row */}
-  <div className="flex flex-col sm:flex-row gap-2 w-full">
+  {/* Action buttons */}
+  <div className="flex items-center gap-2 flex-shrink-0">
     
     {/* Refresh */}
     <button
       onClick={handleRefresh}
       disabled={refreshing}
-      title="Refresh Portal"
-      className="w-full sm:w-auto flex items-center justify-center p-2.5 sm:p-3 rounded-xl border border-gray-200 text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50 transition active:scale-95 disabled:opacity-30"
+      className="p-2 sm:p-2.5 rounded-xl border border-gray-200 text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50 transition active:scale-95 disabled:opacity-30"
     >
       <FiRefreshCw
         className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`}
@@ -131,16 +131,15 @@ const PortalHeader = ({
     {/* CTA */}
     <button
       onClick={handleNewEvent}
-      className="w-full sm:flex-1 flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 bg-gray-900 text-white rounded-xl font-semibold text-xs sm:text-sm hover:bg-black transition active:scale-[0.97]"
+      className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-900 text-white rounded-xl font-semibold text-[10px] sm:text-xs hover:bg-black transition active:scale-[0.97] whitespace-nowrap"
     >
-      <span className="sm:hidden">APPLY NOW</span>
-      <span className="hidden sm:inline">START APPLICATION</span>
-      <FiArrowRight className="w-3.5 h-3.5" />
+      <span className="hidden xs:inline sm:inline">Start</span>
+      <span className="xs:hidden sm:hidden">Apply</span>
+      <FiArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
     </button>
 
   </div>
 </div>
-
           </div>
         </div>
       </div>
