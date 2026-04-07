@@ -294,12 +294,18 @@ const ModernNewsCard = ({ news, onView, onShare, onBookmark, viewMode = 'grid' }
               <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-slate-200 to-slate-100 border-2 border-white shadow-sm overflow-hidden">
                  <div className="w-full h-full bg-slate-400 opacity-20" />
               </div>
-              <span className="text-xs font-black text-slate-800 uppercase tracking-tighter">
-                {news.author || 'Admin'}
+              <span className="text-xs font-black text-slate-800 ">
+               By {news.author || 'Admin'}
               </span>
             </div>
     
           </div>
+
+          <div className="flex items-center justify-end mt-4">
+              <button className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-[1.25rem] text-xs font-black uppercase tracking-widest hover:bg-black transition-colors active:scale-95">
+                View News
+              </button>
+            </div>
         </div>
       </div>
     );
@@ -405,41 +411,45 @@ const ModernShareModal = ({ item, type = 'event', onClose }) => {
 
   return (
     <ModernModal open={true} onClose={onClose} maxWidth="480px">
-      {/* 1. Dark Brown Header */}
-      <div className="bg-[#2D1B14] p-8 text-white relative overflow-hidden">
+      {/* 1. Dark Brown Header - Responsive padding */}
+      <div className="bg-[#2D1B14] p-6 sm:p-8 text-white relative overflow-hidden">
         {/* Subtle Warm Glow for the Brown theme */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 blur-3xl rounded-full -mr-16 -mt-16" />
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-rose-500/5 blur-2xl rounded-full -ml-12 -mb-12" />
+        <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-amber-500/10 blur-3xl rounded-full -mr-16 -mt-16" />
+        <div className="absolute bottom-0 left-0 w-20 sm:w-24 h-20 sm:h-24 bg-rose-500/5 blur-2xl rounded-full -ml-12 -mb-12" />
         
         <div className="relative z-10 flex flex-col items-center text-center">
-          <div className="w-14 h-14 bg-white/5 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-4 border border-white/10 shadow-2xl">
-            <IoShareSocialOutline className="text-2xl text-amber-200" />
+          {/* Responsive icon size */}
+          <div className="w-10 h-10 sm:w-14 sm:h-14 bg-white/5 backdrop-blur-xl rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 border border-white/10 shadow-2xl">
+            <IoShareSocialOutline className="text-xl sm:text-2xl text-amber-200" />
           </div>
-          <h2 className="text-2xl font-black tracking-tight italic">
+          {/* Responsive heading */}
+          <h2 className="text-xl sm:text-2xl font-black tracking-tight italic">
             Share {type === 'event' ? 'Event' : 'News'}
           </h2>
-          <p className="text-amber-100/50 text-xs mt-1 uppercase tracking-[0.2em] font-medium">
+          <p className="text-amber-100/50 text-[10px] sm:text-xs mt-1 uppercase tracking-[0.15em] sm:tracking-[0.2em] font-medium">
             Spread the word
           </p>
         </div>
       </div>
 
-      {/* 2. Content Area */}
-      <div className="p-8 bg-white">
-        {/* Social Platforms - Colored Icons */}
-        <div className="flex flex-wrap justify-center gap-6 mb-10">
+      {/* 2. Content Area - Responsive padding */}
+      <div className="p-4 sm:p-6 md:p-8 bg-white">
+        {/* Social Platforms - Responsive grid layout */}
+        <div className="grid grid-cols-3 sm:flex sm:flex-wrap justify-center gap-4 sm:gap-5 md:gap-6 mb-6 sm:mb-8 md:mb-10">
           {socialPlatforms.map((platform, index) => {
             const Icon = platform.icon;
             return (
               <button
                 key={index}
                 onClick={platform.action}
-                className="flex flex-col items-center gap-2.5 group transition-transform active:scale-90"
+                className="flex flex-col items-center gap-1.5 sm:gap-2 md:gap-2.5 group transition-transform active:scale-90"
               >
-                <div className={`w-14 h-14 rounded-[20px] flex items-center justify-center text-white shadow-lg transition-all duration-300 ${platform.color} ${platform.hoverColor} group-hover:shadow-xl group-hover:-translate-y-1`}>
-                  <Icon className="text-2xl" />
+                {/* Responsive icon container */}
+                <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-14 md:h-14 rounded-2xl sm:rounded-[20px] flex items-center justify-center text-white shadow-lg transition-all duration-300 ${platform.color} ${platform.hoverColor} group-hover:shadow-xl group-hover:-translate-y-1`}>
+                  <Icon className="text-xl sm:text-2xl" />
                 </div>
-                <span className="text-[10px] font-bold text-slate-500">
+                {/* Responsive label */}
+                <span className="text-[9px] sm:text-[10px] font-bold text-slate-500">
                   {platform.name}
                 </span>
               </button>
@@ -448,25 +458,27 @@ const ModernShareModal = ({ item, type = 'event', onClose }) => {
         </div>
 
         {/* 3. Link Section */}
-        <div className="space-y-3">
-          <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">
+        <div className="space-y-2 sm:space-y-3">
+          <label className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">
             Page Link
           </label>
           
-          <div className="relative flex items-center">
-            <div className="w-full p-4 bg-slate-50 rounded-2xl border border-slate-100 text-xs font-medium text-slate-400 truncate pr-28">
+          <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-0">
+            {/* Responsive URL display */}
+            <div className="w-full p-3 sm:p-4 bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-100 text-[10px] sm:text-xs font-medium text-slate-400 truncate sm:pr-28">
               {window.location.href}
             </div>
             
+            {/* Responsive copy button */}
             <button
               onClick={copyToClipboard}
-              className={`absolute right-1.5 px-6 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 ${
+              className={`sm:absolute right-1.5 px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-bold text-[11px] sm:text-xs transition-all flex items-center justify-center gap-1.5 sm:gap-2 ${
                 copied 
                 ? 'bg-emerald-500 text-white shadow-emerald-200' 
                 : 'bg-[#2D1B14] text-white hover:bg-[#3d2a22] shadow-lg shadow-stone-200'
               }`}
             >
-              {copied ? 'Copied!' : <><FiCopy /> Copy</>}
+              {copied ? 'Copied!' : <><FiCopy className="text-xs sm:text-sm" /> Copy</>}
             </button>
           </div>
         </div>
@@ -549,7 +561,7 @@ return (
                 )}
                 {type === 'news' && (
                   <div className="flex items-center gap-2">
-                    <IoPersonOutline className="text-purple-500 text-base sm:text-lg" />
+                    <IoPersonOutline className="text-purple-500 text-base sm:text-md" />
                     By {item.author || 'School Admin'}
                   </div>
                 )}
@@ -630,7 +642,7 @@ return (
             <IoNewspaperOutline className="text-base sm:text-xl text-amber-300" />
           </div>
           <span className="text-[10px] sm:text-sm font-black uppercase tracking-[0.15em] truncate">
-            Read News
+            View Others
           </span>
         </div>
       </button>
