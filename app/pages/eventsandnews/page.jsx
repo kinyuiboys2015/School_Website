@@ -1176,78 +1176,74 @@ if (loading) {
 
   <div className="max-w-7xl mx-auto relative z-10">
     <div className="flex flex-col gap-4 mb-6 sm:mb-10">
-      {/* Header Section */}
+{/* Header Section */}
 <div className="space-y-4">
-  {/* Minimalist Badge */}
-  <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-2xl rounded-full border border-white/10 shadow-2xl">
-    <IoSparkles className="text-amber-400 text-[10px] sm:text-sm animate-pulse" />
-    <span className="text-slate-200 font-bold text-[9px] sm:text-xs uppercase tracking-[0.25em]">
+  {/* Simplified Badge */}
+  <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-md border border-white/20">
+    <IoSparkles className="text-amber-400 text-sm" />
+    <span className="text-slate-200 font-normal text-xs uppercase tracking-wider">
       School Events and News
     </span>
   </div>
 
-  <div className="flex flex-col gap-4">
-    {/* Title & Subtitle */}
+  <div className="flex flex-col gap-2">
+    {/* Title & Subtitle - Reset to Normal/Bold weights */}
     <div className="max-w-full">
-      <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tighter leading-tight">
-        Kinyui Boys <br className="sm:hidden" />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-amber-500 to-rose-400">
-          Events & Insights
-        </span>
+      <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
+        Kinyui Boys Senior School News & Events
       </h1>
-      <p className="text-slate-300 text-sm sm:text-lg mt-3 font-medium leading-relaxed max-w-2xl opacity-90">
-        From championship rugby highlights to academic milestones, stay connected with the vibrant pulse of life and excellence at <span className="text-white font-bold">Kinyui Boys Senior School</span>.
+      <p className="text-slate-300 text-sm sm:text-base mt-2 font-normal leading-relaxed max-w-2xl">
+        Stay updated with the latest happenings, academic achievements, and co-curricular activities within our school community.
       </p>
     </div>
 
-    {/* MOBILE UTILITY ROW */}
+    {/* UTILITY ROW - Rounded-lg with normal font weights */}
     <div className="flex items-center gap-3 w-full sm:w-auto mt-4">
       
-      {/* Refresh Button - Seamless loading state */}
+      {/* Refresh Button */}
       <button
         onClick={refreshData}
         disabled={refreshing}
         className="
           flex-1 sm:flex-none
-          inline-flex items-center justify-center gap-3
-          px-5 py-3.5 sm:px-10 sm:py-4
-          rounded-2xl
-          bg-white hover:bg-amber-50 text-slate-950
-          font-black text-[11px] sm:text-xs
-          uppercase tracking-widest
+          inline-flex items-center justify-center gap-2
+          px-5 py-2.5
+          rounded-lg
+          bg-white hover:bg-slate-50 text-slate-900
+          font-medium text-sm
           transition-all active:scale-95
-          disabled:opacity-70 shadow-xl
+          disabled:opacity-70 shadow-sm
         "
       >
         {refreshing ? (
-          <div className="w-4 h-4 border-2 border-slate-900/20 border-t-slate-900 rounded-full animate-spin" />
+          <div className="w-3.5 h-3.5 border-2 border-slate-900/20 border-t-slate-900 rounded-full animate-spin" />
         ) : (
-          <FiRotateCw className="text-[14px] sm:text-lg" />
+          <FiRotateCw className="text-sm" />
         )}
-        <span>{refreshing ? "Updating Content..." : "Refresh Feed"}</span>
+        <span>{refreshing ? "Updating..." : "Refresh Updates"}</span>
       </button>
 
-      {/* View Toggle - High-End Dark Glass */}
-      <div className="flex bg-black/40 backdrop-blur-3xl rounded-2xl p-1.5 border border-white/5 shadow-2xl">
+      {/* View Toggle - Standard Rounded-lg */}
+      <div className="flex bg-white/10 backdrop-blur-md rounded-lg p-1 border border-white/10">
         <button
           onClick={() => setViewMode('grid')}
-          className={`p-2.5 sm:p-3.5 rounded-xl transition-all duration-300 ${
+          className={`p-2 rounded-md transition-colors ${
             viewMode === 'grid' 
-            ? 'bg-gradient-to-br from-rose-600 to-rose-800 text-white shadow-lg shadow-rose-900/40 scale-105' 
-            : 'text-slate-500 hover:text-slate-200'
+            ? 'bg-white text-slate-900' 
+            : 'text-slate-300 hover:text-white'
           }`}
         >
-          <FiGrid size={18} className="sm:w-[24px] sm:h-[24px]" />
+          <FiGrid size={18} />
         </button>
         <button
           onClick={() => setViewMode('list')}
-          className={`p-2.5 sm:p-3.5 rounded-xl transition-all duration-300 ${
+          className={`p-2 rounded-md transition-colors ${
             viewMode === 'list' 
-            ? 'bg-gradient-to-br from-rose-600 to-rose-800 text-white shadow-lg shadow-rose-900/40 scale-105' 
-            : 'text-slate-500 hover:text-slate-200'
+            ? 'bg-white text-slate-900' 
+            : 'text-slate-300 hover:text-white'
           }`}
         >
-          <FiList size={18} className="sm:w-[24px] sm:h-[24px]" />
+          <FiList size={18} />
         </button>
       </div>
     </div>
