@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
 import {
   LoaderCircle,
   KeyRound,
@@ -11,9 +10,11 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
+  Lock,
+  ArrowLeft,
+  ShieldCheck,
 } from "lucide-react";
 
-// Create a separate component that uses useSearchParams
 const ResetPasswordContent = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -25,13 +26,11 @@ const ResetPasswordContent = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
-  // States to track password conditions
   const [hasMinLength, setHasMinLength] = useState(false);
   const [hasNumber, setHasNumber] = useState(false);
   const [hasLetter, setHasLetter] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(false);
 
-  // Check if token exists on component mount
   useEffect(() => {
     if (!token) {
       setError("Invalid or missing reset token. Please request a new password reset link.");
@@ -40,28 +39,18 @@ const ResetPasswordContent = () => {
     }
   }, [token]);
 
-  // This useEffect hook updates the password conditions in real-time
   useEffect(() => {
-    // Check for minimum length (at least 8 characters)
     setHasMinLength(newPassword.length >= 8);
-
-    // Check for at least one number using a regular expression
     setHasNumber(/[0-9]/.test(newPassword));
-
-    // Check for at least one letter (uppercase or lowercase)
     setHasLetter(/[a-zA-Z]/.test(newPassword));
-
-    // Check if the two password fields match
     setPasswordsMatch(newPassword === confirmPassword && newPassword !== "");
   }, [newPassword, confirmPassword]);
 
-  // Redirect to login after successful reset
   useEffect(() => {
     if (resetSuccess) {
       const timer = setTimeout(() => {
         router.push("/pages/adminLogin");
       }, 3000);
-      
       return () => clearTimeout(timer);
     }
   }, [resetSuccess, router]);
@@ -71,14 +60,12 @@ const ResetPasswordContent = () => {
     setLoading(true);
     setError("");
 
-    // Check if token exists
     if (!token) {
       setError("Invalid reset token. Please request a new password reset link.");
       setLoading(false);
       return;
     }
 
-    // Check all conditions are met before attempting submission
     if (!hasMinLength || !hasNumber || !hasLetter || !passwordsMatch) {
       setError("Please meet all password requirements.");
       setLoading(false);
@@ -88,17 +75,11 @@ const ResetPasswordContent = () => {
     try {
       console.log("Submitting password reset request...");
       console.log("Token being sent:", token);
-      
-      // Call the actual API endpoint - send raw token (backend will hash it)
+
       const response = await fetch('/api/resetpassword', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          token: token, // Send the raw UUID token - backend will hash it
-          newPassword: newPassword
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: token, newPassword: newPassword }),
       });
 
       const data = await response.json();
@@ -108,10 +89,7 @@ const ResetPasswordContent = () => {
       }
 
       console.log("Password reset successful!");
-      
-      // Set success state
       setResetSuccess(true);
-
     } catch (error) {
       console.error("Failed to reset password:", error);
       setError(error.message || "Failed to reset password. Please try again.");
@@ -120,230 +98,265 @@ const ResetPasswordContent = () => {
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, staggerChildren: 0.1 } },
-  };
-
-  // Helper component for the list items to apply conditional styling
-  const ConditionItem = ({ condition, text }) => {
-    const iconClasses = condition ? "text-green-500" : "text-gray-400";
-    const textClasses = condition ? "text-green-300" : "text-gray-400";
-
-    return (
-      <li className="flex items-center gap-2 py-1">
-        {condition ? (
-          <CheckCircle size={16} className={iconClasses} />
-        ) : (
-          <XCircle size={16} className={iconClasses} />
-        )}
-        <span className={`${textClasses} text-sm sm:text-base`}>{text}</span>
-      </li>
-    );
-  };
-
-  // Error message component
-  const ErrorMessage = ({ message }) => (
-    <motion.div
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-red-500/20 border border-red-500/50 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6"
-    >
-      <div className="flex items-start sm:items-center gap-2 sm:gap-3">
-        <AlertCircle className="text-red-400 shrink-0 mt-0.5 sm:mt-0" size={18} />
-        <p className="text-red-300 text-sm sm:text-base">{message}</p>
-      </div>
-    </motion.div>
+  const ConditionItem = ({ condition, text }) => (
+    <li className="flex items-center gap-2.5 py-1">
+      {condition ? (
+        <CheckCircle size={16} className="text-emerald-600 shrink-0" />
+      ) : (
+        <XCircle size={16} className="text-slate-300 shrink-0" />
+      )}
+      <span className={`text-sm ${condition ? 'text-emerald-700 font-medium' : 'text-slate-400'}`}>{text}</span>
+    </li>
   );
 
-  // Success message component
-  const SuccessMessage = () => (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="text-center py-6 sm:py-8 px-2"
-    >
-      <div className="flex justify-center mb-3 sm:mb-4">
-        <CheckCircle size={48} className="text-green-500 sm:w-16 sm:h-16" />
-      </div>
-      <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 px-2">
-        Password Reset Successful!
-      </h2>
-      <p className="text-gray-300 text-sm sm:text-base mb-3 sm:mb-4 px-2">
-        Your password has been successfully reset. Redirecting to login page...
-      </p>
-      <div className="flex justify-center items-center gap-2 mb-4">
-        <LoaderCircle className="animate-spin text-white" size={20} />
-        <span className="text-gray-300 text-xs sm:text-sm">Redirecting in 3 seconds</span>
-      </div>
-      
-      {/* Manual redirect option */}
-      <button
-        onClick={() => router.push("/login")}
-        className="mt-4 sm:mt-6 bg-white/20 hover:bg-white/30 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base w-full sm:w-auto"
-      >
-        Go to Login Now
-      </button>
-    </motion.div>
-  );
-
-  // No token message component
-  const NoTokenMessage = () => (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="text-center py-6 sm:py-8 px-2"
-    >
-      <div className="flex justify-center mb-3 sm:mb-4">
-        <AlertCircle size={48} className="text-red-500 sm:w-16 sm:h-16" />
-      </div>
-      <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
-        Invalid Reset Link
-      </h2>
-      <p className="text-gray-300 text-sm sm:text-base mb-4 sm:mb-6 px-2">
-        This password reset link is invalid or has expired. Please request a new reset link.
-      </p>
-      <button
-        onClick={() => router.push("/forgot-password")}
-        className="bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white px-6 sm:px-8 py-3 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base w-full"
-      >
-        Request New Reset Link
-      </button>
-    </motion.div>
-  );
-
+  // No token state
   if (!token) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-indigo-900 text-white flex items-center justify-center p-3 sm:p-4 font-sans">
-        <div className="w-full max-w-md sm:max-w-xl mx-auto p-4 sm:p-6 md:p-8 lg:p-10 backdrop-blur-lg bg-white/10 rounded-2xl sm:rounded-3xl shadow-xl relative overflow-hidden">
-          <NoTokenMessage />
+      <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
+          <img src="/seo/kinyui.png" alt="" className="w-[500px] h-[500px] object-contain" />
+        </div>
+        <div className="absolute top-0 right-0 w-72 h-72 bg-slate-100 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-slate-50 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="relative z-10 w-full max-w-md mx-auto">
+          <div className="bg-white border border-slate-200 rounded-2xl sm:rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden">
+            <div className="bg-[#1a1a2e] px-6 sm:px-8 py-8 sm:py-10 text-center relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl rounded-full -mr-16 -mt-16" />
+              <div className="relative z-10">
+                <div className="flex items-center justify-center gap-3 mb-5">
+                  <img src="/seo/kinyui.png" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
+                  <div className="text-left">
+                    <p className="text-white/90 text-xs sm:text-sm font-bold uppercase tracking-widest leading-tight">Kinyui Boys</p>
+                    <p className="text-white/50 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium">Senior School</p>
+                  </div>
+                </div>
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-red-400/20">
+                  <AlertCircle className="text-red-400 w-7 h-7 sm:w-8 sm:h-8" />
+                </div>
+                <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">Invalid Reset Link</h1>
+                <p className="text-white/50 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium mt-2">Link Expired or Invalid</p>
+              </div>
+            </div>
+            <div className="px-6 sm:px-8 py-8 sm:py-10 text-center">
+              <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+                This password reset link is invalid or has expired. Please request a new reset link to continue.
+              </p>
+              <button
+                onClick={() => router.push("/pages/forgotpassword")}
+                className="w-full flex items-center justify-center gap-2.5 h-12 sm:h-14 rounded-xl sm:rounded-2xl text-white font-bold text-sm sm:text-base bg-[#1a1a2e] hover:bg-[#2a2a3e] shadow-lg shadow-slate-300 active:scale-[0.98] transition-all"
+              >
+                Request New Reset Link
+              </button>
+              <button
+                onClick={() => router.push("/pages/adminLogin")}
+                className="mt-3 w-full flex items-center justify-center gap-2 h-12 sm:h-14 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base text-slate-600 bg-white border-2 border-slate-200 hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98] transition-all"
+              >
+                <ArrowLeft size={16} /> Back to Login
+              </button>
+            </div>
+          </div>
+          <p className="text-center text-slate-400 text-[10px] sm:text-xs mt-6 sm:mt-8 uppercase tracking-widest font-medium">
+            Kinyui Boys Senior School &bull; Matungulu, Machakos County
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-indigo-900 text-white flex items-center justify-center p-3 sm:p-4 font-sans">
-      <motion.div
-        className="w-full max-w-md sm:max-w-xl mx-auto p-4 sm:p-6 md:p-8 lg:p-10 backdrop-blur-lg bg-white/10 rounded-2xl sm:rounded-3xl shadow-xl relative overflow-hidden transform-gpu"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Decorative elements - smaller on mobile */}
-        <div className="absolute top-0 left-0 w-16 h-16 sm:w-24 sm:h-24 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-        <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style={{animationDelay: '2000ms'}}></div>
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+      {/* Watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
+        <img src="/seo/kinyui.png" alt="" className="w-[500px] h-[500px] object-contain" />
+      </div>
+      <div className="absolute top-0 right-0 w-72 h-72 bg-slate-100 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-72 h-72 bg-slate-50 rounded-full blur-[120px] pointer-events-none" />
 
-        {resetSuccess ? (
-          <SuccessMessage />
-        ) : (
-          <>
-            {/* The rest of the UI (title, description) still animates in */}
-            <motion.div className="relative z-10 text-center mb-4 sm:mb-6" variants={containerVariants}>
-              <div className="flex flex-col sm:flex-row items-center justify-center mb-3 sm:mb-4">
-                <div className="flex items-center mb-2 sm:mb-0">
-                  <KeyRound className="text-white w-8 h-8 sm:w-10 sm:h-10 mr-2 sm:mr-3" />
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
-                    Reset Password
-                  </h1>
-                </div>
-              </div>
-              <p className="text-xs sm:text-sm md:text-base text-gray-300 mb-4 sm:mb-6 px-2">
-                Enter your new password below to reset your account password.
-              </p>
-              <div className="flex justify-center flex-wrap gap-1 sm:gap-2 text-xs sm:text-sm font-medium mb-6 sm:mb-8">
-                <span className="bg-white/20 text-white px-2 sm:px-3 py-1 rounded-full">#Security</span>
-                <span className="bg-white/20 text-white px-2 sm:px-3 py-1 rounded-full">#AccountRecovery</span>
-              </div>
-            </motion.div>
+      <div className="relative z-10 w-full max-w-md mx-auto">
 
-            {/* Error Message */}
-            {error && <ErrorMessage message={error} />}
+        {/* Back link */}
+        <button
+          onClick={() => router.push("/pages/adminLogin")}
+          className="flex items-center gap-2 text-slate-500 hover:text-slate-800 text-sm font-medium mb-8 transition-colors group"
+        >
+          <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
+          Back to login
+        </button>
 
-            <form onSubmit={handleSubmit} className="relative z-10 space-y-4 sm:space-y-6">
-              <div>
-                <label className="block text-sm sm:text-base font-medium text-gray-300 mb-1 sm:mb-2">
-                  New Password
-                </label>
-                <div className="relative">
-                  <KeyRound className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="New Password"
-                    className="w-full h-12 sm:h-14 pl-9 sm:pl-12 pr-10 sm:pr-12 bg-white/20 text-white placeholder-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300 text-sm sm:text-base"
-                    required
-                    disabled={loading}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors duration-200"
-                    disabled={loading}
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
+        {/* Card */}
+        <div className="bg-white border border-slate-200 rounded-2xl sm:rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden">
+
+          {/* Header */}
+          <div className="bg-[#1a1a2e] px-6 sm:px-8 py-8 sm:py-10 text-center relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl rounded-full -mr-16 -mt-16" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 blur-2xl rounded-full -ml-12 -mb-12" />
+
+            <div className="relative z-10">
+              <div className="flex items-center justify-center gap-3 mb-5">
+                <img src="/seo/kinyui.png" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
+                <div className="text-left">
+                  <p className="text-white/90 text-xs sm:text-sm font-bold uppercase tracking-widest leading-tight">Kinyui Boys</p>
+                  <p className="text-white/50 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium">Senior School</p>
                 </div>
               </div>
 
-              <div className="text-sm space-y-1 sm:space-y-2 p-3 sm:p-4 rounded-xl backdrop-blur-sm bg-white/10">
-                <h3 className="text-base sm:text-lg font-bold text-white mb-1 sm:mb-2">
-                  Password Requirements:
-                </h3>
-                <ul className="space-y-1">
-                  <ConditionItem condition={hasMinLength} text="At least 8 characters" />
-                  <ConditionItem condition={hasNumber} text="Contains a number" />
-                  <ConditionItem condition={hasLetter} text="Contains a letter" />
-                </ul>
-                
-                <div className="mt-4 sm:mt-6">
-                  <label className="block text-sm sm:text-base font-medium text-gray-300 mb-1 sm:mb-2">
-                    Confirm Password
-                  </label>
-                  <div className="relative">
-                    <KeyRound className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="Confirm Password"
-                      className="w-full h-12 sm:h-14 pl-9 sm:pl-12 pr-10 sm:pr-12 bg-white/20 text-white placeholder-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300 text-sm sm:text-base"
-                      required
-                      disabled={loading}
-                    />
+              {resetSuccess ? (
+                <>
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-emerald-400/20">
+                    <ShieldCheck className="text-emerald-400 w-7 h-7 sm:w-8 sm:h-8" />
+                  </div>
+                  <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">Password Reset!</h1>
+                  <p className="text-white/50 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium mt-2">Success</p>
+                </>
+              ) : (
+                <>
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 border border-white/10">
+                    <Lock className="text-amber-300 w-7 h-7 sm:w-8 sm:h-8" />
+                  </div>
+                  <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">Reset Password</h1>
+                  <p className="text-white/50 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium mt-2">Account Security</p>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Body */}
+          <div className="px-6 sm:px-8 py-8 sm:py-10">
+
+            {resetSuccess ? (
+              /* Success state */
+              <div className="text-center">
+                <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-start gap-3">
+                  <CheckCircle className="text-emerald-600 w-5 h-5 mt-0.5 shrink-0" />
+                  <div className="text-left">
+                    <p className="text-sm font-bold text-emerald-800">Password updated successfully!</p>
+                    <p className="text-xs text-emerald-600 mt-0.5">You can now log in with your new password.</p>
                   </div>
                 </div>
-                
-                <div className="mt-2">
-                  <ConditionItem condition={passwordsMatch} text="Passwords match" />
-                </div>
-              </div>
 
-              <motion.div variants={containerVariants}>
+                <div className="flex items-center justify-center gap-2 mb-6 text-slate-500">
+                  <LoaderCircle className="animate-spin w-4 h-4" />
+                  <span className="text-sm">Redirecting to login in 3 seconds...</span>
+                </div>
+
                 <button
-                  type="submit"
-                  disabled={loading || !hasMinLength || !hasNumber || !hasLetter || !passwordsMatch}
-                  className={`w-full h-12 sm:h-14 rounded-xl text-white font-semibold transition-all duration-300 ${
-                    loading || !hasMinLength || !hasNumber || !hasLetter || !passwordsMatch
-                      ? "bg-indigo-400 cursor-not-allowed"
-                      : "bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700"
-                  } text-sm sm:text-base`}
+                  onClick={() => router.push("/pages/adminLogin")}
+                  className="w-full flex items-center justify-center gap-2.5 h-12 sm:h-14 rounded-xl sm:rounded-2xl text-white font-bold text-sm sm:text-base bg-[#1a1a2e] hover:bg-[#2a2a3e] shadow-lg shadow-slate-300 active:scale-[0.98] transition-all"
                 >
-                  {loading ? (
-                    <div className="flex items-center justify-center">
-                      <LoaderCircle className="animate-spin w-5 h-5 sm:w-6 sm:h-6" />
-                      <span className="ml-2">Resetting Password...</span>
-                    </div>
-                  ) : (
-                    <span>Reset Password</span>
-                  )}
+                  Go to Login Now
                 </button>
-              </motion.div>
-            </form>
-          </>
-        )}
-      </motion.div>
+              </div>
+            ) : (
+              /* Form state */
+              <>
+                {/* Error */}
+                {error && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-3">
+                    <AlertCircle className="text-red-600 w-5 h-5 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-sm font-bold text-red-800">Error</p>
+                      <p className="text-xs text-red-600 mt-0.5">{error}</p>
+                    </div>
+                  </div>
+                )}
+
+                <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+                  Create a strong new password for your account. Make sure it meets all the requirements below.
+                </p>
+
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  {/* New Password */}
+                  <div>
+                    <label className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-slate-400 mb-2 block">
+                      New Password
+                    </label>
+                    <div className="relative">
+                      <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 sm:w-5 sm:h-5" />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        placeholder="Enter new password"
+                        className="w-full h-12 sm:h-14 pl-11 sm:pl-12 pr-11 sm:pr-12 bg-slate-50 text-slate-900 placeholder-slate-400 rounded-xl sm:rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-300 transition-all text-sm sm:text-base font-medium"
+                        required
+                        disabled={loading}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors"
+                        disabled={loading}
+                      >
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Password Requirements */}
+                  <div className="p-4 bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-100">
+                    <h3 className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-slate-400 mb-3">
+                      Password Requirements
+                    </h3>
+                    <ul className="space-y-1">
+                      <ConditionItem condition={hasMinLength} text="At least 8 characters" />
+                      <ConditionItem condition={hasNumber} text="Contains a number" />
+                      <ConditionItem condition={hasLetter} text="Contains a letter" />
+                    </ul>
+                  </div>
+
+                  {/* Confirm Password */}
+                  <div>
+                    <label className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-slate-400 mb-2 block">
+                      Confirm Password
+                    </label>
+                    <div className="relative">
+                      <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 sm:w-5 sm:h-5" />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="Confirm new password"
+                        className="w-full h-12 sm:h-14 pl-11 sm:pl-12 pr-4 bg-slate-50 text-slate-900 placeholder-slate-400 rounded-xl sm:rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-300 transition-all text-sm sm:text-base font-medium"
+                        required
+                        disabled={loading}
+                      />
+                    </div>
+                    <div className="mt-2 ml-1">
+                      <ConditionItem condition={passwordsMatch} text="Passwords match" />
+                    </div>
+                  </div>
+
+                  {/* Submit */}
+                  <button
+                    type="submit"
+                    disabled={loading || !hasMinLength || !hasNumber || !hasLetter || !passwordsMatch}
+                    className={`w-full flex items-center justify-center gap-2.5 h-12 sm:h-14 rounded-xl sm:rounded-2xl text-white font-bold text-sm sm:text-base transition-all duration-300 shadow-lg ${
+                      loading || !hasMinLength || !hasNumber || !hasLetter || !passwordsMatch
+                        ? 'bg-slate-300 cursor-not-allowed shadow-slate-100'
+                        : 'bg-[#1a1a2e] hover:bg-[#2a2a3e] shadow-slate-300 active:scale-[0.98]'
+                    }`}
+                  >
+                    {loading ? (
+                      <>
+                        <LoaderCircle className="animate-spin w-5 h-5" />
+                        <span>Resetting Password...</span>
+                      </>
+                    ) : (
+                      <span>Reset Password</span>
+                    )}
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <p className="text-center text-slate-400 text-[10px] sm:text-xs mt-6 sm:mt-8 uppercase tracking-widest font-medium">
+          Kinyui Boys Senior School &bull; Matungulu, Machakos County
+        </p>
+      </div>
     </div>
   );
 };
@@ -352,15 +365,30 @@ const ResetPasswordContent = () => {
 const ResetPasswordPage = () => {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-indigo-900 text-white flex items-center justify-center p-3 sm:p-4">
-        <div className="w-full max-w-md sm:max-w-xl mx-auto p-4 sm:p-6 md:p-8 lg:p-10 backdrop-blur-lg bg-white/10 rounded-2xl sm:rounded-3xl shadow-xl relative overflow-hidden">
-          <div className="text-center py-6 sm:py-8">
-            <div className="flex justify-center mb-3 sm:mb-4">
-              <LoaderCircle className="animate-spin text-white w-10 h-10 sm:w-12 sm:h-12" size={48} />
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
+          <img src="/seo/kinyui.png" alt="" className="w-[500px] h-[500px] object-contain" />
+        </div>
+        <div className="relative z-10 w-full max-w-md mx-auto">
+          <div className="bg-white border border-slate-200 rounded-2xl sm:rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden">
+            <div className="bg-[#1a1a2e] px-6 sm:px-8 py-8 sm:py-10 text-center relative overflow-hidden">
+              <div className="relative z-10">
+                <div className="flex items-center justify-center gap-3 mb-5">
+                  <img src="/seo/kinyui.png" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
+                  <div className="text-left">
+                    <p className="text-white/90 text-xs sm:text-sm font-bold uppercase tracking-widest leading-tight">Kinyui Boys</p>
+                    <p className="text-white/50 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium">Senior School</p>
+                  </div>
+                </div>
+                <LoaderCircle className="animate-spin text-white w-8 h-8 mx-auto mb-3" />
+                <h2 className="text-lg font-bold text-white">Loading...</h2>
+                <p className="text-white/50 text-xs mt-1">Checking reset link</p>
+              </div>
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">Loading...</h2>
-            <p className="text-gray-300 text-sm sm:text-base">Checking reset link validity</p>
           </div>
+          <p className="text-center text-slate-400 text-[10px] sm:text-xs mt-6 uppercase tracking-widest font-medium">
+            Kinyui Boys Senior School &bull; Matungulu, Machakos County
+          </p>
         </div>
       </div>
     }>

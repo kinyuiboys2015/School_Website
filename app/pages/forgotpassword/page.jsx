@@ -57,7 +57,7 @@ const ForgotPasswordPage = () => {
 
       {/* Watermark school logo */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
-        <img src="/seo/logo.png" alt="" className="w-[500px] h-[500px] object-contain" />
+        <img src="/seo/kinyui.png" alt="" className="w-[500px] h-[500px] object-contain" />
       </div>
 
       {/* Subtle background accents */}
@@ -86,7 +86,7 @@ const ForgotPasswordPage = () => {
             <div className="relative z-10">
               {/* School branding */}
               <div className="flex items-center justify-center gap-3 mb-5">
-                <img src="/seo/logo.png" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
+                <img src="/seo/kinyui.png" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
                 <div className="text-left">
                   <p className="text-white/90 text-xs sm:text-sm font-bold uppercase tracking-widest leading-tight">Kinyui Boys</p>
                   <p className="text-white/50 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium">Senior School</p>
@@ -142,40 +142,44 @@ const ForgotPasswordPage = () => {
                 </div>
               </div>
 
-              {/* Submit button */}
-              <button
-                type="submit"
-                disabled={loading}
-                className={`w-full flex items-center justify-center gap-2.5 h-12 sm:h-14 rounded-xl sm:rounded-2xl text-white font-bold text-sm sm:text-base transition-all duration-300 shadow-lg ${
-                  loading
-                    ? 'bg-slate-400 cursor-not-allowed shadow-slate-200'
-                    : 'bg-[#1a1a2e] hover:bg-[#2a2a3e] shadow-slate-300 active:scale-[0.98]'
-                }`}
-              >
-                {loading ? (
-                  <>
-                    <LoaderCircle className="animate-spin w-5 h-5" />
-                    <span>Sending Link...</span>
-                  </>
-                ) : (
-                  <span>Send Reset Link</span>
-                )}
-              </button>
+         <div className="flex flex-row items-center gap-2 sm:gap-4 w-full mt-6">
+  {/* 1. Submit button - Flex 1 to share space */}
+  <button
+    type="submit"
+    disabled={loading}
+    className={`flex-1 flex items-center justify-center gap-2 h-12 sm:h-14 rounded-xl sm:rounded-2xl text-white font-black text-[11px] sm:text-base uppercase tracking-wider transition-all duration-300 shadow-lg ${
+      loading
+        ? 'bg-slate-400 cursor-not-allowed shadow-slate-200'
+        : 'bg-[#1a1a2e] hover:bg-[#2a2a3e] shadow-slate-200 active:scale-[0.95]'
+    }`}
+  >
+    {loading ? (
+      <>
+        <LoaderCircle className="animate-spin w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+        <span className="truncate">Sending...</span>
+      </>
+    ) : (
+      <span className="truncate">Reset Link</span>
+    )}
+  </button>
 
-              {/* Open Gmail button */}
-              <button
-                type="button"
-                disabled={!gmailEnabled}
-                onClick={handleGmailClick}
-                className={`w-full flex items-center justify-center gap-2.5 h-12 sm:h-14 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 border-2 ${
-                  !gmailEnabled
-                    ? 'bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed'
-                    : 'bg-white text-slate-800 border-slate-200 hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98]'
-                }`}
-              >
-                <Mail size={18} />
-                <span>{gmailEnabled ? 'Open Gmail' : 'Send link first'}</span>
-              </button>
+  {/* 2. Open Gmail button - Flex 1 to share space */}
+  <button
+    type="button"
+    disabled={!gmailEnabled}
+    onClick={handleGmailClick}
+    className={`flex-1 flex items-center justify-center gap-2 h-12 sm:h-14 rounded-xl sm:rounded-2xl font-black text-[11px] sm:text-base uppercase tracking-wider transition-all duration-300 border-2 ${
+      !gmailEnabled
+        ? 'bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed'
+        : 'bg-white text-slate-800 border-slate-200 hover:bg-slate-50 hover:border-slate-300 active:scale-[0.95]'
+    }`}
+  >
+    <Mail size={16} className="shrink-0 sm:size-[18px]" />
+    <span className="truncate">
+      {gmailEnabled ? 'Gmail' : 'Link first'}
+    </span>
+  </button>
+</div>
             </form>
 
             {/* Divider */}
