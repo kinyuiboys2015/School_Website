@@ -959,8 +959,8 @@ Loading for Opportunities at Kinyui Senior School
     at Kinyui Boys Senior School
   </span>
 </h1>
-     <p className="text-slate-600 text-md leading-relaxed max-w-4xl mx-auto">
-  At <span className="font-semibold text-slate-900">Kinyui Boys Senior School</span>, we believe that educators are the architects of the future. Join a community dedicated to academic excellence, where your passion for teaching inspires the next generation of Kenyan leaders, innovators, and thinkers.
+     <p className="text-slate-900 text-md leading-relaxed max-w-4xl mx-auto">
+  At <span className="font-semibold text-amber-900">Kinyui Boys Senior School</span>, we believe that educators are the architects of the future. Join a community dedicated to academic excellence, where your passion for teaching inspires the next generation of Kenyan leaders, innovators, and thinkers.
 </p>
         </div>
 
