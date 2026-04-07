@@ -880,6 +880,7 @@ kjseaGrade: '',         // Changed from meanGrade
               name="nationality"
               value={formData.nationality}
               onChange={handleChange}
+              readOnly
               className="w-full px-6 py-4 bg-slate-800/50 border border-slate-700 rounded-2xl focus:ring-2 focus:ring-blue-500 font-bold text-white transition-all"
               placeholder="e.g. Kenyan"
               required
