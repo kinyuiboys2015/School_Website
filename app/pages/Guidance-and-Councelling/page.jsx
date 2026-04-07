@@ -502,7 +502,7 @@ export default function StudentCounseling() {
                 All counseling sessions at Kinyui Boys Senior School are 100% confidential. Our trained professionals follow strict ethical guidelines to protect every student&apos;s privacy.
               </p>
               <p className="text-slate-500 text-sm leading-relaxed">
-                Whether you need academic guidance, emotional support, or spiritual counsel, our team is here for you — no judgment, just care.
+                Whether you need academic guidance, emotional support, or spiritual counsel, our team is here for you  no judgment, just care.
               </p>
             </div>
           </div></div>
@@ -534,7 +534,7 @@ export default function StudentCounseling() {
 
       {/* Description */}
       <p className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto md:mx-0">
-        We focus on the complete student — supporting mental, emotional, and personal growth beyond academics.
+        We focus on the complete student  supporting mental, emotional, and personal growth beyond academics.
       </p>
 
       {/* Features */}
