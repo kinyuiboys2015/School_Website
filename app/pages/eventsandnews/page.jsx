@@ -1189,9 +1189,12 @@ if (loading) {
   <div className="flex flex-col gap-2">
     {/* Title & Subtitle - Reset to Normal/Bold weights */}
     <div className="max-w-full">
-      <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
-        Kinyui Boys Senior School News & Events
-      </h1>
+   <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
+  Kinyui Boys Senior School 
+  <span className="bg-gradient-to-r from-rose-800 to-amber-700 bg-clip-text text-transparent">
+    News & Events
+  </span>
+</h1>
       <p className="text-slate-300 text-sm sm:text-base mt-2 font-normal leading-relaxed max-w-2xl">
         Stay updated with the latest happenings, academic achievements, and co-curricular activities within our school community.
       </p>
