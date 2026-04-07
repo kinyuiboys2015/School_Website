@@ -1052,7 +1052,7 @@ kjseaGrade: '',         // Changed from meanGrade
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         
         {/* Father's Card */}
-        <div className="bg-blue-50/40 rounded-[2rem] p-6 border border-blue-100/50 hover:bg-blue-50 transition-colors">
+        <div className="bg-blue-50/40 rounded-2xl sm:rounded-[2rem] p-3 sm:p-6 border border-blue-100/50 hover:bg-blue-50 transition-colors">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
               <FiUser size={16} />
@@ -1076,7 +1076,7 @@ kjseaGrade: '',         // Changed from meanGrade
         </div>
 
         {/* Mother's Card */}
-        <div className="bg-pink-50/40 rounded-[2rem] p-6 border border-pink-100/50 hover:bg-pink-50 transition-colors">
+        <div className="bg-pink-50/40 rounded-2xl sm:rounded-[2rem] p-3 sm:p-6 border border-pink-100/50 hover:bg-pink-50 transition-colors">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-8 rounded-lg bg-pink-500 flex items-center justify-center text-white">
               <FiUser size={16} />
@@ -1100,7 +1100,7 @@ kjseaGrade: '',         // Changed from meanGrade
         </div>
 
         {/* Guardian Card */}
-        <div className="bg-emerald-50/40 rounded-[2rem] p-6 border border-emerald-100/50 hover:bg-emerald-50 transition-colors">
+        <div className="bg-emerald-50/40 rounded-2xl sm:rounded-[2rem] p-3 sm:p-6 border border-emerald-100/50 hover:bg-emerald-50 transition-colors">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white">
               <FiUser size={16} />
@@ -1174,7 +1174,7 @@ kjseaGrade: '',         // Changed from meanGrade
       </div>
 
       {/* CBC / KPSEA SECTION */}
-      <div className="bg-emerald-50/50 rounded-[2rem] p-6 md:p-8 border border-emerald-100/50">
+      <div className="bg-emerald-50/50 rounded-2xl sm:rounded-[2rem] p-3 sm:p-6 md:p-8 border border-emerald-100/50">
         <div className="flex items-center gap-3 mb-8">
           <FiAward className="text-emerald-600" size={20} />
           <h4 className="font-black text-emerald-900 text-xs md:text-sm uppercase tracking-widest">CBC Assessment Results</h4>
@@ -1261,7 +1261,7 @@ kjseaGrade: '',         // Changed from meanGrade
 
     {/* 2. HEALTH & WELLNESS (L-Shaped Layout) */}
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="bg-rose-50/50 rounded-[2.5rem] p-6 md:p-10 border border-rose-100">
+      <div className="bg-rose-50/50 rounded-2xl sm:rounded-[2.5rem] p-3 sm:p-6 md:p-10 border border-rose-100">
         <div className="flex items-center gap-3 mb-8">
           <div className="p-3 bg-rose-500 rounded-xl text-white shadow-lg shadow-rose-100">
             <FiActivity size={20} />
@@ -1294,7 +1294,7 @@ kjseaGrade: '',         // Changed from meanGrade
       </div>
 
       {/* 3. INTERESTS (Modern List Layout) */}
-      <div className="bg-indigo-50/50 rounded-[2.5rem] p-6 md:p-10 border border-indigo-100">
+      <div className="bg-indigo-50/50 rounded-2xl sm:rounded-[2.5rem] p-3 sm:p-6 md:p-10 border border-indigo-100">
         <div className="flex items-center gap-3 mb-8">
           <div className="p-3 bg-indigo-500 rounded-xl text-white shadow-lg shadow-indigo-100">
             <FiHeart size={20} />
@@ -1329,7 +1329,7 @@ kjseaGrade: '',         // Changed from meanGrade
   <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
     
     {/* 1. Dynamic Review Banner */}
-    <div className="relative overflow-hidden bg-slate-900 rounded-[2rem] p-6 md:p-10 shadow-2xl">
+    <div className="relative overflow-hidden bg-slate-900 rounded-2xl sm:rounded-[2rem] p-3 sm:p-6 md:p-10 shadow-2xl">
       <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 blur-[80px] rounded-full -mr-32 -mt-32" />
       <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
         <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/30">
@@ -1383,7 +1383,7 @@ kjseaGrade: '',         // Changed from meanGrade
           ]
         }
       ].map((section, idx) => (
-        <div key={idx} className="group bg-white rounded-[2rem] p-6 md:p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500">
+        <div key={idx} className="group bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-6 md:p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500">
           <div className="flex items-center gap-4 mb-8">
             <div className={`p-3 rounded-xl bg-${section.theme}-50 text-${section.theme}-600`}>
               <section.icon size={22} />
