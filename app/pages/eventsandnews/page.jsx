@@ -304,11 +304,7 @@ const ModernNewsCard = ({ news, onView, onShare, onBookmark, viewMode = 'grid' }
                 {news.author || 'Admin'}
               </span>
             </div>
-            
-            <div className="flex items-center gap-1.5 text-rose-600">
-               <FiHeart className="fill-rose-100" />
-               <span className="text-xs font-black">{news.likes || 12}</span>
-            </div>
+    
           </div>
         </div>
       </div>
