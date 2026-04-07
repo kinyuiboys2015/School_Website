@@ -748,9 +748,9 @@ kjseaGrade: '',         // Changed from meanGrade
 </div>
 
   {/* Form Content */}
-  <div className="p-4 sm:p-6 md:p-8">
+  <div className="p-2 sm:p-2 md:p-8">
 {step === 1 && (
-  <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
+  <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
     
     {/* --- 1. CORE IDENTITY CARD --- */}
     <div className="bg-white rounded-[2.5rem] p-6 md:p-10 border border-slate-100 shadow-xl shadow-slate-200/40 relative overflow-hidden">
