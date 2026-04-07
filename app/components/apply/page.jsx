@@ -95,7 +95,7 @@ const PortalHeader = ({
             </div>
 
 {/* ── Right ── */}
-<div className="flex items-stretch gap-2 sm:gap-3 w-full flex-shrink-0">
+<div className="flex items-stretch gap-2 sm:gap-3 w-full lg:w-auto lg:flex-shrink">
   
   {/* Stats card */}
   <div className="flex-1 min-w-0 bg-gray-50 border border-gray-100 rounded-xl p-2.5 sm:p-3 flex items-center gap-2 sm:gap-3">
