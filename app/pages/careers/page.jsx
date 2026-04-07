@@ -1037,153 +1037,165 @@ Loading for Opportunities at Kinyui Senior School
             </div>
           </div>
 
-          {/* Main Content */}
-          <div className="lg:w-3/4">
-            {/* Search Bar */}
-            <div className="mb-6">
-              <div className="relative">
-                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                <input
-                  type="text"
-                  placeholder="🔍 Search for positions by title, department, or description..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 border border-slate-200 rounded-xl text-base font-semibold placeholder:font-normal focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 transition-all"
-                />
-              </div>
-            </div>
+       {/* Main Content Area */}
+<div className="w-full lg:w-3/4 px-0 sm:px-4">
+  
+  {/* 1. Search Bar: Full width, larger touch targets for mobile */}
+  <div className="mb-6">
+    <div className="relative group">
+      <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={20} />
+      <input
+        type="text"
+        placeholder="Search positions..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl text-base font-semibold shadow-sm focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-50/50 transition-all"
+      />
+    </div>
+  </div>
 
-            {/* Action Buttons Row - Full width with text */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
-              <button
-                onClick={refreshData}
-                disabled={refreshing}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-all disabled:opacity-50"
-              >
-                <FiRefreshCw size={18} className={refreshing ? 'animate-spin' : ''} />
-                <span>Refresh Jobs</span>
-              </button>
+  {/* 2. Action Buttons: 2 columns on mobile, 5 on desktop */}
+  <div className="grid grid-cols-2 md:grid-cols-5 gap-2 sm:gap-3 mb-8">
+    <button
+      onClick={refreshData}
+      disabled={refreshing}
+      className="flex items-center justify-center gap-2 px-3 py-3 bg-white border border-slate-200 rounded-xl text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-50 transition-all"
+    >
+      <FiRefreshCw size={16} className={refreshing ? 'animate-spin' : ''} />
+      <span className="truncate">Refresh</span>
+    </button>
 
-              <button
-                onClick={handleShareAllJobs}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-green-50 border border-green-200 rounded-xl text-green-900 font-semibold text-sm hover:bg-green-100 transition-all"
-              >
-                <FaWhatsapp size={18} />
-                <span>WhatsApp Share</span>
-              </button>
+    <button
+      onClick={handleShareAllJobs}
+      className="flex items-center justify-center gap-2 px-3 py-3 bg-green-50 border border-green-100 rounded-xl text-green-700 font-bold text-xs sm:text-sm hover:bg-green-100 transition-all"
+    >
+      <FaWhatsapp size={16} />
+      <span className="truncate">WhatsApp</span>
+    </button>
 
-              <button
-                onClick={handleCopyAllJobsLink}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold text-sm hover:bg-slate-100 transition-all"
-              >
-                <FiCopy size={18} />
-                <span>Copy Link</span>
-              </button>
+    <button
+      onClick={handleCopyAllJobsLink}
+      className="flex items-center justify-center gap-2 px-3 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-100 transition-all"
+    >
+      <FiCopy size={16} />
+      <span className="truncate">Link</span>
+    </button>
 
-              <button
-                onClick={clearFilters}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 font-semibold text-sm hover:bg-amber-100 transition-all"
-              >
-                <FiFilter size={18} />
-                <span>Reset Filters</span>
-              </button>
+    <button
+      onClick={clearFilters}
+      className="flex items-center justify-center gap-2 px-3 py-3 bg-amber-50 border border-amber-100 rounded-xl text-amber-700 font-bold text-xs sm:text-sm hover:bg-amber-100 transition-all"
+    >
+      <FiFilter size={16} />
+      <span className="truncate">Reset</span>
+    </button>
 
-              <button
-                onClick={() => setShowCVModal(true)}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-900 transition-all shadow-md"
-              >
-                <FiFileText size={18} />
-                <span>Submit CV</span>
-              </button>
-            </div>
+    {/* Submit CV: Takes full width on mobile if odd number, or stays in grid */}
+    <button
+      onClick={() => setShowCVModal(true)}
+      className="col-span-2 md:col-span-1 flex items-center justify-center gap-2 px-3 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs sm:text-sm hover:bg-blue-700 transition-all shadow-lg shadow-blue-100"
+    >
+      <FiFileText size={16} />
+      <span className="truncate">Submit CV</span>
+    </button>
+  </div>
 
-            {/* Category Select and View Toggle Row */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-              {/* Category Select */}
-              <select
-                value={activeTab}
-                onChange={(e) => setActiveTab(e.target.value)}
-                className="px-4 py-2.5 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:border-slate-400 font-medium"
-              >
-                {categories.map(cat => (
-                  <option key={cat.id} value={cat.id}>{cat.name}</option>
-                ))}
-              </select>
-
-              {/* View Toggle */}
-              <div className="flex border border-slate-200 rounded-lg overflow-hidden">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`flex items-center gap-2 px-4 py-2 ${viewMode === 'grid' ? 'bg-slate-900 text-white' : 'bg-white text-slate-600'}`}
-                >
-                  <FiTrendingUp size={16} />
-                  <span className="text-sm font-medium">Grid View</span>
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`flex items-center gap-2 px-4 py-2 ${viewMode === 'list' ? 'bg-slate-900 text-white' : 'bg-white text-slate-600'}`}
-                >
-                  <FiList size={16} />
-                  <span className="text-sm font-medium">List View</span>
-                </button>
-              </div>
-            </div>
-
-    {/* Category Pills */}
-<div className="flex flex-wrap gap-2 mb-8 w-full">
-  {categories.map(cat => {
-    const Icon = cat.icon;
-    const isActive = activeTab === cat.id;
-    return (
-      <button
-        key={cat.id}
-        onClick={() => setActiveTab(cat.id)}
-        /* Added 'flex-1' and 'sm:flex-none' 
-           This makes them fill the width on mobile but stay compact on desktop 
-        */
-        className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex-1 sm:flex-none min-w-[calc(50%-8px)] sm:min-w-0 border ${
-          isActive
-            ? 'bg-slate-900 text-white border-slate-900 shadow-md shadow-slate-200 scale-[1.02]'
-            : 'bg-white text-slate-600 border-slate-100 hover:bg-slate-50 hover:border-slate-200'
-        }`}
+  {/* 3. Controls Row: Stacks on mobile, inline on tablet+ */}
+  <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-6">
+    
+    {/* Category Select: Full width on mobile */}
+    <div className="relative flex-1">
+      <select
+        value={activeTab}
+        onChange={(e) => setActiveTab(e.target.value)}
+        className="w-full appearance-none px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
       >
-        <Icon size={14} className={isActive ? "text-blue-400" : "text-slate-400"} />
-        <span className="whitespace-nowrap">{cat.name}</span>
+        {categories.map(cat => (
+          <option key={cat.id} value={cat.id}>{cat.name}</option>
+        ))}
+      </select>
+      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+        <FiChevronDown />
+      </div>
+    </div>
+
+    {/* View Toggle: Full width on mobile */}
+    <div className="flex bg-slate-100 p-1 rounded-xl">
+      <button
+        onClick={() => setViewMode('grid')}
+        className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+      >
+        <FiTrendingUp size={16} />
+        <span className="text-xs font-bold">Grid</span>
       </button>
-    );
-  })}
+      <button
+        onClick={() => setViewMode('list')}
+        className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+      >
+        <FiList size={16} />
+        <span className="text-xs font-bold">List</span>
+      </button>
+    </div>
+  </div>
+
+  {/* 4. Category Pills: Responsive Wrap (The logic you liked earlier) */}
+  <div className="flex flex-wrap gap-2 mb-8">
+    {categories.map(cat => {
+      const Icon = cat.icon;
+      const isActive = activeTab === cat.id;
+      return (
+        <button
+          key={cat.id}
+          onClick={() => setActiveTab(cat.id)}
+          className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex-1 sm:flex-none min-w-[calc(50%-8px)] sm:min-w-0 border ${
+            isActive
+              ? 'bg-slate-900 text-white border-slate-900 shadow-md scale-[1.02]'
+              : 'bg-white text-slate-600 border-slate-100 hover:bg-slate-50'
+          }`}
+        >
+          <Icon size={14} className={isActive ? "text-blue-400" : "text-slate-400"} />
+          <span className="whitespace-nowrap">{cat.name}</span>
+        </button>
+      );
+    })}
+  </div>
+
+  {/* 5. Job Listings: Adaptive spacing */}
+  <div className="min-h-[400px]">
+    {filteredJobs.length === 0 ? (
+      <ModernEmptyState onClearFilters={clearFilters} />
+    ) : (
+      <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6' : 'space-y-4'}>
+        {filteredJobs.map((job, index) => (
+          <ModernJobCard
+            key={job.id || index}
+            job={job}
+            onView={setSelectedJob}
+            onBookmark={handleBookmark}
+            onShare={handleShare}
+            viewMode={viewMode}
+          />
+        ))}
+      </div>
+    )}
+  </div>
+
+  {/* 6. CTA Banner: Responsive padding and text sizing */}
+  <div className="mt-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 sm:p-10 text-center shadow-xl shadow-blue-100 relative overflow-hidden">
+    {/* Decorative light effect */}
+    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rounded-full -mr-16 -mt-16" />
+    
+    <h3 className="text-2xl font-bold text-white mb-3">Didn't find your role?</h3>
+    <p className="text-blue-100 mb-6 max-w-md mx-auto text-sm sm:text-base">
+      We are always looking for exceptional talent to join Kinyui Boys Senior School. Submit a general application today.
+    </p>
+    <button
+      onClick={() => setShowCVModal(true)}
+      className="w-full sm:w-auto px-8 py-3.5 bg-white text-blue-600 rounded-xl text-sm font-bold hover:bg-blue-50 transition-all active:scale-95 shadow-lg"
+    >
+      Submit General CV
+    </button>
+  </div>
 </div>
-
-            {/* Job Listings */}
-            {filteredJobs.length === 0 ? (
-              <ModernEmptyState onClearFilters={clearFilters} />
-            ) : (
-              <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 gap-5' : 'space-y-4'}>
-                {filteredJobs.map((job, index) => (
-                  <ModernJobCard
-                    key={job.id || index}
-                    job={job}
-                    onView={setSelectedJob}
-                    onBookmark={handleBookmark}
-                    onShare={handleShare}
-                    viewMode={viewMode}
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* CTA Banner */}
-            <div className="mt-10 bg-gradient-to-r from-slate-100 to-slate-50 rounded-xl p-6 text-center border border-slate-200">
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Don't see the right fit?</h3>
-              <p className="text-slate-600 mb-4">Submit your CV for future opportunities.</p>
-              <button
-                onClick={() => setShowCVModal(true)}
-                className="px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-md"
-              >
-                Submit Your CV
-              </button>
-            </div>
-          </div>
         </div>
       </div>
 
