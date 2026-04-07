@@ -94,43 +94,52 @@ const PortalHeader = ({
               </div>
             </div>
 
-            {/* ── Right ── */}
-            <div className="flex flex-row lg:flex-col items-stretch gap-3 flex-shrink-0 lg:pt-1">
-              {/* Stats card */}
-              <div className="flex-1 lg:flex-none bg-gray-50 border border-gray-100 rounded-xl p-3.5 sm:p-4 flex items-center gap-3 sm:gap-4">
-                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
-                  <FiCheckCircle className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-[0.12em]">
-                    Today&apos;s Applications
-                  </p>
-                  <p className="text-xl sm:text-2xl font-black text-gray-900 leading-none mt-0.5">
-                    {stats.today || 0}
-                  </p>
-                </div>
-              </div>
+      {/* ── Right ── */}
+<div className="flex flex-col sm:flex-col lg:flex-col gap-3 w-full lg:w-auto flex-shrink-0">
+  
+  {/* Stats card */}
+  <div className="w-full bg-gray-50 border border-gray-100 rounded-xl p-3 sm:p-4 flex items-center gap-3">
+    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
+      <FiCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+    </div>
 
-              {/* Action row */}
-              <div className="flex gap-2">
-                <button
-                  onClick={handleRefresh}
-                  disabled={refreshing}
-                  title="Refresh Portal"
-                  className="p-2.5 sm:p-3 rounded-xl border border-gray-200 text-gray-400 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50 transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
-                >
-                  <FiRefreshCw className={`w-4 h-4 sm:w-[18px] sm:h-[18px] ${refreshing ? 'animate-spin' : ''}`} />
-                </button>
-                <button
-                  onClick={handleNewEvent}
-                  className="group flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-gray-900 text-white rounded-xl font-bold text-xs sm:text-sm hover:bg-black transition-all active:scale-[0.97]"
-                >
-                  <span className="sm:hidden">APPLY NOW</span>
-                  <span className="hidden sm:inline">START APPLICATION</span>
-                  <FiArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                </button>
-              </div>
-            </div>
+    <div className="min-w-0">
+      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide truncate">
+        Today&apos;s Applications
+      </p>
+      <p className="text-lg sm:text-xl font-black text-gray-900 leading-none mt-0.5">
+        {stats.today || 0}
+      </p>
+    </div>
+  </div>
+
+  {/* Action row */}
+  <div className="flex flex-col sm:flex-row gap-2 w-full">
+    
+    {/* Refresh */}
+    <button
+      onClick={handleRefresh}
+      disabled={refreshing}
+      title="Refresh Portal"
+      className="w-full sm:w-auto flex items-center justify-center p-2.5 sm:p-3 rounded-xl border border-gray-200 text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50 transition active:scale-95 disabled:opacity-30"
+    >
+      <FiRefreshCw
+        className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`}
+      />
+    </button>
+
+    {/* CTA */}
+    <button
+      onClick={handleNewEvent}
+      className="w-full sm:flex-1 flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 bg-gray-900 text-white rounded-xl font-semibold text-xs sm:text-sm hover:bg-black transition active:scale-[0.97]"
+    >
+      <span className="sm:hidden">APPLY NOW</span>
+      <span className="hidden sm:inline">START APPLICATION</span>
+      <FiArrowRight className="w-3.5 h-3.5" />
+    </button>
+
+  </div>
+</div>
 
           </div>
         </div>
