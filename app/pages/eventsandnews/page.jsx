@@ -1319,47 +1319,47 @@ if (loading) {
   <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/5 blur-[80px] rounded-full -mr-24 -mt-24" />
   <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/5 blur-[80px] rounded-full -ml-24 -mb-24" />
 
-  <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-8">
-    
-    {/* Left Side: Scaled down Icon */}
-    <div className="shrink-0">
-      <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white flex items-center justify-center shadow-lg">
-        <FiMessageCircle className="text-slate-900 text-2xl md:text-3xl" />
-      </div>
-    </div>
-
-    {/* Right Side: Main Content */}
-    <div className="flex-1 text-center md:text-left">
-      <h3 className="text-2xl md:text-3xl font-black text-white mb-2 tracking-tight">
-        Stay Connected.
-      </h3>
-      <p className="text-slate-400 text-sm md:text-base leading-relaxed max-w-xl mx-auto md:mx-0">
-        The hub for school updates. Sync schedules, collaborate, and stay on track.
-      </p>
-
-      {/* Feature Grid - Compact & Responsive */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-6">
-        {([
-          { label: 'Sharing', icon: FiShare2, color: 'text-blue-400', bg: 'bg-blue-400/10' },
-          { label: 'Sync', icon: FiCalendar, color: 'text-emerald-400', bg: 'bg-emerald-400/10' },
-          { label: 'Save', icon: FiBookmark, color: 'text-amber-400', bg: 'bg-amber-400/10' },
-          { label: 'Alerts', icon: FiBell, color: 'text-purple-400', bg: 'bg-purple-400/10' }
-        ]).map((feature, idx) => (
-          <div 
-            key={idx} 
-            className="flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/10"
-          >
-            <div className={`p-1.5 rounded-md ${feature.bg} ${feature.color} shrink-0`}>
-              <feature.icon size={16} />
-            </div>
-            <span className="text-[10px] font-black uppercase tracking-wider text-slate-300 truncate">
-              {feature.label}
-            </span>
-          </div>
-        ))}
-      </div>
+<div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-10 p-6 md:p-10 bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-100/50">
+  
+  {/* Left Side: Soft Floating Icon */}
+  <div className="shrink-0">
+    <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.5rem] bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-inner">
+      <FiMessageCircle className="text-3xl md:text-4xl" />
     </div>
   </div>
+
+  {/* Right Side: Simple & Clean Content */}
+  <div className="flex-1 text-center md:text-left">
+    <h3 className="text-2xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight leading-none">
+      Stay Connected.
+    </h3>
+    <p className="text-slate-500 text-sm md:text-lg font-medium leading-relaxed max-w-2xl mx-auto md:mx-0">
+      The central hub for all school updates. Sync your schedules, collaborate with peers, and never miss a beat.
+    </p>
+
+    {/* Feature Grid - Clean Pastel Style */}
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+      {[
+        { label: 'Sharing', icon: FiShare2, color: 'text-blue-600', bg: 'bg-blue-50' },
+        { label: 'Sync', icon: FiCalendar, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+        { label: 'Save', icon: FiBookmark, color: 'text-amber-600', bg: 'bg-amber-50' },
+        { label: 'Alerts', icon: FiBell, color: 'text-purple-600', bg: 'bg-purple-50' }
+      ].map((feature, idx) => (
+        <div 
+          key={idx} 
+          className="flex items-center gap-3 p-3 bg-slate-50/50 rounded-2xl border border-slate-100 group hover:bg-white hover:shadow-md transition-all duration-300"
+        >
+          <div className={`p-2 rounded-xl ${feature.bg} ${feature.color} shrink-0`}>
+            <feature.icon size={18} />
+          </div>
+          <span className="text-[11px] font-black uppercase tracking-wider text-slate-700">
+            {feature.label}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
 </div>
 
       </div>
