@@ -1040,7 +1040,6 @@ Loading for Opportunities at Kinyui Senior School
        {/* Main Content Area */}
 <div className="w-full lg:w-3/4 px-0 sm:px-4">
   
-  {/* 1. Search Bar: Full width, larger touch targets for mobile */}
   <div className="mb-6">
     <div className="relative group">
       <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={20} />
