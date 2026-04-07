@@ -604,35 +604,63 @@ return (
           </div>
         </div>
 
-{/* 3. Action Footer - Sticky at bottom */}
-<div className="shrink-0 p-4 sm:p-6 bg-slate-50/80 backdrop-blur-md border-t border-slate-100">
-  <div className="max-w-2xl mx-auto flex flex-row items-center gap-2 sm:gap-3">
+{/* 3. Action Footer - Sticky "Floating Dock" Style */}
+<div className="shrink-0 p-4 pb-6 sm:p-6 bg-white/80 backdrop-blur-xl border-t border-slate-100/50">
+  <div className="max-w-2xl mx-auto flex items-center gap-3 sm:gap-4">
+    
+    {/* Primary Action: Add to Calendar or See Articles */}
     {type === 'event' ? (
       <button
         onClick={onAddToCalendar}
-        className="flex-[2] min-w-0 h-11 sm:h-14 bg-slate-900 text-white rounded-xl sm:rounded-2xl font-bold text-[11px] sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+        className="flex-[2.5] relative group h-12 sm:h-16 bg-[#2D1B14] overflow-hidden rounded-2xl sm:rounded-[24px] shadow-lg shadow-stone-200 active:scale-[0.98] transition-all duration-300"
       >
-        <IoCalendarClearOutline size={16} className="shrink-0 sm:size-[20px]" />
-        <span className="truncate">Add to Calendar</span>
+        {/* Animated Gloss Effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+        
+        <div className="relative flex items-center justify-center gap-2 sm:gap-3 px-4 text-white">
+          <div className="p-1.5 sm:p-2 bg-white/10 rounded-lg sm:rounded-xl">
+            <IoCalendarClearOutline className="text-base sm:text-xl text-amber-300" />
+          </div>
+          <span className="text-[10px] sm:text-sm font-black uppercase tracking-[0.15em] truncate">
+            Add to Calendar
+          </span>
+        </div>
       </button>
     ) : (
       <button
-        className="flex-[2] min-w-0 h-11 sm:h-14 bg-slate-900 text-white rounded-xl sm:rounded-2xl font-bold text-[11px] sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all"
         onClick={onClose}
+        className="flex-[2.5] relative group h-12 sm:h-16 bg-[#2D1B14] overflow-hidden rounded-2xl sm:rounded-[24px] shadow-lg shadow-stone-200 active:scale-[0.98] transition-all duration-300"
       >
-        <IoNewspaperOutline size={16} className="shrink-0 sm:size-[20px]" />
-        <span className="truncate">See articles</span>
+        <div className="relative flex items-center justify-center gap-2 sm:gap-3 px-4 text-white">
+          <div className="p-1.5 sm:p-2 bg-white/10 rounded-lg sm:rounded-xl">
+            <IoNewspaperOutline className="text-base sm:text-xl text-amber-300" />
+          </div>
+          <span className="text-[10px] sm:text-sm font-black uppercase tracking-[0.15em] truncate">
+            Read News
+          </span>
+        </div>
       </button>
     )}
-    
+
     <button
       onClick={onShare}
-      className="flex-1 min-w-0 h-11 sm:h-14 bg-white border-2 border-slate-200 text-slate-900 rounded-xl sm:rounded-2xl font-bold text-[11px] sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+      className="flex-1 h-12 sm:h-16 bg-amber-50 border-2 border-amber-100 text-[#2D1B14] rounded-2xl sm:rounded-[24px] font-black active:scale-95 transition-all duration-300 shadow-sm flex items-center justify-center gap-2 group hover:bg-amber-100"
     >
-      <IoShareOutline size={16} className="shrink-0 sm:size-[20px]" />
-      <span className="truncate">Share</span>
+      <IoShareOutline className="text-lg sm:text-xl group-hover:rotate-12 transition-transform" />
+      <span className="hidden sm:inline text-xs uppercase tracking-widest font-black">Share</span>
+    </button>
+
+    {/* Mobile Quick Close (Optional - can be swapped for a bookmark icon) */}
+    <button 
+      onClick={onClose}
+      className="sm:hidden flex items-center justify-center w-12 h-12 bg-slate-100 rounded-2xl text-slate-500 active:bg-slate-200 transition-colors"
+    >
+      <IoCloseOutline size={22} />
     </button>
   </div>
+  
+  {/* Modern Home Indicator (Mobile visual flourish) */}
+  <div className="w-10 h-1 bg-slate-200 rounded-full mx-auto mt-4 sm:hidden opacity-50" />
 </div>
 
       </div>
