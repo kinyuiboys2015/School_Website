@@ -1007,11 +1007,16 @@ Loading for Opportunities at Kinyui Senior School
                 </div>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-slate-100">
-                <p className="text-xs text-slate-500 italic">
-                  "Excellence Through Discipline and Hard Work"
-                </p>
-              </div>
+            <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col items-center">
+  <div className="flex items-center gap-3 mb-2">
+    <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-slate-300" />
+    <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">School Motto</span>
+    <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-slate-300" />
+  </div>
+  <p className="text-sm md:text-base font-serif italic text-slate-800 tracking-wide text-center">
+    "Soaring To <span className="text-rose-900 font-semibold">Excellence</span>... We Believe in <span className="text-amber-600 font-semibold">Prayer</span>"
+  </p>
+</div>
             </div>
 
             {/* Career Info Card */}
