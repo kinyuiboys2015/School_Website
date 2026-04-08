@@ -537,10 +537,12 @@ export default function AboutPage() {
                 <div className="inline-flex p-3 bg-white shadow-sm border border-amber-200 rounded-2xl mb-8">
                   <ShieldCheck className="text-amber-600 w-8 h-8" />
                 </div>
-                <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-[0.9] mb-6">
-                  The <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-500 to-orange-700">Kinyui Standard.</span> <br />
-                </h2>
+               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-snug sm:leading-tight md:leading-[0.9] mb-6">
+  Kinyui <br />
+  <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-800 to-orange-800">
+    Standard.
+  </span>
+</h2>
                 <p className="text-slate-700 text-sm font-medium leading-relaxed">
                   Building men of integrity through structured discipline and mental resilience.
                 </p>
