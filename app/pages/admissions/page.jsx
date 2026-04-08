@@ -479,7 +479,7 @@ const CareerSearchPage = () => {
               {/* Search Input */}
               <div className="md:col-span-2 relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <FiSearch className="text-slate-400" size={18} />
+                  <FiSearch className="text-slate-900" size={18} />
                 </div>
                 <input 
                   type="text"
@@ -496,7 +496,7 @@ const CareerSearchPage = () => {
               {/* Department Filter */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <FiFilter className="text-slate-400" size={16} />
+                  <FiFilter className="text-slate-900" size={16} />
                 </div>
                 <select
                   className="w-full pl-12 pr-4 py-3 bg-white border border-slate-300 rounded-xl text-sm font-medium text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none appearance-none"
@@ -513,7 +513,7 @@ const CareerSearchPage = () => {
                   ))}
                 </select>
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <FiChevronDown className="text-slate-400" />
+                  <FiChevronDown className="text-slate-900" />
                 </div>
               </div>
             </div>
@@ -604,7 +604,7 @@ const CareerSearchPage = () => {
                       {/* Subjects */}
                       <div className="mt-3">
                         <div className="flex items-center gap-2 mb-2">
-                          <FiBook className="text-slate-400 text-sm" />
+                          <FiBook className="text-slate-900 text-sm" />
                           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                             Subjects
                           </span>
@@ -623,7 +623,7 @@ const CareerSearchPage = () => {
                     {isExpanded && (
                       <div className="border-t border-slate-100 px-5 py-4">
                         <div className="flex items-center gap-2 mb-4">
-                          <FiBriefcase className="text-slate-400" />
+                          <FiBriefcase className="text-slate-900" />
                           <h4 className="text-sm font-black text-slate-900 uppercase tracking-wider">
                             Career Paths
                           </h4>
@@ -695,7 +695,7 @@ const CareerSearchPage = () => {
                         pageNumber === currentPage - 2 ||
                         pageNumber === currentPage + 2
                       ) {
-                        return <span key={pageNumber} className="px-1 text-slate-400">...</span>;
+                        return <span key={pageNumber} className="px-1 text-slate-900">...</span>;
                       }
                       return null;
                     })}
@@ -813,14 +813,14 @@ const ModernEducationSystemCard = ({ system, icon: Icon, color, description, fea
 
         {/* Academic Path — inline row */}
         <div>
-          <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-3">Academic Path</p>
+          <p className="text-[9px] font-bold uppercase tracking-wider text-slate-900 mb-3">Academic Path</p>
           <div className="flex gap-2">
             {structure.map((stage, idx) => (
               <div key={idx} className="flex-1 text-center p-3 rounded-xl bg-slate-50 border border-slate-100">
                 <div className="text-lg md:text-xl font-black text-slate-900 leading-none tabular-nums">
                   {stage.years}
                 </div>
-                <div className="text-[8px] md:text-[9px] font-bold text-slate-400 uppercase tracking-wider mt-1">
+                <div className="text-[8px] md:text-[9px] font-bold text-slate-900 uppercase tracking-wider mt-1">
                   {stage.name}
                 </div>
               </div>
@@ -830,14 +830,14 @@ const ModernEducationSystemCard = ({ system, icon: Icon, color, description, fea
 
         {/* Features — compact 2-col grid */}
         <div>
-          <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-3">Key Pillars</p>
+          <p className="text-[9px] font-bold uppercase tracking-wider text-slate-900 mb-3">Key Pillars</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {features.map((feature, idx) => (
               <div key={idx} className="flex items-start gap-2.5">
                 <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${color} mt-1.5 shrink-0`} />
                 <div>
                   <h5 className="text-xs font-bold text-slate-900 leading-tight">{feature.title}</h5>
-                  <p className="text-[10px] text-slate-400 leading-snug">{feature.description}</p>
+                  <p className="text-[10px] text-slate-900 leading-snug">{feature.description}</p>
                 </div>
               </div>
             ))}
@@ -886,7 +886,7 @@ const AdmissionPathCard = ({ path, onApply, index }) => {
               <h3 className={`text-base md:text-lg font-extrabold tracking-tight leading-tight ${isEven ? 'text-slate-900' : 'text-white'}`}>
                 {path.title}
               </h3>
-              <span className={`text-[9px] font-bold uppercase tracking-wider ${isEven ? 'text-slate-400' : 'text-slate-400'}`}>
+              <span className={`text-[9px] font-bold uppercase tracking-wider ${isEven ? 'text-slate-900' : 'text-slate-900'}`}>
                 {path.deadline === 'Rolling Admission' ? 'Open Enrollment' : 'Intake Period'}
               </span>
             </div>
@@ -901,7 +901,7 @@ const AdmissionPathCard = ({ path, onApply, index }) => {
         </div>
 
         {/* Description */}
-        <p className={`text-sm leading-relaxed ${isEven ? 'text-slate-500' : 'text-slate-400'}`}>
+        <p className={`text-sm leading-relaxed ${isEven ? 'text-slate-500' : 'text-slate-900'}`}>
           {path.description}
         </p>
 
@@ -918,9 +918,9 @@ const AdmissionPathCard = ({ path, onApply, index }) => {
         {/* Footer */}
         <div className={`flex items-center justify-between pt-4 border-t ${isEven ? 'border-slate-100' : 'border-white/10'}`}>
           <div className="flex items-center gap-2">
-            <IoCalendarOutline className={`text-sm ${isEven ? 'text-slate-400' : 'text-slate-500'}`} />
+            <IoCalendarOutline className={`text-sm ${isEven ? 'text-slate-900' : 'text-slate-500'}`} />
             <div>
-              <span className={`text-[8px] uppercase font-bold tracking-wider block ${isEven ? 'text-slate-400' : 'text-slate-500'}`}>Deadline</span>
+              <span className={`text-[8px] uppercase font-bold tracking-wider block ${isEven ? 'text-slate-900' : 'text-slate-500'}`}>Deadline</span>
               <span className={`text-xs font-bold ${isEven ? 'text-slate-800' : 'text-white'}`}>{path.deadline}</span>
             </div>
           </div>
@@ -1007,7 +1007,7 @@ const StatCard = ({ stat }) => {
           <div className={`flex items-center justify-center h-10 w-10 md:h-11 md:w-11 rounded-2xl bg-gradient-to-br ${stat.color} text-white shadow-sm group-hover:scale-105 transition-transform`}>
             <StatIcon className="text-lg md:text-xl" />
           </div>
-          <span className="text-[9px] md:text-[10px] font-medium text-slate-400 uppercase tracking-wider">
+          <span className="text-[9px] md:text-[10px] font-medium text-slate-900 uppercase tracking-wider">
             {stat.sublabel}
           </span>
         </div>
@@ -1124,7 +1124,7 @@ const ModernFeeCard = ({
               <h3 className="text-xl md:text-3xl font-black uppercase tracking-tighter truncate leading-none">
                 {feeType}
               </h3>
-              <p className={`text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] mt-2 ${isDark ? 'text-white/40' : 'text-slate-400'}`}>
+              <p className={`text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] mt-2 ${isDark ? 'text-white/40' : 'text-slate-900'}`}>
                 Session {year} • {term}
               </p>
             </div>
@@ -1398,11 +1398,11 @@ const VisionMissionSection = ({ vision, mission, motto, videoTour, videoType, vi
             <div className="pt-4 grid grid-cols-2 gap-4">
               <div>
                 <div className="text-2xl font-black text-emerald-600">500+</div>
-                <div className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Students</div>
+                <div className="text-[10px] font-black text-slate-900 uppercase tracking-wider">Students</div>
               </div>
               <div>
                 <div className="text-2xl font-black text-emerald-600">98%</div>
-                <div className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Success Rate</div>
+                <div className="text-[10px] font-black text-slate-900 uppercase tracking-wider">Success Rate</div>
               </div>
             </div>
           </div>
@@ -1437,7 +1437,7 @@ const VisionMissionSection = ({ vision, mission, motto, videoTour, videoType, vi
             </div>
             
             <div>
-              <span className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] block mb-1">
+              <span className="text-[8px] md:text-[9px] font-black text-slate-900 uppercase tracking-[0.2em] block mb-1">
                 The Spirit of Kinyui
               </span>
               <h3 className="text-lg md:text-xl font-black text-slate-900 tracking-tight">
@@ -1452,7 +1452,7 @@ const VisionMissionSection = ({ vision, mission, motto, videoTour, videoType, vi
             </p>
             <div className="flex items-center justify-end gap-2 mt-2">
               <div className="w-2 h-2 rounded-full bg-emerald-600" />
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider">
+              <span className="text-[9px] font-black text-slate-900 uppercase tracking-wider">
                 Kinyui Boys Senior School
               </span>
             </div>
@@ -1527,7 +1527,7 @@ const AcademicResultsSection = ({ documentData }) => {
                 </div>
                 <div className="text-right">
                   <span className="block text-xl font-black text-slate-900 leading-none">{result.year}</span>
-                  <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{result.term || 'Annual'}</span>
+                  <span className="text-[9px] font-black text-slate-900 uppercase tracking-widest">{result.term || 'Annual'}</span>
                 </div>
               </div>
               
@@ -1536,7 +1536,7 @@ const AcademicResultsSection = ({ documentData }) => {
               </h4>
               
               {result.description && (
-                <p className="text-slate-400 text-[10px] font-bold leading-relaxed mb-6 line-clamp-2 min-h-[30px]">
+                <p className="text-slate-900 text-[10px] font-bold leading-relaxed mb-6 line-clamp-2 min-h-[30px]">
                   {result.description}
                 </p>
               )}
@@ -1558,7 +1558,7 @@ const AcademicResultsSection = ({ documentData }) => {
         {/* Additional Documents - Horizontal Bento */}
         {documentData?.additionalDocuments && documentData.additionalDocuments.length > 0 && (
           <div className="mt-10 md:mt-16 pt-10 border-t border-slate-200">
-            <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6 px-1">
+            <h4 className="text-[10px] font-black text-slate-900 uppercase tracking-[0.3em] mb-6 px-1">
               Resources & Support Docs
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -1572,7 +1572,7 @@ const AcademicResultsSection = ({ documentData }) => {
                       <h5 className="font-black text-slate-900 text-[11px] uppercase tracking-wide truncate">
                         {doc.description || doc.filename}
                       </h5>
-                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">
+                      <p className="text-[9px] font-black text-slate-900 uppercase tracking-widest mt-1">
                         {doc.year} • {doc.term || 'General'}
                       </p>
                     </div>
@@ -1621,7 +1621,7 @@ const ModernUniformRequirementsSection = ({
               <h3 className="text-xl md:text-2xl font-bold tracking-tight">
                 Admission <span className="text-emerald-400">Breakdown</span>
               </h3>
-              <div className="flex items-center gap-2 mt-1 text-sm text-slate-400">
+              <div className="flex items-center gap-2 mt-1 text-sm text-slate-900">
                 <span>{admissionFeeYear || '2026'} • {admissionFeeTerm || 'Full Session'}</span>
                 {admissionFeeDescription && (
                   <>
@@ -1770,7 +1770,7 @@ const ModernFAQItem = ({ faq, index, openFaq, setOpenFaq }) => {
             >
               <FiChevronDown
                 className={`text-sm md:text-base ${
-                  isOpen ? 'text-emerald-600 rotate-180' : 'text-slate-400'
+                  isOpen ? 'text-emerald-600 rotate-180' : 'text-slate-900'
                 }`}
               />
             </div>
@@ -1796,7 +1796,7 @@ const ModernFAQItem = ({ faq, index, openFaq, setOpenFaq }) => {
                       </span>
                     </div>
                     <div className="w-px h-3 bg-slate-200" />
-                    <span className="text-[8px] font-black text-slate-400 uppercase tracking-wider">
+                    <span className="text-[8px] font-black text-slate-900 uppercase tracking-wider">
                       Updated {new Date().getFullYear()}
                     </span>
                   </div>
@@ -2178,7 +2178,7 @@ export default function ComprehensiveAdmissions() {
             <h2 className="text-sm md:text-base font-bold text-white leading-tight truncate">
               {schoolData?.name || 'Kinyui Boys Senior School'}
             </h2>
-            <p className="text-[10px] md:text-xs text-slate-400 font-medium mt-0.5">
+            <p className="text-[10px] md:text-xs text-slate-900 font-medium mt-0.5">
               Soaring to Greater Heights
             </p>
           </div>
@@ -2188,7 +2188,7 @@ export default function ComprehensiveAdmissions() {
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white leading-none mb-3">
           Admissions <span className="text-teal-400">Portal</span>
         </h1>
-        <p className="text-slate-400 text-xs md:text-sm leading-relaxed max-w-md mb-5">
+        <p className="text-slate-900 text-xs md:text-sm leading-relaxed max-w-md mb-5">
           Begin your academic journey. Explore programs, check requirements, and apply online.
         </p>
 
@@ -2227,39 +2227,54 @@ export default function ComprehensiveAdmissions() {
       <img src="/kinyui.png" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 md:w-44 opacity-[0.03] pointer-events-none select-none" />
       
       <div className="relative z-10 space-y-4">
-        <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Why Apply Here</p>
+        <p className="text-[10px] font-bold uppercase tracking-wider text-slate-900 mb-1">Why Apply Here</p>
         
-        <div className="space-y-3">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-lg bg-teal-50 border border-teal-100 flex items-center justify-center shrink-0 mt-0.5">
-              <FiAward className="text-teal-600 text-sm" />
-            </div>
-            <div className="min-w-0">
-              <h4 className="text-xs font-bold text-slate-900 leading-tight">Nationally Ranked Results</h4>
-              <p className="text-[10px] text-slate-500 leading-snug mt-0.5">Consistent top marks across KCSE national examinations year after year.</p>
-            </div>
-          </div>
-          
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-lg bg-cyan-50 border border-cyan-100 flex items-center justify-center shrink-0 mt-0.5">
-              <FiUsers className="text-cyan-600 text-sm" />
-            </div>
-            <div className="min-w-0">
-              <h4 className="text-xs font-bold text-slate-900 leading-tight">Personalized Mentoring</h4>
-              <p className="text-[10px] text-slate-500 leading-snug mt-0.5">Small class sizes ensure every student gets tailored academic guidance.</p>
-            </div>
-          </div>
-          
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center shrink-0 mt-0.5">
-              <FiBookOpen className="text-indigo-600 text-sm" />
-            </div>
-            <div className="min-w-0">
-              <h4 className="text-xs font-bold text-slate-900 leading-tight">Dual Curriculum Tracks</h4>
-              <p className="text-[10px] text-slate-500 leading-snug mt-0.5">Both 8-4-4 and CBC pathways to match each learner's strengths.</p>
-            </div>
-          </div>
-        </div>
+<div className="space-y-4 md:space-y-5">
+  {/* Holistic Curriculum - Replaced Nationally Ranked */}
+  <div className="flex items-start gap-4 p-1">
+    <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center shrink-0 mt-0.5">
+      <FiAward className="text-teal-600 text-base" />
+    </div>
+    <div className="min-w-0">
+      <h4 className="text-sm md:text-base font-bold text-slate-900 leading-tight">
+        Holistic Learning Approach
+      </h4>
+      <p className="text-xs md:text-sm text-slate-500 leading-relaxed mt-1">
+        A well-rounded CBC-aligned curriculum that balances core academics with creative and critical thinking.
+      </p>
+    </div>
+  </div>
+
+  {/* Personalized Mentoring */}
+  <div className="flex items-start gap-4 p-1">
+    <div className="w-10 h-10 rounded-xl bg-cyan-50 border border-cyan-100 flex items-center justify-center shrink-0 mt-0.5">
+      <FiUsers className="text-cyan-600 text-base" />
+    </div>
+    <div className="min-w-0">
+      <h4 className="text-sm md:text-base font-bold text-slate-900 leading-tight">
+        Personalized Mentoring
+      </h4>
+      <p className="text-xs md:text-sm text-slate-500 leading-relaxed mt-1">
+        Dedicated teachers and small class sizes ensure every student receives the individual attention they deserve.
+      </p>
+    </div>
+  </div>
+
+  {/* Dual Curriculum Tracks */}
+  <div className="flex items-start gap-4 p-1">
+    <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center shrink-0 mt-0.5">
+      <FiBookOpen className="text-indigo-600 text-base" />
+    </div>
+    <div className="min-w-0">
+      <h4 className="text-sm md:text-base font-bold text-slate-900 leading-tight">
+        Diverse Academic Tracks
+      </h4>
+      <p className="text-xs md:text-sm text-slate-500 leading-relaxed mt-1">
+        Expertly managed pathways for both 8-4-4 and CBC, tailored to the unique strengths of every learner.
+      </p>
+    </div>
+  </div>
+</div>
       </div>
     </div>
   </div>
@@ -2277,7 +2292,7 @@ export default function ComprehensiveAdmissions() {
               </div>
               <span className="text-xs font-bold text-slate-900 uppercase tracking-wide">About Admissions</span>
             </div>
-            <p className="text-slate-500 text-xs md:text-sm leading-relaxed">
+            <p className="text-slate-900 text-xs md:text-sm leading-relaxed">
               Explore our academic programs, review entry requirements, download fee structures, and track your application — all from one place. Use the tabs below to navigate each section.
             </p>
           </div>
@@ -2315,7 +2330,7 @@ return (
           <h3 className="font-bold text-base md:text-lg text-stone-900 leading-tight">
             {isOpen ? 'Admissions Now Open' : 'Admissions Closed'}
           </h3>
-          <p className="text-xs text-stone-500 mt-0.5">
+          <p className="text-xs text-stone-900 mt-0.5">
             {isOpen 
               ? 'Applications are being accepted for the upcoming academic year.' 
               : 'The application window has ended for this period.'}
@@ -2459,7 +2474,7 @@ return (
       <h2 className="text-xl md:text-2xl font-extrabold text-stone-900 tracking-tight leading-tight">
         The Kinyui Advantage
       </h2>
-      <p className="text-stone-500 text-xs md:text-sm mt-1 max-w-md">
+      <p className="text-stone-700 text-xs md:text-sm mt-1 max-w-md">
         Three pillars that define the student experience at our institution.
       </p>
     </div>
@@ -2477,7 +2492,7 @@ return (
           <IoBulbOutline className="text-teal-300 text-lg" />
         </div>
         <h4 className="text-base md:text-lg font-bold text-white mb-2">Proven Academic Track Record</h4>
-        <p className="text-slate-400 text-xs md:text-sm leading-relaxed max-w-md">
+        <p className="text-slate-900 text-xs md:text-sm leading-relaxed max-w-md">
           Consistently ranked among top-performing schools in Machakos County. Our KCSE results reflect a culture of disciplined study, expert instruction, and individualized support that turns potential into achievement.
         </p>
         <div className="flex items-center gap-3 mt-4">
@@ -2538,7 +2553,7 @@ return (
           <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tighter leading-[1.1] mb-4">
             Academic <span className="text-indigo-600">Programs</span>
           </h2>
-       <p className="text-slate-600 text-md md:text-lg font-medium leading-relaxed ">
+       <p className="text-slate-900 text-md md:text-md font-medium ">
   Kinyui Boys Senior School offers a future-ready, holistic curriculum 
   specifically designed to cultivate critical thinking, academic excellence, 
   and global leadership. We empower our students to navigate the complexities 
@@ -2626,7 +2641,7 @@ return (
         <h3 className="text-white text-lg md:text-xl font-black tracking-tight mb-3 uppercase">
           Academic <span className="text-emerald-500">Calendar</span>
         </h3>
-        <p className="text-slate-400 text-xs md:text-md font-medium leading-relaxed">
+        <p className="text-slate-900 text-xs md:text-md font-medium leading-relaxed">
           Mark your journey. Stay ahead of the curve with our key enrollment dates.
         </p>
       </div>
@@ -2770,7 +2785,7 @@ return (
                     <PathIcon className={`text-lg ${isDark ? 'text-white' : 'text-slate-700'}`} />
                     <div>
                       <h4 className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{path.pathway}</h4>
-                      <p className={`text-[10px] font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{path.description}</p>
+                      <p className={`text-[10px] font-medium ${isDark ? 'text-slate-900' : 'text-slate-500'}`}>{path.description}</p>
                     </div>
                   </div>
                   
@@ -2785,7 +2800,7 @@ return (
                   </div>
                   
                   <div className={`pt-3 border-t ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
-                    <p className={`text-[9px] font-bold uppercase tracking-wider mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Career Outcomes</p>
+                    <p className={`text-[9px] font-bold uppercase tracking-wider mb-1 ${isDark ? 'text-slate-500' : 'text-slate-900'}`}>Career Outcomes</p>
                     <p className={`text-xs font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{path.careers}</p>
                   </div>
                 </div>
@@ -2802,7 +2817,7 @@ return (
             </div>
             <div>
               <h4 className="font-bold text-slate-900 text-sm">CBC Core Subjects (Mandatory for All Pathways)</h4>
-              <p className="text-[10px] text-slate-400">Every student takes these foundational subjects</p>
+              <p className="text-[10px] text-slate-900">Every student takes these foundational subjects</p>
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
@@ -2906,7 +2921,7 @@ return (
               Required Documents
             </h3>
           </div>
-          <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">
+          <p className="text-[11px] font-black text-slate-900 uppercase tracking-[0.2em] ml-1">
             Essential paperwork for admission processing
           </p>
         </div>
@@ -2990,7 +3005,7 @@ return (
                   <div className="absolute inset-0 w-2 h-2 rounded-full bg-amber-500 animate-ping opacity-20" />
                 </div>
                 
-                <p className="text-[12px] md:text-[13px] font-bold text-slate-400 leading-relaxed transition-colors group-hover:text-white">
+                <p className="text-[12px] md:text-[13px] font-bold text-slate-900 leading-relaxed transition-colors group-hover:text-white">
                   {note}
                 </p>
               </div>
@@ -3016,7 +3031,7 @@ return (
             Transfer <span className="text-blue-400">Process</span>
           </h3>
         </div>
-        <p className="text-slate-400 text-sm md:text-base font-medium">Seamless transition with 4-step verification</p>
+        <p className="text-slate-900 text-sm md:text-base font-medium">Seamless transition with 4-step verification</p>
       </div>
       
       {/* Time Badge - Styled for mobile */}
@@ -3051,7 +3066,7 @@ return (
               </div>
             </div>
             
-            <p className="text-slate-400 text-xs md:text-sm font-bold leading-relaxed">
+            <p className="text-slate-900 text-xs md:text-sm font-bold leading-relaxed">
               {step.description}
             </p>
             
@@ -3086,7 +3101,7 @@ return (
           </div>
           <div>
             <h4 className="text-xl font-black text-white">Ready to Join Us?</h4>
-            <p className="text-slate-400 text-sm font-medium">Complete all steps for official admission approval</p>
+            <p className="text-slate-900 text-sm font-medium">Complete all steps for official admission approval</p>
           </div>
         </div>
       </div>
@@ -3200,7 +3215,7 @@ return (
               Start Your <span className="text-teal-400">Journey With Us</span>
             </h2>
             
-            <p className="text-slate-400 mb-6 md:mb-8 text-sm md:text-base leading-relaxed max-w-lg mx-auto text-balance">
+            <p className="text-slate-900 mb-6 md:mb-8 text-sm md:text-base leading-relaxed max-w-lg mx-auto text-balance">
               Have questions about enrollment, fees, or student life? Our admissions team is ready to guide you through every step.
             </p>
 
