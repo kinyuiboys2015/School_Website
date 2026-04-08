@@ -308,17 +308,27 @@ function getModernEmailTemplate({
   
   // Generate attachments HTML if there are attachments
   const attachmentsHTML = attachments && attachments.length > 0 ? `
-    <div>
-      <div>📎 Attachments:</div>
-      <ul>
-        ${attachments.map(attachment => `
-          <li>
-            <a href="${attachment.url}" target="_blank">${attachment.originalName || attachment.filename}</a>
-            (${formatFileSize(attachment.fileSize)})
-          </li>
-        `).join('')}
-      </ul>
-    </div>
+    <tr>
+      <td style="padding: 0 6% 6%;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #64748b;">
+          <tr>
+            <td style="padding: 5%;">
+              <p style="color: #0f172a; font-size: clamp(14px, 3.5vw, 15px); font-weight: 700; margin: 0 0 12px;">📎 Attachments</p>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                ${attachments.map(attachment => `
+                  <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                      <a href="${attachment.url}" target="_blank" style="color: #334155; font-size: clamp(13px, 3.2vw, 14px); font-weight: 600; text-decoration: none;">${attachment.originalName || attachment.filename}</a>
+                      <span style="color: #94a3b8; font-size: clamp(11px, 2.8vw, 12px); margin-left: 6px;">(${formatFileSize(attachment.fileSize)})</span>
+                    </td>
+                  </tr>
+                `).join('')}
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
   ` : '';
   
   return `
@@ -326,72 +336,143 @@ function getModernEmailTemplate({
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="x-apple-disable-message-reformatting">
     <title>${subject}</title>
 </head>
-<body>
-    <div>
-        <!-- Header -->
-        <div>
-            <h1 style="font-size: 24px; margin-bottom: 10px;">${SCHOOL_NAME}</h1>
-            <div>${recipientTypeLabel}</div>
-        </div>
-        
-        <!-- Subject -->
-        <h2 style="font-size: 18px; margin-bottom: 10px;">${subject}</h2>
-        
-        <!-- Date -->
-        <div style="font-size: 12px; color: #666; margin-bottom: 20px;">
-            Date: ${new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-            })}
-        </div>
-        
-        <!-- Message Content -->
-        <div>
-            ${sanitizedContent}
-        </div>
-        
-        <!-- Attachments -->
-        ${attachmentsHTML}
-        
-        <!-- Notice -->
-        <div style="margin-top: 30px; color: #666;">
-            Official communication from ${SCHOOL_NAME}. Do not reply to this email.
-        </div>
-    </div>
+<body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f1f5f9; line-height: 1.6; color: #1e293b; -webkit-text-size-adjust: 100%;">
     
-    <!-- Footer with Social Media -->
-    <div style="background: #f8f9fa; padding: 20px; border-top: 1px solid #dee2e6; text-align: center;">
-        <div style="margin-bottom: 15px;">
-            <strong>${SCHOOL_NAME}</strong><br>
-            ${SCHOOL_LOCATION}
-        </div>
-        
-        <div style="margin-bottom: 15px;">
-            Email: <a href="mailto:${CONTACT_EMAIL}" style="color: #0066cc;">${CONTACT_EMAIL}</a><br>
-            Phone: <a href="tel:${CONTACT_PHONE}" style="color: #0066cc;">${CONTACT_PHONE}</a><br>
-            Website: <a href="${SCHOOL_WEBSITE}" target="_blank" style="color: #0066cc;">${SCHOOL_WEBSITE}</a>
-        </div>
-        
-        <!-- Social Media Section -->
-        <div style="margin-bottom: 15px;">
-            <div style="font-weight: bold; margin-bottom: 10px;">Follow Us</div>
-            <div style="display: flex; justify-content: center; gap: 10px;">
-                <a href="${SOCIAL_MEDIA.facebook.url}" target="_blank" style="color: #1877F2; text-decoration: none;">Facebook</a> |
-                <a href="${SOCIAL_MEDIA.youtube.url}" target="_blank" style="color: #FF0000; text-decoration: none;">YouTube</a> |
-                <a href="${SOCIAL_MEDIA.linkedin.url}" target="_blank" style="color: #0A66C2; text-decoration: none;">LinkedIn</a> |
-                <a href="${SOCIAL_MEDIA.twitter.url}" target="_blank" style="color: #000000; text-decoration: none;">Twitter</a>
-            </div>
-        </div>
-        
-        <div style="font-size: 12px; color: #666;">
-            Sent by: ${senderName}<br>
-            Confidential communication for authorized recipients only.
-        </div>
-    </div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f1f5f9;">
+      <tr>
+        <td align="center" style="padding: 4% 3%;">
+          
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 640px; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(15,23,42,0.08);">
+            
+            <!-- HEADER -->
+            <tr>
+              <td style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%); padding: 10% 6% 8%; text-align: center;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td align="center" style="padding-bottom: 10px;">
+                      <div style="display: inline-block; background: rgba(255,255,255,0.1); border-radius: 50%; width: 52px; height: 52px; line-height: 52px; text-align: center;">
+                        <span style="font-size: 26px;">📨</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <h1 style="color: white; font-size: clamp(20px, 5.5vw, 26px); font-weight: 800; margin: 0 0 6px; line-height: 1.2; letter-spacing: -0.02em;">${SCHOOL_NAME}</h1>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" style="padding-top: 8px;">
+                      <span style="display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15); padding: 5px 16px; border-radius: 24px; font-size: clamp(10px, 2.5vw, 11px); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.9);">${recipientTypeLabel}</span>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            
+            <!-- SUBJECT & DATE -->
+            <tr>
+              <td style="padding: 8% 6% 2%;">
+                <h2 style="color: #0f172a; font-size: clamp(18px, 4.8vw, 24px); font-weight: 700; margin: 0 0 8px; line-height: 1.3; letter-spacing: -0.01em;">${subject}</h2>
+                <p style="color: #94a3b8; font-size: clamp(11px, 2.8vw, 12px); margin: 0; letter-spacing: 0.03em;">
+                  ${new Date().toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'short', 
+                      day: 'numeric' 
+                  })}
+                </p>
+              </td>
+            </tr>
+            
+            <!-- DIVIDER -->
+            <tr>
+              <td style="padding: 4% 6%;">
+                <div style="height: 1px; background: #e2e8f0;"></div>
+              </td>
+            </tr>
+            
+            <!-- MESSAGE CONTENT -->
+            <tr>
+              <td style="padding: 0 6% 6%;">
+                <div style="color: #334155; font-size: clamp(14px, 3.5vw, 15px); line-height: 1.7;">
+                  ${sanitizedContent}
+                </div>
+              </td>
+            </tr>
+            
+            <!-- ATTACHMENTS -->
+            ${attachmentsHTML}
+            
+            <!-- NOTICE -->
+            <tr>
+              <td style="padding: 0 6% 6%;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                  <tr>
+                    <td style="padding: 4%; text-align: center;">
+                      <p style="color: #94a3b8; font-size: clamp(11px, 2.8vw, 12px); margin: 0; font-style: italic;">
+                        Official communication from ${SCHOOL_NAME}. Do not reply to this email.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            
+            <!-- FOOTER -->
+            <tr>
+              <td style="background: #0f172a; padding: 8% 6%; text-align: center;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td align="center">
+                      <p style="color: #ffffff; font-size: clamp(15px, 4vw, 17px); font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em;">${SCHOOL_NAME}</p>
+                      <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 14px;">${SCHOOL_LOCATION}</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" style="padding-bottom: 14px;">
+                      <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 4px;">
+                        <a href="mailto:${CONTACT_EMAIL}" style="color: #94a3b8; text-decoration: none;">${CONTACT_EMAIL}</a>
+                      </p>
+                      <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 4px;">
+                        <a href="tel:${CONTACT_PHONE}" style="color: #94a3b8; text-decoration: none;">${CONTACT_PHONE}</a>
+                      </p>
+                      <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0;">
+                        <a href="${SCHOOL_WEBSITE}" target="_blank" style="color: #94a3b8; text-decoration: none;">${SCHOOL_WEBSITE}</a>
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" style="padding-bottom: 14px;">
+                      <p style="color: #64748b; font-size: clamp(11px, 2.8vw, 12px); font-weight: 600; margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.06em;">Follow Us</p>
+                      <p style="margin: 0; font-size: clamp(12px, 3vw, 13px);">
+                        <a href="${SOCIAL_MEDIA.facebook.url}" target="_blank" style="color: #94a3b8; text-decoration: none; margin: 0 4px;">Facebook</a>
+                        <span style="color: #475569;">·</span>
+                        <a href="${SOCIAL_MEDIA.youtube.url}" target="_blank" style="color: #94a3b8; text-decoration: none; margin: 0 4px;">YouTube</a>
+                        <span style="color: #475569;">·</span>
+                        <a href="${SOCIAL_MEDIA.linkedin.url}" target="_blank" style="color: #94a3b8; text-decoration: none; margin: 0 4px;">LinkedIn</a>
+                        <span style="color: #475569;">·</span>
+                        <a href="${SOCIAL_MEDIA.twitter.url}" target="_blank" style="color: #94a3b8; text-decoration: none; margin: 0 4px;">Twitter</a>
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <div style="width: 40px; height: 2px; background: #475569; margin: 0 auto 12px;"></div>
+                      <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0 0 4px;">Sent by: ${senderName}</p>
+                      <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0;">Confidential communication for authorized recipients only.</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            
+          </table>
+        </td>
+      </tr>
+    </table>
 </body>
 </html>`;
 }

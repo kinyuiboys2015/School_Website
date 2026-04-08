@@ -75,77 +75,208 @@ async function sendParentConfirmation(parentEmail, parentName, teacherName, refe
       <html lang="en">
       <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="x-apple-disable-message-reformatting">
         <title>Consultation Confirmation - ${SCHOOL_NAME}</title>
       </head>
-      <body style="margin:0; padding:16px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height:1.6; color:#333; background-color:#f8fafc;">
-        <div style="max-width:600px; margin:0 auto; background:white; border-radius:24px; overflow:hidden; box-shadow:0 20px 35px rgba(0,0,0,0.1);">
-          
-          <!-- Header -->
-          <div style="background:linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color:white; padding:40px 24px; text-align:center;">
-            <div style="font-size:48px; margin-bottom:16px;">📧</div>
-            <h1 style="font-size:28px; font-weight:800; margin:0 0 8px 0;">Consultation Request</h1>
-            <p style="font-size:14px; opacity:0.9; margin:0;">Teacher-Parent Communication</p>
-          </div>
-          
-          <!-- Content -->
-          <div style="padding:32px 28px;">
-            
-            <div style="background:#e8f5e9; padding:20px; border-radius:16px; text-align:center; margin-bottom:24px;">
-              <span style="font-size:40px;">✅</span>
-              <p style="color:#2e7d32; font-weight:700; margin:8px 0 0 0;">Your consultation request has been received!</p>
-            </div>
-            
-            <p style="font-size:16px; margin-bottom:16px;">
-              Dear <strong style="color:#1e3c72;">${parentName}</strong>,
-            </p>
-            
-            <p style="font-size:15px; color:#4b5563; margin-bottom:24px;">
-              Thank you for reaching out to <strong>${teacherName}</strong>. Your consultation request has been successfully submitted and will be reviewed shortly.
-            </p>
-            
-            <!-- Reference Card -->
-            <div style="background:#f3f4f6; border-radius:12px; padding:16px; margin-bottom:24px; border-left:4px solid #2a5298;">
-              <p style="font-size:12px; font-weight:700; color:#6b7280; margin-bottom:4px;">REFERENCE NUMBER</p>
-              <p style="font-size:20px; font-weight:800; color:#1e3c72; margin:0;">${referenceNumber}</p>
-              <p style="font-size:11px; color:#9ca3af; margin-top:8px;">Please keep this for your records</p>
-            </div>
-            
-            <!-- What Happens Next -->
-            <h3 style="font-size:18px; font-weight:700; color:#1e3c72; margin:24px 0 16px 0;">📋 What Happens Next?</h3>
-            
-            <div style="background:#f9fafb; border-radius:12px; padding:20px; margin-bottom:24px;">
-              <div style="display:flex; gap:12px; margin-bottom:16px;">
-                <span style="background:#2a5298; color:white; width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:700;">1</span>
-                <p style="margin:0; font-size:14px;"><strong>Teacher Review:</strong> ${teacherName} will review your consultation request</p>
-              </div>
-              <div style="display:flex; gap:12px; margin-bottom:16px;">
-                <span style="background:#2a5298; color:white; width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:700;">2</span>
-                <p style="margin:0; font-size:14px;"><strong>Response Time:</strong> You'll receive a response within 24-48 hours</p>
-              </div>
-              <div style="display:flex; gap:12px;">
-                <span style="background:#2a5298; color:white; width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:700;">3</span>
-                <p style="margin:0; font-size:14px;"><strong>Follow-up:</strong> The teacher will contact you via your preferred method</p>
-              </div>
-            </div>
-            
-            <!-- Contact Options -->
-            <div style="background:linear-gradient(135deg, #fef3c7, #fde68a); border-radius:12px; padding:20px; text-align:center; margin-bottom:24px;">
-              <h4 style="margin:0 0 12px 0; color:#92400e;">📞 Need Immediate Assistance?</h4>
-              <div style="display:flex; gap:12px; justify-content:center;">
-                <a href="tel:${CONTACT_PHONE}" style="background:#2563eb; color:white; padding:10px 20px; border-radius:12px; text-decoration:none; font-size:14px; font-weight:600;">Call School</a>
-                <a href="mailto:${CONTACT_EMAIL}" style="background:#6b7280; color:white; padding:10px 20px; border-radius:12px; text-decoration:none; font-size:14px; font-weight:600;">Email Office</a>
-              </div>
-            </div>
-            
-            <hr style="border:none; border-top:1px solid #e5e7eb; margin:24px 0;">
-            
-            <p style="font-size:13px; color:#6b7280; text-align:center;">
-              This is an automated confirmation. Please do not reply to this email.<br>
-              © ${new Date().getFullYear()} ${SCHOOL_NAME} | ${SCHOOL_MOTTO}
-            </p>
-          </div>
-        </div>
+      <body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f1f5f9; line-height: 1.6; color: #1e293b; -webkit-text-size-adjust: 100%;">
+        
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f1f5f9;">
+          <tr>
+            <td align="center" style="padding: 4% 3%;">
+              
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 640px; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(15,23,42,0.08);">
+                
+                <!-- HEADER -->
+                <tr>
+                  <td style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%); padding: 10% 6% 8%; text-align: center;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td align="center" style="padding-bottom: 10px;">
+                          <div style="display: inline-block; background: rgba(255,255,255,0.1); border-radius: 50%; width: 56px; height: 56px; line-height: 56px; text-align: center;">
+                            <span style="font-size: 28px;">📧</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                          <h1 style="color: white; font-size: clamp(20px, 5.5vw, 26px); font-weight: 800; margin: 0 0 4px; line-height: 1.2; letter-spacing: -0.02em;">Consultation Request</h1>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                          <p style="color: rgba(255,255,255,0.85); font-size: clamp(12px, 3vw, 14px); margin: 4px 0 0; font-weight: 500;">${SCHOOL_NAME}</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="padding-top: 10px;">
+                          <span style="display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15); padding: 5px 18px; border-radius: 24px; font-size: clamp(10px, 2.5vw, 11px); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.9);">Teacher-Parent Communication</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- SUCCESS BANNER -->
+                <tr>
+                  <td style="padding: 6% 6% 0;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-radius: 12px; border: 1px solid #a7f3d0;">
+                      <tr>
+                        <td style="padding: 5%; text-align: center;">
+                          <span style="font-size: 36px;">✅</span>
+                          <p style="color: #065f46; font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; margin: 8px 0 0 0;">Your consultation request has been received!</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- GREETING & MESSAGE -->
+                <tr>
+                  <td style="padding: 6% 6% 2%;">
+                    <p style="color: #334155; font-size: clamp(14px, 3.5vw, 16px); margin: 0 0 12px;">
+                      Dear <strong style="color: #0f172a;">${parentName}</strong>,
+                    </p>
+                    <p style="color: #475569; font-size: clamp(13px, 3.2vw, 15px); margin: 0; line-height: 1.7;">
+                      Thank you for reaching out to <strong style="color: #0f172a;">${teacherName}</strong>. Your consultation request has been successfully submitted and will be reviewed shortly.
+                    </p>
+                  </td>
+                </tr>
+                
+                <!-- DIVIDER -->
+                <tr>
+                  <td style="padding: 4% 6%;">
+                    <div style="height: 1px; background: #e2e8f0;"></div>
+                  </td>
+                </tr>
+                
+                <!-- REFERENCE CARD -->
+                <tr>
+                  <td style="padding: 0 6% 5%;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7;">
+                      <tr>
+                        <td style="padding: 5%;">
+                          <p style="font-size: clamp(10px, 2.5vw, 11px); font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 6px;">Reference Number</p>
+                          <p style="font-size: clamp(18px, 4.8vw, 22px); font-weight: 800; color: #0c4a6e; margin: 0;">${referenceNumber}</p>
+                          <p style="font-size: clamp(10px, 2.5vw, 11px); color: #94a3b8; margin: 8px 0 0; font-style: italic;">Please keep this for your records</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- WHAT HAPPENS NEXT -->
+                <tr>
+                  <td style="padding: 0 6% 5%;">
+                    <p style="color: #0f172a; font-size: clamp(15px, 4vw, 18px); font-weight: 700; margin: 0 0 14px;">📋 What Happens Next?</p>
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                      <tr>
+                        <td style="padding: 5%;">
+                          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                              <td style="padding: 8px 0; vertical-align: top; width: 32px;">
+                                <div style="background: #0f172a; color: white; width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; font-size: 12px; font-weight: 700;">1</div>
+                              </td>
+                              <td style="padding: 8px 0 8px 12px; color: #334155; font-size: clamp(13px, 3.2vw, 14px); line-height: 1.5;">
+                                <strong>Teacher Review:</strong> ${teacherName} will review your consultation request
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 8px 0; vertical-align: top; width: 32px;">
+                                <div style="background: #0f172a; color: white; width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; font-size: 12px; font-weight: 700;">2</div>
+                              </td>
+                              <td style="padding: 8px 0 8px 12px; color: #334155; font-size: clamp(13px, 3.2vw, 14px); line-height: 1.5;">
+                                <strong>Response Time:</strong> You'll receive a response within 24-48 hours
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 8px 0; vertical-align: top; width: 32px;">
+                                <div style="background: #0f172a; color: white; width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; font-size: 12px; font-weight: 700;">3</div>
+                              </td>
+                              <td style="padding: 8px 0 8px 12px; color: #334155; font-size: clamp(13px, 3.2vw, 14px); line-height: 1.5;">
+                                <strong>Follow-up:</strong> The teacher will contact you via your preferred method
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- CONTACT OPTIONS -->
+                <tr>
+                  <td style="padding: 0 6% 5%;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-radius: 12px; border: 1px solid #fde68a;">
+                      <tr>
+                        <td style="padding: 5%; text-align: center;">
+                          <p style="color: #92400e; font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; margin: 0 0 14px;">📞 Need Immediate Assistance?</p>
+                          <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+                            <tr>
+                              <td style="padding: 0 6px;">
+                                <a href="tel:${CONTACT_PHONE}" style="display: inline-block; background: #0f172a; color: white; padding: 10px 22px; border-radius: 10px; text-decoration: none; font-size: clamp(12px, 3vw, 14px); font-weight: 600;">Call School</a>
+                              </td>
+                              <td style="padding: 0 6px;">
+                                <a href="mailto:${CONTACT_EMAIL}" style="display: inline-block; background: #475569; color: white; padding: 10px 22px; border-radius: 10px; text-decoration: none; font-size: clamp(12px, 3vw, 14px); font-weight: 600;">Email Office</a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- NOTICE -->
+                <tr>
+                  <td style="padding: 0 6% 6%;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                      <tr>
+                        <td style="padding: 4%; text-align: center;">
+                          <p style="color: #94a3b8; font-size: clamp(11px, 2.8vw, 12px); margin: 0; font-style: italic;">
+                            This is an automated confirmation. Please do not reply to this email.
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- FOOTER -->
+                <tr>
+                  <td style="background: #0f172a; padding: 8% 6%; text-align: center;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td align="center">
+                          <p style="color: #ffffff; font-size: clamp(15px, 4vw, 17px); font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em;">${SCHOOL_NAME}</p>
+                          <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 4px;">${SCHOOL_MOTTO}</p>
+                          <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 14px;">${SCHOOL_LOCATION}</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="padding-bottom: 14px;">
+                          <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 4px;">
+                            <a href="mailto:${CONTACT_EMAIL}" style="color: #94a3b8; text-decoration: none;">${CONTACT_EMAIL}</a>
+                          </p>
+                          <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0;">
+                            <a href="tel:${CONTACT_PHONE}" style="color: #94a3b8; text-decoration: none;">${CONTACT_PHONE}</a>
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                          <div style="width: 40px; height: 2px; background: #475569; margin: 0 auto 12px;"></div>
+                          <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0;">&copy; ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+              </table>
+            </td>
+          </tr>
+        </table>
       </body>
       </html>
     `
@@ -173,104 +304,275 @@ async function sendTeacherNotification(teacherEmail, teacherName, parentData, re
       <html lang="en">
       <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="x-apple-disable-message-reformatting">
         <title>New Consultation Request - ${SCHOOL_NAME}</title>
       </head>
-      <body style="margin:0; padding:16px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height:1.6; color:#333; background-color:#f8fafc;">
-        <div style="max-width:600px; margin:0 auto; background:white; border-radius:24px; overflow:hidden; box-shadow:0 20px 35px rgba(0,0,0,0.1);">
-          
-          <!-- Header -->
-          <div style="background:linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color:white; padding:32px 24px; text-align:center;">
-            <div style="font-size:48px; margin-bottom:16px;">📩</div>
-            <h1 style="font-size:26px; font-weight:800; margin:0 0 8px 0;">NEW CONSULTATION REQUEST</h1>
-            <p style="font-size:13px; opacity:0.9; margin:0;">Action Required - Parent Communication</p>
-          </div>
-          
-          <!-- Content -->
-          <div style="padding:32px 28px;">
-            
-            <div style="background:#fee2e2; padding:16px; border-radius:16px; text-align:center; margin-bottom:24px;">
-              <span style="font-size:32px;">👋</span>
-              <p style="color:#991b1b; font-weight:700; margin:8px 0 0 0;">You have a new consultation request from a parent!</p>
-            </div>
-            
-            <p style="font-size:16px; margin-bottom:16px;">
-              Hello <strong style="color:#dc2626;">${teacherName}</strong>,
-            </p>
-            
-            <p style="font-size:15px; color:#4b5563; margin-bottom:24px;">
-              A parent has requested a consultation with you. Please review the details below and respond within 24-48 hours.
-            </p>
-            
-            <!-- Reference Card -->
-            <div style="background:#f3f4f6; border-radius:12px; padding:16px; margin-bottom:24px; border-left:4px solid #dc2626;">
-              <p style="font-size:12px; font-weight:700; color:#6b7280; margin-bottom:4px;">REFERENCE NUMBER</p>
-              <p style="font-size:20px; font-weight:800; color:#991b1b; margin:0;">${referenceNumber}</p>
-            </div>
-            
-            <!-- Parent Details -->
-            <h3 style="font-size:18px; font-weight:700; color:#1e3c72; margin:24px 0 16px 0;">👨‍👩‍👧 Parent Information</h3>
-            
-            <div style="background:#f9fafb; border-radius:12px; padding:20px; margin-bottom:24px;">
-              <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e5e7eb;">
-                <span style="font-weight:700; color:#4b5563;">Name:</span>
-                <span style="color:#111827;">${parentData.name}</span>
-              </div>
-              <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e5e7eb;">
-                <span style="font-weight:700; color:#4b5563;">Email:</span>
-                <span style="color:#111827;">${parentData.email}</span>
-              </div>
-              <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e5e7eb;">
-                <span style="font-weight:700; color:#4b5563;">Phone:</span>
-                <span style="color:#111827;">${parentData.phone}</span>
-              </div>
-              ${parentData.studentDetails ? `
-              <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e5e7eb;">
-                <span style="font-weight:700; color:#4b5563;">Student:</span>
-                <span style="color:#111827;">${parentData.studentDetails}</span>
-              </div>
-              ` : ''}
-              <div style="display:flex; justify-content:space-between; padding:8px 0;">
-                <span style="font-weight:700; color:#4b5563;">Contact Preference:</span>
-                <span style="color:#111827; text-transform:capitalize;">${parentData.contactMethod || 'email'}</span>
-              </div>
-            </div>
-            
-            <!-- Message -->
-            <h3 style="font-size:18px; font-weight:700; color:#1e3c72; margin:24px 0 16px 0;">💬 Message from Parent</h3>
-            
-            <div style="background:#fef3c7; border-radius:12px; padding:20px; margin-bottom:24px;">
-              <p style="font-size:14px; font-weight:700; color:#92400e; margin-bottom:8px;">Subject: ${parentData.subject}</p>
-              <p style="font-size:14px; color:#78350f; line-height:1.6; margin:0; white-space:pre-wrap;">${parentData.message}</p>
-            </div>
-            
-            <!-- Action Buttons -->
-            <div style="display:flex; gap:12px; margin-bottom:24px;">
-              <a href="mailto:${parentData.email}" style="flex:1; background:#2563eb; color:white; text-align:center; padding:12px; border-radius:12px; text-decoration:none; font-weight:600; font-size:14px;">📧 Reply via Email</a>
-              ${parentData.contactMethod === 'phone' || parentData.contactMethod === 'whatsapp' ? `
-              <a href="tel:${parentData.phone}" style="flex:1; background:#10b981; color:white; text-align:center; padding:12px; border-radius:12px; text-decoration:none; font-weight:600; font-size:14px;">📞 Call Parent</a>
-              ` : ''}
-            </div>
-            
-            <!-- Quick Response Tips -->
-            <div style="background:#f0f9ff; border-radius:12px; padding:16px; margin-bottom:24px;">
-              <p style="font-size:12px; font-weight:700; color:#0369a1; margin-bottom:8px;">💡 Quick Response Tips:</p>
-              <ul style="margin:0; padding-left:20px; font-size:12px; color:#075985;">
-                <li>Acknowledge receipt of the consultation request</li>
-                <li>Schedule a convenient time for follow-up</li>
-                <li>Address the parent's specific concerns</li>
-                <li>Keep the reference number for tracking</li>
-              </ul>
-            </div>
-            
-            <hr style="border:none; border-top:1px solid #e5e7eb; margin:24px 0;">
-            
-            <p style="font-size:12px; color:#6b7280; text-align:center;">
-              This is an automated notification from ${SCHOOL_NAME}.<br>
-              Please respond to the parent within 24-48 hours.
-            </p>
-          </div>
-        </div>
+      <body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f1f5f9; line-height: 1.6; color: #1e293b; -webkit-text-size-adjust: 100%;">
+        
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f1f5f9;">
+          <tr>
+            <td align="center" style="padding: 4% 3%;">
+              
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 640px; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(15,23,42,0.08);">
+                
+                <!-- HEADER -->
+                <tr>
+                  <td style="background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #b91c1c 100%); padding: 10% 6% 8%; text-align: center;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td align="center" style="padding-bottom: 10px;">
+                          <div style="display: inline-block; background: rgba(255,255,255,0.1); border-radius: 50%; width: 56px; height: 56px; line-height: 56px; text-align: center;">
+                            <span style="font-size: 28px;">📩</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                          <h1 style="color: white; font-size: clamp(18px, 5vw, 24px); font-weight: 800; margin: 0 0 4px; line-height: 1.2; letter-spacing: -0.02em; text-transform: uppercase;">New Consultation Request</h1>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="padding-top: 10px;">
+                          <span style="display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); padding: 5px 18px; border-radius: 24px; font-size: clamp(10px, 2.5vw, 11px); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.95);">⚡ Action Required</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- ALERT BANNER -->
+                <tr>
+                  <td style="padding: 6% 6% 0;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-radius: 12px; border: 1px solid #fecaca;">
+                      <tr>
+                        <td style="padding: 5%; text-align: center;">
+                          <span style="font-size: 32px;">👋</span>
+                          <p style="color: #991b1b; font-size: clamp(13px, 3.2vw, 15px); font-weight: 700; margin: 8px 0 0 0;">You have a new consultation request from a parent!</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- GREETING -->
+                <tr>
+                  <td style="padding: 6% 6% 2%;">
+                    <p style="color: #334155; font-size: clamp(14px, 3.5vw, 16px); margin: 0 0 12px;">
+                      Hello <strong style="color: #0f172a;">${teacherName}</strong>,
+                    </p>
+                    <p style="color: #475569; font-size: clamp(13px, 3.2vw, 15px); margin: 0; line-height: 1.7;">
+                      A parent has requested a consultation with you. Please review the details below and respond within 24-48 hours.
+                    </p>
+                  </td>
+                </tr>
+                
+                <!-- DIVIDER -->
+                <tr>
+                  <td style="padding: 4% 6%;">
+                    <div style="height: 1px; background: #e2e8f0;"></div>
+                  </td>
+                </tr>
+                
+                <!-- REFERENCE CARD -->
+                <tr>
+                  <td style="padding: 0 6% 5%;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #dc2626;">
+                      <tr>
+                        <td style="padding: 5%;">
+                          <p style="font-size: clamp(10px, 2.5vw, 11px); font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 6px;">Reference Number</p>
+                          <p style="font-size: clamp(18px, 4.8vw, 22px); font-weight: 800; color: #991b1b; margin: 0;">${referenceNumber}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- PARENT INFORMATION -->
+                <tr>
+                  <td style="padding: 0 6% 5%;">
+                    <p style="color: #0f172a; font-size: clamp(15px, 4vw, 18px); font-weight: 700; margin: 0 0 14px;">👨‍👩‍👧 Parent Information</p>
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                      <tr>
+                        <td style="padding: 5%;">
+                          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                              <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                  <tr>
+                                    <td style="color: #64748b; font-size: clamp(12px, 3vw, 13px); font-weight: 700; width: 40%;">Name:</td>
+                                    <td style="color: #0f172a; font-size: clamp(13px, 3.2vw, 14px); font-weight: 600;">${parentData.name}</td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                  <tr>
+                                    <td style="color: #64748b; font-size: clamp(12px, 3vw, 13px); font-weight: 700; width: 40%;">Email:</td>
+                                    <td style="color: #0f172a; font-size: clamp(13px, 3.2vw, 14px); font-weight: 600; word-break: break-word;">${parentData.email}</td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                  <tr>
+                                    <td style="color: #64748b; font-size: clamp(12px, 3vw, 13px); font-weight: 700; width: 40%;">Phone:</td>
+                                    <td style="color: #0f172a; font-size: clamp(13px, 3.2vw, 14px); font-weight: 600;">${parentData.phone}</td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                            ${parentData.studentDetails ? `
+                            <tr>
+                              <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                  <tr>
+                                    <td style="color: #64748b; font-size: clamp(12px, 3vw, 13px); font-weight: 700; width: 40%;">Student:</td>
+                                    <td style="color: #0f172a; font-size: clamp(13px, 3.2vw, 14px); font-weight: 600;">${parentData.studentDetails}</td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                            ` : ''}
+                            <tr>
+                              <td style="padding: 10px 0;">
+                                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                  <tr>
+                                    <td style="color: #64748b; font-size: clamp(12px, 3vw, 13px); font-weight: 700; width: 40%;">Contact Pref:</td>
+                                    <td style="color: #0f172a; font-size: clamp(13px, 3.2vw, 14px); font-weight: 600; text-transform: capitalize;">${parentData.contactMethod || 'email'}</td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- MESSAGE FROM PARENT -->
+                <tr>
+                  <td style="padding: 0 6% 5%;">
+                    <p style="color: #0f172a; font-size: clamp(15px, 4vw, 18px); font-weight: 700; margin: 0 0 14px;">💬 Message from Parent</p>
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-radius: 12px; border: 1px solid #fde68a; border-left: 4px solid #f59e0b;">
+                      <tr>
+                        <td style="padding: 5%;">
+                          <p style="color: #92400e; font-size: clamp(13px, 3.2vw, 14px); font-weight: 700; margin: 0 0 8px;">Subject: ${parentData.subject}</p>
+                          <p style="color: #78350f; font-size: clamp(13px, 3.2vw, 14px); line-height: 1.7; margin: 0; white-space: pre-wrap;">${parentData.message}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- ACTION BUTTONS -->
+                <tr>
+                  <td style="padding: 0 6% 5%;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                      <tr>
+                        <td style="padding: 0 4px 0 0;" width="50%">
+                          <a href="mailto:${parentData.email}" style="display: block; background: #0f172a; color: white; text-align: center; padding: 12px 8px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: clamp(12px, 3vw, 14px);">📧 Reply via Email</a>
+                        </td>
+                        ${parentData.contactMethod === 'phone' || parentData.contactMethod === 'whatsapp' ? `
+                        <td style="padding: 0 0 0 4px;" width="50%">
+                          <a href="tel:${parentData.phone}" style="display: block; background: #059669; color: white; text-align: center; padding: 12px 8px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: clamp(12px, 3vw, 14px);">📞 Call Parent</a>
+                        </td>
+                        ` : ''}
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- QUICK RESPONSE TIPS -->
+                <tr>
+                  <td style="padding: 0 6% 5%;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border: 1px solid #bae6fd; border-left: 4px solid #0284c7;">
+                      <tr>
+                        <td style="padding: 5%;">
+                          <p style="color: #0c4a6e; font-size: clamp(12px, 3vw, 13px); font-weight: 700; margin: 0 0 10px;">💡 Quick Response Tips:</p>
+                          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                              <td style="padding: 4px 0; color: #075985; font-size: clamp(11px, 2.8vw, 12px); line-height: 1.5;">
+                                <span style="color: #0284c7; font-weight: 700; margin-right: 6px;">&#8226;</span> Acknowledge receipt of the consultation request
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 4px 0; color: #075985; font-size: clamp(11px, 2.8vw, 12px); line-height: 1.5;">
+                                <span style="color: #0284c7; font-weight: 700; margin-right: 6px;">&#8226;</span> Schedule a convenient time for follow-up
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 4px 0; color: #075985; font-size: clamp(11px, 2.8vw, 12px); line-height: 1.5;">
+                                <span style="color: #0284c7; font-weight: 700; margin-right: 6px;">&#8226;</span> Address the parent's specific concerns
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 4px 0; color: #075985; font-size: clamp(11px, 2.8vw, 12px); line-height: 1.5;">
+                                <span style="color: #0284c7; font-weight: 700; margin-right: 6px;">&#8226;</span> Keep the reference number for tracking
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- NOTICE -->
+                <tr>
+                  <td style="padding: 0 6% 6%;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                      <tr>
+                        <td style="padding: 4%; text-align: center;">
+                          <p style="color: #94a3b8; font-size: clamp(11px, 2.8vw, 12px); margin: 0; font-style: italic;">
+                            This is an automated notification from ${SCHOOL_NAME}.<br>Please respond to the parent within 24-48 hours.
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- FOOTER -->
+                <tr>
+                  <td style="background: #0f172a; padding: 8% 6%; text-align: center;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td align="center">
+                          <p style="color: #ffffff; font-size: clamp(15px, 4vw, 17px); font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em;">${SCHOOL_NAME}</p>
+                          <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 4px;">${SCHOOL_MOTTO}</p>
+                          <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 14px;">${SCHOOL_LOCATION}</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="padding-bottom: 14px;">
+                          <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 4px;">
+                            <a href="mailto:${CONTACT_EMAIL}" style="color: #94a3b8; text-decoration: none;">${CONTACT_EMAIL}</a>
+                          </p>
+                          <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0;">
+                            <a href="tel:${CONTACT_PHONE}" style="color: #94a3b8; text-decoration: none;">${CONTACT_PHONE}</a>
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                          <div style="width: 40px; height: 2px; background: #475569; margin: 0 auto 12px;"></div>
+                          <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0;">&copy; ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+              </table>
+            </td>
+          </tr>
+        </table>
       </body>
       </html>
     `

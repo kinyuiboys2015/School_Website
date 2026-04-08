@@ -13,701 +13,336 @@ const CONTACT_EMAIL = 'kinyuiboys2015@gmail.com';
 const emailTemplates = {
   admin: ({ email }) => `
     <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="x-apple-disable-message-reformatting">
-        <title>New Subscriber - ${SCHOOL_NAME}</title>
-        <style>
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-          }
-          
-          body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
-          }
-          
-          .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-          }
-          
-          .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-          }
-          
-          .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.1;
-          }
-          
-          .header h1 {
-            font-size: 26px;
-            font-weight: 700;
-            margin: 0;
-            position: relative;
-            z-index: 1;
-          }
-          
-          .header p {
-            font-size: 14px;
-            opacity: 0.9;
-            margin: 8px 0 0 0;
-            position: relative;
-            z-index: 1;
-          }
-          
-          .content {
-            padding: 40px 30px;
-            text-align: center;
-          }
-          
-          .subscriber-card {
-            background: linear-gradient(135deg, #f0f7ff 0%, #dbeafe 100%);
-            border-radius: 12px;
-            padding: 24px;
-            margin: 20px auto;
-            max-width: 400px;
-            border: 1px solid #e0f2fe;
-          }
-          
-          .card-label {
-            color: #075985;
-            font-size: 13px;
-            margin: 0 0 8px 0;
-            font-weight: 600;
-            text-transform: uppercase;
-          }
-          
-          .card-value {
-            color: #1e40af;
-            font-size: 16px;
-            margin: 0;
-            font-weight: 700;
-            word-break: break-word;
-          }
-          
-          .info-box {
-            background: #f0f7ff;
-            border-radius: 10px;
-            padding: 16px;
-            margin: 24px auto 0;
-            max-width: 450px;
-            border-left: 4px solid #1e3c72;
-            text-align: left;
-          }
-          
-          .info-title {
-            color: #1e3c72;
-            font-size: 13px;
-            margin: 0 0 8px 0;
-            font-weight: 600;
-          }
-          
-          .info-text {
-            color: #4b5563;
-            font-size: 12px;
-            margin: 0;
-            line-height: 1.5;
-          }
-          
-          .timestamp {
-            color: #718096;
-            font-size: 13px;
-            margin-top: 16px;
-          }
-          
-          .footer {
-            background: #f8fafc;
-            padding: 24px 30px;
-            text-align: center;
-            border-top: 1px solid #e2e8f0;
-          }
-          
-          .footer-title {
-            color: #1a202c;
-            font-size: 14px;
-            margin: 0;
-            font-weight: 600;
-          }
-          
-          .footer-text {
-            color: #718096;
-            font-size: 12px;
-            margin: 6px 0 0 0;
-          }
-          
-          .footer-small {
-            color: #a0aec0;
-            font-size: 11px;
-            margin-top: 8px;
-          }
-          
-          @media (max-width: 768px) {
-            body {
-              padding: 12px;
-            }
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <meta name="x-apple-disable-message-reformatting">
+      <title>New Subscriber - ${SCHOOL_NAME}</title>
+    </head>
+    <body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f1f5f9; line-height: 1.6; color: #1e293b; -webkit-text-size-adjust: 100%;">
+      
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f1f5f9;">
+        <tr>
+          <td align="center" style="padding: 4% 3%;">
             
-            .header {
-              padding: 32px 20px;
-            }
-            
-            .header h1 {
-              font-size: 22px;
-            }
-            
-            .header p {
-              font-size: 13px;
-              margin-top: 4px;
-            }
-            
-            .content {
-              padding: 28px 20px;
-            }
-            
-            .subscriber-card {
-              padding: 20px;
-              margin: 16px auto;
-            }
-            
-            .card-label {
-              font-size: 12px;
-            }
-            
-            .card-value {
-              font-size: 14px;
-            }
-            
-            .info-box {
-              padding: 14px;
-              margin: 20px auto 0;
-            }
-            
-            .info-title {
-              font-size: 12px;
-            }
-            
-            .info-text {
-              font-size: 11px;
-            }
-            
-            .timestamp {
-              font-size: 12px;
-            }
-            
-            .footer {
-              padding: 20px;
-            }
-            
-            .footer-text {
-              font-size: 11px;
-            }
-            
-            .footer-small {
-              font-size: 10px;
-            }
-          }
-          
-          @media (max-width: 480px) {
-            body {
-              padding: 8px;
-            }
-            
-            .header {
-              padding: 24px 16px;
-            }
-            
-            .header h1 {
-              font-size: 20px;
-            }
-            
-            .header p {
-              font-size: 12px;
-              margin-top: 4px;
-            }
-            
-            .content {
-              padding: 20px 14px;
-            }
-            
-            .subscriber-card {
-              padding: 16px;
-              margin: 14px auto;
-              max-width: none;
-            }
-            
-            .card-label {
-              font-size: 11px;
-              margin-bottom: 6px;
-            }
-            
-            .card-value {
-              font-size: 13px;
-            }
-            
-            .info-box {
-              padding: 12px;
-              margin: 16px auto 0;
-              max-width: none;
-            }
-            
-            .info-title {
-              font-size: 11px;
-            }
-            
-            .info-text {
-              font-size: 10px;
-            }
-            
-            .timestamp {
-              font-size: 11px;
-              margin-top: 12px;
-            }
-            
-            .footer {
-              padding: 16px;
-            }
-            
-            .footer-title {
-              font-size: 13px;
-            }
-            
-            .footer-text {
-              font-size: 10px;
-              margin-top: 4px;
-            }
-            
-            .footer-small {
-              font-size: 9px;
-              margin-top: 6px;
-            }
-          }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <div class="header">
-            <h1>📩 New Subscriber</h1>
-            <p>${SCHOOL_NAME}</p>
-            <p>${SCHOOL_LOCATION}</p>
-          </div>
-
-          <div class="content">
-            <h2 style="color: #1a202c; font-size: 20px; font-weight: 600; margin: 0 0 20px 0;">New Newsletter Subscriber</h2>
-            
-            <div class="subscriber-card">
-              <p class="card-label">📧 Subscriber Email</p>
-              <p class="card-value">${email}</p>
-            </div>
-            
-            <p class="timestamp">Subscribed on ${new Date().toLocaleString('en-US', { timeZone: 'Africa/Nairobi' })}</p>
-            
-            <div class="info-box">
-              <p class="info-title">🏫 School Information</p>
-              <p class="info-text">
-                <strong>${SCHOOL_NAME}</strong><br>
-                ${SCHOOL_LOCATION}<br>
-                Public Boarding School | 400+ Students | 8-4-4 Curriculum
-              </p>
-            </div>
-          </div>
-
-          <div class="footer">
-            <p class="footer-title">${SCHOOL_NAME}</p>
-            <p class="footer-text">Newsletter notification system</p>
-            <p class="footer-small">© ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
-          </div>
-        </div>
-      </body>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 640px; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(15,23,42,0.08);">
+              
+              <!-- HEADER -->
+              <tr>
+                <td style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%); padding: 10% 6% 8%; text-align: center;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 10px;">
+                        <div style="display: inline-block; background: rgba(255,255,255,0.1); border-radius: 50%; width: 52px; height: 52px; line-height: 52px; text-align: center;">
+                          <span style="font-size: 26px;">📩</span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <h1 style="color: white; font-size: clamp(20px, 5.5vw, 26px); font-weight: 800; margin: 0 0 4px; line-height: 1.2; letter-spacing: -0.02em;">New Subscriber</h1>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <p style="color: rgba(255,255,255,0.85); font-size: clamp(12px, 3vw, 14px); margin: 0; font-weight: 500;">${SCHOOL_NAME}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center" style="padding-top: 8px;">
+                        <span style="display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15); padding: 5px 16px; border-radius: 24px; font-size: clamp(10px, 2.5vw, 11px); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.9);">Newsletter Alert</span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              
+              <!-- TITLE -->
+              <tr>
+                <td style="padding: 8% 6% 2%;">
+                  <h2 style="color: #0f172a; font-size: clamp(18px, 4.8vw, 22px); font-weight: 700; margin: 0 0 8px; line-height: 1.3; letter-spacing: -0.01em;">New Newsletter Subscriber</h2>
+                  <p style="color: #94a3b8; font-size: clamp(11px, 2.8vw, 12px); margin: 0; letter-spacing: 0.03em;">
+                    ${new Date().toLocaleString('en-US', { timeZone: 'Africa/Nairobi', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                </td>
+              </tr>
+              
+              <!-- DIVIDER -->
+              <tr>
+                <td style="padding: 4% 6%;">
+                  <div style="height: 1px; background: #e2e8f0;"></div>
+                </td>
+              </tr>
+              
+              <!-- SUBSCRIBER CARD -->
+              <tr>
+                <td style="padding: 0 6% 6%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border: 1px solid #bae6fd; border-left: 4px solid #0284c7;">
+                    <tr>
+                      <td style="padding: 6%;">
+                        <p style="color: #075985; font-size: clamp(10px, 2.5vw, 11px); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 8px;">📧 Subscriber Email</p>
+                        <p style="color: #0c4a6e; font-size: clamp(16px, 4.2vw, 20px); font-weight: 800; margin: 0; word-break: break-word; line-height: 1.4;">${email}</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              
+              <!-- SCHOOL INFO -->
+              <tr>
+                <td style="padding: 0 6% 6%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #64748b;">
+                    <tr>
+                      <td style="padding: 5%;">
+                        <p style="color: #0f172a; font-size: clamp(13px, 3.2vw, 14px); font-weight: 700; margin: 0 0 10px;">🏫 School Information</p>
+                        <p style="color: #475569; font-size: clamp(12px, 3vw, 13px); margin: 0; line-height: 1.7;">
+                          <strong>${SCHOOL_NAME}</strong><br>
+                          ${SCHOOL_LOCATION}<br>
+                          Public Boarding School &bull; 400+ Students &bull; 8-4-4 Curriculum
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              
+              <!-- NOTICE -->
+              <tr>
+                <td style="padding: 0 6% 6%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <tr>
+                      <td style="padding: 4%; text-align: center;">
+                        <p style="color: #94a3b8; font-size: clamp(11px, 2.8vw, 12px); margin: 0; font-style: italic;">
+                          This is an automated notification from the ${SCHOOL_NAME} newsletter system.
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              
+              <!-- FOOTER -->
+              <tr>
+                <td style="background: #0f172a; padding: 8% 6%; text-align: center;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center">
+                        <p style="color: #ffffff; font-size: clamp(15px, 4vw, 17px); font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em;">${SCHOOL_NAME}</p>
+                        <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 14px;">${SCHOOL_LOCATION}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center" style="padding-bottom: 14px;">
+                        <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 4px;">
+                          <a href="mailto:${CONTACT_EMAIL}" style="color: #94a3b8; text-decoration: none;">${CONTACT_EMAIL}</a>
+                        </p>
+                        <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0;">
+                          <a href="tel:${CONTACT_PHONE}" style="color: #94a3b8; text-decoration: none;">${CONTACT_PHONE}</a>
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <div style="width: 40px; height: 2px; background: #475569; margin: 0 auto 12px;"></div>
+                        <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0;">&copy; ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
     </html>
   `,
 
   user: ({ email }) => `
     <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="x-apple-disable-message-reformatting">
-        <title>Welcome - ${SCHOOL_NAME}</title>
-        <style>
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-          }
-          
-          body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
-          }
-          
-          .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-          }
-          
-          .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-          }
-          
-          .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.1;
-          }
-          
-          .header h1 {
-            font-size: 26px;
-            font-weight: 700;
-            margin: 0;
-            position: relative;
-            z-index: 1;
-          }
-          
-          .header p {
-            font-size: 14px;
-            opacity: 0.9;
-            margin: 6px 0 0 0;
-            position: relative;
-            z-index: 1;
-          }
-          
-          .content {
-            padding: 40px 30px;
-          }
-          
-          .welcome-text {
-            color: #1a202c;
-            font-size: 16px;
-            line-height: 1.6;
-            margin: 0 0 20px 0;
-          }
-          
-          .info-card {
-            background: #f0f7ff;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 24px auto;
-            max-width: 500px;
-            border: 1px solid #e0f2fe;
-          }
-          
-          .card-title {
-            color: #1e3c72;
-            font-size: 15px;
-            font-weight: 600;
-            margin: 0 0 14px 0;
-          }
-          
-          .card-list {
-            color: #4b5563;
-            font-size: 13px;
-            line-height: 1.8;
-            margin: 0;
-            padding-left: 20px;
-          }
-          
-          .card-list li {
-            margin-bottom: 8px;
-          }
-          
-          .contact-card {
-            background: #f0f9ff;
-            border-radius: 10px;
-            padding: 16px;
-            margin: 24px auto 0;
-            max-width: 450px;
-            text-align: center;
-          }
-          
-          .contact-label {
-            color: #075985;
-            font-size: 12px;
-            margin: 0 0 6px 0;
-            font-weight: 600;
-          }
-          
-          .contact-text {
-            color: #4b5563;
-            font-size: 12px;
-            margin: 0;
-            line-height: 1.5;
-          }
-          
-          .footer {
-            background: #f8fafc;
-            padding: 24px 30px;
-            text-align: center;
-            border-top: 1px solid #e2e8f0;
-          }
-          
-          .footer-title {
-            color: #1a202c;
-            font-size: 15px;
-            margin: 0;
-            font-weight: 700;
-          }
-          
-          .footer-text {
-            color: #718096;
-            font-size: 12px;
-            margin: 4px 0 0 0;
-          }
-          
-          .footer-small {
-            color: #9ca3af;
-            font-size: 11px;
-            margin-top: 8px;
-          }
-          
-          @media (max-width: 768px) {
-            body {
-              padding: 12px;
-            }
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <meta name="x-apple-disable-message-reformatting">
+      <title>Welcome - ${SCHOOL_NAME}</title>
+    </head>
+    <body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f1f5f9; line-height: 1.6; color: #1e293b; -webkit-text-size-adjust: 100%;">
+      
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f1f5f9;">
+        <tr>
+          <td align="center" style="padding: 4% 3%;">
             
-            .header {
-              padding: 32px 20px;
-            }
-            
-            .header h1 {
-              font-size: 22px;
-            }
-            
-            .header p {
-              font-size: 13px;
-              margin-top: 4px;
-            }
-            
-            .content {
-              padding: 28px 20px;
-            }
-            
-            .welcome-text {
-              font-size: 15px;
-            }
-            
-            .info-card {
-              padding: 18px;
-              margin: 20px auto;
-            }
-            
-            .card-title {
-              font-size: 14px;
-              margin-bottom: 12px;
-            }
-            
-            .card-list {
-              font-size: 12px;
-              padding-left: 18px;
-            }
-            
-            .card-list li {
-              margin-bottom: 6px;
-            }
-            
-            .contact-card {
-              padding: 14px;
-              margin: 20px auto 0;
-            }
-            
-            .contact-label {
-              font-size: 11px;
-            }
-            
-            .contact-text {
-              font-size: 11px;
-            }
-            
-            .footer {
-              padding: 20px;
-            }
-            
-            .footer-title {
-              font-size: 14px;
-            }
-            
-            .footer-text {
-              font-size: 11px;
-            }
-            
-            .footer-small {
-              font-size: 10px;
-            }
-          }
-          
-          @media (max-width: 480px) {
-            body {
-              padding: 8px;
-            }
-            
-            .header {
-              padding: 24px 14px;
-            }
-            
-            .header h1 {
-              font-size: 20px;
-            }
-            
-            .header p {
-              font-size: 12px;
-              margin-top: 4px;
-            }
-            
-            .content {
-              padding: 20px 12px;
-            }
-            
-            .welcome-text {
-              font-size: 14px;
-              margin-bottom: 16px;
-            }
-            
-            .info-card {
-              padding: 16px;
-              margin: 16px auto;
-              max-width: none;
-            }
-            
-            .card-title {
-              font-size: 13px;
-              margin-bottom: 10px;
-            }
-            
-            .card-list {
-              font-size: 11px;
-              padding-left: 16px;
-            }
-            
-            .card-list li {
-              margin-bottom: 6px;
-            }
-            
-            .contact-card {
-              padding: 12px;
-              margin: 16px auto 0;
-              max-width: none;
-            }
-            
-            .contact-label {
-              font-size: 10px;
-            }
-            
-            .contact-text {
-              font-size: 10px;
-            }
-            
-            .footer {
-              padding: 16px;
-            }
-            
-            .footer-title {
-              font-size: 13px;
-            }
-            
-            .footer-text {
-              font-size: 10px;
-              margin-top: 3px;
-            }
-            
-            .footer-small {
-              font-size: 9px;
-              margin-top: 6px;
-            }
-          }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <div class="header">
-            <h1>🏫 Welcome to ${SCHOOL_NAME}</h1>
-            <p>Newsletter Subscription Confirmed</p>
-            <p>${SCHOOL_MOTTO}</p>
-          </div>
-
-          <div class="content">
-            <p class="welcome-text">
-              Hello! 👋<br><br>
-              Thank you for subscribing to <strong>${SCHOOL_NAME}</strong> newsletter with email <strong>${email}</strong>. You'll now receive important school updates, announcements, events, and academic information from our Public Boarding School.
-            </p>
-            
-            <div class="info-card">
-              <p class="card-title">📬 What you'll receive:</p>
-              <ul class="card-list">
-                <li>School announcements and updates</li>
-                <li>Academic calendar and events</li>
-                <li>Student achievements and news</li>
-                <li>Important deadline reminders</li>
-                <li>Admission information</li>
-              </ul>
-            </div>
-            
-            <div class="contact-card">
-              <p class="contact-label">📞 School Contacts</p>
-              <p class="contact-text">
-                <strong>${CONTACT_PHONE}</strong> | ${CONTACT_EMAIL}<br>
-                📍 ${SCHOOL_LOCATION}
-              </p>
-            </div>
-          </div>
-
-          <div class="footer">
-            <p class="footer-title">${SCHOOL_NAME}</p>
-            <p class="footer-text">${SCHOOL_MOTTO}</p>
-            <p class="footer-small">© ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
-            <p class="footer-small">Public Mi Boarding School | ${SCHOOL_LOCATION} | 400+ Students</p>
-          </div>
-        </div>
-      </body>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 640px; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(15,23,42,0.08);">
+              
+              <!-- HEADER -->
+              <tr>
+                <td style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%); padding: 10% 6% 8%; text-align: center;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 10px;">
+                        <div style="display: inline-block; background: rgba(255,255,255,0.1); border-radius: 50%; width: 56px; height: 56px; line-height: 56px; text-align: center;">
+                          <span style="font-size: 28px;">🏫</span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <h1 style="color: white; font-size: clamp(20px, 5.5vw, 26px); font-weight: 800; margin: 0 0 4px; line-height: 1.2; letter-spacing: -0.02em;">${SCHOOL_NAME}</h1>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <p style="color: rgba(255,255,255,0.85); font-size: clamp(12px, 3vw, 14px); margin: 4px 0 0; font-weight: 500;">${SCHOOL_MOTTO}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center" style="padding-top: 10px;">
+                        <span style="display: inline-block; background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.3); padding: 5px 18px; border-radius: 24px; font-size: clamp(10px, 2.5vw, 11px); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #86efac;">&#10003; Subscription Confirmed</span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              
+              <!-- WELCOME MESSAGE -->
+              <tr>
+                <td style="padding: 8% 6% 2%;">
+                  <h2 style="color: #0f172a; font-size: clamp(18px, 4.8vw, 24px); font-weight: 700; margin: 0 0 8px; line-height: 1.3; letter-spacing: -0.01em;">Welcome to Our Newsletter! 👋</h2>
+                  <p style="color: #94a3b8; font-size: clamp(11px, 2.8vw, 12px); margin: 0; letter-spacing: 0.03em;">
+                    ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                  </p>
+                </td>
+              </tr>
+              
+              <!-- DIVIDER -->
+              <tr>
+                <td style="padding: 4% 6%;">
+                  <div style="height: 1px; background: #e2e8f0;"></div>
+                </td>
+              </tr>
+              
+              <!-- CONTENT -->
+              <tr>
+                <td style="padding: 0 6% 6%;">
+                  <p style="color: #334155; font-size: clamp(14px, 3.5vw, 15px); line-height: 1.7; margin: 0;">
+                    Thank you for subscribing to <strong style="color: #0f172a;">${SCHOOL_NAME}</strong> newsletter with email <strong style="color: #0f172a;">${email}</strong>. You'll now receive important school updates, announcements, events, and academic information from our Public Boarding School.
+                  </p>
+                </td>
+              </tr>
+              
+              <!-- WHAT YOU'LL RECEIVE -->
+              <tr>
+                <td style="padding: 0 6% 6%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border: 1px solid #bae6fd; border-left: 4px solid #0284c7;">
+                    <tr>
+                      <td style="padding: 6%;">
+                        <p style="color: #0c4a6e; font-size: clamp(14px, 3.5vw, 15px); font-weight: 700; margin: 0 0 14px;">📬 What you'll receive:</p>
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td style="padding: 6px 0; color: #334155; font-size: clamp(13px, 3.2vw, 14px); line-height: 1.5;">
+                              <span style="color: #0284c7; font-weight: 700; margin-right: 8px;">&#8226;</span> School announcements and updates
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 6px 0; color: #334155; font-size: clamp(13px, 3.2vw, 14px); line-height: 1.5;">
+                              <span style="color: #0284c7; font-weight: 700; margin-right: 8px;">&#8226;</span> Academic calendar and events
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 6px 0; color: #334155; font-size: clamp(13px, 3.2vw, 14px); line-height: 1.5;">
+                              <span style="color: #0284c7; font-weight: 700; margin-right: 8px;">&#8226;</span> Student achievements and news
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 6px 0; color: #334155; font-size: clamp(13px, 3.2vw, 14px); line-height: 1.5;">
+                              <span style="color: #0284c7; font-weight: 700; margin-right: 8px;">&#8226;</span> Important deadline reminders
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 6px 0; color: #334155; font-size: clamp(13px, 3.2vw, 14px); line-height: 1.5;">
+                              <span style="color: #0284c7; font-weight: 700; margin-right: 8px;">&#8226;</span> Admission information
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              
+              <!-- CONTACT CARD -->
+              <tr>
+                <td style="padding: 0 6% 6%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <tr>
+                      <td style="padding: 5%; text-align: center;">
+                        <p style="color: #0f172a; font-size: clamp(13px, 3.2vw, 14px); font-weight: 700; margin: 0 0 10px;">📞 School Contacts</p>
+                        <p style="color: #475569; font-size: clamp(13px, 3.2vw, 14px); margin: 0; line-height: 1.7;">
+                          <strong>${CONTACT_PHONE}</strong> &bull;
+                          <a href="mailto:${CONTACT_EMAIL}" style="color: #0284c7; text-decoration: none; font-weight: 600;">${CONTACT_EMAIL}</a><br>
+                          📍 ${SCHOOL_LOCATION}
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              
+              <!-- NOTICE -->
+              <tr>
+                <td style="padding: 0 6% 6%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <tr>
+                      <td style="padding: 4%; text-align: center;">
+                        <p style="color: #94a3b8; font-size: clamp(11px, 2.8vw, 12px); margin: 0; font-style: italic;">
+                          Official communication from ${SCHOOL_NAME}. Do not reply to this email.
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              
+              <!-- FOOTER -->
+              <tr>
+                <td style="background: #0f172a; padding: 8% 6%; text-align: center;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center">
+                        <p style="color: #ffffff; font-size: clamp(15px, 4vw, 17px); font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em;">${SCHOOL_NAME}</p>
+                        <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 4px;">${SCHOOL_MOTTO}</p>
+                        <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 14px;">${SCHOOL_LOCATION}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center" style="padding-bottom: 14px;">
+                        <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 4px;">
+                          <a href="mailto:${CONTACT_EMAIL}" style="color: #94a3b8; text-decoration: none;">${CONTACT_EMAIL}</a>
+                        </p>
+                        <p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0;">
+                          <a href="tel:${CONTACT_PHONE}" style="color: #94a3b8; text-decoration: none;">${CONTACT_PHONE}</a>
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <div style="width: 40px; height: 2px; background: #475569; margin: 0 auto 12px;"></div>
+                        <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0 0 4px;">Public Boarding School &bull; 400+ Students</p>
+                        <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0;">&copy; ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
     </html>
   `,
 };

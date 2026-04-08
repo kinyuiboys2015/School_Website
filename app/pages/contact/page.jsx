@@ -260,8 +260,8 @@ export default function ContactPage() {
       Soaring To Excellence & Integrity
     </span>
     
-    <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter mb-2 sm:mb-4 drop-shadow-lg">
-      Kinyui Boys High School
+    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-2 sm:mb-4 drop-shadow-lg">
+      Kinyui Boys  <span className='text-amber-800'>Senior School</span> 
     </h1>
     
     <div className="flex flex-col gap-3">
@@ -352,8 +352,12 @@ export default function ContactPage() {
 
           {/* --- Right Column: Contact Form --- */}
           <div className="lg:col-span-2 bg-white p-5 sm:p-8 md:p-12 rounded-xl sm:rounded-2xl shadow-xl border border-slate-200/80">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 mb-1 sm:mb-2">Send Us a Message</h2>
-            <p className="text-slate-600 mb-4 sm:mb-6 md:mb-8 text-sm sm:text-sm">
+<h2 className="text-2xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">
+  Send Us a{' '}
+  <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-amber-600 bg-clip-text text-transparent">
+    Message
+  </span>
+</h2>            <p className="text-slate-600 mb-4 sm:mb-6 md:mb-8 text-sm sm:text-sm">
               Have a question or need assistance? Fill out the form and our team will respond within 24 hours.
             </p>
 
