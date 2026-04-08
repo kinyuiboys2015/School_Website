@@ -417,67 +417,32 @@ export default function StaffProfilePage() {
   
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
-        {/* Dynamic Brand Logo Loader */}
-        <div className="relative mb-12">
-          {/* Animated Rings */}
-          <div className="absolute inset-0 rounded-[1rem] border-2 border-blue-600/20 animate-ping" />
-          <div className="absolute inset-0 rounded-[1rem] border-4 border-slate-900/5 animate-pulse" />
-          
-          {/* Central Icon */}
-          <div className="relative w-24 h-24 bg-slate-900 rounded-[1rem] flex items-center justify-center shadow-2xl rotate-3">
-            <FaGraduationCap className="text-white text-4xl animate-bounce" />
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6">
+        <div className="relative mb-10">
+          <div className="w-16 h-16 border-[3px] border-slate-200 border-t-[#1a1a2e] rounded-full animate-spin" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Image src="/seo/logo.png" alt="Logo" width={28} height={28} className="opacity-60" />
           </div>
         </div>
-  
-        {/* Loading Text with Modern Letter Spacing */}
-        <div className="space-y-3">
-          <h2 className="text-xs font-black tracking-[0.3em] text-slate-900 uppercase">
-            Opening the profile
-          </h2>
-          <div className="flex items-center justify-center gap-1">
-            {[0, 1, 2].map((i) => (
-              <div 
-                key={i} 
-                className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-bounce" 
-                style={{ animationDelay: `${i * 0.1}s` }}
-              />
-            ))}
-          </div>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest max-w-[200px] leading-relaxed">
-            kinyui boys Senior School Professional Directory
-          </p>
-        </div>
-  
-        {/* Subtle Progress Bar */}
-        <div className="mt-12 w-48 h-1 bg-slate-100 rounded-full overflow-hidden">
-          <div className="h-full bg-slate-900 w-1/3 rounded-full animate-[loading_1.5s_infinite_ease-in-out]" />
-        </div>
-  
-        <style jsx>{`
-          @keyframes loading {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(300%); }
-          }
-        `}</style>
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em]">Loading Profile</p>
       </div>
     );
   }
   
   if (error || !staff) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30 flex items-center justify-center p-4">
-        <div className="text-center max-w-md w-full p-8 bg-white rounded-xl shadow-lg">
-          <div className="w-20 h-20 bg-gradient-to-br from-red-100 to-red-200 rounded-xl flex items-center justify-center mx-auto mb-6">
-            <FaUserTie className="text-2xl text-red-600" />
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
+        <div className="text-center max-w-sm w-full">
+          <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-red-100">
+            <FaUserTie className="text-xl text-red-500" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">Profile Unavailable</h2>
-          <p className="text-gray-600 mb-6 leading-relaxed">
-            We're unable to retrieve this staff member's profile at the moment.
+          <h2 className="text-lg font-black text-slate-900 mb-2">Profile Unavailable</h2>
+          <p className="text-sm text-slate-500 mb-6">
+            We couldn&apos;t load this staff member&apos;s profile.
           </p>
           <button 
             onClick={() => router.push('/pages/staff')}
-            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-shadow w-full"
+            className="bg-[#1a1a2e] text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:bg-[#2d2d44] transition-colors w-full"
           >
             Return to Staff Directory
           </button>
@@ -489,375 +454,313 @@ export default function StaffProfilePage() {
   return (
     <>
       <SeoHead />
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30 font-sans">
-        {/* MOBILE Header - Optimized for small screens */}
-        <div className="bg-white/90 backdrop-blur-sm border-b border-gray-200/50 sticky top-0 z-40 sm:bg-white/80">
-          <div className="max-w-7xl mx-auto px-4 h-14 sm:h-16 flex items-center justify-between">
+      <div className="min-h-screen bg-white font-sans">
+
+        {/* ── Sticky Top Bar ── */}
+        <div className="bg-white border-b border-slate-100 sticky top-0 z-40">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
             <button
               onClick={() => router.push('/pages/staff')}
-              className="flex items-center gap-1 text-gray-700 hover:text-blue-600 group transition-all duration-300"
+              className="flex items-center gap-2 text-slate-600 hover:text-[#1a1a2e] transition-colors"
             >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-50 sm:bg-gradient-to-br sm:from-blue-50 sm:to-blue-100 rounded-lg sm:rounded-xl flex items-center justify-center group-hover:bg-blue-100">
-                <FiArrowLeft className="text-blue-600 sm:text-blue-600" size={16} />
-              </div>
-              <span className="font-medium text-sm hidden sm:block">Back to Directory</span>
+              <FiArrowLeft size={18} />
+              <span className="text-sm font-bold hidden sm:inline">Staff Directory</span>
             </button>
-            
-            {/* School Logo/Name - Mobile Optimized */}
-            <div className="flex items-center gap-1.5">
-              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 rounded flex items-center justify-center">
-                <FaGraduationCap className="text-white text-xs sm:text-sm" />
-              </div>
-              <span className="font-bold text-gray-800 text-xs sm:text-sm hidden xs:block sm:hidden md:block">
-                kinyui boys Senior School
-              </span>
-              <span className="font-bold text-gray-800 hidden sm:block md:hidden">KHS</span>
-              <span className="font-bold text-gray-800 hidden md:block lg:hidden">kinyui boys</span>
-              <span className="font-bold text-gray-800 hidden lg:block">kinyui boys Senior School</span>
+
+            <div className="flex items-center gap-2">
+              <Image src="/seo/logo.png" alt="Logo" width={24} height={24} />
+              <span className="text-sm font-black text-[#1a1a2e] hidden sm:inline">Kinyui Boys Senior School</span>
             </div>
-  
-            <div className="flex gap-1 sm:gap-2">
+
+            <div className="flex gap-1.5">
               <button 
                 onClick={() => setShowShareModal(true)}
-                className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 sm:bg-gradient-to-br sm:from-gray-100 sm:to-gray-50 rounded-lg sm:rounded-xl flex items-center justify-center text-gray-600 hover:text-blue-600"
-                title="Share Profile"
+                className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#1a1a2e] hover:border-slate-300 transition-all"
               >
-                <FiShare2 size={14} />
+                <FiShare2 size={15} />
               </button>
               <button 
                 onClick={() => window.print()}
-                className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 sm:bg-gradient-to-br sm:from-gray-100 sm:to-gray-50 rounded-lg sm:rounded-xl flex items-center justify-center text-gray-600 hover:text-blue-600"
-                title="Print Profile"
+                className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#1a1a2e] hover:border-slate-300 transition-all"
               >
-                <FiPrinter />
+                <FiPrinter size={15} />
               </button>
             </div>
           </div>
         </div>
         
-        {/* COMPLETE PROFILE SECTION - Fully Responsive & Zoom-Friendly */}
-        <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+        {/* ── Hero Section: Full-width dark banner ── */}
+        <div className="relative bg-[#1a1a2e] overflow-hidden">
+          {/* Subtle grid pattern */}
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
           
-          {/* Main Profile Card */}
-          <div className="bg-white rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-lg sm:shadow-xl overflow-hidden">
-            
-            {/* Header with Pattern - Responsive height */}
-            <div className="relative h-28 sm:h-36 lg:h-48 bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600">
-              {/* Abstract Pattern - scales with container */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-0 left-0 w-40 sm:w-60 lg:w-80 h-40 sm:h-60 lg:h-80 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-                <div className="absolute bottom-0 right-0 w-60 sm:w-80 lg:w-96 h-60 sm:h-80 lg:h-96 bg-white rounded-full translate-x-1/3 translate-y-1/3"></div>
-              </div>
-              
-              {/* School Badge - responsive sizing */}
-              <div className="absolute top-2 sm:top-3 lg:top-4 right-2 sm:right-3 lg:right-4 bg-white/10 backdrop-blur-md px-2 sm:px-3 lg:px-4 py-1 sm:py-1.5 lg:py-2 rounded-full border border-white/20">
-                <span className="text-white text-[10px] sm:text-xs lg:text-sm font-medium tracking-wide whitespace-nowrap">
-                  🏫 kinyui boys Senior School
-                </span>
-              </div>
-            </div>
-            
-            {/* Profile Content - Responsive padding */}
-            <div className="relative px-4 sm:px-5 lg:px-8 pb-6 sm:pb-7 lg:pb-10">
-              
-              {/* Profile Image - Dramatic Overlap with responsive sizing */}
-              <div className="relative -mt-10 sm:-mt-12 lg:-mt-16 mb-4 sm:mb-5 lg:mb-8 flex flex-wrap items-end justify-between gap-4">
-                <div className="relative flex items-center gap-3 sm:gap-4">
-                  <div className="relative shrink-0">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-28 lg:h-28 rounded-lg sm:rounded-xl lg:rounded-2xl border-2 sm:border-3 lg:border-4 border-white shadow-lg sm:shadow-xl lg:shadow-2xl overflow-hidden bg-white">
-                      <Image
-                        src={staff.image || '/male.png'}
-                        alt={staff.name}
-                        width={112}
-                        height={112}
-                        className="w-full h-full object-cover"
-                        priority
-                      />
-                    </div>
-                    {/* Status Indicator with Pulse - responsive sizing */}
-                    <div className="absolute -bottom-0.5 -right-0.5 sm:-bottom-1 sm:-right-1">
-                      <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5 lg:h-3 lg:w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-full w-full bg-green-500 border-1 sm:border-2 border-white"></span>
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {/* Mobile: Name next to image */}
-                  <div className="lg:hidden">
-                    <h1 className="text-base sm:text-lg font-bold text-gray-900 leading-tight">
-                      {staff.name}
-                    </h1>
-                    <p className="text-xs sm:text-sm text-blue-600 font-medium">{staff.position}</p>
-                  </div>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16 relative z-10">
+            <div className="flex flex-col sm:flex-row items-center sm:items-end gap-5 sm:gap-8">
+              {/* Profile Image */}
+              <div className="relative shrink-0">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-36 lg:h-36 rounded-2xl border-[3px] border-white/20 overflow-hidden bg-white/10 shadow-2xl">
+                  <Image
+                    src={staff.image || '/male.png'}
+                    alt={staff.name}
+                    width={144}
+                    height={144}
+                    className="w-full h-full object-cover"
+                    priority
+                  />
                 </div>
-                
-                {/* Action Icons - responsive */}
-                <div className="flex gap-1.5 sm:gap-2 w-full sm:w-auto justify-end">
-                  {staff.email && (
-                    <a href={`mailto:${staff.email}`} 
-                       className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 bg-blue-50 rounded-lg sm:rounded-xl flex items-center justify-center text-blue-600 hover:bg-blue-100 transition-all hover:scale-110">
-                      <FiMail size={14} className="sm:hidden" />
-                      <FiMail size={16} className="hidden sm:block lg:hidden" />
-                      <FiMail size={18} className="hidden lg:block" />
-                    </a>
-                  )}
-                  <button onClick={() => setShowShareModal(true)} className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 bg-purple-50 rounded-lg sm:rounded-xl flex items-center justify-center text-purple-600 hover:bg-purple-100 transition-all hover:scale-110">
-                    <FiShare2 size={14} className="sm:hidden" />
-                    <FiShare2 size={16} className="hidden sm:block lg:hidden" />
-                    <FiShare2 size={18} className="hidden lg:block" />
-                  </button>
-                </div>
-              </div>
-        
-              {/* Desktop: Name & Title - Hidden on mobile */}
-              <div className="hidden lg:block mb-6">
-                <div className="flex items-center gap-4 mb-2">
-                  <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
-                    {staff.name}
-                  </h1>
-                  <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full whitespace-nowrap">
-                    {staff.joinDate} Present
+                <div className="absolute -bottom-1 -right-1">
+                  <span className="relative flex h-4 w-4">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-[#1a1a2e]"></span>
                   </span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-xl font-medium text-blue-600">{staff.position}</span>
-                  <span className="text-gray-300 text-xl">•</span>
-                  <div className="flex items-center gap-2">
-                    <FiMapPin className="text-gray-400" size={16} />
-                    <span className="text-gray-600 font-medium">{staff.department} Department</span>
-                  </div>
-                </div>
               </div>
-        
-              {/* Tablet: Name & Title */}
-              <div className="hidden sm:block lg:hidden mb-4">
-                <div className="flex flex-wrap items-center gap-2 mb-1">
-                  <h1 className="text-xl font-bold text-gray-900">{staff.name}</h1>
-                  <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-semibold rounded-full">
+
+              {/* Name & Meta */}
+              <div className="text-center sm:text-left flex-1 min-w-0">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-2">
+                  <span className="px-2.5 py-0.5 bg-white/10 border border-white/10 rounded text-[10px] font-black text-white/70 uppercase tracking-widest">
+                    {staff.department}
+                  </span>
+                  <span className="px-2.5 py-0.5 bg-emerald-500/20 border border-emerald-400/20 rounded text-[10px] font-black text-emerald-300 uppercase tracking-widest">
                     Since {staff.joinDate}
                   </span>
                 </div>
-                <p className="text-base font-medium text-blue-600">{staff.position}</p>
-                <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
-                  <FiMapPin size={12} /> {staff.department} Department
-                </p>
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
+                  {staff.name}
+                </h1>
+                <p className="text-sm sm:text-base text-blue-300/80 font-semibold mt-1">{staff.position}</p>
+                
+                {/* Quick contact row */}
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-4">
+                  {staff.email && (
+                    <a href={`mailto:${staff.email}`} className="flex items-center gap-1.5 text-white/50 hover:text-white text-xs transition-colors">
+                      <FiMail size={13} />
+                      <span className="hidden md:inline">{staff.email}</span>
+                      <span className="md:hidden">Email</span>
+                    </a>
+                  )}
+                  {staff.phone && (
+                    <a href={`tel:${staff.phone}`} className="flex items-center gap-1.5 text-white/50 hover:text-white text-xs transition-colors">
+                      <FiPhone size={13} />
+                      <span className="hidden md:inline">{staff.phone}</span>
+                      <span className="md:hidden">Call</span>
+                    </a>
+                  )}
+                  <span className="flex items-center gap-1.5 text-white/40 text-xs">
+                    <FiMapPin size={13} />
+                    <span className="hidden md:inline">{staff.location}</span>
+                    <span className="md:hidden">{staff.department}</span>
+                  </span>
+                </div>
               </div>
-        
-              {/* Quote Card - Responsive */}
+
+              {/* Action buttons - desktop */}
+              <div className="hidden lg:flex gap-2 shrink-0">
+                {staff.email && (
+                  <a href={`mailto:${staff.email}`} className="px-4 py-2.5 bg-white text-[#1a1a2e] rounded-lg text-xs font-black uppercase tracking-wider hover:bg-blue-50 transition-colors flex items-center gap-2">
+                    <FiMail size={14} /> Contact
+                  </a>
+                )}
+                <button onClick={() => setShowShareModal(true)} className="px-4 py-2.5 bg-white/10 text-white border border-white/10 rounded-lg text-xs font-black uppercase tracking-wider hover:bg-white/20 transition-colors flex items-center gap-2">
+                  <FiShare2 size={14} /> Share
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Stats Strip ── */}
+        <div className="border-b border-slate-100 bg-slate-50/50">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-4 divide-x divide-slate-200">
+              {[
+                { icon: FiCalendar, label: 'Joined', value: staff.joinDate, color: 'text-blue-600' },
+                { icon: FiStar, label: 'Expertise', value: staff.expertise?.length || 0, color: 'text-purple-600' },
+                { icon: FiBriefcase, label: 'Roles', value: staff.responsibilities?.length || 0, color: 'text-emerald-600' },
+                { icon: FiAward, label: 'Awards', value: staff.achievements?.length || 0, color: 'text-amber-600' },
+              ].map((stat, i) => (
+                <div key={i} className="py-4 sm:py-5 flex flex-col items-center text-center">
+                  <stat.icon className={`${stat.color} mb-1`} size={16} />
+                  <p className="text-lg sm:text-xl font-black text-slate-900">{stat.value}</p>
+                  <p className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Main Content ── */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+
+            {/* ── Left Sidebar (1 col) ── */}
+            <div className="lg:col-span-1 space-y-6">
+
+              {/* Quote */}
               {staff.quote && (
-                <div className="relative mb-5 sm:mb-6 lg:mb-8">
-                  <div className="absolute -left-1 -top-1 sm:-left-2 sm:-top-2 text-3xl sm:text-4xl lg:text-6xl text-blue-200 font-serif">"</div>
-                  <div className="relative pl-5 sm:pl-6 lg:pl-8 pr-3 sm:pr-4 py-2 sm:py-3 lg:py-4 bg-gradient-to-r from-blue-50 to-transparent rounded-xl sm:rounded-2xl">
-                    <p className="text-gray-700 text-xs sm:text-sm lg:text-base italic leading-relaxed font-light">
-                      {staff.quote}
-                    </p>
+                <div className="relative bg-slate-50 rounded-xl p-5 border border-slate-100">
+                  <span className="absolute -top-3 left-4 text-4xl text-[#1a1a2e]/10 font-serif leading-none">&ldquo;</span>
+                  <p className="text-sm text-slate-600 italic leading-relaxed pt-2">
+                    {staff.quote}
+                  </p>
+                </div>
+              )}
+
+              {/* Areas of Expertise */}
+              {staff.expertise?.length > 0 && (
+                <div>
+                  <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 flex items-center gap-2">
+                    <div className="w-5 h-0.5 bg-blue-500 rounded-full" />
+                    Expertise
+                  </h3>
+                  <div className="flex flex-wrap gap-1.5">
+                    {staff.expertise.map((item, i) => (
+                      <span 
+                        key={i}
+                        className="px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-semibold rounded-lg border border-blue-100 hover:bg-blue-100 transition-colors"
+                      >
+                        {item}
+                      </span>
+                    ))}
                   </div>
                 </div>
               )}
-        
-              {/* Bio - Responsive text */}
-              <p className="text-gray-600 leading-relaxed mb-5 sm:mb-6 lg:mb-8 text-xs sm:text-sm lg:text-base border-l-2 sm:border-l-3 lg:border-l-4 border-blue-200 pl-3 sm:pl-4 py-1">
-                {staff.bio}
-              </p>
-        
-              {/* Stats Grid - Responsive */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 mb-6 sm:mb-8 lg:mb-10">
-                <div className="bg-gradient-to-br from-blue-50 to-white rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4 border border-blue-100">
-                  <FiCalendar className="text-blue-500 mb-1 sm:mb-2" size={16}  />
-                  <FiCalendar className="text-blue-500 mb-1 sm:mb-2 hidden sm:block lg:hidden" size={18} />
-                  <FiCalendar className="text-blue-500 mb-2 hidden lg:block" size={20} />
-                  <p className="text-base sm:text-lg lg:text-2xl font-bold text-gray-900">{staff.joinDate}</p>
-                  <p className="text-[8px] sm:text-[10px] lg:text-xs text-gray-500 uppercase tracking-wide">Joined</p>
+
+              {/* Professional Skills */}
+              {staff.skills && staff.skills.length > 0 && (
+                <div>
+                  <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 flex items-center gap-2">
+                    <div className="w-5 h-0.5 bg-purple-500 rounded-full" />
+                    Skills
+                  </h3>
+                  <div className="space-y-2">
+                    {staff.skills.slice(0, 4).map((skill, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <span className="text-xs font-bold text-slate-700 flex-1">{skill.name}</span>
+                        <div className="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-purple-500 rounded-full transition-all duration-700"
+                            style={{ width: `${skill.level}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                
-                <div className="bg-gradient-to-br from-purple-50 to-white rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4 border border-purple-100">
-                  <FiStar className="text-purple-500 mb-1 sm:mb-2" size={16}/>
-                  <FiStar className="text-purple-500 mb-1 sm:mb-2 hidden sm:block lg:hidden" size={18} />
-                  <FiStar className="text-purple-500 mb-2 hidden lg:block" size={20} />
-                  <p className="text-base sm:text-lg lg:text-2xl font-bold text-gray-900">{staff.expertise?.length || 0}</p>
-                  <p className="text-[8px] sm:text-[10px] lg:text-xs text-gray-500 uppercase tracking-wide">Expertise</p>
-                </div>
-                
-                <div className="bg-gradient-to-br from-green-50 to-white rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4 border border-green-100">
-                  <FiBriefcase className="text-green-500 mb-1 sm:mb-2" size={16}  />
-                  <FiBriefcase className="text-green-500 mb-1 sm:mb-2 hidden sm:block lg:hidden" size={18} />
-                  <FiBriefcase className="text-green-500 mb-2 hidden lg:block" size={20} />
-                  <p className="text-base sm:text-lg lg:text-2xl font-bold text-gray-900">{staff.responsibilities?.length || 0}</p>
-                  <p className="text-[8px] sm:text-[10px] lg:text-xs text-gray-500 uppercase tracking-wide">Roles</p>
-                </div>
-                
-                <div className="bg-gradient-to-br from-amber-50 to-white rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4 border border-amber-100">
-                  <FiAward className="text-amber-500 mb-1 sm:mb-2" size={16} />
-                  <FiAward className="text-amber-500 mb-1 sm:mb-2 hidden sm:block lg:hidden" size={18} />
-                  <FiAward className="text-amber-500 mb-2 hidden lg:block" size={20} />
-                  <p className="text-base sm:text-lg lg:text-2xl font-bold text-gray-900">{staff.achievements?.length || 0}</p>
-                  <p className="text-[8px] sm:text-[10px] lg:text-xs text-gray-500 uppercase tracking-wide">Awards</p>
-                </div>
-              </div>
-        
-              {/* Main Content Grid - Responsive */}
-              <div className="grid lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
-                
-                {/* Left Column */}
-                <div className="space-y-5 sm:space-y-6 lg:space-y-8">
-                  
-                  {/* Expertise - Responsive Tags */}
-                  <div>
-                    <h3 className="text-[10px] sm:text-xs lg:text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2 sm:mb-3 lg:mb-4 flex items-center gap-2">
-                      <span className="w-4 sm:w-6 lg:w-8 h-0.5 bg-blue-400 rounded-full"></span>
-                      Areas of Expertise
-                    </h3>
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                      {staff.expertise?.map((item, i) => (
-                        <span 
-                          key={i}
-                          className="px-2 sm:px-3 lg:px-4 py-1 sm:py-1.5 lg:py-2 bg-white text-gray-700 text-[10px] sm:text-xs lg:text-sm rounded-lg sm:rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-200 hover:-translate-y-0.5 transition-all cursor-default"
-                        >
-                          {item}
-                        </span>
-                      ))}
+              )}
+
+              {/* Office Info Card */}
+              <div className="bg-[#1a1a2e] rounded-xl p-5 text-white/80">
+                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-4">Office Details</h3>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <FiMapPin size={14} className="text-blue-400 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-[10px] font-bold text-white/40 uppercase">Location</p>
+                      <p className="text-xs font-semibold text-white/90">{staff.location}</p>
                     </div>
                   </div>
-        
-                  {/* Skills - Modern without percentages */}
-                  {staff.skills && staff.skills.length > 0 && (
+                  <div className="flex items-start gap-3">
+                    <FiCalendar size={14} className="text-emerald-400 mt-0.5 shrink-0" />
                     <div>
-                      <h3 className="text-[10px] sm:text-xs lg:text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2 sm:mb-3 lg:mb-4 flex items-center gap-2">
-                        <span className="w-4 sm:w-6 lg:w-8 h-0.5 bg-purple-400 rounded-full"></span>
-                        Professional Skills
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {staff.skills.slice(0, 4).map((skill, i) => (
-                          <span key={i} className="px-2 sm:px-3 py-1 sm:py-1.5 bg-purple-50 text-purple-700 text-[10px] sm:text-xs rounded-lg border border-purple-200">
-                            {skill.name}
-                          </span>
-                        ))}
+                      <p className="text-[10px] font-bold text-white/40 uppercase">Office Hours</p>
+                      <p className="text-xs font-semibold text-white/90">{staff.officeHours}</p>
+                    </div>
+                  </div>
+                  {staff.email && (
+                    <div className="flex items-start gap-3">
+                      <FiMail size={14} className="text-amber-400 mt-0.5 shrink-0" />
+                      <div>
+                        <p className="text-[10px] font-bold text-white/40 uppercase">Email</p>
+                        <a href={`mailto:${staff.email}`} className="text-xs font-semibold text-white/90 hover:text-white break-all">{staff.email}</a>
                       </div>
                     </div>
                   )}
                 </div>
-        
-                {/* Right Column */}
-                <div className="space-y-5 sm:space-y-6 lg:space-y-8">
-                  
-                  {/* Responsibilities - Responsive List */}
-                  <div>
-                    <h3 className="text-[10px] sm:text-xs lg:text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2 sm:mb-3 lg:mb-4 flex items-center gap-2">
-                      <span className="w-4 sm:w-6 lg:w-8 h-0.5 bg-green-400 rounded-full"></span>
-                      Key Responsibilities
-                    </h3>
-                    <div className="space-y-1.5 sm:space-y-2">
-                      {staff.responsibilities?.map((item, i) => (
-                        <div key={i} className="flex items-start gap-2 p-2 sm:p-2.5 lg:p-3 bg-gray-50 rounded-lg sm:rounded-xl hover:bg-gray-100 transition-colors">
-                          <div className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 bg-green-100 rounded-lg flex items-center justify-center text-green-600 shrink-0 mt-0.5">
-                            <FiCheckCircle size={10} className="sm:hidden" />
-                            <FiCheckCircle size={12} className="hidden sm:block lg:hidden" />
-                            <FiCheckCircle size={14} className="hidden lg:block" />
-                          </div>
-                          <span className="text-gray-700 text-[10px] sm:text-xs lg:text-sm leading-relaxed">{item}</span>
+              </div>
+            </div>
+
+            {/* ── Right Content (2 cols) ── */}
+            <div className="lg:col-span-2 space-y-8">
+
+              {/* Bio Section */}
+              <div>
+                <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 flex items-center gap-2">
+                  <div className="w-5 h-0.5 bg-slate-400 rounded-full" />
+                  About
+                </h3>
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                  {staff.bio}
+                </p>
+              </div>
+
+              {/* Responsibilities */}
+              {staff.responsibilities?.length > 0 && (
+                <div>
+                  <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <div className="w-5 h-0.5 bg-emerald-500 rounded-full" />
+                    Key Responsibilities
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {staff.responsibilities.map((item, i) => (
+                      <div key={i} className="flex items-start gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50/30 transition-all group">
+                        <div className="w-6 h-6 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600 shrink-0 mt-0.5 group-hover:bg-emerald-200 transition-colors">
+                          <FiCheckCircle size={12} />
                         </div>
-                      ))}
-                    </div>
-                  </div>
-        
-                  {/* Achievements - Responsive Cards */}
-                  <div>
-                    <h3 className="text-[10px] sm:text-xs lg:text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2 sm:mb-3 lg:mb-4 flex items-center gap-2">
-                      <span className="w-4 sm:w-6 lg:w-8 h-0.5 bg-amber-400 rounded-full"></span>
-                      Notable Achievements
-                    </h3>
-                    <div className="space-y-1.5 sm:space-y-2">
-                      {staff.achievements?.map((item, i) => (
-                        <div key={i} className="bg-white border border-amber-100 rounded-lg sm:rounded-xl p-2 sm:p-2.5 lg:p-3 hover:border-amber-200 transition-all">
-                          <div className="flex items-center gap-2 sm:gap-3">
-                            <div className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600 font-bold text-[10px] sm:text-xs shrink-0">
-                              {i + 1}
-                            </div>
-                            <span className="text-gray-700 text-[10px] sm:text-xs lg:text-sm font-medium">{item}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                        <span className="text-xs sm:text-sm text-slate-700 leading-relaxed">{item}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </div>
-        
-              {/* Footer Contact Bar - Responsive */}
-              <div className="mt-5 sm:mt-6 lg:mt-10 pt-4 sm:pt-5 lg:pt-6 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-2 sm:gap-3 lg:gap-4">
-                  {staff.email && (
-                    <a href={`mailto:${staff.email}`} className="flex items-center gap-1 sm:gap-1.5 lg:gap-2 text-gray-600 hover:text-blue-600 transition-colors text-[10px] sm:text-xs lg:text-sm">
-                      <FiMail size={12} className="sm:hidden" />
-                      <FiMail size={14} className="hidden sm:block lg:hidden" />
-                      <FiMail size={16} className="hidden lg:block" />
-                      <span className="hidden sm:inline">{staff.email}</span>
-                      <span className="sm:hidden">Email</span>
-                    </a>
-                  )}
+              )}
+
+              {/* Achievements */}
+              {staff.achievements?.length > 0 && (
+                <div>
+                  <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <div className="w-5 h-0.5 bg-amber-500 rounded-full" />
+                    Notable Achievements
+                  </h3>
+                  <div className="space-y-2.5">
+                    {staff.achievements.map((item, i) => (
+                      <div key={i} className="flex items-center gap-4 p-3 sm:p-4 bg-white border border-slate-100 rounded-xl hover:border-amber-200 hover:shadow-sm transition-all group">
+                        <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center border border-amber-100 group-hover:bg-amber-100 transition-colors shrink-0">
+                          <FiAward size={14} className="text-amber-600" />
+                        </div>
+                        <span className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">{item}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex items-center gap-1.5 text-[8px] sm:text-[10px] lg:text-xs text-gray-400">
-                  <span className="whitespace-nowrap">Updated {new Date().getFullYear()}</span>
-                  <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-gray-300 rounded-full"></span>
-                  <span className="whitespace-nowrap">kinyui boys Senior School</span>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
-        
-        {/* MODERN BRAND FOOTER - Zoom & Mobile Optimized */}
-        <footer className="mt-12 sm:mt-20 border-t border-slate-100 bg-white/50 backdrop-blur-sm relative overflow-hidden">
-          {/* Sublte Decorative Background Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-50/50 pointer-events-none" />
-        
-          <div className="max-w-7xl mx-auto px-6 py-10 sm:py-16 relative z-10">
-            <div className="flex flex-col items-center justify-center space-y-6">
-              
-              {/* Brand Mark */}
-              <div className="flex flex-col items-center group cursor-default">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-slate-900 rounded-[1.5rem] flex items-center justify-center shadow-2xl shadow-blue-900/20 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500">
-                  <FaGraduationCap className="text-white text-xl sm:text-2xl" />
-                </div>
-                
-                <div className="mt-6 text-center">
-                  <h4 className="font-black text-slate-900 text-sm sm:text-lg uppercase tracking-[0.3em] leading-none mb-2">
-                    kinyui boys Senior School
-                  </h4>
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="h-px w-4 bg-blue-600/30" />
-                    <span className="text-[10px] sm:text-xs font-bold text-blue-600 uppercase tracking-widest">
-                      Boarding School
-                    </span>
-                    <div className="h-px w-4 bg-blue-600/30" />
-                  </div>
-                </div>
+
+        {/* ── Footer ── */}
+        <footer className="border-t border-slate-100 bg-white">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+            <div className="flex flex-col items-center gap-4">
+              <div className="flex items-center gap-3">
+                <Image src="/seo/logo.png" alt="Logo" width={28} height={28} className="opacity-50" />
+                <span className="text-xs font-black text-slate-300 uppercase tracking-[0.2em]">
+                  Kinyui Boys Senior School
+                </span>
               </div>
-        
-              {/* Meta Information */}
-              <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 text-slate-400">
-                <p className="text-[10px] sm:text-xs font-black uppercase tracking-tighter">
-                Soaring to Excellence 
-                </p>
-                <div className="w-1 h-1 rounded-full bg-slate-200" />
-                <p className="text-[10px] sm:text-xs font-black uppercase tracking-tighter">
-                  Professional Staff Directory
-                </p>
-                <div className="w-1 h-1 rounded-full bg-slate-200" />
-                <p className="text-[10px] sm:text-xs font-black uppercase tracking-tighter text-slate-300">
-                  © {new Date().getFullYear()} kinyui boys Senior School
-                </p>
+              <div className="flex items-center gap-3 text-[10px] text-slate-300">
+                <span>Soaring to Excellence</span>
+                <span className="w-1 h-1 rounded-full bg-slate-200" />
+                <span>Staff Directory</span>
+                <span className="w-1 h-1 rounded-full bg-slate-200" />
+                <span>&copy; {new Date().getFullYear()}</span>
               </div>
-        
-              {/* Modern Interaction: Quick Action */}
-              <div className="pt-4">
-                <button 
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                  className="px-6 py-2 rounded-full border border-slate-200 text-slate-500 text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all active:scale-95"
-                >
-                  Back to Top
-                </button>
-              </div>
+              <button 
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="mt-2 px-5 py-1.5 rounded-full border border-slate-200 text-slate-400 text-[10px] font-bold uppercase tracking-widest hover:bg-[#1a1a2e] hover:text-white hover:border-[#1a1a2e] transition-all"
+              >
+                Back to Top
+              </button>
             </div>
           </div>
         </footer>
