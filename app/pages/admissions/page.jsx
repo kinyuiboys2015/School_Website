@@ -1364,7 +1364,7 @@ const VisionMissionSection = ({ vision, mission, motto, videoTour, videoType, vi
               The <span className="text-emerald-600">Future</span> We Build
             </h3>
             
-            <p className="text-slate-600 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl">
+            <p className="text-slate-900 text-sm md:text-base lg:text-md  max-w-xl">
               {vision || "To be a premier center of academic excellence in Machakos, nurturing globally competitive leaders through integrity, innovation, and holistic development."}
             </p>
             
@@ -1391,13 +1391,13 @@ const VisionMissionSection = ({ vision, mission, motto, videoTour, videoType, vi
               What Drives Us
             </h3>
             
-            <p className="text-slate-600 text-sm md:text-base lg:text-lg leading-relaxed">
+            <p className="text-slate-900 text-sm md:text-base lg:text-md">
               {mission || "Providing quality education through modern infrastructure, fostering discipline, innovation, and self-reliance in every student who walks through our gates."}
             </p>
             
             <div className="pt-4 grid grid-cols-2 gap-4">
               <div>
-                <div className="text-2xl font-black text-emerald-600">500+</div>
+                <div className="text-2xl font-black text-emerald-600">400+</div>
                 <div className="text-[10px] font-black text-slate-900 uppercase tracking-wider">Students</div>
               </div>
               <div>
@@ -2416,7 +2416,7 @@ return (
         </span>
       </h2>
       
-      <p className="text-stone-500 mx-auto text-sm sm:text-base md:text-lg leading-relaxed px-2 text-balance max-w-2xl">
+      <p className="text-dark mx-auto text-sm sm:text-base md:text-md px-2 text-balance max-w-4xl">
         {schoolData?.description || "A premier learning institution that blends academic rigor with character formation, preparing young men to lead with purpose and integrity."}
       </p>
       </div>
