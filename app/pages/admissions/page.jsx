@@ -2600,9 +2600,21 @@ return (
 
     {/* Section 3 & 4: Subject Tiles & Departments (Unified Visuals) */}
     {[
-      { title: "Subjects Offered", desc: "Core and elective disciplines.", count: schoolData?.subjects?.length, data: schoolData?.subjects, iconColor: "text-blue-600", bgColor: "bg-blue-50" },
-      { title: "Departments", desc: "Academic and administrative wings.", count: schoolData?.departments?.length, data: schoolData?.departments, iconColor: "text-purple-600", bgColor: "bg-purple-50" }
-    ].map((sect, i) => (
+{
+  title: "Subjects Offered",
+  desc: "Our school provides a wide range of subjects, encompassing both core and elective disciplines. The curriculum is designed to give students a strong foundation in essential academic areas while also allowing them to explore diverse interests and talents. Each subject is carefully structured to promote critical thinking, creativity, and practical skills, preparing students for higher education, career paths, and lifelong learning.",
+  count: schoolData?.subjects?.length,
+  data: schoolData?.subjects,
+  iconColor: "text-blue-600",
+  bgColor: "bg-blue-50"
+}{
+  title: "Departments",
+  desc: "Our school is structured into distinct departments, each responsible for specific academic and administrative functions. These departments work together to provide a holistic educational experience, ensure smooth operations, and support the growth and development of both students and staff. They cover areas from curriculum planning and classroom instruction to student services, administration, and extracurricular programs, making sure every aspect of school life is efficiently managed and aligned with our educational goals.",
+  count: schoolData?.departments?.length,
+  data: schoolData?.departments,
+  iconColor: "text-purple-600",
+  bgColor: "bg-purple-50"
+}    ].map((sect, i) => (
       <section key={i} className="relative bg-slate-50 rounded-[2rem] p-6 md:p-12 mx-1">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
           <div>
