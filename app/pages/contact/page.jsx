@@ -389,11 +389,11 @@ export default function ContactPage() {
               <div className="grid sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
                 <div>
                   <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">Full Name <span className="text-red-500">*</span></label>
-                  <input type="text" name="name" required value={formData.name} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition text-sm font-semibold text-slate-900 placeholder:font-normal placeholder:text-slate-400" placeholder="e.g. John Doe" />
+                  <input type="text" name="name" required value={formData.name} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition text-sm font-semibold text-slate-900 placeholder:font-normal placeholder:text-slate-400" placeholder="e.g. John Mutuku" />
                 </div>
                 <div>
                   <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">Email Address <span className="text-red-500">*</span></label>
-                  <input type="email" name="email" required value={formData.email} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition text-sm font-semibold text-slate-900 placeholder:font-normal placeholder:text-slate-400" placeholder="e.g. john.doe@example.com" />
+                  <input type="email" name="email" required value={formData.email} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition text-sm font-semibold text-slate-900 placeholder:font-normal placeholder:text-slate-400" placeholder="e.g. john.mutuku@example.com" />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
@@ -401,17 +401,25 @@ export default function ContactPage() {
                   <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">Phone Number <span className="text-red-500">*</span></label>
                   <input type="tel" name="phone" required value={formData.phone} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition text-sm font-semibold text-slate-900 placeholder:font-normal placeholder:text-slate-400" placeholder="0712 345 678" />
                 </div>
-                <div>
-                  <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">Student Grade</label>
-                  <select name="studentGrade" value={formData.studentGrade} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition appearance-none text-sm font-semibold text-slate-900">
-                    <option value="">Select Grade (Optional)</option>
-                    <option value="Form 1">Form 1</option>
-                    <option value="Form 2">Form 2</option>
-                    <option value="Form 3">Form 3</option>
-                    <option value="Form 4">Form 4</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
+              <div>
+  <label className="text-xs sm:text-sm font-bold text-slate-800 mb-1.5 sm:mb-2 block">
+    Student Grade
+  </label>
+  <select
+    name="studentGrade"
+    value={formData.studentGrade}
+    onChange={handleInputChange}
+    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-100 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-amber-400 transition appearance-none text-sm font-semibold text-slate-900"
+  >
+    <option value="">Select Grade (Optional)</option>
+    <option value="Grade 10 (CBC)">Grade 10 (CBC)</option>
+    <option value="Form 1">Form 1</option>
+    <option value="Form 2">Form 2</option>
+    <option value="Form 3">Form 3</option>
+    <option value="Form 4">Form 4</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
               </div>
                <div className="grid sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
                 <div>
