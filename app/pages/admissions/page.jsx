@@ -2190,7 +2190,7 @@ export default function ComprehensiveAdmissions() {
         </h1>
 <p className="text-white text-xs md:text-sm leading-relaxed max-w-md mb-5">
   Begin your academic journey. Explore programs, check requirements, and apply online. 
-  Our smart admissions portal brings everything together in one place, allowing you to access information, submit applications, and track your progress بسهولة from any device.
+  Our smart admissions portal brings everything together in one place, allowing you to access information, submit applications, and track Our admissions from any device.
 </p>
 
         {/* Action Row */}
