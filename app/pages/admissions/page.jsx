@@ -1973,7 +1973,7 @@ export default function ComprehensiveAdmissions() {
   // Admission paths - Updated based on your school's focus
   const admissionPaths = [
     {
-      title: 'Form 1 Entry',
+      title: 'Grade 9 & Form 1 Entry ',
       icon: FiBookOpen,
       description: 'Join our Form 1 program with comprehensive academic curriculum and extracurricular activities',
       features: ['Academic Excellence', 'Extra-curricular Activities', 'Digital Literacy', 'Talent Development'],
