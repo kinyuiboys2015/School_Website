@@ -880,7 +880,7 @@ const AdmissionPathCard = ({ path, onApply, index }) => {
                 ? 'bg-teal-50 border border-teal-100' 
                 : 'bg-white/10 border border-white/10'
             }`}>
-              <PathIcon className={`text-lg ${isEven ? 'text-teal-600' : 'text-teal-300'}`} />
+              <PathIcon className={`text-lg ${isEven ? 'text-teal-800' : 'text-teal-300'}`} />
             </div>
             <div>
               <h3 className={`text-base md:text-lg font-extrabold tracking-tight leading-tight ${isEven ? 'text-slate-900' : 'text-white'}`}>
@@ -1871,7 +1871,7 @@ export default function ComprehensiveAdmissions() {
         fullName: 'Competency Based Curriculum'
       },
       icon: FiBookOpen,
-      color: 'from-teal-600 to-green-500',
+      color: 'from-teal-800 to-green-500',
       description: 'The CBC system focuses on developing seven core competencies: communication, collaboration, critical thinking, creativity, citizenship, digital literacy, and learning to learn. It emphasizes practical skills and values over rote memorization.',
       structure: [
         { years: '2', name: 'Pre-Primary' },
@@ -2233,7 +2233,7 @@ export default function ComprehensiveAdmissions() {
   {/* Holistic Curriculum - Replaced Nationally Ranked */}
   <div className="flex items-start gap-4 p-1">
     <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center shrink-0 mt-0.5">
-      <FiAward className="text-teal-600 text-base" />
+      <FiAward className="text-teal-800 text-base" />
     </div>
     <div className="min-w-0">
       <h4 className="text-sm md:text-base font-bold text-slate-900 leading-tight">
@@ -2288,7 +2288,7 @@ export default function ComprehensiveAdmissions() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-5">
             <div className="flex items-center gap-2.5 shrink-0">
               <div className="w-8 h-8 rounded-lg bg-teal-50 border border-teal-100 flex items-center justify-center">
-                <FiInfo className="text-teal-600 text-sm" />
+                <FiInfo className="text-teal-800 text-sm" />
               </div>
               <span className="text-xs font-bold text-slate-900 uppercase tracking-wide">About Admissions</span>
             </div>
@@ -2402,7 +2402,7 @@ return (
       
       <div className="relative z-10">
       <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-200 mb-4 md:mb-6">
-        <FiBookOpen className="text-teal-600 text-xs" />
+        <FiBookOpen className="text-teal-800 text-xs" />
         <span className="text-[10px] font-semibold uppercase tracking-wider text-teal-700">
           Admissions {new Date().getFullYear()}
         </span>
@@ -2410,7 +2410,7 @@ return (
       
       <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-stone-900 mb-3 tracking-tight leading-[1.15] text-balance">
         Discover{" "}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-800 to-cyan-600">
           {schoolData?.name || "Kinyui Boys"}
         </span>
       </h2>
@@ -2713,11 +2713,11 @@ return (
       <img src="/kinyui.png" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 opacity-[0.03] pointer-events-none select-none" />
       <div className="relative z-10">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-50 border border-teal-200 rounded-lg mb-6">
-          <FiBriefcase className="text-teal-600 text-xs" />
+          <FiBriefcase className="text-teal-800 text-xs" />
           <span className="text-[10px] font-extrabold uppercase tracking-wider text-teal-700">Career Readiness</span>
         </div>
         <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">
-          Career <span className="text-teal-600">Compass</span> and CBC <span className="text-teal-600">Pathways</span>
+          Career <span className="text-teal-800">Compass</span> and CBC <span className="text-teal-800">Pathways</span>
         </h2>
         <p className="text-black text-sm md:text-md max-w-2xl mx-auto leading-relaxed">
           Map your ambitions to real-world careers. See how each subject you study today connects to the profession you'll build tomorrow.
@@ -2734,11 +2734,11 @@ return (
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
             <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-teal-100 rounded-full mb-2">
-              <FiBookOpen className="text-teal-600 text-xs" />
+              <FiBookOpen className="text-teal-800 text-xs" />
               <span className="text-[9px] font-bold uppercase tracking-wider text-teal-700">CBC Framework</span>
             </div>
             <h3 className="text-lg md:text-2xl font-extrabold text-slate-900 tracking-tight">
-              CBC <span className="text-teal-600">Learning Tracks</span> & Subjects
+              CBC <span className="text-teal-800">Learning Tracks</span> & Subjects
             </h3>
             <p className="text-slate-700 text-xs md:text-sm mt-1 max-w-xl">
               The Competency Based Curriculum organizes learning around three main pathways, each tailored to different student strengths and career goals.
@@ -2853,7 +2853,7 @@ return (
               const SubjIcon = subj.icon;
               return (
                 <div key={i} className="flex items-center gap-2 p-2.5 bg-slate-50 rounded-lg border border-slate-100">
-                  <SubjIcon className="text-teal-600 text-sm shrink-0" />
+                  <SubjIcon className="text-teal-800 text-sm shrink-0" />
                   <span className="text-[10px] md:text-xs font-semibold text-slate-700 truncate">{subj.name}</span>
                 </div>
               );
@@ -2905,11 +2905,11 @@ return (
               {/* Hero Header */}
               <div className="text-center mb-8 md:mb-12 px-2 md:px-4">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-50 border border-teal-200 rounded-lg mb-6">
-                  <FiFileText className="text-teal-600 text-xs" />
+                  <FiFileText className="text-teal-800 text-xs" />
                   <span className="text-[10px] font-extrabold uppercase tracking-wider text-teal-700">Admission Checklist</span>
                 </div>
                 <h2 className="text-lg sm:text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-4 px-2">
-                  Application <span className="text-teal-600">Requirements</span>
+                  Application <span className="text-teal-800">Requirements</span>
                 </h2>
                 <p className="text-slate-700 text-base md:text-lg max-w-3xl mx-auto leading-relaxed px-2">
                   Everything you need to prepare for a successful application journey.
