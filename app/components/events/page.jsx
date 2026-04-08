@@ -323,45 +323,45 @@ const ModernEventsNewsSection = () => {
                         )}
                       </div>
 
-                      {/* Actions */}
-                      <div className="mt-5 pt-4 border-t border-gray-100 flex flex-col sm:flex-row gap-2">
-                        {tab === 'events' ? (
-                          <>
-                            <button
-                              onClick={() => {
-                                const dt = fmtDate(featured.date);
-                                window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(featured.title)}&dates=${dt.iso}/${dt.iso}&details=${encodeURIComponent(featured.description || '')}&location=${encodeURIComponent(featured.location || '')}`, '_blank');
-                              }}
-                              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 bg-gray-900 text-white rounded-xl text-xs sm:text-sm font-bold hover:bg-black transition-colors active:scale-[0.97]"
-                            >
-                              <FiCalendar className="w-3.5 h-3.5" /> Add to Cal
-                            </button>
-                            <button
-                              onClick={() => setShareModal(true)}
-                              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl text-xs sm:text-sm font-bold hover:bg-gray-50 transition-colors active:scale-[0.97]"
-                            >
-                              <FiShare2 className="w-3.5 h-3.5" /> Share
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <div className="flex items-center gap-3 flex-1">
-                              <button className="flex items-center gap-1 text-gray-400 hover:text-red-500 transition-colors text-sm">
-                                <FiHeart className="w-4 h-4" /> <span className="font-bold">{featured.likes || 0}</span>
-                              </button>
-                              <button onClick={() => setShareModal(true)} className="flex items-center gap-1 text-gray-400 hover:text-blue-500 transition-colors text-sm">
-                                <FiShare2 className="w-4 h-4" /> <span className="font-bold">Share</span>
-                              </button>
-                            </div>
-                            <button
-                              onClick={() => window.location.href = '/pages/eventsandnews'}
-                              className="flex items-center justify-center gap-1.5 px-4 py-2.5 bg-gray-900 text-white rounded-xl text-xs sm:text-sm font-bold hover:bg-black transition-colors active:scale-[0.97]"
-                            >
-                              Read Full <FiArrowRight className="w-3.5 h-3.5" />
-                            </button>
-                          </>
-                        )}
-                      </div>
+       {/* Actions - Always row layout */}
+<div className="mt-5 pt-4 border-t border-gray-100 flex flex-row flex-wrap items-center gap-2 sm:gap-3">
+  {tab === 'events' ? (
+    <>
+      <button
+        onClick={() => {
+          const dt = fmtDate(featured.date);
+          window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(featured.title)}&dates=${dt.iso}/${dt.iso}&details=${encodeURIComponent(featured.description || '')}&location=${encodeURIComponent(featured.location || '')}`, '_blank');
+        }}
+        className="flex-1 min-w-[120px] flex items-center justify-center gap-1.5 px-3 py-2.5 bg-gray-900 text-white rounded-xl text-xs sm:text-sm font-bold hover:bg-black transition-colors active:scale-[0.97]"
+      >
+        <FiCalendar className="w-3.5 h-3.5" /> Add to Cal
+      </button>
+      <button
+        onClick={() => setShareModal(true)}
+        className="flex-1 min-w-[100px] flex items-center justify-center gap-1.5 px-3 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl text-xs sm:text-sm font-bold hover:bg-gray-50 transition-colors active:scale-[0.97]"
+      >
+        <FiShare2 className="w-3.5 h-3.5" /> Share
+      </button>
+    </>
+  ) : (
+    <>
+      <div className="flex items-center gap-3 flex-1 flex-wrap">
+        <button className="flex items-center gap-1 text-gray-400 hover:text-red-500 transition-colors text-sm">
+          <FiHeart className="w-4 h-4" /> <span className="font-bold">{featured.likes || 0}</span>
+        </button>
+        <button onClick={() => setShareModal(true)} className="flex items-center gap-1 text-gray-400 hover:text-blue-500 transition-colors text-sm">
+          <FiShare2 className="w-4 h-4" /> <span className="font-bold">Share</span>
+        </button>
+      </div>
+      <button
+        onClick={() => window.location.href = '/pages/eventsandnews'}
+        className="flex-1 min-w-[120px] flex items-center justify-center gap-1.5 px-4 py-2.5 bg-gray-900 text-white rounded-xl text-xs sm:text-sm font-bold hover:bg-black transition-colors active:scale-[0.97]"
+      >
+        Read Full <FiArrowRight className="w-3.5 h-3.5" />
+      </button>
+    </>
+  )}
+</div>
                     </div>
                   </div>
                 </div>

@@ -590,31 +590,31 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              {/* Actions & Secondary Stats */}
-              <div className="flex flex-col sm:flex-row items-center gap-4 pt-10 border-t border-slate-200">
-                <Link href="/pages/OurSchoolPolicies" className="w-full sm:w-auto">
-                  <button className="w-full px-8 py-4 bg-slate-900 text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-amber-600 transition-colors flex items-center justify-center gap-3">
-                    View School Rules <ArrowRight size={16} />
-                  </button>
-                </Link>
-                
-                <Link href="/pages/Guidance-and-Councelling" className="w-full sm:w-auto">
-                  <button className="w-full px-8 py-4 bg-white text-slate-900 border border-slate-300 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-slate-50 transition-colors">
-                    Sessions
-                  </button>
-                </Link>
+          {/* Actions & Secondary Stats - Always row layout */}
+<div className="flex flex-row flex-wrap items-center justify-start gap-4 pt-10 border-t border-slate-200">
+  <Link href="/pages/OurSchoolPolicies" className="flex-none">
+    <button className="px-6 sm:px-8 py-3 sm:py-4 bg-slate-900 text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-amber-600 transition-colors flex items-center justify-center gap-2">
+      View School Rules <ArrowRight size={14} />
+    </button>
+  </Link>
 
-                <div className="flex gap-8 ml-auto xl:flex">
-                  <div className="text-right">
-                    <p className="text-xl sm:text-2xl font-black text-slate-900">24/7</p>
-                    <p className="text-[9px] uppercase font-bold text-slate-600">Support</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xl sm:text-2xl font-black text-slate-900">15+</p>
-                    <p className="text-[9px] uppercase font-bold text-slate-600">Mentors</p>
-                  </div>
-                </div>
-              </div>
+  <Link href="/pages/Guidance-and-Councelling" className="flex-none">
+    <button className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-slate-900 border border-slate-300 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-slate-50 transition-colors">
+      Sessions
+    </button>
+  </Link>
+
+  <div className="flex flex-row gap-6 ml-auto">
+    <div className="text-right">
+      <p className="text-lg sm:text-2xl font-black text-slate-900">24/7</p>
+      <p className="text-[9px] uppercase font-bold text-slate-600">Student Support</p>
+    </div>
+    <div className="text-right">
+      <p className="text-lg sm:text-2xl font-black text-slate-900">10+</p>
+      <p className="text-[9px] uppercase font-bold text-slate-600">Mentors</p>
+    </div>
+  </div>
+</div>
             </div>
 
           </div>
