@@ -25,7 +25,6 @@ import {
   FiBook,
   FiTarget,
   FiUsers,
-  FiChevronUp,
   FiBookOpen,
   FiRefreshCw
 } from 'react-icons/fi';
@@ -159,7 +158,7 @@ const sortStaffByHierarchy = (staff) => {
 // ==========================================
 
 const Badge = ({ children, color = 'slate', className = '', icon }) => (
-  <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold border ${getBadgeColorStyles(color)} ${className}`}>
+  <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold border ${getBadgeColorStyles(color)} ${className}`}>
     {icon && <span className="mr-1">{icon}</span>}
     {children}
   </span>
@@ -168,83 +167,58 @@ const Badge = ({ children, color = 'slate', className = '', icon }) => (
 const StaffSkeleton = ({ viewMode }) => {
   if (viewMode === 'list') {
     return (
-      <div className="flex gap-4 p-4 border border-gray-200/50 rounded-xl bg-white/80 animate-pulse">
-        <div className="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl shrink-0" />
-        <div className="flex-1 space-y-3">
-          <div className="h-5 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-1/3" />
-          <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-1/4" />
-          <div className="h-10 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-full" />
+      <div className="flex gap-4 p-4 bg-white border border-slate-100 rounded-xl animate-pulse">
+        <div className="w-14 h-14 bg-slate-100 rounded-xl shrink-0" />
+        <div className="flex-1 space-y-2">
+          <div className="h-4 bg-slate-100 rounded w-1/3" />
+          <div className="h-3 bg-slate-100 rounded w-1/4" />
+          <div className="h-3 bg-slate-100 rounded w-full" />
         </div>
       </div>
     );
   }
   return (
-    <div className="border border-gray-200/50 rounded-2xl bg-white/80 p-4 space-y-4 animate-pulse">
-      <div className="w-full aspect-[4/3] bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl" />
-      <div className="space-y-2">
-        <div className="h-5 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-3/4" />
-        <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-1/2" />
+    <div className="bg-white border border-slate-100 rounded-xl overflow-hidden animate-pulse">
+      <div className="w-full aspect-[4/3] bg-slate-100" />
+      <div className="p-4 space-y-2">
+        <div className="h-4 bg-slate-100 rounded w-3/4" />
+        <div className="h-3 bg-slate-100 rounded w-1/2" />
       </div>
     </div>
   );
 };
 
-const StatsPill = ({ icon, value, label, color = 'blue' }) => {
-  const colorMap = {
-    blue: 'bg-blue-50 text-blue-600 ring-blue-100',
-    emerald: 'bg-emerald-50 text-emerald-600 ring-emerald-100',
-    amber: 'bg-amber-50 text-amber-600 ring-amber-100',
-    purple: 'bg-purple-50 text-purple-600 ring-purple-100',
-  };
-
-  const activeColor = colorMap[color] || colorMap.blue;
-
-  return (
-    <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-lg border border-slate-100 shadow-sm group hover:border-slate-300 transition-all cursor-default">
-      <div className={`shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-sm ring-1 transition-transform group-hover:scale-101 ${activeColor}`}>
-        {icon}
-      </div>
-      <div className="flex flex-col leading-tight">
-        <span className="text-sm font-black text-slate-900 tracking-tight">
-          {value}
-        </span>
-        <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">
-          {label}
-        </span>
-      </div>
-    </div>
-  );
-};
+const StatsPill = ({ icon, value, label }) => (
+  <div className="flex flex-col items-center py-3 sm:py-4">
+    <span className="text-base mb-1">{icon}</span>
+    <span className="text-lg sm:text-xl font-black text-slate-900">{value}</span>
+    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">{label}</span>
+  </div>
+);
 
 const HierarchySection = ({ title, icon, staff, viewMode, isFirst = false, onContactClick }) => {
   if (!staff?.length) return null;
 
   return (
-    <section className={isFirst ? "animate-in fade-in slide-in-from-bottom-4 duration-700" : "mt-12"}>
-      <div className="flex items-center gap-3 mb-4 px-1">
-        <div className="relative shrink-0 w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-900/10 overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <span className="relative text-lg">{icon}</span>
-        </div>
-        
-        <div className="min-w-0">
-          <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-none mb-0.5">
-            {title}
-          </h2>
-          <p className="text-[10px] sm:text-xs font-bold text-blue-600 tracking-widest uppercase">
-            {staff.length} {staff.length === 1 ? 'Expert' : 'Professionals'}
-          </p>
-        </div>
-        <div className="flex-1 h-px bg-gradient-to-r from-gray-200 to-transparent ml-2 hidden sm:block" />
+    <section className={isFirst ? "" : "mt-10"}>
+      <div className="flex items-center gap-3 mb-5">
+        <span className="text-lg">{icon}</span>
+        <h2 className="text-sm font-black text-[#1a1a2e] uppercase tracking-[0.15em]">
+          {title}
+        </h2>
+        <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
+          {staff.length}
+        </span>
+        <div className="flex-1 h-px bg-slate-200 ml-2" />
       </div>
       
       <div className={
         viewMode === 'grid' 
-          ? "grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4 sm:gap-6" 
+          ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" 
           : "flex flex-col gap-3"
       }>
         {staff.map((member) => (
-          <div key={member.id} className="transition-all duration-300">
+          <div key={member.id}>
             {viewMode === 'grid' 
               ? <StaffCard staff={member} onContactClick={onContactClick} /> 
               : <StaffListCard staff={member} onContactClick={onContactClick} />
@@ -256,16 +230,16 @@ const HierarchySection = ({ title, icon, staff, viewMode, isFirst = false, onCon
   );
 };
 
-// StaffCard Component with fixed button layout
+// StaffCard Component
 const StaffCard = ({ staff, onContactClick }) => {
   const deptConfig = DEPARTMENTS.find(d => d.id === staff.departmentId);
   const hierarchy = getStaffHierarchy(staff.position);
   
   return (
-    <div className="bg-white rounded-xl border border-gray-200/60 overflow-hidden shadow-sm flex flex-col h-full">
+    <div className="bg-white rounded-xl border border-slate-100 overflow-hidden hover:border-slate-200 hover:shadow-md transition-all group flex flex-col h-full">
       
-      {/* Image Section */}
-      <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200">
+      {/* Image */}
+      <div className="relative w-full aspect-[4/3] bg-slate-100">
         <Image
           src={getImageSrc(staff)}
           alt={staff.name}
@@ -276,79 +250,59 @@ const StaffCard = ({ staff, onContactClick }) => {
           onError={(e) => { e.target.src = '/images/default-staff.jpg'; }}
         />
         
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-        
-        <div className="absolute top-2 right-2 flex items-center gap-1">
-          <div className="flex items-center gap-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full shadow-md">
-            <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-            <span className="text-[10px] font-medium text-gray-700">Active</span>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+        {hierarchy === 'leadership' && (
+          <div className="absolute top-2 left-2 bg-amber-500 text-white px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider flex items-center gap-1">
+            <span>👑</span> Lead
           </div>
-        </div>
+        )}
 
         <div className="absolute bottom-2 left-2">
-          <Badge color={deptConfig?.color} icon={deptConfig?.icon} className="text-[10px] font-medium px-2 py-1 bg-white/90 backdrop-blur-sm shadow-md">
+          <Badge color={deptConfig?.color} icon={deptConfig?.icon} className="bg-white/90 backdrop-blur-sm shadow-sm">
             {staff.department}
           </Badge>
         </div>
-
-        {hierarchy === 'leadership' && (
-          <div className="absolute top-2 left-2 bg-amber-400 text-white px-2 py-1 rounded-full text-[10px] font-bold shadow-md flex items-center gap-1">
-            <span>👑</span>
-            <span>LEAD</span>
-          </div>
-        )}
       </div>
 
-      <div className="p-3 flex-1 flex flex-col">
-        
-        <div className="mb-2">
-          <h3 className="text-base sm:text-lg font-bold text-gray-900 leading-tight mb-0.5">
-            {staff.name}
-          </h3>
-          <p className="text-xs font-medium text-blue-600">
-            {staff.position}
-          </p>
-        </div>
+      <div className="p-4 flex-1 flex flex-col">
+        <h3 className="text-sm font-black text-slate-900 leading-tight mb-0.5">
+          {staff.name}
+        </h3>
+        <p className="text-xs font-semibold text-blue-600 mb-2">{staff.position}</p>
 
-        <p className="text-xs text-gray-600 line-clamp-2 mb-2 leading-relaxed">
-          "{staff.quote || staff.bio}"
+        <p className="text-[11px] text-slate-500 line-clamp-2 mb-3 leading-relaxed">
+          {staff.quote || staff.bio}
         </p>
 
         {staff.expertise && staff.expertise.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-3">
             {staff.expertise.slice(0, 2).map((tag, idx) => (
-              <span 
-                key={idx} 
-                className="px-2 py-0.5 bg-gray-100 text-gray-700 text-[10px] font-medium rounded-full"
-              >
+              <span key={idx} className="px-2 py-0.5 bg-slate-50 text-slate-600 text-[10px] font-medium rounded border border-slate-100">
                 {tag}
               </span>
             ))}
             {staff.expertise.length > 2 && (
-              <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-[10px] font-medium rounded-full">
+              <span className="px-2 py-0.5 bg-slate-50 text-slate-400 text-[10px] font-medium rounded border border-slate-100">
                 +{staff.expertise.length - 2}
               </span>
             )}
           </div>
         )}
 
-        {/* Buttons in flex row */}
-        <div className="flex gap-2 mt-auto">
+        <div className="flex gap-2 mt-auto pt-2 border-t border-slate-50">
           <button
             onClick={() => onContactClick(staff)}
-            className="flex-1 flex items-center justify-center gap-1 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-medium hover:bg-blue-100 transition-colors"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-slate-50 text-slate-700 rounded-lg text-xs font-bold hover:bg-blue-50 hover:text-blue-600 transition-colors"
           >
-            <FiMail size={12} />
-            <span>Contact</span>
+            <FiMail size={12} /> Contact
           </button>
           
           <Link
             href={`/pages/staff/${staff.id}/${generateSlug(staff.name, staff.id)}`}
-            className="flex-1 flex items-center justify-center gap-1 py-2 bg-gray-900 text-white text-xs font-medium rounded-lg"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#1a1a2e] text-white text-xs font-bold rounded-lg hover:bg-[#2d2d44] transition-colors"
           >
-            <FiUser size={12} />
-            <span>Profile</span>
-            <FiArrowRight size={12} />
+            <FiUser size={12} /> Profile
           </Link>
         </div>
       </div>
@@ -362,54 +316,50 @@ const StaffListCard = ({ staff, onContactClick }) => {
   const hierarchy = getStaffHierarchy(staff.position);
   
   return (
-    <div className="bg-white rounded-xl border border-gray-200/50 p-3 flex flex-col sm:flex-row gap-3 items-center relative">
-      <div className="relative">
-        <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-gradient-to-br from-gray-100 to-gray-200 shadow">
+    <div className="bg-white rounded-xl border border-slate-100 p-3 flex flex-col sm:flex-row gap-3 items-center hover:border-slate-200 hover:shadow-sm transition-all">
+      <div className="relative shrink-0">
+        <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-slate-100">
           <Image
             src={getImageSrc(staff)}
             alt={staff.name}
             fill
             className="object-cover"
-            sizes="64px"
-            onError={(e) => {
-              e.target.src = '/images/default-staff.jpg';
-            }}
+            sizes="56px"
+            onError={(e) => { e.target.src = '/images/default-staff.jpg'; }}
           />
         </div>
         {hierarchy === 'leadership' && (
-          <div className="absolute -top-1 -left-1 w-5 h-5 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center shadow-sm border border-white">
-            <span className="text-white text-[10px]">⭐</span>
-          </div>
+          <div className="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center text-[8px] border-2 border-white">👑</div>
         )}
       </div>
 
-      <div className="flex-1 text-center sm:text-left">
-        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
-          <h3 className="text-sm font-bold text-gray-900">
-            <Link href={`/pages/staff/${staff.id}/${generateSlug(staff.name, staff.id)}`} className="text-gray-900">
+      <div className="flex-1 text-center sm:text-left min-w-0">
+        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-0.5">
+          <h3 className="text-sm font-bold text-slate-900">
+            <Link href={`/pages/staff/${staff.id}/${generateSlug(staff.name, staff.id)}`} className="hover:text-blue-600 transition-colors">
               {staff.name}
             </Link>
           </h3>
-          <Badge color={deptConfig?.color} icon={deptConfig?.icon} className="text-[10px] px-2 py-0.5">
+          <Badge color={deptConfig?.color} icon={deptConfig?.icon}>
             {staff.department}
           </Badge>
         </div>
-        <p className="text-blue-600 font-semibold text-xs mb-1">{staff.position}</p>
-        <p className="text-gray-600 text-xs leading-relaxed line-clamp-1">{staff.bio}</p>
+        <p className="text-xs font-semibold text-blue-600 mb-0.5">{staff.position}</p>
+        <p className="text-slate-500 text-[11px] leading-relaxed line-clamp-1">{staff.bio}</p>
       </div>
 
-      <div className="flex flex-row gap-2 shrink-0 w-full sm:w-auto">
+      <div className="flex gap-2 shrink-0 w-full sm:w-auto">
         <button
           onClick={() => onContactClick(staff)}
-          className="flex-1 sm:flex-none flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 text-xs font-semibold hover:from-blue-100 hover:to-blue-200 transition-colors"
+          className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 text-slate-700 text-xs font-bold hover:bg-blue-50 hover:text-blue-600 transition-colors"
         >
-          <FiMail size={12} /> <span>Contact</span>
+          <FiMail size={12} /> Contact
         </button>
         <Link
           href={`/pages/staff/${staff.id}/${generateSlug(staff.name, staff.id)}`}
-          className="flex-1 sm:flex-none flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg border border-gray-300 text-gray-700 text-xs font-semibold"
+          className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1a1a2e] text-white text-xs font-bold hover:bg-[#2d2d44] transition-colors"
         >
-          <FiUser size={12} /> <span>Profile</span>
+          <FiUser size={12} /> Profile
         </Link>
       </div>
     </div>
@@ -640,16 +590,16 @@ export default function StaffDirectory() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
-        <div className="text-center max-w-md w-full mx-auto p-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-red-100 to-red-200 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <FiUser className="text-2xl text-red-600" />
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
+        <div className="text-center max-w-sm w-full">
+          <div className="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-red-100">
+            <FiUser className="text-xl text-red-500" />
           </div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Error Loading Staff Directory</h2>
-          <p className="text-gray-600 mb-4 leading-relaxed text-sm">{error}</p>
+          <h2 className="text-lg font-black text-slate-900 mb-2">Error Loading Directory</h2>
+          <p className="text-sm text-slate-500 mb-5">{error}</p>
           <button 
             onClick={() => window.location.reload()}
-            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg w-full sm:w-auto"
+            className="bg-[#1a1a2e] text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:bg-[#2d2d44] transition-colors w-full"
           >
             Try Again
           </button>
@@ -659,7 +609,7 @@ export default function StaffDirectory() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 font-sans text-gray-900">
+    <div className="min-h-screen bg-white font-sans text-slate-900">
       
       {/* Mobile Filter Drawer Overlay */}
       {isSidebarOpen && (
@@ -669,52 +619,42 @@ export default function StaffDirectory() {
         />
       )}
 
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200/50 sticky top-0 z-30">
-        <div className="container mx-auto px-4 h-14 sm:h-16 flex items-center justify-between">
+      {/* ── Sticky Header ── */}
+      <header className="bg-white border-b border-slate-100 sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
           
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setIsSidebarOpen(true)}
-              className="lg:hidden p-2 text-gray-600 -ml-2"
+              className="lg:hidden p-2 text-slate-500 -ml-2 hover:text-[#1a1a2e]"
             >
               <FiMenu size={20} />
             </button>
             
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-500 via-purple-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-                <img 
-                  src="/kinyui.png" 
-                  alt="School Logo" 
-                  className="w-full h-full object-contain p-1"
-                />
-              </div>
+              <Image src="/seo/logo.png" alt="Logo" width={28} height={28} />
               <div className="hidden sm:block">
-                <span className="text-sm sm:text-base font-bold tracking-tight bg-gradient-to-r from-gray-900 to-blue-600 bg-clip-text text-transparent">
-                  Katz Staff Faculty
+                <span className="text-sm font-black text-[#1a1a2e] tracking-tight">
+                  Kinyui Boys
                 </span>
-                <p className="text-[10px] text-gray-500 mt-0.5">Prayer, Discipline and Hardwork</p>
+                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Staff Directory</p>
               </div>
             </Link>
           </div>
 
-          <div className="hidden md:flex flex-1 max-w-md mx-4">
+          {/* Search - Desktop */}
+          <div className="hidden md:flex flex-1 max-w-md mx-6">
             <div className="relative w-full">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FiSearch className="text-gray-400 text-sm" />
-              </div>
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search by name, role, expertise..."
-                className="block w-full pl-9 pr-8 py-2 border border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-sm transition-all"
+                className="w-full pl-9 pr-8 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#1a1a2e] focus:ring-1 focus:ring-[#1a1a2e]/10 transition-all"
               />
               {searchQuery && (
-                <button 
-                  onClick={() => setSearchQuery('')}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400"
-                >
+                <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                   <FiX size={14} />
                 </button>
               )}
@@ -725,391 +665,281 @@ export default function StaffDirectory() {
             <button
               onClick={fetchStaffData}
               disabled={loading}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-600 hover:text-blue-600 hover:border-blue-400 hover:shadow-md disabled:opacity-60 disabled:cursor-not-allowed transition-all text-xs font-semibold shadow-sm"
-              title="Refresh staff data"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:border-[#1a1a2e] hover:text-[#1a1a2e] disabled:opacity-50 transition-all text-xs font-bold"
             >
-              <FiRefreshCw size={12} className={loading ? 'animate-spin text-blue-500' : ''} />
+              <FiRefreshCw size={12} className={loading ? 'animate-spin' : ''} />
               <span className="hidden sm:inline">{loading ? 'Loading...' : 'Refresh'}</span>
             </button>
             
-            <div className="hidden sm:flex bg-white p-1 rounded-lg border border-gray-200/50 shadow-sm">
+            <div className="hidden sm:flex bg-slate-50 p-0.5 rounded-lg border border-slate-100">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-md ${
-                  viewMode === 'grid' 
-                    ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-md' 
-                    : 'text-gray-500'
-                }`}
-                aria-label="Grid View"
+                className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-[#1a1a2e] text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
               >
-                <FiGrid size={16} />
+                <FiGrid size={14} />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded-md ${
-                  viewMode === 'list' 
-                    ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-md' 
-                    : 'text-gray-500'
-                }`}
-                aria-label="List View"
+                className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-[#1a1a2e] text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
               >
-                <FiList size={16} />
+                <FiList size={14} />
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-4 sm:py-6">
-        <div className="flex flex-col lg:flex-row gap-5">
+      {/* ── Hero Banner ── */}
+      <div className="relative bg-[#1a1a2e] overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 relative z-10">
+          <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4">
+            <div className="text-center sm:text-left">
+              <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-2">Kinyui Boys Senior School</p>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
+                Our Staff <span className="text-blue-400">Directory</span>
+              </h1>
+              <p className="text-sm text-white/50 mt-2 max-w-md">
+                {loading ? 'Discovering our talented educators...' : `${staffData.length} dedicated professionals shaping the future`}
+              </p>
+            </div>
+
+            {/* Stats */}
+            {!loading && (
+              <div className="grid grid-cols-4 divide-x divide-white/10 bg-white/5 rounded-xl border border-white/10 backdrop-blur-sm">
+                {departmentStats.map((stat, i) => (
+                  <StatsPill key={i} icon={stat.icon} value={stat.value} label={stat.label} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+        <div className="flex flex-col lg:flex-row gap-6">
           
-          {/* Sidebar */}
+          {/* ── Sidebar ── */}
           <aside className={`
-            fixed lg:static inset-y-0 left-0 w-72 bg-white transform transition-transform duration-300 ease-in-out shadow-xl z-50 lg:z-auto lg:shadow-none overflow-y-auto border-r lg:border-r-0 border-gray-200/50
+            fixed lg:static inset-y-0 left-0 w-72 bg-white transform transition-transform duration-300 ease-in-out shadow-xl z-50 lg:z-auto lg:shadow-none overflow-y-auto border-r lg:border-r-0 border-slate-100
             ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-          `}
-          >
+          `}>
             <div className="p-4 lg:p-0 lg:sticky lg:top-20 space-y-5">
-              <div className="flex items-center justify-between lg:hidden pb-3 border-b border-gray-100 bg-white sticky top-0 z-10">
-                <h2 className="text-base font-black text-gray-900 tracking-tight">FILTERS</h2>
-                <button
-                  onClick={() => setIsSidebarOpen(false)}
-                  className="p-2 bg-gray-100 rounded-full hover:bg-red-50 hover:text-red-600 transition-colors"
-                  aria-label="Close filters"
-                >
-                  <FiX size={20} />
+              
+              {/* Mobile close */}
+              <div className="flex items-center justify-between lg:hidden pb-3 border-b border-slate-100">
+                <h2 className="text-xs font-black text-[#1a1a2e] uppercase tracking-[0.2em]">Filters</h2>
+                <button onClick={() => setIsSidebarOpen(false)} className="p-2 bg-slate-50 rounded-full hover:bg-red-50 hover:text-red-500 transition-colors">
+                  <FiX size={18} />
                 </button>
               </div>
 
+              {/* Mobile search */}
               <div className="lg:hidden">
                 <div className="relative">
+                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search staff members..."
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all text-sm font-medium"
+                    placeholder="Search staff..."
+                    className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#1a1a2e]"
                   />
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl border border-gray-100 shadow-md overflow-hidden">
-                <div className="p-3 bg-slate-900 border-b border-slate-800">
-                  <h3 className="font-black text-white flex items-center gap-2 text-xs uppercase tracking-widest">
-                    <FiUsers className="text-blue-400" size={14} />
-                    Staff Hierarchy
+              {/* Hierarchy Filter */}
+              <div className="bg-white rounded-xl border border-slate-100 overflow-hidden">
+                <div className="px-4 py-3 bg-[#1a1a2e]">
+                  <h3 className="text-[10px] font-black text-white/70 uppercase tracking-[0.2em] flex items-center gap-2">
+                    <FiUsers size={12} className="text-blue-400" /> Staff Hierarchy
                   </h3>
                 </div>
-
-                <div className="p-2 space-y-1">
-                  <button
-                    onClick={() => setSelectedHierarchy('all')}
-                    className={`w-full flex items-center justify-between p-2 rounded-lg transition-all ${
-                      selectedHierarchy === 'all'
-                        ? 'bg-blue-600 text-white shadow-md'
-                        : 'hover:bg-gray-50 text-gray-700'
-                    }`}
-                  >
-                    <span className="text-xs font-black uppercase tracking-tight">ALL STAFF</span>
-                    <span
-                      className={`text-[9px] font-black px-1.5 py-0.5 rounded-md ${
-                        selectedHierarchy === 'all' ? 'bg-white/20' : 'bg-gray-100'
-                      }`}
-                    >
-                      {staffData.length}
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => setSelectedHierarchy('leadership')}
-                    className={`w-full flex items-center justify-between p-2 rounded-lg transition-all ${
-                      selectedHierarchy === 'leadership'
-                        ? 'bg-blue-600 text-white shadow-md'
-                        : 'hover:bg-gray-50 text-gray-700'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-base">👑</span>
-                      <span className="text-xs font-black uppercase tracking-tight">
-                        SCHOOL LEADERSHIP
-                      </span>
-                    </div>
-                    <span
-                      className={`text-[9px] font-black px-1.5 py-0.5 rounded-md ${
-                        selectedHierarchy === 'leadership' ? 'bg-white/20' : 'bg-gray-100'
-                      }`}
-                    >
-                      {staffByHierarchy.leadership?.length || 0}
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => setSelectedHierarchy('teaching')}
-                    className={`w-full flex items-center justify-between p-2 rounded-lg transition-all ${
-                      selectedHierarchy === 'teaching'
-                        ? 'bg-blue-600 text-white shadow-md'
-                        : 'hover:bg-gray-50 text-gray-700'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-base">📚</span>
-                      <span className="text-xs font-black uppercase tracking-tight">
-                        TEACHING STAFF
-                      </span>
-                    </div>
-                    <span
-                      className={`text-[9px] font-black px-1.5 py-0.5 rounded-md ${
-                        selectedHierarchy === 'teaching' ? 'bg-white/20' : 'bg-gray-100'
-                      }`}
-                    >
-                      {staffByHierarchy.teaching?.length || 0}
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => setSelectedHierarchy('support')}
-                    className={`w-full flex items-center justify-between p-2 rounded-lg transition-all ${
-                      selectedHierarchy === 'support'
-                        ? 'bg-blue-600 text-white shadow-md'
-                        : 'hover:bg-gray-50 text-gray-700'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-base">🛠️</span>
-                      <span className="text-xs font-black uppercase tracking-tight">
-                        SUPPORT STAFF
-                      </span>
-                    </div>
-                    <span
-                      className={`text-[9px] font-black px-1.5 py-0.5 rounded-md ${
-                        selectedHierarchy === 'support' ? 'bg-white/20' : 'bg-gray-100'
-                      }`}
-                    >
-                      {staffByHierarchy.support?.length || 0}
-                    </span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl border border-gray-100 shadow-md overflow-hidden">
-                <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center">
-                  <h3 className="font-black text-gray-900 flex items-center gap-2 text-xs uppercase tracking-widest">
-                    <FiBriefcase className="text-blue-600" size={14} />
-                    Departments
-                  </h3>
-                  {selectedDepts.length > 0 && (
+                <div className="p-2 space-y-0.5">
+                  {[
+                    { key: 'all', label: 'All Staff', icon: null, count: staffData.length },
+                    { key: 'leadership', label: 'Leadership', icon: '👑', count: staffByHierarchy.leadership?.length || 0 },
+                    { key: 'teaching', label: 'Teaching Staff', icon: '📚', count: staffByHierarchy.teaching?.length || 0 },
+                    { key: 'support', label: 'Support Staff', icon: '🛠️', count: staffByHierarchy.support?.length || 0 },
+                  ].map((item) => (
                     <button
-                      onClick={() => setSelectedDepts([])}
-                      className="text-[9px] font-black text-red-500 hover:text-red-700 uppercase tracking-tighter bg-red-50 px-2 py-0.5 rounded-md"
-                    >
-                      Reset
-                    </button>
-                  )}
-                </div>
-
-                <div className="p-2 space-y-1 max-h-[280px] overflow-y-auto">
-                  {DEPARTMENTS.map((dept) => (
-                    <div
-                      key={dept.id}
-                      onClick={() => toggleDept(dept.id)}
-                      className={`cursor-pointer flex items-center justify-between p-2 rounded-lg border transition-all ${
-                        selectedDepts.includes(dept.id)
-                          ? 'border-blue-500 bg-blue-50/50'
-                          : 'border-transparent hover:bg-gray-50'
+                      key={item.key}
+                      onClick={() => setSelectedHierarchy(item.key)}
+                      className={`w-full flex items-center justify-between p-2.5 rounded-lg text-xs font-bold transition-all ${
+                        selectedHierarchy === item.key
+                          ? 'bg-[#1a1a2e] text-white'
+                          : 'text-slate-600 hover:bg-slate-50'
                       }`}
                     >
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span
-                          className={`p-1 rounded-md ${
-                            selectedDepts.includes(dept.id)
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-gray-100 text-gray-500'
-                          }`}
-                        >
-                          {dept.icon}
-                        </span>
-                        <span className="text-xs font-bold text-gray-700 truncate">
-                          {dept.label}
-                        </span>
+                      <div className="flex items-center gap-2">
+                        {item.icon && <span className="text-sm">{item.icon}</span>}
+                        <span className="uppercase tracking-wider">{item.label}</span>
                       </div>
-                      <span className="text-[9px] font-black text-gray-400 ml-2">
-                        {getDeptCount(dept.id)}
+                      <span className={`text-[9px] font-black px-1.5 py-0.5 rounded ${
+                        selectedHierarchy === item.key ? 'bg-white/15' : 'bg-slate-100'
+                      }`}>
+                        {item.count}
                       </span>
-                    </div>
+                    </button>
                   ))}
                 </div>
               </div>
 
+              {/* Departments Filter */}
+              <div className="bg-white rounded-xl border border-slate-100 overflow-hidden">
+                <div className="px-4 py-3 border-b border-slate-100 flex justify-between items-center">
+                  <h3 className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em] flex items-center gap-2">
+                    <FiBriefcase size={12} className="text-blue-600" /> Departments
+                  </h3>
+                  {selectedDepts.length > 0 && (
+                    <button onClick={() => setSelectedDepts([])} className="text-[9px] font-black text-red-500 hover:text-red-700 uppercase tracking-wider bg-red-50 px-2 py-0.5 rounded">
+                      Reset
+                    </button>
+                  )}
+                </div>
+                <div className="p-2 space-y-0.5 max-h-[300px] overflow-y-auto">
+                  {DEPARTMENTS.map((dept) => (
+                    <button
+                      key={dept.id}
+                      onClick={() => toggleDept(dept.id)}
+                      className={`w-full flex items-center justify-between p-2.5 rounded-lg transition-all ${
+                        selectedDepts.includes(dept.id)
+                          ? 'bg-blue-50 border border-blue-200'
+                          : 'border border-transparent hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-sm">{dept.icon}</span>
+                        <span className="text-xs font-bold text-slate-700 truncate">{dept.label}</span>
+                      </div>
+                      <span className="text-[9px] font-black text-slate-400 ml-2">{getDeptCount(dept.id)}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Clear All */}
               {(selectedDepts.length > 0 || searchQuery || selectedHierarchy !== 'all') && (
                 <button
                   onClick={clearAllFilters}
-                  className="w-full py-2 rounded-xl bg-white border border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
+                  className="w-full py-2.5 rounded-lg bg-[#1a1a2e] text-white text-[10px] font-black uppercase tracking-[0.15em] hover:bg-[#2d2d44] transition-colors flex items-center justify-center gap-2"
                 >
-                  <FiX size={12} />
-                  Reset All
+                  <FiX size={12} /> Reset All Filters
                 </button>
               )}
             </div>
           </aside>
 
-          <main className="flex-1 min-w-0 relative z-10">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 mb-5">
-              <div className="flex-1">
-                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-gray-900 to-blue-600 bg-clip-text text-transparent mb-1">
-                  Meet Our Team
-                </h1>
-                <p className="text-gray-600 text-sm">
-                  {loading
-                    ? 'Discovering our talented educators...'
-                    : `Showing ${filteredStaff.length} dedicated professionals`}
-                  {!loading && filteredStaff.length !== staffData.length && (
-                    <span className="text-blue-600 font-semibold">
-                      {' '}
-                      • Filtered from {staffData.length}
-                    </span>
+          {/* ── Main Content ── */}
+          <main className="flex-1 min-w-0">
+            
+            {/* Toolbar */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5">
+              <div>
+                <p className="text-sm text-slate-500">
+                  {loading ? 'Loading...' : (
+                    <>
+                      Showing <span className="font-bold text-slate-900">{filteredStaff.length}</span> staff members
+                      {filteredStaff.length !== staffData.length && (
+                        <span className="text-blue-600 font-semibold"> (filtered from {staffData.length})</span>
+                      )}
+                    </>
                   )}
                 </p>
               </div>
 
-              <div className="relative group w-full lg:w-64">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors z-10">
-                  <FiFilter size={14} />
-                </div>
-                <select
-                  className="
-                    appearance-none w-full
-                    bg-white/80 backdrop-blur-md
-                    border border-slate-200 hover:border-blue-400
-                    pl-8 pr-8 py-2.5
-                    rounded-xl
-                    text-xs font-black uppercase tracking-widest text-slate-700
-                    focus:outline-none focus:ring-2 focus:ring-blue-600/5 focus:border-blue-600
-                    shadow-sm
-                    cursor-pointer transition-all
-                  "
-                >
-                  <option value="hierarchy" className="font-sans font-semibold">
-                    Hierarchy View
-                  </option>
-                  <option value="alphabetical" className="font-sans font-semibold">
-                    Alphabetical (A-Z)
-                  </option>
-                  <option value="department" className="font-sans font-semibold">
-                    By Department
-                  </option>
-                  <option value="expertise" className="font-sans font-semibold">
-                    Top Expertise
-                  </option>
+              <div className="relative w-full sm:w-52">
+                <FiFilter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={12} />
+                <select className="appearance-none w-full bg-white border border-slate-200 pl-8 pr-8 py-2 rounded-lg text-xs font-bold text-slate-700 focus:outline-none focus:border-[#1a1a2e] cursor-pointer">
+                  <option value="hierarchy">Hierarchy View</option>
+                  <option value="alphabetical">Alphabetical (A-Z)</option>
+                  <option value="department">By Department</option>
                 </select>
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex flex-col gap-0 pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity">
-                  <FiChevronUp size={10} className="text-slate-900 -mb-0.5" />
-                  <FiChevronDown size={10} className="text-slate-900" />
-                </div>
+                <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={12} />
               </div>
             </div>
-
-            {!loading && (
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 mb-5">
-                {departmentStats.map((stat, index) => (
-                  <StatsPill
-                    key={index}
-                    icon={stat.icon}
-                    value={stat.value}
-                    label={stat.label}
-                    color={stat.color}
-                  />
-                ))}
-              </div>
-            )}
 
             {/* Consultation Modal */}
             {showConsultModal && selectedStaff && (
               <div 
-                className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center p-3 z-[200] animate-in fade-in duration-200"
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-[200]"
                 onClick={() => setShowConsultModal(false)}
               >
                 <div 
-                  className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl border border-slate-200 animate-in slide-in-from-bottom-4 duration-300"
+                  className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl border border-slate-100"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {/* Header */}
-                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-5 text-white">
+                  {/* Modal Header */}
+                  <div className="bg-[#1a1a2e] p-5 text-white">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="p-2 bg-white/10 backdrop-blur-sm rounded-xl">
-                          <FiMail className="text-xl" />
+                        <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
+                          <FiMail size={18} />
                         </div>
                         <div>
-                          <h2 className="text-xl font-bold">Contact {selectedStaff.name}</h2>
-                          <p className="text-blue-100 text-xs">Send inquiry to {selectedStaff.position}</p>
+                          <h2 className="text-lg font-black">Contact {selectedStaff.name}</h2>
+                          <p className="text-white/50 text-xs">{selectedStaff.position} &bull; {selectedStaff.department}</p>
                         </div>
                       </div>
-                      <button
-                        onClick={() => setShowConsultModal(false)}
-                        className="p-2 hover:bg-white/10 rounded-xl transition-colors"
-                      >
-                        <FiX size={20} />
+                      <button onClick={() => setShowConsultModal(false)} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                        <FiX size={18} />
                       </button>
                     </div>
                   </div>
 
                   {/* Form */}
-                  <form onSubmit={handleConsultSubmit} className="p-6 overflow-y-auto max-h-[calc(90vh-120px)] space-y-5">
-                    {/* Staff Info Card */}
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-2xl border border-blue-100">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                          {selectedStaff.name.charAt(0)}
-                        </div>
-                        <div>
-                          <p className="font-bold text-gray-900 text-sm">Consultation with:</p>
-                          <p className="font-semibold text-gray-800 text-sm">{selectedStaff.name}</p>
-                          <p className="text-xs text-gray-600">{selectedStaff.position} • {selectedStaff.department}</p>
-                        </div>
+                  <form onSubmit={handleConsultSubmit} className="p-5 overflow-y-auto max-h-[calc(90vh-100px)] space-y-4">
+                    {/* Staff Card */}
+                    <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 flex items-center gap-3">
+                      <div className="w-10 h-10 bg-[#1a1a2e] rounded-lg flex items-center justify-center text-white font-black text-sm">
+                        {selectedStaff.name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-slate-900">{selectedStaff.name}</p>
+                        <p className="text-[10px] text-slate-500">{selectedStaff.position} &bull; {selectedStaff.department}</p>
                       </div>
                     </div>
 
-                    {/* Personal Details Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs font-bold text-gray-700 mb-2">Your Name *</label>
+                        <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1.5">Your Name *</label>
                         <input
                           type="text"
                           required
                           value={consultForm.name}
                           onChange={(e) => setConsultForm({...consultForm, name: e.target.value})}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                          placeholder="Enter your full name"
+                          className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#1a1a2e] focus:ring-1 focus:ring-[#1a1a2e]/10"
+                          placeholder="Full name"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-gray-700 mb-2">Email Address *</label>
+                        <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1.5">Email *</label>
                         <input
                           type="email"
                           required
                           value={consultForm.email}
                           onChange={(e) => setConsultForm({...consultForm, email: e.target.value})}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                          className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#1a1a2e] focus:ring-1 focus:ring-[#1a1a2e]/10"
                           placeholder="your@email.com"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-gray-700 mb-2">Phone Number *</label>
+                        <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1.5">Phone *</label>
                         <input
                           type="tel"
                           required
                           value={consultForm.phone}
                           onChange={(e) => setConsultForm({...consultForm, phone: e.target.value})}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                          className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#1a1a2e] focus:ring-1 focus:ring-[#1a1a2e]/10"
                           placeholder="+254700000000"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-gray-700 mb-2">Inquiry Type</label>
+                        <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1.5">Inquiry Type</label>
                         <select
                           value={consultForm.inquiryType}
                           onChange={(e) => setConsultForm({...consultForm, inquiryType: e.target.value})}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                          className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#1a1a2e]"
                         >
                           <option value="general">General Inquiry</option>
                           <option value="academic">Academic Consultation</option>
@@ -1120,77 +950,72 @@ export default function StaffDirectory() {
                       </div>
                     </div>
 
-                    {/* Student Details */}
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 mb-2">Student Details (if applicable)</label>
+                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1.5">Student Details (optional)</label>
                       <input
                         type="text"
                         value={consultForm.studentGrade}
                         onChange={(e) => setConsultForm({...consultForm, studentGrade: e.target.value})}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                        placeholder="Student name, grade, class (optional)"
+                        className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#1a1a2e] focus:ring-1 focus:ring-[#1a1a2e]/10"
+                        placeholder="Student name, grade, class"
                       />
                     </div>
 
-                    {/* Subject */}
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 mb-2">Subject *</label>
+                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1.5">Subject *</label>
                       <input
                         type="text"
                         required
                         value={consultForm.subject}
                         onChange={(e) => setConsultForm({...consultForm, subject: e.target.value})}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                        placeholder="Brief subject of your inquiry"
+                        className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#1a1a2e] focus:ring-1 focus:ring-[#1a1a2e]/10"
+                        placeholder="Subject of inquiry"
                       />
                     </div>
 
-                    {/* Message */}
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 mb-2">Message *</label>
+                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1.5">Message *</label>
                       <textarea
                         required
-                        rows={4}
+                        rows={3}
                         value={consultForm.message}
                         onChange={(e) => setConsultForm({...consultForm, message: e.target.value})}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
-                        placeholder="Type your message here..."
+                        className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#1a1a2e] focus:ring-1 focus:ring-[#1a1a2e]/10 resize-none"
+                        placeholder="Your message..."
                       />
                     </div>
 
-                    {/* Contact Preference */}
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 mb-2">Preferred Contact Method</label>
-                      <div className="flex gap-3">
+                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-2">Preferred Contact</label>
+                      <div className="flex gap-4">
                         {['email', 'phone', 'whatsapp'].map(method => (
-                          <label key={method} className="flex items-center gap-2 cursor-pointer">
+                          <label key={method} className="flex items-center gap-1.5 cursor-pointer">
                             <input
                               type="radio"
                               name="contactMethod"
                               value={method}
                               checked={consultForm.contactMethod === method}
                               onChange={(e) => setConsultForm({...consultForm, contactMethod: e.target.value})}
-                              className="w-4 h-4 text-blue-600"
+                              className="w-3.5 h-3.5 text-[#1a1a2e]"
                             />
-                            <span className="text-sm capitalize">{method}</span>
+                            <span className="text-xs font-semibold text-slate-600 capitalize">{method}</span>
                           </label>
                         ))}
                       </div>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex gap-3 pt-4 border-t border-gray-200">
+                    <div className="flex gap-3 pt-3 border-t border-slate-100">
                       <button
                         type="button"
                         onClick={() => setShowConsultModal(false)}
-                        className="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold text-sm transition-all"
+                        className="flex-1 py-2.5 bg-slate-50 text-slate-600 rounded-lg font-bold text-sm hover:bg-slate-100 transition-colors"
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
                         disabled={submitting}
-                        className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl font-semibold text-sm transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="flex-1 py-2.5 bg-[#1a1a2e] text-white rounded-lg font-bold text-sm hover:bg-[#2d2d44] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                       >
                         {submitting ? (
                           <>
@@ -1199,8 +1024,7 @@ export default function StaffDirectory() {
                           </>
                         ) : (
                           <>
-                            <FiMail size={16} />
-                            Send Message
+                            <FiMail size={14} /> Send Message
                           </>
                         )}
                       </button>
@@ -1210,14 +1034,9 @@ export default function StaffDirectory() {
               </div>
             )}
 
+            {/* Content */}
             {loading ? (
-              <div
-                className={
-                  viewMode === 'grid'
-                    ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4'
-                    : 'space-y-3'
-                }
-              >
+              <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4' : 'space-y-3'}>
                 {[...Array(6)].map((_, i) => (
                   <StaffSkeleton key={i} viewMode={viewMode} />
                 ))}
@@ -1225,122 +1044,79 @@ export default function StaffDirectory() {
             ) : filteredStaff.length > 0 ? (
               <>
                 {selectedHierarchy === 'all' ? (
-                  <div className="space-y-8">
-                    <HierarchySection
-                      title="School Leadership"
-                      icon="👑"
-                      staff={staffByHierarchy.leadership}
-                      viewMode={viewMode}
-                      isFirst={true}
-                      onContactClick={handleContactClick}
-                    />
-                    <HierarchySection
-                      title="Teaching Staff"
-                      icon="📚"
-                      staff={staffByHierarchy.teaching}
-                      viewMode={viewMode}
-                      onContactClick={handleContactClick}
-                    />
-                    <HierarchySection
-                      title="Support Staff"
-                      icon="🛠️"
-                      staff={staffByHierarchy.support}
-                      viewMode={viewMode}
-                      onContactClick={handleContactClick}
-                    />
+                  <div className="space-y-6">
+                    <HierarchySection title="School Leadership" icon="👑" staff={staffByHierarchy.leadership} viewMode={viewMode} isFirst={true} onContactClick={handleContactClick} />
+                    <HierarchySection title="Teaching Staff" icon="📚" staff={staffByHierarchy.teaching} viewMode={viewMode} onContactClick={handleContactClick} />
+                    <HierarchySection title="Support Staff" icon="🛠️" staff={staffByHierarchy.support} viewMode={viewMode} onContactClick={handleContactClick} />
                   </div>
                 ) : viewMode === 'grid' ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {paginatedStaff.map((staff) => (
-                      <StaffCard 
-                        key={staff.id} 
-                        staff={staff} 
-                        onContactClick={handleContactClick}
-                      />
+                      <StaffCard key={staff.id} staff={staff} onContactClick={handleContactClick} />
                     ))}
                   </div>
                 ) : (
                   <div className="space-y-3">
                     {paginatedStaff.map((staff) => (
-                      <StaffListCard 
-                        key={staff.id} 
-                        staff={staff} 
-                        onContactClick={handleContactClick}
-                      />
+                      <StaffListCard key={staff.id} staff={staff} onContactClick={handleContactClick} />
                     ))}
                   </div>
                 )}
 
+                {/* Pagination */}
                 {totalPages > 1 && selectedHierarchy !== 'all' && (
-                  <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-gray-200/50 pt-5">
-                    <div className="text-xs text-gray-500 font-medium">
-                      Page <span className="font-bold text-gray-900">{currentPage}</span> of{' '}
-                      <span className="font-bold text-gray-900">{totalPages}</span>
-                      <span className="text-blue-600 ml-2">
-                        • {filteredStaff.length} total staff
-                      </span>
-                    </div>
-
-                    <div className="flex gap-2">
+                  <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-100 pt-5">
+                    <p className="text-xs text-slate-400">
+                      Page <span className="font-bold text-slate-900">{currentPage}</span> of <span className="font-bold text-slate-900">{totalPages}</span>
+                      <span className="text-blue-600 ml-2">&bull; {filteredStaff.length} total</span>
+                    </p>
+                    <div className="flex gap-1.5">
                       <button
                         onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                         disabled={currentPage === 1}
-                        className="px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-semibold text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                        className="px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-bold text-slate-600 disabled:opacity-40 flex items-center gap-1 hover:border-slate-300 transition-colors"
                       >
-                        <FiArrowLeft size={12} />
-                        <span className="hidden sm:inline">Previous</span>
+                        <FiArrowLeft size={12} /> <span className="hidden sm:inline">Prev</span>
                       </button>
-
-                      <div className="flex gap-1">
-                        {Array.from({ length: Math.min(3, totalPages) }, (_, i) => {
-                          let pageNum = i + 1;
-                          if (totalPages > 3 && currentPage > 2) {
-                            pageNum = currentPage - 1 + i;
-                          }
-                          if (pageNum > totalPages) return null;
-
-                          return (
-                            <button
-                              key={pageNum}
-                              onClick={() => setCurrentPage(pageNum)}
-                              className={`w-7 h-7 rounded-md text-xs font-semibold ${
-                                currentPage === pageNum
-                                  ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-md'
-                                  : 'text-gray-600'
-                              }`}
-                            >
-                              {pageNum}
-                            </button>
-                          );
-                        })}
-                      </div>
-
+                      
+                      {Array.from({ length: Math.min(3, totalPages) }, (_, i) => {
+                        let pageNum = i + 1;
+                        if (totalPages > 3 && currentPage > 2) pageNum = currentPage - 1 + i;
+                        if (pageNum > totalPages) return null;
+                        return (
+                          <button
+                            key={pageNum}
+                            onClick={() => setCurrentPage(pageNum)}
+                            className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
+                              currentPage === pageNum ? 'bg-[#1a1a2e] text-white' : 'text-slate-500 hover:bg-slate-50'
+                            }`}
+                          >
+                            {pageNum}
+                          </button>
+                        );
+                      })}
+                      
                       <button
                         onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                         disabled={currentPage === totalPages}
-                        className="px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-semibold text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                        className="px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-bold text-slate-600 disabled:opacity-40 flex items-center gap-1 hover:border-slate-300 transition-colors"
                       >
-                        <span className="hidden sm:inline">Next</span>
-                        <FiArrowRight size={12} />
+                        <span className="hidden sm:inline">Next</span> <FiArrowRight size={12} />
                       </button>
                     </div>
                   </div>
                 )}
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center py-12 px-4 text-center bg-white rounded-xl border border-dashed border-gray-300 shadow-sm">
-                <div className="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md">
-                  <FiSearch className="text-2xl text-gray-400" />
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-100">
+                  <FiSearch className="text-xl text-slate-300" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">No staff members found</h3>
-                <p className="text-gray-600 max-w-md text-sm mb-4 leading-relaxed">
-                  We couldn't find anyone matching your current search criteria. Try
-                  adjusting your filters or search terms to discover our talented team
-                  members.
-                </p>
+                <h3 className="text-base font-black text-slate-900 mb-1">No staff found</h3>
+                <p className="text-sm text-slate-400 max-w-sm mb-5">Try adjusting your search or filters.</p>
                 <button
                   onClick={clearAllFilters}
-                  className="px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-bold text-sm shadow-md"
+                  className="px-5 py-2 bg-[#1a1a2e] text-white rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-[#2d2d44] transition-colors"
                 >
                   Clear Filters
                 </button>
@@ -1349,6 +1125,19 @@ export default function StaffDirectory() {
           </main>
         </div>
       </div>
+
+      {/* ── Footer ── */}
+      <footer className="border-t border-slate-100 bg-white mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex items-center gap-2">
+              <Image src="/seo/logo.png" alt="Logo" width={24} height={24} className="opacity-40" />
+              <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Kinyui Boys Senior School</span>
+            </div>
+            <p className="text-[10px] text-slate-300">Soaring to Excellence &bull; Staff Directory &bull; &copy; {new Date().getFullYear()}</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
