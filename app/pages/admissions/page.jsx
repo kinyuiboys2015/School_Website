@@ -2717,7 +2717,7 @@ return (
           <span className="text-[10px] font-extrabold uppercase tracking-wider text-teal-700">Career Readiness</span>
         </div>
         <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">
-          Career <span className="text-teal-600">Compass</span>
+          Career <span className="text-teal-600">Compass</span> and CBC <span className="text-teal-600">Pathways</span>
         </h2>
         <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
           Map your ambitions to real-world careers. See how each subject you study today connects to the profession you'll build tomorrow.
