@@ -469,7 +469,7 @@ const CareerSearchPage = () => {
           <h1 className="text-xl md:text-3xl font-extrabold text-slate-900 uppercase tracking-tighter leading-none mb-3">
             Career <span className="text-[#1a1a2e]">Explorer</span>
           </h1>
-          <p className="text-slate-500 font-semibold text-xs md:text-sm uppercase tracking-[0.2em] mb-6">
+          <p className="text-slate-700 font-semibold text-xs md:text-sm uppercase tracking-[0.2em] mb-6">
             Browse careers by high school department
           </p>
 
@@ -524,7 +524,7 @@ const CareerSearchPage = () => {
                 <h3 className="text-base font-black text-slate-900">
                   {filteredDepartments.length} {filteredDepartments.length === 1 ? 'Department' : 'Departments'} Found
                 </h3>
-                <p className="text-slate-500 text-xs">
+                <p className="text-slate-700 text-xs">
                   {selectedDepartment !== "all" && `in ${departments.find(d => d.value === selectedDepartment)?.label}`}
                   {globalSearch && ` matching "${globalSearch}"`}
                 </p>
@@ -572,7 +572,7 @@ const CareerSearchPage = () => {
                           <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">
                             {dept.department}
                           </h3>
-                          <p className="text-slate-500 text-xs font-medium">
+                          <p className="text-slate-700 text-xs font-medium">
                             {dept.careerPaths.length} career paths • {dept.subjects.length} subjects
                           </p>
                         </div>
@@ -588,7 +588,7 @@ const CareerSearchPage = () => {
   {/* Interactive Toggle Circle */}
   <div className={`
     w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300
-    ${isExpanded ? 'bg-slate-900 text-white shadow-lg rotate-180' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}
+    ${isExpanded ? 'bg-slate-900 text-white shadow-lg rotate-180' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}
   `}>
     <FiChevronDown size={16} strokeWidth={3} />
   </div>
@@ -605,7 +605,7 @@ const CareerSearchPage = () => {
                       <div className="mt-3">
                         <div className="flex items-center gap-2 mb-2">
                           <FiBook className="text-slate-900 text-sm" />
-                          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                          <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                             Subjects
                           </span>
                         </div>
@@ -634,7 +634,7 @@ const CareerSearchPage = () => {
                             <div key={careerIndex} className="bg-slate-50 rounded-lg p-4 border border-slate-200">
                               <h5 className="font-bold text-slate-900 text-sm mb-2">{career.title}</h5>
                               <p className="text-slate-600 text-xs mb-3 leading-relaxed">{career.description}</p>
-                              <div className="text-xs text-slate-500 font-medium">
+                              <div className="text-xs text-slate-700 font-medium">
                                 <span className="font-bold text-slate-700">Examples:</span> {career.examples}
                               </div>
                             </div>
@@ -650,7 +650,7 @@ const CareerSearchPage = () => {
             {/* PAGINATION */}
             {totalPages > 1 && (
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-200">
-                <div className="text-slate-500 text-xs font-medium">
+                <div className="text-slate-700 text-xs font-medium">
                   Showing {indexOfFirstDept + 1}-{Math.min(indexOfLastDept, filteredDepartments.length)} of {filteredDepartments.length} departments
                 </div>
                 
@@ -724,7 +724,7 @@ const CareerSearchPage = () => {
             <h3 className="text-lg font-black text-slate-900 mb-2">
               No departments found
             </h3>
-            <p className="text-slate-500 font-medium text-sm mb-4 max-w-md mx-auto">
+            <p className="text-slate-700 font-medium text-sm mb-4 max-w-md mx-auto">
               {globalSearch 
                 ? `No departments or careers found matching "${globalSearch}"${selectedDepartment !== "all" ? ` in ${departments.find(d => d.value === selectedDepartment)?.label}` : ''}`
                 : `No departments available in ${departments.find(d => d.value === selectedDepartment)?.label}`
@@ -746,7 +746,7 @@ const CareerSearchPage = () => {
               <div className="text-xl font-black text-slate-900 mb-1">
                 {highSchoolDepartments.length}
               </div>
-              <div className="text-slate-500 text-xs font-medium">
+              <div className="text-slate-700 text-xs font-medium">
                 Academic Departments
               </div>
             </div>
@@ -754,7 +754,7 @@ const CareerSearchPage = () => {
               <div className="text-xl font-black text-slate-900 mb-1">
                 {highSchoolDepartments.reduce((sum, dept) => sum + dept.careerPaths.length, 0)}
               </div>
-              <div className="text-slate-500 text-xs font-medium">
+              <div className="text-slate-700 text-xs font-medium">
                 Total Career Paths
               </div>
             </div>
@@ -762,7 +762,7 @@ const CareerSearchPage = () => {
               <div className="text-xl font-black text-slate-900 mb-1">
                 {[...new Set(highSchoolDepartments.flatMap(dept => dept.subjects))].length}
               </div>
-              <div className="text-slate-500 text-xs font-medium">
+              <div className="text-slate-700 text-xs font-medium">
                 Subjects Offered
               </div>
             </div>
@@ -770,7 +770,7 @@ const CareerSearchPage = () => {
               <div className="text-xl font-black text-slate-900 mb-1">
                 100%
               </div>
-              <div className="text-slate-500 text-xs font-medium">
+              <div className="text-slate-700 text-xs font-medium">
                 KCSE Aligned
               </div>
             </div>
@@ -807,7 +807,7 @@ const ModernEducationSystemCard = ({ system, icon: Icon, color, description, fea
       <div className="p-5 md:p-7 space-y-6">
         
         {/* Description */}
-        <p className="text-slate-500 text-xs md:text-sm leading-relaxed">
+        <p className="text-slate-700 text-xs md:text-sm leading-relaxed">
           {description}
         </p>
 
@@ -901,7 +901,7 @@ const AdmissionPathCard = ({ path, onApply, index }) => {
         </div>
 
         {/* Description */}
-        <p className={`text-sm leading-relaxed ${isEven ? 'text-slate-500' : 'text-slate-900'}`}>
+        <p className={`text-sm leading-relaxed ${isEven ? 'text-slate-700' : 'text-slate-900'}`}>
           {path.description}
         </p>
 
@@ -918,9 +918,9 @@ const AdmissionPathCard = ({ path, onApply, index }) => {
         {/* Footer */}
         <div className={`flex items-center justify-between pt-4 border-t ${isEven ? 'border-slate-100' : 'border-white/10'}`}>
           <div className="flex items-center gap-2">
-            <IoCalendarOutline className={`text-sm ${isEven ? 'text-slate-900' : 'text-slate-500'}`} />
+            <IoCalendarOutline className={`text-sm ${isEven ? 'text-slate-900' : 'text-slate-700'}`} />
             <div>
-              <span className={`text-[8px] uppercase font-bold tracking-wider block ${isEven ? 'text-slate-900' : 'text-slate-500'}`}>Deadline</span>
+              <span className={`text-[8px] uppercase font-bold tracking-wider block ${isEven ? 'text-slate-900' : 'text-slate-700'}`}>Deadline</span>
               <span className={`text-xs font-bold ${isEven ? 'text-slate-800' : 'text-white'}`}>{path.deadline}</span>
             </div>
           </div>
@@ -1016,7 +1016,7 @@ const StatCard = ({ stat }) => {
           <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight tabular-nums">
             {stat.number}
           </h3>
-          <span className="text-xs font-medium text-slate-500 mt-0.5 block">
+          <span className="text-xs font-medium text-slate-700 mt-0.5 block">
             {stat.label}
           </span>
         </div>
@@ -1566,7 +1566,7 @@ const AcademicResultsSection = ({ documentData }) => {
                 <div key={index} className="flex items-center justify-between p-4 md:p-6 bg-white rounded-2xl border border-slate-200 group transition-all">
                   <div className="flex items-center gap-4 min-w-0">
                     <div className="p-3 bg-slate-100 rounded-xl group-hover:bg-blue-50 transition-colors shrink-0">
-                      <IoDocumentTextOutline className="text-slate-500 group-hover:text-blue-500" />
+                      <IoDocumentTextOutline className="text-slate-700 group-hover:text-blue-500" />
                     </div>
                     <div className="min-w-0">
                       <h5 className="font-black text-slate-900 text-[11px] uppercase tracking-wide truncate">
@@ -1670,13 +1670,13 @@ const ModernUniformRequirementsSection = ({
                   </div>
                   
                   {item.description && (
-                    <p className="text-sm text-slate-500 mb-4">
+                    <p className="text-sm text-slate-700 mb-4">
                       {item.description}
                     </p>
                   )}
                   
                   <div className="flex justify-between items-center pt-3 border-t border-slate-100">
-                    <span className="text-sm text-slate-500">Amount</span>
+                    <span className="text-sm text-slate-700">Amount</span>
                     <span className="text-lg font-bold text-slate-900">
                       KSh {parseInt(item.amount || 0).toLocaleString()}
                     </span>
@@ -1691,7 +1691,7 @@ const ModernUniformRequirementsSection = ({
                 <div className="flex items-center gap-3">
                   <FiDollarSign className="text-emerald-600 text-xl" />
                   <div>
-                    <span className="text-sm text-slate-500 block">Total Admission Cost</span>
+                    <span className="text-sm text-slate-700 block">Total Admission Cost</span>
                     <span className="text-2xl font-bold text-slate-900">
                       KSh {totalCost.toLocaleString()}
                     </span>
@@ -1700,11 +1700,11 @@ const ModernUniformRequirementsSection = ({
                 
                 <div className="flex gap-6 text-sm">
                   <div>
-                    <span className="text-slate-500 block">Mandatory</span>
+                    <span className="text-slate-700 block">Mandatory</span>
                     <span className="font-semibold text-slate-900">{uniformItems.filter(i => !i.optional).length} items</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block">Optional</span>
+                    <span className="text-slate-700 block">Optional</span>
                     <span className="font-semibold text-emerald-600">{uniformItems.filter(i => i.optional).length} items</span>
                   </div>
                 </div>
@@ -1715,7 +1715,7 @@ const ModernUniformRequirementsSection = ({
           <div className="text-center py-12">
             <FiAlertTriangle className="w-12 h-12 text-slate-300 mx-auto mb-3" />
             <h4 className="text-lg font-semibold text-slate-900 mb-1">No Items Available</h4>
-            <p className="text-sm text-slate-500">The admission breakdown is being updated.</p>
+            <p className="text-sm text-slate-700">The admission breakdown is being updated.</p>
           </div>
         )}
       </div>
@@ -2185,8 +2185,8 @@ export default function ComprehensiveAdmissions() {
         </div>
 
         {/* Title Block */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white leading-none mb-3">
-          Admissions <span className="text-teal-400">Portal</span>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-none mb-3">
+          Admissions <span className="text-amber-800">Portal</span>
         </h1>
         <p className="text-slate-900 text-xs md:text-sm leading-relaxed max-w-md mb-5">
           Begin your academic journey. Explore programs, check requirements, and apply online.
@@ -2195,7 +2195,7 @@ export default function ComprehensiveAdmissions() {
         {/* Action Row */}
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-[9px] md:text-[10px] font-bold px-3 py-1.5 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/20 uppercase">
-            {schoolData?.academicYear || '2026'} Session
+            {schoolData?.academicYear || getFullYear()} Session
           </span>
           <button
             onClick={refreshData}
@@ -2208,7 +2208,7 @@ export default function ComprehensiveAdmissions() {
             {loading ? (
               <>
                 <CircularProgress size={10} thickness={6} sx={{ color: '#fff' }} />
-                <span>Loading...</span>
+                <span>fetching data...</span>
               </>
             ) : (
               <>
@@ -2239,7 +2239,7 @@ export default function ComprehensiveAdmissions() {
       <h4 className="text-sm md:text-base font-bold text-slate-900 leading-tight">
         Holistic Learning Approach
       </h4>
-      <p className="text-xs md:text-sm text-slate-500 leading-relaxed mt-1">
+      <p className="text-xs md:text-sm text-slate-700 leading-relaxed mt-1">
         A well-rounded CBC-aligned curriculum that balances core academics with creative and critical thinking.
       </p>
     </div>
@@ -2254,7 +2254,7 @@ export default function ComprehensiveAdmissions() {
       <h4 className="text-sm md:text-base font-bold text-slate-900 leading-tight">
         Personalized Mentoring
       </h4>
-      <p className="text-xs md:text-sm text-slate-500 leading-relaxed mt-1">
+      <p className="text-xs md:text-sm text-slate-700 leading-relaxed mt-1">
         Dedicated teachers and small class sizes ensure every student receives the individual attention they deserve.
       </p>
     </div>
@@ -2269,7 +2269,7 @@ export default function ComprehensiveAdmissions() {
       <h4 className="text-sm md:text-base font-bold text-slate-900 leading-tight">
         Diverse Academic Tracks
       </h4>
-      <p className="text-xs md:text-sm text-slate-500 leading-relaxed mt-1">
+      <p className="text-xs md:text-sm text-slate-700 leading-relaxed mt-1">
         Expertly managed pathways for both 8-4-4 and CBC, tailored to the unique strengths of every learner.
       </p>
     </div>
@@ -2497,7 +2497,7 @@ return (
         </p>
         <div className="flex items-center gap-3 mt-4">
           <span className="text-[9px] font-bold uppercase tracking-wider text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-md border border-teal-500/20">Top Ranked</span>
-          <span className="text-[9px] font-bold uppercase tracking-wider text-slate-500">Since 1976</span>
+          <span className="text-[9px] font-bold uppercase tracking-wider text-slate-700">Since 1976</span>
         </div>
       </div>
     </div>
@@ -2620,7 +2620,7 @@ return (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
           <div>
             <h3 className="text-xl md:text-3xl font-black text-slate-900 tracking-tight">{sect.title}</h3>
-            <p className="text-slate-500 text-xs font-medium">{sect.desc}</p>
+            <p className="text-slate-700 text-xs font-medium">{sect.desc}</p>
           </div>
           <div className="px-3 py-1.5 bg-white self-start rounded-full shadow-sm border border-slate-200 text-[10px] font-black text-slate-600 uppercase">
             {sect.count || 0} Subjects
@@ -2719,7 +2719,7 @@ return (
         <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">
           Career <span className="text-teal-600">Compass</span> and CBC <span className="text-teal-600">Pathways</span>
         </h2>
-        <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
+        <p className="text-slate-700 text-sm md:text-md max-w-2xl mx-auto leading-relaxed">
           Map your ambitions to real-world careers. See how each subject you study today connects to the profession you'll build tomorrow.
         </p>
       </div>
@@ -2740,7 +2740,7 @@ return (
             <h3 className="text-lg md:text-2xl font-extrabold text-slate-900 tracking-tight">
               CBC <span className="text-teal-600">Learning Tracks</span> & Subjects
             </h3>
-            <p className="text-slate-500 text-xs md:text-sm mt-1 max-w-xl">
+            <p className="text-slate-700 text-xs md:text-sm mt-1 max-w-xl">
               The Competency Based Curriculum organizes learning around three main pathways, each tailored to different student strengths and career goals.
             </p>
           </div>
@@ -2800,7 +2800,7 @@ return (
             </div>
             <div>
               <h4 className={`font-bold text-base md:text-lg ${isDark ? 'text-white' : 'text-slate-900'}`}>{path.pathway}</h4>
-              <p className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{path.description}</p>
+              <p className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-700'}`}>{path.description}</p>
             </div>
           </div>
           
@@ -2911,7 +2911,7 @@ return (
                 <h2 className="text-lg sm:text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-4 px-2">
                   Application <span className="text-teal-600">Requirements</span>
                 </h2>
-                <p className="text-slate-500 text-base md:text-lg max-w-3xl mx-auto leading-relaxed px-2">
+                <p className="text-slate-700 text-base md:text-lg max-w-3xl mx-auto leading-relaxed px-2">
                   Everything you need to prepare for a successful application journey.
                 </p>
               </div>
@@ -3089,7 +3089,7 @@ return (
             
             {/* Requirements List */}
             <div className="pt-4 border-t border-white/5 space-y-3">
-              <span className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em]">Checklist</span>
+              <span className="text-[9px] font-black text-slate-700 uppercase tracking-[0.2em]">Checklist</span>
               <ul className="space-y-2.5">
                 {step.requirements.map((req, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-[11px] md:text-xs text-slate-300 font-medium">
@@ -3143,7 +3143,7 @@ return (
         Examination <span className="text-violet-600">Results</span>
       </h2>
       
-      <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed px-6">
+      <p className="text-slate-700 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed px-6">
         Access past examination results, performance reports, and academic archives.
       </p>
     </div>
@@ -3187,7 +3187,7 @@ return (
                 <h2 className="text-xl sm:text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight mb-4 px-2">
                   Frequently Asked <span className="text-[#1a1a2e]">Questions</span>
                 </h2>
-                <p className="text-slate-500 text-base md:text-lg max-w-3xl mx-auto leading-relaxed px-2">
+                <p className="text-slate-700 text-base md:text-lg max-w-3xl mx-auto leading-relaxed px-2">
                   Clear answers to common queries about admissions, curriculum, fees, and school policies.
                 </p>
               </div>
@@ -3250,7 +3250,7 @@ return (
               </button>
             </div>
 
-            <p className="mt-4 md:mt-6 text-[10px] uppercase tracking-widest text-slate-500 font-bold opacity-60">
+            <p className="mt-4 md:mt-6 text-[10px] uppercase tracking-widest text-slate-700 font-bold opacity-60">
               Application takes few minutes
             </p>
           </div>
