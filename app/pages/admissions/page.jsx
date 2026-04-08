@@ -1440,9 +1440,10 @@ const VisionMissionSection = ({ vision, mission, motto, videoTour, videoType, vi
               <span className="text-[8px] md:text-[9px] font-black text-slate-900 uppercase tracking-[0.2em] block mb-1">
                 The Spirit of Kinyui
               </span>
-              <h3 className="text-lg md:text-xl font-black text-slate-900 tracking-tight">
-                School Motto
-              </h3>
+           <h3 className="group flex items-center gap-2 text-lg md:text-xl font-black text-slate-900 tracking-tight">
+  <span>School Motto</span>
+  <FiArrowRight className="text-indigo-600 transition-transform duration-300 group-hover:translate-x-1" />
+</h3>
             </div>
           </div>
 
