@@ -25,7 +25,14 @@ import {
   FiTarget,
   FiUsers,
   FiBookOpen,
-  FiRefreshCw
+  FiRefreshCw,
+  FiSettings,
+  FiHeart,
+  FiCpu,
+  FiGlobe,
+  FiActivity,
+  FiLayers,
+  FiShield
 } from 'react-icons/fi';
 import { toast } from 'sonner';
 import { SiGmail } from 'react-icons/si';
@@ -34,40 +41,55 @@ import { SiGmail } from 'react-icons/si';
 // 1. ENHANCED CONFIGURATION WITH HIERARCHY
 // ==========================================
 
+const HIERARCHY_ICONS = {
+  leadership: FiShield,
+  teaching: FiBookOpen,
+  support: FiSettings,
+};
+
+const DEPT_ICONS = {
+  administration: FiShield,
+  sciences: FiActivity,
+  mathematics: FiTarget,
+  languages: FiGlobe,
+  humanities: FiBook,
+  guidance: FiHeart,
+  sports: FiAward,
+  technical: FiCpu,
+  support: FiSettings,
+};
+
 const STAFF_HIERARCHY = [
   {
     level: 'leadership',
     label: 'School Leadership',
     color: 'blue',
-    icon: '👑',
     positions: ['Principal', 'Deputy Principal']
   },
   {
     level: 'teaching',
     label: 'Teaching Staff',
     color: 'emerald',
-    icon: '📚',
     positions: ['Teacher', 'Subject Teacher', 'Class Teacher', 'Assistant Teacher', 'Senior Teacher', 'Head of Department']
   },
   {
     level: 'support',
     label: 'Support Staff',
     color: 'orange',
-    icon: '🛠️',
     positions: ['Librarian', 'Laboratory Technician', 'Accountant', 'Secretary', 'Support Staff']
   }
 ];
 
 const DEPARTMENTS = [
-  { id: 'administration', label: 'Administration', color: 'blue', icon: '👑', hierarchy: 'leadership' },
-  { id: 'sciences', label: 'Sciences', color: 'emerald', icon: '🔬', hierarchy: 'teaching' },
-  { id: 'mathematics', label: 'Mathematics', color: 'orange', icon: '📊', hierarchy: 'teaching' },
-  { id: 'languages', label: 'Languages', color: 'violet', icon: '🌐', hierarchy: 'teaching' },
-  { id: 'humanities', label: 'Humanities', color: 'amber', icon: '📚', hierarchy: 'teaching' },
-  { id: 'guidance', label: 'Guidance & Counseling', color: 'pink', icon: '💝', hierarchy: 'support' },
-  { id: 'sports', label: 'Sports & Athletics', color: 'teal', icon: '⚽', hierarchy: 'teaching' },
-  { id: 'technical', label: 'Technical & IT', color: 'cyan', icon: '💻', hierarchy: 'support' },
-  { id: 'support', label: 'Support Staff', color: 'slate', icon: '🛠️', hierarchy: 'support' }
+  { id: 'administration', label: 'Administration', color: 'blue', hierarchy: 'leadership' },
+  { id: 'sciences', label: 'Sciences', color: 'emerald', hierarchy: 'teaching' },
+  { id: 'mathematics', label: 'Mathematics', color: 'orange', hierarchy: 'teaching' },
+  { id: 'languages', label: 'Languages', color: 'violet', hierarchy: 'teaching' },
+  { id: 'humanities', label: 'Humanities', color: 'amber', hierarchy: 'teaching' },
+  { id: 'guidance', label: 'Guidance & Counseling', color: 'pink', hierarchy: 'support' },
+  { id: 'sports', label: 'Sports & Athletics', color: 'teal', hierarchy: 'teaching' },
+  { id: 'technical', label: 'Technical & IT', color: 'cyan', hierarchy: 'support' },
+  { id: 'support', label: 'Support Staff', color: 'slate', hierarchy: 'support' }
 ];
 
 const ITEMS_PER_PAGE = 12;
@@ -187,33 +209,36 @@ const StaffSkeleton = ({ viewMode }) => {
   );
 };
 
-const StatsPill = ({ icon, value, label }) => (
-  <div className="flex flex-col items-center py-3 sm:py-4">
-    <span className="text-base mb-1">{icon}</span>
-    <span className="text-lg sm:text-xl font-black text-slate-900">{value}</span>
-    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">{label}</span>
+const StatsPill = ({ icon: Icon, value, label }) => (
+  <div className="flex flex-col items-center py-3 sm:py-4 px-4 sm:px-6">
+    {Icon && <Icon size={16} className="text-blue-400 mb-1" />}
+    <span className="text-lg sm:text-xl font-black text-white">{value}</span>
+    <span className="text-[9px] font-semibold text-white/40 uppercase tracking-wider">{label}</span>
   </div>
 );
 
-const HierarchySection = ({ title, icon, staff, viewMode, isFirst = false, onContactClick }) => {
+const HierarchySection = ({ title, iconKey, staff, viewMode, isFirst = false, onContactClick }) => {
   if (!staff?.length) return null;
+  const Icon = HIERARCHY_ICONS[iconKey] || FiUsers;
 
   return (
     <section className={isFirst ? "" : "mt-10"}>
       <div className="flex items-center gap-3 mb-5">
-        <span className="text-lg">{icon}</span>
+        <div className="w-8 h-8 rounded-lg bg-[#1a1a2e] flex items-center justify-center">
+          <Icon size={14} className="text-white" />
+        </div>
         <h2 className="text-sm font-black text-[#1a1a2e] uppercase tracking-[0.15em]">
           {title}
         </h2>
-        <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
+        <span className="text-[10px] font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
           {staff.length}
         </span>
-        <div className="flex-1 h-px bg-slate-200 ml-2" />
+        <div className="flex-1 h-px bg-slate-100 ml-2" />
       </div>
       
       <div className={
         viewMode === 'grid' 
-          ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" 
+          ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" 
           : "flex flex-col gap-3"
       }>
         {staff.map((member) => (
@@ -229,79 +254,80 @@ const HierarchySection = ({ title, icon, staff, viewMode, isFirst = false, onCon
   );
 };
 
-// StaffCard Component
+// StaffCard Component — horizontal modern card
 const StaffCard = ({ staff, onContactClick }) => {
   const deptConfig = DEPARTMENTS.find(d => d.id === staff.departmentId);
   const hierarchy = getStaffHierarchy(staff.position);
+  const DeptIcon = DEPT_ICONS[deptConfig?.id] || FiLayers;
   
   return (
-    <div className="bg-white rounded-xl border border-slate-100 overflow-hidden hover:border-slate-200 hover:shadow-md transition-all group flex flex-col h-full">
+    <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-lg hover:border-slate-200 transition-all duration-300 group flex flex-col h-full">
       
       {/* Image */}
-      <div className="relative w-full aspect-[4/3] bg-slate-100">
+      <div className="relative w-full aspect-square bg-slate-50">
         <Image
           src={getImageSrc(staff)}
           alt={staff.name}
           fill
-          className="object-cover object-top"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           priority={hierarchy === 'leadership'}
           onError={(e) => { e.target.src = '/images/default-staff.jpg'; }}
         />
-        
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
         {hierarchy === 'leadership' && (
-          <div className="absolute top-2 left-2 bg-amber-500 text-white px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider flex items-center gap-1">
-            <span>👑</span> Lead
+          <div className="absolute top-3 left-3 bg-[#1a1a2e] text-white px-2.5 py-1 rounded-full text-[9px] font-semibold uppercase tracking-wider flex items-center gap-1">
+            <FiShield size={10} /> Leadership
           </div>
         )}
-
-        <div className="absolute bottom-2 left-2">
-          <Badge color={deptConfig?.color} icon={deptConfig?.icon} className="bg-white/90 backdrop-blur-sm shadow-sm">
-            {staff.department}
-          </Badge>
-        </div>
       </div>
 
+      {/* Content */}
       <div className="p-4 flex-1 flex flex-col">
-        <h3 className="text-sm font-black text-slate-900 leading-tight mb-0.5">
-          {staff.name}
-        </h3>
-        <p className="text-xs font-semibold text-blue-600 mb-2">{staff.position}</p>
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <div className="min-w-0">
+            <h3 className="text-[13px] font-semibold text-slate-900 leading-tight truncate">
+              {staff.name}
+            </h3>
+            <p className="text-[11px] font-semibold text-[#1a1a2e]/60 mt-0.5">{staff.position}</p>
+          </div>
+          <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${getBadgeColorStyles(deptConfig?.color).split(' ')[0]} border ${getBadgeColorStyles(deptConfig?.color).split(' ')[2]}`}>
+            <DeptIcon size={12} className={getBadgeColorStyles(deptConfig?.color).split(' ')[1]} />
+          </div>
+        </div>
 
-        <p className="text-[11px] text-slate-500 line-clamp-2 mb-3 leading-relaxed">
+        <p className="text-[11px] font-medium text-slate-400 line-clamp-2 mb-3 leading-relaxed">
           {staff.quote || staff.bio}
         </p>
 
         {staff.expertise && staff.expertise.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-3">
+          <div className="flex flex-wrap gap-1.5 mb-3">
             {staff.expertise.slice(0, 2).map((tag, idx) => (
-              <span key={idx} className="px-2 py-0.5 bg-slate-50 text-slate-600 text-[10px] font-medium rounded border border-slate-100">
+              <span key={idx} className="px-2 py-0.5 bg-slate-50 text-slate-500 text-[10px] font-semibold rounded-full">
                 {tag}
               </span>
             ))}
             {staff.expertise.length > 2 && (
-              <span className="px-2 py-0.5 bg-slate-50 text-slate-400 text-[10px] font-medium rounded border border-slate-100">
+              <span className="px-2 py-0.5 bg-slate-50 text-slate-400 text-[10px] font-semibold rounded-full">
                 +{staff.expertise.length - 2}
               </span>
             )}
           </div>
         )}
 
-        <div className="flex gap-2 mt-auto pt-2 border-t border-slate-50">
+        <div className="flex gap-2 mt-auto pt-3 border-t border-slate-50">
           <button
             onClick={() => onContactClick(staff)}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-slate-50 text-slate-700 rounded-lg text-xs font-bold hover:bg-blue-50 hover:text-blue-600 transition-colors"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-semibold text-slate-600 bg-slate-50 hover:bg-blue-50 hover:text-blue-600 transition-colors"
           >
-            <FiMail size={12} /> Contact
+            <FiMail size={11} /> Contact
           </button>
           
           <Link
             href={`/pages/staff/${staff.id}/${generateSlug(staff.name, staff.id)}`}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#1a1a2e] text-white text-xs font-bold rounded-lg hover:bg-[#2d2d44] transition-colors"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-semibold text-white bg-[#1a1a2e] hover:bg-[#2d2d44] transition-colors"
           >
-            <FiUser size={12} /> Profile
+            <FiChevronRight size={11} /> View
           </Link>
         </div>
       </div>
@@ -313,11 +339,12 @@ const StaffCard = ({ staff, onContactClick }) => {
 const StaffListCard = ({ staff, onContactClick }) => {
   const deptConfig = DEPARTMENTS.find(d => d.id === staff.departmentId);
   const hierarchy = getStaffHierarchy(staff.position);
+  const DeptIcon = DEPT_ICONS[deptConfig?.id] || FiLayers;
   
   return (
-    <div className="bg-white rounded-xl border border-slate-100 p-3 flex flex-col sm:flex-row gap-3 items-center hover:border-slate-200 hover:shadow-sm transition-all">
+    <div className="bg-white rounded-xl border border-slate-100 p-4 flex flex-col sm:flex-row gap-4 items-center hover:shadow-md hover:border-slate-200 transition-all duration-300">
       <div className="relative shrink-0">
-        <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-slate-100">
+        <div className="relative w-14 h-14 rounded-2xl overflow-hidden bg-slate-50 ring-2 ring-slate-100">
           <Image
             src={getImageSrc(staff)}
             alt={staff.name}
@@ -328,37 +355,40 @@ const StaffListCard = ({ staff, onContactClick }) => {
           />
         </div>
         {hierarchy === 'leadership' && (
-          <div className="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center text-[8px] border-2 border-white">👑</div>
+          <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#1a1a2e] rounded-full flex items-center justify-center border-2 border-white">
+            <FiShield size={8} className="text-white" />
+          </div>
         )}
       </div>
 
       <div className="flex-1 text-center sm:text-left min-w-0">
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-0.5">
-          <h3 className="text-sm font-bold text-slate-900">
-            <Link href={`/pages/staff/${staff.id}/${generateSlug(staff.name, staff.id)}`} className="hover:text-blue-600 transition-colors">
+          <h3 className="text-sm font-semibold text-slate-900">
+            <Link href={`/pages/staff/${staff.id}/${generateSlug(staff.name, staff.id)}`} className="hover:text-[#1a1a2e] transition-colors">
               {staff.name}
             </Link>
           </h3>
-          <Badge color={deptConfig?.color} icon={deptConfig?.icon}>
+          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border ${getBadgeColorStyles(deptConfig?.color)}`}>
+            <DeptIcon size={9} />
             {staff.department}
-          </Badge>
+          </span>
         </div>
-        <p className="text-xs font-semibold text-blue-600 mb-0.5">{staff.position}</p>
-        <p className="text-slate-500 text-[11px] leading-relaxed line-clamp-1">{staff.bio}</p>
+        <p className="text-[11px] font-semibold text-[#1a1a2e]/50 mb-0.5">{staff.position}</p>
+        <p className="text-slate-400 text-[11px] font-medium leading-relaxed line-clamp-1">{staff.bio}</p>
       </div>
 
       <div className="flex gap-2 shrink-0 w-full sm:w-auto">
         <button
           onClick={() => onContactClick(staff)}
-          className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 text-slate-700 text-xs font-bold hover:bg-blue-50 hover:text-blue-600 transition-colors"
+          className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-50 text-slate-600 text-[11px] font-semibold hover:bg-blue-50 hover:text-blue-600 transition-colors"
         >
-          <FiMail size={12} /> Contact
+          <FiMail size={11} /> Contact
         </button>
         <Link
           href={`/pages/staff/${staff.id}/${generateSlug(staff.name, staff.id)}`}
-          className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1a1a2e] text-white text-xs font-bold hover:bg-[#2d2d44] transition-colors"
+          className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#1a1a2e] text-white text-[11px] font-semibold hover:bg-[#2d2d44] transition-colors"
         >
-          <FiUser size={12} /> Profile
+          <FiChevronRight size={11} /> View
         </Link>
       </div>
     </div>
@@ -580,10 +610,10 @@ export default function StaffDirectory() {
   const getDeptCount = (id) => staffData.filter(s => s.departmentId === id).length;
 
   const departmentStats = useMemo(() => [
-    { icon: '👑', value: staffByHierarchy.leadership.length, label: 'Leadership', color: 'blue' },
-    { icon: '📚', value: staffByHierarchy.teaching.length, label: 'Teachers', color: 'emerald' },
-    { icon: '🛠️', value: staffByHierarchy.support.length, label: 'Support Staff', color: 'orange' },
-    { icon: '🏢', value: DEPARTMENTS.length, label: 'Departments', color: 'violet' }
+    { icon: FiShield, value: staffByHierarchy.leadership.length, label: 'Leadership', color: 'blue' },
+    { icon: FiBookOpen, value: staffByHierarchy.teaching.length, label: 'Teachers', color: 'emerald' },
+    { icon: FiSettings, value: staffByHierarchy.support.length, label: 'Support', color: 'orange' },
+    { icon: FiLayers, value: DEPARTMENTS.length, label: 'Depts', color: 'violet' }
   ], [staffByHierarchy]);
 
   if (error) {
@@ -614,7 +644,7 @@ export default function StaffDirectory() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
           
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/seo/logo.png" alt="Logo" width={28} height={28} />
+            <Image src="/seo/kinyui.png" alt="Logo" width={28} height={28} />
             <div className="hidden sm:block">
               <span className="text-sm font-black text-[#1a1a2e] tracking-tight">
                 Kinyui Boys
@@ -677,7 +707,7 @@ export default function StaffDirectory() {
           <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4">
             <div className="text-center sm:text-left">
               <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-2">Kinyui Boys Senior School</p>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
+              <h1 className="text-4xl sm:text-3xl lg:text-5xl font-black text-white tracking-tight">
                 Our Staff <span className="text-blue-400">Directory</span>
               </h1>
               <p className="text-sm text-white/50 mt-2 max-w-md">
@@ -698,30 +728,30 @@ export default function StaffDirectory() {
       </div>
 
       {/* ── Top Filter Bar ── */}
-      <div className="bg-white border-b border-slate-100 sticky top-14 z-20">
+      <div className="bg-slate-50/80 backdrop-blur-sm border-b border-slate-100 sticky top-14 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
           {/* Hierarchy Tabs */}
-          <div className="flex items-center gap-1 py-2.5 overflow-x-auto scrollbar-hide -mx-1 px-1">
+          <div className="flex items-center gap-1.5 py-3 overflow-x-auto scrollbar-hide -mx-1 px-1">
             {[
-              { key: 'all', label: 'All Staff', icon: null, count: staffData.length },
-              { key: 'leadership', label: 'Leadership', icon: '👑', count: staffByHierarchy.leadership?.length || 0 },
-              { key: 'teaching', label: 'Teaching', icon: '📚', count: staffByHierarchy.teaching?.length || 0 },
-              { key: 'support', label: 'Support', icon: '🛠️', count: staffByHierarchy.support?.length || 0 },
+              { key: 'all', label: 'All Staff', Icon: FiUsers, count: staffData.length },
+              { key: 'leadership', label: 'Leadership', Icon: FiShield, count: staffByHierarchy.leadership?.length || 0 },
+              { key: 'teaching', label: 'Teaching', Icon: FiBookOpen, count: staffByHierarchy.teaching?.length || 0 },
+              { key: 'support', label: 'Support', Icon: FiSettings, count: staffByHierarchy.support?.length || 0 },
             ].map((item) => (
               <button
                 key={item.key}
                 onClick={() => setSelectedHierarchy(item.key)}
-                className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                className={`flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[11px] font-semibold transition-all ${
                   selectedHierarchy === item.key
                     ? 'bg-[#1a1a2e] text-white shadow-sm'
-                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
+                    : 'text-slate-500 hover:bg-white hover:text-slate-700 hover:shadow-sm'
                 }`}
               >
-                {item.icon && <span className="text-sm">{item.icon}</span>}
+                <item.Icon size={13} />
                 <span className="whitespace-nowrap">{item.label}</span>
-                <span className={`text-[9px] font-black px-1.5 py-0.5 rounded ${
-                  selectedHierarchy === item.key ? 'bg-white/15' : 'bg-slate-100'
+                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
+                  selectedHierarchy === item.key ? 'bg-white/15' : 'bg-slate-200/60'
                 }`}>
                   {item.count}
                 </span>
@@ -729,24 +759,27 @@ export default function StaffDirectory() {
             ))}
 
             {/* Divider */}
-            <div className="w-px h-5 bg-slate-200 mx-1 flex-shrink-0" />
+            <div className="w-px h-6 bg-slate-200 mx-2 flex-shrink-0" />
 
-            {/* Department Pills - scrollable */}
-            {DEPARTMENTS.map((dept) => (
-              <button
-                key={dept.id}
-                onClick={() => toggleDept(dept.id)}
-                className={`flex-shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
-                  selectedDepts.includes(dept.id)
-                    ? 'bg-blue-50 border-blue-200 text-blue-700'
-                    : 'border-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-700'
-                }`}
-              >
-                <span className="text-sm">{dept.icon}</span>
-                <span className="whitespace-nowrap hidden sm:inline">{dept.label}</span>
-                <span className="text-[9px] font-black text-slate-400">{getDeptCount(dept.id)}</span>
-              </button>
-            ))}
+            {/* Department Pills */}
+            {DEPARTMENTS.map((dept) => {
+              const DIcon = DEPT_ICONS[dept.id] || FiLayers;
+              return (
+                <button
+                  key={dept.id}
+                  onClick={() => toggleDept(dept.id)}
+                  className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-full text-[11px] font-semibold transition-all border ${
+                    selectedDepts.includes(dept.id)
+                      ? 'bg-blue-50 border-blue-200 text-blue-700 shadow-sm'
+                      : 'border-transparent text-slate-500 hover:bg-white hover:text-slate-700 hover:shadow-sm'
+                  }`}
+                >
+                  <DIcon size={12} />
+                  <span className="whitespace-nowrap">{dept.label}</span>
+                  <span className="text-[9px] font-bold text-slate-400">{getDeptCount(dept.id)}</span>
+                </button>
+              );
+            })}
 
             {/* Clear Filters */}
             {(selectedDepts.length > 0 || searchQuery || selectedHierarchy !== 'all') && (
@@ -980,12 +1013,12 @@ export default function StaffDirectory() {
               <>
                 {selectedHierarchy === 'all' ? (
                   <div className="space-y-6">
-                    <HierarchySection title="School Leadership" icon="👑" staff={staffByHierarchy.leadership} viewMode={viewMode} isFirst={true} onContactClick={handleContactClick} />
-                    <HierarchySection title="Teaching Staff" icon="📚" staff={staffByHierarchy.teaching} viewMode={viewMode} onContactClick={handleContactClick} />
-                    <HierarchySection title="Support Staff" icon="🛠️" staff={staffByHierarchy.support} viewMode={viewMode} onContactClick={handleContactClick} />
+                    <HierarchySection title="School Leadership" iconKey="leadership" staff={staffByHierarchy.leadership} viewMode={viewMode} isFirst={true} onContactClick={handleContactClick} />
+                    <HierarchySection title="Teaching Staff" iconKey="teaching" staff={staffByHierarchy.teaching} viewMode={viewMode} onContactClick={handleContactClick} />
+                    <HierarchySection title="Support Staff" iconKey="support" staff={staffByHierarchy.support} viewMode={viewMode} onContactClick={handleContactClick} />
                   </div>
                 ) : viewMode === 'grid' ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {paginatedStaff.map((staff) => (
                       <StaffCard key={staff.id} staff={staff} onContactClick={handleContactClick} />
                     ))}
@@ -1065,7 +1098,7 @@ export default function StaffDirectory() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <div className="flex flex-col items-center gap-3">
             <div className="flex items-center gap-2">
-              <Image src="/seo/logo.png" alt="Logo" width={24} height={24} className="opacity-40" />
+              <Image src="/seo/kinyui.png" alt="Logo" width={24} height={24} className="opacity-40" />
               <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Kinyui Boys Senior School</span>
             </div>
             <p className="text-[10px] text-slate-300">Soaring to Excellence &bull; Staff Directory &bull; &copy; {new Date().getFullYear()}</p>
