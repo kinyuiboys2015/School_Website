@@ -2484,25 +2484,33 @@ return (
   {/* Magazine-style staggered grid */}
   <div className="grid grid-cols-1 md:grid-cols-12 gap-4 px-4 md:px-0">
     
-    {/* Large feature card — spans 7 cols */}
-    <div className="md:col-span-7 group relative bg-slate-900 rounded-2xl md:rounded-3xl overflow-hidden p-6 md:p-8 min-h-[220px] flex flex-col justify-end">
-      <div className="absolute top-0 right-0 w-48 h-48 bg-teal-500/10 blur-[60px] rounded-full -mr-16 -mt-16" />
-      <img src="/kinyui.png" alt="" className="absolute right-4 bottom-4 w-24 md:w-32 opacity-[0.04] pointer-events-none select-none" />
-      <div className="relative z-10">
-        <div className="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-500/20 flex items-center justify-center mb-4">
-          <IoBulbOutline className="text-teal-500 text-lg" />
-        </div>
-        <h4 className="text-base md:text-lg font-bold text-white mb-2">Proven Academic Track Record</h4>
-        <p className="text-slate-900 text-xs md:text-sm leading-relaxed max-w-md">
-          Consistently ranked among top-performing schools in Machakos County. Our KCSE results reflect a culture of disciplined study, expert instruction, and individualized support that turns potential into achievement.
-        </p>
-        <div className="flex items-center gap-3 mt-4">
-          <span className="text-[9px] font-bold uppercase tracking-wider text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-md border border-teal-500/20">Top Ranked</span>
-          <span className="text-[9px] font-bold uppercase tracking-wider text-slate-700">Since 1976</span>
-        </div>
-      </div>
+  {/* Large feature card — spans 7 cols */}
+<div className="md:col-span-7 group relative bg-slate-900 rounded-2xl md:rounded-3xl overflow-hidden p-6 md:p-8 min-h-[220px] flex flex-col justify-end">
+  <div className="absolute top-0 right-0 w-48 h-48 bg-teal-500/10 blur-[60px] rounded-full -mr-16 -mt-16" />
+  <img src="/kinyui.png" alt="" className="absolute right-4 bottom-4 w-24 md:w-32 opacity-[0.04] pointer-events-none select-none" />
+  <div className="relative z-10">
+    <div className="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-500/20 flex items-center justify-center mb-4">
+      <IoBulbOutline className="text-teal-500 text-lg" />
     </div>
 
+    <h4 className="text-base md:text-lg font-bold text-white mb-2">
+      A School on the Rise
+    </h4>
+
+    <p className="text-slate-100 text-xs md:text-sm leading-relaxed max-w-md">
+      Kinyui Senior School is steadily building a strong academic foundation, with consistent improvement in performance and a clear focus on excellence. Through dedicated teaching, structured learning, and student support, we are working towards achieving and surpassing a projected mean score of 5 and beyond. Our journey is defined by progress, discipline, and a shared commitment to unlocking every student’s potential.
+    </p>
+
+    <div className="flex items-center gap-3 mt-4">
+      <span className="text-[9px] font-bold uppercase tracking-wider text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-md border border-teal-500/20">
+        Improving Every Year
+      </span>
+      <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">
+        Future-Focused
+      </span>
+    </div>
+  </div>
+</div>
     {/* Right column — 2 stacked cards */}
     <div className="md:col-span-5 flex flex-col gap-4">
       
