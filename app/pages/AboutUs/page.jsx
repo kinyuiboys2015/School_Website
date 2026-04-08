@@ -27,13 +27,13 @@ const AnimatedCounter = ({ value, label, icon: Icon, suffix = "" }) => {
   }, [count, value]);
 
   return (
-    <div className="bg-white rounded-2xl p-4 sm:p-5 flex items-center gap-3 shadow-lg shadow-slate-200/50 border border-slate-200 hover:shadow-xl transition-all hover:border-amber-200">
-      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center flex-shrink-0 shadow-md">
+    <div className="bg-white rounded-2xl p-4 sm:p-5 flex items-center gap-3 sm:shadow-lg sm:shadow-slate-200/50 border border-slate-200 sm:hover:shadow-xl transition-all hover:border-amber-200">
+      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center flex-shrink-0 sm:shadow-md">
         <Icon className="text-white" size={18} />
       </div>
       <div>
         <div className="text-xl sm:text-2xl font-black text-slate-900 leading-none">{count}{suffix}</div>
-        <div className="text-[10px] sm:text-[11px] text-amber-700 font-bold uppercase tracking-wider mt-0.5">{label}</div>
+        <div className="text-[10px] sm:text-[11px] text-amber-900 font-bold uppercase tracking-wider mt-0.5">{label}</div>
       </div>
     </div>
   );
@@ -325,7 +325,7 @@ export default function AboutPage() {
               <div className="relative z-10 group">
                 <div className="absolute -inset-4 bg-slate-100 rounded-[3rem] rotate-2 -z-10 group-hover:rotate-0 transition-transform duration-700" />
                 
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border-[12px] border-white shadow-2xl">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-lg border-[12px] border-white shadow-2xl">
                   <Image
                     src="/bg/kin2.jpeg"
                     alt="Kinyui Boys Excellence"

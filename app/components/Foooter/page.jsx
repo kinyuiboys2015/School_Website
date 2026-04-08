@@ -283,21 +283,17 @@ const NewsletterForm = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
-    if (!email || isSubmitting) return;
-
     setIsSubmitting(true);
+    setErrorMsg('');
     try {
       const response = await fetch('/api/subscriber', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: email.trim(),
-          subscribedAt: new Date().toISOString(),
-          source: 'footer-newsletter',
-        }),
+        body: JSON.stringify({ email: email.trim() }),
       });
       const data = await response.json();
       if (data.success) {
@@ -306,11 +302,10 @@ const NewsletterForm = () => {
         setTimeout(() => setShowSuccess(false), 5000);
         toast.success('Successfully subscribed to newsletter!', { icon: '✅' });
       } else {
-        throw new Error(data.error || 'Subscription failed');
+        setErrorMsg(data.error || 'Subscription failed');
       }
     } catch (error) {
-      console.error('Subscription error:', error);
-      toast.error('Failed to subscribe. Please try again.', { icon: '❌' });
+      setErrorMsg('Failed to subscribe. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -352,6 +347,11 @@ const NewsletterForm = () => {
       {showSuccess && (
         <div className="mt-3 p-2 bg-emerald-500/20 border border-emerald-500 rounded-lg">
           <p className="text-emerald-300 text-xs text-center">Successfully subscribed!</p>
+        </div>
+      )}
+      {errorMsg && (
+        <div className="mt-3 p-2 bg-red-500/20 border border-red-500 rounded-lg text-red-300 text-xs text-center">
+          {errorMsg}
         </div>
       )}
     </div>
@@ -520,44 +520,46 @@ export default function ModernFooter() {
                         Get the latest updates and news from Kinyui Boys Senior School
                       </p>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                    <form
+                      onSubmit={handleSubscribe}
+                      className="flex flex-row flex-nowrap w-full md:w-auto gap-3 items-center"
+                      style={{ maxWidth: 480 }}
+                    >
                       <input
                         type="email"
                         placeholder="Enter your email address"
-                        className="flex-1 sm:w-72 px-4 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        className="flex-1 min-w-0 px-4 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                        required
                       />
-                      <button className="bg-white text-amber-600 font-bold px-6 py-3 rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-md hover:shadow-lg">
+                      <button
+                        type="submit"
+                        disabled={isSubmitting || !email}
+                        className="bg-white text-amber-600 font-bold px-6 py-3 rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-md hover:shadow-lg flex items-center gap-2 flex-shrink-0"
+                      >
+                        {isSubmitting && (
+                          <svg className="animate-spin h-5 w-5 mr-2 text-amber-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                          </svg>
+                        )}
                         Subscribe
                       </button>
+                    </form>
+                  </div>
+                  {/* Notifications */}
+                  {showSuccess && (
+                    <div className="mt-3 p-2 bg-emerald-500/20 border border-emerald-500 rounded-lg text-emerald-300 text-xs text-center">
+                      Successfully subscribed!
                     </div>
-                  </div>
+                  )}
+                  {errorMsg && (
+                    <div className="mt-3 p-2 bg-red-500/20 border border-red-500 rounded-lg text-red-300 text-xs text-center">
+                      {errorMsg}
+                    </div>
+                  )}
                 </div>
-              </div>
-
-              {/* Footer Bottom */}
-              <div className="mt-12 pt-8 border-t border-white/10">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
-                  <p className="text-gray-400 font-medium text-center md:text-left">
-                    © {currentYear} Kinyui Boys Senior School. All rights reserved.
-                  </p>
-                  <div className="flex gap-6">
-                    <button
-                      onClick={() => setShowSitemap(true)}
-                      className="text-gray-400 font-medium flex items-center gap-1"
-                    >
-                      <FiGlobe className="text-sm" />
-                      <span>Sitemap</span>
-                    </button>
-                    <button
-                      onClick={() => setShowPrivacy(true)}
-                      className="text-gray-400 font-medium flex items-center gap-1"
-                    >
-                      <FiShield className="text-sm" />
-                      <span>Privacy</span>
-                    </button>
-                  </div>
-                </div>
-                <DevCredits />
               </div>
             </div>
           </div>
