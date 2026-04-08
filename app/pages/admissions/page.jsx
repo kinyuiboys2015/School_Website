@@ -2292,9 +2292,9 @@ export default function ComprehensiveAdmissions() {
               </div>
               <span className="text-xs font-bold text-slate-900 uppercase tracking-wide">About Admissions</span>
             </div>
-            <p className="text-slate-900 text-xs md:text-sm leading-relaxed">
-              Explore our academic programs, review entry requirements, download fee structures, and track your application — all from one place. Use the tabs below to navigate each section.
-            </p>
+         <p className="text-slate-900 text-xs md:text-sm lg:text-base leading-relaxed md:leading-loose">
+  Explore our comprehensive academic programs, review detailed entry requirements, download the latest fee structures, and track the status of your application—all from a single, easy-to-use portal. Navigate through the tabs below to access each section efficiently. Our admissions team is here to guide you through every step, from understanding eligibility criteria to submitting your application and preparing for enrollment. Whether you are a prospective student or a parent, this centralized hub ensures that all the information you need is accessible anytime, anywhere, and fully optimized for both mobile and desktop viewing.
+</p>
           </div>
         </div>
 
@@ -2750,77 +2750,81 @@ return (
           </div>
         </div>
 
-        {/* CBC Pathways — Numbered Timeline Layout */}
-        <div className="space-y-4 mb-8">
-          {[
-            {
-              pathway: 'STEM Pathway',
-              icon: IoFlaskOutline,
-              color: 'from-blue-500 to-cyan-500',
-              accent: 'blue',
-              description: 'Science, Technology, Engineering & Mathematics',
-              subjects: ['Mathematics', 'Integrated Science', 'Computer Science', 'Pre-Technical Studies', 'Health Education'],
-              careers: 'Engineers, Doctors, Data Scientists, Researchers'
-            },
-            {
-              pathway: 'Arts & Sports Pathway',
-              icon: IoAccessibilityOutline,
-              color: 'from-purple-500 to-pink-500',
-              accent: 'purple',
-              description: 'Creative Arts, Performing Arts & Athletic Excellence',
-              subjects: ['Visual Arts', 'Performing Arts', 'Physical Education', 'Music', 'Creative Design'],
-              careers: 'Athletes, Artists, Musicians, Designers, Coaches'
-            },
-            {
-              pathway: 'Social Sciences Pathway',
-              icon: IoNewspaperOutline,
-              color: 'from-amber-500 to-orange-500',
-              accent: 'amber',
-              description: 'Humanities, Languages & Civic Education',
-              subjects: ['Social Studies', 'Religious Education', 'Business Studies', 'Languages', 'Life Skills'],
-              careers: 'Lawyers, Diplomats, Journalists, Teachers, Counselors'
-            }
-          ].map((path, idx) => {
-            const PathIcon = path.icon;
-            const isDark = idx === 1;
-            return (
-              <div key={idx} className={`flex flex-col md:flex-row rounded-2xl overflow-hidden border transition-shadow hover:shadow-md ${
-                isDark ? 'bg-slate-900 border-slate-700/50' : 'bg-white border-slate-200'
-              }`}>
-                {/* Left number strip */}
-                <div className={`flex md:flex-col items-center justify-center gap-2 px-4 py-3 md:px-5 md:py-0 md:min-w-[60px] bg-gradient-to-b ${path.color}`}>
-                  <span className="text-2xl md:text-3xl font-black text-white/90">0{idx + 1}</span>
-                </div>
-                
-                {/* Content */}
-                <div className="flex-1 p-5 md:p-6 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <PathIcon className={`text-lg ${isDark ? 'text-white' : 'text-slate-700'}`} />
-                    <div>
-                      <h4 className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{path.pathway}</h4>
-                      <p className={`text-[10px] font-medium ${isDark ? 'text-slate-900' : 'text-slate-500'}`}>{path.description}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-1.5">
-                    {path.subjects.map((subj, i) => (
-                      <span key={i} className={`px-2 py-1 rounded-md text-[10px] font-medium border ${
-                        isDark ? 'bg-white/5 text-slate-300 border-white/10' : 'bg-slate-50 text-slate-700 border-slate-100'
-                      }`}>
-                        {subj}
-                      </span>
-                    ))}
-                  </div>
-                  
-                  <div className={`pt-3 border-t ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
-                    <p className={`text-[9px] font-bold uppercase tracking-wider mb-1 ${isDark ? 'text-slate-500' : 'text-slate-900'}`}>Career Outcomes</p>
-                    <p className={`text-xs font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{path.careers}</p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+      {/* CBC Pathways — Numbered Timeline Layout */}
+<div className="space-y-5 mb-8">
+  {[
+    {
+      pathway: 'STEM Pathway',
+      icon: IoFlaskOutline,
+      color: 'from-blue-600 to-cyan-500',
+      accent: 'blue',
+      description: 'Science, Technology, Engineering & Mathematics',
+      subjects: ['Mathematics', 'Integrated Science', 'Computer Science', 'Pre-Technical Studies', 'Health Education'],
+      careers: 'Software Engineer, Medical Doctor, Civil Engineer, Data Scientist, Pharmacist, Architect, Cybersecurity Analyst, Pilot, Agricultural Researcher, Biotechnologist, Quantitative Analyst, Telecommunications Expert, Environmental Scientist, AI Specialist, Mechanical Technician'
+    },
+    {
+      pathway: 'Arts & Sports Pathway',
+      icon: IoAccessibilityOutline,
+      color: 'from-purple-600 to-pink-500',
+      accent: 'purple',
+      description: 'Creative Arts, Performing Arts & Athletic Excellence',
+      subjects: ['Visual Arts', 'Performing Arts', 'Physical Education', 'Music', 'Creative Design'],
+      careers: 'Professional Athlete, Graphic Designer, Music Producer, Film Director, Interior Decorator, Sports Physiotherapist, Fashion Designer, Choreographer, Fine Artist, Photojournalist, Sports Agent, Animator, Theatre Manager, Fitness Consultant, Content Creator'
+    },
+    {
+      pathway: 'Social Sciences Pathway',
+      icon: IoNewspaperOutline,
+      color: 'from-amber-600 to-orange-500',
+      accent: 'amber',
+      description: 'Humanities, Languages & Civic Education',
+      subjects: ['Social Studies', 'Religious Education', 'Business Studies', 'Languages', 'Life Skills'],
+      careers: 'Advocate of the High Court, Diplomat, Economist, Clinical Psychologist, Human Resource Manager, Journalist, International Relations Officer, Sociologist, Public Relations Specialist, Social Worker, Political Scientist, Archaeologist, Translator/Linguist, Historian, Urban Planner'
+    }
+  ].map((path, idx) => {
+    const PathIcon = path.icon;
+    const isDark = idx === 1;
+    return (
+      <div key={idx} className={`flex flex-col md:flex-row rounded-2xl overflow-hidden border transition-all hover:shadow-lg ${
+        isDark ? 'bg-slate-900 border-slate-700/50' : 'bg-white border-slate-200'
+      }`}>
+        {/* Left number strip */}
+        <div className={`flex md:flex-col items-center justify-center gap-2 px-4 py-4 md:px-6 md:py-0 md:min-w-[70px] bg-gradient-to-b ${path.color}`}>
+          <span className="text-3xl md:text-4xl font-black text-white/95">0{idx + 1}</span>
         </div>
+        
+        {/* Content */}
+        <div className="flex-1 p-5 md:p-7 space-y-5">
+          <div className="flex items-center gap-4">
+            <div className={`p-2 rounded-lg ${isDark ? 'bg-white/10' : 'bg-slate-100'}`}>
+                <PathIcon className={`text-xl ${isDark ? 'text-white' : 'text-slate-700'}`} />
+            </div>
+            <div>
+              <h4 className={`font-bold text-base md:text-lg ${isDark ? 'text-white' : 'text-slate-900'}`}>{path.pathway}</h4>
+              <p className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{path.description}</p>
+            </div>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            {path.subjects.map((subj, i) => (
+              <span key={i} className={`px-2.5 py-1 rounded-md text-[11px] md:text-xs font-semibold border ${
+                isDark ? 'bg-white/5 text-slate-300 border-white/10' : 'bg-slate-50 text-slate-700 border-slate-100'
+              }`}>
+                {subj}
+              </span>
+            ))}
+          </div>
+          
+          <div className={`pt-4 border-t ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
+            <p className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>Potential Career Outcomes</p>
+            <p className={`text-xs md:text-sm font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              {path.careers}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  })}
+</div>
 
         {/* CBC Core Subjects Row */}
         <div className="bg-white rounded-xl border border-slate-200 p-5 md:p-6">
