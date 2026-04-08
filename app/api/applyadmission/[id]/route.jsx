@@ -234,688 +234,237 @@ function formatDate(date) {
 function getApplicantConfirmationTemplate(name, appNumber) {
   return `
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
       <meta name="x-apple-disable-message-reformatting">
       <title>Application Confirmation - ${SCHOOL_NAME}</title>
-      <style>
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-          -webkit-text-size-adjust: 100%;
-          -ms-text-size-adjust: 100%;
-        }
-        
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          line-height: 1.6;
-          color: #333;
-          background-color: #f8fafc;
-          padding: 16px;
-          margin: 0;
-          -webkit-font-smoothing: antialiased;
-        }
-        
-        .container {
-          max-width: 600px;
-          margin: 0 auto;
-          background: white;
-          border-radius: 16px;
-          overflow: hidden;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-          border: 1px solid #e2e8f0;
-        }
-        
-        .header {
-          background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-          color: white;
-          padding: 40px 20px;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .header::before {
-          content: '';
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-          background-size: 20px 20px;
-          opacity: 0.1;
-        }
-        
-        .header h1 {
-          font-size: 28px;
-          font-weight: 800;
-          margin: 0 0 8px 0;
-          position: relative;
-          z-index: 1;
-        }
-        
-        .header p {
-          font-size: 15px;
-          opacity: 0.95;
-          margin: 0;
-          position: relative;
-          z-index: 1;
-        }
-        
-        .badge {
-          display: inline-block;
-          background: rgba(255, 255, 255, 0.15);
-          padding: 8px 20px;
-          border-radius: 24px;
-          font-size: 12px;
-          font-weight: 600;
-          text-transform: uppercase;
-          margin-top: 12px;
-          position: relative;
-          z-index: 1;
-        }
-        
-        .content {
-          padding: 40px 28px;
-        }
-        
-        .success-card {
-          background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-          padding: 28px;
-          margin: 24px 0;
-          border-radius: 12px;
-          text-align: center;
-        }
-        
-        .success-icon {
-          font-size: 48px;
-          display: block;
-          margin-bottom: 12px;
-        }
-        
-        .success-badge {
-          display: inline-block;
-          background: #4caf50;
-          color: white;
-          padding: 10px 24px;
-          border-radius: 50px;
-          font-weight: 600;
-          font-size: 14px;
-          margin: 12px 0;
-        }
-        
-        .info-grid {
-          display: flex;
-          flex-direction: column;
-          gap: 14px;
-          margin: 28px 0;
-        }
-        
-        @media (min-width: 480px) {
-          .info-grid {
-            flex-direction: row;
-          }
-        }
-        
-        .info-box {
-          background: #f8fafc;
-          padding: 20px;
-          border-radius: 12px;
-          border: 1px solid #e2e8f0;
-          flex: 1;
-        }
-        
-        .info-label {
-          font-size: 11px;
-          font-weight: 800;
-          text-transform: uppercase;
-          color: #0369a1;
-          letter-spacing: 0.05em;
-          margin-bottom: 8px;
-        }
-        
-        .info-value {
-          font-size: 20px;
-          font-weight: 700;
-          color: #075985;
-          word-break: break-word;
-          line-height: 1.3;
-        }
-        
-        .section-title {
-          font-size: 18px;
-          font-weight: 700;
-          color: #1e3c72;
-          margin: 28px 0 16px 0;
-          border-left: 4px solid #4c7cf3;
-          padding-left: 12px;
-        }
-        
-        .steps-box {
-          background: #e3f2fd;
-          padding: 24px;
-          border-radius: 12px;
-          margin: 24px 0;
-        }
-        
-        .steps-list {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-        }
-        
-        .steps-list li {
-          padding: 14px 0;
-          border-bottom: 1px solid rgba(30, 60, 114, 0.1);
-          display: flex;
-          align-items: flex-start;
-          gap: 12px;
-        }
-        
-        .steps-list li:last-child {
-          border-bottom: none;
-        }
-        
-        .step-icon {
-          font-size: 24px;
-          min-width: 30px;
-          flex-shrink: 0;
-        }
-        
-        .step-text {
-          font-size: 14px;
-          color: #333;
-          line-height: 1.6;
-        }
-        
-        .important-box {
-          background: rgba(234, 179, 8, 0.1);
-          border: 1px solid rgba(234, 179, 8, 0.3);
-          padding: 20px;
-          border-radius: 12px;
-          margin: 24px 0;
-        }
-        
-        .important-title {
-          font-size: 15px;
-          font-weight: 700;
-          color: #92400e;
-          margin: 0 0 12px 0;
-        }
-        
-        .important-text {
-          font-size: 14px;
-          color: #78350f;
-          margin: 8px 0;
-          line-height: 1.6;
-        }
-        
-        .contact-section {
-          background: linear-gradient(135deg, #f0f7ff 0%, #dbeafe 100%);
-          padding: 28px;
-          border-radius: 12px;
-          margin: 28px 0;
-          text-align: center;
-        }
-        
-        .contact-title {
-          font-size: 18px;
-          font-weight: 700;
-          color: #1e3c72;
-          margin: 0 0 20px 0;
-        }
-        
-        .contact-buttons {
-          display: flex;
-          flex-direction: column;
-          gap: 14px;
-          margin: 20px 0;
-        }
-        
-        @media (min-width: 480px) {
-          .contact-buttons {
-            flex-direction: row;
-            justify-content: center;
-          }
-        }
-        
-        .contact-btn {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 16px;
-          background: white;
-          border: 2px solid #dbeafe;
-          border-radius: 10px;
-          text-decoration: none;
-          transition: all 0.2s ease;
-          flex: 1;
-          justify-content: center;
-        }
-        
-        .contact-btn:hover {
-          background: #f0f7ff;
-          border-color: #0284c7;
-        }
-        
-        .contact-icon {
-          width: 40px;
-          height: 40px;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 20px;
-          color: white;
-          font-weight: bold;
-          flex-shrink: 0;
-        }
-        
-        .contact-icon.phone {
-          background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
-        }
-        
-        .contact-icon.email {
-          background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
-        }
-        
-        .contact-text {
-          color: #1e3c72;
-          font-weight: 600;
-          font-size: 14px;
-        }
-        
-        .footer {
-          background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-          color: #cbd5e1;
-          padding: 28px;
-          text-align: center;
-        }
-        
-        .footer-title {
-          font-size: 18px;
-          font-weight: 700;
-          color: white;
-          margin: 0 0 8px 0;
-        }
-        
-        .footer-text {
-          font-size: 13px;
-          margin: 4px 0;
-        }
-        
-        .footer-motto {
-          font-size: 12px;
-          font-style: italic;
-          margin: 12px 0;
-        }
-        
-        @media (max-width: 768px) {
-          body {
-            padding: 12px;
-          }
-          
-          .header {
-            padding: 32px 16px;
-          }
-          
-          .header h1 {
-            font-size: 24px;
-          }
-          
-          .header p {
-            font-size: 14px;
-          }
-          
-          .content {
-            padding: 24px 16px;
-          }
-          
-          .success-card {
-            padding: 20px;
-          }
-          
-          .info-box {
-            padding: 16px;
-          }
-          
-          .info-value {
-            font-size: 18px;
-          }
-          
-          .section-title {
-            font-size: 17px;
-            margin: 24px 0 14px 0;
-          }
-          
-          .steps-box {
-            padding: 20px;
-            margin: 20px 0;
-          }
-          
-          .steps-list li {
-            padding: 12px 0;
-          }
-          
-          .step-icon {
-            font-size: 20px;
-          }
-          
-          .step-text {
-            font-size: 13px;
-          }
-          
-          .important-box {
-            padding: 16px;
-            margin: 20px 0;
-          }
-          
-          .important-title {
-            font-size: 14px;
-          }
-          
-          .important-text {
-            font-size: 13px;
-            margin: 6px 0;
-          }
-          
-          .contact-section {
-            padding: 24px;
-            margin: 24px 0;
-          }
-          
-          .contact-title {
-            font-size: 16px;
-            margin-bottom: 18px;
-          }
-          
-          .contact-btn {
-            padding: 14px;
-            font-size: 13px;
-          }
-          
-          .contact-icon {
-            width: 36px;
-            height: 36px;
-            font-size: 18px;
-          }
-          
-          .footer {
-            padding: 24px;
-          }
-          
-          .footer-title {
-            font-size: 16px;
-          }
-          
-          .footer-text {
-            font-size: 12px;
-          }
-        }
-        
-        @media (max-width: 480px) {
-          body {
-            padding: 8px;
-          }
-          
-          .header {
-            padding: 24px 12px;
-          }
-          
-          .header h1 {
-            font-size: 20px;
-            margin-bottom: 6px;
-          }
-          
-          .header p {
-            font-size: 12px;
-          }
-          
-          .badge {
-            font-size: 10px;
-            padding: 6px 14px;
-            margin-top: 10px;
-          }
-          
-          .content {
-            padding: 16px 12px;
-          }
-          
-          .success-card {
-            padding: 16px;
-            margin: 16px 0;
-          }
-          
-          .success-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-          }
-          
-          .success-badge {
-            font-size: 12px;
-            padding: 8px 16px;
-          }
-          
-          .info-grid {
-            gap: 12px;
-            margin: 16px 0;
-          }
-          
-          .info-box {
-            padding: 14px;
-            margin-bottom: 0;
-          }
-          
-          .info-label {
-            font-size: 10px;
-            margin-bottom: 6px;
-          }
-          
-          .info-value {
-            font-size: 16px;
-          }
-          
-          .section-title {
-            font-size: 16px;
-            margin: 20px 0 12px 0;
-            padding-left: 10px;
-          }
-          
-          .steps-box {
-            padding: 16px;
-            margin: 16px 0;
-          }
-          
-          .steps-list li {
-            padding: 10px 0;
-            gap: 10px;
-          }
-          
-          .step-icon {
-            font-size: 18px;
-          }
-          
-          .step-text {
-            font-size: 12px;
-          }
-          
-          .important-box {
-            padding: 14px;
-            margin: 16px 0;
-          }
-          
-          .important-title {
-            font-size: 13px;
-            margin-bottom: 8px;
-          }
-          
-          .important-text {
-            font-size: 12px;
-            margin: 4px 0;
-          }
-          
-          .contact-section {
-            padding: 16px;
-            margin: 16px 0;
-          }
-          
-          .contact-title {
-            font-size: 15px;
-            margin-bottom: 14px;
-          }
-          
-          .contact-buttons {
-            gap: 10px;
-            margin: 12px 0;
-          }
-          
-          .contact-btn {
-            padding: 12px;
-            gap: 10px;
-            flex-direction: column;
-          }
-          
-          .contact-icon {
-            width: 32px;
-            height: 32px;
-            font-size: 16px;
-          }
-          
-          .contact-text {
-            font-size: 12px;
-          }
-          
-          .footer {
-            padding: 16px;
-          }
-          
-          .footer-title {
-            font-size: 16px;
-          }
-          
-          .footer-text {
-            font-size: 11px;
-          }
-          
-          .footer-motto {
-            font-size: 11px;
-          }
-        }
-      </style>
     </head>
-    <body>
-      <div class="container">
-        <div class="header">
-          <h1>✅ Application Received</h1>
-          <p>${SCHOOL_NAME}</p>
-          <div class="badge">Welcome to Our Admissions Process</div>
-        </div>
-        
-        <div class="content">
-          <div class="success-card">
-            <span class="success-icon">🎉</span>
-            <span class="success-badge">Application Submitted Successfully!</span>
-            <h3 style="color: #2e7d32; margin: 16px 0 0 0; font-size: 22px;">
-              Welcome to ${SCHOOL_NAME} Admissions
-            </h3>
-          </div>
-          
-          <p style="font-size: 16px; color: #333; margin: 20px 0; line-height: 1.6;">
-            Dear <strong style="color: #1e3c72;">${name}</strong>,
-            <br><br>
-            Thank you for choosing ${SCHOOL_NAME} for your education journey. 
-            We have successfully received your admission application and it is now under review by our team.
-          </p>
-          
-          <div class="info-grid">
-            <div class="info-box">
-              <div class="info-label">📝 Applicant Name</div>
-              <div class="info-value">${name}</div>
-            </div>
-            <div class="info-box">
-              <div class="info-label">🔐 Application Number</div>
-              <div class="info-value">${appNumber}</div>
-            </div>
-          </div>
-          
-          <div class="section-title">📋 What Happens Next?</div>
-          <div class="steps-box">
-            <ul class="steps-list">
-              <li>
-                <span class="step-icon">🔍</span>
-                <span class="step-text"><strong>Application Review:</strong> Our admissions team will review your application within 7-14 working days</span>
-              </li>
-              <li>
-                <span class="step-icon">📧</span>
-                <span class="step-text"><strong>Status Updates:</strong> You will receive email notifications at every stage of the process</span>
-              </li>
-              <li>
-                <span class="step-icon">📞</span>
-                <span class="step-text"><strong>Verification:</strong> We may contact you for additional information or clarification</span>
-              </li>
-              <li>
-                <span class="step-icon">🎯</span>
-                <span class="step-text"><strong>Decision:</strong> Final admission decision will be communicated via email</span>
-              </li>
-            </ul>
-          </div>
-          
-          <div class="important-box">
-            <h4 class="important-title">⚠️ Important Notes</h4>
-            <p class="important-text">• Keep your application number <strong>${appNumber}</strong> safe for future reference</p>
-            <p class="important-text">• All communications will be sent to this email address</p>
-            <p class="important-text">• Do not share your application details with unauthorized persons</p>
-            <p class="important-text">• Application review typically takes 2-3 weeks</p>
-          </div>
-          
-          <div class="contact-section">
-            <h3 class="contact-title">📞 Need Help?</h3>
-            <p style="font-size: 14px; color: #1e3c72; margin: 0 0 16px 0;">
-              Our admissions team is here to assist you:
-            </p>
-            <div class="contact-buttons">
-              <a href="tel:${CONTACT_PHONE}" class="contact-btn">
-                <div class="contact-icon phone">☎</div>
-                <div class="contact-text">${CONTACT_PHONE}</div>
-              </a>
-              <a href="mailto:${CONTACT_EMAIL}" class="contact-btn">
-                <div class="contact-icon email">✉</div>
-                <div class="contact-text">${CONTACT_EMAIL}</div>
-              </a>
-            </div>
-            <p style="margin-top: 14px; font-size: 12px; color: #666;">
-              Office Hours: Monday - Friday, 8:00 AM - 5:00 PM
-            </p>
-          </div>
-          
-          <div style="text-align: center; margin-top: 28px; padding-top: 20px; border-top: 2px solid #e2e8f0;">
-            <p style="font-size: 16px; color: #1e3c72; font-weight: 600; margin-bottom: 8px;">
-              We look forward to reviewing your application!
-            </p>
-            <p style="font-size: 15px; color: #333; margin: 0;">
-              Best regards,<br>
-              <strong>The Admissions Team</strong><br>
-              ${SCHOOL_NAME}
-            </p>
-          </div>
-        </div>
-        
-        <div class="footer">
-          <p class="footer-title">${SCHOOL_NAME}</p>
-          <p class="footer-text">${SCHOOL_LOCATION}</p>
-          <p class="footer-motto">"${SCHOOL_MOTTO}"</p>
-          <p class="footer-text" style="margin-top: 12px;">
-            © ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.
-          </p>
-          <p class="footer-text" style="opacity: 0.7;">
-            This is an automated confirmation email. Please do not reply to this email.
-          </p>
-        </div>
-      </div>
+    <body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f1f5f9; line-height: 1.6; color: #1e293b; -webkit-text-size-adjust: 100%;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f1f5f9;">
+        <tr>
+          <td align="center" style="padding: 4% 3%;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 640px; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(15,23,42,0.08);">
+
+              <!-- HEADER -->
+              <tr>
+                <td style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%); padding: 10% 6% 8%; text-align: center;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 10px;">
+                        <div style="display: inline-block; background: rgba(255,255,255,0.1); border-radius: 50%; width: 56px; height: 56px; line-height: 56px; text-align: center;">
+                          <span style="font-size: 28px;">🏫</span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <h1 style="color: white; font-size: clamp(20px, 5.5vw, 26px); font-weight: 800; margin: 0 0 4px; line-height: 1.2; letter-spacing: -0.02em;">${SCHOOL_NAME}</h1>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <p style="color: rgba(255,255,255,0.85); font-size: clamp(12px, 3vw, 14px); margin: 4px 0 0; font-weight: 500;">${SCHOOL_LOCATION}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center" style="padding-top: 10px;">
+                        <span style="display: inline-block; background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.3); padding: 5px 18px; border-radius: 24px; font-size: clamp(10px, 2.5vw, 11px); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #86efac;">&#10003; Application Received</span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- SUCCESS BANNER -->
+              <tr>
+                <td style="padding: 6% 6% 2%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-radius: 12px; border: 1px solid #a7f3d0; text-align: center;">
+                    <tr>
+                      <td style="padding: 6%;">
+                        <p style="font-size: 40px; margin: 0 0 8px;">🎉</p>
+                        <span style="display: inline-block; background: #059669; color: white; padding: 8px 22px; border-radius: 50px; font-weight: 700; font-size: clamp(12px, 3vw, 14px);">Application Submitted Successfully!</span>
+                        <p style="color: #047857; font-size: clamp(16px, 4.2vw, 20px); font-weight: 700; margin: 14px 0 0;">Welcome to ${SCHOOL_NAME} Admissions</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- GREETING -->
+              <tr>
+                <td style="padding: 5% 6% 2%;">
+                  <p style="color: #334155; font-size: clamp(14px, 3.5vw, 16px); margin: 0; line-height: 1.7;">
+                    Dear <strong style="color: #0f172a;">${name}</strong>,
+                  </p>
+                  <p style="color: #475569; font-size: clamp(13px, 3.2vw, 15px); margin: 12px 0 0; line-height: 1.7;">
+                    Thank you for choosing ${SCHOOL_NAME} for your education journey. We have successfully received your admission application and it is now under review by our team.
+                  </p>
+                </td>
+              </tr>
+
+              <!-- DIVIDER -->
+              <tr><td style="padding: 4% 6%;"><div style="height: 1px; background: #e2e8f0;"></div></td></tr>
+
+              <!-- APPLICANT NAME CARD -->
+              <tr>
+                <td style="padding: 0 6% 4%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-radius: 12px; border: 1px solid #a7f3d0; border-left: 4px solid #059669;">
+                    <tr>
+                      <td style="padding: 5%;">
+                        <p style="font-size: clamp(10px, 2.5vw, 11px); font-weight: 700; color: #065f46; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 6px;">📝 Applicant Name</p>
+                        <p style="font-size: clamp(18px, 4.8vw, 22px); font-weight: 800; color: #047857; margin: 0; word-break: break-word; line-height: 1.3;">${name}</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- APPLICATION NUMBER CARD -->
+              <tr>
+                <td style="padding: 0 6% 5%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border: 1px solid #bae6fd; border-left: 4px solid #0284c7;">
+                    <tr>
+                      <td style="padding: 5%;">
+                        <p style="font-size: clamp(10px, 2.5vw, 11px); font-weight: 700; color: #075985; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 6px;">🔐 Application Number</p>
+                        <p style="font-size: clamp(18px, 4.8vw, 22px); font-weight: 800; color: #0c4a6e; margin: 0; word-break: break-word; line-height: 1.3;">${appNumber}</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- WHAT HAPPENS NEXT -->
+              <tr>
+                <td style="padding: 0 6% 5%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 12px; border: 1px solid #bfdbfe; border-left: 4px solid #3b82f6;">
+                    <tr>
+                      <td style="padding: 5%;">
+                        <p style="color: #1e40af; font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; margin: 0 0 14px;">📋 What Happens Next?</p>
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td style="padding: 8px 0; border-bottom: 1px solid rgba(59,130,246,0.15);">
+                              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+                                <td style="width: 30px; vertical-align: top; font-size: 18px;">🔍</td>
+                                <td style="padding-left: 10px; color: #1e3a5f; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;"><strong>Application Review:</strong> Our admissions team will review your application within 7-14 working days</td>
+                              </tr></table>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px 0; border-bottom: 1px solid rgba(59,130,246,0.15);">
+                              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+                                <td style="width: 30px; vertical-align: top; font-size: 18px;">📧</td>
+                                <td style="padding-left: 10px; color: #1e3a5f; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;"><strong>Status Updates:</strong> You will receive email notifications at every stage of the process</td>
+                              </tr></table>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px 0; border-bottom: 1px solid rgba(59,130,246,0.15);">
+                              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+                                <td style="width: 30px; vertical-align: top; font-size: 18px;">📞</td>
+                                <td style="padding-left: 10px; color: #1e3a5f; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;"><strong>Verification:</strong> We may contact you for additional information or clarification</td>
+                              </tr></table>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px 0;">
+                              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+                                <td style="width: 30px; vertical-align: top; font-size: 18px;">🎯</td>
+                                <td style="padding-left: 10px; color: #1e3a5f; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;"><strong>Decision:</strong> Final admission decision will be communicated via email</td>
+                              </tr></table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- IMPORTANT NOTES -->
+              <tr>
+                <td style="padding: 0 6% 5%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-radius: 12px; border: 1px solid #fde68a; border-left: 4px solid #f59e0b;">
+                    <tr>
+                      <td style="padding: 5%;">
+                        <p style="color: #92400e; font-size: clamp(13px, 3.2vw, 14px); font-weight: 700; margin: 0 0 12px;">⚠️ Important Notes</p>
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <tr><td style="padding: 4px 0; color: #78350f; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;"><span style="color: #d97706; font-weight: 700; margin-right: 6px;">&#8226;</span> Keep your application number <strong>${appNumber}</strong> safe for future reference</td></tr>
+                          <tr><td style="padding: 4px 0; color: #78350f; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;"><span style="color: #d97706; font-weight: 700; margin-right: 6px;">&#8226;</span> All communications will be sent to this email address</td></tr>
+                          <tr><td style="padding: 4px 0; color: #78350f; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;"><span style="color: #d97706; font-weight: 700; margin-right: 6px;">&#8226;</span> Do not share your application details with unauthorized persons</td></tr>
+                          <tr><td style="padding: 4px 0; color: #78350f; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;"><span style="color: #d97706; font-weight: 700; margin-right: 6px;">&#8226;</span> Application review typically takes 2-3 weeks</td></tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- CONTACT SECTION -->
+              <tr>
+                <td style="padding: 0 6% 5%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <tr>
+                      <td style="padding: 5%;">
+                        <p style="color: #0f172a; font-size: clamp(13px, 3.2vw, 14px); font-weight: 700; margin: 0 0 4px;">📞 Need Help?</p>
+                        <p style="color: #64748b; font-size: clamp(12px, 3vw, 13px); margin: 0 0 14px;">Our admissions team is here to assist you:</p>
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+                                <td style="width: 32px; vertical-align: middle;"><div style="background: #059669; color: white; width: 28px; height: 28px; border-radius: 8px; text-align: center; line-height: 28px; font-size: 14px;">☎</div></td>
+                                <td style="padding-left: 12px; color: #334155; font-size: clamp(13px, 3.2vw, 14px); font-weight: 600;"><a href="tel:${CONTACT_PHONE}" style="color: #334155; text-decoration: none;">${CONTACT_PHONE}</a></td>
+                              </tr></table>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px 0;">
+                              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+                                <td style="width: 32px; vertical-align: middle;"><div style="background: #d97706; color: white; width: 28px; height: 28px; border-radius: 8px; text-align: center; line-height: 28px; font-size: 14px;">✉</div></td>
+                                <td style="padding-left: 12px; color: #334155; font-size: clamp(13px, 3.2vw, 14px); font-weight: 600;"><a href="mailto:${CONTACT_EMAIL}" style="color: #334155; text-decoration: none;">${CONTACT_EMAIL}</a></td>
+                              </tr></table>
+                            </td>
+                          </tr>
+                        </table>
+                        <p style="color: #94a3b8; font-size: clamp(10px, 2.5vw, 11px); margin: 12px 0 0; font-style: italic;">Office Hours: Monday - Friday, 8:00 AM - 5:00 PM</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- SIGN-OFF -->
+              <tr>
+                <td style="padding: 0 6% 6%; text-align: center;">
+                  <div style="border-top: 1px solid #e2e8f0; padding-top: 5%;"></div>
+                  <p style="color: #0f172a; font-size: clamp(14px, 3.5vw, 15px); font-weight: 600; margin: 0 0 6px;">We look forward to reviewing your application!</p>
+                  <p style="color: #475569; font-size: clamp(13px, 3.2vw, 14px); margin: 0;">Best regards,<br><strong>The Admissions Team</strong><br>${SCHOOL_NAME}</p>
+                </td>
+              </tr>
+
+              <!-- FOOTER -->
+              <tr>
+                <td style="background: #0f172a; padding: 8% 6%; text-align: center;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr><td align="center"><p style="color: #ffffff; font-size: clamp(15px, 4vw, 17px); font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em;">${SCHOOL_NAME}</p></td></tr>
+                    <tr><td align="center"><p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 4px;">"${SCHOOL_MOTTO}"</p></td></tr>
+                    <tr><td align="center"><p style="color: #94a3b8; font-size: clamp(12px, 3vw, 13px); margin: 0 0 14px;">${SCHOOL_LOCATION}</p></td></tr>
+                    <tr>
+                      <td align="center">
+                        <div style="width: 40px; height: 2px; background: #475569; margin: 0 auto 12px;"></div>
+                        <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0 0 4px;">&copy; ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
+                        <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0;">This is an automated confirmation email. Please do not reply.</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
     </body>
     </html>
   `;
@@ -928,473 +477,201 @@ function getAdminNotificationTemplate(applicantData, applicationNumber) {
   
   return `
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
       <meta name="x-apple-disable-message-reformatting">
       <title>New Application - ${SCHOOL_NAME}</title>
-      <style>
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-          -webkit-text-size-adjust: 100%;
-          -ms-text-size-adjust: 100%;
-        }
-        
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          line-height: 1.6;
-          color: #333;
-          background-color: #f8fafc;
-          padding: 16px;
-          margin: 0;
-          -webkit-font-smoothing: antialiased;
-        }
-        
-        .container {
-          max-width: 600px;
-          margin: 0 auto;
-          background: white;
-          border-radius: 16px;
-          overflow: hidden;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-          border: 1px solid #e2e8f0;
-        }
-        
-        .header {
-          background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
-          color: white;
-          padding: 32px 20px;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .header::before {
-          content: '';
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-          background-size: 20px 20px;
-          opacity: 0.1;
-        }
-        
-        .header h1 {
-          font-size: 24px;
-          font-weight: 800;
-          margin: 0 0 6px 0;
-          position: relative;
-          z-index: 1;
-        }
-        
-        .header p {
-          font-size: 14px;
-          opacity: 0.95;
-          margin: 0;
-          position: relative;
-          z-index: 1;
-        }
-        
-        .alert-banner {
-          background: #fef2f2;
-          border-left: 4px solid #dc2626;
-          padding: 16px 20px;
-          text-align: center;
-        }
-        
-        .badge {
-          display: inline-block;
-          background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
-          color: white;
-          padding: 8px 18px;
-          border-radius: 50px;
-          font-weight: 600;
-          font-size: 12px;
-          margin-bottom: 8px;
-        }
-        
-        .content {
-          padding: 28px;
-        }
-        
-        .app-card {
-          background: linear-gradient(135deg, #f0f7ff 0%, #dbeafe 100%);
-          padding: 24px;
-          border-radius: 12px;
-          margin: 20px 0;
-          text-align: center;
-        }
-        
-        .app-number {
-          color: #1e3c72;
-          font-size: 16px;
-          font-weight: 600;
-          margin: 0 0 8px 0;
-        }
-        
-        .app-name {
-          font-size: 22px;
-          font-weight: 700;
-          color: #075985;
-          margin: 0 0 8px 0;
-        }
-        
-        .app-date {
-          font-size: 12px;
-          color: #666;
-          margin: 0;
-        }
-        
-        .section-title {
-          font-size: 17px;
-          font-weight: 700;
-          color: #dc2626;
-          margin: 24px 0 14px 0;
-          border-bottom: 2px solid #fee2e2;
-          padding-bottom: 8px;
-        }
-        
-        .info-row {
-          display: flex;
-          padding: 12px 0;
-          border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .info-row:last-child {
-          border-bottom: none;
-        }
-        
-        .info-label {
-          font-weight: 700;
-          color: #666;
-          width: 40%;
-          font-size: 13px;
-        }
-        
-        .info-value {
-          color: #333;
-          width: 60%;
-          font-size: 13px;
-          word-break: break-word;
-        }
-        
-        .action-box {
-          background: #e8f5e9;
-          border: 2px solid #4caf50;
-          border-radius: 12px;
-          padding: 20px;
-          margin: 24px 0;
-        }
-        
-        .action-title {
-          color: #2e7d32;
-          font-size: 16px;
-          font-weight: 700;
-          margin: 0 0 12px 0;
-        }
-        
-        .action-list {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-        }
-        
-        .action-list li {
-          padding: 8px 0;
-          color: #2e7d32;
-          font-size: 13px;
-        }
-        
-        .urgency-notice {
-          background: #fff3cd;
-          border: 1px solid #ffeaa7;
-          border-radius: 8px;
-          padding: 14px;
-          margin: 20px 0;
-          text-align: center;
-          font-weight: 600;
-          color: #856404;
-          font-size: 13px;
-        }
-        
-        .footer {
-          background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-          color: #cbd5e1;
-          padding: 24px;
-          text-align: center;
-        }
-        
-        .footer-title {
-          font-size: 16px;
-          font-weight: 700;
-          color: white;
-          margin: 0 0 6px 0;
-        }
-        
-        .footer-text {
-          font-size: 12px;
-          margin: 3px 0;
-        }
-        
-        @media (max-width: 768px) {
-          body {
-            padding: 12px;
-          }
-          
-          .header {
-            padding: 28px 16px;
-          }
-          
-          .header h1 {
-            font-size: 22px;
-          }
-          
-          .header p {
-            font-size: 13px;
-          }
-          
-          .content {
-            padding: 20px;
-          }
-          
-          .app-card {
-            padding: 20px;
-            margin: 16px 0;
-          }
-          
-          .app-name {
-            font-size: 20px;
-          }
-          
-          .section-title {
-            font-size: 16px;
-            margin: 20px 0 12px 0;
-          }
-          
-          .info-row {
-            padding: 10px 0;
-          }
-          
-          .info-label {
-            font-size: 12px;
-          }
-          
-          .info-value {
-            font-size: 12px;
-          }
-          
-          .action-box {
-            padding: 16px;
-            margin: 20px 0;
-          }
-          
-          .action-title {
-            font-size: 15px;
-          }
-          
-          .footer {
-            padding: 20px;
-          }
-        }
-        
-        @media (max-width: 480px) {
-          body {
-            padding: 8px;
-          }
-          
-          .header {
-            padding: 20px 12px;
-          }
-          
-          .header h1 {
-            font-size: 20px;
-          }
-          
-          .header p {
-            font-size: 12px;
-          }
-          
-          .content {
-            padding: 16px;
-          }
-          
-          .app-card {
-            padding: 16px;
-            margin: 12px 0;
-          }
-          
-          .app-number {
-            font-size: 14px;
-            margin-bottom: 6px;
-          }
-          
-          .app-name {
-            font-size: 18px;
-          }
-          
-          .app-date {
-            font-size: 11px;
-          }
-          
-          .section-title {
-            font-size: 15px;
-            margin: 16px 0 10px 0;
-          }
-          
-          .info-row {
-            flex-direction: column;
-            padding: 8px 0;
-          }
-          
-          .info-label {
-            width: 100%;
-            margin-bottom: 3px;
-            font-size: 11px;
-          }
-          
-          .info-value {
-            width: 100%;
-            font-size: 12px;
-          }
-          
-          .action-box {
-            padding: 14px;
-            margin: 16px 0;
-          }
-          
-          .action-title {
-            font-size: 14px;
-          }
-          
-          .action-list li {
-            font-size: 12px;
-            padding: 6px 0;
-          }
-          
-          .urgency-notice {
-            padding: 12px;
-            font-size: 12px;
-          }
-          
-          .footer {
-            padding: 16px;
-          }
-          
-          .footer-title {
-            font-size: 14px;
-          }
-          
-          .footer-text {
-            font-size: 11px;
-          }
-        }
-      </style>
     </head>
-    <body>
-      <div class="container">
-        <div class="header">
-          <h1>🚨 NEW APPLICATION</h1>
-          <p>${SCHOOL_NAME} Admissions System</p>
-        </div>
-        
-        <div class="alert-banner">
-          <div class="badge">ACTION REQUIRED</div>
-          <p style="margin: 8px 0 0 0; font-weight: 600; color: #991b1b; font-size: 14px;">
-            A new student application requires review
-          </p>
-        </div>
-        
-        <div class="content">
-          <div class="app-card">
-            <p class="app-number">Application: ${applicationNumber}</p>
-            <p class="app-name">${applicantData.firstName} ${applicantData.lastName}</p>
-            <p class="app-date">Submitted: ${formattedDate}</p>
-          </div>
-          
-          <h2 class="section-title">📋 Application Details</h2>
-          <div class="info-row">
-            <div class="info-label">Full Name:</div>
-            <div class="info-value">${applicantData.firstName} ${applicantData.middleName || ''} ${applicantData.lastName}</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Date of Birth:</div>
-            <div class="info-value">${formatDate(applicantData.dateOfBirth)} (Age: ${age})</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Gender:</div>
-            <div class="info-value">${applicantData.gender}</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Nationality:</div>
-            <div class="info-value">${applicantData.nationality}</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">County:</div>
-            <div class="info-value">${applicantData.county}</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Preferred Stream:</div>
-            <div class="info-value">${getStreamLabel(applicantData.preferredStream)}</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Previous School:</div>
-            <div class="info-value">${applicantData.previousSchool}</div>
-          </div>
-       <div class="info-row">
-  <div class="info-label">KPSEA Score:</div>
-  <div class="info-value">${applicantData.kpseaMarks ? `${applicantData.kpseaMarks}/100` : (applicantData.kcpeMarks || 'Not provided')}</div>
-</div>
-<div class="info-row">
-  <div class="info-label">KJSEA Grade:</div>
-  <div class="info-value">${applicantData.kjseaGrade || applicantData.meanGrade || 'Not provided'}</div>
-</div>
-          <div class="info-row">
-            <div class="info-label">Contact Email:</div>
-            <div class="info-value">${applicantData.email}</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Contact Phone:</div>
-            <div class="info-value">${applicantData.phone}</div>
-          </div>
-          
-          <div class="action-box">
-            <h3 class="action-title">✅ Next Steps</h3>
-            <ol class="action-list">
-              <li>1. Review application completeness</li>
-              <li>2. Verify academic credentials</li>
-              <li>3. Check for any missing documents</li>
-              <li>4. Update application status in portal</li>
-              <li>5. Schedule interview if required</li>
-            </ol>
-          </div>
-          
-          <div class="urgency-notice">
-            ⏰ Please process this application within 48 hours
-          </div>
-          
-          <div style="background: #f8fafc; padding: 16px; border-radius: 10px; margin: 20px 0;">
-            <p style="font-size: 13px; color: #666; margin: 0;">
-              <strong>School:</strong> ${SCHOOL_NAME}<br>
-              <strong>Location:</strong> ${SCHOOL_LOCATION}<br>
-              <strong>Motto:</strong> "${SCHOOL_MOTTO}"
-            </p>
-          </div>
-        </div>
-        
-        <div class="footer">
-          <p class="footer-title">${SCHOOL_NAME} Admissions Portal</p>
-          <p class="footer-text">This is an automated notification from the admissions system.</p>
-          <p class="footer-text">Please log in to the portal to take action.</p>
-          <p class="footer-text" style="margin-top: 12px;">
-            © ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.
-          </p>
-        </div>
-      </div>
+    <body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f1f5f9; line-height: 1.6; color: #1e293b; -webkit-text-size-adjust: 100%;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f1f5f9;">
+        <tr>
+          <td align="center" style="padding: 4% 3%;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 640px; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(15,23,42,0.08);">
+
+              <!-- HEADER -->
+              <tr>
+                <td style="background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #b91c1c 100%); padding: 8% 6%; text-align: center;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 10px;">
+                        <div style="display: inline-block; background: rgba(255,255,255,0.15); border-radius: 50%; width: 56px; height: 56px; line-height: 56px; text-align: center;">
+                          <span style="font-size: 28px;">🚨</span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <h1 style="color: white; font-size: clamp(18px, 5vw, 24px); font-weight: 800; margin: 0 0 4px; line-height: 1.2; letter-spacing: -0.02em;">NEW APPLICATION</h1>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <p style="color: rgba(255,255,255,0.85); font-size: clamp(12px, 3vw, 14px); margin: 4px 0 0; font-weight: 500;">${SCHOOL_NAME} Admissions System</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center" style="padding-top: 10px;">
+                        <span style="display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); padding: 5px 18px; border-radius: 24px; font-size: clamp(10px, 2.5vw, 11px); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #fecaca;">&#9888; Action Required</span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- ALERT BANNER -->
+              <tr>
+                <td style="background: #fef2f2; border-left: 4px solid #dc2626; padding: 4% 6%; text-align: center;">
+                  <p style="margin: 0; font-weight: 700; color: #991b1b; font-size: clamp(13px, 3.2vw, 14px);">A new student application requires review</p>
+                </td>
+              </tr>
+
+              <!-- APPLICATION CARD -->
+              <tr>
+                <td style="padding: 6% 6% 4%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border: 1px solid #bae6fd; text-align: center;">
+                    <tr>
+                      <td style="padding: 5%;">
+                        <p style="font-size: clamp(12px, 3vw, 14px); font-weight: 600; color: #075985; margin: 0 0 6px;">Application: ${applicationNumber}</p>
+                        <p style="font-size: clamp(18px, 4.8vw, 22px); font-weight: 800; color: #0c4a6e; margin: 0 0 6px;">${applicantData.firstName} ${applicantData.lastName}</p>
+                        <p style="font-size: clamp(11px, 2.8vw, 12px); color: #64748b; margin: 0;">Submitted: ${formattedDate}</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- APPLICATION DETAILS SECTION -->
+              <tr>
+                <td style="padding: 0 6% 2%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr><td style="padding-bottom: 10px; border-bottom: 2px solid #fee2e2;"><p style="font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; color: #b91c1c; margin: 0;">📋 Application Details</p></td></tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 2% 6% 5%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden;">
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Full Name</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569; word-break: break-word;">${applicantData.firstName} ${applicantData.middleName || ''} ${applicantData.lastName}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Date of Birth</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569;">${formatDate(applicantData.dateOfBirth)} (Age: ${age})</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Gender</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569;">${applicantData.gender}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Nationality</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569;">${applicantData.nationality}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">County</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569;">${applicantData.county}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Preferred Stream</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569;">${getStreamLabel(applicantData.preferredStream)}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Previous School</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569;">${applicantData.previousSchool}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">KPSEA Score</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569;">${applicantData.kpseaMarks ? applicantData.kpseaMarks + '/100' : (applicantData.kcpeMarks || 'Not provided')}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">KJSEA Grade</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569;">${applicantData.kjseaGrade || applicantData.meanGrade || 'Not provided'}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Contact Email</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569; word-break: break-word;">${applicantData.email}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Contact Phone</td>
+                      <td style="padding: 10px 14px; background: #ffffff; font-size: clamp(12px, 3vw, 13px); color: #475569;">${applicantData.phone}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- NEXT STEPS -->
+              <tr>
+                <td style="padding: 0 6% 5%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-radius: 12px; border: 1px solid #a7f3d0; border-left: 4px solid #059669;">
+                    <tr>
+                      <td style="padding: 5%;">
+                        <p style="color: #065f46; font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; margin: 0 0 12px;">✅ Next Steps</p>
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <tr><td style="padding: 5px 0; color: #047857; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;">1. Review application completeness</td></tr>
+                          <tr><td style="padding: 5px 0; color: #047857; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;">2. Verify academic credentials</td></tr>
+                          <tr><td style="padding: 5px 0; color: #047857; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;">3. Check for any missing documents</td></tr>
+                          <tr><td style="padding: 5px 0; color: #047857; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;">4. Update application status in portal</td></tr>
+                          <tr><td style="padding: 5px 0; color: #047857; font-size: clamp(12px, 3vw, 13px); line-height: 1.6;">5. Schedule interview if required</td></tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- URGENCY NOTICE -->
+              <tr>
+                <td style="padding: 0 6% 5%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-radius: 12px; border: 1px solid #fde68a; text-align: center;">
+                    <tr>
+                      <td style="padding: 4%;">
+                        <p style="margin: 0; font-weight: 700; color: #92400e; font-size: clamp(12px, 3vw, 13px);">⏰ Please process this application within 48 hours</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- SCHOOL DETAILS -->
+              <tr>
+                <td style="padding: 0 6% 6%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <tr>
+                      <td style="padding: 4%;">
+                        <p style="font-size: clamp(12px, 3vw, 13px); color: #475569; margin: 0; line-height: 1.7;">
+                          <strong style="color: #0f172a;">School:</strong> ${SCHOOL_NAME}<br>
+                          <strong style="color: #0f172a;">Location:</strong> ${SCHOOL_LOCATION}<br>
+                          <strong style="color: #0f172a;">Motto:</strong> "${SCHOOL_MOTTO}"
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- FOOTER -->
+              <tr>
+                <td style="background: #0f172a; padding: 8% 6%; text-align: center;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr><td align="center"><p style="color: #ffffff; font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; margin: 0 0 4px;">${SCHOOL_NAME} Admissions Portal</p></td></tr>
+                    <tr>
+                      <td align="center">
+                        <div style="width: 40px; height: 2px; background: #475569; margin: 10px auto;"></div>
+                        <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0 0 4px;">This is an automated notification from the admissions system.</p>
+                        <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0 0 4px;">Please log in to the portal to take action.</p>
+                        <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0;">&copy; ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
     </body>
     </html>
   `;
@@ -1409,7 +686,7 @@ function getStatusUpdateTemplate(application, newStatus, updateData = {}) {
   let title = '';
   let message = '';
   let actionSection = '';
-  let headerGradient = 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)';
+  let headerGradient = 'linear-gradient(135deg, #0f172a 0%, #334155 100%)';
   
   switch (newStatus) {
     case 'ACCEPTED':
@@ -1418,16 +695,18 @@ function getStatusUpdateTemplate(application, newStatus, updateData = {}) {
       headerGradient = 'linear-gradient(135deg, #059669 0%, #047857 100%)';
       message = `We are pleased to inform you that your application to ${SCHOOL_NAME} has been <strong>ACCEPTED</strong>. Welcome to our school community!`;
       actionSection = `
-        <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 24px; border-radius: 12px; margin: 20px 0;">
-          <h4 style="color: #2e7d32; margin: 0 0 14px 0; font-size: 17px;">✅ Next Steps to Complete Admission:</h4>
-          <ol style="margin: 0; padding-left: 20px; color: #2e7d32;">
-            <li style="margin-bottom: 8px; font-size: 14px;">Complete the admission acceptance form</li>
-            <li style="margin-bottom: 8px; font-size: 14px;">Submit all required documents</li>
-            <li style="margin-bottom: 8px; font-size: 14px;">Pay admission fees as per fee structure</li>
-            <li style="font-size: 14px;">Report on: <strong>${updateData.reportingDate ? formatDate(updateData.reportingDate) : 'To be communicated'}</strong></li>
-          </ol>
-          ${updateData.assignedStream ? `<p style="margin-top: 12px; font-size: 14px; color: #2e7d32;"><strong>Assigned Stream:</strong> ${getStreamLabel(updateData.assignedStream)}</p>` : ''}
-        </div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-radius: 12px; border: 1px solid #a7f3d0;">
+          <tr><td style="padding: 5%;">
+            <p style="color: #065f46; font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; margin: 0 0 12px;">&#10003; Next Steps to Complete Admission:</p>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td style="padding: 5px 0; color: #047857; font-size: clamp(12px, 3vw, 14px); line-height: 1.6;">1. Complete the admission acceptance form</td></tr>
+              <tr><td style="padding: 5px 0; color: #047857; font-size: clamp(12px, 3vw, 14px); line-height: 1.6;">2. Submit all required documents</td></tr>
+              <tr><td style="padding: 5px 0; color: #047857; font-size: clamp(12px, 3vw, 14px); line-height: 1.6;">3. Pay admission fees as per fee structure</td></tr>
+              <tr><td style="padding: 5px 0; color: #047857; font-size: clamp(12px, 3vw, 14px); line-height: 1.6;">4. Report on: <strong>${updateData.reportingDate ? formatDate(updateData.reportingDate) : 'To be communicated'}</strong></td></tr>
+            </table>
+            ${updateData.assignedStream ? `<p style="margin-top: 12px; font-size: clamp(12px, 3vw, 14px); color: #047857;"><strong>Assigned Stream:</strong> ${getStreamLabel(updateData.assignedStream)}</p>` : ''}
+          </td></tr>
+        </table>
       `;
       break;
       
@@ -1437,10 +716,12 @@ function getStatusUpdateTemplate(application, newStatus, updateData = {}) {
       title = 'Application Status Update';
       message = `After careful review, we regret to inform you that your application to ${SCHOOL_NAME} has not been successful at this time.`;
       actionSection = `
-        <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #dc2626;">
-          <h4 style="color: #7f1d1d; margin: 0 0 8px 0; font-size: 15px;">Application Feedback:</h4>
-          <p style="font-size: 13px; margin: 0 0 6px 0; color: #333;"><strong>Reason:</strong> ${updateData.rejectionReason || 'Application did not meet admission criteria.'}</p>
-        </div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #dc2626;">
+          <tr><td style="padding: 5%;">
+            <p style="color: #7f1d1d; font-size: clamp(13px, 3.2vw, 15px); font-weight: 700; margin: 0 0 8px;">Application Feedback:</p>
+            <p style="font-size: clamp(12px, 3vw, 13px); margin: 0; color: #475569;"><strong>Reason:</strong> ${updateData.rejectionReason || 'Application did not meet admission criteria.'}</p>
+          </td></tr>
+        </table>
       `;
       break;
       
@@ -1450,19 +731,33 @@ function getStatusUpdateTemplate(application, newStatus, updateData = {}) {
       title = 'Interview Scheduled';
       message = `Your application to ${SCHOOL_NAME} has progressed to the interview stage. We would like to invite you for an interview.`;
       actionSection = `
-        <div style="background: linear-gradient(135deg, #f3e5f5, #e1bee7); padding: 20px; border-radius: 12px; margin: 20px 0;">
-          <h4 style="color: #6a1b9a; margin: 0 0 14px 0; font-size: 16px;">📅 Interview Details:</h4>
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            <div style="background: white; padding: 12px; border-radius: 8px;">
-              <p style="margin: 0 0 3px 0; font-size: 12px; color: #666;">Date</p>
-              <p style="margin: 0; font-weight: 700; color: #333; font-size: 15px;">${updateData.interviewDate ? formatDate(updateData.interviewDate) : 'To be confirmed'}</p>
-            </div>
-            <div style="background: white; padding: 12px; border-radius: 8px;">
-              <p style="margin: 0 0 3px 0; font-size: 12px; color: #666;">Time</p>
-              <p style="margin: 0; font-weight: 700; color: #333; font-size: 15px;">${updateData.interviewTime || 'To be confirmed'}</p>
-            </div>
-          </div>
-        </div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-radius: 12px; border: 1px solid #c4b5fd;">
+          <tr><td style="padding: 5%;">
+            <p style="color: #5b21b6; font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; margin: 0 0 14px;">📅 Interview Details:</p>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="padding-bottom: 10px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #ffffff; border-radius: 8px; border: 1px solid #ddd6fe;">
+                    <tr><td style="padding: 12px;">
+                      <p style="margin: 0 0 3px 0; font-size: clamp(10px, 2.5vw, 12px); color: #64748b;">Date</p>
+                      <p style="margin: 0; font-weight: 700; color: #1e293b; font-size: clamp(13px, 3.2vw, 15px);">${updateData.interviewDate ? formatDate(updateData.interviewDate) : 'To be confirmed'}</p>
+                    </td></tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #ffffff; border-radius: 8px; border: 1px solid #ddd6fe;">
+                    <tr><td style="padding: 12px;">
+                      <p style="margin: 0 0 3px 0; font-size: clamp(10px, 2.5vw, 12px); color: #64748b;">Time</p>
+                      <p style="margin: 0; font-weight: 700; color: #1e293b; font-size: clamp(13px, 3.2vw, 15px);">${updateData.interviewTime || 'To be confirmed'}</p>
+                    </td></tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td></tr>
+        </table>
       `;
       break;
       
@@ -1472,9 +767,11 @@ function getStatusUpdateTemplate(application, newStatus, updateData = {}) {
       title = 'Application Waitlisted';
       message = `Your application to ${SCHOOL_NAME} has been placed on a <strong>WAITLIST</strong>. We will contact you if a space becomes available.`;
       actionSection = `
-        <div style="background: linear-gradient(135deg, #fef3c7, #fef08a); padding: 16px; border-radius: 8px; margin: 20px 0;">
-          <p style="font-size: 13px; margin: 0; color: #92400e;">We will notify you immediately if a space becomes available.</p>
-        </div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-radius: 12px; border: 1px solid #fde68a;">
+          <tr><td style="padding: 5%;">
+            <p style="font-size: clamp(12px, 3vw, 13px); margin: 0; color: #92400e;">We will notify you immediately if a space becomes available.</p>
+          </td></tr>
+        </table>
       `;
       break;
       
@@ -1484,12 +781,16 @@ function getStatusUpdateTemplate(application, newStatus, updateData = {}) {
       title = 'Conditional Admission Offer';
       message = `Your application to ${SCHOOL_NAME} has received a <strong>CONDITIONAL ACCEPTANCE</strong>. Please review the conditions below.`;
       actionSection = `
-        <div style="background: linear-gradient(135deg, #fff3cd, #ffeaa7); padding: 20px; border-radius: 12px; margin: 20px 0; border-left: 4px solid #ffc107;">
-          <h4 style="color: #d35400; margin: 0 0 12px 0; font-size: 16px;">📋 Conditions to Fulfill:</h4>
-          <div style="background: white; padding: 14px; border-radius: 8px;">
-            <p style="font-size: 13px; margin: 0; color: #333;">${updateData.conditions || 'Please contact admissions for specific conditions.'}</p>
-          </div>
-        </div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-radius: 12px; border: 1px solid #fde68a; border-left: 4px solid #f59e0b;">
+          <tr><td style="padding: 5%;">
+            <p style="color: #92400e; font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; margin: 0 0 12px;">📋 Conditions to Fulfill:</p>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #ffffff; border-radius: 8px; border: 1px solid #fde68a;">
+              <tr><td style="padding: 14px;">
+                <p style="font-size: clamp(12px, 3vw, 13px); margin: 0; color: #475569;">${updateData.conditions || 'Please contact admissions for specific conditions.'}</p>
+              </td></tr>
+            </table>
+          </td></tr>
+        </table>
       `;
       break;
       
@@ -1500,411 +801,160 @@ function getStatusUpdateTemplate(application, newStatus, updateData = {}) {
   
   return `
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
       <meta name="x-apple-disable-message-reformatting">
       <title>Status Update - ${SCHOOL_NAME}</title>
-      <style>
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-          -webkit-text-size-adjust: 100%;
-          -ms-text-size-adjust: 100%;
-        }
-        
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          line-height: 1.6;
-          color: #333;
-          background-color: #f8fafc;
-          padding: 16px;
-          margin: 0;
-          -webkit-font-smoothing: antialiased;
-        }
-        
-        .container {
-          max-width: 600px;
-          margin: 0 auto;
-          background: white;
-          border-radius: 16px;
-          overflow: hidden;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-          border: 1px solid #e2e8f0;
-        }
-        
-        .header {
-          background: ${headerGradient};
-          color: white;
-          padding: 32px 20px;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .header::before {
-          content: '';
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-          background-size: 20px 20px;
-          opacity: 0.1;
-        }
-        
-        .header h1 {
-          font-size: 24px;
-          font-weight: 800;
-          margin: 0 0 6px 0;
-          position: relative;
-          z-index: 1;
-        }
-        
-        .header p {
-          font-size: 14px;
-          opacity: 0.95;
-          margin: 0;
-          position: relative;
-          z-index: 1;
-        }
-        
-        .content {
-          padding: 28px;
-        }
-        
-        .status-card {
-          background: linear-gradient(135deg, #f0f7ff 0%, #dbeafe 100%);
-          padding: 24px;
-          border-radius: 12px;
-          margin: 20px 0;
-          text-align: center;
-          border: 1px solid #bfdbfe;
-        }
-        
-        .status-title {
-          color: #1e3c72;
-          font-size: 20px;
-          font-weight: 700;
-          margin: 0 0 12px 0;
-        }
-        
-        .status-message {
-          font-size: 15px;
-          line-height: 1.6;
-          margin: 0;
-          color: #333;
-        }
-        
-        .info-grid {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          margin: 20px 0;
-        }
-        
-        @media (min-width: 480px) {
-          .info-grid {
-            flex-direction: row;
-          }
-        }
-        
-        .info-box {
-          background: #f8fafc;
-          padding: 16px;
-          border-radius: 10px;
-          border: 1px solid #e2e8f0;
-          flex: 1;
-        }
-        
-        .info-label {
-          font-size: 11px;
-          font-weight: 800;
-          text-transform: uppercase;
-          color: #0369a1;
-          letter-spacing: 0.05em;
-          margin-bottom: 6px;
-        }
-        
-        .info-value {
-          font-size: 16px;
-          font-weight: 700;
-          color: #075985;
-          word-break: break-word;
-        }
-        
-        .contact-section {
-          background: #e3f2fd;
-          padding: 20px;
-          border-radius: 12px;
-          margin: 24px 0;
-          text-align: center;
-        }
-        
-        .contact-title {
-          font-size: 16px;
-          font-weight: 700;
-          color: #1e3c72;
-          margin: 0 0 16px 0;
-        }
-        
-        .contact-buttons {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-        
-        @media (min-width: 480px) {
-          .contact-buttons {
-            flex-direction: row;
-            justify-content: center;
-            gap: 12px;
-          }
-        }
-        
-        .contact-btn {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 12px 16px;
-          background: white;
-          border: 1px solid #90caf9;
-          border-radius: 8px;
-          text-decoration: none;
-          transition: all 0.2s ease;
-          flex: 1;
-          justify-content: center;
-          font-size: 13px;
-          color: #1e3c72;
-          font-weight: 600;
-        }
-        
-        .contact-btn:hover {
-          background: #f0f7ff;
-          border-color: #0284c7;
-        }
-        
-        .contact-icon {
-          font-size: 18px;
-          width: 28px;
-          height: 28px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
-          color: white;
-          border-radius: 6px;
-          font-weight: bold;
-        }
-        
-        .footer {
-          background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-          color: #cbd5e1;
-          padding: 24px;
-          text-align: center;
-        }
-        
-        .footer-title {
-          font-size: 16px;
-          font-weight: 700;
-          color: white;
-          margin: 0 0 6px 0;
-        }
-        
-        .footer-text {
-          font-size: 12px;
-          margin: 3px 0;
-        }
-        
-        @media (max-width: 768px) {
-          body {
-            padding: 12px;
-          }
-          
-          .header {
-            padding: 28px 16px;
-          }
-          
-          .header h1 {
-            font-size: 22px;
-          }
-          
-          .content {
-            padding: 20px;
-          }
-          
-          .status-card {
-            padding: 20px;
-          }
-          
-          .info-box {
-            padding: 14px;
-          }
-          
-          .info-value {
-            font-size: 14px;
-          }
-          
-          .footer {
-            padding: 20px;
-          }
-        }
-        
-        @media (max-width: 480px) {
-          body {
-            padding: 8px;
-          }
-          
-          .header {
-            padding: 20px 12px;
-          }
-          
-          .header h1 {
-            font-size: 20px;
-          }
-          
-          .header p {
-            font-size: 12px;
-          }
-          
-          .content {
-            padding: 16px;
-          }
-          
-          .status-card {
-            padding: 16px;
-            margin: 16px 0;
-          }
-          
-          .status-title {
-            font-size: 18px;
-          }
-          
-          .status-message {
-            font-size: 14px;
-          }
-          
-          .info-grid {
-            gap: 10px;
-            margin: 16px 0;
-          }
-          
-          .info-box {
-            padding: 12px;
-          }
-          
-          .info-label {
-            font-size: 10px;
-          }
-          
-          .info-value {
-            font-size: 14px;
-          }
-          
-          .contact-section {
-            padding: 16px;
-            margin: 16px 0;
-          }
-          
-          .contact-buttons {
-            gap: 8px;
-          }
-          
-          .contact-btn {
-            padding: 10px 12px;
-            font-size: 12px;
-          }
-          
-          .contact-icon {
-            font-size: 16px;
-            width: 24px;
-            height: 24px;
-          }
-          
-          .footer {
-            padding: 16px;
-          }
-          
-          .footer-title {
-            font-size: 16px;
-          }
-          
-          .footer-text {
-            font-size: 11px;
-          }
-          
-          .footer-motto {
-            font-size: 11px;
-          }
-        }
-      </style>
     </head>
-    <body>
-      <div class="container">
-        <div class="header">
-          <h1>${subjectIcon} ${title}</h1>
-          <p>${SCHOOL_NAME}</p>
-        </div>
-        
-        <div class="content">
-          <div class="status-card">
-            <h3 class="status-title">Status: ${statusLabel}</h3>
-            <p class="status-message">${message}</p>
-          </div>
-          
-          <div class="info-grid">
-            <div class="info-box">
-              <div class="info-label">Applicant Name</div>
-              <div class="info-value">${applicantName}</div>
-            </div>
-            <div class="info-box">
-              <div class="info-label">Application Number</div>
-              <div class="info-value">${applicationNumber}</div>
-            </div>
-          </div>
-          
-          ${actionSection}
-          
-          <div class="contact-section">
-            <h3 class="contact-title">Need Assistance?</h3>
-            <div class="contact-buttons">
-              <a href="tel:${CONTACT_PHONE}" class="contact-btn">
-                <div class="contact-icon">☎</div>
-                <span>call us</span>
-              </a>
-              <a href="mailto:${CONTACT_EMAIL}" class="contact-btn">
-                <div class="contact-icon">✉</div>
-                <span>Email Us</span>
-              </a>
-            </div>
-            <p style="margin-top: 12px; font-size: 12px; color: #666;">
-              Office Hours: Monday - Friday, 8:00 AM - 5:00 PM
-            </p>
-          </div>
-          
-          <div style="text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
-            <p style="font-size: 15px; color: #1e3c72; font-weight: 600; margin-bottom: 8px;">
-              Thank you for your interest in ${SCHOOL_NAME}
-            </p>
-            <p style="font-size: 14px; color: #333, margin: 0;">
-              Best regards,<br>
-              <strong>The Admissions Team</strong>
-            </p>
-          </div>
-        </div>
-        
-        <div class="footer">
-          <p class="footer-title">${SCHOOL_NAME}</p>
-          <p class="footer-text">${SCHOOL_LOCATION}</p>
-          <p class="footer-text" style="margin-top: 10px;">© ${new Date().getFullYear()} ${SCHOOL_NAME}</p>
-          <p class="footer-text" style="opacity: 0.7;">
-            This is an automated email. Please do not reply.
-          </p>
-        </div>
-      </div>
+    <body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f1f5f9; line-height: 1.6; color: #1e293b; -webkit-text-size-adjust: 100%;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f1f5f9;">
+        <tr>
+          <td align="center" style="padding: 4% 3%;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 640px; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(15,23,42,0.08);">
+
+              <!-- HEADER -->
+              <tr>
+                <td style="background: ${headerGradient}; padding: 8% 6%; text-align: center;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 10px;">
+                        <div style="display: inline-block; background: rgba(255,255,255,0.15); border-radius: 50%; width: 56px; height: 56px; line-height: 56px; text-align: center;">
+                          <span style="font-size: 28px;">${subjectIcon}</span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <h1 style="color: white; font-size: clamp(18px, 5vw, 24px); font-weight: 800; margin: 0 0 4px; line-height: 1.2; letter-spacing: -0.02em;">${title}</h1>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <p style="color: rgba(255,255,255,0.85); font-size: clamp(12px, 3vw, 14px); margin: 4px 0 0; font-weight: 500;">${SCHOOL_NAME}</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- STATUS CARD -->
+              <tr>
+                <td style="padding: 6% 6% 4%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border: 1px solid #bae6fd; text-align: center;">
+                    <tr>
+                      <td style="padding: 5%;">
+                        <p style="font-size: clamp(11px, 2.8vw, 12px); font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #0369a1; margin: 0 0 8px;">Status Update</p>
+                        <span style="display: inline-block; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; padding: 6px 20px; border-radius: 24px; font-size: clamp(12px, 3vw, 14px); font-weight: 700;">${statusLabel}</span>
+                        <p style="font-size: clamp(13px, 3.2vw, 15px); line-height: 1.7; margin: 14px 0 0; color: #334155;">${message}</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- APPLICANT INFO -->
+              <tr>
+                <td style="padding: 0 6% 4%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="padding-right: 6px; width: 50%; vertical-align: top;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+                          <tr><td style="padding: 14px;">
+                            <p style="font-size: clamp(10px, 2.5vw, 11px); font-weight: 800; text-transform: uppercase; color: #0369a1; letter-spacing: 0.05em; margin: 0 0 6px;">Applicant Name</p>
+                            <p style="font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; color: #075985; margin: 0; word-break: break-word;">${applicantName}</p>
+                          </td></tr>
+                        </table>
+                      </td>
+                      <td style="padding-left: 6px; width: 50%; vertical-align: top;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+                          <tr><td style="padding: 14px;">
+                            <p style="font-size: clamp(10px, 2.5vw, 11px); font-weight: 800; text-transform: uppercase; color: #0369a1; letter-spacing: 0.05em; margin: 0 0 6px;">Application Number</p>
+                            <p style="font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; color: #075985; margin: 0; word-break: break-word;">${applicationNumber}</p>
+                          </td></tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- ACTION SECTION -->
+              <tr>
+                <td style="padding: 0 6% 5%;">
+                  ${actionSection}
+                </td>
+              </tr>
+
+              <!-- CONTACT SECTION -->
+              <tr>
+                <td style="padding: 0 6% 5%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border: 1px solid #bae6fd; text-align: center;">
+                    <tr>
+                      <td style="padding: 5%;">
+                        <p style="font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; color: #0c4a6e; margin: 0 0 14px;">Need Assistance?</p>
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td style="padding-right: 6px; width: 50%; vertical-align: top;">
+                              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #ffffff; border-radius: 8px; border: 1px solid #bae6fd;">
+                                <tr>
+                                  <td style="padding: 12px; text-align: center;">
+                                    <span style="display: inline-block; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; border-radius: 6px; width: 28px; height: 28px; line-height: 28px; font-size: 14px; text-align: center;">&#9742;</span>
+                                    <p style="margin: 6px 0 0; font-size: clamp(11px, 2.8vw, 13px); font-weight: 600; color: #0c4a6e;"><a href="tel:${CONTACT_PHONE}" style="color: #0c4a6e; text-decoration: none;">Call Us</a></p>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                            <td style="padding-left: 6px; width: 50%; vertical-align: top;">
+                              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #ffffff; border-radius: 8px; border: 1px solid #bae6fd;">
+                                <tr>
+                                  <td style="padding: 12px; text-align: center;">
+                                    <span style="display: inline-block; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; border-radius: 6px; width: 28px; height: 28px; line-height: 28px; font-size: 14px; text-align: center;">&#9993;</span>
+                                    <p style="margin: 6px 0 0; font-size: clamp(11px, 2.8vw, 13px); font-weight: 600; color: #0c4a6e;"><a href="mailto:${CONTACT_EMAIL}" style="color: #0c4a6e; text-decoration: none;">Email Us</a></p>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                        <p style="margin: 12px 0 0; font-size: clamp(10px, 2.5vw, 12px); color: #64748b;">Office Hours: Monday - Friday, 8:00 AM - 5:00 PM</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- SIGN-OFF -->
+              <tr>
+                <td style="padding: 0 6% 6%; text-align: center;">
+                  <div style="width: 40px; height: 2px; background: #e2e8f0; margin: 0 auto 14px;"></div>
+                  <p style="font-size: clamp(13px, 3.2vw, 15px); color: #0f172a; font-weight: 600; margin: 0 0 6px;">Thank you for your interest in ${SCHOOL_NAME}</p>
+                  <p style="font-size: clamp(12px, 3vw, 14px); color: #475569; margin: 0;">Best regards,<br><strong>The Admissions Team</strong></p>
+                </td>
+              </tr>
+
+              <!-- FOOTER -->
+              <tr>
+                <td style="background: #0f172a; padding: 8% 6%; text-align: center;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr><td align="center"><p style="color: #ffffff; font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; margin: 0 0 4px;">${SCHOOL_NAME}</p></td></tr>
+                    <tr><td align="center"><p style="color: #94a3b8; font-size: clamp(10px, 2.5vw, 12px); margin: 0 0 4px;">${SCHOOL_LOCATION}</p></td></tr>
+                    <tr>
+                      <td align="center">
+                        <div style="width: 40px; height: 2px; background: #475569; margin: 10px auto;"></div>
+                        <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0 0 4px;">&copy; ${new Date().getFullYear()} ${SCHOOL_NAME}</p>
+                        <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0;">This is an automated email. Please do not reply.</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
     </body>
     </html>
   `;
@@ -1917,317 +967,131 @@ function getDeletionNotificationTemplate(application, deletedBy) {
   
   return `
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
       <meta name="x-apple-disable-message-reformatting">
       <title>Application Deleted - ${SCHOOL_NAME}</title>
-      <style>
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-          -webkit-text-size-adjust: 100%;
-          -ms-text-size-adjust: 100%;
-        }
-        
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          line-height: 1.6;
-          color: #333;
-          background-color: #f8fafc;
-          padding: 16px;
-          margin: 0;
-          -webkit-font-smoothing: antialiased;
-        }
-        
-        .container {
-          max-width: 600px;
-          margin: 0 auto;
-          background: white;
-          border-radius: 16px;
-          overflow: hidden;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-          border: 1px solid #e2e8f0;
-        }
-        
-        .header {
-          background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-          color: white;
-          padding: 32px 20px;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .header::before {
-          content: '';
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-          background-size: 20px 20px;
-          opacity: 0.1;
-        }
-        
-        .header h1 {
-          font-size: 24px;
-          font-weight: 800;
-          margin: 0 0 6px 0;
-          position: relative;
-          z-index: 1;
-        }
-        
-        .header p {
-          font-size: 14px;
-          opacity: 0.95;
-          margin: 0;
-          position: relative;
-          z-index: 1;
-        }
-        
-        .content {
-          padding: 28px;
-        }
-        
-        .alert-box {
-          background: #f8d7da;
-          border: 1px solid #f5c6cb;
-          border-radius: 12px;
-          padding: 20px;
-          margin: 20px 0;
-        }
-        
-        .alert-title {
-          font-size: 16px;
-          font-weight: 700;
-          color: #721c24;
-          margin: 0 0 8px 0;
-        }
-        
-        .alert-text {
-          font-size: 14px;
-          color: #721c24;
-          margin: 0;
-          line-height: 1.6;
-        }
-        
-        .info-box {
-          background: #f8fafc;
-          padding: 20px;
-          border-radius: 12px;
-          margin: 20px 0;
-          border: 1px solid #e2e8f0;
-        }
-        
-        .info-box h4 {
-          color: #1e3c72;
-          font-size: 16px;
-          margin: 0 0 14px 0;
-        }
-        
-        .info-row {
-          display: flex;
-          padding: 8px 0;
-          border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .info-row:last-child {
-          border-bottom: none;
-        }
-        
-        .info-label {
-          font-weight: 700;
-          color: #666;
-          width: 35%;
-          font-size: 13px;
-        }
-        
-        .info-value {
-          color: #333;
-          width: 65%;
-          font-size: 13px;
-          word-break: break-word;
-        }
-        
-        .footer {
-          background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-          color: #cbd5e1;
-          padding: 24px;
-          text-align: center;
-        }
-        
-        .footer-title {
-          font-size: 16px;
-          font-weight: 700;
-          color: white;
-          margin: 0 0 6px 0;
-        }
-        
-        .footer-text {
-          font-size: 12px;
-          margin: 3px 0;
-        }
-        
-        @media (max-width: 768px) {
-          body {
-            padding: 12px;
-          }
-          
-          .header {
-            padding: 28px 16px;
-          }
-          
-          .header h1 {
-            font-size: 22px;
-          }
-          
-          .content {
-            padding: 20px;
-          }
-          
-          .alert-box {
-            padding: 16px;
-          }
-          
-          .info-box {
-            padding: 16px;
-          }
-          
-          .footer {
-            padding: 20px;
-          }
-        }
-        
-        @media (max-width: 480px) {
-          body {
-            padding: 8px;
-          }
-          
-          .header {
-            padding: 20px 12px;
-          }
-          
-          .header h1 {
-            font-size: 20px;
-          }
-          
-          .header p {
-            font-size: 12px;
-          }
-          
-          .content {
-            padding: 16px;
-          }
-          
-          .alert-box {
-            padding: 14px;
-          }
-          
-          .alert-title {
-            font-size: 14px;
-          }
-          
-          .alert-text {
-            font-size: 12px;
-          }
-          
-          .info-box {
-            padding: 14px;
-          }
-          
-          .info-box h4 {
-            font-size: 14px;
-          }
-          
-          .info-row {
-            padding: 6px 0;
-          }
-          
-          .info-label {
-            font-size: 12px;
-          }
-          
-          .info-value {
-            font-size: 12px;
-          }
-          
-          .footer {
-            padding: 16px;
-          }
-          
-          .footer-title {
-            font-size: 14px;
-          }
-          
-          .footer-text {
-            font-size: 11px;
-          }
-        }
-      </style>
     </head>
-    <body>
-      <div class="container">
-        <div class="header">
-          <h1>🗑️ Application Deleted</h1>
-          <p>${SCHOOL_NAME} Admissions System</p>
-        </div>
-        
-        <div class="content">
-          <div class="alert-box">
-            <h3 class="alert-title">⚠️ Application Record Deleted</h3>
-            <p class="alert-text">
-              An application record has been permanently deleted from the admissions system.
-            </p>
-          </div>
-          
-          <div class="info-box">
-            <h4>Deleted Application Details:</h4>
-            <div class="info-row">
-              <div class="info-label">Applicant:</div>
-              <div class="info-value">${applicantName}</div>
-            </div>
-            <div class="info-row">
-              <div class="info-label">App Number:</div>
-              <div class="info-value">${applicationNumber}</div>
-            </div>
-            <div class="info-row">
-              <div class="info-label">Email:</div>
-              <div class="info-value">${application.email}</div>
-            </div>
-            <div class="info-row">
-              <div class="info-label">Phone:</div>
-              <div class="info-value">${application.phone}</div>
-            </div>
-            <div class="info-row">
-              <div class="info-label">Deleted On:</div>
-              <div class="info-value">${deletionDate}</div>
-            </div>
-            <div class="info-row">
-              <div class="info-label">Deleted By:</div>
-              <div class="info-value">${deletedBy}</div>
-            </div>
-          </div>
-          
-          <div style="background: #e9ecef; padding: 14px; border-radius: 8px; margin: 20px 0;">
-            <p style="margin: 0; color: #495057; font-size: 13px;">
-              <strong>Note:</strong> This deletion is permanent and cannot be undone. All data has been removed.
-            </p>
-          </div>
-        </div>
-        
-        <div class="footer">
-          <p class="footer-title">${SCHOOL_NAME}</p>
-          <p class="footer-text">${SCHOOL_LOCATION}</p>
-          <p class="footer-text">"${SCHOOL_MOTTO}"</p>
-          <p class="footer-text" style="margin-top: 12px; opacity: 0.7;">
-            © ${new Date().getFullYear()} ${SCHOOL_NAME}. Confidential.
-          </p>
-        </div>
-      </div>
+    <body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f1f5f9; line-height: 1.6; color: #1e293b; -webkit-text-size-adjust: 100%;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f1f5f9;">
+        <tr>
+          <td align="center" style="padding: 4% 3%;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 640px; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(15,23,42,0.08);">
+
+              <!-- HEADER -->
+              <tr>
+                <td style="background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #b91c1c 100%); padding: 8% 6%; text-align: center;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 10px;">
+                        <div style="display: inline-block; background: rgba(255,255,255,0.15); border-radius: 50%; width: 56px; height: 56px; line-height: 56px; text-align: center;">
+                          <span style="font-size: 28px;">&#128465;</span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <h1 style="color: white; font-size: clamp(18px, 5vw, 24px); font-weight: 800; margin: 0 0 4px; line-height: 1.2; letter-spacing: -0.02em;">APPLICATION DELETED</h1>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <p style="color: rgba(255,255,255,0.85); font-size: clamp(12px, 3vw, 14px); margin: 4px 0 0; font-weight: 500;">${SCHOOL_NAME} Admissions System</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- ALERT BANNER -->
+              <tr>
+                <td style="padding: 6% 6% 4%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-radius: 12px; border: 1px solid #fecaca; border-left: 4px solid #dc2626;">
+                    <tr>
+                      <td style="padding: 5%;">
+                        <p style="color: #991b1b; font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; margin: 0 0 6px;">&#9888; Application Record Deleted</p>
+                        <p style="color: #7f1d1d; font-size: clamp(12px, 3vw, 14px); margin: 0; line-height: 1.6;">An application record has been permanently deleted from the admissions system.</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- DELETED APPLICATION DETAILS -->
+              <tr>
+                <td style="padding: 0 6% 2%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr><td style="padding-bottom: 10px; border-bottom: 2px solid #fee2e2;"><p style="font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; color: #b91c1c; margin: 0;">Deleted Application Details</p></td></tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 2% 6% 5%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden;">
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Applicant</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569;">${applicantName}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">App Number</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569;">${applicationNumber}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Email</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569; word-break: break-word;">${application.email}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Phone</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569;">${application.phone}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Deleted On</td>
+                      <td style="padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #e2e8f0; font-size: clamp(12px, 3vw, 13px); color: #475569;">${deletionDate}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 14px; background: #f8fafc; font-size: clamp(12px, 3vw, 13px); font-weight: 700; color: #0f172a; width: 40%;">Deleted By</td>
+                      <td style="padding: 10px 14px; background: #ffffff; font-size: clamp(12px, 3vw, 13px); color: #475569;">${deletedBy}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- DELETION NOTE -->
+              <tr>
+                <td style="padding: 0 6% 6%;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <tr>
+                      <td style="padding: 4%;">
+                        <p style="margin: 0; color: #475569; font-size: clamp(12px, 3vw, 13px);"><strong style="color: #0f172a;">Note:</strong> This deletion is permanent and cannot be undone. All data has been removed.</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- FOOTER -->
+              <tr>
+                <td style="background: #0f172a; padding: 8% 6%; text-align: center;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr><td align="center"><p style="color: #ffffff; font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; margin: 0 0 4px;">${SCHOOL_NAME}</p></td></tr>
+                    <tr><td align="center"><p style="color: #94a3b8; font-size: clamp(10px, 2.5vw, 12px); margin: 0 0 4px;">${SCHOOL_LOCATION}</p></td></tr>
+                    <tr><td align="center"><p style="color: #94a3b8; font-size: clamp(10px, 2.5vw, 12px); font-style: italic; margin: 0 0 8px;">"${SCHOOL_MOTTO}"</p></td></tr>
+                    <tr>
+                      <td align="center">
+                        <div style="width: 40px; height: 2px; background: #475569; margin: 6px auto;"></div>
+                        <p style="color: #64748b; font-size: clamp(10px, 2.5vw, 11px); margin: 0;">&copy; ${new Date().getFullYear()} ${SCHOOL_NAME}. Confidential.</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
     </body>
     </html>
   `;
