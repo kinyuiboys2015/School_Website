@@ -26,7 +26,7 @@ const ModernSchoolLayout = () => {
     { src: "/hero/student.jpeg", alt: "Kinyui Boys Senior School - ICT Lab" },
     { src: "/hero/env.jpeg", alt: "Kinyui Boys Senior School - Environment" },
     { src: "/hero/sports.jpeg", alt: "Kinyui Boys Senior School - Sports" },
-    { src: "/hero/kin1.jpeg", alt: "Kinyui Boys Senior School - Campus" },
+    { src: "/hero/kin.jpeg", alt: "Kinyui Boys Senior School - Campus" },
   ];
 
   // Fetch real school data

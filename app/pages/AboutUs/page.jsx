@@ -83,7 +83,7 @@ export default function AboutPage() {
       {/* ═══════════════════════ HERO SECTION ═══════════════════════ */}
       <section className="relative min-h-[90vh] flex items-end overflow-hidden">
         <Image
-          src="/hero/kin1.jpeg"
+          src="/hero/kin.jpeg"
           alt="Kinyui Boys Senior School School"
           fill
           className="object-cover"

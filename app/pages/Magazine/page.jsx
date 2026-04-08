@@ -258,7 +258,7 @@ export default function MagazinePage() {
       {/* ═══════════════════════ HERO SECTION ═══════════════════════ */}
       <section className="relative min-h-[55vh] flex items-center overflow-hidden">
         <Image
-          src="/hero/kin1.jpeg"
+          src="/hero/kin.jpeg"
           alt="School Magazine Archive"
           fill
           className="object-cover"
