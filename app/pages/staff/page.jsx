@@ -16,7 +16,6 @@ import {
   FiCalendar, 
   FiUser,
   FiX,
-  FiMenu,
   FiArrowLeft,
   FiArrowRight,
   FiMapPin,
@@ -381,7 +380,6 @@ export default function StaffDirectory() {
   
   const [viewMode, setViewMode] = useState('grid');
   const [currentPage, setCurrentPage] = useState(1);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Consultation Modal States
   const [showConsultModal, setShowConsultModal] = useState(false);
@@ -611,39 +609,22 @@ export default function StaffDirectory() {
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
       
-      {/* Mobile Filter Drawer Overlay */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/30 z-40 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
-
       {/* ── Sticky Header ── */}
       <header className="bg-white border-b border-slate-100 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
           
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={() => setIsSidebarOpen(true)}
-              className="lg:hidden p-2 text-slate-500 -ml-2 hover:text-[#1a1a2e]"
-            >
-              <FiMenu size={20} />
-            </button>
-            
-            <Link href="/" className="flex items-center gap-2">
-              <Image src="/seo/logo.png" alt="Logo" width={28} height={28} />
-              <div className="hidden sm:block">
-                <span className="text-sm font-black text-[#1a1a2e] tracking-tight">
-                  Kinyui Boys
-                </span>
-                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Staff Directory</p>
-              </div>
-            </Link>
-          </div>
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="/seo/logo.png" alt="Logo" width={28} height={28} />
+            <div className="hidden sm:block">
+              <span className="text-sm font-black text-[#1a1a2e] tracking-tight">
+                Kinyui Boys
+              </span>
+              <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Staff Directory</p>
+            </div>
+          </Link>
 
-          {/* Search - Desktop */}
-          <div className="hidden md:flex flex-1 max-w-md mx-6">
+          {/* Search */}
+          <div className="flex-1 max-w-md mx-4">
             <div className="relative w-full">
               <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
               <input
@@ -716,122 +697,76 @@ export default function StaffDirectory() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-        <div className="flex flex-col lg:flex-row gap-6">
+      {/* ── Top Filter Bar ── */}
+      <div className="bg-white border-b border-slate-100 sticky top-14 z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
-          {/* ── Sidebar ── */}
-          <aside className={`
-            fixed lg:static inset-y-0 left-0 w-72 bg-white transform transition-transform duration-300 ease-in-out shadow-xl z-50 lg:z-auto lg:shadow-none overflow-y-auto border-r lg:border-r-0 border-slate-100
-            ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-          `}>
-            <div className="p-4 lg:p-0 lg:sticky lg:top-20 space-y-5">
-              
-              {/* Mobile close */}
-              <div className="flex items-center justify-between lg:hidden pb-3 border-b border-slate-100">
-                <h2 className="text-xs font-black text-[#1a1a2e] uppercase tracking-[0.2em]">Filters</h2>
-                <button onClick={() => setIsSidebarOpen(false)} className="p-2 bg-slate-50 rounded-full hover:bg-red-50 hover:text-red-500 transition-colors">
-                  <FiX size={18} />
-                </button>
-              </div>
+          {/* Hierarchy Tabs */}
+          <div className="flex items-center gap-1 py-2.5 overflow-x-auto scrollbar-hide -mx-1 px-1">
+            {[
+              { key: 'all', label: 'All Staff', icon: null, count: staffData.length },
+              { key: 'leadership', label: 'Leadership', icon: '👑', count: staffByHierarchy.leadership?.length || 0 },
+              { key: 'teaching', label: 'Teaching', icon: '📚', count: staffByHierarchy.teaching?.length || 0 },
+              { key: 'support', label: 'Support', icon: '🛠️', count: staffByHierarchy.support?.length || 0 },
+            ].map((item) => (
+              <button
+                key={item.key}
+                onClick={() => setSelectedHierarchy(item.key)}
+                className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  selectedHierarchy === item.key
+                    ? 'bg-[#1a1a2e] text-white shadow-sm'
+                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
+                }`}
+              >
+                {item.icon && <span className="text-sm">{item.icon}</span>}
+                <span className="whitespace-nowrap">{item.label}</span>
+                <span className={`text-[9px] font-black px-1.5 py-0.5 rounded ${
+                  selectedHierarchy === item.key ? 'bg-white/15' : 'bg-slate-100'
+                }`}>
+                  {item.count}
+                </span>
+              </button>
+            ))}
 
-              {/* Mobile search */}
-              <div className="lg:hidden">
-                <div className="relative">
-                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search staff..."
-                    className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#1a1a2e]"
-                  />
-                </div>
-              </div>
+            {/* Divider */}
+            <div className="w-px h-5 bg-slate-200 mx-1 flex-shrink-0" />
 
-              {/* Hierarchy Filter */}
-              <div className="bg-white rounded-xl border border-slate-100 overflow-hidden">
-                <div className="px-4 py-3 bg-[#1a1a2e]">
-                  <h3 className="text-[10px] font-black text-white/70 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <FiUsers size={12} className="text-blue-400" /> Staff Hierarchy
-                  </h3>
-                </div>
-                <div className="p-2 space-y-0.5">
-                  {[
-                    { key: 'all', label: 'All Staff', icon: null, count: staffData.length },
-                    { key: 'leadership', label: 'Leadership', icon: '👑', count: staffByHierarchy.leadership?.length || 0 },
-                    { key: 'teaching', label: 'Teaching Staff', icon: '📚', count: staffByHierarchy.teaching?.length || 0 },
-                    { key: 'support', label: 'Support Staff', icon: '🛠️', count: staffByHierarchy.support?.length || 0 },
-                  ].map((item) => (
-                    <button
-                      key={item.key}
-                      onClick={() => setSelectedHierarchy(item.key)}
-                      className={`w-full flex items-center justify-between p-2.5 rounded-lg text-xs font-bold transition-all ${
-                        selectedHierarchy === item.key
-                          ? 'bg-[#1a1a2e] text-white'
-                          : 'text-slate-600 hover:bg-slate-50'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        {item.icon && <span className="text-sm">{item.icon}</span>}
-                        <span className="uppercase tracking-wider">{item.label}</span>
-                      </div>
-                      <span className={`text-[9px] font-black px-1.5 py-0.5 rounded ${
-                        selectedHierarchy === item.key ? 'bg-white/15' : 'bg-slate-100'
-                      }`}>
-                        {item.count}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
+            {/* Department Pills - scrollable */}
+            {DEPARTMENTS.map((dept) => (
+              <button
+                key={dept.id}
+                onClick={() => toggleDept(dept.id)}
+                className={`flex-shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                  selectedDepts.includes(dept.id)
+                    ? 'bg-blue-50 border-blue-200 text-blue-700'
+                    : 'border-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-700'
+                }`}
+              >
+                <span className="text-sm">{dept.icon}</span>
+                <span className="whitespace-nowrap hidden sm:inline">{dept.label}</span>
+                <span className="text-[9px] font-black text-slate-400">{getDeptCount(dept.id)}</span>
+              </button>
+            ))}
 
-              {/* Departments Filter */}
-              <div className="bg-white rounded-xl border border-slate-100 overflow-hidden">
-                <div className="px-4 py-3 border-b border-slate-100 flex justify-between items-center">
-                  <h3 className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <FiBriefcase size={12} className="text-blue-600" /> Departments
-                  </h3>
-                  {selectedDepts.length > 0 && (
-                    <button onClick={() => setSelectedDepts([])} className="text-[9px] font-black text-red-500 hover:text-red-700 uppercase tracking-wider bg-red-50 px-2 py-0.5 rounded">
-                      Reset
-                    </button>
-                  )}
-                </div>
-                <div className="p-2 space-y-0.5 max-h-[300px] overflow-y-auto">
-                  {DEPARTMENTS.map((dept) => (
-                    <button
-                      key={dept.id}
-                      onClick={() => toggleDept(dept.id)}
-                      className={`w-full flex items-center justify-between p-2.5 rounded-lg transition-all ${
-                        selectedDepts.includes(dept.id)
-                          ? 'bg-blue-50 border border-blue-200'
-                          : 'border border-transparent hover:bg-slate-50'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className="text-sm">{dept.icon}</span>
-                        <span className="text-xs font-bold text-slate-700 truncate">{dept.label}</span>
-                      </div>
-                      <span className="text-[9px] font-black text-slate-400 ml-2">{getDeptCount(dept.id)}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Clear All */}
-              {(selectedDepts.length > 0 || searchQuery || selectedHierarchy !== 'all') && (
+            {/* Clear Filters */}
+            {(selectedDepts.length > 0 || searchQuery || selectedHierarchy !== 'all') && (
+              <>
+                <div className="w-px h-5 bg-slate-200 mx-1 flex-shrink-0" />
                 <button
                   onClick={clearAllFilters}
-                  className="w-full py-2.5 rounded-lg bg-[#1a1a2e] text-white text-[10px] font-black uppercase tracking-[0.15em] hover:bg-[#2d2d44] transition-colors flex items-center justify-center gap-2"
+                  className="flex-shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-black text-red-500 hover:bg-red-50 transition-colors uppercase tracking-wider"
                 >
-                  <FiX size={12} /> Reset All Filters
+                  <FiX size={12} /> Clear
                 </button>
-              )}
-            </div>
-          </aside>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           {/* ── Main Content ── */}
-          <main className="flex-1 min-w-0">
+          <main className="w-full">
             
             {/* Toolbar */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5">
@@ -1123,7 +1058,6 @@ export default function StaffDirectory() {
               </div>
             )}
           </main>
-        </div>
       </div>
 
       {/* ── Footer ── */}
