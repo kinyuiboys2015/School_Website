@@ -2293,8 +2293,8 @@ export default function ComprehensiveAdmissions() {
               </div>
               <span className="text-xs font-bold text-slate-900 uppercase tracking-wide">About Admissions</span>
             </div>
-         <p className="text-slate-900 text-xs md:text-sm lg:text-base leading-relaxed md:leading-loose">
-  Explore our comprehensive academic programs, review detailed entry requirements, download the latest fee structures, and track the status of your application—all from a single, easy-to-use portal. Navigate through the tabs below to access each section efficiently. Our admissions team is here to guide you through every step, from understanding eligibility criteria to submitting your application and preparing for enrollment. Whether you are a prospective student or a parent, this centralized hub ensures that all the information you need is accessible anytime, anywhere, and fully optimized for both mobile and desktop viewing.
+<p className="text-slate-900 text-xs md:text-sm lg:text-base leading-relaxed md:leading-loose">
+  Explore our academic programs, review entry requirements, download fee structures, and track your application from one easy-to-use portal. Navigate the tabs below to access each section, with all essential information available anytime in one place.
 </p>
           </div>
         </div>
