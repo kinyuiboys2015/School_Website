@@ -96,9 +96,14 @@ export default function ModernNavbar() {
       exact: true
     },
     { 
-      name: 'About Us', 
+      name: 'About School', 
       href: '/pages/AboutUs',
       icon: FiInfo
+    },
+        { 
+      name: 'Help Center', 
+      href: '/pages/contact', 
+      icon: FiMail 
     },
     { 
       name: 'Academics', 
@@ -117,7 +122,7 @@ export default function ModernNavbar() {
       icon: FiImage 
     },
     { 
-      name: 'News & Events', 
+      name: 'Activities & News', 
       href: '/pages/eventsandnews', 
       icon: FiCalendar 
     },
@@ -125,11 +130,6 @@ export default function ModernNavbar() {
       name: 'Fees', 
       href: '/pages/fees', 
       icon: FiDollarSign 
-    },
-    { 
-      name: 'Contact', 
-      href: '/pages/contact', 
-      icon: FiMail 
     },
   ];
 

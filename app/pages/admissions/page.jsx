@@ -1027,28 +1027,28 @@ const StatCard = ({ stat }) => {
   const StatIcon = stat.icon;
 
   return (
-    <div className="relative overflow-hidden rounded-xl bg-white border border-stone-200/60 p-4 md:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-md">
+    <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-100 p-4 md:p-5 shadow-sm hover:shadow-md transition-shadow duration-300 group">
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <div className={`flex items-center justify-center h-10 w-10 md:h-11 md:w-11 rounded-xl bg-gradient-to-br ${stat.color} text-white shadow-sm`}>
+          <div className={`flex items-center justify-center h-10 w-10 md:h-11 md:w-11 rounded-2xl bg-gradient-to-br ${stat.color} text-white shadow-sm group-hover:scale-105 transition-transform`}>
             <StatIcon className="text-lg md:text-xl" />
           </div>
-          <span className="text-[9px] md:text-[10px] font-semibold text-stone-400 uppercase tracking-wider">
+          <span className="text-[9px] md:text-[10px] font-medium text-slate-400 uppercase tracking-wider">
             {stat.sublabel}
           </span>
         </div>
 
         <div>
-          <h3 className="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">
+          <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight tabular-nums">
             {stat.number}
           </h3>
-          <span className="text-xs font-medium text-stone-500 mt-0.5 block">
+          <span className="text-xs font-medium text-slate-500 mt-0.5 block">
             {stat.label}
           </span>
         </div>
         
         {/* Subtle accent bar */}
-        <div className="h-1 w-full bg-stone-100 rounded-full overflow-hidden">
+        <div className="h-0.5 w-full bg-slate-100 rounded-full overflow-hidden">
           <div className={`h-full w-3/5 bg-gradient-to-r ${stat.color} rounded-full`} />
         </div>
       </div>
@@ -2180,75 +2180,102 @@ export default function ComprehensiveAdmissions() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f7f4] p-0 md:p-6">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 p-0 md:p-6">
       <Toaster position="top-right" richColors />
       
       <div className="max-w-7xl mx-auto space-y-5 px-3 md:px-0">
 
-        {/* Modernized Admissions Portal Header with MUI Loader */}
-<header className="relative bg-white rounded-none md:rounded-2xl p-5 sm:p-6 md:p-8 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04)] border-b md:border border-stone-200/60 mb-6">
-  {/* Accent line top */}
-  <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500" />
-  
-  {/* School Logo Watermark */}
-  <img src="/seo/kinyui.png" alt="" className="absolute right-4 md:right-8 bottom-4 md:bottom-6 w-14 md:w-20 opacity-[0.04] pointer-events-none select-none" />
-  
-  <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5 md:gap-6">
+        {/* Modern Split Header with School Branding */}
+<header className="relative rounded-none md:rounded-2xl overflow-hidden shadow-sm border-b md:border border-slate-200/60 mb-6">
+  <div className="flex flex-col md:flex-row">
     
-    {/* Left: Branding & Title */}
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
-          <IoSchoolOutline className="text-white text-lg md:text-xl" />
+    {/* Left Panel - Dark Branded Section */}
+    <div className="relative bg-slate-900 p-5 sm:p-6 md:p-8 md:w-[55%] overflow-hidden">
+      {/* Logo Watermark Background */}
+      <img src="/kinyui.png" alt="" className="absolute right-0 bottom-0 w-40 md:w-56 opacity-[0.04] pointer-events-none select-none translate-x-8 translate-y-8" />
+      {/* Decorative Gradient Orb */}
+      <div className="absolute -top-20 -left-20 w-52 h-52 bg-teal-500/15 blur-[80px] rounded-full" />
+      
+      <div className="relative z-10">
+        {/* School Identity Row */}
+        <div className="flex items-center gap-3 mb-5">
+          <img src="/kinyui.png" alt="School Logo" className="w-10 h-10 md:w-11 md:h-11 rounded-xl object-contain bg-white/10 p-1 border border-white/10" />
+          <div className="flex flex-col min-w-0">
+            <h2 className="text-sm md:text-base font-bold text-white leading-tight truncate">
+              {schoolData?.name || 'Kinyui Boys Senior School'}
+            </h2>
+            <p className="text-[10px] md:text-xs text-slate-400 font-medium mt-0.5">
+              Soaring to Greater Heights
+            </p>
+          </div>
         </div>
-        <div className="flex flex-col min-w-0">
-          <h2 className="text-xs md:text-sm font-bold text-stone-900 leading-tight truncate">
-            {schoolData?.name || 'Kinyui Boys Senior School'}
-          </h2>
-          <p className="text-[10px] md:text-xs text-stone-400 font-medium mt-0.5 italic">
-            Soaring to Greater Heights
-          </p>
-        </div>
-      </div>
 
-      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-stone-900 leading-none">
-          Admissions
+        {/* Title Block */}
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white leading-none mb-3">
+          Admissions <span className="text-teal-400">Portal</span>
         </h1>
-        <span className="text-[9px] md:text-[10px] font-bold px-2 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 uppercase whitespace-nowrap">
-          {schoolData?.academicYear || '2026'} Session
-        </span>
+        <p className="text-slate-400 text-xs md:text-sm leading-relaxed max-w-md mb-5">
+          Begin your academic journey. Explore programs, check requirements, and apply online.
+        </p>
+
+        {/* Action Row */}
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-[9px] md:text-[10px] font-bold px-3 py-1.5 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/20 uppercase">
+            {schoolData?.academicYear || '2026'} Session
+          </span>
+          <button
+            onClick={refreshData}
+            disabled={loading}
+            className="flex items-center justify-center gap-2 h-8 px-3 rounded-lg
+                       transition-all font-semibold text-[11px]
+                       bg-white/10 hover:bg-white/15 text-white border border-white/10
+                       active:scale-95 disabled:opacity-50"
+          >
+            {loading ? (
+              <>
+                <CircularProgress size={10} thickness={6} sx={{ color: '#fff' }} />
+                <span>Loading...</span>
+              </>
+            ) : (
+              <>
+                <FiRefreshCw className="text-xs" />
+                <span>Refresh</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </div>
 
-    {/* Right: Refresh Action */}
-    <div className="flex items-center self-start md:self-center">
-      <button
-        onClick={refreshData}
-        disabled={loading}
-        className="flex items-center justify-center gap-2 h-9 md:h-10 px-4 rounded-lg
-                   transition-all font-semibold text-xs
-                   bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200
-                   active:scale-95 disabled:opacity-50"
-      >
-        {loading ? (
-          <>
-            <CircularProgress 
-              size={12} 
-              thickness={6} 
-              sx={{ color: '#78716c' }}
-            />
-            <span>Refreshing...</span>
-          </>
-        ) : (
-          <>
-            <FiRefreshCw className={`text-sm ${loading ? 'animate-spin' : ''}`} />
-            <span>Refresh</span>
-          </>
-        )}
-      </button>
+    {/* Right Panel - Quick Stats */}
+    <div className="relative bg-white p-5 sm:p-6 md:p-8 md:w-[45%] flex flex-col justify-center">
+      {/* Logo Watermark */}
+      <img src="/kinyui.png" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 md:w-44 opacity-[0.03] pointer-events-none select-none" />
+      
+      <div className="relative z-10">
+        <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-4">Quick Overview</p>
+        <div className="grid grid-cols-2 gap-3">
+          {dynamicStats.slice(0, 4).map((stat, index) => {
+            const StatIcon = stat.icon;
+            return (
+              <div key={index} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${stat.color} flex items-center justify-center text-white shrink-0`}>
+                  <StatIcon className="text-sm" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-lg font-black text-slate-900 leading-none tabular-nums">{stat.number}</div>
+                  <div className="text-[9px] font-medium text-slate-500 mt-0.5 truncate">{stat.label}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   </div>
+  
+  {/* Bottom Accent Line */}
+  <div className="h-[3px] bg-gradient-to-r from-teal-500 via-cyan-500 to-indigo-500" />
 </header>
 
         {/* Stats */}
@@ -2356,17 +2383,21 @@ return (
   <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 space-y-10 md:space-y-24">
     
     {/* 1. Hero / Introduction Section */}
-    <div className="relative pt-4 pb-2 text-center px-4">
-      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 mb-4 md:mb-6">
-        <FiBookOpen className="text-amber-600 text-xs" />
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-700">
+    <div className="relative pt-4 pb-2 text-center px-4 overflow-hidden">
+      {/* Logo watermark */}
+      <img src="/kinyui.png" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-44 md:w-56 opacity-[0.03] pointer-events-none select-none" />
+      
+      <div className="relative z-10">
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-200 mb-4 md:mb-6">
+        <FiBookOpen className="text-teal-600 text-xs" />
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-teal-700">
           Admissions {new Date().getFullYear()}
         </span>
       </div>
       
       <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-stone-900 mb-3 tracking-tight leading-[1.15] text-balance">
         Welcome to{" "}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
           {schoolData?.name || "Our School"}
         </span>
       </h2>
@@ -2374,6 +2405,7 @@ return (
       <p className="text-stone-500 mx-auto text-sm sm:text-base md:text-lg leading-relaxed px-2 text-balance max-w-2xl">
         {schoolData?.description || "We are committed to nurturing well-rounded learners through quality education and strong values."}
       </p>
+      </div>
     </div>
 
     {/* 2. Vision/Mission Section */}
@@ -2388,13 +2420,15 @@ return (
     {/* 3. Admission Paths - Mobile Optimized Grid */}
 {/* 3. Admission Paths - Full Bleed on Mobile */}
 <section className="relative overflow-hidden py-12 md:py-16 bg-stone-50 rounded-none md:rounded-3xl md:mx-4 px-0 md:px-8">
-  <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-64 h-64 bg-amber-200/20 blur-3xl rounded-full" />
+  {/* Logo Watermark */}
+  <img src="/kinyui.png" alt="" className="absolute right-4 bottom-4 w-28 md:w-40 opacity-[0.03] pointer-events-none select-none" />
+  <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-64 h-64 bg-teal-200/20 blur-3xl rounded-full" />
   
   <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-0">
     <div className="mb-8 text-center md:text-left">
-      <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full mb-3">
-        <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-700">Admissions {new Date().getFullYear()}</span>
+      <div className="inline-flex items-center gap-2 px-3 py-1 bg-teal-50 border border-teal-200 rounded-full mb-3">
+        <span className="w-1.5 h-1.5 rounded-full bg-teal-500" />
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-teal-700">Admissions {new Date().getFullYear()}</span>
       </div>
       <h3 className="text-xl md:text-2xl font-extrabold text-stone-900 tracking-tight mb-3 leading-tight">
         Your Path Forward
@@ -2431,11 +2465,11 @@ return (
     
     <div className="flex flex-wrap items-center gap-3 mt-2">
       <div className="flex items-center gap-1.5 text-[10px] text-stone-500 font-semibold">
-        <FiAward className="text-amber-500" />
+        <FiAward className="text-teal-500" />
         <span>KICD Approved</span>
       </div>
       <div className="flex items-center gap-1.5 text-[10px] text-stone-500 font-semibold">
-        <FiUsers className="text-amber-500" />
+        <FiUsers className="text-teal-500" />
         <span>Community</span>
       </div>
     </div>
@@ -2446,7 +2480,7 @@ return (
     {/* Academic Card */}
     <div className="md:col-span-7 relative rounded-xl bg-stone-50 border border-stone-200 p-5 md:p-6">
       <div className="flex flex-col h-full gap-3">
-        <div className="w-9 h-9 bg-white text-amber-600 rounded-lg flex items-center justify-center shadow-sm border border-stone-200 shrink-0">
+        <div className="w-9 h-9 bg-white text-teal-600 rounded-lg flex items-center justify-center shadow-sm border border-stone-200 shrink-0">
           <IoBulbOutline size={18} />
         </div>
         <div>
@@ -2465,7 +2499,7 @@ return (
           <FiUsers size={18} className="text-white" />
         </div>
         <div>
-          <h4 className="text-base md:text-lg font-bold mb-1.5 text-amber-400">Expert Educators</h4>
+          <h4 className="text-base md:text-lg font-bold mb-1.5 text-teal-400">Expert Educators</h4>
           <p className="text-stone-300 text-[12px] md:text-sm leading-relaxed">
             Our faculty consists of TSC-certified professionals providing personalized mentorship, ensuring every student discovers their unique potential through innovation.
           </p>
@@ -2476,7 +2510,7 @@ return (
     {/* Infrastructure Card */}
     <div className="md:col-span-12 relative rounded-xl bg-white border border-stone-200 p-5 md:p-7 flex flex-col gap-3">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center border border-amber-100 shrink-0">
+        <div className="w-10 h-10 bg-teal-50 text-teal-600 rounded-lg flex items-center justify-center border border-teal-100 shrink-0">
           <FiCpu size={20} />
         </div>
         <h4 className="text-base md:text-lg font-bold text-stone-900">Modern Learning Resources</h4>
@@ -2651,67 +2685,170 @@ return (
 {activeTab === 'career-paths' && (
   <div className="space-y-10 md:space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
     {/* Hero Section */}
-    <div className="text-center px-4">
-      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-lg mb-6">
-        <FiBriefcase className="text-amber-600 text-xs" />
-        <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-700">Career Readiness</span>
+    <div className="relative text-center px-4 overflow-hidden">
+      {/* Logo watermark behind hero */}
+      <img src="/kinyui.png" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 opacity-[0.03] pointer-events-none select-none" />
+      <div className="relative z-10">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-50 border border-teal-200 rounded-lg mb-6">
+          <FiBriefcase className="text-teal-600 text-xs" />
+          <span className="text-[10px] font-extrabold uppercase tracking-wider text-teal-700">Career Readiness</span>
+        </div>
+        <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">
+          Future <span className="text-teal-600">Pathways</span>
+        </h2>
+        <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
+          Strategic academic planning for diverse career trajectories. Our curriculum integrates industry-relevant skills with traditional excellence.
+        </p>
       </div>
-      <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">
-        Future <span className="text-amber-600">Pathways</span>
-      </h2>
-      <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
-        Strategic academic planning for diverse career trajectories. Our curriculum integrates industry-relevant skills with traditional excellence.
-      </p>
     </div>
 
+    {/* CBC Pathways & Subjects Section */}
+    <section className="relative bg-gradient-to-br from-slate-50 to-teal-50/30 rounded-2xl md:rounded-3xl border border-slate-200/60 p-5 md:p-10 overflow-hidden">
+      {/* Logo watermark */}
+      <img src="/kinyui.png" alt="" className="absolute right-4 bottom-4 w-28 md:w-40 opacity-[0.03] pointer-events-none select-none" />
+      
+      <div className="relative z-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div>
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-teal-100 rounded-full mb-2">
+              <FiBookOpen className="text-teal-600 text-xs" />
+              <span className="text-[9px] font-bold uppercase tracking-wider text-teal-700">CBC Framework</span>
+            </div>
+            <h3 className="text-lg md:text-2xl font-extrabold text-slate-900 tracking-tight">
+              CBC <span className="text-teal-600">Pathways</span> & Subjects
+            </h3>
+            <p className="text-slate-500 text-xs md:text-sm mt-1 max-w-xl">
+              Under the Competency Based Curriculum, students follow structured pathways aligned with their talents and career aspirations.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-xl border border-slate-200 shadow-sm self-start">
+            <IoSparkles className="text-teal-500" />
+            <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">7 Core Competencies</span>
+          </div>
+        </div>
+
+        {/* CBC Pathways Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          {[
+            {
+              pathway: 'STEM Pathway',
+              icon: IoFlaskOutline,
+              color: 'from-blue-500 to-cyan-500',
+              description: 'Science, Technology, Engineering & Mathematics',
+              subjects: ['Mathematics', 'Integrated Science', 'Computer Science', 'Pre-Technical Studies', 'Health Education'],
+              careers: 'Engineers, Doctors, Data Scientists, Researchers'
+            },
+            {
+              pathway: 'Arts & Sports Pathway',
+              icon: IoAccessibilityOutline,
+              color: 'from-purple-500 to-pink-500',
+              description: 'Creative Arts, Performing Arts & Athletic Excellence',
+              subjects: ['Visual Arts', 'Performing Arts', 'Physical Education', 'Music', 'Creative Design'],
+              careers: 'Athletes, Artists, Musicians, Designers, Coaches'
+            },
+            {
+              pathway: 'Social Sciences Pathway',
+              icon: IoNewspaperOutline,
+              color: 'from-amber-500 to-orange-500',
+              description: 'Humanities, Languages & Civic Education',
+              subjects: ['Social Studies', 'Religious Education', 'Business Studies', 'Languages', 'Life Skills'],
+              careers: 'Lawyers, Diplomats, Journalists, Teachers, Counselors'
+            }
+          ].map((path, idx) => {
+            const PathIcon = path.icon;
+            return (
+              <div key={idx} className="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${path.color} flex items-center justify-center text-white shadow-sm`}>
+                    <PathIcon className="text-lg" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-900 text-sm">{path.pathway}</h4>
+                    <p className="text-[10px] text-slate-400 font-medium">{path.description}</p>
+                  </div>
+                </div>
+                
+                <div className="mb-4">
+                  <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-2">Key Subjects</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {path.subjects.map((subj, i) => (
+                      <span key={i} className="px-2 py-1 bg-slate-50 text-slate-700 rounded-md text-[10px] font-medium border border-slate-100">
+                        {subj}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="pt-3 border-t border-slate-100">
+                  <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Career Outcomes</p>
+                  <p className="text-xs text-slate-600 font-medium leading-relaxed">{path.careers}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* CBC Core Subjects Row */}
+        <div className="bg-white rounded-xl border border-slate-200 p-5 md:p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+              <FiLayers className="text-white text-sm" />
+            </div>
+            <div>
+              <h4 className="font-bold text-slate-900 text-sm">CBC Core Subjects (Mandatory for All Pathways)</h4>
+              <p className="text-[10px] text-slate-400">Every student takes these foundational subjects</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+            {[
+              { name: 'English', icon: FiBook },
+              { name: 'Kiswahili', icon: FiGlobe },
+              { name: 'Mathematics', icon: FiCpu },
+              { name: 'Integrated Science', icon: FiActivity },
+              { name: 'Social Studies', icon: FiUsers },
+              { name: 'Religious Education', icon: FiHeart },
+              { name: 'Creative Arts', icon: FiPenTool },
+              { name: 'Agriculture', icon: FiDroplet },
+              { name: 'Life Skills', icon: FiStar },
+              { name: 'Physical Education', icon: FiTarget }
+            ].map((subj, i) => {
+              const SubjIcon = subj.icon;
+              return (
+                <div key={i} className="flex items-center gap-2 p-2.5 bg-slate-50 rounded-lg border border-slate-100">
+                  <SubjIcon className="text-teal-600 text-sm shrink-0" />
+                  <span className="text-[10px] md:text-xs font-semibold text-slate-700 truncate">{subj.name}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+
     {/* Career Guidance Banner - Full Width on Mobile */}
-    <div className="relative overflow-hidden bg-gradient-to-br from-amber-900 to-amber-950 md:rounded-[2.5rem] p-8 md:p-12 text-white w-full">
-      <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-amber-500/15 blur-[60px] md:blur-[100px] rounded-full -mr-32 -mt-32" />
+    <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 md:rounded-[2.5rem] p-8 md:p-12 text-white w-full">
+      {/* Logo watermark */}
+      <img src="/kinyui.png" alt="" className="absolute right-6 bottom-6 w-32 md:w-48 opacity-[0.04] pointer-events-none select-none" />
+      <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-teal-500/10 blur-[60px] md:blur-[100px] rounded-full -mr-32 -mt-32" />
       
       <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
         <div className="max-w-2xl">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-amber-500/20 backdrop-blur-md border border-amber-400/20 rounded-2xl flex items-center justify-center">
-              <FiTarget className="text-amber-300 text-xl" />
+            <div className="w-12 h-12 bg-teal-500/20 backdrop-blur-md border border-teal-400/20 rounded-2xl flex items-center justify-center">
+              <FiTarget className="text-teal-300 text-xl" />
             </div>
             <h3 className="text-xl md:text-2xl font-extrabold uppercase tracking-tight">Professional Development</h3>
           </div>
-          <p className="text-amber-100/70 text-sm md:text-base leading-relaxed font-medium">
+          <p className="text-slate-300/80 text-sm md:text-base leading-relaxed font-medium">
             Personalized career mapping, university placement strategy, and industry immersion experiences. 
             We bridge academic learning with professional reality.
           </p>
         </div>
         <button 
           onClick={() => router.push('/pages/contact')}
-          className="
-            /* Layout */
-            flex items-center justify-center gap-2 md:gap-3
-            w-full lg:w-auto 
-            
-            /* Sizing & Shape */
-            px-5 md:px-10 
-            py-3.5 md:py-5 
-            rounded-xl md:rounded-2xl 
-            
-            /* Aesthetics */
-            bg-white text-slate-900 
-            border border-slate-200 
-            shadow-sm
-            
-            /* Typography */
-            font-black uppercase 
-            tracking-[0.1em] md:tracking-[0.2em] 
-            text-[10px] md:text-[11px]
-            
-            /* Interactions (Simplified) */
-            transition-transform active:scale-95
-          "
+          className="flex items-center justify-center gap-2 md:gap-3 w-full lg:w-auto px-5 md:px-10 py-3.5 md:py-5 rounded-xl md:rounded-2xl bg-white text-slate-900 border border-slate-200 shadow-sm font-black uppercase tracking-[0.1em] md:tracking-[0.2em] text-[10px] md:text-[11px] transition-transform active:scale-95"
         >
-          <span className="whitespace-nowrap">
-            Schedule <span className="hidden xs:inline">Consultation</span>
-            <span className="xs:hidden">Now</span>
-          </span>
-          
+          <span className="whitespace-nowrap">Schedule Consultation</span>
           <div className="flex-shrink-0 flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-full bg-slate-900 text-white">
             <FiArrowRight className="text-[10px] md:text-[12px]" />
           </div>
@@ -3035,28 +3172,28 @@ return (
           )}
         </div>
 
-        {/* Modernized CTA Section - Refined Typography */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-[#1a1a2e] to-[#2d2d4e] rounded-xl md:rounded-[24px] p-4 md:p-12 text-center shadow-2xl">
+        {/* CTA Section with School Logo Watermark */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl md:rounded-[24px] p-6 md:p-12 text-center shadow-2xl">
           
-          {/* Static Background Decoration */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-2xl bg-blue-500/10 blur-[80px] rounded-full pointer-events-none" />
+          {/* School Logo Watermark */}
+          <img src="/kinyui.png" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 md:w-64 opacity-[0.04] pointer-events-none select-none" />
+          {/* Decorative Glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-2xl bg-teal-500/8 blur-[80px] rounded-full pointer-events-none" />
           
           <div className="relative z-10 flex flex-col items-center max-w-2xl mx-auto">
             
-            {/* 1. Modern Badge */}
+            {/* Badge */}
             <div className="mb-4 md:mb-5 inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
-              <span className="flex h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-200">
+              <span className="flex h-1.5 w-1.5 rounded-full bg-teal-400"></span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-teal-200">
                 Enrollment Open {new Date().getFullYear()}
               </span>
             </div>
 
-            {/* 2. Responsive Typography (Reduced Sizes) */}
             <h2 className="text-xl md:text-3xl font-black text-white mb-4 tracking-tight leading-tight text-balance">
-              Ready to Begin Your <span className="text-emerald-400">Academic Journey This year</span>
+              Ready to Begin Your <span className="text-teal-400">Academic Journey</span>
             </h2>
             
-            {/* Description: Scaled down to base size for better reading density */}
             <p className="text-slate-400 mb-6 md:mb-8 text-sm md:text-base leading-relaxed max-w-lg mx-auto text-balance">
               Join a community dedicated to nurturing future leaders through personalized attention and holistic development.
             </p>
@@ -3065,17 +3202,16 @@ return (
             <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto">
               <button
                 onClick={() => router.push('/pages/contact')}
-                className="flex-shrink-0 px-3 py-2.5 sm:px-4 sm:py-3 md:px-6 md:py-3.5 
-                           bg-white/10 border border-white/20 text-white rounded-xl font-semibold text-xs sm:text-sm 
+                className="flex-shrink-0 px-4 py-2.5 sm:px-5 sm:py-3 md:px-7 md:py-3.5 
+                           bg-teal-500 hover:bg-teal-400 text-white rounded-xl font-bold text-xs sm:text-sm 
                            tracking-wide flex items-center justify-center gap-2 
-                           active:scale-95 transition-transform hover:bg-white/20"
+                           active:scale-95 transition-all shadow-lg shadow-teal-500/20"
               >
                 Contact Admissions Office
                 <FiArrowRight size={14} />
               </button>
             </div>
 
-            {/* 4. Trust Indicator */}
             <p className="mt-4 md:mt-6 text-[10px] uppercase tracking-widest text-slate-500 font-bold opacity-60">
               Application takes ~5 minutes
             </p>
