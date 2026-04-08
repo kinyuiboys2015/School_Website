@@ -2355,7 +2355,7 @@ return (
       <button
         disabled={!isOpen}
         onClick={() => router.push('/pages/apply-for-admissions')}
-        className={`w-full lg:w-auto px-7 py-3 rounded-xl font-bold text-sm shadow-sm transition-all active:scale-95 ${
+        className={`w-auto px-7 py-3 rounded-xl font-bold text-sm shadow-sm transition-all active:scale-95 ${
           isOpen 
             ? 'bg-stone-900 text-white hover:bg-stone-800' 
             : 'bg-stone-100 text-stone-400 cursor-not-allowed border border-stone-200'
