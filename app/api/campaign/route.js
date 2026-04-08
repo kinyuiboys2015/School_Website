@@ -20,6 +20,7 @@ class DeviceTokenManager {
       }
 
       // Validate admin token format (basic check)
+
       const adminParts = adminToken.split('.');
       if (adminParts.length !== 3) {
         return { valid: false, reason: 'invalid_admin_token_format', message: 'Invalid admin token format' };
@@ -221,35 +222,36 @@ const emailTemplates = {
           <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
           <title>Admissions Open - ${SCHOOL_NAME}</title>
         </head>
-        <body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f8fafc; line-height: 1.6; color: #333; -webkit-text-size-adjust: 100%;">
-          <!-- Container -->
-          <div style="max-width: 100%; width: 100%; min-width: 320px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f1f5f9; line-height: 1.6; color: #1e293b; -webkit-text-size-adjust: 100%;">
+          <div style="max-width: 100%; width: 100%; min-width: 320px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(15,23,42,0.08);">
             
             <!-- Header -->
-            <div style="background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%); padding: 10% 5% 8%; text-align: center; color: white;">
-              <h1 style="color: white; font-size: clamp(24px, 6vw, 32px); font-weight: 700; margin: 0 0 8px; line-height: 1.2;">🎓 Admissions Open</h1>
-              <p style="color: rgba(255,255,255,0.95); font-size: clamp(14px, 4vw, 18px); margin: 0 0 4px; font-weight: 500;">${SCHOOL_NAME}</p>
-              <p style="color: rgba(255,255,255,0.85); font-size: clamp(12px, 3vw, 14px); margin: 0; font-weight: 400;">${SCHOOL_LOCATION}</p>
+            <div style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%); padding: 10% 5% 8%; text-align: center; color: white;">
+              <div style="display: inline-block; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 12px; margin-bottom: 12px;">
+                <span style="font-size: 32px;">🎓</span>
+              </div>
+              <h1 style="color: white; font-size: clamp(24px, 6vw, 32px); font-weight: 700; margin: 0 0 8px; line-height: 1.2; letter-spacing: -0.02em;">Admissions Open</h1>
+              <p style="color: rgba(255,255,255,0.9); font-size: clamp(14px, 4vw, 18px); margin: 0 0 4px; font-weight: 500;">${SCHOOL_NAME}</p>
+              <p style="color: rgba(255,255,255,0.7); font-size: clamp(12px, 3vw, 14px); margin: 0; font-weight: 400; letter-spacing: 0.05em;">${SCHOOL_LOCATION}</p>
             </div>
             
             <!-- Content -->
-            <div style="padding: 8% 5%;">
-              <h2 style="color: #1e293b; font-size: clamp(20px, 5vw, 28px); font-weight: 600; margin: 0 0 5%; line-height: 1.3;">Begin Your Educational Journey</h2>
+            <div style="padding: 8% 6%;">
+              <h2 style="color: #0f172a; font-size: clamp(20px, 5vw, 28px); font-weight: 700; margin: 0 0 5%; line-height: 1.3; letter-spacing: -0.01em;">Begin Your Educational Journey</h2>
               
               ${customMessage ? `
-                <!-- Custom Message -->
-                <div style="background: #fef3c7; border-radius: 12px; padding: 5%; margin: 0 0 5%; border-left: 4px solid #f59e0b;">
-                  <h3 style="color: #92400e; font-size: clamp(16px, 4vw, 18px); font-weight: 600; margin: 0 0 3%;">Additional Message:</h3>
-                  <p style="color: #78350f; font-size: clamp(14px, 3.5vw, 16px); line-height: 1.5; margin: 0;">${customMessage}</p>
+                <div style="background: #f8fafc; border-radius: 12px; padding: 5%; margin: 0 0 5%; border-left: 4px solid #475569;">
+                  <h3 style="color: #334155; font-size: clamp(16px, 4vw, 18px); font-weight: 600; margin: 0 0 3%;">Additional Message:</h3>
+                  <p style="color: #475569; font-size: clamp(14px, 3.5vw, 16px); line-height: 1.6; margin: 0;">${customMessage}</p>
                 </div>
               ` : ''}
               
               <!-- Admissions Information -->
-              <div style="background: #f8fafc; border-radius: 12px; padding: 5%; margin: 0 0 5%; border-left: 4px solid #3b82f6;">
-                <h3 style="color: #1e40af; font-size: clamp(18px, 4.5vw, 22px); font-weight: 600; margin: 0 0 4%;">📚 Admissions Information</h3>
+              <div style="background: #f8fafc; border-radius: 12px; padding: 5%; margin: 0 0 5%; border-left: 4px solid #334155;">
+                <h3 style="color: #1e293b; font-size: clamp(18px, 4.5vw, 22px); font-weight: 600; margin: 0 0 4%;">📚 Admissions Information</h3>
                 
                 ${admission.title ? `
-                  <p style="color: #1e40af; font-size: clamp(16px, 4vw, 20px); font-weight: 600; margin: 0 0 2%;">
+                  <p style="color: #1e293b; font-size: clamp(16px, 4vw, 20px); font-weight: 600; margin: 0 0 2%;">
                     ${admission.title}
                   </p>
                 ` : ''}
@@ -260,11 +262,11 @@ const emailTemplates = {
                 </p>
                 
                 ${admission.deadline ? `
-                  <p style="color: #059669; font-size: clamp(15px, 3.8vw, 17px); font-weight: 600; margin: 4% 0;">
+                  <p style="color: #334155; font-size: clamp(15px, 3.8vw, 17px); font-weight: 600; margin: 4% 0;">
                     📅 Application Deadline: ${formatDate(admission.deadline)}
                   </p>
                 ` : data.deadline ? `
-                  <p style="color: #059669; font-size: clamp(15px, 3.8vw, 17px); font-weight: 600; margin: 4% 0;">
+                  <p style="color: #334155; font-size: clamp(15px, 3.8vw, 17px); font-weight: 600; margin: 4% 0;">
                     📅 Application Deadline: ${data.deadline}
                   </p>
                 ` : ''}
@@ -277,9 +279,9 @@ const emailTemplates = {
               </div>
               
               <!-- Quick Facts -->
-              <div style="background: #f0f9ff; border-radius: 12px; padding: 5%; margin: 0 0 6%; border-left: 4px solid #3b82f6;">
-                <h3 style="color: #1e40af; font-size: clamp(18px, 4.5vw, 22px); font-weight: 600; margin: 0 0 4%;">Quick Facts:</h3>
-                <ul style="color: #475569; font-size: clamp(14px, 3.5vw, 16px); line-height: 1.6; margin: 0; padding-left: 5%;">
+              <div style="background: #f8fafc; border-radius: 12px; padding: 5%; margin: 0 0 6%; border-left: 4px solid #64748b;">
+                <h3 style="color: #1e293b; font-size: clamp(18px, 4.5vw, 22px); font-weight: 600; margin: 0 0 4%;">Quick Facts:</h3>
+                <ul style="color: #475569; font-size: clamp(14px, 3.5vw, 16px); line-height: 1.8; margin: 0; padding-left: 5%;">
                   <li style="margin: 0 0 2%;">Public Boarding School in Matungulu, Machakos</li>
                   <li style="margin: 0 0 2%;">400+ students community</li>
                   <li style="margin: 0 0 2%;">8-4-4 Curriculum System</li>
@@ -292,31 +294,33 @@ const emailTemplates = {
                 <a href="https://kinyui-senior.vercel.app/pages/apply-for-admissions" 
                    style="display: inline-block; 
                           width: 100%; 
-                          max-width: 280px; 
-                          background: linear-gradient(135deg, #059669 0%, #047857 100%); 
+                          max-width: 300px; 
+                          background: linear-gradient(135deg, #1e293b 0%, #334155 100%); 
                           color: white; 
                           padding: 16px 8px; 
                           text-decoration: none; 
-                          border-radius: 8px; 
+                          border-radius: 10px; 
                           font-weight: 600; 
                           font-size: clamp(16px, 4vw, 18px); 
                           margin: 0 auto; 
                           text-align: center;
                           border: none;
-                          cursor: pointer;">Apply Now →</a>
+                          cursor: pointer;
+                          letter-spacing: 0.02em;">Apply Now →</a>
               </div>
               
               <!-- Contact Info -->
               <p style="color: #64748b; font-size: clamp(13px, 3.2vw, 15px); line-height: 1.6; margin: 6% 0 0; text-align: center;">
-                For more information, contact our admissions office at <strong>${SCHOOL_PHONE}</strong> or email <strong>${SCHOOL_EMAIL}</strong>
+                For more information, contact our admissions office at <strong style="color: #334155;">${SCHOOL_PHONE}</strong> or email <strong style="color: #334155;">${SCHOOL_EMAIL}</strong>
               </p>
             </div>
 
             <!-- Footer -->
-            <div style="background: #f1f5f9; padding: 8% 5%; text-align: center; border-top: 1px solid #e2e8f0;">
-              <p style="color: #1e293b; font-size: clamp(16px, 4vw, 20px); font-weight: 600; margin: 0 0 3%;">${SCHOOL_NAME}</p>
-              <p style="color: #64748b; font-size: clamp(14px, 3.5vw, 16px); margin: 0 0 3%; font-style: italic;">${SCHOOL_MOTTO}</p>
-              <p style="color: #94a3b8; font-size: clamp(11px, 2.8vw, 13px); margin: 3% 0 0;">© ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
+            <div style="background: #0f172a; padding: 8% 5%; text-align: center;">
+              <p style="color: #ffffff; font-size: clamp(16px, 4vw, 20px); font-weight: 600; margin: 0 0 3%; letter-spacing: -0.01em;">${SCHOOL_NAME}</p>
+              <p style="color: #94a3b8; font-size: clamp(14px, 3.5vw, 16px); margin: 0 0 3%; font-style: italic;">${SCHOOL_MOTTO}</p>
+              <div style="width: 40px; height: 2px; background: #475569; margin: 4% auto;"></div>
+              <p style="color: #64748b; font-size: clamp(11px, 2.8vw, 13px); margin: 0;">© ${new Date().getFullYear()} ${SCHOOL_NAME}. All rights reserved.</p>
             </div>
           </div>
         </body>

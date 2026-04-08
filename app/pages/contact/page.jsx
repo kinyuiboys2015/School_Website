@@ -244,25 +244,37 @@ export default function ContactPage() {
   return (
     <div className="bg-slate-50 text-slate-800 min-h-screen font-sans">
 
-      {/* --- Hero Section --- */}
-      <section className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] flex items-center justify-center text-white overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/hero/kin.jpeg')" }}
-        ></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/50 to-transparent"></div>
-        <div className="relative z-10 text-center px-4 py-6 max-w-4xl mx-auto">
-          <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 mb-3 sm:mb-4 text-xs sm:text-xs font-bold tracking-widest text-amber-300 uppercase bg-black/20 backdrop-blur-sm rounded-full border border-amber-300/30">
-            Connect With Us
-          </span>
-          <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tighter mb-2 sm:mb-4">
-            Kinyui Boys Senior School
-          </h1>
-          <p className="text-sm sm:text-base md:text-lg text-slate-200 max-w-2xl mx-auto">
-            We're here to help. Reach out with any questions or inquiries, and our team will get back to you promptly.
-          </p>
-        </div>
-      </section>
+{/* --- Hero Section --- */}
+<section className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] flex items-center justify-center text-white overflow-hidden bg-slate-950">
+  {/* Background Image with Lowered Opacity */}
+  <div 
+    className="absolute inset-0 bg-cover bg-center opacity-40" // Lowered opacity to 40%
+    style={{ backgroundImage: "url('/hero/kin.jpeg')" }}
+  ></div>
+  
+  {/* Darkened Overlay - Increased darkness for better contrast */}
+  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/80 to-slate-900/40"></div>
+  
+  <div className="relative z-10 text-center px-4 py-6 max-w-4xl mx-auto">
+    <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 mb-3 sm:mb-4 text-[10px] sm:text-xs font-bold tracking-widest text-amber-400 uppercase bg-black/40 backdrop-blur-md rounded-full border border-amber-400/20">
+      Soaring To Excellence & Integrity
+    </span>
+    
+    <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter mb-2 sm:mb-4 drop-shadow-lg">
+      Kinyui Boys High School
+    </h1>
+    
+    <div className="flex flex-col gap-3">
+      <h3 className="flex items-center justify-center gap-2 text-sm sm:text-lg font-bold text-amber-500 tracking-tight">
+        Knowledge is Power <span className="text-xl md:text-2xl">&rarr;</span>
+      </h3>
+      
+      <p className="text-sm sm:text-base md:text-xl text-slate-100 max-w-2xl mx-auto leading-relaxed font-medium">
+        Empowering young men through discipline and innovation. Reach out to join our community of scholars and leaders.
+      </p>
+    </div>
+  </div>
+</section>
 
       {/* --- Main Content --- */}
       <main className="py-8 sm:py-16 md:py-24 px-3 sm:px-6 lg:px-8">
