@@ -1547,14 +1547,6 @@ kjseaGrade: '',         // Changed from meanGrade
           </div>
         </a>
 
-        {/* Schedule Link */}
-        <div className="flex flex-col items-center md:items-start gap-1">
-          <span className="text-[9px] font-black text-slate-800 uppercase tracking-widest">Office</span>
-          <div className="flex items-center gap-2">
-            <FiClock size={14} className="text-slate-900" />
-            <span className="text-xs md:text-sm font-bold text-slate-900">8AM - 5PM</span>
-          </div>
-        </div>
 
       </div>
     </div>
