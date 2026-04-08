@@ -846,7 +846,6 @@ const jsonLd = {
         </div>
       )}
 
-      <ChatBot />
 
       {/* Custom Animations */}
       <style jsx global>{`
