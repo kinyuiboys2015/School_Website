@@ -2188,9 +2188,10 @@ export default function ComprehensiveAdmissions() {
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-none mb-3">
           Admissions <span className="text-amber-800">Portal</span>
         </h1>
-        <p className="text-slate-900 text-xs md:text-sm leading-relaxed max-w-md mb-5">
-          Begin your academic journey. Explore programs, check requirements, and apply online.
-        </p>
+<p className="text-white text-xs md:text-sm leading-relaxed max-w-md mb-5">
+  Begin your academic journey. Explore programs, check requirements, and apply online. 
+  Our smart admissions portal brings everything together in one place, allowing you to access information, submit applications, and track your progress بسهولة from any device.
+</p>
 
         {/* Action Row */}
         <div className="flex flex-wrap items-center gap-3">
