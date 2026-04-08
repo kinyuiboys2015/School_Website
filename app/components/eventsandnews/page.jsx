@@ -1334,8 +1334,6 @@ export default function NewsEventsManager() {
   };
 
   // Fetch news from API
-// Fetch news from API
-// Fetch news from API - FIXED MAPPING
 const fetchNews = async () => {
   try {
     const response = await fetch('/api/news');

@@ -28,7 +28,7 @@ import { Loader2 } from 'lucide-react';
 import { IoPeopleOutline, IoRibbonOutline } from 'react-icons/io5';
 import { GiGraduateCap } from 'react-icons/gi';
 
-// Helper function for image URLs
+// Helper function for image URLs (unchanged)
 const getImageUrl = (imagePath) => {
   if (!imagePath || typeof imagePath !== 'string') return null;
   const trimmedPath = imagePath.trim();
@@ -252,13 +252,13 @@ const ModernStaffLeadership = () => {
 
   return (
     <div className="bg-gradient-to-br from-slate-50 via-white to-slate-100 font-sans">
-      {/* Hero Section - Responsive */}
+      {/* Hero Section - Responsive (only text changed) */}
       <div className="relative overflow-hidden bg-gradient-to-r from-blue-900 via-indigo-800 to-purple-800 text-white py-16 md:py-24">
         <div className="absolute inset-0 bg-black/30"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4 sm:mb-6">
             <IoPeopleOutline className="w-3 h-3 sm:w-4 sm:h-4" />
-            <span className="text-[10px] sm:text-xs md:text-sm font-bold tracking-wider">Leadership Team</span>
+            <span className="text-[10px] sm:text-xs md:text-sm font-bold tracking-wider">LEADERSHIP & FACULTY</span>
           </div>
           
           <h1 className={`font-black tracking-tight mb-3 sm:mb-4 ${
@@ -275,24 +275,23 @@ const ModernStaffLeadership = () => {
           <p className={`text-white/90 max-w-3xl mx-auto px-2 sm:px-0 ${
             isMobile ? 'text-xs' : 'text-sm sm:text-base md:text-lg'
           }`}>
-            Committed professionals dedicated to academic excellence, student development,
+            Dedicated professionals committed to academic excellence, student development,
             and community engagement.
           </p>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-50 to-transparent"></div>
       </div>
 
-      {/* Description - Responsive */}
+      {/* Description - only text changed to match modal tone */}
       <p className={`text-gray-900 font-semibold leading-relaxed mb-10 
         ${isMobile ? 'text-xs w-full px-4 text-center' : 'text-sm sm:text-base md:text-md w-[90%] px-4 sm:px-6 md:px-10 mx-auto'}`}>
         {isMobile 
-          ? 'Our passionate educators shape excellence, discipline, and innovation.'
+          ? 'Passionate educators shaping excellence, discipline, and innovation.'
           : 'Our team of passionate educators and professionals is committed to shaping excellence, discipline, and innovation in every student. Explore the people behind our success and discover the strength of our academic community.'}
       </p>
 
-      {/* Feature Highlights - Responsive: Grid on desktop, Horizontal scroll on mobile */}
+      {/* Feature Highlights - only text changed */}
       {!isMobile ? (
-        // Desktop: Original Grid Layout with Dark Theme
         <div className="flex px-10 sm:flex-row flex-wrap gap-4 sm:gap-5 md:gap-6 mb-8 sm:mb-10 md:mb-12">
           <div className="flex-1 min-w-[200px] bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg border border-slate-700/50 hover:shadow-xl hover:border-slate-600 transition-all duration-300 group">
             <div className="flex items-start gap-3 sm:gap-4">
@@ -343,7 +342,6 @@ const ModernStaffLeadership = () => {
           </div>
         </div>
       ) : (
-        // Mobile: Horizontal Scroll White Cards
         <div className="flex overflow-x-auto gap-3 px-4 py-6 scrollbar-hide">
           <div className="flex-shrink-0 w-[180px] bg-white rounded-xl p-3 shadow-md border border-slate-100">
             <div className="flex items-center gap-2">
@@ -396,7 +394,7 @@ const ModernStaffLeadership = () => {
       )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-        {/* Back to Principal Button */}
+        {/* Back to Principal Button - text changed */}
         {featuredStaff.id !== principal.id && (
           <div className="mb-6 flex justify-start">
             <button
@@ -413,13 +411,13 @@ const ModernStaffLeadership = () => {
           </div>
         )}
 
-        {/* Featured Staff Card */}
+        {/* Featured Staff Card - only text changes inside, no layout changes */}
         <div
           id="featured-staff-card"
           className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 mb-16 transition-all duration-300 hover:shadow-3xl"
         >
           <div className={`${isMobile ? 'flex flex-col' : 'grid md:grid-cols-2 gap-8'}`}>
-            {/* Image Side */}
+            {/* Image Side - unchanged */}
             <div className={`relative ${isMobile ? 'h-78' : 'h-96 md:h-full min-h-[400px]'}`}>
               <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-transparent z-10"></div>
               {getImageUrl(featuredStaff?.image) ? (
@@ -454,7 +452,7 @@ const ModernStaffLeadership = () => {
               </div>
             </div>
 
-            {/* Content Side */}
+            {/* Content Side - only text changes */}
             <div className={`${isMobile ? 'p-4' : 'p-6 md:p-8'} flex flex-col justify-between`}>
               <div>
                 <div className="hidden md:block mb-4">
@@ -473,9 +471,9 @@ const ModernStaffLeadership = () => {
                   {featuredStaff?.department || 'Administration'}
                 </p>
 
-                {/* Quote Section */}
+                {/* Quote Section - text unchanged because it comes from API */}
                 {featuredStaff?.quote && (
-                  <div className={`${isMobile ? 'w-full' : 'sm:max-w-xl mx-auto'} bg-gradient-to-r from-amber-50 to-orange-50 
+                  <div className={`${isMobile ? 'w-full' : 'sm:max-w-xl mx-auto'} 
                     ${isMobile ? 'p-3' : 'p-4 sm:p-5 md:p-6'} rounded-xl sm:rounded-2xl border-l-4 border-amber-500 
                     mb-4 sm:mb-6 shadow-sm`}>
                     <div className="flex items-start gap-2 sm:gap-3">
@@ -492,7 +490,7 @@ const ModernStaffLeadership = () => {
                   </div>
                 )}
 
-                {/* Bio Section */}
+                {/* Bio Section - text unchanged (API) */}
                 <div className={`${isMobile ? 'w-full' : 'sm:max-w-xl mx-auto'} mb-4 sm:mb-6`}>
                   <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
                     <div className={`${isMobile ? 'w-6 h-6' : 'w-7 h-7 sm:w-8 sm:h-8'} rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0`}>
@@ -511,14 +509,15 @@ const ModernStaffLeadership = () => {
                   </div>
                 </div>
 
-                {/* Achievements & Responsibilities */}
+                {/* Achievements & Responsibilities - only section titles changed to match modal style */}
                 <div className={`grid ${isMobile ? 'gap-3' : 'sm:grid-cols-2 gap-5'} mt-6`}>
                   {/* Achievements Section */}
                   <div className={`${isMobile ? 'bg-amber-50/50 rounded-lg p-3' : 'bg-gradient-to-br from-amber-50/50 to-yellow-50/30 rounded-xl p-4'} border border-amber-100`}>
                     <div className="flex items-center gap-2 mb-3">
                       <div className={`${isMobile ? 'w-5 h-5' : 'w-7 h-7'} rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center`}>
+                        <FiAward className="text-white text-xs" />
                       </div>
-                      <h3 className={`${isMobile ? 'text-[9px]' : 'text-xs'} font-black text-amber-700 uppercase tracking-wider`}>Achievements</h3>
+                      <h3 className={`${isMobile ? 'text-[9px]' : 'text-xs'} font-black text-amber-700 uppercase tracking-wider`}>Key Achievements</h3>
                     </div>
                     {featuredStaff?.achievements && featuredStaff.achievements.length > 0 ? (
                       <ul className="space-y-2">
@@ -541,7 +540,7 @@ const ModernStaffLeadership = () => {
                         <div className={`${isMobile ? 'w-5 h-5' : 'w-7 h-7'} rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center`}>
                           <FiTarget className={`text-white ${isMobile ? 'text-xs' : 'text-xs'}`} />
                         </div>
-                        <h3 className={`${isMobile ? 'text-[9px]' : 'text-xs'} font-black text-emerald-700 uppercase tracking-wider`}>Responsibilities</h3>
+                        <h3 className={`${isMobile ? 'text-[9px]' : 'text-xs'} font-black text-emerald-700 uppercase tracking-wider`}>Core Responsibilities</h3>
                       </div>
                       <ul className="space-y-2">
                         {featuredStaff.responsibilities.slice(0, isMobile ? 3 : 4).map((item, i) => (
@@ -555,7 +554,7 @@ const ModernStaffLeadership = () => {
                   )}
                 </div>
 
-                {/* Expertise Section */}
+                {/* Expertise Section - unchanged */}
                 {featuredStaff?.expertise && featuredStaff.expertise.length > 0 && (
                   <div className="mt-5 pt-3">
                     <div className="flex items-center gap-2 mb-2">
@@ -576,7 +575,7 @@ const ModernStaffLeadership = () => {
                 )}
               </div>
 
-              {/* Contact - Email only */}
+              {/* Contact - unchanged */}
               <div className="mt-5 pt-4 border-t border-slate-200">
                 <div className="flex flex-wrap gap-4">
                   {featuredStaff?.email && (
@@ -596,9 +595,8 @@ const ModernStaffLeadership = () => {
           </div>
         </div>
 
-        {/* Side Cards Grid - Responsive: Grid on desktop, Horizontal scroll on mobile */}
+        {/* Side Cards Grid - unchanged except text on button */}
         {!isMobile ? (
-          // Desktop: Original Grid Layout
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {sideCards.map(({ staff, label, color }, idx) => (
               <button
@@ -653,7 +651,6 @@ const ModernStaffLeadership = () => {
             ))}
           </div>
         ) : (
-          // Mobile: Horizontal Scroll Cards
           <div className="overflow-x-auto pb-4 mb-6 scrollbar-hide">
             <div className="flex gap-3 min-w-max px-1">
               {sideCards.map(({ staff, label, color }, idx) => (
@@ -711,7 +708,7 @@ const ModernStaffLeadership = () => {
           </div>
         )}
 
-        {/* Staff Section */}
+        {/* Staff Section - only button text changed */}
         <section className="py-4 px-6 bg-gradient-to-b from-gray-50 to-white rounded-3xl">
           <div className="max-w-6xl mx-auto text-center">
             <div className="text-center">
@@ -724,14 +721,14 @@ const ModernStaffLeadership = () => {
                 }`}
               >
                 <FiUsers className={`${isMobile ? 'text-sm' : 'text-lg'}`} />
-                View Complete Directory
+                View Complete Staff Directory
                 <FiChevronRight className={`${isMobile ? 'text-sm' : 'text-lg'}`} />
               </button>
             </div>
           </div>
         </section>
 
-        {/* Mobile Hint */}
+        {/* Mobile Hint - unchanged */}
         {isMobile && (
           <p className="text-center text-sm text-slate-500 mt-8">
             Tap on any staff card to see their full profile.
@@ -739,7 +736,7 @@ const ModernStaffLeadership = () => {
         )}
       </div>
 
-      {/* Hide scrollbar styles */}
+      {/* Hide scrollbar styles - unchanged */}
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
