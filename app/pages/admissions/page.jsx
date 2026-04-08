@@ -783,93 +783,75 @@ const CareerSearchPage = () => {
 
 const ModernEducationSystemCard = ({ system, icon: Icon, color, description, features, structure, advantages }) => {
   return (
-    /* Removed p-2 on mobile so the card is edge-to-edge; kept rounded for desktop */
-    <div className="group relative bg-slate-50 md:rounded-[2.5rem] p-0 md:p-2 ">
-      {/* Outer Glow Effect - Hidden on mobile to keep edge clean */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-5 transition-opacity duration-500 md:rounded-[2.5rem] hidden md:block`} />
+    <div className="group relative bg-white md:rounded-2xl border-y md:border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
       
-      <div className="relative bg-white md:rounded-[2rem] border-y md:border border-slate-200 overflow-hidden shadow-sm">
-        
-        {/* Top Header - Adjusted height for mobile screens */}
-        <div className={`relative h-32 md:h-40 p-6 md:p-10 bg-gradient-to-br ${color} overflow-hidden`}>
-          {/* Decorative Elements */}
-          <div className="absolute top-0 right-0 w-64 md:w-72 h-64 md:h-72 bg-white/20 blur-[70px] md:blur-[90px] rounded-full -mr-32 -mt-32 animate-pulse" />
-          
-          <div className="relative z-10">
-            <h3 className="text-xl md:text-2xl font-black text-white tracking-tighter uppercase leading-none">
+      {/* Compact Header with gradient accent */}
+      <div className={`relative p-5 md:p-7 bg-gradient-to-r ${color} overflow-hidden`}>
+        <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 blur-[60px] rounded-full -mr-20 -mt-20" />
+        <div className="relative z-10 flex items-center justify-between">
+          <div>
+            <h3 className="text-lg md:text-xl font-black text-white tracking-tight uppercase leading-none">
               {system.name}
             </h3>
-            <p className="text-white/90 text-[9px] md:text-[11px] font-black tracking-[0.2em] md:tracking-[0.3em] mt-2 md:mt-3 uppercase opacity-80">
+            <p className="text-white/70 text-[9px] md:text-[10px] font-bold tracking-[0.15em] mt-1.5 uppercase">
               {system.fullName}
             </p>
           </div>
-        </div>
-
-        {/* Floating Icon - Smaller on mobile */}
-        <div className="relative px-6 md:px-8">
-          <div className="absolute -top-8 md:-top-12 right-6 md:right-8 p-1 bg-white rounded-[1.2rem] md:rounded-[1.5rem] shadow-2xl border border-slate-100">
-            <div className={`p-3 md:p-5 rounded-[1rem] md:rounded-[1.2rem] bg-gradient-to-br ${color} text-white shadow-inner active:scale-95 transition-transform`}>
-              <Icon className="text-xl md:text-2xl" />
-            </div>
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-white/15 backdrop-blur-sm rounded-xl border border-white/20 flex items-center justify-center">
+            <Icon className="text-white text-lg md:text-xl" />
           </div>
         </div>
+      </div>
 
-        {/* Main Content Body */}
-        <div className="p-6 md:p-10 pt-10 md:pt-12">
-          <div className="relative mb-8 md:mb-10">
-            <span className="absolute -top-4 -left-2 text-2xl md:text-3xl text-slate-100 font-black pointer-events-none">“</span>
-            <p className="relative z-10 text-slate-500 leading-relaxed text-xs md:text-base font-bold italic">
-              {description}
-            </p>
-          </div>
+      {/* Body */}
+      <div className="p-5 md:p-7 space-y-6">
+        
+        {/* Description */}
+        <p className="text-slate-500 text-xs md:text-sm leading-relaxed">
+          {description}
+        </p>
 
-          {/* Educational Structure - 3 Columns preserved, font adjusted for small width */}
-          <h4 className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-4 ml-1">Academic Path</h4>
-          <div className="grid grid-cols-3 gap-2 md:gap-4 mb-8 md:mb-10">
+        {/* Academic Path — inline row */}
+        <div>
+          <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-3">Academic Path</p>
+          <div className="flex gap-2">
             {structure.map((stage, idx) => (
-              <div key={idx} className="relative overflow-hidden p-3 md:p-5 rounded-2xl md:rounded-[1.5rem] bg-[#1a1a2e] border border-slate-800 transition-transform hover:-translate-y-1">
-                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${color}`} />
-                <div className="font-black text-white text-xl md:text-3xl leading-none tabular-nums">
+              <div key={idx} className="flex-1 text-center p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <div className="text-lg md:text-xl font-black text-slate-900 leading-none tabular-nums">
                   {stage.years}
                 </div>
-                <div className="text-[8px] md:text-[9px] text-blue-400 font-black uppercase tracking-widest mt-2 md:mt-3 leading-tight">
+                <div className="text-[8px] md:text-[9px] font-bold text-slate-400 uppercase tracking-wider mt-1">
                   {stage.name}
                 </div>
               </div>
             ))}
           </div>
+        </div>
 
-          {/* Features - Optimized spacing for narrow screens */}
-          <div className="space-y-6 mb-8 md:mb-10">
-             <h4 className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-4 ml-1">
-               System Pillars
-             </h4>
-             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 md:gap-y-6">
-                {features.map((feature, idx) => (
-                  <div key={idx} className="flex gap-3 md:gap-4 items-start group/feat">
-                    <div className={`flex-shrink-0 w-2 h-2 md:w-3 md:h-3 rounded-full bg-gradient-to-r ${color} mt-1.5`} />
-                    <div className="min-w-0">
-                      <h5 className="font-black text-slate-900 text-[11px] md:text-[13px] uppercase tracking-tight leading-tight mb-1">
-                        {feature.title}
-                      </h5>
-                      <p className="text-slate-400 text-[10px] md:text-[11px] font-bold leading-snug">
-                        {feature.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-             </div>
+        {/* Features — compact 2-col grid */}
+        <div>
+          <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-3">Key Pillars</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {features.map((feature, idx) => (
+              <div key={idx} className="flex items-start gap-2.5">
+                <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${color} mt-1.5 shrink-0`} />
+                <div>
+                  <h5 className="text-xs font-bold text-slate-900 leading-tight">{feature.title}</h5>
+                  <p className="text-[10px] text-slate-400 leading-snug">{feature.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
 
-          {/* Advantages - Pill Tags scrollable/wrap behavior */}
-          <div className="pt-6 md:pt-8 border-t border-slate-100">
-            <div className="flex flex-wrap gap-1.5 md:gap-2">
-              {advantages.map((advantage, idx) => (
-                <span key={idx} className="px-3 py-1.5 md:px-4 md:py-2 bg-slate-100 text-slate-900 rounded-lg md:rounded-xl text-[8px] md:text-[9px] font-black uppercase tracking-wider md:tracking-[0.15em]">
-                  {advantage}
-                </span>
-              ))}
-            </div>
+        {/* Advantages */}
+        <div className="pt-5 border-t border-slate-100">
+          <div className="flex flex-wrap gap-1.5">
+            {advantages.map((advantage, idx) => (
+              <span key={idx} className="px-2.5 py-1 bg-slate-50 text-slate-600 rounded-lg text-[8px] md:text-[9px] font-bold uppercase tracking-wider border border-slate-100">
+                {advantage}
+              </span>
+            ))}
           </div>
         </div>
       </div>
@@ -2740,13 +2722,14 @@ return (
           </div>
         </div>
 
-        {/* CBC Pathways Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        {/* CBC Pathways — Numbered Timeline Layout */}
+        <div className="space-y-4 mb-8">
           {[
             {
               pathway: 'STEM Pathway',
               icon: IoFlaskOutline,
               color: 'from-blue-500 to-cyan-500',
+              accent: 'blue',
               description: 'Science, Technology, Engineering & Mathematics',
               subjects: ['Mathematics', 'Integrated Science', 'Computer Science', 'Pre-Technical Studies', 'Health Education'],
               careers: 'Engineers, Doctors, Data Scientists, Researchers'
@@ -2755,6 +2738,7 @@ return (
               pathway: 'Arts & Sports Pathway',
               icon: IoAccessibilityOutline,
               color: 'from-purple-500 to-pink-500',
+              accent: 'purple',
               description: 'Creative Arts, Performing Arts & Athletic Excellence',
               subjects: ['Visual Arts', 'Performing Arts', 'Physical Education', 'Music', 'Creative Design'],
               careers: 'Athletes, Artists, Musicians, Designers, Coaches'
@@ -2763,38 +2747,47 @@ return (
               pathway: 'Social Sciences Pathway',
               icon: IoNewspaperOutline,
               color: 'from-amber-500 to-orange-500',
+              accent: 'amber',
               description: 'Humanities, Languages & Civic Education',
               subjects: ['Social Studies', 'Religious Education', 'Business Studies', 'Languages', 'Life Skills'],
               careers: 'Lawyers, Diplomats, Journalists, Teachers, Counselors'
             }
           ].map((path, idx) => {
             const PathIcon = path.icon;
+            const isDark = idx === 1;
             return (
-              <div key={idx} className="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${path.color} flex items-center justify-center text-white shadow-sm`}>
-                    <PathIcon className="text-lg" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 text-sm">{path.pathway}</h4>
-                    <p className="text-[10px] text-slate-400 font-medium">{path.description}</p>
-                  </div>
+              <div key={idx} className={`flex flex-col md:flex-row rounded-2xl overflow-hidden border transition-shadow hover:shadow-md ${
+                isDark ? 'bg-slate-900 border-slate-700/50' : 'bg-white border-slate-200'
+              }`}>
+                {/* Left number strip */}
+                <div className={`flex md:flex-col items-center justify-center gap-2 px-4 py-3 md:px-5 md:py-0 md:min-w-[60px] bg-gradient-to-b ${path.color}`}>
+                  <span className="text-2xl md:text-3xl font-black text-white/90">0{idx + 1}</span>
                 </div>
                 
-                <div className="mb-4">
-                  <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-2">Key Subjects</p>
+                {/* Content */}
+                <div className="flex-1 p-5 md:p-6 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <PathIcon className={`text-lg ${isDark ? 'text-white' : 'text-slate-700'}`} />
+                    <div>
+                      <h4 className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{path.pathway}</h4>
+                      <p className={`text-[10px] font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{path.description}</p>
+                    </div>
+                  </div>
+                  
                   <div className="flex flex-wrap gap-1.5">
                     {path.subjects.map((subj, i) => (
-                      <span key={i} className="px-2 py-1 bg-slate-50 text-slate-700 rounded-md text-[10px] font-medium border border-slate-100">
+                      <span key={i} className={`px-2 py-1 rounded-md text-[10px] font-medium border ${
+                        isDark ? 'bg-white/5 text-slate-300 border-white/10' : 'bg-slate-50 text-slate-700 border-slate-100'
+                      }`}>
                         {subj}
                       </span>
                     ))}
                   </div>
-                </div>
-                
-                <div className="pt-3 border-t border-slate-100">
-                  <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Career Outcomes</p>
-                  <p className="text-xs text-slate-600 font-medium leading-relaxed">{path.careers}</p>
+                  
+                  <div className={`pt-3 border-t ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
+                    <p className={`text-[9px] font-bold uppercase tracking-wider mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Career Outcomes</p>
+                    <p className={`text-xs font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{path.careers}</p>
+                  </div>
                 </div>
               </div>
             );
@@ -3220,13 +3213,13 @@ return (
                            tracking-wide flex items-center justify-center gap-2 
                            active:scale-95 transition-all shadow-lg shadow-teal-500/20"
               >
-                Contact Admissions Office
+                Contact Admissions 
                 <FiArrowRight size={14} />
               </button>
             </div>
 
             <p className="mt-4 md:mt-6 text-[10px] uppercase tracking-widest text-slate-500 font-bold opacity-60">
-              Application takes ~5 minutes
+              Application takes few minutes
             </p>
           </div>
         </div>
