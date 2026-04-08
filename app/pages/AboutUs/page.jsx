@@ -147,7 +147,7 @@ export default function AboutPage() {
             {/* IMAGE SIDE */}
             <div className="lg:col-span-6 relative group order-1 lg:order-1">
               <div className="relative">
-                <div className="relative z-10 aspect-[4/5] sm:aspect-video lg:aspect-[4/5] overflow-hidden rounded-[3rem] border-[16px] border-white shadow-2xl transition-transform duration-700 group-hover:-translate-y-2">
+                <div className="relative z-10 aspect-[4/5] sm:aspect-video lg:aspect-[4/5] overflow-hidden rounded-lg border-[16px] border-white shadow-2xl transition-transform duration-700 group-hover:-translate-y-2">
                   <Image
                     src="/hero/kin2.jpeg"
                     alt="School Vision"
@@ -158,12 +158,12 @@ export default function AboutPage() {
                 </div>
 
                 {/* Floating Glass Card */}
-                <div className="absolute -bottom-6 -right-6 lg:right-12 z-20 bg-white/80 backdrop-blur-xl p-6 rounded-[2rem] border border-white shadow-2xl max-w-[240px]">
+                <div className="absolute -bottom-6 -right-6 lg:right-12 z-20 bg-white/80 backdrop-blur-xl p-6 rounded-lg border border-white shadow-2xl max-w-[240px]">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center shadow-lg shadow-amber-500/40">
                       <Compass className="text-white w-5 h-5" />
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">Our Compass</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">Our School</span>
                   </div>
                   <p className="text-slate-800 font-bold text-xs sm:text-sm leading-tight">
                     Directing every student toward global competence and local integrity.
@@ -187,7 +187,7 @@ export default function AboutPage() {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">Enriching Lives.</span>
                 </h3>
                 
-                <p className="text-sm sm:text-base text-slate-700 font-medium leading-relaxed max-w-xl">
+                <p className="text-sm sm:text-base text-slate-700  leading-relaxed max-w-xl">
                   Our vision is to bridge traditional values with 21st-century requirements, ensuring every Kinyui boy graduates as a balanced leader ready for the global stage.
                 </p>
               </div>
@@ -251,7 +251,7 @@ export default function AboutPage() {
             <div className="lg:col-span-7 flex flex-col gap-6">
               
               {/* Vision Card */}
-              <div className="group bg-slate-50 p-8 md:p-12 rounded-[2.5rem] border border-slate-200 transition-all hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50">
+              <div className="group bg-slate-50 p-8 md:p-12 rounded-lg border border-slate-200 transition-all hover:bg-white hover:shadow-lg hover:shadow-slate-200/50">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-200 flex items-center justify-center text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-all">
                     <Eye size={24} strokeWidth={2.5} />
@@ -264,7 +264,7 @@ export default function AboutPage() {
               </div>
 
               {/* Mission Card */}
-              <div className="group bg-slate-50 p-8 md:p-12 rounded-[2.5rem] border border-slate-200 transition-all hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50">
+              <div className="group bg-slate-50 p-8 md:p-12 rounded-lg border border-slate-200 transition-all hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-200 flex items-center justify-center text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
                     <Target size={24} strokeWidth={2.5} />
@@ -409,7 +409,7 @@ export default function AboutPage() {
             <div className="lg:col-span-7 space-y-8">
               
               {/* Main Info Card */}
-              <div className="bg-white rounded-[2.5rem] p-8 md:p-12 border border-slate-200 shadow-sm transition-all hover:shadow-md">
+              <div className="bg-white rounded-lg p-8 md:p-12 border border-slate-200 shadow-sm transition-all hover:shadow-md">
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-2 h-8 bg-amber-500 rounded-full" />
                   <h3 className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight">
