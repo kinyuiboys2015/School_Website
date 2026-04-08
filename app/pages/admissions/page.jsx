@@ -2196,7 +2196,7 @@ export default function ComprehensiveAdmissions() {
         {/* Action Row */}
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-[9px] md:text-[10px] font-bold px-3 py-1.5 rounded-full bg-teal-500/15 text-teal-500 border border-teal-500/20 uppercase">
-            {schoolData?.academicYear || getFullYear()} Session
+            {schoolData?.academicYear || new Date().getFullYear()} Session
           </span>
           <button
             onClick={refreshData}
