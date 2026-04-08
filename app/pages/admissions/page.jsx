@@ -2607,7 +2607,8 @@ return (
   data: schoolData?.subjects,
   iconColor: "text-blue-600",
   bgColor: "bg-blue-50"
-}{
+},
+{
   title: "Departments",
   desc: "Our school is structured into distinct departments, each responsible for specific academic and administrative functions. These departments work together to provide a holistic educational experience, ensure smooth operations, and support the growth and development of both students and staff. They cover areas from curriculum planning and classroom instruction to student services, administration, and extracurricular programs, making sure every aspect of school life is efficiently managed and aligned with our educational goals.",
   count: schoolData?.departments?.length,
