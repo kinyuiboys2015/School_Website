@@ -466,10 +466,10 @@ const CareerSearchPage = () => {
         
         {/* Header Section */}
         <div className="mb-8 text-center">
-          <h1 className="text-xl md:text-3xl font-black text-slate-900 uppercase tracking-tighter leading-none mb-3">
-            Career <span className="text-blue-600">Explorer</span>
+          <h1 className="text-xl md:text-3xl font-extrabold text-slate-900 uppercase tracking-tighter leading-none mb-3">
+            Career <span className="text-[#1a1a2e]">Explorer</span>
           </h1>
-          <p className="text-slate-500 font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-6">
+          <p className="text-slate-500 font-semibold text-xs md:text-sm uppercase tracking-[0.2em] mb-6">
             Browse careers by high school department
           </p>
 
@@ -569,7 +569,7 @@ const CareerSearchPage = () => {
                           }`} />
                         </div>
                         <div className="text-left">
-                          <h3 className="text-lg font-black text-slate-900 tracking-tight">
+                          <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">
                             {dept.department}
                           </h3>
                           <p className="text-slate-500 text-xs font-medium">
@@ -827,7 +827,7 @@ const ModernEducationSystemCard = ({ system, icon: Icon, color, description, fea
           <h4 className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-4 ml-1">Academic Path</h4>
           <div className="grid grid-cols-3 gap-2 md:gap-4 mb-8 md:mb-10">
             {structure.map((stage, idx) => (
-              <div key={idx} className="relative overflow-hidden p-3 md:p-5 rounded-2xl md:rounded-[1.5rem] bg-[#0F172A] border border-slate-800 transition-transform hover:-translate-y-1">
+              <div key={idx} className="relative overflow-hidden p-3 md:p-5 rounded-2xl md:rounded-[1.5rem] bg-[#1a1a2e] border border-slate-800 transition-transform hover:-translate-y-1">
                 <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${color}`} />
                 <div className="font-black text-white text-xl md:text-3xl leading-none tabular-nums">
                   {stage.years}
@@ -956,29 +956,10 @@ const AdmissionPathCard = ({ path, onApply, index }) => {
               </div>
             </div>
             
-            {/* Price/Fee Tag (Optional addition) */}
-            <span className="text-[9px] font-black text-blue-600 bg-blue-50 px-2 py-1 rounded-md uppercase">
-              Apply Today
+            <span className="text-[9px] font-black text-[#1a1a2e] bg-blue-50 px-2 py-1 rounded-md uppercase">
+              {path.deadline === 'Rolling Admission' ? 'Open Enrollment' : 'Limited Entry'}
             </span>
           </div>
-          
-          <button
-            onClick={onApply}
-            className={`
-              w-full md:w-max flex items-center justify-center gap-3 
-              px-8 py-4 md:px-10 md:py-5
-              bg-gradient-to-r ${path.color} 
-              text-white rounded-xl md:rounded-2xl 
-              shadow-xl md:shadow-2xl
-              font-black text-[10px] md:text-[11px] 
-              uppercase tracking-[0.2em]
-              transition-transform duration-300
-              md:active:scale-95
-              md:hover:brightness-110
-            `}
-          >
-            Apply now
-          </button>
         </div>
       </div>
     </div>
@@ -1046,52 +1027,29 @@ const StatCard = ({ stat }) => {
   const StatIcon = stat.icon;
 
   return (
-    <div className="group relative overflow-hidden rounded-xl md:rounded-[24px] bg-white p-1 transition-all duration-500">
-      {/* Outer Border Glow - Only visible on hover */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 transition-opacity duration-500`} />
-      
-      {/* Inner Card Content */}
-      <div className="relative h-full w-full rounded-lg md:rounded-[22px] bg-white p-4 md:p-6">
-        <div className="flex flex-col h-full justify-between gap-4 md:gap-6">
-          
-          <div className="flex items-center justify-between">
-            {/* Minimalist Glass Icon */}
-            <div className={`relative flex items-center justify-center h-12 w-12 md:h-14 md:w-14 rounded-xl md:rounded-2xl bg-gradient-to-br ${stat.color} text-white shadow-2xl`}>
-              <StatIcon className="text-xl md:text-2xl transform transition-transform duration-500" />
-              {/* Soft Glow behind icon */}
-              <div className={`absolute inset-0 rounded-xl md:rounded-2xl bg-gradient-to-br ${stat.color} blur-lg opacity-40 transition-opacity`} />
-            </div>
-
-            {/* Micro-Interaction Button */}
-            <div className="h-8 w-8 rounded-full bg-slate-50 flex items-center justify-center">
-               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-               </svg>
-            </div>
+    <div className="relative overflow-hidden rounded-xl bg-white border border-stone-200/60 p-4 md:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-md">
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <div className={`flex items-center justify-center h-10 w-10 md:h-11 md:w-11 rounded-xl bg-gradient-to-br ${stat.color} text-white shadow-sm`}>
+            <StatIcon className="text-lg md:text-xl" />
           </div>
+          <span className="text-[9px] md:text-[10px] font-semibold text-stone-400 uppercase tracking-wider">
+            {stat.sublabel}
+          </span>
+        </div>
 
-          <div>
-            <div className="flex flex-col">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-1">
-                {stat.label}
-              </span>
-              <div className="flex items-baseline gap-2">
-                <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight italic">
-                  {stat.number}
-                </h3>
-              </div>
-            </div>
-            
-            {/* Decorative progress track */}
-            <div className="mt-4 flex items-center gap-3">
-              <div className="h-1.5 flex-1 bg-slate-100 rounded-full overflow-hidden">
-                <div className={`h-full w-2/3 bg-gradient-to-r ${stat.color} rounded-full transform transition-transform duration-700 ease-out`} />
-              </div>
-              <span className="text-[10px] font-bold text-slate-500">
-                {stat.sublabel}
-              </span>
-            </div>
-          </div>
+        <div>
+          <h3 className="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">
+            {stat.number}
+          </h3>
+          <span className="text-xs font-medium text-stone-500 mt-0.5 block">
+            {stat.label}
+          </span>
+        </div>
+        
+        {/* Subtle accent bar */}
+        <div className="h-1 w-full bg-stone-100 rounded-full overflow-hidden">
+          <div className={`h-full w-3/5 bg-gradient-to-r ${stat.color} rounded-full`} />
         </div>
       </div>
     </div>
@@ -1176,7 +1134,7 @@ const ModernFeeCard = ({
       /* Mobile: Full Screen / Desktop: Rounded Card */
       rounded-none md:rounded-[3rem] 
       border-x-0 md:border
-      ${isDark ? 'bg-[#0F172A] border-white/5 text-white' : 'bg-white border-slate-100 text-slate-900'}
+      ${isDark ? 'bg-[#1a1a2e] border-white/5 text-white' : 'bg-white border-slate-100 text-slate-900'}
     `}>
       
       {/* Top Header - Adjusted for Mobile Spacing */}
@@ -1306,7 +1264,7 @@ const VideoTourSection = ({ videoTour, videoType, videoThumbnail }) => {
             </div>
             <div>
               <h3 className="text-xl md:text-3xl font-extrabold tracking-tight">Virtual School Tour</h3>
-              <p className="text-blue-100/90 text-sm md:text-base font-medium mt-1">Experience our School  in immersive detail</p>
+              <p className="text-blue-100/90 text-sm md:text-base font-medium mt-1">Experience our campus in immersive detail</p>
             </div>
           </div>
           
@@ -1506,7 +1464,7 @@ const VisionMissionSection = ({ vision, mission, motto, videoTour, videoType, vi
             
             <div>
               <span className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] block mb-1">
-                The Spirit of Matungulu
+                The Spirit of Kinyui
               </span>
               <h3 className="text-lg md:text-xl font-black text-slate-900 tracking-tight">
                 School Motto
@@ -1521,7 +1479,7 @@ const VisionMissionSection = ({ vision, mission, motto, videoTour, videoType, vi
             <div className="flex items-center justify-end gap-2 mt-2">
               <div className="w-2 h-2 rounded-full bg-emerald-600" />
               <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider">
-                Matungulu Girls High School
+                Kinyui Boys Senior School
               </span>
             </div>
           </div>
@@ -1561,7 +1519,7 @@ const AcademicResultsSection = ({ documentData }) => {
     <div className="bg-white rounded-none md:rounded-[2.5rem] border-x-0 md:border border-slate-100 shadow-2xl overflow-hidden">
       
       {/* Header Section - Edge-to-edge look */}
-      <div className="relative p-6 md:p-12 bg-[#0F172A] text-white">
+      <div className="relative p-6 md:p-12 bg-[#1a1a2e] text-white">
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/20 blur-[80px] md:blur-[100px] rounded-full -mr-32 -mt-32" />
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -2222,81 +2180,79 @@ export default function ComprehensiveAdmissions() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-emerald-50/20 p-4 md:p-6">
+    <div className="min-h-screen bg-[#f8f7f4] p-0 md:p-6">
       <Toaster position="top-right" richColors />
       
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto space-y-5 px-3 md:px-0">
 
         {/* Modernized Admissions Portal Header with MUI Loader */}
-<header className="relative bg-[#0F172A] rounded-2xl md:rounded-[2rem] p-4 sm:p-5 md:p-8 text-white overflow-hidden shadow-2xl border border-white/5 mb-8">
-  {/* Subtle Mesh Accents - Adjusted for mobile position */}
-  <div className="absolute top-[-10%] right-[-5%] w-[180px] md:w-[250px] h-[180px] md:h-[250px] bg-blue-600/20 rounded-full blur-[60px] md:blur-[80px] pointer-events-none" />
+<header className="relative bg-white rounded-none md:rounded-2xl p-5 sm:p-6 md:p-8 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04)] border-b md:border border-stone-200/60 mb-6">
+  {/* Accent line top */}
+  <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500" />
+  
+  {/* School Logo Watermark */}
+  <img src="/seo/kinyui.png" alt="" className="absolute right-4 md:right-8 bottom-4 md:bottom-6 w-14 md:w-20 opacity-[0.04] pointer-events-none select-none" />
   
   <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5 md:gap-6">
     
     {/* Left: Branding & Title */}
-    <div className="flex flex-col gap-2.5 md:gap-3">
-      <div className="flex items-center gap-2.5 sm:gap-3">
-        {/* Adjusted bar height for mobile */}
-        <div className="h-8 md:h-10 w-1 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,99,235,0.5)]" />
-        <div className="flex flex-col min-w-0"> {/* min-w-0 allows truncation/proper flex shrinking */}
-          <h2 className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em] sm:tracking-[0.3em] text-blue-400 leading-tight truncate">
-            {schoolData?.name || 'kinyui boys Senior School School'}
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
+          <IoSchoolOutline className="text-white text-lg md:text-xl" />
+        </div>
+        <div className="flex flex-col min-w-0">
+          <h2 className="text-xs md:text-sm font-bold text-stone-900 leading-tight truncate">
+            {schoolData?.name || 'Kinyui Boys Senior School'}
           </h2>
-          <p className="text-[8px] md:text-[9px] font-bold text-white/40 tracking-[0.1em] sm:tracking-[0.2em] uppercase mt-0.5 sm:mt-1 italic">
-            "Soaring to Excellence "
+          <p className="text-[10px] md:text-xs text-stone-400 font-medium mt-0.5 italic">
+            Soaring to Greater Heights
           </p>
         </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tighter uppercase leading-none">
-          Admissions <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-100 to-blue-400">Portal</span>
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-stone-900 leading-none">
+          Admissions
         </h1>
-        {/* Mobile-friendly session badge */}
-        <span className="text-[8px] md:text-[10px] font-black px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/10 uppercase whitespace-nowrap">
+        <span className="text-[9px] md:text-[10px] font-bold px-2 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 uppercase whitespace-nowrap">
           {schoolData?.academicYear || '2026'} Session
         </span>
       </div>
     </div>
 
-    {/* Right: Modern Compact Action Hub */}
+    {/* Right: Refresh Action */}
     <div className="flex items-center self-start md:self-center">
-      <div className="p-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl">
-        <button
-          onClick={refreshData}
-          disabled={loading}
-          className="flex items-center justify-center gap-2 h-9 md:h-10 px-3 md:px-4 rounded-lg md:rounded-xl
-                     transition-all font-black text-[9px] md:text-[10px] uppercase tracking-widest
-                     bg-white/5 hover:bg-white/10 text-white
-                     active:scale-95 disabled:opacity-50"
-        >
-          {loading ? (
+      <button
+        onClick={refreshData}
+        disabled={loading}
+        className="flex items-center justify-center gap-2 h-9 md:h-10 px-4 rounded-lg
+                   transition-all font-semibold text-xs
+                   bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200
+                   active:scale-95 disabled:opacity-50"
+      >
+        {loading ? (
           <>
-  <CircularProgress 
-    size={12} 
-    thickness={6} 
-    sx={{ color: '#ffffff' }} // Pure White
-  />
-  <span className="text-white font-black uppercase tracking-widest text-[10px]">
-    Refreshing...
-  </span>
-</>
-          ) : (
-            <>
-              <FiRefreshCw className={`text-xs md:text-base   text-white ${loading ? 'animate-spin' : ''}`} />
-              {/* Show text on small screens too, but smaller */}
-              <span className="inline text-white" >Refresh Info</span>
-            </>
-          )}
-        </button>
-      </div>
+            <CircularProgress 
+              size={12} 
+              thickness={6} 
+              sx={{ color: '#78716c' }}
+            />
+            <span>Refreshing...</span>
+          </>
+        ) : (
+          <>
+            <FiRefreshCw className={`text-sm ${loading ? 'animate-spin' : ''}`} />
+            <span>Refresh</span>
+          </>
+        )}
+      </button>
     </div>
   </div>
 </header>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
           {dynamicStats.map((stat, index) => (
             <StatCard key={index} stat={stat} />
           ))}
@@ -2310,60 +2266,58 @@ export default function ComprehensiveAdmissions() {
   const isOpen = today >= openDate && today <= closeDate;
 
 return (
-  <div className={`rounded-2xl p-5 md:p-8 shadow-2xl border-2 transition-all duration-500 ${
+  <div className={`rounded-xl md:rounded-2xl p-5 md:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border transition-all duration-500 ${
     isOpen 
-      ? 'bg-gradient-to-br from-emerald-600 to-teal-800 border-emerald-400/20' 
-      : 'bg-gradient-to-br from-slate-800 to-slate-950 border-slate-700'
+      ? 'bg-white border-emerald-200' 
+      : 'bg-stone-50 border-stone-200'
   }`}>
-    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
       
       {/* Status Section */}
       <div className="flex items-start sm:items-center gap-4">
-        <div className={`p-3 md:p-4 rounded-2xl backdrop-blur-md border shadow-inner shrink-0 ${
-          isOpen ? 'bg-white/20 border-white/30' : 'bg-slate-800 border-slate-700'
+        <div className={`p-3 rounded-xl shrink-0 ${
+          isOpen ? 'bg-emerald-50 border border-emerald-200' : 'bg-stone-100 border border-stone-200'
         }`}>
-          <IoCalendarOutline className={`w-6 h-6 md:w-7 md:h-7 ${isOpen ? 'text-white' : 'text-slate-500'}`} />
+          <IoCalendarOutline className={`w-5 h-5 md:w-6 md:h-6 ${isOpen ? 'text-emerald-600' : 'text-stone-400'}`} />
         </div>
         <div className="min-w-0">
-          <h3 className="font-black text-lg md:text-2xl text-white tracking-tighter uppercase leading-tight">
-            {isOpen ? 'Admissions Now Open' : 'Admissions Currently Closed'}
+          <div className="flex items-center gap-2 mb-1">
+            <div className={`w-2 h-2 rounded-full ${isOpen ? 'bg-emerald-500 animate-pulse' : 'bg-stone-300'}`} />
+            <span className={`text-[10px] font-bold uppercase tracking-wider ${isOpen ? 'text-emerald-600' : 'text-stone-400'}`}>
+              {isOpen ? 'Open' : 'Closed'}
+            </span>
+          </div>
+          <h3 className="font-bold text-base md:text-lg text-stone-900 leading-tight">
+            {isOpen ? 'Admissions Now Open' : 'Admissions Closed'}
           </h3>
-          <p className={`text-[11px] md:text-sm font-bold leading-snug mt-1 ${isOpen ? 'text-emerald-100' : 'text-slate-400'}`}>
+          <p className="text-xs text-stone-500 mt-0.5">
             {isOpen 
-              ? 'Join kinyui boys Senior School for the upcoming academic year.' 
-              : 'The application window has officially ended for this period.'}
+              ? 'Applications are being accepted for the upcoming academic year.' 
+              : 'The application window has ended for this period.'}
           </p>
         </div>
       </div>
 
-      {/* Dynamic Date Grid - Optimized for Mobile */}
-      <div className="grid grid-cols-2 gap-0 py-3 px-2 sm:px-6 sm:py-4 bg-black/20 rounded-2xl border border-white/5">
-        <div className="px-4 border-r border-white/10">
-          <p className={`text-[9px] font-black uppercase tracking-wider mb-1 ${isOpen ? 'text-emerald-300' : 'text-slate-500'}`}>
-            Open Date
-          </p>
-          <p className="font-black text-sm md:text-lg text-white tabular-nums">
-            {formatDate(schoolData.admissionOpenDate)}
-          </p>
+      {/* Date Grid */}
+      <div className="grid grid-cols-2 gap-3 p-3 bg-stone-50 rounded-xl border border-stone-100">
+        <div className="px-3 border-r border-stone-200">
+          <p className="text-[9px] font-semibold uppercase tracking-wider text-stone-400 mb-0.5">Opens</p>
+          <p className="font-bold text-sm text-stone-900">{formatDate(schoolData.admissionOpenDate)}</p>
         </div>
-        <div className="px-4">
-          <p className={`text-[9px] font-black uppercase tracking-wider mb-1 ${isOpen ? 'text-emerald-300' : 'text-slate-500'}`}>
-            Final Deadline
-          </p>
-          <p className="font-black text-sm md:text-lg text-white tabular-nums">
-            {formatDate(schoolData.admissionCloseDate)}
-          </p>
+        <div className="px-3">
+          <p className="text-[9px] font-semibold uppercase tracking-wider text-stone-400 mb-0.5">Deadline</p>
+          <p className="font-bold text-sm text-stone-900">{formatDate(schoolData.admissionCloseDate)}</p>
         </div>
       </div>
 
-      {/* Interactive Action Button - Full width on mobile */}
+      {/* Action Button - Only strategic Apply Now */}
       <button
         disabled={!isOpen}
         onClick={() => router.push('/pages/apply-for-admissions')}
-        className={`w-full lg:w-auto px-8 py-4 rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-xl transition-all active:scale-95 ${
+        className={`w-full lg:w-auto px-7 py-3 rounded-xl font-bold text-sm shadow-sm transition-all active:scale-95 ${
           isOpen 
-            ? 'bg-white text-emerald-800 hover:bg-emerald-50 hover:shadow-emerald-500/20' 
-            : 'bg-slate-800/50 text-slate-500 cursor-not-allowed border border-slate-700'
+            ? 'bg-stone-900 text-white hover:bg-stone-800' 
+            : 'bg-stone-100 text-stone-400 cursor-not-allowed border border-stone-200'
         }`}
       >
         {isOpen ? 'Apply Now' : 'Closed'}
@@ -2373,23 +2327,23 @@ return (
 );
 })()}
 
-        {/* Navigation Tabs - Modernized */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200/70 overflow-hidden mb-6">
-          <div className="flex overflow-x-auto scrollbar-hide">
+        {/* Navigation Tabs - Segment Style */}
+        <div className="bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-stone-200/60 overflow-hidden mb-5">
+          <div className="flex overflow-x-auto scrollbar-hide p-1.5">
             {tabs.map((tab) => {
               const TabIcon = tab.icon;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-3 px-4 py-3 md:px-6 md:py-4 font-semibold transition-all whitespace-nowrap border-b-2 ${
+                  className={`flex items-center gap-2 px-4 py-2.5 md:px-5 md:py-3 font-semibold transition-all whitespace-nowrap rounded-lg text-sm ${
                     activeTab === tab.id
-                      ? 'border-blue-500 text-blue-600 bg-blue-50/50'
-                      : 'border-transparent text-gray-600'
+                      ? 'bg-stone-900 text-white shadow-sm'
+                      : 'text-stone-500 hover:text-stone-700 hover:bg-stone-50'
                   }`}
                 >
-                  <TabIcon className="text-lg" />
-                  <span className="text-sm md:text-base">{tab.label}</span>
+                  <TabIcon className="text-base" />
+                  <span className="text-xs md:text-sm">{tab.label}</span>
                 </button>
               );
             })}
@@ -2397,30 +2351,27 @@ return (
         </div>
 
         {/* Tab Content */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200/70 p-4 md:p-5">
+        <div className="bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-stone-200/60 p-4 md:p-6">
     {activeTab === 'overview' && (
   <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 space-y-10 md:space-y-24">
     
     {/* 1. Hero / Introduction Section */}
     <div className="relative pt-4 pb-2 text-center px-4">
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 mb-4 md:mb-6">
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-        </span>
-        <span className="text-[9px] md:text-[10px] font-black uppercase tracking-wider text-blue-700">
-          Admissions Open {new Date().getFullYear()}
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 mb-4 md:mb-6">
+        <FiBookOpen className="text-amber-600 text-xs" />
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-700">
+          Admissions {new Date().getFullYear()}
         </span>
       </div>
       
-      <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 mb-3 tracking-tight leading-[1.1] text-balance">
+      <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-stone-900 mb-3 tracking-tight leading-[1.15] text-balance">
         Welcome to{" "}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
           {schoolData?.name || "Our School"}
         </span>
       </h2>
       
-      <p className="text-slate-500  mx-auto text-xs sm:text-base md:text-md leading-relaxed px-2 text-balance">
+      <p className="text-stone-500 mx-auto text-sm sm:text-base md:text-lg leading-relaxed px-2 text-balance max-w-2xl">
         {schoolData?.description || "We are committed to nurturing well-rounded learners through quality education and strong values."}
       </p>
     </div>
@@ -2436,27 +2387,24 @@ return (
 
     {/* 3. Admission Paths - Mobile Optimized Grid */}
 {/* 3. Admission Paths - Full Bleed on Mobile */}
-<section className="relative overflow-hidden py-12 md:py-20 bg-slate-50 rounded-none md:rounded-[40px] md:mx-4 px-0 md:px-8">
-  <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-64 h-64 bg-blue-200/20 blur-3xl rounded-full" />
+<section className="relative overflow-hidden py-12 md:py-16 bg-stone-50 rounded-none md:rounded-3xl md:mx-4 px-0 md:px-8">
+  <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-64 h-64 bg-amber-200/20 blur-3xl rounded-full" />
   
   <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-0">
-    <div className="mb-10 text-center md:text-left">
-      <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100/50 rounded-full mb-4">
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
-        <span className="text-[10px] font-black uppercase tracking-widest text-blue-700">Admissions {new Date().getFullYear()}</span>
+    <div className="mb-8 text-center md:text-left">
+      <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full mb-3">
+        <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-700">Admissions {new Date().getFullYear()}</span>
       </div>
-      <h3 className="text-xl md:text-3xl font-black text-slate-900 tracking-tighter mb-4 leading-none">
-        Your <span className="text-blue-600">Future</span> Starts Here
+      <h3 className="text-xl md:text-2xl font-extrabold text-stone-900 tracking-tight mb-3 leading-tight">
+        Your Path Forward
       </h3>
-      {/* Added additional line of description below */}
-      <p className="text-slate-500 text-sm md:text-md max-w-2xl mx-auto md:mx-0 font-medium leading-relaxed">
-        Select the enrollment track that matches your goals. <br className="hidden md:block" />
-        Join a community dedicated to academic excellence and character development.
+      <p className="text-stone-500 text-sm md:text-base max-w-2xl mx-auto md:mx-0 font-medium leading-relaxed">
+        Select the enrollment track that matches your goals.
       </p>
     </div>
 
-    {/* Grid: 0 gap on mobile for the full-bleed cards to stack perfectly */}
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
       {admissionPaths.map((path, index) => (
         <AdmissionPathCard
           key={path.title}
@@ -2468,27 +2416,27 @@ return (
     </div>
   </div>
 </section>
-{/* 4. Bento Grid - Refined for Small Screens */}
-<div className="py-10 md:py-16 px-0 md:px-6 max-w-4xl mx-auto">
-  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 pb-6 border-b-2 border-slate-100 px-4 md:px-0">
+{/* 4. Bento Grid - School Profile */}
+<div className="py-10 md:py-14 px-0 md:px-6 max-w-4xl mx-auto">
+  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 pb-5 border-b border-stone-200 px-4 md:px-0">
     <div className="flex-1">
-      <div className="inline-flex items-center gap-2 px-2 py-1 bg-slate-100 rounded-md mb-3 border border-slate-200">
-        <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
-        <span className="text-[9px] font-black uppercase tracking-widest text-slate-600">SChool Profile</span>
+      <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-stone-100 rounded-full mb-3 border border-stone-200">
+        <div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
+        <span className="text-[9px] font-semibold uppercase tracking-wider text-stone-600">School Profile</span>
       </div>
-      <h2 className="text-xl md:text-3xl font-black text-slate-900 tracking-tighter leading-[1.1]">
-        Why <span className="text-blue-600 whitespace-nowrap">kinyui boys Senior School?</span>
+      <h2 className="text-xl md:text-2xl font-extrabold text-stone-900 tracking-tight leading-tight">
+        Why Kinyui Boys?
       </h2>
     </div>
     
     <div className="flex flex-wrap items-center gap-3 mt-2">
-      <div className="flex items-center gap-1 text-[10px] text-slate-500 font-black uppercase">
-        <FiAward className="text-blue-600" />
-        <span>KICD APPROVED</span>
+      <div className="flex items-center gap-1.5 text-[10px] text-stone-500 font-semibold">
+        <FiAward className="text-amber-500" />
+        <span>KICD Approved</span>
       </div>
-      <div className="flex items-center gap-1 text-[10px] text-slate-500 font-black uppercase">
-        <FiUsers className="text-blue-600" />
-        <span>COMMUNITY</span>
+      <div className="flex items-center gap-1.5 text-[10px] text-stone-500 font-semibold">
+        <FiUsers className="text-amber-500" />
+        <span>Community</span>
       </div>
     </div>
   </div>
@@ -2496,14 +2444,14 @@ return (
 <div className="grid grid-cols-1 md:grid-cols-12 auto-rows-min gap-4">
     
     {/* Academic Card */}
-    <div className="md:col-span-7 relative rounded-xl md:rounded-3xl bg-slate-50 border-b md:border-2 border-slate-200 p-5 md:p-6">
+    <div className="md:col-span-7 relative rounded-xl bg-stone-50 border border-stone-200 p-5 md:p-6">
       <div className="flex flex-col h-full gap-3">
-        <div className="w-9 h-9 bg-white text-blue-600 rounded-lg flex items-center justify-center shadow-sm border border-slate-200 shrink-0">
+        <div className="w-9 h-9 bg-white text-amber-600 rounded-lg flex items-center justify-center shadow-sm border border-stone-200 shrink-0">
           <IoBulbOutline size={18} />
         </div>
         <div>
-          <h4 className="text-base md:text-lg font-black text-slate-900 mb-1 uppercase tracking-tight">Academic Achievement</h4>
-          <p className="text-slate-600 text-[12px] md:text-[13px] font-bold协议 leading-snug">
+          <h4 className="text-base md:text-lg font-bold text-stone-900 mb-1.5">Academic Achievement</h4>
+          <p className="text-stone-600 text-[12px] md:text-sm leading-relaxed">
             We maintain a track record of academic excellence, consistently producing top-tier KCSE results. Our specialized focus on STEM subjects equips students with technical skills for the modern economy.
           </p>
         </div>
@@ -2511,14 +2459,14 @@ return (
     </div>
 
     {/* Faculty Card */}
-    <div className="md:col-span-5 relative rounded-xl md:rounded-3xl bg-slate-900 p-5 md:p-6 text-white border-b border-white/5 md:border-none">
+    <div className="md:col-span-5 relative rounded-xl bg-stone-900 p-5 md:p-6 text-white">
       <div className="flex flex-col h-full gap-3">
-        <div className="w-9 h-9 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg flex items-center justify-center shrink-0">
+        <div className="w-9 h-9 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center shrink-0">
           <FiUsers size={18} className="text-white" />
         </div>
         <div>
-          <h4 className="text-base md:text-lg font-black mb-1 uppercase tracking-tight text-blue-400">Expert Educators</h4>
-          <p className="text-slate-300 text-[12px] md:text-[13px] font-bold leading-snug">
+          <h4 className="text-base md:text-lg font-bold mb-1.5 text-amber-400">Expert Educators</h4>
+          <p className="text-stone-300 text-[12px] md:text-sm leading-relaxed">
             Our faculty consists of TSC-certified professionals providing personalized mentorship, ensuring every student discovers their unique potential through innovation.
           </p>
         </div>
@@ -2526,18 +2474,18 @@ return (
     </div>
 
     {/* Infrastructure Card */}
-    <div className="md:col-span-12 relative rounded-xl md:rounded-3xl bg-white border-b md:border-2 border-slate-900 p-5 md:p-8 flex flex-col gap-3">
+    <div className="md:col-span-12 relative rounded-xl bg-white border border-stone-200 p-5 md:p-7 flex flex-col gap-3">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center border border-blue-100 shrink-0">
+        <div className="w-10 h-10 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center border border-amber-100 shrink-0">
           <FiCpu size={20} />
         </div>
-        <h4 className="text-base md:text-xl font-black text-slate-900 uppercase tracking-tighter">Modern Learning Resources</h4>
+        <h4 className="text-base md:text-lg font-bold text-stone-900">Modern Learning Resources</h4>
       </div>
-      <p className="text-slate-600 text-[12px] md:text-[14px] font-bold leading-snug max-w-4xl">
-        Our School  features state-of-the-art science laboratories and advanced computer labs. We provide tech-integrated classrooms and a vast library to foster research and self-reliance.
+      <p className="text-stone-600 text-[12px] md:text-sm leading-relaxed max-w-4xl">
+        Kinyui Boys features state-of-the-art science laboratories and advanced computer labs. We provide tech-integrated classrooms and a vast library to foster research and self-reliance.
       </p>
-      <div className="flex items-center gap-3 mt-1 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-200 self-start">
-        <span className="text-[9px] font-black text-slate-900 uppercase tracking-widest">
+      <div className="flex items-center gap-3 mt-1 px-3 py-1.5 bg-stone-50 rounded-lg border border-stone-200 self-start">
+        <span className="text-[10px] font-semibold text-stone-700">
           10k+ Global Alumni Network
         </span>
       </div>
@@ -2554,18 +2502,15 @@ return (
     <div className="relative pt-2">
       <div className="relative flex flex-col lg:flex-row lg:items-end justify-between gap-6 md:gap-8 border-b border-slate-100 pb-8 md:pb-12 px-2">
         <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-600 rounded-full mb-4 md:mb-6">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-100 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span>
-            </span>
-            <span className="text-[9px] md:text-[10px] text-white font-black uppercase tracking-[0.2em]">Academic Excellence</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-600 rounded-lg mb-4 md:mb-6">
+            <FiBookOpen className="text-indigo-200 text-xs" />
+            <span className="text-[9px] md:text-[10px] text-white font-extrabold uppercase tracking-[0.2em]">Academic Excellence</span>
           </div>
-          <h2 className="text-xl md:text-3xl font-black text-slate-900 tracking-tighter leading-[1.1] mb-4">
-            Academic <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">Programs</span>
+          <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tighter leading-[1.1] mb-4">
+            Academic <span className="text-indigo-600">Programs</span>
           </h2>
        <p className="text-slate-600 text-md md:text-lg font-medium leading-relaxed ">
-  kinyui boys Senior School offers a future-ready, holistic curriculum 
+  Kinyui Boys Senior School offers a future-ready, holistic curriculum 
   specifically designed to cultivate critical thinking, academic excellence, 
   and global leadership. We empower our students to navigate the complexities 
   of the modern world with integrity, innovation, and a commitment to excellence.
@@ -2578,7 +2523,7 @@ return (
             href={documentData.curriculumPDF}
             download={documentData.curriculumPdfName}
             target="_blank"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-4 px-6 py-4 bg-slate-900 text-white rounded-2xl active:scale-95 transition-all shadow-xl"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-4 px-6 py-4 bg-[#1a1a2e] text-white rounded-2xl active:scale-95 transition-all shadow-xl"
           >
             <FiDownload className="text-xl text-blue-400" />
             <div className="text-left">
@@ -2643,14 +2588,14 @@ return (
 
 {/* Section 5: Stats & Calendar - Refined Responsive Dates */}
 {schoolData?.openDate && (
-  <div className="relative overflow-hidden bg-slate-900 md:rounded-[3rem] p-8 md:p-16 w-full">
+  <div className="relative overflow-hidden bg-[#1a1a2e] md:rounded-[3rem] p-8 md:p-16 w-full">
     {/* Decorative Glow */}
     <div className="absolute top-0 right-0 w-48 md:w-96 h-48 md:h-96 bg-blue-500/10 blur-[60px] md:blur-[100px] rounded-full -mr-24 -mt-24" />
     
     <div className="relative z-10 flex flex-col lg:flex-row justify-between items-center gap-8 md:gap-12">
       <div className="text-center lg:text-left max-w-sm">
         <h3 className="text-white text-lg md:text-xl font-black tracking-tight mb-3 uppercase">
-          Academic <span className="text-blue-500">Calendar</span>
+          Academic <span className="text-emerald-500">Calendar</span>
         </h3>
         <p className="text-slate-400 text-xs md:text-md font-medium leading-relaxed">
           Mark your journey. Stay ahead of the curve with our key enrollment dates.
@@ -2707,15 +2652,12 @@ return (
   <div className="space-y-10 md:space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
     {/* Hero Section */}
     <div className="text-center px-4">
-      <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 border border-blue-100 rounded-full mb-6">
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-        </span>
-        <span className="text-[10px] font-bold uppercase tracking-wider text-blue-700">Career Readiness</span>
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-lg mb-6">
+        <FiBriefcase className="text-amber-600 text-xs" />
+        <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-700">Career Readiness</span>
       </div>
-      <h2 className="text-xl md:text-3xl font-black text-slate-900 tracking-tight mb-4 leading-tight">
-        Future <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">Pathways</span>
+      <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">
+        Future <span className="text-amber-600">Pathways</span>
       </h2>
       <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
         Strategic academic planning for diverse career trajectories. Our curriculum integrates industry-relevant skills with traditional excellence.
@@ -2723,18 +2665,18 @@ return (
     </div>
 
     {/* Career Guidance Banner - Full Width on Mobile */}
-    <div className="relative overflow-hidden bg-slate-900 md:rounded-[2.5rem] p-8 md:p-12 text-white w-full">
-      <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-blue-500/20 blur-[60px] md:blur-[100px] rounded-full -mr-32 -mt-32" />
+    <div className="relative overflow-hidden bg-gradient-to-br from-amber-900 to-amber-950 md:rounded-[2.5rem] p-8 md:p-12 text-white w-full">
+      <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-amber-500/15 blur-[60px] md:blur-[100px] rounded-full -mr-32 -mt-32" />
       
       <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
         <div className="max-w-2xl">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl flex items-center justify-center">
-              <FiTarget className="text-blue-300 text-xl" />
+            <div className="w-12 h-12 bg-amber-500/20 backdrop-blur-md border border-amber-400/20 rounded-2xl flex items-center justify-center">
+              <FiTarget className="text-amber-300 text-xl" />
             </div>
-            <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight">Professional Development</h3>
+            <h3 className="text-xl md:text-2xl font-extrabold uppercase tracking-tight">Professional Development</h3>
           </div>
-          <p className="text-slate-300 text-sm md:text-base leading-relaxed font-medium">
+          <p className="text-amber-100/70 text-sm md:text-base leading-relaxed font-medium">
             Personalized career mapping, university placement strategy, and industry immersion experiences. 
             We bridge academic learning with professional reality.
           </p>
@@ -2787,15 +2729,12 @@ return (
               
               {/* Hero Header */}
               <div className="text-center mb-8 md:mb-12 px-2 md:px-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-full mb-6">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-                  </span>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-blue-700">Admission Checklist</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-50 border border-teal-200 rounded-lg mb-6">
+                  <FiFileText className="text-teal-600 text-xs" />
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-teal-700">Admission Checklist</span>
                 </div>
-                <h2 className="text-lg sm:text-xl md:text-3xl font-black text-slate-900 tracking-tight mb-4 px-2">
-                  Application <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">Requirements</span>
+                <h2 className="text-lg sm:text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-4 px-2">
+                  Application <span className="text-teal-600">Requirements</span>
                 </h2>
                 <p className="text-slate-500 text-base md:text-lg max-w-3xl mx-auto leading-relaxed px-2">
                   Everything you need to prepare for a successful application journey.
@@ -2882,7 +2821,7 @@ return (
 </div>
 
       {/* Important Notes - Full-Screen Mobile Strategy */}
-      <div className="mt-8 md:mt-12 p-6 md:p-12 bg-slate-900 rounded-none md:rounded-[2.5rem] relative overflow-hidden border-y border-white/5 md:border shadow-2xl">
+      <div className="mt-8 md:mt-12 p-6 md:p-12 bg-[#1a1a2e] rounded-none md:rounded-[2.5rem] relative overflow-hidden border-y border-white/5 md:border shadow-2xl">
         <div className="absolute top-0 right-0 w-48 md:w-64 h-48 md:h-64 bg-amber-500/10 blur-[60px] md:blur-[80px] rounded-full -mr-24 -mt-24 md:-mr-32 md:-mt-32"></div>
         
         <div className="relative z-10">
@@ -2919,7 +2858,7 @@ return (
     </div>
 
 {/* Transfer Process - Modern Timeline Optimized for All Screens */}
-<div className="bg-slate-900 rounded-none md:rounded-[3rem] p-6 md:p-12 text-white relative overflow-hidden">
+<div className="bg-[#1a1a2e] rounded-none md:rounded-[3rem] p-6 md:p-12 text-white relative overflow-hidden">
   {/* Decorative Background Glow */}
   <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-full -mr-32 -mt-32 invisible md:visible" />
 
@@ -3007,38 +2946,10 @@ return (
             <p className="text-slate-400 text-sm font-medium">Complete all steps for official admission approval</p>
           </div>
         </div>
-        
-  <button 
-  onClick={() => router.push('/pages/apply-for-admissions')}
-  className={`
-    /* Basic Layout */
-    flex items-center justify-center
-    w-full md:w-max md:min-w-[220px]
-    px-8 py-4 md:px-10 md:py-5 
-    
-    /* Colors & Typography */
-    bg-white text-slate-900 
-    rounded-xl md:rounded-2xl 
-    font-black uppercase 
-    tracking-[0.15em] md:tracking-widest 
-    text-[10px] md:text-[11px] 
-    
-  
-    transition-all 
-    md:hover:bg-blue-50
-    md:active:scale-95 
-    
-    /* Depth */
-    shadow-lg md:shadow-2xl shadow-white/10
-  `}
->
-  Start Application
-</button>
       </div>
     </div>
   </div>
 </div>
-
          
             </div>
           )}
@@ -3048,16 +2959,13 @@ return (
     
     {/* Hero Header - Adjusted for Mobile */}
     <div className="text-center mb-6 md:mb-12 pt-4 md:pt-0">
-      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-100 rounded-full mb-4 md:mb-6">
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-        </span>
-        <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-blue-700">Academic Performance</span>
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-violet-50 border border-violet-200 rounded-lg mb-4 md:mb-6">
+        <FiTrendingUp className="text-violet-600 text-xs" />
+        <span className="text-[9px] md:text-[10px] font-extrabold uppercase tracking-widest text-violet-700">Academic Performance</span>
       </div>
       
-      <h2 className="text-xl md:text-3xl font-black text-slate-900 tracking-tighter mb-4 px-4 leading-tight">
-        Examination <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">Results</span>
+      <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tighter mb-4 px-4 leading-tight">
+        Examination <span className="text-violet-600">Results</span>
       </h2>
       
       <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed px-6">
@@ -3097,15 +3005,12 @@ return (
               
               {/* Hero Header */}
               <div className="text-center mb-8 md:mb-10 px-2 md:px-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-full mb-6">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-                  </span>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-blue-700">Quick Answers</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-lg mb-6">
+                  <FiHelpCircle className="text-slate-600 text-xs" />
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-700">Quick Answers</span>
                 </div>
-                <h2 className="text-xl sm:text-xl md:text-2xl font-black text-slate-900 tracking-tight mb-4 px-2">
-                  Frequently Asked <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">Questions</span>
+                <h2 className="text-xl sm:text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight mb-4 px-2">
+                  Frequently Asked <span className="text-[#1a1a2e]">Questions</span>
                 </h2>
                 <p className="text-slate-500 text-base md:text-lg max-w-3xl mx-auto leading-relaxed px-2">
                   Clear answers to common queries about admissions, curriculum, fees, and school policies.
@@ -3131,7 +3036,7 @@ return (
         </div>
 
         {/* Modernized CTA Section - Refined Typography */}
-        <div className="relative overflow-hidden bg-slate-900 rounded-xl md:rounded-[24px] p-4 md:p-12 text-center shadow-2xl">
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#1a1a2e] to-[#2d2d4e] rounded-xl md:rounded-[24px] p-4 md:p-12 text-center shadow-2xl">
           
           {/* Static Background Decoration */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-2xl bg-blue-500/10 blur-[80px] rounded-full pointer-events-none" />
@@ -3148,7 +3053,7 @@ return (
 
             {/* 2. Responsive Typography (Reduced Sizes) */}
             <h2 className="text-xl md:text-3xl font-black text-white mb-4 tracking-tight leading-tight text-balance">
-              Ready to Begin Your <span className="text-blue-400">Academic Journey This year</span>
+              Ready to Begin Your <span className="text-emerald-400">Academic Journey This year</span>
             </h2>
             
             {/* Description: Scaled down to base size for better reading density */}
@@ -3156,21 +3061,18 @@ return (
               Join a community dedicated to nurturing future leaders through personalized attention and holistic development.
             </p>
 
-            {/* Action Buttons – always flex row, no wrap */}
+            {/* Contact Action */}
             <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto">
-              
-              {/* Primary Button */}
               <button
-                onClick={() => router.push('/pages/apply-for-admissions')}
+                onClick={() => router.push('/pages/contact')}
                 className="flex-shrink-0 px-3 py-2.5 sm:px-4 sm:py-3 md:px-6 md:py-3.5 
-                           bg-white text-slate-900 rounded-xl font-bold text-xs sm:text-sm 
+                           bg-white/10 border border-white/20 text-white rounded-xl font-semibold text-xs sm:text-sm 
                            tracking-wide flex items-center justify-center gap-2 
-                           active:scale-95 transition-transform"
+                           active:scale-95 transition-transform hover:bg-white/20"
               >
-                Apply Online
+                Contact Admissions Office
                 <FiArrowRight size={14} />
               </button>
-
             </div>
 
             {/* 4. Trust Indicator */}
