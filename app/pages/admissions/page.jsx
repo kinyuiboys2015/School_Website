@@ -880,7 +880,7 @@ const AdmissionPathCard = ({ path, onApply, index }) => {
                 ? 'bg-teal-50 border border-teal-100' 
                 : 'bg-white/10 border border-white/10'
             }`}>
-              <PathIcon className={`text-lg ${isEven ? 'text-teal-800' : 'text-teal-300'}`} />
+              <PathIcon className={`text-lg ${isEven ? 'text-teal-800' : 'text-teal-500'}`} />
             </div>
             <div>
               <h3 className={`text-base md:text-lg font-extrabold tracking-tight leading-tight ${isEven ? 'text-slate-900' : 'text-white'}`}>
@@ -894,7 +894,7 @@ const AdmissionPathCard = ({ path, onApply, index }) => {
           <span className={`text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide shrink-0 ${
             isEven 
               ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' 
-              : 'bg-teal-500/15 text-teal-300 border border-teal-500/20'
+              : 'bg-teal-500/15 text-teal-500 border border-teal-500/20'
           }`}>
             {path.deadline === 'Rolling Admission' ? 'Open' : 'Limited'}
           </span>
@@ -2194,7 +2194,7 @@ export default function ComprehensiveAdmissions() {
 
         {/* Action Row */}
         <div className="flex flex-wrap items-center gap-3">
-          <span className="text-[9px] md:text-[10px] font-bold px-3 py-1.5 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/20 uppercase">
+          <span className="text-[9px] md:text-[10px] font-bold px-3 py-1.5 rounded-full bg-teal-500/15 text-teal-500 border border-teal-500/20 uppercase">
             {schoolData?.academicYear || getFullYear()} Session
           </span>
           <button
@@ -2489,7 +2489,7 @@ return (
       <img src="/kinyui.png" alt="" className="absolute right-4 bottom-4 w-24 md:w-32 opacity-[0.04] pointer-events-none select-none" />
       <div className="relative z-10">
         <div className="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-500/20 flex items-center justify-center mb-4">
-          <IoBulbOutline className="text-teal-300 text-lg" />
+          <IoBulbOutline className="text-teal-500 text-lg" />
         </div>
         <h4 className="text-base md:text-lg font-bold text-white mb-2">Proven Academic Track Record</h4>
         <p className="text-slate-900 text-xs md:text-sm leading-relaxed max-w-md">
@@ -2873,7 +2873,7 @@ return (
         <div className="max-w-2xl">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 bg-teal-500/20 backdrop-blur-md border border-teal-400/20 rounded-2xl flex items-center justify-center">
-              <FiTarget className="text-teal-300 text-xl" />
+              <FiTarget className="text-teal-500 text-xl" />
             </div>
             <h3 className="text-xl md:text-2xl font-extrabold uppercase tracking-tight">Professional Development</h3>
           </div>
