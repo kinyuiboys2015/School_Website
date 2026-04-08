@@ -330,85 +330,117 @@ export default function StaffProfilePage() {
     const channels = [
       { 
         name: 'WhatsApp', 
-        icon: <FaWhatsapp />, 
-        color: 'bg-[#25D366]', 
+        icon: <FaWhatsapp size={20} />, 
+        color: '#25D366',
         link: `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + profileUrl)}` 
       },
       { 
         name: 'Facebook', 
-        icon: <FaFacebook />, 
-        color: 'bg-[#1877F2]', 
+        icon: <FaFacebook size={20} />, 
+        color: '#1877F2',
         link: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}` 
       },
       { 
         name: 'Instagram', 
-        icon: <FaInstagram />, 
-        color: 'bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7]', 
+        icon: <FaInstagram size={20} />, 
+        color: '#E4405F',
         action: handleCopy 
       },
     ];
   
     return (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+      <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center">
         {/* Backdrop */}
-        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300" onClick={() => setShowShareModal(false)} />
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowShareModal(false)} />
         
-        {/* Modal Card */}
-        <div className="relative bg-white w-full max-w-sm rounded-lg shadow-3xl overflow-hidden animate-in zoom-in-95 duration-200">
-          <div className="p-8">
-            <div className="flex justify-between items-center mb-8">
-              <div>
-                <h3 className="text-2xl font-black text-slate-900 tracking-tighter uppercase">Share</h3>
-                <p className="text-xs font-bold text-slate-400 tracking-widest uppercase">Professional Profile</p>
-              </div>
-              <button onClick={() => setShowShareModal(false)} className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all">
-                <FiX size={20} />
+        {/* Modal — slides up on mobile, centered on desktop */}
+        <div className="relative bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl overflow-hidden shadow-2xl">
+          
+          {/* Profile preview strip */}
+          <div className="bg-[#1a1a2e] px-6 pt-6 pb-5">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-[9px] font-semibold text-white/30 uppercase tracking-[0.2em]">Share Profile</span>
+              <button 
+                onClick={() => setShowShareModal(false)} 
+                className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all"
+              >
+                <FiX size={14} />
               </button>
             </div>
-  
-            <div className="grid grid-cols-1 gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-xl overflow-hidden bg-white/10 ring-2 ring-white/10 shrink-0">
+                <Image
+                  src={staff.image || '/male.png'}
+                  alt={staff.name}
+                  width={44}
+                  height={44}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="min-w-0">
+                <h3 className="text-sm font-semibold text-white truncate">{staff.name}</h3>
+                <p className="text-[11px] text-white/40 font-medium">{staff.position} &bull; {staff.department}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Share channels — horizontal row */}
+          <div className="px-6 py-5">
+            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-3">Share via</p>
+            <div className="flex items-center gap-3">
               {channels.map((ch) => (
-                <a 
+                <a
                   key={ch.name}
                   href={ch.link || '#'}
                   target={ch.link ? "_blank" : "_self"}
+                  rel="noopener noreferrer"
                   onClick={ch.action}
-                  className="group flex items-center gap-4 p-2 pr-6 rounded-xl bg-slate-50 border border-slate-100 hover:border-blue-200 hover:bg-blue-50 transition-all"
+                  className="group flex-1 flex flex-col items-center gap-2 py-3 rounded-xl border border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all cursor-pointer"
                 >
-                  <div className={`w-12 h-12 ${ch.color} rounded-md flex items-center justify-center text-white text-xl shadow-lg group-hover:scale-110 transition-transform`}>
+                  <div 
+                    className="w-11 h-11 rounded-full flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform"
+                    style={{ backgroundColor: ch.color }}
+                  >
                     {ch.icon}
                   </div>
-                  <div className="flex-1">
-                    <span className="block font-black text-slate-900 text-sm uppercase tracking-tight">{ch.name}</span>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase leading-none">
-                      {ch.name === 'Instagram' ? 'Copy Link to Post' : `Share to ${ch.name}`}
-                    </span>
-                  </div>
-                  <FiShare2 className="text-slate-300 group-hover:text-blue-500 transition-colors" />
+                  <span className="text-[10px] font-semibold text-slate-500 group-hover:text-slate-700 transition-colors">{ch.name}</span>
                 </a>
               ))}
-            </div>
-  
-            {/* Smart Link Bar */}
-            <div className="mt-8 relative">
-              <input 
-                readOnly 
-                value={profileUrl} 
-                className="w-full bg-slate-100 border-none rounded-xl py-4 pl-5 pr-16 text-xs font-bold text-slate-500 focus:ring-2 ring-blue-500"
-              />
-              <button 
+              
+              {/* Copy link as a channel */}
+              <button
                 onClick={handleCopy}
-                className={`absolute right-2 top-2 bottom-2 px-4 rounded-md font-black text-[10px] uppercase tracking-widest transition-all ${
-                  copied ? 'bg-emerald-500 text-white' : 'bg-slate-900 text-white hover:bg-blue-600'
-                }`}
+                className="group flex-1 flex flex-col items-center gap-2 py-3 rounded-xl border border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all cursor-pointer"
               >
-                {copied ? 'Copied' : 'Copy'}
+                <div className={`w-11 h-11 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 transition-all ${
+                  copied ? 'bg-emerald-500 text-white' : 'bg-[#1a1a2e] text-white'
+                }`}>
+                  {copied ? <FiCheckCircle size={18} /> : <FiShare2 size={18} />}
+                </div>
+                <span className="text-[10px] font-semibold text-slate-500 group-hover:text-slate-700 transition-colors">
+                  {copied ? 'Copied!' : 'Copy'}
+                </span>
               </button>
             </div>
           </div>
-          
-          <div className="bg-slate-50 p-4 text-center">
-            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">kinyui boys Senior School</p>
+
+          {/* URL row */}
+          <div className="px-6 pb-6">
+            <div className="flex items-center gap-2 bg-slate-50 rounded-xl p-1.5 border border-slate-100">
+              <div className="flex-1 min-w-0 px-3">
+                <p className="text-[11px] font-medium text-slate-400 truncate">{profileUrl}</p>
+              </div>
+              <button
+                onClick={handleCopy}
+                className={`shrink-0 px-4 py-2 rounded-lg text-[10px] font-semibold uppercase tracking-wider transition-all ${
+                  copied 
+                    ? 'bg-emerald-500 text-white' 
+                    : 'bg-[#1a1a2e] text-white hover:bg-[#2d2d44]'
+                }`}
+              >
+                {copied ? 'Copied' : 'Copy Link'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
