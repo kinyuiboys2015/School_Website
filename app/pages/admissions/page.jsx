@@ -877,89 +877,81 @@ const ModernEducationSystemCard = ({ system, icon: Icon, color, description, fea
   );
 };
 const AdmissionPathCard = ({ path, onApply, index }) => {
-  const getLocalImage = (type) => {
-    const images = { grade7: '/bg/9.jpeg', transfer: '/im2.jpeg' };
-    return images[type] || '/bg/9.jpeg';
-  };
-
-  const themeColor = path.color.includes('blue') ? 'blue' : 'purple';
+  const isEven = index % 2 === 0;
+  const PathIcon = path.icon;
 
   return (
-    <div className="relative bg-white rounded-none md:rounded-[3rem] border-y md:border border-slate-100 overflow-hidden flex flex-col h-full shadow-sm md:shadow-xl">
+    <div className={`group relative overflow-hidden rounded-2xl md:rounded-3xl border transition-all duration-300 hover:shadow-lg ${
+      isEven 
+        ? 'bg-white border-slate-200' 
+        : 'bg-slate-900 border-slate-700/50'
+    }`}>
+      {/* Top accent */}
+      <div className={`h-1 w-full bg-gradient-to-r ${path.color}`} />
       
-      <div className="relative h-44 md:h-64 overflow-hidden">
-        <img
-          src={getLocalImage(path.type)}
-          alt={path.title}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-        
-        <div className="absolute top-4 left-4">
-          <span className="flex items-center gap-1.5 backdrop-blur-md bg-white/10 border border-white/20 px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest text-white">
-            <IoFlash className="text-yellow-400" />
-            {path.deadline === 'Rolling Admission' ? 'Open Now' : 'Limited Entry'}
+      <div className="p-5 md:p-7 space-y-5">
+        {/* Header row */}
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
+              isEven 
+                ? 'bg-teal-50 border border-teal-100' 
+                : 'bg-white/10 border border-white/10'
+            }`}>
+              <PathIcon className={`text-lg ${isEven ? 'text-teal-600' : 'text-teal-300'}`} />
+            </div>
+            <div>
+              <h3 className={`text-base md:text-lg font-extrabold tracking-tight leading-tight ${isEven ? 'text-slate-900' : 'text-white'}`}>
+                {path.title}
+              </h3>
+              <span className={`text-[9px] font-bold uppercase tracking-wider ${isEven ? 'text-slate-400' : 'text-slate-400'}`}>
+                {path.deadline === 'Rolling Admission' ? 'Open Enrollment' : 'Intake Period'}
+              </span>
+            </div>
+          </div>
+          <span className={`text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide shrink-0 ${
+            isEven 
+              ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' 
+              : 'bg-teal-500/15 text-teal-300 border border-teal-500/20'
+          }`}>
+            {path.deadline === 'Rolling Admission' ? 'Open' : 'Limited'}
           </span>
         </div>
 
-        {/* Floating Title on Image for Mobile */}
-        <div className="absolute bottom-4 left-4 right-4 md:hidden">
-          <h3 className="font-black text-white text-lg tracking-tight leading-none italic">
-            {path.title}
-          </h3>
-        </div>
-      </div>
-
-      {/* Content Body */}
-      <div className="p-6 md:p-6 flex flex-col flex-1">
-        {/* Desktop Title (Hidden on Mobile because it's on the image) */}
-        <div className="hidden md:flex items-center gap-5 mb-6">
-          <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${path.color} p-0.5 shadow-lg`}>
-            <div className="w-full h-full bg-white rounded-[calc(1rem-1px)] flex items-center justify-center">
-              {path.icon({ className: `text-2xl text-${themeColor}-600` })}
-            </div>
-          </div>
-          <h3 className="font-black text-slate-800 md:text-lg text-md tracking-tighter uppercase leading-none">
-            {path.title}
-          </h3>
-        </div>
-
-        <p className="text-slate-500 text-sm md:text-base leading-relaxed mb-6">
+        {/* Description */}
+        <p className={`text-sm leading-relaxed ${isEven ? 'text-slate-500' : 'text-slate-400'}`}>
           {path.description}
         </p>
 
-        {/* Features - Using CSS grid that adapts naturally */}
-        <div className="grid grid-cols-2 md:grid-cols-1 gap-2 md:gap-3 mb-6">
-          {path.features.slice(0, 4).map((feature, idx) => (
-            <div 
-              key={idx} 
-              className="flex items-center gap-2 md:gap-3 p-2 md:p-3 bg-slate-50 rounded-lg md:rounded-xl border border-slate-100"
-            >
-              <IoCheckmarkCircle className={`text-${themeColor}-500 text-[10px] md:text-sm shrink-0`} />
-              <span className="text-[10px] md:text-sm text-slate-700 font-bold md:font-medium truncate tracking-tight">
-                {feature}
-              </span>
+        {/* Features list — vertical with check marks */}
+        <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+          {path.features.map((feature, idx) => (
+            <div key={idx} className="flex items-center gap-2">
+              <IoCheckmarkCircle className={`text-xs shrink-0 ${isEven ? 'text-teal-500' : 'text-teal-400'}`} />
+              <span className={`text-[11px] font-semibold ${isEven ? 'text-slate-600' : 'text-slate-300'}`}>{feature}</span>
             </div>
           ))}
         </div>
 
-        {/* Footer Action */}
-        <div className="mt-auto pt-6 border-t border-slate-100 flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-slate-100 rounded-lg">
-                <IoCalendarOutline className="text-slate-500" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[9px] uppercase font-black text-slate-400 tracking-widest">Deadline</span>
-                <span className="text-xs font-black text-slate-900">{path.deadline}</span>
-              </div>
+        {/* Footer */}
+        <div className={`flex items-center justify-between pt-4 border-t ${isEven ? 'border-slate-100' : 'border-white/10'}`}>
+          <div className="flex items-center gap-2">
+            <IoCalendarOutline className={`text-sm ${isEven ? 'text-slate-400' : 'text-slate-500'}`} />
+            <div>
+              <span className={`text-[8px] uppercase font-bold tracking-wider block ${isEven ? 'text-slate-400' : 'text-slate-500'}`}>Deadline</span>
+              <span className={`text-xs font-bold ${isEven ? 'text-slate-800' : 'text-white'}`}>{path.deadline}</span>
             </div>
-            
-            <span className="text-[9px] font-black text-[#1a1a2e] bg-blue-50 px-2 py-1 rounded-md uppercase">
-              {path.deadline === 'Rolling Admission' ? 'Open Enrollment' : 'Limited Entry'}
-            </span>
           </div>
+          <button
+            onClick={onApply}
+            className={`text-[10px] font-bold px-4 py-2 rounded-lg uppercase tracking-wide transition-colors ${
+              isEven 
+                ? 'bg-slate-900 text-white hover:bg-slate-800' 
+                : 'bg-white text-slate-900 hover:bg-slate-100'
+            }`}
+          >
+            Apply Now
+          </button>
         </div>
       </div>
     </div>
@@ -2247,28 +2239,44 @@ export default function ComprehensiveAdmissions() {
       </div>
     </div>
 
-    {/* Right Panel - Quick Stats */}
+    {/* Right Panel - Admission Highlights */}
     <div className="relative bg-white p-5 sm:p-6 md:p-8 md:w-[45%] flex flex-col justify-center">
       {/* Logo Watermark */}
       <img src="/kinyui.png" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 md:w-44 opacity-[0.03] pointer-events-none select-none" />
       
-      <div className="relative z-10">
-        <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-4">Quick Overview</p>
-        <div className="grid grid-cols-2 gap-3">
-          {dynamicStats.slice(0, 4).map((stat, index) => {
-            const StatIcon = stat.icon;
-            return (
-              <div key={index} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${stat.color} flex items-center justify-center text-white shrink-0`}>
-                  <StatIcon className="text-sm" />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-lg font-black text-slate-900 leading-none tabular-nums">{stat.number}</div>
-                  <div className="text-[9px] font-medium text-slate-500 mt-0.5 truncate">{stat.label}</div>
-                </div>
-              </div>
-            );
-          })}
+      <div className="relative z-10 space-y-4">
+        <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Why Apply Here</p>
+        
+        <div className="space-y-3">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-teal-50 border border-teal-100 flex items-center justify-center shrink-0 mt-0.5">
+              <FiAward className="text-teal-600 text-sm" />
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-xs font-bold text-slate-900 leading-tight">Nationally Ranked Results</h4>
+              <p className="text-[10px] text-slate-500 leading-snug mt-0.5">Consistent top marks across KCSE national examinations year after year.</p>
+            </div>
+          </div>
+          
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-cyan-50 border border-cyan-100 flex items-center justify-center shrink-0 mt-0.5">
+              <FiUsers className="text-cyan-600 text-sm" />
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-xs font-bold text-slate-900 leading-tight">Personalized Mentoring</h4>
+              <p className="text-[10px] text-slate-500 leading-snug mt-0.5">Small class sizes ensure every student gets tailored academic guidance.</p>
+            </div>
+          </div>
+          
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center shrink-0 mt-0.5">
+              <FiBookOpen className="text-indigo-600 text-sm" />
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-xs font-bold text-slate-900 leading-tight">Dual Curriculum Tracks</h4>
+              <p className="text-[10px] text-slate-500 leading-snug mt-0.5">Both 8-4-4 and CBC pathways to match each learner's strengths.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2278,11 +2286,19 @@ export default function ComprehensiveAdmissions() {
   <div className="h-[3px] bg-gradient-to-r from-teal-500 via-cyan-500 to-indigo-500" />
 </header>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
-          {dynamicStats.map((stat, index) => (
-            <StatCard key={index} stat={stat} />
-          ))}
+        {/* Admissions Overview Strip */}
+        <div className="bg-white rounded-xl border border-slate-200/60 p-4 md:p-5 mb-5">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-5">
+            <div className="flex items-center gap-2.5 shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-teal-50 border border-teal-100 flex items-center justify-center">
+                <FiInfo className="text-teal-600 text-sm" />
+              </div>
+              <span className="text-xs font-bold text-slate-900 uppercase tracking-wide">About Admissions</span>
+            </div>
+            <p className="text-slate-500 text-xs md:text-sm leading-relaxed">
+              Explore our academic programs, review entry requirements, download fee structures, and track your application — all from one place. Use the tabs below to navigate each section.
+            </p>
+          </div>
         </div>
 
 {schoolData && (() => {
@@ -2396,14 +2412,14 @@ return (
       </div>
       
       <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-stone-900 mb-3 tracking-tight leading-[1.15] text-balance">
-        Welcome to{" "}
+        Discover{" "}
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
-          {schoolData?.name || "Our School"}
+          {schoolData?.name || "Kinyui Boys"}
         </span>
       </h2>
       
       <p className="text-stone-500 mx-auto text-sm sm:text-base md:text-lg leading-relaxed px-2 text-balance max-w-2xl">
-        {schoolData?.description || "We are committed to nurturing well-rounded learners through quality education and strong values."}
+        {schoolData?.description || "A premier learning institution that blends academic rigor with character formation, preparing young men to lead with purpose and integrity."}
       </p>
       </div>
     </div>
@@ -2431,10 +2447,10 @@ return (
         <span className="text-[10px] font-semibold uppercase tracking-wider text-teal-700">Admissions {new Date().getFullYear()}</span>
       </div>
       <h3 className="text-xl md:text-2xl font-extrabold text-stone-900 tracking-tight mb-3 leading-tight">
-        Your Path Forward
+        Choose Your Entry Track
       </h3>
       <p className="text-stone-500 text-sm md:text-base max-w-2xl mx-auto md:mx-0 font-medium leading-relaxed">
-        Select the enrollment track that matches your goals.
+        Whether joining as a fresh Form 1 student or transferring from another school, we have a clear path ready for you.
       </p>
     </div>
 
@@ -2450,81 +2466,78 @@ return (
     </div>
   </div>
 </section>
-{/* 4. Bento Grid - School Profile */}
-<div className="py-10 md:py-14 px-0 md:px-6 max-w-4xl mx-auto">
-  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 pb-5 border-b border-stone-200 px-4 md:px-0">
+{/* 4. School Highlights — Magazine Grid */}
+<div className="py-10 md:py-14 px-0 md:px-4 max-w-5xl mx-auto">
+  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 px-4 md:px-0">
     <div className="flex-1">
-      <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-stone-100 rounded-full mb-3 border border-stone-200">
-        <div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
-        <span className="text-[9px] font-semibold uppercase tracking-wider text-stone-600">School Profile</span>
+      <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-teal-50 rounded-full mb-3 border border-teal-100">
+        <div className="w-1.5 h-1.5 rounded-full bg-teal-500"></div>
+        <span className="text-[9px] font-semibold uppercase tracking-wider text-teal-700">What Sets Us Apart</span>
       </div>
       <h2 className="text-xl md:text-2xl font-extrabold text-stone-900 tracking-tight leading-tight">
-        Why Kinyui Boys?
+        The Kinyui Advantage
       </h2>
-    </div>
-    
-    <div className="flex flex-wrap items-center gap-3 mt-2">
-      <div className="flex items-center gap-1.5 text-[10px] text-stone-500 font-semibold">
-        <FiAward className="text-teal-500" />
-        <span>KICD Approved</span>
-      </div>
-      <div className="flex items-center gap-1.5 text-[10px] text-stone-500 font-semibold">
-        <FiUsers className="text-teal-500" />
-        <span>Community</span>
-      </div>
+      <p className="text-stone-500 text-xs md:text-sm mt-1 max-w-md">
+        Three pillars that define the student experience at our institution.
+      </p>
     </div>
   </div>
 
-<div className="grid grid-cols-1 md:grid-cols-12 auto-rows-min gap-4">
+  {/* Magazine-style staggered grid */}
+  <div className="grid grid-cols-1 md:grid-cols-12 gap-4 px-4 md:px-0">
     
-    {/* Academic Card */}
-    <div className="md:col-span-7 relative rounded-xl bg-stone-50 border border-stone-200 p-5 md:p-6">
-      <div className="flex flex-col h-full gap-3">
-        <div className="w-9 h-9 bg-white text-teal-600 rounded-lg flex items-center justify-center shadow-sm border border-stone-200 shrink-0">
-          <IoBulbOutline size={18} />
+    {/* Large feature card — spans 7 cols */}
+    <div className="md:col-span-7 group relative bg-slate-900 rounded-2xl md:rounded-3xl overflow-hidden p-6 md:p-8 min-h-[220px] flex flex-col justify-end">
+      <div className="absolute top-0 right-0 w-48 h-48 bg-teal-500/10 blur-[60px] rounded-full -mr-16 -mt-16" />
+      <img src="/kinyui.png" alt="" className="absolute right-4 bottom-4 w-24 md:w-32 opacity-[0.04] pointer-events-none select-none" />
+      <div className="relative z-10">
+        <div className="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-500/20 flex items-center justify-center mb-4">
+          <IoBulbOutline className="text-teal-300 text-lg" />
         </div>
-        <div>
-          <h4 className="text-base md:text-lg font-bold text-stone-900 mb-1.5">Academic Achievement</h4>
-          <p className="text-stone-600 text-[12px] md:text-sm leading-relaxed">
-            We maintain a track record of academic excellence, consistently producing top-tier KCSE results. Our specialized focus on STEM subjects equips students with technical skills for the modern economy.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    {/* Faculty Card */}
-    <div className="md:col-span-5 relative rounded-xl bg-stone-900 p-5 md:p-6 text-white">
-      <div className="flex flex-col h-full gap-3">
-        <div className="w-9 h-9 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center shrink-0">
-          <FiUsers size={18} className="text-white" />
-        </div>
-        <div>
-          <h4 className="text-base md:text-lg font-bold mb-1.5 text-teal-400">Expert Educators</h4>
-          <p className="text-stone-300 text-[12px] md:text-sm leading-relaxed">
-            Our faculty consists of TSC-certified professionals providing personalized mentorship, ensuring every student discovers their unique potential through innovation.
-          </p>
+        <h4 className="text-base md:text-lg font-bold text-white mb-2">Proven Academic Track Record</h4>
+        <p className="text-slate-400 text-xs md:text-sm leading-relaxed max-w-md">
+          Consistently ranked among top-performing schools in Machakos County. Our KCSE results reflect a culture of disciplined study, expert instruction, and individualized support that turns potential into achievement.
+        </p>
+        <div className="flex items-center gap-3 mt-4">
+          <span className="text-[9px] font-bold uppercase tracking-wider text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-md border border-teal-500/20">Top Ranked</span>
+          <span className="text-[9px] font-bold uppercase tracking-wider text-slate-500">Since 1976</span>
         </div>
       </div>
     </div>
 
-    {/* Infrastructure Card */}
-    <div className="md:col-span-12 relative rounded-xl bg-white border border-stone-200 p-5 md:p-7 flex flex-col gap-3">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-teal-50 text-teal-600 rounded-lg flex items-center justify-center border border-teal-100 shrink-0">
-          <FiCpu size={20} />
+    {/* Right column — 2 stacked cards */}
+    <div className="md:col-span-5 flex flex-col gap-4">
+      
+      {/* Card 2 - Educators */}
+      <div className="group flex-1 bg-white rounded-2xl border border-slate-200 p-5 md:p-6 hover:shadow-md transition-shadow">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-9 h-9 rounded-lg bg-cyan-50 border border-cyan-100 flex items-center justify-center shrink-0">
+            <FiUsers className="text-cyan-600 text-sm" />
+          </div>
+          <span className="text-[9px] font-bold uppercase tracking-wider text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded">TSC Certified</span>
         </div>
-        <h4 className="text-base md:text-lg font-bold text-stone-900">Modern Learning Resources</h4>
+        <h4 className="text-sm font-bold text-stone-900 mb-1.5">Dedicated Teaching Faculty</h4>
+        <p className="text-stone-500 text-xs leading-relaxed">
+          Every educator brings years of classroom and mentoring experience. Small class ratios allow one-on-one guidance, ensuring no student falls through the cracks.
+        </p>
       </div>
-      <p className="text-stone-600 text-[12px] md:text-sm leading-relaxed max-w-4xl">
-        Kinyui Boys features state-of-the-art science laboratories and advanced computer labs. We provide tech-integrated classrooms and a vast library to foster research and self-reliance.
-      </p>
-      <div className="flex items-center gap-3 mt-1 px-3 py-1.5 bg-stone-50 rounded-lg border border-stone-200 self-start">
-        <span className="text-[10px] font-semibold text-stone-700">
-          10k+ Global Alumni Network
-        </span>
+
+      {/* Card 3 - Infrastructure */}
+      <div className="group flex-1 bg-gradient-to-br from-indigo-50 to-white rounded-2xl border border-indigo-100 p-5 md:p-6 hover:shadow-md transition-shadow">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-9 h-9 rounded-lg bg-indigo-100 border border-indigo-200 flex items-center justify-center shrink-0">
+            <FiCpu className="text-indigo-600 text-sm" />
+          </div>
+          <span className="text-[9px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded">Modern Campus</span>
+        </div>
+        <h4 className="text-sm font-bold text-stone-900 mb-1.5">Future-Ready Learning Spaces</h4>
+        <p className="text-stone-500 text-xs leading-relaxed">
+          Fully equipped science labs, high-speed computer rooms, a digital library, and smart classrooms — every facility is built to inspire curiosity and hands-on discovery.
+        </p>
       </div>
+
     </div>
-</div>
+  </div>
 </div>
   </div>
 )}
@@ -2694,10 +2707,10 @@ return (
           <span className="text-[10px] font-extrabold uppercase tracking-wider text-teal-700">Career Readiness</span>
         </div>
         <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">
-          Future <span className="text-teal-600">Pathways</span>
+          Career <span className="text-teal-600">Compass</span>
         </h2>
         <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
-          Strategic academic planning for diverse career trajectories. Our curriculum integrates industry-relevant skills with traditional excellence.
+          Map your ambitions to real-world careers. See how each subject you study today connects to the profession you'll build tomorrow.
         </p>
       </div>
     </div>
@@ -2715,10 +2728,10 @@ return (
               <span className="text-[9px] font-bold uppercase tracking-wider text-teal-700">CBC Framework</span>
             </div>
             <h3 className="text-lg md:text-2xl font-extrabold text-slate-900 tracking-tight">
-              CBC <span className="text-teal-600">Pathways</span> & Subjects
+              CBC <span className="text-teal-600">Learning Tracks</span> & Subjects
             </h3>
             <p className="text-slate-500 text-xs md:text-sm mt-1 max-w-xl">
-              Under the Competency Based Curriculum, students follow structured pathways aligned with their talents and career aspirations.
+              The Competency Based Curriculum organizes learning around three main pathways, each tailored to different student strengths and career goals.
             </p>
           </div>
           <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-xl border border-slate-200 shadow-sm self-start">
@@ -2840,8 +2853,8 @@ return (
             <h3 className="text-xl md:text-2xl font-extrabold uppercase tracking-tight">Professional Development</h3>
           </div>
           <p className="text-slate-300/80 text-sm md:text-base leading-relaxed font-medium">
-            Personalized career mapping, university placement strategy, and industry immersion experiences. 
-            We bridge academic learning with professional reality.
+            From personalized career mapping and university placement guidance to hands-on industry visits — 
+            we equip every student with the clarity and confidence to pursue their chosen profession.
           </p>
         </div>
         <button 
@@ -3191,11 +3204,11 @@ return (
             </div>
 
             <h2 className="text-xl md:text-3xl font-black text-white mb-4 tracking-tight leading-tight text-balance">
-              Ready to Begin Your <span className="text-teal-400">Academic Journey</span>
+              Start Your <span className="text-teal-400">Journey With Us</span>
             </h2>
             
             <p className="text-slate-400 mb-6 md:mb-8 text-sm md:text-base leading-relaxed max-w-lg mx-auto text-balance">
-              Join a community dedicated to nurturing future leaders through personalized attention and holistic development.
+              Have questions about enrollment, fees, or student life? Our admissions team is ready to guide you through every step.
             </p>
 
             {/* Contact Action */}
