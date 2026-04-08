@@ -83,7 +83,7 @@ export default function AboutPage() {
       {/* ═══════════════════════ HERO SECTION ═══════════════════════ */}
       <section className="relative min-h-[90vh] flex items-end overflow-hidden">
         <Image
-          src="/hero/katz8.jpeg"
+          src="/hero/kin1.jpeg"
           alt="Kinyui Boys Senior School School"
           fill
           className="object-cover"
@@ -149,7 +149,7 @@ export default function AboutPage() {
         <div className="relative">
           <div className="relative z-10 aspect-[4/5] sm:aspect-video lg:aspect-[4/5] overflow-hidden rounded-[3rem] border-[16px] border-white shadow-2xl transition-transform duration-700 group-hover:-translate-y-2">
             <Image
-              src="/hero/katz8.jpeg"
+              src="/hero/kin1.jpeg"
               alt="School Vision"
               fill
               className="object-cover transition-transform duration-1000 group-hover:scale-110"

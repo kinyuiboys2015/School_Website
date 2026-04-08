@@ -248,9 +248,9 @@ export default function ContactPage() {
       <section className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] flex items-center justify-center text-white overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/hero/katz8.jpeg')" }}
+          style={{ backgroundImage: "url('/hero/kin.jpeg')" }}
         ></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/50 to-transparent"></div>
         <div className="relative z-10 text-center px-4 py-6 max-w-4xl mx-auto">
           <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 mb-3 sm:mb-4 text-xs sm:text-xs font-bold tracking-widest text-amber-300 uppercase bg-black/20 backdrop-blur-sm rounded-full border border-amber-300/30">
             Connect With Us

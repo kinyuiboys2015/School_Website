@@ -14,7 +14,7 @@ const heroSlides = [
     titleAccent: "Senior",
     subtitle: "Matungulu, Machakos County",
     description: "A premier public boys' boarding school in Matungulu sub-county. Established to serve the Eastern Region with excellence in STEM, Social Sciences, and Arts & Sports pathways under CBC curriculum.",
-    image: "/hero/katz8.jpeg",
+    image: "/hero/kin1.jpeg",
     tags: ["Public School", "Boys' Boarding", "STEM", "Social Sciences"],
     cta: "Admissions",
     link: "/pages/admissions",
