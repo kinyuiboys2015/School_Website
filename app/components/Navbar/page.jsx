@@ -245,7 +245,8 @@ export default function ModernNavbar() {
                   alt="kinyui boys Senior School Logo"
                   width={48}
                   height={48}
-                  className="relative z-10 filter drop-shadow-sm group-hover:scale-100 transition-transform duration-300 w-10 h-10 xs:w-12 xs:h-12 sm:w-14 sm:h-14"
+                  className="relative z-10 cursor-pointer filter drop-shadow-sm group-hover:scale-100 transition-transform duration-300 w-10 h-10 xs:w-12 xs:h-12 sm:w-14 sm:h-14"
+                  href="/"
                   priority
                   sizes="(max-width: 480px) 48px, (max-width: 640px) 56px, 64px"
                 />
