@@ -510,7 +510,7 @@ export async function POST(request) {
     // Only allow ADMIN or SUPERADMIN to create users (unless no users exist yet)
     const userCount = await prisma.user.count();
     if (userCount > 0) {
-      // Uncomment authentication block to enforce
+      // Token verification is DISABLED for user creation (for testing)
       /*
       const auth = authenticateRequest(request);
       if (!auth.authenticated) {
