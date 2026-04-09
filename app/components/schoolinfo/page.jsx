@@ -1652,7 +1652,7 @@ const StatCard = ({ icon: Icon, label, value, change, color, subtitle, trend }) 
                   : 'bg-rose-50 text-rose-600 border-rose-100'
               }`}>
                 {isPositive ? <FiTrendingUp /> : <FiTrendingDown />}
-                <span>{displayChange > 0 ? '+' : ''}{displayChange}%</span>
+                <span>{isPositive ? '+' : ''}{displayChange}%</span>
               </div>
             )}
             

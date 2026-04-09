@@ -521,7 +521,7 @@ export async function GET() {
     console.log("🔍 GET /api/school - Fetching school info");
     
 const school = await prisma.schoolInfo.findFirst({
-  include: { magazine: true }
+  include: { Magazine: true }
 });    
     if (!school) {
       console.log("📭 No school found in database");
@@ -755,7 +755,7 @@ export async function PUT(req) {
     console.log(`Request from: ${auth.user.name} (${auth.user.role})`);
     
 const existing = await prisma.schoolInfo.findFirst({
-  include: { magazine: true }  // Add this include
+  include: { Magazine: true }  // Add this include
 });    if (!existing) {
       return NextResponse.json(
         { 
