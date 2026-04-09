@@ -14,7 +14,7 @@ model User {
   emailVerified  DateTime?
   password       String?
   phone          String?
-  role           UserRole        @default(TEACHER)
+  role           UserRole        @default(ADMIN)
   image          String?
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
@@ -640,6 +640,7 @@ enum UserRole {
   TEACHER
   PRINCIPAL
   ADMIN
+  SUPER_ADMIN
 }
 
 enum Category {
