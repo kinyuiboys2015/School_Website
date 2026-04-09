@@ -693,7 +693,7 @@ if (magazinePdf && magazinePdf.size > 0) {
       videoTour: videoUrl,
       videoType,
       videoThumbnail: thumbnailUrl,
-      magazineId: magazineId,  // Add this line
+      Magazine: magazineId ? { connect: { id: magazineId } } : undefined,
       studentCount: parseIntField(formData.get("studentCount")) || 0,
       staffCount: parseIntField(formData.get("staffCount")) || 0,
       feesDay: parseNumber(formData.get("feesDay")),
@@ -925,7 +925,7 @@ if (magazinePdf || magazineThumb || (magazineTitle !== undefined && magazineTitl
         mission: formData.get("mission") !== null ? formData.get("mission") : existing.mission,
         videoTour: videoUrl,
         videoType,
-         magazineId: magazineId,  // Add this line
+         Magazine: magazineId ? { connect: { id: magazineId } } : undefined,
 
         videoThumbnail: thumbnailUrl,
         studentCount: formData.get("studentCount") ? parseIntField(formData.get("studentCount")) : existing.studentCount,
