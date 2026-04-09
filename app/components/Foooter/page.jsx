@@ -500,8 +500,10 @@ export default function ModernFooter() {
               {/* Subscriber Bar */}
       <div className="mt-8 sm:mt-12">
   <div className="bg-gradient-to-br from-gray-700 via-gray-700 to-gray-900 text-white rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
-    <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
-      <div className="text-center md:text-left space-y-1 sm:space-y-2">
+    <div className="flex flex-row items-center justify-between gap-4 sm:gap-6">
+      {/* flex-row (not flex-col) on all screens */}
+      <div className="text-left space-y-1 sm:space-y-2">
+        {/* Removed text-center, kept text-left */}
         <h3 className="text-lg sm:text-xl md:text-2xl font-bold leading-tight">
           Subscribe to Our School Newsletter
         </h3>
