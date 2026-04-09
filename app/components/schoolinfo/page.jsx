@@ -762,7 +762,7 @@ function ModernSchoolModal({ onClose, onSave, school, loading: parentLoading }) 
     description: school?.description || '',
     motto: school?.motto || '',
     vision: school?.vision || '',
-    
+
    magazineTitle: school?.Magazine?.title || '',
   magazineYear: school?.Magazine?.year?.toString() || '',
   magazineDescription: school?.Magazine?.description || '',
@@ -2538,6 +2538,56 @@ const handleDeleteSchool = async () => {
               </div>
             </div>
           </div>
+
+
+          {/* Add this section in your school info display area */}
+{schoolInfo.magazine && (
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+    <div className="group relative bg-white rounded-[2rem] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h3 className="text-lg font-black text-slate-800 tracking-tight">School Magazine</h3>
+          <p className="text-xs text-slate-400 font-medium">Latest publication</p>
+        </div>
+        <div className="p-3 rounded-2xl bg-amber-50 border border-amber-100 text-amber-600">
+          <FaBook className="text-xl" />
+        </div>
+      </div>
+      
+      <div className="space-y-4">
+        {schoolInfo.magazine.thumbnail && (
+          <div className="rounded-xl overflow-hidden">
+            <img 
+              src={schoolInfo.magazine.thumbnail} 
+              alt={schoolInfo.magazine.title}
+              className="w-full h-48 object-cover"
+            />
+          </div>
+        )}
+        
+        <div>
+          <h4 className="text-xl font-bold text-slate-800">{schoolInfo.magazine.title}</h4>
+          <p className="text-sm text-slate-500">Year: {schoolInfo.magazine.year}</p>
+          {schoolInfo.magazine.description && (
+            <p className="text-slate-600 mt-2">{schoolInfo.magazine.description}</p>
+          )}
+        </div>
+        
+        {schoolInfo.magazine.pdfUrl && (
+          <a 
+            href={schoolInfo.magazine.pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-xl hover:bg-amber-700 transition"
+          >
+            <FaFileAlt className="text-sm" />
+            Read Magazine
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+)}
         </div>
       )}
 
