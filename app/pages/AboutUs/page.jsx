@@ -327,7 +327,7 @@ export default function AboutPage() {
                 
                 <div className="relative aspect-[4/5] overflow-hidden rounded-lg border-[12px] border-white shadow-2xl">
                   <Image
-                    src="/bg/kin2.jpeg"
+                    src="/hero/kin2.jpeg"
                     alt="Kinyui Boys Excellence"
                     fill
                     className="object-cover transition-transform duration-1000 group-hover:scale-110"

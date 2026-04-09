@@ -279,84 +279,47 @@ const SocialLinksGroup = () => (
 );
 
 // Newsletter Form - no glow effects
-const NewsletterForm = () => {
-  const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const handleSubscribe = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setErrorMsg('');
-    try {
-      const response = await fetch('/api/subscriber', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim() }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        setShowSuccess(true);
-        setEmail('');
-        setTimeout(() => setShowSuccess(false), 5000);
-        toast.success('Successfully subscribed to newsletter!', { icon: '✅' });
-      } else {
-        setErrorMsg(data.error || 'Subscription failed');
-      }
-    } catch (error) {
-      setErrorMsg('Failed to subscribe. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <div className="p-5 bg-white/5 rounded-xl">
-      <div className="text-center mb-4">
-        <div className="inline-flex p-2 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full mb-3">
-          <FiBell className="text-white text-lg" />
-        </div>
-
-
-        <h4 className="text-lg font-semibold text-white">Newsletter</h4>
-        <p className="text-gray-300 text-xs mt-1">Get academic events & announcements</p>
+const NewsletterForm = ({ email, setEmail, isSubmitting, showSuccess, errorMsg, handleSubscribe }) => (
+  <div className="p-5 bg-white/5 rounded-xl">
+    <div className="text-center mb-4">
+      <div className="inline-flex p-2 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full mb-3">
+        <FiBell className="text-white text-lg" />
       </div>
-      
-      <form onSubmit={handleSubscribe} className="space-y-3">
-        <div className="relative">
-          <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
-          <input
-            type="email"
-            placeholder="your@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full pl-9 pr-3 py-2 bg-black/30 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 transition-colors text-sm"
-          />
-        </div>
-        <button
-          type="submit"
-          disabled={isSubmitting || !email}
-          className="w-full bg-gradient-to-r from-amber-500 to-orange-600 disabled:opacity-50 text-white py-2 rounded-lg font-medium text-sm"
-        >
-          {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-        </button>
-      </form>
-      
-      {showSuccess && (
-        <div className="mt-3 p-2 bg-emerald-500/20 border border-emerald-500 rounded-lg">
-          <p className="text-emerald-300 text-xs text-center">Successfully subscribed!</p>
-        </div>
-      )}
-      {errorMsg && (
-        <div className="mt-3 p-2 bg-red-500/20 border border-red-500 rounded-lg text-red-300 text-xs text-center">
-          {errorMsg}
-        </div>
-      )}
+      <h4 className="text-lg font-semibold text-white">Newsletter</h4>
+      <p className="text-gray-300 text-xs mt-1">Get academic events & announcements</p>
     </div>
-  );
-};
+    <form onSubmit={handleSubscribe} className="space-y-3">
+      <div className="relative">
+        <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
+        <input
+          type="email"
+          placeholder="your@email.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full pl-9 pr-3 py-2 bg-black/30 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 transition-colors text-sm"
+        />
+      </div>
+      <button
+        type="submit"
+        disabled={isSubmitting || !email}
+        className="w-full bg-gradient-to-r from-amber-500 to-orange-600 disabled:opacity-50 text-white py-2 rounded-lg font-medium text-sm"
+      >
+        {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+      </button>
+    </form>
+    {showSuccess && (
+      <div className="mt-3 p-2 bg-emerald-500/20 border border-emerald-500 rounded-lg">
+        <p className="text-emerald-300 text-xs text-center">Successfully subscribed!</p>
+      </div>
+    )}
+    {errorMsg && (
+      <div className="mt-3 p-2 bg-red-500/20 border border-red-500 rounded-lg text-red-300 text-xs text-center">
+        {errorMsg}
+      </div>
+    )}
+  </div>
+);
 
 // Scroll to Top Button - positioned left from where it is (moved from right-6 to left-6)
 const ScrollToTop = () => {
@@ -470,13 +433,43 @@ export default function ModernFooter() {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showSitemap, setShowSitemap] = useState(false);
   const currentYear = new Date().getFullYear();
+  // Newsletter state and logic
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMsg('');
+    try {
+      const response = await fetch('/api/subscriber', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setShowSuccess(true);
+        setEmail('');
+        setTimeout(() => setShowSuccess(false), 5000);
+        toast.success('Successfully subscribed to newsletter!', { icon: '✅' });
+      } else {
+        setErrorMsg(data.error || 'Subscription failed');
+      }
+    } catch (error) {
+      setErrorMsg('Failed to subscribe. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
       <footer className="relative bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white">
         {/* Main Content */}
         <div className="relative z-10">
-
           {/* Footer with Main Items */}
           <div className="w-full px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
             <div className="max-w-7xl mx-auto">
@@ -484,18 +477,15 @@ export default function ModernFooter() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
                 {/* Column 1 */}
                 <BrandSection />
-                
                 {/* Column 2 */}
                 <div className="space-y-8">
                   <LinkGroup title="Quick Links" icon={FiGlobe} links={QUICK_LINKS.slice(0, 4)} />
                 </div>
-                
                 {/* Column 3 */}
                 <div className="space-y-8">
                   <LinkGroup title="Resources" icon={FiActivity} links={RESOURCES} />
                   <SocialLinksGroup />
                 </div>
-                
                 {/* Column 4 */}
                 <div className="space-y-6">
                   <div className="space-y-4">
@@ -507,7 +497,6 @@ export default function ModernFooter() {
                   </div>
                 </div>
               </div>
-
               {/* Subscriber Bar */}
               <div className="mt-10 sm:mt-12">
                 <div className="bg-gradient-to-br from-gray-700 via-gray-700 to-gray-900 text-white rounded-2xl shadow-xl p-6 md:p-8">
@@ -565,7 +554,6 @@ export default function ModernFooter() {
           </div>
         </div>
       </footer>
-
       {/* Modals & Scroll Button */}
       <PrivacyModal isOpen={showPrivacy} onClose={() => setShowPrivacy(false)} />
       <SitemapModal isOpen={showSitemap} onClose={() => setShowSitemap(false)} />
