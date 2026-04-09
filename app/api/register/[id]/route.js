@@ -167,12 +167,11 @@ const validateInput = (name, email, password, role, phone = null, isEditing = fa
       }
     }
   }
-
-  const validRoles = ["TEACHER", "PRINCIPAL", "ADMIN", "SUPER_ADMIN", "MODERATOR"];
-  if (role && !validRoles.includes(role.toUpperCase())) {
-    errors.push("Invalid user role");
+  // If role is missing or invalid, default to ADMIN (no error)
+  const validRoles = ["ADMIN", "SUPER_ADMIN"];
+  if (!role || !validRoles.includes(role.toUpperCase())) {
+    // No error, just default to ADMIN
   }
-
   return errors;
 };
 

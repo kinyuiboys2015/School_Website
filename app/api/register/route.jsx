@@ -453,10 +453,10 @@ const validateInput = (name, email, password, role) => {
   if (!password || password.length < 6) {
     errors.push('Password must be at least 6 characters');
   }
-  // Only allow roles defined in Prisma enum UserRole
+  // If role is missing or invalid, default to ADMIN
   const validRoles = ['ADMIN', 'SUPER_ADMIN', 'USER'];
-  if (!validRoles.includes(role?.toUpperCase())) {
-    errors.push('Invalid user role');
+  if (!role || !validRoles.includes(role.toUpperCase())) {
+    // No error, just default to ADMIN
   }
   return errors;
 };
@@ -498,10 +498,13 @@ export async function POST(request) {
     // ===================== END TOKEN VERIFICATION DISABLED =====================
 
     // ================ REST OF YOUR EXISTING CODE CONTINUES HERE ================
-    let { name, email, password, phone, role } = await request.json();
 
-    // Default role to SUPERADMIN if not provided
-    if (!role) role = 'SUPERADMIN';
+    let { name, email, password, phone, role } = await request.json();
+    // Default role to ADMIN if not provided or invalid
+    const validRoles = ['ADMIN', 'SUPER_ADMIN', 'USER'];
+    if (!role || !validRoles.includes(role.toUpperCase())) {
+      role = 'ADMIN';
+    }
 
     // Only allow ADMIN or SUPERADMIN to create users (unless no users exist yet)
     const userCount = await prisma.user.count();
