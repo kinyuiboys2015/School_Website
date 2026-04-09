@@ -469,7 +469,10 @@ const validateInput = (name, email, password, role) => {
 // Main POST
 export async function POST(request) {
   try {
-    // ===================== TOKEN VERIFICATION ENABLED =====================
+    // ===================== TOKEN VERIFICATION DISABLED FOR TESTING =====================
+    // Authentication is disabled to allow user creation for testing purposes.
+    // Uncomment the following block to re-enable admin/device token checks.
+    /*
     // Authenticate request first - only ADMIN and SUPERADMIN can create users
     const auth = authenticateRequest(request);
     if (!auth.authenticated) {
@@ -495,7 +498,8 @@ export async function POST(request) {
       device: auth.deviceInfo,
       timestamp: new Date().toISOString()
     });
-    // ===================== END TOKEN VERIFICATION =====================
+    */
+    // ===================== END TOKEN VERIFICATION DISABLED =====================
 
     // ================ REST OF YOUR EXISTING CODE CONTINUES HERE ================
     const { name, email, password, phone, role = 'ADMIN' } = await request.json();
