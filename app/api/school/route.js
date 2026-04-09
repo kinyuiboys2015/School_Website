@@ -480,8 +480,6 @@ const uploadMagazineFiles = async (pdfFile, thumbFile, existingMagazine = null) 
   return { pdfUrl, thumbUrl };
 };
 
-
-
 // Validate required fields for CREATE operation
 const validateRequiredFieldsCreate = (formData) => {
   const required = [
