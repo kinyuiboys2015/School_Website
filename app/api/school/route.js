@@ -29,12 +29,28 @@ class DeviceTokenManager {
       // Validate device token
       const deviceValid = this.validateDeviceToken(deviceToken);
       if (!deviceValid.valid) {
-      return school;
-    } catch (error) {
-      console.error("Error cleaning school response:", error);
-      return school;
-    }
-  };
+        return { 
+          valid: false, 
+          reason: `device_${deviceValid.reason}`,
+          message: `Device token ${deviceValid.reason}: ${deviceValid.error || ''}`
+        };
+      }
+
+      // Parse admin token payload
+      let adminPayload;
+      try {
+        adminPayload = JSON.parse(atob(adminParts[1]));
+        
+        // Check expiration
+        const currentTime = Date.now() / 1000;
+        if (adminPayload.exp < currentTime) {
+          return { valid: false, reason: 'admin_token_expired', message: 'Admin token has expired' };
+        }
+        
+        // Check user role - only admins can manage school info
+        const userRole = adminPayload.role || adminPayload.userRole;
+        const validRoles = ['ADMIN', 'SUPER_ADMIN', 'administrator', 'PRINCIPAL'];
+        
         if (!userRole || !validRoles.includes(userRole.toUpperCase())) {
           return { 
             valid: false, 
