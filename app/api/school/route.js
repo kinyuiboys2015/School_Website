@@ -440,30 +440,7 @@ const cleanSchoolResponse = (school) => {
     console.error("Error cleaning school response:", error);
     return school;
   }
-}
-      admissionCloseDate: school.admissionCloseDate,
-      admissionRequirements: school.admissionRequirements,
-      admissionCapacity: school.admissionCapacity,
-      admissionContactEmail: school.admissionContactEmail,
-      admissionContactPhone: school.admissionContactPhone,
-      admissionWebsite: school.admissionWebsite,
-      admissionLocation: school.admissionLocation,
-      admissionOfficeHours: school.admissionOfficeHours,
-      admissionDocumentsRequired,
-      
-      // Timestamps
-      createdAt: school.createdAt,
-      updatedAt: school.updatedAt
-
-
-
-    };
-  } catch (error) {
-    console.error("Error cleaning school response:", error);
-    return school;
-  }
 };
-
 
 // Add this function
 const uploadMagazineFiles = async (pdfFile, thumbFile, existingMagazine = null) => {
@@ -570,40 +547,6 @@ export async function GET() {
       success: true, 
       message: "School information retrieved successfully",
       school: cleanSchoolResponse(school)  // This now includes magazine
-    });
-
-  } catch (error) {
-    console.error("❌ GET Error:", error);
-    return NextResponse.json(
-      { 
-        success: false, 
-        error: error.message || "Internal server error",
-        message: "Failed to fetch school information"
-      }, 
-      { status: 500 }
-    );
-  }
-}
-
-
-    if (!school) {
-      console.log("📭 No school found in database");
-      return NextResponse.json(
-        { 
-          success: true, 
-          message: "No school information found",
-          school: null 
-        }, 
-        { status: 200 }
-      );
-    }
-
-    console.log("✅ School found:", school.name);
-    
-    return NextResponse.json({ 
-      success: true, 
-      message: "School information retrieved successfully",
-      school: cleanSchoolResponse(school)
     });
 
   } catch (error) {
