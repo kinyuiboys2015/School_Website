@@ -298,10 +298,49 @@ function HomeDashboardView({ student, token }) {
 
 // ==================== LANDING PAGE (UNAUTHENTICATED) ====================
 function LandingPage({ onOpenLogin, router }) {
+  // Modern color schemes for each feature card
+  const featureColors = [
+    {
+      iconBg: 'bg-gradient-to-br from-amber-400 to-orange-500',
+      text: 'text-amber-700',
+      border: 'border-amber-100',
+      hover: 'hover:bg-amber-50 hover:shadow-amber-200/40',
+    },
+    {
+      iconBg: 'bg-gradient-to-br from-emerald-400 to-green-500',
+      text: 'text-emerald-700',
+      border: 'border-emerald-100',
+      hover: 'hover:bg-emerald-50 hover:shadow-emerald-200/40',
+    },
+    {
+      iconBg: 'bg-gradient-to-br from-sky-400 to-blue-500',
+      text: 'text-sky-700',
+      border: 'border-sky-100',
+      hover: 'hover:bg-sky-50 hover:shadow-sky-200/40',
+    },
+    {
+      iconBg: 'bg-gradient-to-br from-pink-400 to-fuchsia-500',
+      text: 'text-pink-700',
+      border: 'border-pink-100',
+      hover: 'hover:bg-pink-50 hover:shadow-pink-200/40',
+    },
+    {
+      iconBg: 'bg-gradient-to-br from-lime-400 to-green-600',
+      text: 'text-lime-700',
+      border: 'border-lime-100',
+      hover: 'hover:bg-lime-50 hover:shadow-lime-200/40',
+    },
+    {
+      iconBg: 'bg-gradient-to-br from-indigo-400 to-violet-500',
+      text: 'text-indigo-700',
+      border: 'border-indigo-100',
+      hover: 'hover:bg-indigo-50 hover:shadow-indigo-200/40',
+    },
+  ];
   const features = [
     { icon: FaBook, title: 'Digital Learning Resources', desc: 'Access digital notes, revision e-books, past papers, and supplementary materials for all subjects.' },
     { icon: FaAward, title: 'Assignments & Projects', desc: 'View subject-specific tasks, holiday assignments, and projects. Track deadlines and get teacher feedback.' },
-    { icon: FaChartBar, title: 'Performance Analytics', desc: 'Personalized reports comparing your results with class averages and KCSE targets.' },
+    { icon: FaChartBar, title: 'Performance Analytics', desc: 'Personalized reports comparing your results with class averages and Final Exam targets Through Zeraki' },
     { icon: FaDollarSign, title: 'Fee Management', desc: 'Check balances, download statements, view payment history, and access fee structures.' },
     { icon: FaCalendar, title: 'School Calendar', desc: 'Academic dates, exam schedules, sports fixtures, and parent-teacher meeting times.' },
     { icon: FaComments, title: 'Communication Hub', desc: 'Announcements, school news, event notifications, and deadline reminders.' },
@@ -432,16 +471,22 @@ function LandingPage({ onOpenLogin, router }) {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {features.map((f, i) => {
               const Icon = f.icon;
+              const color = featureColors[i % featureColors.length];
               return (
-                <div key={i} className="group p-5 sm:p-6 rounded-2xl border border-gray-100 bg-gray-50/50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/40 hover:-translate-y-0.5 transition-all duration-300 anim-fade-up"
-                  style={{ animationDelay: `${i * 60}ms` }}>
-                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-slate-100 to-gray-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <Icon className="w-5 h-5 text-slate-700" />
+                <div
+                  key={i}
+                  className={`group p-5 sm:p-6 rounded-2xl border ${color.border} bg-gray-50/50 ${color.hover} hover:-translate-y-0.5 transition-all duration-300 anim-fade-up`}
+                  style={{ animationDelay: `${i * 60}ms` }}
+                >
+                  <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl ${color.iconBg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                    <Icon className={`w-5 h-5 ${color.text}`} />
                   </div>
-                  <h3 className="text-base sm:text-lg font-bold text-black mb-1.5">{f.title}</h3>
-                  <p className="text-sm text-gray-800 leading-relaxed line-clamp-3">{f.desc}</p>
-                  <button onClick={onOpenLogin}
-                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 uppercase tracking-wider group-hover:text-slate-900 transition-colors">
+                  <h3 className={`text-base sm:text-lg font-bold mb-1.5 ${color.text}`}>{f.title}</h3>
+                  <p className={`text-sm leading-relaxed line-clamp-3 ${color.text}`}>{f.desc}</p>
+                  <button
+                    onClick={onOpenLogin}
+                    className={`mt-4 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider ${color.text} group-hover:text-black transition-colors`}
+                  >
                     Login to Access <FaArrowRight className="w-3 h-3" />
                   </button>
                 </div>
@@ -477,7 +522,8 @@ function LandingPage({ onOpenLogin, router }) {
 export default function ModernStudentPortalPage() {
   const [student, setStudent] = useState(null);
   const [token, setToken] = useState(null);
-  const [showLoginModal, setShowLoginModal] = useState(true);
+  // Modal does NOT open automatically; only when user clicks sign in/access portal
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState(null);
   const [requiresContact, setRequiresContact] = useState(false);
