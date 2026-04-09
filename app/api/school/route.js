@@ -398,8 +398,15 @@ const cleanSchoolResponse = (school) => {
       feesDay: school.feesDay,
       feesBoarding: school.feesBoarding,
       admissionFee: school.admissionFee,
-       magazine: school.magazine || null,  // Add this line
-
+Magazine: {
+  create: {
+    title: magazineTitle,
+    year: magazineYear,
+    description: magazineDescription,
+    pdfUrl: pdfUrl,
+    thumbnail: thumbUrl,
+  }
+},
     
       // Academic Calendar
       openDate: school.openDate,
