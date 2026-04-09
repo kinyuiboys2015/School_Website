@@ -32,141 +32,39 @@ const BookReader = dynamic(
 // ============================================================
 // Scroll to Top Button
 // ============================================================
-const ScrollToTop = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const toggleVisibility = () => {
-      setIsVisible(window.pageYOffset > 300);
-    };
-    window.addEventListener('scroll', toggleVisibility);
-    return () => window.removeEventListener('scroll', toggleVisibility);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  if (!isVisible) return null;
-
-  return (
-    <button
-      onClick={scrollToTop}
-      className="fixed bottom-6 left-6 p-3 bg-gradient-to-r from-amber-900 to-orange-600 rounded-full shadow-lg z-50 active:scale-95 transition-all"
-    >
-      <ArrowUp className="text-white text-xl" />
-    </button>
-  );
-};
-
-// ============================================================
-// Fetch magazine data from /api/school GET request
-// ============================================================
-
-// ============================================================
-// Magazine Card Component — No hover effects
-// ============================================================
-const MagazineCard = ({ issue, onOpen }) => {
-  return (
-    <div className="relative bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200">
-      {/* Featured Badge */}
-      {issue.featured && (
-        <div className="absolute top-5 left-5 z-10">
-          <div className="bg-gradient-to-r from-amber-900 to-orange-900 text-white px-3 py-1.5 rounded-full text-xs font-black flex items-center gap-1.5 shadow-lg">
-            <Star size={12} fill="currentColor" />
-            Latest Edition
-          </div>
-        </div>
-      )}
-
-      {/* Cover Image */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-amber-100 to-orange-100">
-        {/* Book Spine Shadow */}
-        <div className="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-black/30 to-transparent z-10" />
-        
-        <Image
-          src={issue.coverImage}
-          alt={`${issue.title} ${issue.year}`}
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-        
-        {/* Year Badge */}
-        <div className="absolute top-5 right-5 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-xl text-xl font-black text-slate-900 shadow-lg">
-          {issue.year}
-        </div>
-
-        {/* Title Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black to-transparent">
-          <p className="text-amber-900 text-xs font-black uppercase tracking-wider mb-1">Annual Publication</p>
-          <h3 className="text-white font-black text-2xl leading-tight">{issue.title}</h3>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-6">
-        <div className="flex items-center gap-4 mb-3 text-sm">
-          <span className="flex items-center gap-1.5 text-amber-600 font-bold">
-            <Calendar size={14} />
-            {issue.year}
-          </span>
-          <span className="flex items-center gap-1.5 text-slate-500">
-            <FileText size={14} />
-            {issue.pageCount} pages
-          </span>
-        </div>
-        
-        <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
-          {issue.description}
-        </p>
-
-        {/* Highlights */}
-        <div className="mb-5">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Highlights</p>
-          <div className="flex flex-wrap gap-1.5">
-            {issue.highlights.slice(0, 2).map((highlight, idx) => (
-              <span key={idx} className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded-full">
-                {highlight}
-              </span>
-            ))}
-            {issue.highlights.length > 2 && (
-              <span className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded-full">
-                +{issue.highlights.length - 2} more
-              </span>
-            )}
-          </div>
-        </div>
-        
-        <div className="flex gap-3">
-          <button
-            onClick={() => onOpen(issue)}
-            className="flex-1 px-5 py-2.5 bg-gradient-to-r from-amber-900 to-orange-900 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all"
-          >
-            <Eye size={16} />
-            Read Magazine
-          </button>
-          <a
-            href={issue.pdfUrl}
-            download
-            className="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl transition-colors"
-            title="Download PDF"
-          >
-            <Download size={18} />
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ============================================================
-// Main Magazine Page Component
-// ============================================================
 export default function MagazinePage() {
+  const [magazineData, setMagazineData] = useState([]);
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedYear, setSelectedYear] = useState('all');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchMagazines() {
+      setLoading(true);
+      setError(null);
+      try {
+        // Fetch from /api/school (adjust if you have a dedicated /api/magazine)
+        const res = await fetch('/api/school');
+        const data = await res.json();
+        // If your API returns an array of magazines, set directly. If only one, wrap in array.
+        let magazines = [];
+        if (data?.school?.magazine) {
+          // If only one magazine (object), wrap in array
+          magazines = Array.isArray(data.school.magazine)
+            ? data.school.magazine
+            : [data.school.magazine];
+        }
+        setMagazineData(magazines);
+      } catch (err) {
+        setError('Failed to load magazine data');
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchMagazines();
+  }, []);
 
   // Get unique years from data
   const years = [...new Set(magazineData.map(m => m.year))].sort((a, b) => b - a);
@@ -174,21 +72,36 @@ export default function MagazinePage() {
   // Filter magazines
   const filteredMagazines = magazineData.filter(issue => {
     const matchesYear = selectedYear === 'all' || issue.year === selectedYear;
-    const matchesSearch = issue.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          issue.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          issue.year.toString().includes(searchQuery);
+    const matchesSearch = (issue.title?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+      (issue.description?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+      (issue.year?.toString() || '').includes(searchQuery);
     return matchesYear && matchesSearch;
   });
 
   // Total stats
   const totalIssues = magazineData.length;
-  const totalPages = magazineData.reduce((sum, m) => sum + m.pageCount, 0);
-  const earliestYear = Math.min(...magazineData.map(m => m.year));
-  const latestYear = Math.max(...magazineData.map(m => m.year));
+  const totalPages = magazineData.reduce((sum, m) => sum + (m.pageCount || 0), 0);
+  const earliestYear = magazineData.length > 0 ? Math.min(...magazineData.map(m => m.year)) : '';
+  const latestYear = magazineData.length > 0 ? Math.max(...magazineData.map(m => m.year)) : '';
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-lg text-slate-600">Loading magazine...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-lg text-red-600">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      
       {/* ═══════════════════════ HERO SECTION ═══════════════════════ */}
       <section className="relative min-h-[55vh] flex items-center overflow-hidden">
         <Image
@@ -199,14 +112,12 @@ export default function MagazinePage() {
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/30" />
-        
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-900/20 backdrop-blur-sm border border-amber-900/30 mb-6">
               <Newspaper className="text-amber-900" size={14} />
               <span className="text-xs font-bold text-amber-300 uppercase tracking-wider">Annual Publication</span>
             </div>
-
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-5">
               The Kinyui Echo
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-900 to-orange-400">
