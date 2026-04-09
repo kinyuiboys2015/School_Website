@@ -465,7 +465,7 @@ function LandingPage({ onOpenLogin, router }) {
               Everything You Need
             </h2>
             <p className="mt-2 text-sm sm:text-base text-gray-500 max-w-xl mx-auto">
-              Six powerful modules designed to support your academic journey at Kinyui Boys'.
+              Six powerful modules designed to support your academic journey at Kinyui Boys Senior School'.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
