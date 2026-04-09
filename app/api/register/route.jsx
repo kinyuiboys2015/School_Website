@@ -554,7 +554,6 @@ export async function POST(request) {
 
     // Log successful creation
     console.log('✅ User created successfully:', {
-      createdBy: auth.user.name,
       newUser: user.email,
       newUserRole: user.role,
       timestamp: new Date().toISOString()
@@ -565,11 +564,8 @@ export async function POST(request) {
         success: true,
         message: 'User registered successfully',
         user: sanitizeUser(user),
-        token,
-        createdBy: {
-          name: auth.user.name,
-          role: auth.user.role
-        }
+        token
+        // createdBy: only included if authentication is enabled
       },
       { status: 201 }
     );

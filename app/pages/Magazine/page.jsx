@@ -60,74 +60,95 @@ const ScrollToTop = () => {
 };
 
 // ============================================================
-// Magazine Data - Expanded with more editions
+// Fetch magazine data from /api/school GET request
 // ============================================================
-const magazineData = [
-  {
-    id: "2024-annual",
-    title: "The Kinyui Echo",
-    year: 2024,
-    coverImage: "/magazine/kbss.png",
-    description: "Celebrating a year of academic excellence, sports achievements, and infrastructural growth. This edition highlights the KCSE top performers, new classroom blocks, and the successful inter-school sports gala.",
-    featured: true,
-    pdfUrl: "/Magazines/kinyui.pdf",
-    pageCount: 48,
-    highlights: [
-      "KCSE 2023 - 98% Pass Rate",
-      "New Science Laboratory Launch",
-      "Sports Day Champions",
-      "Principal's Excellence Awards"
-    ]
-  },
-  {
-    id: "2023-annual",
-    title: "The Kinyui Echo",
-    year: 2023,
-    coverImage: "/magazine/kbss.png",
-    description: "A look back at a transformative year featuring the inauguration of the new computer lab, cultural day celebrations, and remarkable student achievements in science congress competitions.",
-    featured: false,
-    pdfUrl: "/Magazines/kinyui.pdf",
-    pageCount: 44,
-    highlights: [
-      "Computer Lab Inauguration",
-      "Science Congress Winners",
-      "Cultural Day Highlights",
-      "Alumni Reunion 2023"
-    ]
-  },
-  {
-    id: "2022-annual",
-    title: "The Kinyui Echo",
-    year: 2022,
-    coverImage: "/magazine/kbss.png",
-    description: "This edition covers the resilient comeback after the pandemic — students returning to full learning, sports resumption, and the remarkable KCSE results that defined the year.",
-    featured: false,
-    pdfUrl: "/Magazines/kinyui.pdf",
-    pageCount: 40,
-    highlights: [
-      "Post-COVID Academic Recovery",
-      "KCSE 2021 Results Analysis",
-      "Sports Resumption Highlights",
-      "Infrastructure Upgrades"
-    ]
-  },
-  {
-    id: "2021-annual",
-    title: "The Kinyui Echo",
-    year: 2021,
-    coverImage: "/magazine/kbss.png",
-    description: "A special pandemic edition documenting the resilience of students and staff during unprecedented times, online learning innovations, and the spirit that kept the Kinyui community together.",
-    featured: false,
-    pdfUrl: "/Magazines/kinyui.pdf",
-    pageCount: 36,
-    highlights: [
-      "Online Learning Innovation",
-      "Community Resilience Stories",
-      "Health & Safety Protocols",
-      "Virtual Events Coverage"
-    ]
+import axios from "axios";
+
+// Main Magazine Page Component
+export default function MagazinePage() {
+  const [magazine, setMagazine] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedIssue, setSelectedIssue] = useState(null);
+
+  useEffect(() => {
+    async function fetchMagazine() {
+      try {
+        setLoading(true);
+        const res = await axios.get("/api/school");
+        const school = res.data?.school;
+        if (school && school.magazine) {
+          setMagazine(school.magazine);
+        } else {
+          setMagazine(null);
+        }
+      } catch (err) {
+        setError("Failed to load magazine data");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchMagazine();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-lg text-slate-600">Loading magazine...</p>
+      </div>
+    );
   }
-];
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-lg text-red-600">{error}</p>
+      </div>
+    );
+  }
+
+  if (!magazine) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-lg text-slate-500">No magazine available.</p>
+      </div>
+    );
+  }
+
+  // Render the magazine (single)
+  return (
+    <div className="bg-slate-50 min-h-screen flex flex-col items-center justify-center">
+      <div className="max-w-2xl w-full bg-white rounded-3xl shadow-xl border border-slate-200 p-8 flex flex-col items-center">
+        <Image
+          src={magazine.thumbnail || "/magazine/kbss.png"}
+          alt={magazine.title || "School Magazine"}
+          width={320}
+          height={420}
+          className="rounded-xl object-cover mb-6"
+        />
+        <h2 className="text-2xl font-black text-amber-900 mb-2">{magazine.title || "School Magazine"}</h2>
+        <p className="text-slate-600 mb-4">{magazine.description || "No description available."}</p>
+        <a
+          href={magazine.pdfUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-6 py-3 bg-gradient-to-r from-amber-900 to-orange-900 text-white text-lg font-bold rounded-xl flex items-center gap-2 mb-2"
+        >
+          <Eye size={20} />
+          Read Magazine
+        </a>
+        <a
+          href={magazine.pdfUrl}
+          download
+          className="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl text-lg font-bold flex items-center gap-2"
+        >
+          <Download size={20} />
+          Download PDF
+        </a>
+      </div>
+    </div>
+  );
+}
 
 // ============================================================
 // Magazine Card Component — No hover effects
