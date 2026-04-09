@@ -498,54 +498,65 @@ export default function ModernFooter() {
                 </div>
               </div>
               {/* Subscriber Bar */}
-      <div className="mt-8 sm:mt-12">
-  <div className="bg-gradient-to-br from-gray-700 via-gray-700 to-gray-900 text-white rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
-    <div className="flex flex-col items-center justify-between gap-4 sm:gap-6">
-      {/* flex-row (not flex-col) on all screens */}
-      <div className="text-left space-y-1 sm:space-y-2 w-full md:w-auto mb-4 md:mb-0">
-        <h3 className="text-lg sm:text-xl md:text-2xl font-bold leading-tight">
+<div className="mt-8 sm:mt-12">
+  <div className="bg-gradient-to-br from-gray-700 via-gray-700 to-gray-900 text-white rounded-2xl shadow-xl p-6 md:p-10">
+    <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-12">
+      
+      {/* Text Content */}
+      <div className="text-center md:text-left space-y-2 w-full md:flex-1">
+        <h3 className="text-xl sm:text-2xl font-bold leading-tight">
           Subscribe to Our School Newsletter
         </h3>
-        <p className="text-white/80 text-xs sm:text-sm md:text-base max-w-md">
+        <p className="text-white/80 text-sm md:text-base max-w-md mx-auto md:mx-0">
           Get the latest updates and news from Kinyui Boys Senior School
         </p>
       </div>
+
+      {/* Form Container */}
       <form
         onSubmit={handleSubscribe}
-        className="flex flex-row flex-nowrap w-full md:w-auto gap-2 sm:gap-3 items-center" style={{ maxWidth: 480 }}
+        className="flex flex-row w-full md:w-auto gap-2 items-center flex-nowrap"
+        style={{ maxWidth: '100%', md: { maxWidth: 480 } }}
       >
-        <input
-          type="email"
-          placeholder="Email address"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          className="flex-1 min-w-0 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm sm:text-base"
-          required
-        />
+        <div className="relative flex-1 min-w-0">
+          <input
+            type="email"
+            placeholder="Email address"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm sm:text-base"
+            required
+          />
+        </div>
         <button
           type="submit"
           disabled={isSubmitting || !email}
-          className="bg-white text-amber-600 font-bold px-4 sm:px-6 py-2 sm:py-3 rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-md hover:shadow-lg flex items-center gap-1 sm:gap-2 flex-shrink-0 text-sm sm:text-base"
+          className="bg-white text-amber-600 font-bold px-5 sm:px-8 py-3 rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-md flex-shrink-0 text-sm sm:text-base flex items-center gap-2"
         >
           {isSubmitting && (
-            <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-amber-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className="animate-spin h-4 w-4 text-amber-600" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
             </svg>
           )}
-          Subscribe
+          <span>Subscribe</span>
         </button>
       </form>
     </div>
-    {/* Notifications */}
-    {showSuccess && (
-      <div className="mt-3 p-2 bg-emerald-500/20 border border-emerald-500 rounded-lg text-emerald-300 text-xs text-center">
-        Successfully subscribed!
-      </div>
-    )}
-    {errorMsg && (
-      <div className="mt-3 p-2 bg-red-500/20 border border-red-500 rounded-lg text-red-300 text-xs text-center">
-        {errorMsg}
+
+    {/* Status Messages */}
+    {(showSuccess || errorMsg) && (
+      <div className="mt-6">
+        {showSuccess && (
+          <div className="p-3 bg-emerald-500/20 border border-emerald-500 rounded-lg text-emerald-300 text-sm text-center">
+            Successfully subscribed!
+          </div>
+        )}
+        {errorMsg && (
+          <div className="p-3 bg-red-500/20 border border-red-500 rounded-lg text-red-300 text-sm text-center">
+            {errorMsg}
+          </div>
+        )}
       </div>
     )}
   </div>
