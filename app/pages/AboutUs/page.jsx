@@ -516,7 +516,7 @@ export default function AboutPage() {
                 {/* Bottom Floating Card */}
                 <div className="absolute bottom-8 left-8 right-8 bg-white p-5 rounded-2xl border border-slate-200 shadow-2xl">
                   <p className="text-xs text-slate-700 italic mb-0">
-                    "Providing a conducive learning environment for 35+ years."
+                    "Providing a conducive learning environment for 60+ years."
                   </p>
                 </div>
               </div>
