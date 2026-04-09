@@ -762,10 +762,11 @@ function ModernSchoolModal({ onClose, onSave, school, loading: parentLoading }) 
     description: school?.description || '',
     motto: school?.motto || '',
     vision: school?.vision || '',
-      // ... existing fields
-  magazineTitle: school?.magazine?.title || '',
-  magazineYear: school?.magazine?.year?.toString() || '',
-  magazineDescription: school?.magazine?.description || '',
+    
+   magazineTitle: school?.Magazine?.title || '',
+  magazineYear: school?.Magazine?.year?.toString() || '',
+  magazineDescription: school?.Magazine?.description || '',
+  // ...existing
 
     mission: school?.mission || '',
     studentCount: school?.studentCount?.toString() || '',
