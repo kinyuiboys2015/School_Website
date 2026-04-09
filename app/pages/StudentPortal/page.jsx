@@ -359,12 +359,12 @@ function LandingPage({ onOpenLogin, router }) {
               <HiSparkles className="w-3 h-3 text-slate-700" />
               Excellence in Education Since 1976
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-[1.05]">
-              Your Academic
-              <span className="block bg-gradient-to-r from-slate-700 to-slate-900 bg-clip-text text-transparent">
-                Journey Starts Here
-              </span>
-            </h1>
+         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-[1.05]">
+  Your Academic
+  <span className="block bg-gradient-to-r from-amber-700 via-orange-600 to-amber-800 bg-clip-text text-transparent">
+    Journey Starts Here
+  </span>
+</h1>
             <p className="mt-4 sm:mt-5 text-base sm:text-lg text-gray-600 max-w-lg leading-relaxed">
               The centralized digital platform for Kinyui Boys' students. Access resources, track performance, manage fees, and stay connected.
             </p>

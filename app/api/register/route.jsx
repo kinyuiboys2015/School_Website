@@ -469,13 +469,15 @@ const validateInput = (name, email, password, role) => {
 // Main POST
 export async function POST(request) {
   try {
-    // ================ ADD THIS AUTHENTICATION CHECK HERE ================
+    // ===================== TOKEN VERIFICATION DISABLED FOR NOW =====================
+    // The following authentication and token verification logic is commented out as per request.
+    // To re-enable, uncomment the code below.
+    /*
     // Authenticate request first - only ADMIN and SUPER_ADMIN can create users
     const auth = authenticateRequest(request);
     if (!auth.authenticated) {
       return auth.response;
     }
-    
     // Check if user has permission to create new users (only ADMIN or SUPER_ADMIN)
     const adminRoles = ['ADMIN', 'SUPER_ADMIN', 'administrator', 'PRINCIPAL'];
     if (!adminRoles.includes(auth.user.role?.toUpperCase())) {
@@ -488,7 +490,6 @@ export async function POST(request) {
         { status: 403 }
       );
     }
-    
     // Log the user creation attempt for audit
     console.log('👤 User creation attempt:', {
       createdBy: auth.user.name,
@@ -497,7 +498,9 @@ export async function POST(request) {
       device: auth.deviceInfo,
       timestamp: new Date().toISOString()
     });
-    
+    */
+    // ===================== END TOKEN VERIFICATION DISABLED =====================
+
     // ================ REST OF YOUR EXISTING CODE CONTINUES HERE ================
     const { name, email, password, phone, role = 'ADMIN' } = await request.json();
 
