@@ -307,15 +307,21 @@ export default function MagazineArchive() {
     const fetchMagazines = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/magazines');
+        const response = await fetch('/api/school');
         const data = await response.json();
-        setMagazines(data.magazines || []);
-        
+        // The magazine is nested under data.school.magazine
+        let magazines = [];
+        if (data.school && data.school.magazine) {
+          // If you expect only one magazine, wrap it in an array
+          magazines = [data.school.magazine];
+        }
+        setMagazines(magazines);
+
         // Calculate stats
-        const years = data.magazines.map(m => m.year);
-        const totalPages = data.magazines.reduce((sum, m) => sum + (m.pages || 80), 0);
+        const years = magazines.map(m => m.year);
+        const totalPages = magazines.reduce((sum, m) => sum + (m.pages || 80), 0);
         setStats({
-          totalIssues: data.magazines.length,
+          totalIssues: magazines.length,
           totalPages: totalPages,
           earliestYear: Math.min(...years),
           latestYear: Math.max(...years)
