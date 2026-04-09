@@ -43,7 +43,7 @@ const allTerms = [
       { subTitle: "Payment Methods", content: "Bank payments to SA Kinyui Boys HIGH SCHOOL, Cooperative Bank, Account No: 0112876543210. MPESA Paybill: 894145 (Account: Student Name + Admission No). Crossed bankers cheque payable to Kinyui Boys SECONDARY SCHOOL or Postal money order payable to Kinyui Boys SECONDARY SCHOOL." },
       { subTitle: "Payment Deadlines", content: "Fees payable in full by the second week of each term. Term 1: By 31st January, Term 2: By 30th April, Term 3: By 31st August." },
       { subTitle: "Penalties", content: "Late payment attracts a penalty of KES 500 per week. Students with fee balances will not receive end-term reports or be allowed to sit for exams." },
-      { subTitle: "Official Contact", content: "For fee queries, contact Accounts Clerk at P.O.BOX 142-90131, TALA or call 0710 894 145. Email: kinyuiboysschool@yahoo.com" }
+      { subTitle: "Official Contact", content: "For fee queries, contact Accounts Clerk at P.O.BOX 142-90131, TALA or call 0733 587223. Email: kinyuiboysschool@yahoo.com" }
     ]
   },
   {
@@ -90,7 +90,7 @@ const allTerms = [
     subSections: [
       { subTitle: "School Dispensary", content: "School nurse on duty 24/7. Minor ailments treated at school dispensary. Serious cases referred to Kinyui Health Centre." },
       { subTitle: "Medical Checkups", content: "Routine medical checkups conducted every term. Parents must provide updated medical history and allergy information." },
-      { subTitle: "Emergency Contacts", content: "Parents notified immediately of serious illness/accident. Emergency contacts must be kept updated: Principal: 0710 894 145." }
+      { subTitle: "Emergency Contacts", content: "Parents notified immediately of serious illness/accident. Emergency contacts must be kept updated: Principal: 0733 587223." }
     ]
   },
   {
@@ -548,7 +548,7 @@ export default function SchoolPolicies() {
 
         <div className="mt-8 text-center">
           <p className="text-[11px] sm:text-xs text-slate-400">&copy; {year} SA Kinyui Boys Senior School &middot; Matungulu, Machakos County &middot; All rights reserved</p>
-          <p className="text-[10px] sm:text-[11px] text-slate-400 mt-1">Tel: 0710 894 145 &middot; Email: kinyuiboysschool@yahoo.com &middot; P.O.BOX 142-90131, TALA</p>
+          <p className="text-[10px] sm:text-[11px] text-slate-400 mt-1">Tel: 0733 587223 &middot; Email: kinyuiboysschool@yahoo.com &middot; P.O.BOX 142-90131, TALA</p>
         </div>
       </div>
 

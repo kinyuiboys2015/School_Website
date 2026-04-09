@@ -106,14 +106,14 @@ const CONTACT_INFO = [
   },
   {
     icon: FiPhone,
-    text: '0710 894 145',
-    href: 'tel:0710894145',
+    text: '0733 587223',
+    href: 'tel:0733 587223',
     detail: 'Main Office Line',
   },
   {
     icon: FiPhone,
-    text: '0710 894 145',
-    href: 'tel:0710894145',
+    text: '0733 587223',
+    href: 'tel:0733 587223',
     detail: 'Admissions Office',
   },
   {

@@ -1002,7 +1002,7 @@ Loading for Opportunities at Kinyui Senior School
                 <div className="flex items-center gap-2 text-sm">
                   <FiPhone className="text-slate-400" />
                   <a href="tel:+254710894145" className="text-green-600 hover:underline">
-                    +254 710 894 145
+                    0733 587223
                   </a>
                 </div>
               </div>

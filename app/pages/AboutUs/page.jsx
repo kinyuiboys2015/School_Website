@@ -446,7 +446,7 @@ export default function AboutPage() {
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col gap-2">
                   <Phone className="text-amber-600 w-5 h-5" />
                   <p className="text-[10px] font-black uppercase text-slate-600 tracking-tighter">Call Us</p>
-                  <p className="text-slate-900 font-bold text-sm">+254 710 894 145</p>
+                  <p className="text-slate-900 font-bold text-sm">0733 587223</p>
                 </div>
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col gap-2">
                   <Mail className="text-amber-600 w-5 h-5" />

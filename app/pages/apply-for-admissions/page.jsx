@@ -1529,11 +1529,11 @@ kjseaGrade: '',         // Changed from meanGrade
       <div className="flex-[2] flex flex-row items-center justify-around md:justify-end gap-2 md:gap-12 px-4 md:px-10">
         
         {/* Phone Link */}
-        <a href="tel:0710894145" className="group flex flex-col items-center md:items-start gap-1">
+        <a href="tel:0733 587223" className="group flex flex-col items-center md:items-start gap-1">
           <span className="text-[9px] font-black text-slate-800 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Call Us</span>
           <div className="flex items-center gap-2">
             <FiPhone size={14} className="text-slate-900 group-hover:scale-110 transition-transform" />
-            <span className="text-xs md:text-sm font-bold text-slate-900">0710 894 145</span>
+            <span className="text-xs md:text-sm font-bold text-slate-900">0733 587223</span>
           </div>
         </a>
 
