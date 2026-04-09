@@ -205,16 +205,15 @@ const requiresAdminPrivilege = (operation, targetUserRole, currentUserRole) => {
   
   // For ADMIN users (non-super)
   if (normalizedCurrentRole === 'ADMIN') {
-    // Admins can manage TEACHER or PRINCIPAL users
-    if (normalizedTargetRole === 'TEACHER' || normalizedTargetRole === 'PRINCIPAL') {
-      return { allowed: true, message: 'Admin access granted for teacher/principal' };
+    // Admins can manage TEACHER, PRINCIPAL, and ADMIN users (but not SUPER_ADMIN)
+    if (["TEACHER", "PRINCIPAL", "ADMIN"].includes(normalizedTargetRole)) {
+      return { allowed: true, message: 'Admin access granted for teacher/principal/admin' };
     }
-    
-    // Admins cannot manage other ADMINS or SUPER_ADMIN
-    if (normalizedTargetRole === 'ADMIN' || normalizedTargetRole === 'SUPER_ADMIN') {
+    // Admins cannot manage SUPER_ADMIN
+    if (normalizedTargetRole === 'SUPER_ADMIN') {
       return { 
         allowed: false, 
-        message: 'Only SUPER_ADMIN can manage ADMIN users',
+        message: 'Only SUPER_ADMIN can manage SUPER_ADMIN users',
         requiresSuperAdmin: true
       };
     }

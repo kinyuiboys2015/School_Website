@@ -637,8 +637,7 @@ model StudentStats {
 }
 
 enum UserRole {
-  TEACHER
-  PRINCIPAL
+  USER
   ADMIN
   SUPER_ADMIN
 }

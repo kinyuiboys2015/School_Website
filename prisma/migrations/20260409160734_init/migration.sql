@@ -6,7 +6,7 @@ CREATE TABLE `users` (
     `emailVerified` DATETIME(3) NULL,
     `password` VARCHAR(191) NULL,
     `phone` VARCHAR(191) NULL,
-    `role` ENUM('TEACHER', 'PRINCIPAL', 'ADMIN') NOT NULL DEFAULT 'TEACHER',
+    `role` ENUM('USER', 'ADMIN', 'SUPER_ADMIN') NOT NULL DEFAULT 'ADMIN',
     `image` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,

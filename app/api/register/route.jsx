@@ -502,7 +502,38 @@ export async function POST(request) {
     // ===================== END TOKEN VERIFICATION DISABLED =====================
 
     // ================ REST OF YOUR EXISTING CODE CONTINUES HERE ================
-    const { name, email, password, phone, role = 'ADMIN' } = await request.json();
+    let { name, email, password, phone, role } = await request.json();
+
+    // Default role to SUPERADMIN if not provided
+    if (!role) role = 'SUPERADMIN';
+
+    // Only allow ADMIN or SUPERADMIN to create users (unless no users exist yet)
+    const userCount = await prisma.user.count();
+    if (userCount > 0) {
+      // Uncomment authentication block to enforce
+      /*
+      const auth = authenticateRequest(request);
+      if (!auth.authenticated) {
+        return auth.response;
+      }
+      const allowedRoles = ['ADMIN', 'SUPERADMIN'];
+      if (!allowedRoles.includes((auth.user.role || '').toUpperCase())) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Permission Denied',
+            message: 'Only ADMIN or SUPERADMIN can create new users.'
+          },
+          { status: 403 }
+        );
+      }
+      */
+    }
+
+    // Prevent non-SUPERADMIN role assignment for first user
+    if (userCount === 0 && role !== 'SUPERADMIN') {
+      role = 'SUPERADMIN';
+    }
 
     if (!name || !email || !password) {
       return NextResponse.json({ error: 'Name, email and password are required' }, { status: 400 });
