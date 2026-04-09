@@ -469,17 +469,14 @@ const validateInput = (name, email, password, role) => {
 // Main POST
 export async function POST(request) {
   try {
-    // ===================== TOKEN VERIFICATION DISABLED FOR NOW =====================
-    // The following authentication and token verification logic is commented out as per request.
-    // To re-enable, uncomment the code below.
-    /*
-    // Authenticate request first - only ADMIN and SUPER_ADMIN can create users
+    // ===================== TOKEN VERIFICATION ENABLED =====================
+    // Authenticate request first - only ADMIN and SUPERADMIN can create users
     const auth = authenticateRequest(request);
     if (!auth.authenticated) {
       return auth.response;
     }
-    // Check if user has permission to create new users (only ADMIN or SUPER_ADMIN)
-    const adminRoles = ['ADMIN', 'SUPER_ADMIN', 'administrator', 'PRINCIPAL'];
+    // Check if user has permission to create new users (only ADMIN or SUPERADMIN)
+    const adminRoles = ['ADMIN', 'SUPERADMIN', 'SUPER_ADMIN', 'administrator', 'PRINCIPAL'];
     if (!adminRoles.includes(auth.user.role?.toUpperCase())) {
       return NextResponse.json(
         { 
@@ -498,8 +495,7 @@ export async function POST(request) {
       device: auth.deviceInfo,
       timestamp: new Date().toISOString()
     });
-    */
-    // ===================== END TOKEN VERIFICATION DISABLED =====================
+    // ===================== END TOKEN VERIFICATION =====================
 
     // ================ REST OF YOUR EXISTING CODE CONTINUES HERE ================
     const { name, email, password, phone, role = 'ADMIN' } = await request.json();
