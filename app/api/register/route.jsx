@@ -60,8 +60,8 @@ class DeviceTokenManager {
         }
         
         const userRole = adminPayload.role || adminPayload.userRole;
-        const validRoles = ['ADMIN', 'SUPER_ADMIN', 'administrator', 'PRINCIPAL', 'TEACHER', 'teacher'];
-        
+        // Only allow roles defined in Prisma enum UserRole
+        const validRoles = ['ADMIN', 'SUPER_ADMIN', 'USER'];
         if (!userRole || !validRoles.includes(userRole.toUpperCase())) {
           return { 
             valid: false, 
@@ -444,24 +444,20 @@ const validateEnvironment = () => {
 
 const validateInput = (name, email, password, role) => {
   const errors = [];
-  
   if (!name || name.trim().length < 2) {
     errors.push('Name must be at least 2 characters long');
   }
-
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     errors.push('Valid email is required');
   }
-
   if (!password || password.length < 6) {
     errors.push('Password must be at least 6 characters');
   }
-
-  const validRoles = ['TEACHER', 'PRINCIPAL', 'ADMIN'];
-  if (!validRoles.includes(role)) {
+  // Only allow roles defined in Prisma enum UserRole
+  const validRoles = ['ADMIN', 'SUPER_ADMIN', 'USER'];
+  if (!validRoles.includes(role?.toUpperCase())) {
     errors.push('Invalid user role');
   }
-
   return errors;
 };
 
