@@ -409,23 +409,18 @@ const cleanSchoolResponse = (school) => {
       videoThumbnail: school.videoThumbnail,
       studentCount: school.studentCount,
       staffCount: school.staffCount,
-      
       // Fees
       feesDay: school.feesDay,
       feesBoarding: school.feesBoarding,
       admissionFee: school.admissionFee,
-      
-      // ✅ ADD Magazine to response
+      // Magazine
       magazine: magazineData,
-      
       // Academic Calendar
       openDate: school.openDate,
       closeDate: school.closeDate,
-      
       // Academic Information
       subjects,
       departments,
-      
       // Admission Information
       admissionOpenDate: school.admissionOpenDate,
       admissionCloseDate: school.admissionCloseDate,
@@ -437,7 +432,6 @@ const cleanSchoolResponse = (school) => {
       admissionLocation: school.admissionLocation,
       admissionOfficeHours: school.admissionOfficeHours,
       admissionDocumentsRequired,
-      
       // Timestamps
       createdAt: school.createdAt,
       updatedAt: school.updatedAt
@@ -446,18 +440,7 @@ const cleanSchoolResponse = (school) => {
     console.error("Error cleaning school response:", error);
     return school;
   }
-};
-    
-      // Academic Calendar
-      openDate: school.openDate,
-      closeDate: school.closeDate,
-      
-      // Academic Information
-      subjects,
-      departments,
-      
-      // Admission Information
-      admissionOpenDate: school.admissionOpenDate,
+}
       admissionCloseDate: school.admissionCloseDate,
       admissionRequirements: school.admissionRequirements,
       admissionCapacity: school.admissionCapacity,
