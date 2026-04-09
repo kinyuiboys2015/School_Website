@@ -762,6 +762,11 @@ function ModernSchoolModal({ onClose, onSave, school, loading: parentLoading }) 
     description: school?.description || '',
     motto: school?.motto || '',
     vision: school?.vision || '',
+      // ... existing fields
+  magazineTitle: school?.magazine?.title || '',
+  magazineYear: school?.magazine?.year?.toString() || '',
+  magazineDescription: school?.magazine?.description || '',
+
     mission: school?.mission || '',
     studentCount: school?.studentCount?.toString() || '',
     staffCount: school?.staffCount?.toString() || '',
@@ -792,10 +797,16 @@ function ModernSchoolModal({ onClose, onSave, school, loading: parentLoading }) 
   const [videoThumbnail, setVideoThumbnail] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
 
+  const [magazineFile, setMagazineFile] = useState(null);
+const [magazineThumbnailFile, setMagazineThumbnailFile] = useState(null);
+const [magazinePreview, setMagazinePreview] = useState(null);
+
   const steps = [
     { id: 'basic', label: 'Basic Info', icon: FaBuilding },
     { id: 'academic', label: 'Academic', icon: FaGraduationCap },
-    { id: 'admission', label: 'Admission', icon: FaUserCheck }
+    { id: 'admission', label: 'Admission', icon: FaUserCheck },
+      { id: 'magazine', label: 'Magazine', icon: FaBook }  // Add this
+
   ];
 
 
@@ -900,7 +911,14 @@ const handleFormSubmit = async (e) => {
     if (!adminToken || !deviceToken) {
       throw new Error('Authentication required. Please login again.');
     }
-    
+
+        // Magazine fields
+    if (magazineFile) formDataObj.append('magazinePdf', magazineFile);
+    if (magazineThumbnailFile) formDataObj.append('magazineThumbnail', magazineThumbnailFile);
+    formDataObj.append('magazineTitle', formData.magazineTitle || '');
+    formDataObj.append('magazineYear', formData.magazineYear || '');
+    formDataObj.append('magazineDescription', formData.magazineDescription || '');
+        
     // ✅ DYNAMIC METHOD SELECTION: POST for CREATE, PUT for UPDATE
     const method = isUpdateMode ? 'PUT' : 'POST';
     const endpoint = '/api/school';
@@ -1407,6 +1425,119 @@ const handleFormSubmit = async (e) => {
                 </div>
               </div>
             )}
+
+
+            {currentStep === 3 && (
+  <div className="space-y-6">
+    <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-200">
+      <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+        <FaBook className="text-amber-600" />
+        School Magazine
+      </h3>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-bold text-gray-700 mb-2">Magazine Title</label>
+          <input
+            type="text"
+            value={formData.magazineTitle || ''}
+            onChange={(e) => handleChange('magazineTitle', e.target.value)}
+            placeholder="e.g., The Pride 2024"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-amber-500 focus:border-amber-500"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-bold text-gray-700 mb-2">Year</label>
+          <input
+            type="number"
+            value={formData.magazineYear || ''}
+            onChange={(e) => handleChange('magazineYear', e.target.value)}
+            placeholder="2024"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-amber-500 focus:border-amber-500"
+          />
+        </div>
+      </div>
+      
+      <div className="mt-4">
+        <label className="block text-sm font-bold text-gray-700 mb-2">Description</label>
+        <textarea
+          rows="3"
+          value={formData.magazineDescription || ''}
+          onChange={(e) => handleChange('magazineDescription', e.target.value)}
+          placeholder="Brief description of the magazine content..."
+          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-amber-500 focus:border-amber-500"
+        />
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+        <div>
+          <label className="block text-sm font-bold text-gray-700 mb-2">
+            Magazine PDF (max 4.2MB)
+          </label>
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                if (file.size > 4.2 * 1024 * 1024) {
+                  toast.error('PDF size exceeds 4.2MB');
+                  return;
+                }
+                setMagazineFile(file);
+              }
+            }}
+            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100"
+          />
+          {school?.magazine?.pdfUrl && !magazineFile && (
+            <div className="mt-2 text-sm">
+              <a href={school.magazine.pdfUrl} target="_blank" rel="noopener noreferrer" className="text-amber-600 underline">Current PDF</a>
+              <button
+                type="button"
+                onClick={() => setMagazineFile(null)}
+                className="ml-3 text-red-500 text-xs"
+              >Remove</button>
+            </div>
+          )}
+        </div>
+        
+        <div>
+          <label className="block text-sm font-bold text-gray-700 mb-2">
+            Thumbnail (PNG/JPEG/JPG, max 2MB)
+          </label>
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/jpg"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                  toast.error('Thumbnail size ≤ 2MB');
+                  return;
+                }
+                setMagazineThumbnailFile(file);
+                setMagazinePreview(URL.createObjectURL(file));
+              }
+            }}
+            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100"
+          />
+          {(magazinePreview || school?.magazine?.thumbnail) && (
+            <div className="mt-2">
+              <img src={magazinePreview || school.magazine.thumbnail} alt="Magazine thumbnail" className="h-24 w-auto rounded border" />
+              {!magazinePreview && (
+                <button
+                  type="button"
+                  onClick={() => setMagazineThumbnailFile(null)}
+                  className="mt-1 text-red-500 text-xs"
+                >Remove thumbnail</button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
             <div className="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-gray-200 gap-3">
               <div className="flex items-center gap-2 text-sm text-gray-600 font-bold">

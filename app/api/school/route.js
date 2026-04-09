@@ -398,7 +398,9 @@ const cleanSchoolResponse = (school) => {
       feesDay: school.feesDay,
       feesBoarding: school.feesBoarding,
       admissionFee: school.admissionFee,
-      
+       magazine: school.magazine || null,  // Add this line
+
+    
       // Academic Calendar
       openDate: school.openDate,
       closeDate: school.closeDate,
@@ -431,6 +433,47 @@ const cleanSchoolResponse = (school) => {
     return school;
   }
 };
+
+
+// Add this function
+const uploadMagazineFiles = async (pdfFile, thumbFile, existingMagazine = null) => {
+  let pdfUrl = existingMagazine?.pdfUrl || null;
+  let thumbUrl = existingMagazine?.thumbnail || null;
+
+  // Handle PDF
+  if (pdfFile && pdfFile.size > 0) {
+    // Delete old PDF from Cloudinary if exists
+    if (existingMagazine?.pdfUrl) await deleteFromCloudinary(existingMagazine.pdfUrl);
+    
+    if (pdfFile.type !== 'application/pdf') throw new Error('Only PDF files are allowed for magazine');
+    if (pdfFile.size > 4.2 * 1024 * 1024) throw new Error('PDF size must be ≤ 4.2 MB');
+    
+    const result = await uploadToCloudinary(pdfFile, 'magazines', 'raw');
+    pdfUrl = result.url;
+  } else if (pdfFile === null && existingMagazine?.pdfUrl) {
+    await deleteFromCloudinary(existingMagazine.pdfUrl);
+    pdfUrl = null;
+  }
+
+  // Handle thumbnail
+  if (thumbFile && thumbFile.size > 0) {
+    if (existingMagazine?.thumbnail) await deleteFromCloudinary(existingMagazine.thumbnail);
+    
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!allowedTypes.includes(thumbFile.type)) throw new Error('Thumbnail must be JPEG or PNG');
+    if (thumbFile.size > 2 * 1024 * 1024) throw new Error('Thumbnail size ≤ 2 MB');
+    
+    const result = await uploadToCloudinary(thumbFile, 'magazines/thumbnails', 'image');
+    thumbUrl = result.url;
+  } else if (thumbFile === null && existingMagazine?.thumbnail) {
+    await deleteFromCloudinary(existingMagazine.thumbnail);
+    thumbUrl = null;
+  }
+
+  return { pdfUrl, thumbUrl };
+};
+
+
 
 // Validate required fields for CREATE operation
 const validateRequiredFieldsCreate = (formData) => {
@@ -472,8 +515,9 @@ export async function GET() {
   try {
     console.log("🔍 GET /api/school - Fetching school info");
     
-    const school = await prisma.schoolInfo.findFirst();
-    
+const school = await prisma.schoolInfo.findFirst({
+  include: { magazine: true }
+});    
     if (!school) {
       console.log("📭 No school found in database");
       return NextResponse.json(
@@ -603,6 +647,35 @@ export async function POST(req) {
       );
     }
 
+
+    // Handle Magazine Upload
+let magazineId = null;
+const magazineTitle = formData.get("magazineTitle");
+const magazineYear = formData.get("magazineYear") ? parseInt(formData.get("magazineYear")) : null;
+const magazineDescription = formData.get("magazineDescription") || null;
+const magazinePdf = formData.get("magazinePdf");
+const magazineThumb = formData.get("magazineThumbnail");
+
+if (magazinePdf && magazinePdf.size > 0) {
+  try {
+    const { pdfUrl, thumbUrl } = await uploadMagazineFiles(magazinePdf, magazineThumb);
+    const magazine = await prisma.magazine.create({
+      data: {
+        title: magazineTitle || "School Magazine",
+        year: magazineYear || new Date().getFullYear(),
+        description: magazineDescription,
+        pdfUrl,
+        thumbnail: thumbUrl,
+      }
+    });
+    magazineId = magazine.id;
+  } catch (magazineError) {
+    return NextResponse.json(
+      { success: false, error: magazineError.message },
+      { status: 400 }
+    );
+  }
+}
     // Create new school
     const schoolData = {
       name: formData.get("name"),
@@ -613,6 +686,7 @@ export async function POST(req) {
       videoTour: videoUrl,
       videoType,
       videoThumbnail: thumbnailUrl,
+      magazineId: magazineId,  // Add this line
       studentCount: parseIntField(formData.get("studentCount")) || 0,
       staffCount: parseIntField(formData.get("staffCount")) || 0,
       feesDay: parseNumber(formData.get("feesDay")),
@@ -675,8 +749,9 @@ export async function PUT(req) {
     console.log("✏️ PUT /api/school - Updating school info");
     console.log(`Request from: ${auth.user.name} (${auth.user.role})`);
     
-    const existing = await prisma.schoolInfo.findFirst();
-    if (!existing) {
+const existing = await prisma.schoolInfo.findFirst({
+  include: { magazine: true }  // Add this include
+});    if (!existing) {
       return NextResponse.json(
         { 
           success: false, 
@@ -687,6 +762,56 @@ export async function PUT(req) {
         { status: 404 }
       );
     }
+
+
+    // Handle Magazine Update
+let magazineId = existing.magazineId;
+const magazineTitle = formData.get("magazineTitle");
+const magazineYear = formData.get("magazineYear") ? parseInt(formData.get("magazineYear")) : null;
+const magazineDescription = formData.get("magazineDescription") || null;
+const magazinePdf = formData.get("magazinePdf");
+const magazineThumb = formData.get("magazineThumbnail");
+
+const existingMag = existing.magazine;
+
+if (magazinePdf || magazineThumb || (magazineTitle !== undefined && magazineTitle !== existingMag?.title)) {
+  try {
+    const { pdfUrl, thumbUrl } = await uploadMagazineFiles(
+      magazinePdf, 
+      magazineThumb, 
+      existingMag
+    );
+    
+    if (existingMag) {
+      await prisma.magazine.update({
+        where: { id: existingMag.id },
+        data: {
+          title: magazineTitle ?? existingMag.title,
+          year: magazineYear ?? existingMag.year,
+          description: magazineDescription ?? existingMag.description,
+          pdfUrl: pdfUrl ?? existingMag.pdfUrl,
+          thumbnail: thumbUrl ?? existingMag.thumbnail,
+        }
+      });
+    } else if (pdfUrl) {
+      const newMag = await prisma.magazine.create({
+        data: {
+          title: magazineTitle || "School Magazine",
+          year: magazineYear || new Date().getFullYear(),
+          description: magazineDescription,
+          pdfUrl,
+          thumbnail: thumbUrl,
+        }
+      });
+      magazineId = newMag.id;
+    }
+  } catch (magazineError) {
+    return NextResponse.json(
+      { success: false, error: magazineError.message },
+      { status: 400 }
+    );
+  }
+}
 
     const formData = await req.formData();
     
@@ -793,6 +918,8 @@ export async function PUT(req) {
         mission: formData.get("mission") !== null ? formData.get("mission") : existing.mission,
         videoTour: videoUrl,
         videoType,
+         magazineId: magazineId,  // Add this line
+
         videoThumbnail: thumbnailUrl,
         studentCount: formData.get("studentCount") ? parseIntField(formData.get("studentCount")) : existing.studentCount,
         staffCount: formData.get("staffCount") ? parseIntField(formData.get("staffCount")) : existing.staffCount,
