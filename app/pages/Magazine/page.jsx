@@ -57,30 +57,7 @@ const ScrollToTop = () => {
 
 // Enhanced Magazine Card Component
 const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
-  const [isHovered, setIsHovered] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(issue.likes || 0);
-
-  const handleLike = (e) => {
-    e.stopPropagation();
-    if (isLiked) {
-      setLikesCount(prev => prev - 1);
-      setIsLiked(false);
-    } else {
-      setLikesCount(prev => prev + 1);
-      setIsLiked(true);
-    }
-    // Save to localStorage
-    const liked = JSON.parse(localStorage.getItem('liked_magazines') || '[]');
-    if (!isLiked) {
-      liked.push(issue.id);
-    } else {
-      const index = liked.indexOf(issue.id);
-      if (index > -1) liked.splice(index, 1);
-    }
-    localStorage.setItem('liked_magazines', JSON.stringify(liked));
-  };
 
   const handleBookmark = (e) => {
     e.stopPropagation();
@@ -118,9 +95,8 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 1.01 }}
         onClick={() => onOpen(issue)}
-        className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden border border-slate-200 group"
+        className="bg-white rounded-xl shadow-md cursor-pointer overflow-hidden border border-slate-200"
       >
         <div className="flex flex-col sm:flex-row">
           <div className="relative w-full sm:w-48 h-48 sm:h-auto bg-slate-100 flex items-center justify-center">
@@ -132,15 +108,16 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
                 className="object-cover"
               />
             ) : (
-              <BookOpen className="w-12 h-12 text-slate-400/40" />
+              <BookOpen className="w-12 h-12 text-slate-500" />
             )}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all" />
           </div>
+
           <div className="flex-1 p-5">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-xl font-bold text-slate-100 mb-1">{issue.title}</h3>
-                <div className="flex items-center gap-3 text-sm text-slate-400 mb-3">
+                {/* BLACK TEXT TITLE */}
+                <h3 className="text-xl font-black text-slate-950 mb-1">{issue.title}</h3>
+                <div className="flex items-center gap-3 text-sm text-slate-700 mb-3 font-bold">
                   <span className="flex items-center gap-1">
                     <Calendar size={14} />
                     {issue.year}
@@ -151,38 +128,32 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
                   </span>
                 </div>
               </div>
+
               <div className="flex items-center gap-1">
-                <button
-                  onClick={handleLike}
-                  className={`p-1.5 rounded-lg transition-all ${isLiked ? 'text-red-500 bg-red-500/20' : 'text-slate-400 hover:text-red-500 hover:bg-red-500/10'}`}
-                >
-                  <Heart size={18} fill={isLiked ? "currentColor" : "none"} />
-                </button>
-                <span className="text-xs text-slate-400">{likesCount}</span>
-                <button
-                  onClick={handleBookmark}
-                  className={`p-1.5 rounded-lg transition-all ${isBookmarked ? 'text-amber-400 bg-amber-400/20' : 'text-slate-400 hover:text-amber-400 hover:bg-amber-400/10'}`}
-                >
+                <button onClick={handleBookmark} className={`p-1.5 ${isBookmarked ? 'text-amber-600' : 'text-slate-900'}`}>
                   {isBookmarked ? <BookmarkCheck size={18} /> : <Bookmark size={18} />}
                 </button>
-                <button
-                  onClick={handleShare}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-blue-400/10 transition-all"
-                >
+                <button onClick={handleShare} className="p-1.5 text-slate-900">
                   <Share2 size={18} />
                 </button>
               </div>
             </div>
-            <p className="text-slate-300 text-sm line-clamp-2 mb-3">{issue.description}</p>
+
+            {/* BLACK TEXT DESCRIPTION */}
+            <p className="text-slate-900 text-sm font-bold line-clamp-2 mb-3">
+              {issue.description}
+            </p>
+
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs text-slate-400">
+              <div className="flex items-center gap-2 text-xs text-slate-900 font-black">
                 <Eye size={12} />
                 <span>{issue.views || 0} views</span>
-                <span className="w-1 h-1 bg-slate-500 rounded-full" />
+                <span className="w-1 h-1 bg-slate-950 rounded-full" />
                 <Download size={12} />
                 <span>{issue.downloads || 0} downloads</span>
               </div>
-              <span className="text-xs font-medium text-slate-200 group-hover:translate-x-1 transition-transform">
+              
+              <span className="text-xs font-black text-slate-950 uppercase tracking-wider">
                 Read Now →
               </span>
             </div>
@@ -196,103 +167,60 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -8 }}
       onClick={() => onOpen(issue)}
-      className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className="bg-white rounded-2xl shadow-lg cursor-pointer overflow-hidden border border-slate-200"
     >
-      {/* Cover Image Area */}
-      <div className="relative h-64 bg-slate-700 flex items-center justify-center overflow-hidden">
+      <div className="relative h-64 bg-slate-100 flex items-center justify-center">
         {issue.thumbnail ? (
-          <Image
-            src={issue.thumbnail}
-            alt={issue.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
-          />
+          <Image src={issue.thumbnail} alt={issue.title} fill className="object-cover" />
         ) : (
-          <BookOpen className="w-16 h-16 text-slate-400/30" />
+          <BookOpen className="w-16 h-16 text-slate-500" />
         )}
-        
-        {/* Year Badge */}
-        <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm rounded-lg px-2 py-1">
-          <span className="text-white text-xs font-bold">{issue.year}</span>
+        <div className="absolute top-3 left-3 bg-slate-950 rounded-lg px-2 py-1">
+          <span className="text-white text-xs font-black">{issue.year}</span>
         </div>
-
-        {/* Action Buttons Overlay on Hover */}
-        <AnimatePresence>
-          {isHovered && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/40 flex items-center justify-center gap-3"
-            >
-              <button
-                onClick={handleLike}
-                className={`p-2 rounded-full bg-white/90 backdrop-blur-sm transition-all hover:scale-110 ${isLiked ? 'text-red-500' : 'text-slate-600'}`}
-              >
-                <Heart size={18} fill={isLiked ? "currentColor" : "none"} />
-              </button>
-              <button
-                onClick={handleBookmark}
-                className={`p-2 rounded-full bg-white/90 backdrop-blur-sm transition-all hover:scale-110 ${isBookmarked ? 'text-amber-600' : 'text-slate-600'}`}
-              >
-                {isBookmarked ? <BookmarkCheck size={18} /> : <Bookmark size={18} />}
-              </button>
-              <button
-                onClick={handleShare}
-                className="p-2 rounded-full bg-white/90 backdrop-blur-sm text-slate-600 transition-all hover:scale-110"
-              >
-                <Share2 size={18} />
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
-      {/* Content Area */}
       <div className="p-5">
-        <h3 className="font-bold text-slate-100 text-lg mb-2 line-clamp-1 group-hover:text-slate-200 transition-colors">
+        {/* BLACK TEXT TITLE */}
+        <h3 className="font-black text-slate-950 text-lg mb-2 line-clamp-1">
           {issue.title}
         </h3>
-        <p className="text-slate-300 text-sm line-clamp-2 mb-3">
+        
+        {/* BLACK TEXT DESCRIPTION */}
+        <p className="text-slate-900 text-sm font-bold line-clamp-2 mb-4">
           {issue.description || "Annual magazine showcasing school achievements, events, and student stories."}
         </p>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 text-xs text-slate-400">
-            <span className="flex items-center gap-1">
-              <Eye size={12} />
-              {issue.views || 0}
-            </span>
-            <span className="flex items-center gap-1">
-              <Heart size={12} />
-              {likesCount}
-            </span>
+        
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3 text-xs text-slate-950 font-black">
+            <span className="flex items-center gap-1"><Eye size={12} /> {issue.views || 0}</span>
+            <span className="flex items-center gap-1"><Download size={12} /> {issue.downloads || 0}</span>
           </div>
-          <span className="text-slate-200 text-sm font-medium group-hover:translate-x-1 transition-transform">
-            Read Now →
-          </span>
+          <div className="flex gap-2">
+            <button onClick={handleBookmark} className={isBookmarked ? 'text-amber-600' : 'text-slate-950'}>
+               {isBookmarked ? <BookmarkCheck size={18} /> : <Bookmark size={18} />}
+            </button>
+            <button onClick={handleShare} className="text-slate-950">
+               <Share2 size={18} />
+            </button>
+          </div>
         </div>
         
-        {/* Download Button */}
         {issue.pdfUrl && (
           <a
             href={issue.pdfUrl}
             download
             onClick={e => e.stopPropagation()}
-            className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg font-bold text-xs hover:bg-slate-600 transition-all shadow"
-            title="Download Magazine"
+            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-950 text-white rounded-xl font-black text-xs hover:bg-black transition-colors"
           >
-            <Download size={16} /> Download PDF
+            <Download size={16} /> DOWNLOAD PDF
           </a>
         )}
       </div>
     </motion.div>
   );
 };
-
 // Feature Card Component
 const FeatureCard = ({ icon: Icon, title, description, color }) => (
   <motion.div
