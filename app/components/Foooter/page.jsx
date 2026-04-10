@@ -498,25 +498,25 @@ export default function ModernFooter() {
                 </div>
               </div>
               {/* Sitemap & Privacy Buttons */}
-              <div className="flex flex-wrap gap-3 justify-center items-center mb-8 mt-8">
-                <button
-                  onClick={() => setShowSitemap(true)}
-                  className="px-5 py-2 rounded-lg font-bold bg-gradient-to-r from-amber-700 to-orange-800 text-white shadow hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                  type="button"
-                >
-                  Sitemap
-                </button>
-                <button
-                  onClick={() => setShowPrivacy(true)}
-                  className="px-5 py-2 rounded-lg font-bold bg-gradient-to-r from-amber-700 to-orange-800 text-white shadow hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                  type="button"
-                >
-                  Data Protection & Privacy
-                </button>
-              </div>
+            <div className="flex flex-wrap gap-4 items-center justify-center">
+  <button
+    onClick={() => setShowSitemap(true)}
+    className="text-white font-medium hover:underline transition-all"
+    type="button"
+  >
+    Sitemap
+  </button>
+  <button
+    onClick={() => setShowPrivacy(true)}
+    className="text-white font-medium hover:underline transition-all"
+    type="button"
+  >
+    Data Privacy
+  </button>
+</div>
               {/* Subscriber Bar */}
 <div className="mt-8 sm:mt-12">
-  <div className="bg-gradient-to-br from-gray-700 via-gray-700 to-gray-900 text-white rounded-2xl shadow-xl p-6 md:p-10">
+  <div className="text-white rounded-2xl shadow-xl p-6 md:p-10">
     <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-12">
       
       {/* Text Content */}
