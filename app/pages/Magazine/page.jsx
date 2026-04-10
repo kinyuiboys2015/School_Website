@@ -325,39 +325,60 @@ export default function MagazineArchive() {
     latestYear: null
   });
 
-  // Fetch magazines
+  // FIXED: Fetch magazines from /api/school instead of /api/magazines
   useEffect(() => {
     const fetchMagazines = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/magazines');
+        // ✅ Changed endpoint from /api/magazines to /api/school
+        const response = await fetch('/api/school');
         const data = await response.json();
         
-        // Handle both array and single object responses
+        console.log("Fetched school data:", data); // Debug log
+        
         let magazinesArray = [];
-        if (Array.isArray(data)) {
-          magazinesArray = data;
-        } else if (data.magazines && Array.isArray(data.magazines)) {
-          magazinesArray = data.magazines;
-        } else if (data.school?.magazine) {
-          magazinesArray = [data.school.magazine];
+        
+        // Extract magazine from the school response
+        if (data.success && data.school) {
+          // Check if magazine exists in the school object
+          if (data.school.magazine) {
+            // Single magazine object
+            magazinesArray = [data.school.magazine];
+          } else if (data.school.Magazine) {
+            // Capital M Magazine (from Prisma include)
+            magazinesArray = [data.school.Magazine];
+          }
         }
+        
+        // Handle array of magazines if school has multiple (future proofing)
+        if (data.magazines && Array.isArray(data.magazines)) {
+          magazinesArray = data.magazines;
+        }
+        
+        console.log("Processed magazines:", magazinesArray); // Debug log
         
         setMagazines(magazinesArray);
 
         // Calculate stats
         if (magazinesArray.length > 0) {
-          const years = magazinesArray.map(m => m.year);
+          const years = magazinesArray.map(m => m.year).filter(y => y);
           const totalPages = magazinesArray.reduce((sum, m) => sum + (m.pages || 80), 0);
           setStats({
             totalIssues: magazinesArray.length,
             totalPages: totalPages,
-            earliestYear: Math.min(...years),
-            latestYear: Math.max(...years)
+            earliestYear: years.length ? Math.min(...years) : null,
+            latestYear: years.length ? Math.max(...years) : null
+          });
+        } else {
+          setStats({
+            totalIssues: 0,
+            totalPages: 0,
+            earliestYear: null,
+            latestYear: null
           });
         }
       } catch (error) {
-        console.error('Error fetching magazines:', error);
+        console.error('Error fetching school/magazines:', error);
       } finally {
         setLoading(false);
       }
@@ -406,7 +427,7 @@ export default function MagazineArchive() {
   }, [magazines, searchQuery, selectedYear, sortBy, sortOrder]);
 
   const years = useMemo(() => {
-    const uniqueYears = [...new Set(magazines.map(m => m.year))];
+    const uniqueYears = [...new Set(magazines.map(m => m.year).filter(y => y))];
     return uniqueYears.sort((a, b) => b - a);
   }, [magazines]);
 
@@ -514,7 +535,7 @@ export default function MagazineArchive() {
             </div>
             <div className="text-center group">
               <div className="text-4xl font-black text-white group-hover:text-amber-400 transition-colors">
-                {stats.earliestYear || "-"} - {stats.latestYear || "-"}
+                {stats.earliestYear || "-"} {stats.latestYear && stats.earliestYear !== stats.latestYear ? `- ${stats.latestYear}` : ""}
               </div>
               <div className="text-slate-200/60 text-xs uppercase tracking-widest font-bold mt-1">Timeline</div>
             </div>
