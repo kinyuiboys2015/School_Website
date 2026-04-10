@@ -122,10 +122,7 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
                     <Calendar size={14} />
                     {issue.year}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <FileText size={14} />
-                    {issue.pages || "~80"} pages
-                  </span>
+                  {/* Removed pages count */}
                 </div>
               </div>
 
@@ -145,14 +142,6 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
             </p>
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs text-slate-900 font-black">
-                <Eye size={12} />
-                <span>{issue.views || 0} views</span>
-                <span className="w-1 h-1 bg-slate-950 rounded-full" />
-                <Download size={12} />
-                <span>{issue.downloads || 0} downloads</span>
-              </div>
-              
               <span className="text-xs font-black text-slate-950 uppercase tracking-wider">
                 Read Now →
               </span>
@@ -195,6 +184,7 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3 text-xs text-slate-950 font-black">
             <span className="flex items-center gap-1"><Eye size={12} /> {issue.views || 0}</span>
+            {/* Removed pages count */}
             <span className="flex items-center gap-1"><Download size={12} /> {issue.downloads || 0}</span>
           </div>
           <div className="flex gap-2">
