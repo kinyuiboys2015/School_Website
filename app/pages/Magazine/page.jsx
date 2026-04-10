@@ -687,8 +687,6 @@ export default function MagazineArchive() {
       {selectedIssue && (
         <BookReader issue={selectedIssue} onClose={() => setSelectedIssue(null)} />
       )}
-
-      <ScrollToTop />
     </div>
   );
 }
