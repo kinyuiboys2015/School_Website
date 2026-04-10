@@ -497,23 +497,7 @@ export default function ModernFooter() {
                   </div>
                 </div>
               </div>
-              {/* Sitemap & Privacy Buttons */}
-            <div className="flex flex-wrap gap-4 items-center justify-center">
-  <button
-    onClick={() => setShowSitemap(true)}
-    className="text-white font-medium hover:underline transition-all"
-    type="button"
-  >
-    Sitemap
-  </button>
-  <button
-    onClick={() => setShowPrivacy(true)}
-    className="text-white font-medium hover:underline transition-all"
-    type="button"
-  >
-    Data Privacy
-  </button>
-</div>
+
               {/* Subscriber Bar */}
 <div className="mt-8 sm:mt-12">
   <div className="text-white rounded-2xl shadow-xl p-6 md:p-10">
@@ -560,6 +544,25 @@ export default function ModernFooter() {
         </button>
       </form>
     </div>
+
+
+              {/* Sitemap & Privacy Buttons */}
+            <div className="flex flex-wrap gap-4 items-center justify-center">
+  <button
+    onClick={() => setShowSitemap(true)}
+    className="text-white font-medium hover:underline transition-all"
+    type="button"
+  >
+    Sitemap
+  </button>
+  <button
+    onClick={() => setShowPrivacy(true)}
+    className="text-white font-medium hover:underline transition-all"
+    type="button"
+  >
+    Data Privacy
+  </button>
+</div>
 
     <div className="mt-12 py-6 border-t border-white/10">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">
