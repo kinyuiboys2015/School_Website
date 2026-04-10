@@ -745,11 +745,22 @@ export async function POST(request) {
     
     if (deviceVerificationCheck.requiresVerification) {
       console.log('🔐 Verification required for:', email);
-      
-      const verificationCode = generateVerificationCode();
-      await storeVerificationCode(user.email, verificationCode, deviceHash);
+      // Check for existing unexpired code
+      const existingToken = await prisma.verificationToken.findFirst({
+        where: {
+          identifier: user.email,
+          expires: { gt: new Date() }
+        }
+      });
+      let verificationCode;
+      if (existingToken) {
+        verificationCode = existingToken.token;
+        console.log('♻️ Reusing existing verification code for:', email);
+      } else {
+        verificationCode = generateVerificationCode();
+        await storeVerificationCode(user.email, verificationCode, deviceHash);
+      }
       await sendVerificationEmail(user, verificationCode);
-      
       return NextResponse.json({
         success: false,
         requiresVerification: true,
