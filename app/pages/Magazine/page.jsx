@@ -375,7 +375,7 @@ export default function MagazineArchive() {
               }}
             />
             <Box className="absolute">
-              <IoSparkles className="text-amber-500 text-sm animate-pulse" />
+              <IoSparkles className="text-blue-500 text-sm animate-pulse" />
             </Box>
           </Box>
           <div className="text-center px-4">
