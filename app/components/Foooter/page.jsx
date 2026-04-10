@@ -547,7 +547,7 @@ export default function ModernFooter() {
 
 
               {/* Sitemap & Privacy Buttons */}
-            <div className="flex flex-wrap gap-4 items-center justify-center">
+            <div className="flex flex-wrap gap-4 items-center justify-center mt-7">
   <button
     onClick={() => setShowSitemap(true)}
     className="text-white font-medium hover:underline transition-all"
