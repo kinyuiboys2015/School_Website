@@ -462,7 +462,7 @@ Loading for our School Magazines          </p>
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
       {/* Hero Section */}
-  <section className="relative bg-gradient-to-br from-amber-950 via-orange-950 to-amber-950 text-white overflow-hidden">
+  <section className="relative bg-slate-600 text-white overflow-hidden">
   {/* 1. Base Image Layer with low opacity */}
   <div className="absolute inset-0">
     <img 
