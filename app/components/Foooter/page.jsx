@@ -564,7 +564,7 @@ export default function ModernFooter() {
     <div className="mt-12 py-6 border-t border-white/10">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">
         <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-900 animate-pulse" />
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">
             System Architecture
           </p>
