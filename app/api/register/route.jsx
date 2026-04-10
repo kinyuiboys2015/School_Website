@@ -500,10 +500,10 @@ export async function POST(request) {
     // ================ REST OF YOUR EXISTING CODE CONTINUES HERE ================
 
     let { name, email, password, phone, role } = await request.json();
-    // Default role to ADMIN if not provided or invalid
-    const validRoles = ['ADMIN', 'SUPER_ADMIN', 'USER'];
-    if (!role || !validRoles.includes(role.toUpperCase())) {
-      role = 'ADMIN';
+    // Normalize role to Prisma enum (ADMIN or SUPER_ADMIN)
+    let dbRole = (role || '').toUpperCase().replace(/[- ]/g, '_');
+    if (!['ADMIN', 'SUPER_ADMIN'].includes(dbRole)) {
+      dbRole = 'ADMIN';
     }
 
     // Only allow ADMIN or SUPERADMIN to create users (unless no users exist yet)
@@ -530,8 +530,8 @@ export async function POST(request) {
     }
 
     // Prevent non-SUPERADMIN role assignment for first user
-    if (userCount === 0 && role !== 'SUPERADMIN') {
-      role = 'SUPERADMIN';
+    if (userCount === 0 && dbRole !== 'SUPER_ADMIN') {
+      dbRole = 'SUPER_ADMIN';
     }
 
     if (!name || !email || !password) {
@@ -561,7 +561,7 @@ export async function POST(request) {
         email: email.toLowerCase().trim(),
         password: hashedPassword,
         phone: phone ? phone.trim() : null,
-        role: role
+        role: dbRole
       },
       select: { 
         id: true, 
