@@ -497,6 +497,23 @@ export default function ModernFooter() {
                   </div>
                 </div>
               </div>
+              {/* Sitemap & Privacy Buttons */}
+              <div className="flex flex-wrap gap-3 justify-center items-center mb-8 mt-8">
+                <button
+                  onClick={() => setShowSitemap(true)}
+                  className="px-5 py-2 rounded-lg font-bold bg-gradient-to-r from-amber-700 to-orange-800 text-white shadow hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  type="button"
+                >
+                  Sitemap
+                </button>
+                <button
+                  onClick={() => setShowPrivacy(true)}
+                  className="px-5 py-2 rounded-lg font-bold bg-gradient-to-r from-amber-700 to-orange-800 text-white shadow hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  type="button"
+                >
+                  Data Protection & Privacy
+                </button>
+              </div>
               {/* Subscriber Bar */}
 <div className="mt-8 sm:mt-12">
   <div className="bg-gradient-to-br from-gray-700 via-gray-700 to-gray-900 text-white rounded-2xl shadow-xl p-6 md:p-10">
@@ -542,6 +559,61 @@ export default function ModernFooter() {
           <span>Subscribe</span>
         </button>
       </form>
+    </div>
+
+    <div className="mt-12 py-6 border-t border-white/10">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">
+            System Architecture
+          </p>
+        </div>
+    
+        {/* Modern Dev Credits */}
+        <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2">
+          <p className="text-[11px] font-bold text-white/60 tracking-tight">
+            Developed by{" "}
+            <a 
+              href="https://www.linkedin.com/in/emmanuel-makau-40a12028b/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white hover:text-emerald-400 transition-colors duration-300 underline decoration-emerald-500/30 underline-offset-4"
+            >
+              Emmanuel Makau
+            </a>
+          </p>
+    
+          {/* Social Links Bar */}
+          <div className="flex items-center gap-4 bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-inner">
+            <a 
+              href="https://github.com/Emmanuel10701" 
+              className="text-white/50 hover:text-white transition-all hover:scale-110"
+              title="GitHub Profile"
+            >
+              <FiGithub size={14} />
+            </a>
+            <a 
+              href="mailto:emmanuelmakau90@gmail.com" 
+              className="text-white/50 hover:text-emerald-400 transition-all hover:scale-110"
+              title="Email Developer"
+            >
+              <FiMail size={14} />
+            </a>
+            <a 
+              href="tel:+254793472960" 
+              className="text-white/50 hover:text-blue-400 transition-all hover:scale-110"
+              title="Call"
+            >
+              <FiPhone size={14} />
+            </a>
+            <div className="w-[1px] h-3 bg-white/10 mx-1" />
+            <span className="text-[9px] font-black text-white/30 tracking-widest uppercase">
+              v2.0.26
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
 
     {/* Status Messages */}

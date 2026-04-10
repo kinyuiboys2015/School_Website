@@ -444,11 +444,11 @@ Loading for our School Magazines          </p>
       <section className="relative bg-gradient-to-br from-amber-900 via-orange-900 to-amber-900 text-white overflow-hidden">
         {/* Low-opacity background image */}
         <div className="absolute inset-0">
-          <img src="/kin.jpeg" alt="Kinyui Hero" className="w-full h-full object-cover opacity-20" />
+          <img src="/hero/kin.jpeg" alt="Kinyui Hero" className="w-full h-full object-cover opacity-20" />
         </div>
         {/* Logo watermark overlay */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-          <img src="/kinyui.png" alt="Kinyui Logo" className="w-1/2 max-w-xs opacity-10" />
+          <img src="/hero/kin.jpeg" alt="Kinyui Logo" className="w-1/2 max-w-xs opacity-10" />
         </div>
         <div className="absolute inset-0 bg-black/20" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
