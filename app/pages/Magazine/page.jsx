@@ -207,12 +207,10 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
         ) : (
           <BookOpen className="w-16 h-16 text-amber-600/30" />
         )}
-        
         {/* Year Badge */}
         <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm rounded-lg px-2 py-1">
           <span className="text-white text-xs font-bold">{issue.year}</span>
         </div>
-
         {/* Action Buttons Overlay */}
         <AnimatePresence>
           {isHovered && (
@@ -240,11 +238,22 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
               >
                 <Share2 size={18} />
               </button>
+              {/* Download Button */}
+              {issue.downloadUrl && (
+                <a
+                  href={issue.downloadUrl}
+                  download
+                  onClick={e => e.stopPropagation()}
+                  className="p-2 rounded-full bg-white/90 backdrop-blur-sm text-amber-700 hover:bg-amber-100 transition-all hover:scale-110"
+                  title="Download Magazine"
+                >
+                  <Download size={18} />
+                </a>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
       </div>
-
       {/* Content Area */}
       <div className="p-5">
         <h3 className="font-bold text-slate-800 text-lg mb-2 line-clamp-1 group-hover:text-amber-700 transition-colors">
@@ -268,6 +277,18 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
             Read Now →
           </span>
         </div>
+        {/* Download Button (always visible at bottom of card) */}
+        {issue.downloadUrl && (
+          <a
+            href={issue.downloadUrl}
+            download
+            onClick={e => e.stopPropagation()}
+            className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-amber-700 text-white rounded-lg font-bold text-xs hover:bg-amber-900 transition-all shadow"
+            title="Download Magazine"
+          >
+            <Download size={16} /> Download
+          </a>
+        )}
       </div>
     </motion.div>
   );
@@ -441,57 +462,82 @@ Loading for our School Magazines          </p>
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-amber-900 via-orange-900 to-amber-900 text-white overflow-hidden">
-        {/* Low-opacity background image */}
-        <div className="absolute inset-0">
-          <img src="/hero/kin.jpeg" alt="Kinyui Hero" className="w-full h-full object-cover opacity-20" />
-        </div>
-        {/* Logo watermark overlay */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-          <img src="/hero/kin.jpeg" alt="Kinyui Logo" className="w-1/2 max-w-xs opacity-10" />
-        </div>
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center"
-          >
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-1.5 mb-6">
-              <Sparkles className="w-4 h-4 text-amber-300" />
-              <span className="text-sm font-medium">Digital Archive</span>
-            </div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4">
-              School Magazine
-              <span className="block text-amber-300">Archive</span>
-            </h1>
-            <p className="text-lg sm:text-xl text-amber-100 max-w-2xl mx-auto">
-              Discover the rich history and achievements of Kinyui Boys through our digital magazine collection
-            </p>
-          </motion.div>
+  <section className="relative bg-gradient-to-br from-amber-950 via-orange-950 to-amber-950 text-white overflow-hidden">
+  {/* 1. Base Image Layer with low opacity */}
+  <div className="absolute inset-0">
+    <img 
+      src="/hero/kin.jpeg" 
+      alt="Kinyui Hero" 
+      className="w-full h-full object-cover opacity-20" 
+    />
+  </div>
 
-          {/* Stats Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mt-12 flex flex-wrap justify-center gap-8"
-          >
-            <div className="text-center">
-              <div className="text-3xl font-black">{stats.totalIssues}</div>
-              <div className="text-amber-200 text-sm">Issues Published</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-black">{stats.totalPages}+</div>
-              <div className="text-amber-200 text-sm">Total Pages</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-black">{stats.earliestYear} - {stats.latestYear}</div>
-              <div className="text-amber-200 text-sm">Years of Excellence</div>
-            </div>
-          </motion.div>
+  {/* 2. Logo Watermark */}
+  <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+    <img 
+      src="/hero/kin.jpeg" 
+      alt="Kinyui Logo" 
+      className="w-1/2 max-w-xs opacity-5" 
+    />
+  </div>
+
+  {/* 3. The "Modern" Gradient Overlay: Darker at bottom, clear at top */}
+  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+
+  {/* Content Wrapper */}
+  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-32">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="text-center"
+    >
+      <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 mb-6">
+        <Sparkles className="w-4 h-4 text-amber-300" />
+        <span className="text-sm font-bold tracking-wide">Digital Archive</span>
+      </div>
+      
+      <h1 className="text-4xl sm:text-6xl md:text-7xl font-black mb-6 tracking-tight">
+        School Magazine
+        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">
+          Archive
+        </span>
+      </h1>
+
+      <p className="text-lg sm:text-xl text-amber-100/80 max-w-2xl mx-auto leading-relaxed">
+        Discover the rich history and achievements of Kinyui Boys through our digital magazine collection.
+      </p>
+    </motion.div>
+
+    {/* Stats Bar - Sits on the darkest part of the gradient for high contrast */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 }}
+      className="mt-16 flex flex-wrap justify-center gap-12"
+    >
+      <div className="text-center group">
+        <div className="text-4xl font-black text-white group-hover:text-amber-400 transition-colors">
+          {stats.totalIssues}
         </div>
-      </section>
+        <div className="text-amber-200/60 text-xs uppercase tracking-widest font-bold mt-1">Issues</div>
+      </div>
+      
+      <div className="text-center group">
+        <div className="text-4xl font-black text-white group-hover:text-amber-400 transition-colors">
+          {stats.totalPages}+
+        </div>
+        <div className="text-amber-200/60 text-xs uppercase tracking-widest font-bold mt-1">Pages</div>
+      </div>
+      
+      <div className="text-center group">
+        <div className="text-4xl font-black text-white group-hover:text-amber-400 transition-colors">
+          {stats.earliestYear} - {stats.latestYear}
+        </div>
+        <div className="text-amber-200/60 text-xs uppercase tracking-widest font-bold mt-1">Timeline</div>
+      </div>
+    </motion.div>
+  </div>
+</section>
 
       {/* Search & Filter Section */}
       <section className="sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-md py-4 px-2 sm:px-6">
