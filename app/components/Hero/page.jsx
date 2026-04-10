@@ -45,9 +45,9 @@ const heroSlides = [
 ];
 
 const accentColors = {
-  blue: { text: "text-blue-400", bg: "bg-blue-500", border: "border-blue-500/40", glow: "shadow-blue-500/20", ring: "ring-blue-400/30", gradient: "from-blue-600 to-blue-400" },
-  emerald: { text: "text-emerald-400", bg: "bg-emerald-500", border: "border-emerald-500/40", glow: "shadow-emerald-500/20", ring: "ring-emerald-400/30", gradient: "from-emerald-600 to-emerald-400" },
-  amber: { text: "text-amber-400", bg: "bg-amber-500", border: "border-amber-500/40", glow: "shadow-amber-500/20", ring: "ring-amber-400/30", gradient: "from-amber-600 to-amber-400" },
+  blue: { text: "text-blue-400", bg: "bg-blue-700", border: "border-blue-700/40", glow: "shadow-blue-700/20", ring: "ring-blue-700/30", gradient: "from-blue-900 to-blue-700" },
+  emerald: { text: "text-emerald-400", bg: "bg-emerald-700", border: "border-emerald-700/40", glow: "shadow-emerald-700/20", ring: "ring-emerald-700/30", gradient: "from-emerald-900 to-emerald-700" },
+  amber: { text: "text-amber-400", bg: "bg-amber-800", border: "border-amber-800/40", glow: "shadow-amber-800/20", ring: "ring-amber-800/30", gradient: "from-amber-900 to-amber-800" },
 };
 
 const extractYouTubeId = (url) => {
@@ -188,6 +188,14 @@ const ModernHero = () => {
           />
         </div>
       ))}
+      {/* Low-opacity hero background image */}
+      <div className="absolute inset-0 pointer-events-none select-none">
+        <img src="/kin.jpeg" alt="Kinyui Hero" className="w-full h-full object-cover opacity-20" />
+      </div>
+      {/* Logo watermark overlay */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+        <img src="/kinyui.png" alt="Kinyui Logo" className="w-1/2 max-w-xs opacity-10" />
+      </div>
 
       {/* Overlay with adjusted padding for content */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30" />

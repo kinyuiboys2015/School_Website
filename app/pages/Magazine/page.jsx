@@ -383,21 +383,70 @@ export default function MagazineArchive() {
     return uniqueYears.sort((a, b) => b - a);
   }, [magazines]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-orange-50">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-amber-600 animate-spin mx-auto mb-4" />
-          <p className="text-slate-600">Loading magazines...</p>
+
+if (loading) {
+  return (
+    <Box 
+      className="min-h-[70vh] flex items-center justify-center p-4 bg-transparent"
+    >
+      <Stack 
+        spacing={2} 
+        alignItems="center"
+        className="w-full transition-all duration-500"
+      >
+        {/* Modern Layered Loader - Responsive sizing */}
+        <Box className="relative flex items-center justify-center scale-90 sm:scale-110">
+          <CircularProgress
+            variant="determinate"
+            value={100}
+            size={48} 
+            thickness={4.5}
+            sx={{ color: '#f1f5f9' }} 
+          />
+          <CircularProgress
+            variant="indeterminate"
+            disableShrink
+            size={48}
+            thickness={4.5}
+            sx={{
+              color: '#0f172a', // Matches your dark slate theme
+              animationDuration: '1000ms',
+              position: 'absolute',
+              [`& .MuiCircularProgress-circle`]: {
+                strokeLinecap: 'round',
+              },
+            }}
+          />
+          <Box className="absolute">
+            <IoSparkles className="text-blue-600 text-sm animate-pulse" />
+          </Box>
+        </Box>
+
+        {/* Minimalist Typography */}
+        <div className="text-center px-4">
+          <p className="text-slate-900 font-medium text-sm sm:text-base tracking-tight italic">
+Loading for our School Magazines          </p>
+          <p className="text-slate-400 text-[10px] sm:text-xs uppercase tracking-widest mt-1 font-bold">
+            kinyui boys Senior School
+          </p>
         </div>
-      </div>
-    );
-  }
+      </Stack>
+    </Box>
+  );
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-amber-900 text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-amber-900 via-orange-900 to-amber-900 text-white overflow-hidden">
+        {/* Low-opacity background image */}
+        <div className="absolute inset-0">
+          <img src="/kin.jpeg" alt="Kinyui Hero" className="w-full h-full object-cover opacity-20" />
+        </div>
+        {/* Logo watermark overlay */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <img src="/kinyui.png" alt="Kinyui Logo" className="w-1/2 max-w-xs opacity-10" />
+        </div>
         <div className="absolute inset-0 bg-black/20" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
           <motion.div
@@ -442,40 +491,40 @@ export default function MagazineArchive() {
       </section>
 
       {/* Search & Filter Section */}
-      <section className="sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-md py-4 px-4 sm:px-6">
+      <section className="sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-md py-4 px-2 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <div className="flex flex-col sm:flex-row gap-4 w-full">
+            <div className="relative flex-1 min-w-[200px]">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-700" size={18} />
               <input
                 type="text"
                 placeholder="Search by title, year, or description..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border-2 border-amber-700 text-amber-900 font-bold rounded-xl text-sm focus:outline-none focus:border-amber-800 focus:ring-2 focus:ring-amber-700/30 transition-all"
               />
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="px-4 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-sm font-medium flex items-center gap-2 hover:bg-slate-200 transition-all"
+                className="px-4 py-2.5 bg-amber-50 border-2 border-amber-700 text-amber-900 font-bold rounded-xl text-sm flex items-center gap-2 hover:bg-amber-100 transition-all"
               >
-                <Filter size={16} />
+                <Filter size={16} className="text-amber-700" />
                 Filters
                 {showFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
               </button>
 
-              <div className="flex bg-slate-100 rounded-xl p-1">
+              <div className="flex bg-amber-50 rounded-xl p-1 border border-amber-200">
                 <button
                   onClick={() => setViewMode("grid")}
-                  className={`p-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-white shadow-sm text-amber-600" : "text-slate-500"}`}
+                  className={`p-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-amber-700 shadow-sm text-white font-bold" : "text-amber-700"}`}
                 >
                   <Grid3x3 size={18} />
                 </button>
                 <button
                   onClick={() => setViewMode("list")}
-                  className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-white shadow-sm text-amber-600" : "text-slate-500"}`}
+                  className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-amber-700 shadow-sm text-white font-bold" : "text-amber-700"}`}
                 >
                   <List size={18} />
                 </button>
@@ -498,7 +547,7 @@ export default function MagazineArchive() {
                     <select
                       value={selectedYear}
                       onChange={(e) => setSelectedYear(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-amber-500"
+                      className="w-full px-3 py-2 bg-slate-50 border-2 border-amber-700 text-amber-900 font-bold rounded-lg text-sm focus:outline-none focus:border-amber-800"
                     >
                       <option value="all">All Years</option>
                       {years.map(year => (
@@ -512,7 +561,7 @@ export default function MagazineArchive() {
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-amber-500"
+                      className="w-full px-3 py-2 bg-slate-50 border-2 border-amber-700 text-amber-900 font-bold rounded-lg text-sm focus:outline-none focus:border-amber-800"
                     >
                       <option value="year">Year</option>
                       <option value="title">Title</option>
@@ -526,7 +575,7 @@ export default function MagazineArchive() {
                     <select
                       value={sortOrder}
                       onChange={(e) => setSortOrder(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-amber-500"
+                      className="w-full px-3 py-2 bg-slate-50 border-2 border-amber-700 text-amber-900 font-bold rounded-lg text-sm focus:outline-none focus:border-amber-800"
                     >
                       <option value="desc">Newest First</option>
                       <option value="asc">Oldest First</option>
@@ -555,7 +604,7 @@ export default function MagazineArchive() {
                 setSearchQuery("");
                 setSelectedYear("all");
               }}
-              className="mt-4 px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700 transition-all"
+              className="mt-4 px-4 py-2 bg-amber-800 text-white rounded-lg text-sm font-bold hover:bg-amber-900 transition-all"
             >
               Clear Filters
             </button>
@@ -590,19 +639,19 @@ export default function MagazineArchive() {
               icon={Trophy}
               title="Achievements"
               description="Academic and sports excellence recognized and celebrated"
-              color="from-amber-600 to-orange-600"
+              color="from-amber-800 to-orange-900"
             />
             <FeatureCard
               icon={Users}
               title="Student Stories"
               description="Inspiring journeys and success stories of our young men"
-              color="from-orange-600 to-red-600"
+              color="from-orange-800 to-red-900"
             />
             <FeatureCard
               icon={Calendar}
               title="Events Coverage"
               description="Memorable moments from school events and activities"
-              color="from-amber-700 to-amber-600"
+              color="from-amber-900 to-amber-800"
             />
           </div>
         </div>
@@ -613,7 +662,7 @@ export default function MagazineArchive() {
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="bg-gradient-to-br from-amber-600 to-orange-600 rounded-3xl p-10 shadow-2xl"
+            className="bg-gradient-to-br from-amber-900 to-orange-900 rounded-3xl p-10 shadow-2xl"
           >
             <Sparkles className="text-white mx-auto mb-4" size={32} />
             <h2 className="text-2xl sm:text-3xl font-black text-white mb-3">

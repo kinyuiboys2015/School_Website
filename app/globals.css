@@ -28,6 +28,15 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  .btn-dark-amber {
+    @apply bg-amber-800 hover:bg-amber-900 text-white font-bold transition-all;
+  }
+  .btn-dark-orange {
+    @apply bg-orange-800 hover:bg-orange-900 text-white font-bold transition-all;
+  }
+  .filter-bold {
+    @apply border-amber-700 text-amber-900 font-bold;
+  }
 }
 
 
