@@ -1084,16 +1084,60 @@ const handleSaveAdmin = async (e) => {
     return null;
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20 flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="text-gray-600 text-lg mt-4 font-medium">Loading admins...</p>
+
+
+if (loading) {
+  return (
+    <Box 
+      className="min-h-[70vh] flex items-center justify-center p-4 bg-transparent"
+    >
+      <Stack 
+        spacing={2} 
+        alignItems="center"
+        className="w-full transition-all duration-500"
+      >
+        {/* Modern Layered Loader - Responsive sizing */}
+        <Box className="relative flex items-center justify-center scale-90 sm:scale-110">
+          <CircularProgress
+            variant="determinate"
+            value={100}
+            size={48} 
+            thickness={4.5}
+            sx={{ color: '#f1f5f9' }} 
+          />
+          <CircularProgress
+            variant="indeterminate"
+            disableShrink
+            size={48}
+            thickness={4.5}
+            sx={{
+              color: '#0f172a', // Matches your dark slate theme
+              animationDuration: '1000ms',
+              position: 'absolute',
+              [`& .MuiCircularProgress-circle`]: {
+                strokeLinecap: 'round',
+              },
+            }}
+          />
+          <Box className="absolute">
+            <IoSparkles className="text-blue-600 text-sm animate-pulse" />
+          </Box>
+        </Box>
+
+        {/* Minimalist Typography */}
+        <div className="text-center px-4">
+          <p className="text-slate-900 font-medium text-sm sm:text-base tracking-tight italic">
+           Loading For Administrators
+          </p>
+          <p className="text-slate-400 text-[10px] sm:text-xs uppercase tracking-widest mt-1 font-bold">
+            kinyui boys Senior School
+          </p>
         </div>
-      </div>
-    );
-  }
+      </Stack>
+    </Box>
+  );
+}
+
 
   // Only ADMIN or SUPERADMIN can access privileged actions
   if (currentUserRole && !['ADMIN', 'SUPERADMIN'].includes(currentUserRole.toUpperCase())) {
