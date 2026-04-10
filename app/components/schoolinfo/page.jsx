@@ -1432,7 +1432,7 @@ const handleFormSubmit = async (e) => {
   <div className="space-y-6">
     <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-200">
       <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-        <FaBook className="text-amber-600" />
+        <FaBook className="text-amber-900" />
         School Magazine
       </h3>
       
@@ -1444,7 +1444,7 @@ const handleFormSubmit = async (e) => {
             value={formData.magazineTitle || ''}
             onChange={(e) => handleChange('magazineTitle', e.target.value)}
             placeholder="e.g., The Pride 2024"
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-amber-500 focus:border-amber-500"
+            className="w-full px-4 py-3 border-2 font-bold text-slate-900 border-gray-200 rounded-xl focus:ring-amber-500 focus:border-amber-500"
           />
         </div>
         <div>
@@ -1454,7 +1454,7 @@ const handleFormSubmit = async (e) => {
             value={formData.magazineYear || ''}
             onChange={(e) => handleChange('magazineYear', e.target.value)}
             placeholder="2024"
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-amber-500 focus:border-amber-500"
+            className="w-full px-4 py-3 border-2 font-bold text-slate-900 border-gray-200 rounded-xl focus:ring-amber-500 focus:border-amber-500"
           />
         </div>
       </div>
@@ -1466,7 +1466,7 @@ const handleFormSubmit = async (e) => {
           value={formData.magazineDescription || ''}
           onChange={(e) => handleChange('magazineDescription', e.target.value)}
           placeholder="Brief description of the magazine content..."
-          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-amber-500 focus:border-amber-500"
+          className="w-full px-4 py-3 border-2 border-gray-100 font-bold text-slate-900 rounded-xl focus:ring-amber-500 focus:border-amber-500"
         />
       </div>
       
@@ -1496,7 +1496,7 @@ const handleFormSubmit = async (e) => {
               <button
                 type="button"
                 onClick={() => setMagazineFile(null)}
-                className="ml-3 text-red-500 text-xs"
+                className="ml-3 text-red-900 text-sm"
               >Remove</button>
             </div>
           )}
@@ -1529,7 +1529,7 @@ const handleFormSubmit = async (e) => {
                 <button
                   type="button"
                   onClick={() => setMagazineThumbnailFile(null)}
-                  className="mt-1 text-red-500 text-xs"
+                  className="mt-1 text-red-900 text-sm"
                 >Remove thumbnail</button>
               )}
             </div>
