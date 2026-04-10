@@ -183,8 +183,9 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
         
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3 text-xs text-slate-950 font-black">
-            <span className="flex items-center gap-1"><Eye size={12} /> {issue.views || 0}</span>
-            {/* Removed pages count */}
+         <span className="text-xs font-black text-slate-950 uppercase tracking-wider">
+                Read Now →
+              </span>            {/* Removed pages count */}
             <span className="flex items-center gap-1"><Download size={12} /> {issue.downloads || 0}</span>
           </div>
           <div className="flex gap-2">
