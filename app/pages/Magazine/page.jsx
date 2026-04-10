@@ -454,7 +454,7 @@ export default function MagazineArchive() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative bg-slate-800 text-white overflow-hidden">
         <div className="absolute inset-0">
@@ -523,7 +523,7 @@ export default function MagazineArchive() {
       </section>
 
       {/* Search & Filter Section */}
-      <section className="sticky top-0 z-30 bg-slate-800/95 backdrop-blur-md shadow-md py-4 px-2 sm:px-6">
+      <section className="sticky top-0 z-30 bg-white backdrop-blur-md shadow-md py-4 px-2 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row gap-4 w-full">
             <div className="relative flex-1 min-w-[200px]">
@@ -657,7 +657,7 @@ export default function MagazineArchive() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 sm:px-6 bg-slate-800">
+      <section className="py-16 px-4 sm:px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-black text-slate-100">Why Read Our Magazine?</h2>
@@ -688,7 +688,7 @@ export default function MagazineArchive() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 sm:px-6">
+      <section className="py-16 px-4 sm:px-6 bg-white">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             whileHover={{ scale: 1.02 }}
