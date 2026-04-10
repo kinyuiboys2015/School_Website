@@ -325,12 +325,10 @@ export default function MagazineArchive() {
     latestYear: null
   });
 
-  // FIXED: Fetch magazines from /api/school instead of /api/magazines
   useEffect(() => {
     const fetchMagazines = async () => {
       try {
         setLoading(true);
-        // ✅ Changed endpoint from /api/magazines to /api/school
         const response = await fetch('/api/school');
         const data = await response.json();
         
