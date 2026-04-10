@@ -540,102 +540,129 @@ export default function MagazineArchive() {
           </motion.div>
         </div>
       </section>
+{/* Search & Filter Section */}
+<section className="sticky top-0 z-30 bg-white shadow-md py-4 px-2 sm:px-6">
+  <div className="max-w-7xl mx-auto">
+    <div className="flex flex-col sm:flex-row gap-4 w-full">
+      
+      {/* Search Input */}
+      <div className="relative flex-1 min-w-[200px]">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-black" size={18} />
+        <input
+          type="text"
+          placeholder="Search by title, year, or description..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 text-black font-semibold rounded-xl text-sm focus:outline-none focus:border-black focus:ring-2 focus:ring-black/20 transition-all"
+        />
+      </div>
 
-      {/* Search & Filter Section */}
-      <section className="sticky top-0 z-30 bg-white backdrop-blur-md shadow-md py-4 px-2 sm:px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row gap-4 w-full">
-            <div className="relative flex-1 min-w-[200px]">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-400" size={18} />
-              <input
-                type="text"
-                placeholder="Search by title, year, or description..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-amber-700 text-slate-100 font-bold rounded-xl text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 transition-all"
-              />
-            </div>
+      {/* Buttons */}
+      <div className="flex gap-2 flex-wrap">
+        
+        {/* Filter Toggle */}
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className="px-4 py-2.5 bg-white border border-gray-300 text-black font-semibold rounded-xl text-sm flex items-center gap-2 hover:bg-gray-100 transition-all"
+        >
+          <Filter size={16} className="text-black" />
+          Filters
+          {showFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+        </button>
 
-            <div className="flex gap-2 flex-wrap">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="px-4 py-2.5 bg-slate-700 border border-amber-700 text-slate-100 font-bold rounded-xl text-sm flex items-center gap-2 hover:bg-slate-600 transition-all"
-              >
-                <Filter size={16} className="text-amber-400" />
-                Filters
-                {showFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-              </button>
-              <div className="flex bg-slate-700 rounded-xl p-1 border border-amber-700">
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`p-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-amber-600 shadow-sm text-white font-bold" : "text-amber-400"}`}
-                >
-                  <Grid3x3 size={18} />
-                </button>
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-amber-600 shadow-sm text-white font-bold" : "text-amber-400"}`}
-                >
-                  <List size={18} />
-                </button>
-              </div>
-            </div>
-          </div>
+        {/* View Mode */}
+        <div className="flex bg-gray-100 rounded-xl p-1 border border-gray-300">
+          <button
+            onClick={() => setViewMode("grid")}
+            className={`p-2 rounded-lg transition-all ${
+              viewMode === "grid"
+                ? "bg-black text-white font-bold shadow-sm"
+                : "text-black"
+            }`}
+          >
+            <Grid3x3 size={18} />
+          </button>
 
-          <AnimatePresence>
-            {showFilters && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="mt-4 pt-4 border-t border-slate-700"
-              >
-                <div className="flex flex-wrap gap-4">
-                  <div className="flex-1 min-w-[150px]">
-                    <label className="block text-xs font-medium text-slate-400 mb-1">Year</label>
-                    <select
-                      value={selectedYear}
-                      onChange={(e) => setSelectedYear(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-900 border border-amber-700 text-amber-400 font-bold rounded-lg text-sm focus:outline-none focus:border-amber-500"
-                    >
-                      <option value="all">All Years</option>
-                      {years.map(year => (
-                        <option key={year} value={year}>{year}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="flex-1 min-w-[150px]">
-                    <label className="block text-xs font-medium text-slate-400 mb-1">Sort By</label>
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-900 border border-amber-700 text-amber-400 font-bold rounded-lg text-sm focus:outline-none focus:border-amber-500"
-                    >
-                      <option value="year">Year</option>
-                      <option value="title">Title</option>
-                      <option value="views">Most Viewed</option>
-                      <option value="downloads">Most Downloaded</option>
-                    </select>
-                  </div>
-
-                  <div className="flex-1 min-w-[150px]">
-                    <label className="block text-xs font-medium text-slate-400 mb-1">Order</label>
-                    <select
-                      value={sortOrder}
-                      onChange={(e) => setSortOrder(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-900 border border-amber-700 text-amber-400 font-bold rounded-lg text-sm focus:outline-none focus:border-amber-500"
-                    >
-                      <option value="desc">Newest First</option>
-                      <option value="asc">Oldest First</option>
-                    </select>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <button
+            onClick={() => setViewMode("list")}
+            className={`p-2 rounded-lg transition-all ${
+              viewMode === "list"
+                ? "bg-black text-white font-bold shadow-sm"
+                : "text-black"
+            }`}
+          >
+            <List size={18} />
+          </button>
         </div>
-      </section>
+      </div>
+    </div>
+
+    {/* Filters */}
+    <AnimatePresence>
+      {showFilters && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          className="mt-4 pt-4 border-t border-gray-300"
+        >
+          <div className="flex flex-wrap gap-4">
+            
+            {/* Year */}
+            <div className="flex-1 min-w-[150px]">
+              <label className="block text-xs font-semibold text-black mb-1">
+                Year
+              </label>
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+                className="w-full px-3 py-2 bg-white border border-gray-300 text-black font-semibold rounded-lg text-sm focus:outline-none focus:border-black"
+              >
+                <option value="all">All Years</option>
+                {years.map((year) => (
+                  <option key={year} value={year}>{year}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Sort */}
+            <div className="flex-1 min-w-[150px]">
+              <label className="block text-xs font-semibold text-black mb-1">
+                Sort By
+              </label>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="w-full px-3 py-2 bg-white border border-gray-300 text-black font-semibold rounded-lg text-sm focus:outline-none focus:border-black"
+              >
+                <option value="year">Year</option>
+                <option value="title">Title</option>
+                <option value="views">Most Viewed</option>
+                <option value="downloads">Most Downloaded</option>
+              </select>
+            </div>
+
+            {/* Order */}
+            <div className="flex-1 min-w-[150px]">
+              <label className="block text-xs font-semibold text-black mb-1">
+                Order
+              </label>
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+                className="w-full px-3 py-2 bg-white border border-gray-300 text-black font-semibold rounded-lg text-sm focus:outline-none focus:border-black"
+              >
+                <option value="desc">Newest First</option>
+                <option value="asc">Oldest First</option>
+              </select>
+            </div>
+
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </div>
+</section>
 
       {/* Magazine Grid/List */}
       <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto bg-white rounded-2xl">
