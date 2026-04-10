@@ -78,6 +78,13 @@ const SOCIAL_LINKS = [
     color: '#1877F2',
   },
   {
+    icon: FaLinkedin,
+    href: 'https://www.linkedin.com/company/kinyui-boys-senior-school/',
+    label: 'LinkedIn',
+    color: '#0A66C2',
+
+  },
+  {
     icon: SiYoutube,
     href: 'https://www.youtube.com/channel/UCybL9mGxlEKqIAVnwOaFQ2w',
     label: 'YouTube',
