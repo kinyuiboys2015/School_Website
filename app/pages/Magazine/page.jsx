@@ -660,8 +660,8 @@ export default function MagazineArchive() {
       <section className="py-16 px-4 sm:px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-700">Why Read Our Magazine?</h2>
-            <p className="text-slate-500 mt-2">Every edition captures the essence of Kinyui Boys</p>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Why Read Our Magazine?</h2>
+            <p className="text-slate-900 mt-2">Every edition captures the essence of Kinyui Boys</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
