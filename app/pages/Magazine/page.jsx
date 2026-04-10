@@ -686,7 +686,6 @@ Loading for our School Magazines          </p>
         <BookReader issue={selectedIssue} onClose={() => setSelectedIssue(null)} />
       )}
 
-      <ScrollToTop />
     </div>
   );
 }
