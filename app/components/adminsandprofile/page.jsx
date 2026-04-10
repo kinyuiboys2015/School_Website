@@ -127,7 +127,7 @@ import {
   Briefcase,
   PlayCircle
 } from 'lucide-react';
-
+import {IoSparkles} from 'react-icons/io5';
 export default function AdminManager() {
   const [session, setSession] = useState(null);
   const [status, setStatus] = useState('loading');

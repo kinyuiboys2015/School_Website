@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import {IoSparkles} from 'react-icons/io5';
+
 
 // Dynamic import for BookReader (reduces initial bundle size)
 const BookReader = dynamic(() => import("../../components/book/BookReader"), {
