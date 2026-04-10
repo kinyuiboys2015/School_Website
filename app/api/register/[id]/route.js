@@ -53,8 +53,7 @@ class DeviceTokenManager {
 
         // Check role
         const userRole = payload.role || payload.userRole;
-        const validRoles = ['ADMIN', 'SUPER_ADMIN', 'administrator', 'PRINCIPAL', 'TEACHER', 'STAFF', 'EDITOR', 'NEWS_MANAGER'];
-        
+        const validRoles = ['ADMIN', 'SUPER_ADMIN'];
         if (!userRole || !validRoles.includes(userRole.toUpperCase())) {
           return { valid: false, reason: 'invalid_role', message: 'Insufficient permissions' };
         }
@@ -167,10 +166,10 @@ const validateInput = (name, email, password, role, phone = null, isEditing = fa
       }
     }
   }
-  // If role is missing or invalid, default to ADMIN (no error)
+  // Only allow ADMIN, SUPER_ADMIN. Default to ADMIN if invalid or missing.
   const validRoles = ["ADMIN", "SUPER_ADMIN"];
-  if (!role || !validRoles.includes(role.toUpperCase())) {
-    // No error, just default to ADMIN
+  if (role && !validRoles.includes(role.toUpperCase())) {
+    // No error, just ignore and will default to ADMIN in handler
   }
   return errors;
 };
@@ -192,21 +191,19 @@ const requiresAdminPrivilege = (operation, targetUserRole, currentUserRole) => {
   }
   
   // Check if current user has admin role
-  const adminRoles = ['ADMIN', 'PRINCIPAL'];
+  const adminRoles = ['ADMIN'];
   const isAdmin = adminRoles.includes(normalizedCurrentRole);
-  
   if (!isAdmin) {
     return { 
       allowed: false, 
       message: `Insufficient permissions. Required: ADMIN or SUPER_ADMIN. Current: ${normalizedCurrentRole}` 
     };
   }
-  
   // For ADMIN users (non-super)
   if (normalizedCurrentRole === 'ADMIN') {
-    // Admins can manage TEACHER, PRINCIPAL, and ADMIN users (but not SUPER_ADMIN)
-    if (["TEACHER", "PRINCIPAL", "ADMIN"].includes(normalizedTargetRole)) {
-      return { allowed: true, message: 'Admin access granted for teacher/principal/admin' };
+    // Admins can manage ADMIN users (but not SUPER_ADMIN)
+    if (["ADMIN"].includes(normalizedTargetRole)) {
+      return { allowed: true, message: 'Admin access granted for admin' };
     }
     // Admins cannot manage SUPER_ADMIN
     if (normalizedTargetRole === 'SUPER_ADMIN') {
@@ -216,18 +213,6 @@ const requiresAdminPrivilege = (operation, targetUserRole, currentUserRole) => {
         requiresSuperAdmin: true
       };
     }
-  }
-  
-  // PRINCIPAL role permissions
-  if (normalizedCurrentRole === 'PRINCIPAL') {
-    if (normalizedTargetRole === 'TEACHER') {
-      return { allowed: true, message: 'Principal can manage teachers' };
-    }
-    
-    return { 
-      allowed: false, 
-      message: `Principal cannot manage ${normalizedTargetRole} users` 
-    };
   }
   
   return { 
@@ -328,7 +313,6 @@ export async function PUT(req, { params }) {
     let permissionCheck = { allowed: true };
     if (auth.user.id !== id) {
       permissionCheck = requiresAdminPrivilege('UPDATE', targetUser.role, auth.user.role);
-      
       if (!permissionCheck.allowed) {
         return NextResponse.json(
           { 
@@ -368,8 +352,9 @@ export async function PUT(req, { params }) {
       phone: phone || undefined,
     };
 
-    // Only update role if user has permission
-    if (auth.user.id !== id && role) {
+    // Only update role if user has permission and role is valid
+    const validRoles = ["ADMIN", "SUPER_ADMIN", "USER"];
+    if (auth.user.id !== id && role && validRoles.includes(role.toUpperCase())) {
       const rolePermission = requiresAdminPrivilege('UPDATE_ROLE', targetUser.role, auth.user.role);
       if (rolePermission.allowed) {
         dataToUpdate.role = role.toUpperCase();
@@ -465,7 +450,6 @@ export async function DELETE(req, { params }) {
 
     // Check permission
     const permissionCheck = requiresAdminPrivilege('DELETE', targetUser.role, auth.user.role);
-    
     if (!permissionCheck.allowed) {
       return NextResponse.json(
         { 
