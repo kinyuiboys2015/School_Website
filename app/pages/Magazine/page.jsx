@@ -46,7 +46,7 @@ const ScrollToTop = () => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-40 p-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
+          className="fixed bottom-6 right-6 z-40 p-3 bg-gradient-to-r from-amber-800 to-amber-800 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
         >
           <ChevronUp size={20} />
         </motion.button>
@@ -130,7 +130,7 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
               </div>
 
               <div className="flex items-center gap-1">
-                <button onClick={handleBookmark} className={`p-1.5 ${isBookmarked ? 'text-amber-600' : 'text-slate-900'}`}>
+                <button onClick={handleBookmark} className={`p-1.5 ${isBookmarked ? 'text-amber-800' : 'text-slate-900'}`}>
                   {isBookmarked ? <BookmarkCheck size={18} /> : <Bookmark size={18} />}
                 </button>
                 <button onClick={handleShare} className="p-1.5 text-slate-900">
@@ -198,7 +198,7 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
             <span className="flex items-center gap-1"><Download size={12} /> {issue.downloads || 0}</span>
           </div>
           <div className="flex gap-2">
-            <button onClick={handleBookmark} className={isBookmarked ? 'text-amber-600' : 'text-slate-950'}>
+            <button onClick={handleBookmark} className={isBookmarked ? 'text-amber-800' : 'text-slate-950'}>
                {isBookmarked ? <BookmarkCheck size={18} /> : <Bookmark size={18} />}
             </button>
             <button onClick={handleShare} className="text-slate-950">
@@ -608,7 +608,7 @@ export default function MagazineArchive() {
                 setSearchQuery("");
                 setSelectedYear("all");
               }}
-              className="mt-4 px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-bold hover:bg-amber-700 transition-all"
+              className="mt-4 px-4 py-2 bg-amber-800 text-white rounded-lg text-sm font-bold hover:bg-amber-700 transition-all"
             >
               Clear Filters
             </button>
@@ -643,19 +643,19 @@ export default function MagazineArchive() {
               icon={Trophy}
               title="Achievements"
               description="Academic and sports excellence recognized and celebrated"
-              color="from-amber-600 to-orange-600"
+              color="from-amber-800 to-amber-800"
             />
             <FeatureCard
               icon={Users}
               title="Student Stories"
               description="Inspiring journeys and success stories of our young men"
-              color="from-orange-600 to-red-600"
+              color="from-amber-800 to-red-600"
             />
             <FeatureCard
               icon={Calendar}
               title="Events Coverage"
               description="Memorable moments from school events and activities"
-              color="from-amber-700 to-amber-600"
+              color="from-amber-700 to-amber-800"
             />
           </div>
         </div>
@@ -666,7 +666,7 @@ export default function MagazineArchive() {
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="bg-gradient-to-br from-amber-600 to-orange-600 rounded-3xl p-10 shadow-2xl"
+            className="bg-gradient-to-br from-amber-800 to-amber-800 rounded-3xl p-10 shadow-2xl"
           >
             <Sparkles className="text-white mx-auto mb-4" size={32} />
             <h2 className="text-2xl sm:text-3xl font-black text-white mb-3">
