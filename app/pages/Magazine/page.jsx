@@ -619,7 +619,7 @@ export default function MagazineArchive() {
       </section>
 
       {/* Magazine Grid/List */}
-      <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto bg-white rounded-2xl shadow-lg">
+      <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto bg-white rounded-2xl">
         {filteredAndSortedMagazines.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
@@ -627,8 +627,8 @@ export default function MagazineArchive() {
             className="text-center py-20"
           >
             <BookOpen className="mx-auto text-slate-500 mb-4" size={64} />
-            <h3 className="text-xl font-bold text-slate-300 mb-2">No magazines found</h3>
-            <p className="text-slate-400">Try adjusting your search or filter criteria</p>
+            <h3 className="text-xl font-bold text-slate-900 mb-2">No magazines found</h3>
+            <p className="text-slate-900">Try adjusting your search or filter criteria</p>
             <button
               onClick={() => {
                 setSearchQuery("");
@@ -660,8 +660,8 @@ export default function MagazineArchive() {
       <section className="py-16 px-4 sm:px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-100">Why Read Our Magazine?</h2>
-            <p className="text-slate-300 mt-2">Every edition captures the essence of Kinyui Boys</p>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-700">Why Read Our Magazine?</h2>
+            <p className="text-slate-500 mt-2">Every edition captures the essence of Kinyui Boys</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
