@@ -120,10 +120,10 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.01 }}
         onClick={() => onOpen(issue)}
-        className="bg-slate-800 rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden border border-slate-700 group"
+        className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden border border-slate-200 group"
       >
         <div className="flex flex-col sm:flex-row">
-          <div className="relative w-full sm:w-48 h-48 sm:h-auto bg-slate-700 flex items-center justify-center">
+          <div className="relative w-full sm:w-48 h-48 sm:h-auto bg-slate-100 flex items-center justify-center">
             {issue.thumbnail ? (
               <Image
                 src={issue.thumbnail}
@@ -198,7 +198,7 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -8 }}
       onClick={() => onOpen(issue)}
-      className="group relative bg-slate-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden"
+      className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -619,7 +619,7 @@ export default function MagazineArchive() {
       </section>
 
       {/* Magazine Grid/List */}
-      <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto">
+      <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto bg-white rounded-2xl shadow-lg">
         {filteredAndSortedMagazines.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
