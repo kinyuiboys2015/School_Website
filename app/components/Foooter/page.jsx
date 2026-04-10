@@ -39,7 +39,7 @@ import {
   SiLinkedin,
   SiWhatsapp,
 } from 'react-icons/si';
-import { FaLinkedin } from 'react-icons/fa';
+import { FaLinkedin, FaTiktok } from 'react-icons/fa';
 
 // ----------------------------------------------------------------------
 // Data Layer
@@ -73,19 +73,19 @@ const RESOURCES = [
 const SOCIAL_LINKS = [
   {
     icon: SiFacebook,
-    href: 'https://web.facebook.com/groups/414008468611340',
+    href: 'https://www.facebook.com/KinyuiBoysHighSchool/',
     label: 'Facebook',
     color: '#1877F2',
   },
   {
     icon: SiYoutube,
-    href: 'https://www.youtube.com/@SA.-kinyui boys-HIGH-SCHOOOL',
+    href: 'https://www.youtube.com/channel/UCybL9mGxlEKqIAVnwOaFQ2w',
     label: 'YouTube',
     color: '#FF0000',
   },
   {
-    icon: FaLinkedin,
-    href: 'https://www.linkedin.com/in/kinyui boys-senior-school-8662113b7/',
+    icon: FaTiktok,
+    href: 'https://www.tiktok.com/@kinyui.boys.high',
     label: 'LinkedIn',
     color: '#0A66C2',
   },
