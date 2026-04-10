@@ -643,13 +643,26 @@ export async function POST(request) {
         }, { status: 404 });
       }
 
-      const newCode = generateVerificationCode();
-      await storeVerificationCode(email, newCode, deviceHash);
-      await sendVerificationEmail(user, newCode);
+      // Check for existing unexpired code
+      const existingToken = await prisma.verificationToken.findFirst({
+        where: {
+          identifier: user.email,
+          expires: { gt: new Date() }
+        }
+      });
+      let codeToSend;
+      if (existingToken) {
+        codeToSend = existingToken.token;
+        console.log('♻️ Reusing existing verification code for RESEND:', email);
+      } else {
+        codeToSend = generateVerificationCode();
+        await storeVerificationCode(user.email, codeToSend, deviceHash);
+      }
+      await sendVerificationEmail(user, codeToSend);
 
       return NextResponse.json({
         success: true,
-        message: 'New verification code sent to your email'
+        message: 'Verification code sent to your email'
       }, { status: 200 });
     }
 
