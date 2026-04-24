@@ -18,6 +18,9 @@ const ModernSchoolLayout = () => {
   const [loading, setLoading] = useState(true);
   const [uniImages, setUniImages] = useState([]);
   const [imagesLoading, setImagesLoading] = useState(true);
+  const [achievementModalOpen, setAchievementModalOpen] = useState(false);
+  const [selectedAchievement, setSelectedAchievement] = useState(null);
+
   // State variables
 const [achievementsData, setAchievementsData] = useState(null);
 const [achievementsLoading, setAchievementsLoading] = useState(true);
