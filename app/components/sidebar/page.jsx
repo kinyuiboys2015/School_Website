@@ -226,6 +226,12 @@ const handleLogout = () => {
     icon: FiDollarSign,
     badge: 'yellow'
   },
+      { 
+      id: "achievements",
+      label: "Achievements & Awards",
+      icon: FiFileText,
+      badge: 'blue'
+    },
   { 
     id: 'resources', 
     label: 'Learning Resources', 

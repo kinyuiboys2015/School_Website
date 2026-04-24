@@ -54,6 +54,9 @@ import Student from "../components/student/page";
 import Fees from "../components/fees/page";
 import SchoolDocs from "../components/schooldocuments/page";
 import SMSManager from "../components/sms/page";
+import AchievementsManager from "../components/Achievements/page";
+
+
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -733,7 +736,8 @@ const ModernLoadingScreen = () => {
         studentRes,
         feesRes,
         schooldocumentsRes,
-        smsRes
+        smsRes,
+        achievementsRes
       ] = await Promise.allSettled([
         fetch('/api/staff'),
         fetch('/api/subscriber'),
@@ -748,7 +752,8 @@ const ModernLoadingScreen = () => {
         fetch('/api/career'),
         fetch('/api/studentupload'),
         fetch('/api/feebalances'),
-        fetch('/api/schooldocuments')
+        fetch('/api/schooldocuments'),
+        fetch('/api/achievements')
       ]);
 
       const staff = staffRes.status === 'fulfilled' ? await staffRes.value.json() : { staff: [] };
@@ -765,7 +770,7 @@ const ModernLoadingScreen = () => {
       const fees = feesRes.status === 'fulfilled' ? await feesRes.value.json() : { feebalances: [] };
       const schoolDocs = schooldocumentsRes.status === 'fulfilled' ? await schooldocumentsRes.value.json() : { documents: [] };
       const sms = smsRes.status === 'fulfilled' ? await smsRes.value.json() : { sms: [] };
-
+      const achievements = achievementsRes.status === 'fulfilled' ? await achievementsRes.value.json() : { achievements: [] };
       
       const upcomingEvents = events.events?.filter(e => new Date(e.eventDate) >= new Date()).length || 0;
       const activeAssignments = assignments.assignments?.filter(a => a.status === 'assigned').length || 0;
@@ -787,7 +792,8 @@ const ModernLoadingScreen = () => {
         Careers: careers.careers?.length || 0,
         totalStudent: student.students?.length || 0,
         totalFees: fees.feebalances?.length || 0,
-        schooldocuments: schoolDocs.documents?.length || 0
+        schooldocuments: schoolDocs.documents?.length || 0,
+        achievements: achievements.achievements?.length || 0
       });
 
     } catch (error) {
@@ -1143,6 +1149,9 @@ const handleLogout = () => {
         case 'sms':      
           return <SMSManager />;
 
+      case 'achievements':
+        return <AchievementsManager />;    
+
       case 'subscribers':
         return <SubscriberManager />;
       case 'email':
@@ -1189,6 +1198,12 @@ const handleLogout = () => {
       label: 'Staff & BOM', 
       icon: IoPeopleCircle,
       badge: 'orange'
+    },
+    {
+      id: 'achievements',
+      label: 'Achievements',
+      icon: FiAward,
+      badge: 'yellow'
     },
     { 
       id: 'assignments', 

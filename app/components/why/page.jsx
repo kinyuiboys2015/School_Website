@@ -18,6 +18,34 @@ const ModernSchoolLayout = () => {
   const [loading, setLoading] = useState(true);
   const [uniImages, setUniImages] = useState([]);
   const [imagesLoading, setImagesLoading] = useState(true);
+  // State variables
+const [achievementsData, setAchievementsData] = useState(null);
+const [achievementsLoading, setAchievementsLoading] = useState(true);
+
+// Fetch achievements data
+useEffect(() => {
+  const fetchAchievementsAndStats = async () => {
+    try {
+      // Fetch achievements
+      const achievementsRes = await fetch('/api/achievements');
+      const achievementsResult = await achievementsRes.json();
+      
+      if (achievementsResult.success) {
+        setAchievementsData(achievementsResult);
+      } else {
+        console.warn('Failed to fetch achievements, using fallback');
+        setAchievementsData(null);
+      }
+    } catch (error) {
+      console.error('Error fetching achievements:', error);
+      setAchievementsData(null);
+    } finally {
+      setAchievementsLoading(false);
+    }
+  };
+
+  fetchAchievementsAndStats();
+}, []);
 
   const schoolImages = [
     { src: "/bg/14.jpeg", alt: "Kinyui Boys Senior School - Main Building" },
@@ -79,6 +107,180 @@ const ModernSchoolLayout = () => {
   const studentCount = schoolData?.studentCount || 400;
   const contactEmail = schoolData?.admissionContactEmail || 'kinyuiboys2015@gmail.com';
   const contactPhone = schoolData?.admissionContactPhone || '0733 587223';
+
+const achievements = [
+  {
+    year: "2026",
+    title: "School Growth & Recognition",
+    shortDescription: "Continued growth in academic performance and regional recognition",
+    description: "Kinyui Boys Secondary School has continued to grow steadily in academic excellence and discipline, gaining recognition within Machakos County for improved KCSE performance and holistic student development.",
+    impact: "Improved academic reputation and increased student enrollment",
+    stats: "Steady KCSE Improvement | Increased Enrollment",
+    icon: <FiAward className="w-5 h-5" />,
+    image: "/hero/MatG1.jpg",
+    highlights: [
+      "Improved KCSE performance over recent years",
+      "Strengthened academic programs",
+      "Increased student enrollment",
+      "Recognition within Machakos County",
+      "Focus on discipline and holistic education"
+    ]
+  },
+  {
+    year: "2025",
+    title: "KCSE Performance Improvement",
+    shortDescription: "Notable improvement in KCSE results compared to previous years",
+    description: "The 2025 KCSE results showed a positive upward trend, reflecting the school's commitment to academic excellence, teacher dedication, and student discipline.",
+    impact: "Higher university qualification rates and improved school ranking",
+    stats: "Improved Mean Score | Higher University Transition",
+    icon: <FiTrendingUp className="w-5 h-5" />,
+    image: "/Matungulu/9.jpeg",
+    highlights: [
+      "Improved mean score compared to previous years",
+      "More students qualifying for university entry",
+      "Better subject performance across departments",
+      "Enhanced academic support programs",
+      "Strong teacher-student collaboration"
+    ]
+  },
+  {
+    year: "2025",
+    title: "County Academic Recognition",
+    shortDescription: "Recognized among improving schools in Machakos County",
+    description: "Kinyui Boys has been acknowledged at the county level for its steady academic improvement and commitment to quality education.",
+    impact: "Enhanced reputation and increased admissions",
+    stats: "County Recognition | Academic Growth",
+    icon: <FiStar className="w-5 h-5" />,
+    image: "/Matungulu/29.jpeg",
+    highlights: [
+      "Recognized for academic improvement",
+      "Improved ranking within the county",
+      "Increased student applications",
+      "Positive feedback from education stakeholders",
+      "Stronger community support"
+    ]
+  },
+  {
+    year: "2024",
+    title: "Co-Curricular Excellence",
+    shortDescription: "Strong participation in sports and academic competitions",
+    description: "Students actively participated in various co-curricular activities including sports, drama, and academic contests, representing the school at sub-county and county levels.",
+    impact: "Holistic student development and talent nurturing",
+    stats: "County Participation | Multiple Disciplines",
+    icon: <FiTrendingUp className="w-5 h-5" />,
+    image: "/Matungulu/37.jpeg",
+    highlights: [
+      "Participation in county-level sports competitions",
+      "Drama and music festival involvement",
+      "Academic contest participation",
+      "Talent development programs",
+      "Improved teamwork and leadership skills"
+    ]
+  },
+  {
+    year: "2024",
+    title: "STEM Development",
+    shortDescription: "Strengthening science and technology education",
+    description: "The school has continued to invest in science and technology education, encouraging students to engage in innovation and practical learning.",
+    impact: "Improved performance in STEM subjects",
+    stats: "Enhanced Science Programs | Innovation Focus",
+    icon: <FiAward className="w-5 h-5" />,
+    image: "/Matungulu/26.jpeg",
+    highlights: [
+      "Improved science laboratory usage",
+      "Encouragement of student innovation",
+      "Participation in science contests",
+      "Support for STEM subjects",
+      "Mentorship by science teachers"
+    ]
+  },
+];
+
+
+  // Helper function to get achievements (API data or fallback)
+const getAchievements = () => {
+  // Check if API returned achievements AND they exist (count > 0)
+  if (achievementsData?.achievements) {
+    // Flatten the grouped achievements into an array
+    const allAchievements = [];
+    const grouped = achievementsData.achievements;
+    
+    // Count total achievements across all categories
+    let totalCount = 0;
+    Object.keys(grouped).forEach(category => {
+      if (Array.isArray(grouped[category])) {
+        totalCount += grouped[category].length;
+      }
+    });
+    
+    // If there are NO achievements (count < 1), use fallback
+    if (totalCount < 1) {
+      console.log('No achievements found in API, using fallback data');
+      return achievements; // Return the static fallback achievements array
+    }
+    
+    // Otherwise, map API achievements to expected format
+    Object.keys(grouped).forEach(category => {
+      if (Array.isArray(grouped[category])) {
+        grouped[category].forEach(achievement => {
+          allAchievements.push({
+            ...achievement,
+            year: achievement.year?.toString() || '',
+            title: achievement.title || '',
+            shortDescription: achievement.description?.substring(0, 100) + '...' || '',
+            description: achievement.description || '',
+            impact: achievement.awardingBody || 'Achievement',
+            stats: `${achievement.category} | ${achievement.year}`,
+            icon: getCategoryIcon(achievement.category),
+            image: achievement.images && achievement.images.length > 0 
+              ? achievement.images[0].url 
+              : "/hero/MatG1.jpg",
+            highlights: achievement.recipients || []
+          });
+        });
+      }
+    });
+    
+    // Sort by year (newest first)
+    const sortedAchievements = allAchievements.sort((a, b) => (b.year || 0) - (a.year || 0)).slice(0, 5);
+    
+    // If after mapping we still have no achievements, use fallback
+    if (sortedAchievements.length < 1) {
+      return achievements;
+    }
+    
+    return sortedAchievements;
+  }
+  
+  // Fallback to static achievements array (defined in the component)
+  return achievements;
+};
+
+
+const openAchievementModal = (achievement) => {
+  setSelectedAchievement(achievement);
+  setAchievementModalOpen(true);
+  document.body.style.overflow = "hidden";
+};
+
+const closeAchievementModal = () => {
+  setAchievementModalOpen(false);
+  setSelectedAchievement(null);
+  document.body.style.overflow = "auto";
+};
+
+// Helper to get category icon
+const getCategoryIcon = (category) => {
+  const icons = {
+    'Academic': <FiAward className="w-5 h-5" />,
+    'Sports': <FiAward className="w-5 h-5" />,
+    'Arts': <FiAward className="w-5 h-5" />,
+    'Leadership': <FiStar className="w-5 h-5" />,
+    'Other': <FiAward className="w-5 h-5" />
+  };
+  return icons[category] || <FiAward className="w-5 h-5" />;
+};
+
 
 const whyChooseUs = [
   {
@@ -469,40 +671,101 @@ const whyChooseUs = [
         </div>
       </section>
 
- {/* === KINYUI BOYS ACHIEVEMENTS === */}
-<section className="bg-gray-50">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-18">
-    <div className="bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-50 p-6 sm:p-8 rounded-2xl border border-indigo-100/60 shadow-md">
-      
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <span className="text-2xl">🦁</span>
-        <h4 className="text-sm sm:text-base md:text-lg font-black text-indigo-800">
-          Kinyui Boys Achievements (2019–Present)
-        </h4>
+{/* ===== KINYUI BOYS: HORIZONTAL BENTO CHRONICLE ===== */}
+<section className="bg-white py-24 overflow-hidden">
+  <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    
+    {/* Minimalist Branded Header */}
+    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20">
+      <div className="space-y-4">
+        <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-slate-900 shadow-xl shadow-slate-900/10">
+          <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white">The Kinyui Chronicle</span>
+        </div>
+        <h2 className="text-5xl md:text-7xl font-serif font-medium text-slate-900 tracking-tighter">
+          Legacy <span className="italic text-slate-300">in Motion</span>
+        </h2>
       </div>
-
-      {/* Achievements Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        {[
-          'Top 3 in KCSE — County Level (2023)',
-          'ICT Upgrade — 50+ laptops donated through local sponsors (2022–2024)',
-          'New Library & STEM Labs Established (2021) — Boosting academic excellence',
-          `${studentCount}+ Boys enrolled — Boarding & Day Scholars`,
-          'Environmental Programs — Tree planting and reduced firewood consumption',
-          'Sports & Athletics Excellence — County football champions 2022–2024'
-        ].map((achievement, idx) => (
-          <div
-            key={idx}
-            className="bg-white p-4 sm:p-5 rounded-2xl border border-indigo-100 shadow-sm hover:shadow-lg transition-shadow duration-200"
-          >
-            <p className="text-xs sm:text-sm md:text-base text-gray-700 font-medium leading-relaxed">
-              {achievement}
-            </p>
-          </div>
-        ))}
-      </div>
+      <p className="max-w-xs text-slate-400 text-xs font-bold uppercase tracking-widest leading-loose border-l-2 border-slate-100 pl-6">
+        Mapping the evolution of excellence from our foundation to the current frontier.
+      </p>
     </div>
+
+    {achievementsLoading ? (
+      <div className="flex flex-col items-center justify-center py-24">
+        <FiLoader className="w-12 h-12 animate-spin text-maroon-700 mb-6" />
+        <p className="text-slate-400 font-black uppercase tracking-[0.4em] text-[10px]">Accessing Archives...</p>
+      </div>
+    ) : (
+      /* The Scrollable Canvas */
+      <div className="relative overflow-x-auto pb-12 no-scrollbar">
+        <div className="flex gap-8 min-w-max px-4">
+          {getAchievements().map((item, idx) => (
+            <div 
+              key={idx} 
+              className="w-[350px] md:w-[450px] flex flex-col gap-6"
+            >
+              {/* Year Indicator / Connector */}
+              <div className="flex items-center gap-4">
+                <span className="text-5xl font-serif font-bold italic text-slate-100 tracking-tighter group-hover:text-amber-500 transition-colors">
+                  {item.year}
+                </span>
+                <div className="h-px flex-1 bg-slate-100" />
+                <div className="w-3 h-3 rounded-full border-2 border-slate-200" />
+              </div>
+
+              {/* The Bento Card */}
+              <div className="bg-slate-50 rounded-[2.5rem] p-8 md:p-10 border border-slate-100 flex flex-col justify-between min-h-[400px] shadow-sm transition-all duration-500 hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50 hover:-translate-y-2">
+                
+                <div className="space-y-6">
+                  {/* Category & Icon */}
+                  <div className="flex items-center justify-between">
+                    <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center text-maroon-700 text-2xl">
+                      {item.icon || <FiAward />}
+                    </div>
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                      Record #{idx + 1}
+                    </span>
+                  </div>
+
+                  {/* Text Content */}
+                  <div className="space-y-3">
+                    <h3 className="text-2xl font-serif font-bold text-slate-900 leading-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-slate-500 text-sm font-medium leading-relaxed line-clamp-4">
+                      {item.shortDescription || item.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Footer Action */}
+                <div className="pt-8 border-t border-slate-100 mt-auto flex items-center justify-between">
+                   <div className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">Verified Achievement</span>
+                   </div>
+                   <button
+                    onClick={() => openAchievementModal(item)}
+                    className="p-4 bg-slate-900 text-white rounded-2xl hover:bg-maroon-700 transition-all active:scale-90"
+                  >
+                    <FiArrowRight />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* End of Line Cap */}
+          <div className="w-[200px] flex items-center justify-center">
+             <div className="flex flex-col items-center gap-4 text-slate-300">
+                <FiPlusCircle size={40} className="opacity-20" />
+                <span className="text-[10px] font-black uppercase tracking-[0.3em]">Future Chapter</span>
+             </div>
+          </div>
+        </div>
+      </div>
+    )}
   </div>
 </section>
 
@@ -599,6 +862,136 @@ const whyChooseUs = [
           </div>
         </div>
       </section>
+
+
+
+
+      {/* ===== KINYUI BOYS ACHIEVEMENT DETAIL MODAL ===== */}
+{achievementModalOpen && selectedAchievement && (
+  <div
+    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md transition-all duration-300"
+    onClick={closeAchievementModal}
+  >
+    <div
+      className="relative bg-white rounded-[2.5rem] max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in duration-500 flex flex-col border border-white/10"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* 1. ARCHITECTURAL HEADER */}
+      <div className="bg-slate-900 p-6 sm:p-10 text-white shrink-0 relative overflow-hidden">
+        {/* Subtle Branding Accent */}
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-maroon-600/20 to-transparent skew-x-12 translate-x-20 pointer-events-none" />
+        
+        <div className="relative z-10 flex items-center justify-between">
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 bg-gradient-to-br from-maroon-700 to-amber-600 rounded-2xl flex items-center justify-center shadow-xl border border-white/20">
+              <div className="text-white text-3xl">
+                {selectedAchievement.icon}
+              </div>
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] font-black bg-amber-500 text-slate-900 px-3 py-1 rounded-full uppercase tracking-widest">
+                  Class of {selectedAchievement.year}
+                </span>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1">
+                  <FiAward className="text-amber-500" /> Kinyui Excellence
+                </span>
+              </div>
+              <h3 className="text-2xl sm:text-4xl font-serif font-bold tracking-tight">
+                {selectedAchievement.title}
+              </h3>
+            </div>
+          </div>
+          
+          <button
+            onClick={closeAchievementModal}
+            className="w-12 h-12 rounded-2xl bg-white/5 hover:bg-red-500/20 hover:text-red-400 flex items-center justify-center transition-all border border-white/10 group"
+          >
+            <FiX className="w-6 h-6 group-active:scale-90" />
+          </button>
+        </div>
+      </div>
+
+      {/* 2. MODAL CONTENT (Bento Style) */}
+      <div className="overflow-y-auto flex-1 bg-slate-50/50">
+        <div className="grid grid-cols-1 lg:grid-cols-12">
+          
+          {/* Left Side: Media & Context (7 Cols) */}
+          <div className="lg:col-span-7 p-6 sm:p-10 space-y-8">
+            {selectedAchievement.image && (
+              <div className="relative h-64 sm:h-80 w-full rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white">
+                <Image
+                  src={selectedAchievement.image}
+                  alt={selectedAchievement.title}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent" />
+              </div>
+            )}
+
+            <div className="space-y-4">
+              <h4 className="text-xs font-black text-slate-400 uppercase tracking-[0.3em] flex items-center gap-2">
+                <FiBookOpen className="text-maroon-600" />
+                The Achievement Narrative
+              </h4>
+              <p className="text-lg text-slate-700 leading-relaxed font-medium italic">
+                "{selectedAchievement.description}"
+              </p>
+            </div>
+          </div>
+
+          {/* Right Side: Stats & Highlights (5 Cols) */}
+          <div className="lg:col-span-5 p-6 sm:p-10 bg-white border-l border-slate-100 flex flex-col gap-6">
+            
+            {/* Impact Cards */}
+            <div className="grid grid-cols-1 gap-4">
+              <div className="p-5 bg-maroon-50 rounded-[1.5rem] border border-maroon-100">
+                <p className="text-[10px] font-black text-maroon-700 uppercase tracking-widest mb-2">Metric Impact</p>
+                <p className="text-xl font-serif font-bold text-slate-900">{selectedAchievement.stats}</p>
+              </div>
+              <div className="p-5 bg-blue-50 rounded-[1.5rem] border border-blue-100">
+                <p className="text-[10px] font-black text-blue-700 uppercase tracking-widest mb-2">Social Reach</p>
+                <p className="text-xl font-serif font-bold text-slate-900">{selectedAchievement.impact}</p>
+              </div>
+            </div>
+
+            {/* Highlights List */}
+            {selectedAchievement.highlights && (
+              <div className="flex-1 space-y-4">
+                <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Key Milestones</h5>
+                <div className="space-y-3">
+                  {selectedAchievement.highlights.map((highlight, idx) => (
+                    <div key={idx} className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                      <div className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0" />
+                      <span className="text-sm font-bold text-slate-700 leading-tight">{highlight}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* 3. THE "SA KINYUI" FOOTER */}
+      <div className="px-10 py-6 border-t border-slate-100 bg-white flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-maroon-900 flex items-center justify-center text-[10px] font-black text-white">SA</div>
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+            Kinyui Boys Senior School <span className="mx-2 text-slate-200">|</span> Knowledge is Power
+          </p>
+        </div>
+        <button 
+          onClick={closeAchievementModal}
+          className="px-8 py-3 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-maroon-700 transition-all shadow-lg"
+        >
+          Close Record
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };

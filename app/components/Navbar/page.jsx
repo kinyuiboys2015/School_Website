@@ -16,6 +16,7 @@ import {
   FiChevronDown,
   FiBriefcase,
   FiChevronRight,
+  FiHeart,
   FiLock,
   FiDollarSign,
   FiGrid,
@@ -162,9 +163,22 @@ export default function ModernNavbar() {
     {
       name: 'School Rules',
       href: '/pages/OurSchoolPolicies',
-      icon: FiAward,
+      icon: FiBook,
       description: 'Policies & student regulations'
+    },
+    {
+      name: 'School Achievements',
+      href: '/pages/Achievements',
+      icon: FiAward,
+      description: 'Celebrating our students\' successes & milestones'
+    },
+      {
+      name: 'Alumni page',
+      href: 'https://www.facebook.com/groups/53636547389',
+      icon: FiHeart,
+      description: 'Connect with fellow alumnae'
     }
+
   ];
 
   // Resources dropdown items - WITH DESCRIPTIONS ADDED
