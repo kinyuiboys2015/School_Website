@@ -171,10 +171,10 @@ const ModernStaffLeadership = () => {
 
   const navigateToStaffDirectory = () => {
     try {
-      router.push('/staff');
+      router.push('/pages/staff');
     } catch (err) {
       console.error('Navigation error:', err);
-      window.location.href = '/staff';
+      window.location.href = '/pages/staff';
     }
   };
 
