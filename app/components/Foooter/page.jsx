@@ -86,7 +86,6 @@ const SOCIAL_LINKS = [
   { icon: FaLinkedin, href: 'https://www.linkedin.com/company/kinyui-boys-senior-school/', label: 'LinkedIn', color: '#0A66C2', bgClass: 'bg-[#0A66C2]' },
   { icon: SiYoutube, href: 'https://www.youtube.com/channel/UCybL9mGxlEKqIAVnwOaFQ2w', label: 'YouTube', color: '#FF0000', bgClass: 'bg-[#FF0000]' },
   { icon: FaTiktok, href: 'https://www.tiktok.com/@kinyui.boys.high', label: 'TikTok', color: '#010101', bgClass: 'bg-[#010101]' },
-  { icon: SiWhatsapp, href: 'https://wa.me/25471089415', label: 'WhatsApp', color: '#25D366', bgClass: 'bg-[#25D366]' },
   { icon: SiInstagram, href: 'https://www.instagram.com/kinyuiboys/', label: 'Instagram', color: '#E4405F', bgClass: 'bg-[#E4405F]' },
 ];
 
