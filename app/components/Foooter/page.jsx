@@ -65,9 +65,8 @@ const QUICK_RESOURCES = [
   { name: 'Student Portal', href: '/pages/StudentPortal', icon: FiBookOpen, badge: 'Login' },
   { name: 'Staff Directory', href: '/pages/staff', icon: FiUsers, badge: 'Contact' },
   { name: 'Fees Structure', href: '/pages/fees', icon: FiCompass, badge: '2025' },
-  { name: 'School Calendar', href: '/pages/calendar', icon: FiCalendar, badge: 'Term 2' },
+  { name: 'School Calendar', href: '/pages/eventsandnews', icon: FiCalendar },
   { name: 'Apply Now', href: '/pages/apply-for-admissions', icon: FiUserPlus, badge: 'Open' },
-  { name: 'Exam Results', href: '/pages/results', icon: FiTrendingUp, badge: 'KCSE' },
 ];
 
 // Support & Policies
