@@ -105,10 +105,6 @@ const CONTACT_INFO = {
   ]
 };
 
-
-
-
-
 // Brand Section - Redesigned
 const BrandSection = () => (
   <div className="space-y-6">
@@ -132,7 +128,7 @@ const BrandSection = () => (
           Kinyui Boys <span className="text-amber-400">Senior School</span>
         </h3>
         <p className="text-white/50 text-xs font-bold uppercase tracking-wider mt-1">
-          Soaring To Excellence in 
+          Soaring To Excellence
         </p>
       </div>
     </div>
@@ -145,50 +141,6 @@ const BrandSection = () => (
   </div>
 );
 
-
-
-
-const NewsletterForm = ({ email, setEmail, isSubmitting, showSuccess, errorMsg, handleSubscribe }) => (
-  <div className="p-5 bg-gradient-to-br from-emerald-950/50 to-teal-950/50 rounded-xl border border-emerald-500/20">
-    <div className="text-center mb-4">
-      <div className="inline-flex p-2 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full mb-3">
-        <FiBell className="text-white text-lg" />
-      </div>
-      <h4 className="text-lg font-semibold text-white">School Newsletter</h4>
-      <p className="text-white text-xs mt-1">Get academic events & announcements</p>
-    </div>
-    <form onSubmit={handleSubscribe} className="space-y-3">
-      <div className="relative">
-        <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-400 text-sm" />
-        <input
-          type="email"
-          placeholder="your@email.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full pl-9 pr-3 py-2 bg-black/30 border border-emerald-500/30 rounded-lg text-white placeholder-emerald-300/40 focus:outline-none focus:border-emerald-400 transition-colors text-sm"
-        />
-      </div>
-      <button
-        type="submit"
-        disabled={isSubmitting || !email}
-        className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 disabled:opacity-50 text-white py-2 rounded-lg font-medium text-sm hover:shadow-lg transition-all"
-      >
-        {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-      </button>
-    </form>
-    {showSuccess && (
-      <div className="mt-3 p-2 bg-emerald-500/20 border border-emerald-500 rounded-lg">
-        <p className="text-emerald-300 text-xs text-center">✓ Successfully subscribed!</p>
-      </div>
-    )}
-    {errorMsg && (
-      <div className="mt-3 p-2 bg-red-500/20 border border-red-500 rounded-lg text-red-300 text-xs text-center">
-        {errorMsg}
-      </div>
-    )}
-  </div>
-);
 // Contact Info Section - Modern Grid Layout
 const ContactSection = () => (
   <div className="space-y-4">
@@ -341,63 +293,58 @@ const SocialLinksGroup = () => (
   </div>
 );
 
-// Newsletter Section - Redesigned
+// NEWSLETTER SECTION - REPLACED WITH MATUNGULU GIRLS STYLE
 const NewsletterSection = ({ email, setEmail, isSubmitting, showSuccess, errorMsg, handleSubscribe }) => (
-  <div className="relative bg-gradient-to-br from-amber-900/50 via-gray-900 to-teal-900/50 rounded-2xl p-6 border border-amber-500/20 overflow-hidden">
-    <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl" />
-    <div className="absolute bottom-0 left-0 w-32 h-32 bg-teal-500/10 rounded-full blur-3xl" />
-    
-    <div className="relative z-10 text-center mb-4">
-      <div className="inline-flex p-2 bg-gradient-to-r from-amber-500 to-teal-600 rounded-xl mb-3 shadow-lg">
-        <FiBell className="text-white text-lg" />
+  <div className="bg-gradient-to-r from-amber-900/50 to-teal-900/50 rounded-2xl shadow-xl p-6 md:p-8 border border-amber-500/20">
+    <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-12">
+      
+      <div className="text-center md:text-left space-y-2 w-full md:flex-1">
+        <h3 className="text-xl sm:text-2xl font-bold leading-tight text-white">
+          Subscribe to <span className="text-amber-400">Kinyui Boys</span> Newsletter
+        </h3>
+        <p className="text-white/70 text-sm md:text-base max-w-md mx-auto md:mx-0">
+          Get the latest updates, events, and achievements from our school
+        </p>
       </div>
-      <h4 className="text-lg font-black text-white">Stay Updated</h4>
-      <p className="text-white/60 text-xs mt-1 max-w-xs mx-auto">
-        Subscribe to receive academic events, news, and announcements
-      </p>
+
+      <form onSubmit={handleSubscribe} className="flex flex-row w-full md:w-auto gap-2 items-center flex-nowrap">
+        <div className="relative flex-1 min-w-0">
+          <input
+            type="email"
+            placeholder="Email address"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm sm:text-base"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={isSubmitting || !email}
+          className="bg-gradient-to-r from-amber-500 to-teal-600 text-white font-bold px-5 sm:px-8 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex-shrink-0 text-sm sm:text-base flex items-center gap-2"
+        >
+          {isSubmitting && (
+            <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+            </svg>
+          )}
+          <span>Subscribe</span>
+        </button>
+      </form>
     </div>
-    
-    <form onSubmit={handleSubscribe} className="space-y-3 relative z-10">
-      <div className="relative">
-        <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-sm" />
-        <input
-          type="email"
-          placeholder="Your email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full pl-10 pr-3 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all text-sm"
-        />
-      </div>
-      <button
-        type="submit"
-        disabled={isSubmitting || !email}
-        className="w-full bg-gradient-to-r from-amber-500 to-teal-600 disabled:opacity-50 text-white py-3 rounded-xl font-bold text-sm hover:shadow-lg transition-all active:scale-95"
-      >
-        {isSubmitting ? (
-          <div className="flex items-center justify-center gap-2">
-            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            <span>Subscribing...</span>
-          </div>
-        ) : (
-          <span>Subscribe Now</span>
-        )}
-      </button>
-    </form>
-    
+
+    {/* Status Messages */}
     {(showSuccess || errorMsg) && (
-      <div className="mt-3 relative z-10">
+      <div className="mt-4">
         {showSuccess && (
-          <div className="p-2 bg-amber-500/20 border border-amber-500 rounded-lg">
-            <p className="text-amber-300 text-xs text-center flex items-center justify-center gap-1">
-              <FiCheckCircle className="text-amber-400 text-xs" />
-              Successfully subscribed!
-            </p>
+          <div className="p-3 bg-emerald-500/20 border border-emerald-500 rounded-lg text-emerald-300 text-sm text-center">
+            ✓ Successfully subscribed to Kinyui Boys newsletter!
           </div>
         )}
         {errorMsg && (
-          <div className="p-2 bg-red-500/20 border border-red-500 rounded-lg">
-            <p className="text-red-300 text-xs text-center">{errorMsg}</p>
+          <div className="p-3 bg-red-500/20 border border-red-500 rounded-lg text-red-300 text-sm text-center">
+            {errorMsg}
           </div>
         )}
       </div>
@@ -639,7 +586,7 @@ export default function ModernFooter() {
                 </div>
               </div>
               
-              {/* Newsletter Bar - Full Width */}
+              {/* Newsletter Bar - REPLACED WITH MATUNGULU GIRLS STYLE */}
               <div className="mt-10">
                 <NewsletterSection 
                   email={email}
