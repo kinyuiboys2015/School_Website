@@ -104,7 +104,7 @@ const ModernAchievementCard = ({ achievement, onView, viewMode = 'grid' }) => {
       Sports: { gradient: 'from-rose-600 to-red-600', shadow: 'shadow-rose-500/20', text: 'text-rose-700', bg: 'bg-rose-50' },
       Arts: { gradient: 'from-purple-600 to-pink-600', shadow: 'shadow-purple-500/20', text: 'text-purple-700', bg: 'bg-purple-50' },
       Leadership: { gradient: 'from-amber-600 to-orange-600', shadow: 'shadow-amber-500/20', text: 'text-amber-700', bg: 'bg-amber-50' },
-      Cultural: { gradient: 'from-green-600 to-emerald-600', shadow: 'shadow-green-500/20', text: 'text-green-700', bg: 'bg-green-50' },
+      Cultural: { gradient: 'from-amber-600 to-emerald-600', shadow: 'shadow-amber-500/20', text: 'text-amber-700', bg: 'bg-amber-50' },
       Debate: { gradient: 'from-cyan-600 to-blue-600', shadow: 'shadow-cyan-500/20', text: 'text-cyan-700', bg: 'bg-cyan-50' },
       Other: { gradient: 'from-slate-600 to-slate-700', shadow: 'shadow-slate-500/20', text: 'text-slate-700', bg: 'bg-slate-50' }
     };
@@ -315,7 +315,7 @@ const KinyuiStatsPanel = ({ stats, achievements }) => {
           </div>
           <div className="pb-3 border-b border-slate-100">
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Established</p>
-            <p className="text-sm font-bold text-slate-700">{stats?.yearEstablished || '2010'}</p>
+            <p className="text-sm font-bold text-slate-700">{stats?.yearEstablished || '1950'}</p>
           </div>
           <div>
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Vision</p>
@@ -345,7 +345,7 @@ const KinyuiStatsPanel = ({ stats, achievements }) => {
     <div className="space-y-4">
       {/* Main Description */}
       <p className="text-gray-300 text-sm leading-relaxed font-medium">
-        Welcome to the official <span className="font-black text-amber-400">Kinyui Boys Senior School</span> photo gallery. 
+        Welcome to the official <span className="font-black text-amber-400">Kinyui Boys Senior School</span> Achievement Achievements. 
         A visual chronicle of excellence, discipline, and brotherhood in Matungulu, Machakos County.
       </p>
       
@@ -380,7 +380,7 @@ const KinyuiStatsPanel = ({ stats, achievements }) => {
       
       {/* Call to Action */}
       <p className="text-gray-300 text-sm leading-relaxed pt-2 border-t border-amber-500/20 mt-2">
-        Explore our extensive collections, relive cherished moments, download memories, and share 
+        Explore our extensive collections, relive cherished moments, download Achievements, and share 
         them with the Kinyui community. <span className="font-bold text-amber-400">Every picture tells a story of excellence.</span>
       </p>
       
@@ -426,7 +426,7 @@ const AchievementDetailModal = ({ achievement, onClose }) => {
       Sports: { gradient: 'from-rose-500 to-red-600', icon: FiAward },
       Arts: { gradient: 'from-purple-500 to-pink-600', icon: FiStar },
       Leadership: { gradient: 'from-amber-500 to-orange-600', icon: FiUsers },
-      Cultural: { gradient: 'from-green-500 to-emerald-600', icon: IoSparkles },
+      Cultural: { gradient: 'from-amber-500 to-emerald-600', icon: IoSparkles },
       Debate: { gradient: 'from-cyan-500 to-blue-600', icon: FiAward },
       Other: { gradient: 'from-slate-500 to-slate-600', icon: FiAward }
     };
@@ -502,7 +502,7 @@ const AchievementDetailModal = ({ achievement, onClose }) => {
 
         {achievement.images && achievement.images.length > 1 && (
           <div>
-            <h3 className="text-sm font-black text-slate-900 mb-3 uppercase tracking-wider">Gallery</h3>
+            <h3 className="text-sm font-black text-slate-900 mb-3 uppercase tracking-wider">Achievements</h3>
             <div className="grid grid-cols-3 gap-3">
               {achievement.images.slice(1).map((img, idx) => (
                 <img
