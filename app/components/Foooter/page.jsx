@@ -111,7 +111,7 @@ const BrandSection = () => (
     <div className="flex flex-col items-start gap-4">
       <div className="relative group">
         <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-amber-500 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
-        <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-amber-600 to-teal-700 p-0.5">
+        <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-amber-600 to-rose-700 p-0.5">
           <div className="w-full h-full rounded-2xl overflow-hidden bg-gray-900 flex items-center justify-center">
             <img
               src="/kinyui.png"
@@ -145,7 +145,7 @@ const BrandSection = () => (
 const ContactSection = () => (
   <div className="space-y-4">
     <div className="flex items-center gap-2 pb-3 border-b border-white/10">
-      <div className="p-1.5 bg-gradient-to-r from-amber-500 to-teal-600 rounded-lg">
+      <div className="p-1.5 bg-gradient-to-r from-amber-500 to-rose-600 rounded-lg">
         <FiMapPin className="text-white text-sm" />
       </div>
       <h4 className="text-base font-bold text-white uppercase tracking-wide">Get in Touch</h4>
@@ -226,7 +226,7 @@ const ContactSection = () => (
 );
 
 // Modern Link Group Component
-const LinkGroup = ({ title, icon: Icon, links, gradient = 'from-amber-500 to-teal-600' }) => (
+const LinkGroup = ({ title, icon: Icon, links, gradient = 'from-amber-500 to-rose-600' }) => (
   <div className="space-y-3 md:space-y-2"> 
     {/* Header: Centered on small screens for better thumb reach */}
     <div className="flex items-center gap-2 pb-2 border-b border-white/10">
@@ -304,12 +304,12 @@ const SocialLinksGroup = () => (
 
 // NEWSLETTER SECTION - REPLACED WITH MATUNGULU GIRLS STYLE
 const NewsletterSection = ({ email, setEmail, isSubmitting, showSuccess, errorMsg, handleSubscribe }) => (
-  <div className="bg-gradient-to-r from-amber-900/50 to-teal-900/50 rounded-2xl shadow-xl p-6 md:p-8 border border-amber-500/20">
+  <div className="bg-gradient-to-r from-amber-900/50 to-rose-900/50 rounded-2xl shadow-xl p-6 md:p-8 border border-amber-500/20">
     <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-12">
       
       <div className="text-center md:text-left space-y-2 w-full md:flex-1">
         <h3 className="text-xl sm:text-2xl font-bold leading-tight text-white">
-          Subscribe to <span className="text-amber-400">Kinyui Boys</span> Newsletter
+          Subscribe to <span className="text-amber-700">Kinyui Boys</span> Newsletter
         </h3>
         <p className="text-white/70 text-sm md:text-base max-w-md mx-auto md:mx-0">
           Get the latest updates, events, and achievements from our school
@@ -330,7 +330,7 @@ const NewsletterSection = ({ email, setEmail, isSubmitting, showSuccess, errorMs
         <button
           type="submit"
           disabled={isSubmitting || !email}
-          className="bg-gradient-to-r from-amber-500 to-teal-600 text-white font-bold px-5 sm:px-8 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex-shrink-0 text-sm sm:text-base flex items-center gap-2"
+          className="bg-gradient-to-r from-amber-500 to-rose-600 text-white font-bold px-5 sm:px-8 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex-shrink-0 text-sm sm:text-base flex items-center gap-2"
         >
           {isSubmitting && (
             <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
@@ -382,7 +382,7 @@ const ScrollToTop = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 right-6 p-3 bg-gradient-to-r from-amber-500 to-teal-600 rounded-full shadow-lg z-50 hover:scale-110 transition-all duration-300 group"
+      className="fixed bottom-6 right-6 p-3 bg-gradient-to-r from-amber-500 to-rose-600 rounded-full shadow-lg z-50 hover:scale-110 transition-all duration-300 group"
     >
       <FiArrowUp className="text-white text-xl group-hover:-translate-y-1 transition-transform" />
     </button>
@@ -552,7 +552,7 @@ export default function ModernFooter() {
         {/* Animated Background */}
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-0 -left-4 w-72 h-72 bg-amber-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 -right-4 w-72 h-72 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000" />
+          <div className="absolute bottom-0 -right-4 w-72 h-72 bg-rose-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000" />
         </div>
         
         <div className="relative z-10">
@@ -569,7 +569,7 @@ export default function ModernFooter() {
                   title="Quick Navigation" 
                   icon={FiCompass} 
                   links={MAIN_NAVIGATION}
-                  gradient="from-amber-500 to-teal-600"
+                  gradient="from-amber-500 to-rose-600"
                 />
                 
                 {/* Column 3: Resources & Social */}
