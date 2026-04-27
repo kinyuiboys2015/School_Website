@@ -2200,7 +2200,21 @@ const getSchoolStats = () => {
             Integrating modern technology with traditional values to create a holistic learning environment.
           </p>
         </div>
+                  {/* Metrics Bar */}
+                  <div className={`flex gap-8 pt-6 border-t ${isPremium ? 'border-white/10' : 'border-slate-100'}`}>
+                    {feature.metrics.map((metric, mIdx) => (
+                      <div key={mIdx}>
+                        <p className={`text-xl font-black ${isPremium ? 'text-white' : 'text-slate-900'}`}>
+                          {metric.split(" ")[0]}
+                        </p>
+                        <p className={`text-[10px] font-bold uppercase tracking-wider ${isPremium ? 'text-white/40' : 'text-slate-400'}`}>
+                          {metric.split(" ").slice(1).join(" ")}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
       </div>
+
 
       {/* RIGHT COLUMN: Shuffled Feature Cards */}
       <div className="lg:col-span-7 space-y-6">
@@ -2261,19 +2275,7 @@ const getSchoolStats = () => {
                     ))}
                   </div>
 
-                  {/* Metrics Bar */}
-                  <div className={`flex gap-8 pt-6 border-t ${isPremium ? 'border-white/10' : 'border-slate-100'}`}>
-                    {feature.metrics.map((metric, mIdx) => (
-                      <div key={mIdx}>
-                        <p className={`text-xl font-black ${isPremium ? 'text-white' : 'text-slate-900'}`}>
-                          {metric.split(" ")[0]}
-                        </p>
-                        <p className={`text-[10px] font-bold uppercase tracking-wider ${isPremium ? 'text-white/40' : 'text-slate-400'}`}>
-                          {metric.split(" ").slice(1).join(" ")}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+        
                 </div>
               </div>
             </div>
