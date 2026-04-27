@@ -2036,246 +2036,243 @@ const ModernSchoolLayout = () => {
             })}
           </div>
 
-          {/* CORE COMPETENCIES */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-            {/* Core Subjects Grid */}
-            <div className="lg:col-span-8 bg-white border border-gray-200 rounded-[2.5rem] p-8 shadow-sm">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="p-2 bg-amber-100 rounded-lg">
-                  <IoSparkles className="text-amber-600" />
-                </div>
-                <h4 className="font-bold text-gray-800 uppercase tracking-widest text-sm">
-                  Mandatory Core Subjects
-                </h4>
-              </div>
+{/* CORE COMPETENCIES */}
+<div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+  {/* Core Subjects Grid */}
+  <div className="lg:col-span-8 bg-white border border-gray-200 rounded-[2.5rem] p-8 shadow-sm">
+    <div className="flex items-center gap-3 mb-8">
+      <div className="p-2 bg-amber-100 rounded-lg">
+        <IoSparkles className="text-amber-600" />
+      </div>
+      <h4 className="font-black text-slate-900 uppercase tracking-[0.2em] text-xs">
+        Mandatory Core Subjects
+      </h4>
+    </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                {[
-                  { name: "Math", icon: FiCpu },
-                  { name: "English", icon: FiBook },
-                  { name: "Kiswahili", icon: FiGlobe },
-                  { name: "Science", icon: FiActivity },
-                  { name: "Social", icon: FiUsers },
-                  { name: "Religion", icon: FiHeart },
-                  { name: "Arts", icon: FiPenTool },
-                  { name: "Agri", icon: FiDroplet },
-                  { name: "Life Skills", icon: FiStar },
-                  { name: "P.E.", icon: FiTarget },
-                ].map((subj, i) => {
-                  const SubjIcon = subj.icon;
-                  return (
-                    <div
-                      key={i}
-                      className="flex flex-col items-center justify-center p-4 rounded-2xl bg-gray-50 border border-gray-100 hover:border-indigo-200 hover:bg-white transition-all"
-                    >
-                      <SubjIcon className="text-gray-500 mb-2 group-hover:text-indigo-500 transition-colors" />
-                      <span className="text-[10px] font-bold text-center text-gray-600">
-                        {subj.name}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* CONTEXTUAL OVERVIEW */}
-            <div className="lg:col-span-4 flex flex-col justify-center p-8 bg-indigo-50/50 border border-indigo-100 rounded-[2.5rem] relative overflow-hidden">
-              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-indigo-200/20 blur-3xl rounded-full" />
-              <h5 className="text-lg font-bold text-gray-900 mb-4">
-                Framework Overview
-              </h5>
-              <p className="text-sm text-gray-600 leading-relaxed font-medium">
-                The Competency Based Curriculum (CBC) shifts the focus from
-                "what you know" to "what you can do." Every student follows a
-                core foundation before specializing in their chosen pathway.
-              </p>
-              <div className="mt-8 flex items-center gap-4">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3].map((i) => (
-                    <div
-                      key={i}
-                      className="w-8 h-8 rounded-full border-2 border-white bg-indigo-100 shadow-sm"
-                    />
-                  ))}
-                </div>
-                <span className="text-[10px] font-bold uppercase text-indigo-600">
-                  Join {studentCount}+ Students
-                </span>
-              </div>
-            </div>
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+      {[
+        { name: "Math", icon: FiCpu },
+        { name: "English", icon: FiBook },
+        { name: "Kiswahili", icon: FiGlobe },
+        { name: "Science", icon: FiActivity },
+        { name: "Social", icon: FiUsers },
+        { name: "Religion", icon: FiHeart },
+        { name: "Arts", icon: FiPenTool },
+        { name: "Agri", icon: FiDroplet },
+        { name: "Life Skills", icon: FiStar },
+        { name: "P.E.", icon: FiTarget },
+      ].map((subj, i) => {
+        const SubjIcon = subj.icon;
+        return (
+          <div
+            key={i}
+            className="group flex flex-col items-center justify-center p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:border-indigo-500 hover:bg-white hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1 transition-all duration-300"
+          >
+            <SubjIcon className="text-2xl text-slate-400 group-hover:text-indigo-600 transition-colors mb-3" />
+            <span className="text-[11px] font-black text-center text-slate-900 uppercase tracking-tight">
+              {subj.name}
+            </span>
           </div>
+        );
+      })}
+    </div>
+  </div>
+
+  {/* CONTEXTUAL OVERVIEW */}
+  <div className="lg:col-span-4 flex flex-col justify-center p-8 sm:p-10 bg-indigo-600 border border-indigo-500 rounded-[2.5rem] relative overflow-hidden text-white shadow-2xl shadow-indigo-200">
+    <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 blur-3xl rounded-full" />
+    <div className="absolute -top-10 -left-10 w-32 h-32 bg-indigo-400/20 blur-2xl rounded-full" />
+    
+    <h5 className="text-xl font-black mb-4 tracking-tight">
+      Framework Overview
+    </h5>
+    <p className="text-sm text-indigo-50 leading-relaxed font-medium mb-8">
+      The Competency Based Curriculum (CBC) shifts the focus from
+      "what you know" to "what you can do." Every student follows a
+      core foundation before specializing in their chosen pathway.
+    </p>
+    
+    <div className="flex items-center gap-4">
+      <div className="flex -space-x-2">
+        {[1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="w-9 h-9 rounded-full border-2 border-indigo-600 bg-indigo-100 shadow-sm"
+          />
+        ))}
+      </div>
+      <span className="text-[10px] font-black uppercase tracking-widest text-indigo-200">
+        Join {studentCount}+ Students
+      </span>
+    </div>
+  </div>
+</div>
         </div>
       </section>
 
-      {/* EDUCATIONAL PILLARS - BENTO GRID (FIXED) */}
-      <section className="relative py-24 bg-white overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-50/50" />
-        <div className="absolute top-10 left-10 w-64 h-64 bg-indigo-50 blur-[100px] rounded-full" />
+{/* EDUCATIONAL PILLARS - BENTO GRID (RESPONSIVE OPTIMIZED) */}
+<section className="relative py-16 sm:py-24 bg-white overflow-hidden">
+  {/* Decorative Background Elements - Adjusted for mobile */}
+  <div className="absolute top-0 right-0 w-full sm:w-1/3 h-full bg-slate-50/50 -z-0" />
+  <div className="absolute top-10 left-10 w-32 h-32 sm:w-64 sm:h-64 bg-indigo-50 blur-[60px] sm:blur-[100px] rounded-full" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-            {/* LEFT COLUMN */}
-            <div className="lg:col-span-5 lg:sticky lg:top-24">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-[10px] font-black uppercase tracking-widest text-indigo-600 mb-6">
-                <FiLayers className="w-4 h-4" />
-                The Foundation
-              </div>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      
+      {/* LEFT COLUMN: Sticky Header */}
+      <div className="lg:col-span-5 lg:sticky lg:top-24">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-[10px] font-black uppercase tracking-widest text-indigo-600 mb-6">
+          <FiLayers className="w-4 h-4" />
+          The Foundation
+        </div>
 
-              <h2 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tighter leading-[0.9] mb-8">
-                Educational <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-sky-600">
-                  Pillars
-                </span>
-              </h2>
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tighter leading-[1] sm:leading-[0.9] mb-6 sm:mb-8">
+          Educational <br className="hidden sm:block" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-sky-600">
+            Pillars
+          </span>
+        </h2>
 
-              <p className="text-slate-600 text-lg font-medium leading-relaxed max-w-md mb-10">
-                We don't just teach; we build. Our framework is designed to
-                cultivate academic mastery and character resilience in every
-                student.
+        <p className="text-slate-600 text-base sm:text-lg font-medium leading-relaxed max-w-md mb-8 sm:mb-10">
+          We don't just teach; we build. Our framework is designed to
+          cultivate academic mastery and character resilience in every
+          student.
+        </p>
+
+        {/* Global School Stat - Full width on mobile */}
+        <div className="p-6 sm:p-8 bg-slate-900 rounded-[2rem] sm:rounded-[2.5rem] text-white shadow-2xl shadow-indigo-100">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-xl sm:rounded-2xl flex items-center justify-center">
+              <FiStar className="text-amber-400 text-lg sm:text-xl" />
+            </div>
+            <div>
+              <p className="text-xl sm:text-2xl font-black italic leading-none">Excellence</p>
+              <p className="text-white/50 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest mt-1">
+                As our Standard
               </p>
+            </div>
+          </div>
+          <p className="text-xs sm:text-sm text-white/70 leading-relaxed">
+            Integrating modern technology with traditional values to create
+            a holistic learning environment.
+          </p>
+        </div>
+      </div>
 
-              {/* Global School Stat */}
-              <div className="p-8 bg-slate-900 rounded-[2.5rem] text-white shadow-2xl shadow-indigo-200">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-                    <FiStar className="text-amber-400 text-xl" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-black italic">Excellence</p>
-                    <p className="text-white/50 text-[10px] font-bold uppercase tracking-widest">
-                      As our Standard
-                    </p>
+      {/* RIGHT COLUMN: Feature Cards */}
+      <div className="lg:col-span-7 space-y-4 sm:space-y-6">
+        {schoolFeatures.map((feature, index) => {
+          const isPremium = feature.isPremium;
+
+          return (
+            <div
+              key={index}
+              className={`group relative overflow-hidden rounded-[2rem] border transition-all duration-500 ${
+                isPremium
+                  ? "bg-slate-950 border-white/10 p-6 sm:p-10"
+                  : "bg-white border-slate-100 p-6 sm:p-8 hover:border-indigo-200 hover:shadow-xl"
+              }`}
+            >
+              {/* Feature Gradient Glow */}
+              <div
+                className={`absolute -right-20 -top-20 w-64 h-64 bg-gradient-to-br ${feature.gradient} opacity-[0.08] blur-3xl`}
+              />
+
+              <div className="relative z-10 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
+                {/* Icon & Badge */}
+                <div className="shrink-0">
+                  <div
+                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white shadow-lg`}
+                  >
+                    {React.cloneElement(feature.icon, {
+                      className: "w-6 h-6 sm:w-7 sm:h-7",
+                    })}
                   </div>
                 </div>
-                <p className="text-sm text-white/70 leading-relaxed">
-                  Integrating modern technology with traditional values to create
-                  a holistic learning environment.
-                </p>
-              </div>
-              {/* END OF LEFT COLUMN */}
-            </div>
 
-            {/* RIGHT COLUMN: Feature Cards */}
-            <div className="lg:col-span-7 space-y-6">
-              {schoolFeatures.map((feature, index) => {
-                const isPremium = feature.isPremium;
+                {/* Content Area */}
+                <div className="flex-1">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
+                    <span
+                      className={`text-[9px] sm:text-[10px] font-black uppercase tracking-widest ${
+                        isPremium ? "text-sky-300" : "text-indigo-600"
+                      }`}
+                    >
+                      {feature.highlight}
+                    </span>
+                    {isPremium && (
+                      <span className="px-2 py-0.5 rounded-md bg-white/10 text-[8px] sm:text-[9px] font-bold text-white/60 border border-white/10">
+                        PREMIUM TRACK
+                      </span>
+                    )}
+                  </div>
 
-                return (
-                  <div
-                    key={index}
-                    className={`group relative overflow-hidden rounded-[2rem] border transition-all duration-500 ${
-                      isPremium
-                        ? "bg-slate-950 border-white/10 p-10"
-                        : "bg-white border-slate-100 p-8 hover:border-indigo-200 hover:shadow-xl"
+                  <h4
+                    className={`text-xl sm:text-2xl font-black mb-3 tracking-tight ${
+                      isPremium ? "text-white" : "text-slate-900"
                     }`}
                   >
-                    {/* Feature Gradient Glow */}
-                    <div
-                      className={`absolute -right-20 -top-20 w-64 h-64 bg-gradient-to-br ${feature.gradient} opacity-[0.08] blur-3xl`}
-                    />
+                    {feature.title}
+                  </h4>
 
-                    <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start">
-                      {/* Icon & Badge */}
-                      <div className="shrink-0">
-                        <div
-                          className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white shadow-lg`}
-                        >
-                          {React.cloneElement(feature.icon, {
-                            className: "w-7 h-7",
-                          })}
-                        </div>
-                      </div>
+                  <p
+                    className={`text-xs sm:text-sm leading-relaxed mb-6 font-medium ${
+                      isPremium ? "text-white/70" : "text-slate-500"
+                    }`}
+                  >
+                    {feature.description}
+                  </p>
 
-                      {/* Content Area */}
-                      <div className="flex-1">
-                        <div className="flex flex-wrap items-center gap-3 mb-3">
-                          <span
-                            className={`text-[10px] font-black uppercase tracking-widest ${
-                              isPremium
-                                ? "text-sky-300"
-                                : "text-indigo-600"
-                            }`}
-                          >
-                            {feature.highlight}
-                          </span>
-                          {isPremium && (
-                            <span className="px-2 py-0.5 rounded-md bg-white/10 text-[9px] font-bold text-white/60 border border-white/10">
-                              PREMIUM TRACK
-                            </span>
-                          )}
-                        </div>
+                  {/* Details Pills */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {feature.details.map((detail, dIdx) => (
+                      <span
+                        key={dIdx}
+                        className={`px-3 py-1 rounded-lg text-[9px] sm:text-[10px] font-black border ${
+                          isPremium
+                            ? "bg-white/5 border-white/10 text-white/60"
+                            : "bg-slate-50 border-slate-100 text-slate-600"
+                        }`}
+                      >
+                        {detail}
+                      </span>
+                    ))}
+                  </div>
 
-                        <h4
-                          className={`text-2xl font-black mb-3 tracking-tight ${
+                  {/* Metrics Row - Responsive columns */}
+                  <div
+                    className={`grid grid-cols-2 gap-4 sm:flex sm:gap-8 pt-6 border-t ${
+                      isPremium ? "border-white/10" : "border-slate-100"
+                    }`}
+                  >
+                    {feature.metrics.map((metric, mIdx) => (
+                      <div key={mIdx}>
+                        <p
+                          className={`text-lg sm:text-xl font-black ${
                             isPremium ? "text-white" : "text-slate-900"
                           }`}
                         >
-                          {feature.title}
-                        </h4>
-
-                        <p
-                          className={`text-sm leading-relaxed mb-6 ${
-                            isPremium ? "text-white/70" : "text-slate-500"
-                          }`}
-                        >
-                          {feature.description}
+                          {metric.split(" ")[0]}
                         </p>
-
-                        {/* Details Pills */}
-                        <div className="flex flex-wrap gap-2 mb-6">
-                          {feature.details.map((detail, dIdx) => (
-                            <span
-                              key={dIdx}
-                              className={`px-3 py-1 rounded-lg text-[10px] font-bold border ${
-                                isPremium
-                                  ? "bg-white/5 border-white/10 text-white/60"
-                                  : "bg-slate-50 border-slate-100 text-slate-600"
-                              }`}
-                            >
-                              {detail}
-                            </span>
-                          ))}
-                        </div>
-
-                        <div
-                          className={`flex gap-8 pt-6 border-t ${
-                            isPremium
-                              ? "border-white/10"
-                              : "border-slate-100"
+                        <p
+                          className={`text-[8px] sm:text-[10px] font-bold uppercase tracking-wider ${
+                            isPremium ? "text-white/40" : "text-slate-400"
                           }`}
                         >
-                          {feature.metrics.map((metric, mIdx) => (
-                            <div key={mIdx}>
-                              <p
-                                className={`text-xl font-black ${
-                                  isPremium
-                                    ? "text-white"
-                                    : "text-slate-900"
-                                }`}
-                              >
-                                {metric.split(" ")[0]}
-                              </p>
-                              <p
-                                className={`text-[10px] font-bold uppercase tracking-wider ${
-                                  isPremium
-                                    ? "text-white/40"
-                                    : "text-slate-400"
-                                }`}
-                              >
-                                {metric.split(" ").slice(1).join(" ")}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
+                          {metric.split(" ").slice(1).join(" ")}
+                        </p>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                );
-              })}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* UNIVERSITY PARTNERS */}
       <section className="relative py-16 sm:py-20 overflow-hidden">
