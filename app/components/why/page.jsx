@@ -1036,72 +1036,73 @@ const ModernSchoolLayout = () => {
                   </p>
                 </div>
 
-                {/* Key Metrics */}
-                <div className="mt-6 grid grid-cols-3 gap-3">
-                  {(() => {
-                    const stats = getSchoolStats();
-                    const items = [
-                      {
-                        label: "Students",
-                        value: `${studentCount}+`,
-                        icon: FiUsers,
-                        tone: "sm:from-sky-500 sm:to-indigo-600 from-amber-800 to-amber-700",
-                      },
-                      {
-                        label: "Mean",
-                        value: stats.meanScore?.toFixed(2) || "—",
-                        icon: FiTrendingUp,
-                        tone: "sm:from-emerald-500 sm:to-teal-600 from-rose-800 to-rose-700",
-                      },
-                      {
-                        label: "Target",
-                        value: stats.targetMean?.toFixed(2) || "—",
-                        icon: FiTarget,
-                        tone: "from-amber-500 to-orange-600",
-                      },
-                    ];
+<div className="mt-6 grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3">
+  {(() => {
+    const stats = getSchoolStats();
+    const items = [
+      {
+        label: "Students",
+        value: `${studentCount}+`,
+        icon: FiUsers,
+        tone: "sm:from-sky-500 sm:to-indigo-600 from-amber-800 to-amber-700",
+      },
+      {
+        label: "Mean Score",
+        value: stats.meanScore?.toFixed(2) || "—",
+        icon: FiTrendingUp,
+        tone: "sm:from-emerald-500 sm:to-teal-600 from-rose-800 to-rose-700",
+      },
+      {
+        label: "Target",
+        value: stats.targetMean?.toFixed(2) || "—",
+        icon: FiTarget,
+        tone: "from-amber-500 to-orange-600",
+      },
+    ];
 
-                    return items.map((stat, idx) => {
-                      const Icon = stat.icon;
-                      return (
-                        <div
-                          key={idx}
-                          className="rounded-2xl border border-slate-200 bg-white/70 px-3 py-3 shadow-sm w-full"
-                        >
-                          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">
-                            {stat.label}
-                          </p>
-                          <div className="mt-2 flex items-center gap-2">
-                            <span
-                              className={`inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br ${stat.tone} text-white shadow-sm`}
-                            >
-                              <Icon className="w-4 h-4" />
-                            </span>
-                            <p className="text-lg sm:text-xl font-black text-slate-900">
-                              {stat.value}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    });
-                  })()}
-                </div>
+    return items.map((stat, idx) => {
+      const Icon = stat.icon;
+      return (
+        <div
+          key={idx}
+          className="rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm w-full transition-all hover:border-indigo-300"
+        >
+          <p className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-500 mb-3">
+            {stat.label}
+          </p>
+          <div className="flex items-center gap-3">
+            {/* shrink-0 ensures icon doesn't squeeze on narrow widths */}
+            <span
+              className={`shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${stat.tone} text-white shadow-md`}
+            >
+              <Icon className="w-5 h-5" />
+            </span>
+            <p className="text-xl font-black text-slate-900 tracking-tight truncate">
+              {stat.value}
+            </p>
+          </div>
+        </div>
+      );
+    });
+  })()}
+</div>
 
-                {/* CTA Buttons */}
-                <div className="mt-7 flex flex-col sm:flex-row gap-3">
-                  <button
-                    onClick={handleExplorePathways}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600 text-white font-black text-sm tracking-tight shadow-lg shadow-indigo-600/20"
-                  >
-                    Admissions <FiArrowRight className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => router.push("/pages/AboutUs")}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white text-slate-900 font-black text-sm tracking-tight border border-slate-200 shadow-sm"
-                  >
-                    About Us
-                  </button>
-                </div>
+           {/* CTA Buttons - Flex No-Wrap & Solid Tones */}
+<div className="mt-7 flex flex-nowrap items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
+  <button
+    onClick={handleExplorePathways}
+    className="shrink-0 flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-slate-900 text-white font-black text-sm tracking-tight shadow-xl shadow-slate-200 transition-transform active:scale-95"
+  >
+    Admissions <FiArrowRight className="w-4 h-4 text-indigo-400" />
+  </button>
+  
+  <button
+    onClick={() => router.push("/pages/AboutUs")}
+    className="shrink-0 flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white text-slate-900 font-black text-sm tracking-tight border border-slate-200 shadow-sm transition-transform active:scale-95"
+  >
+    About Us
+  </button>
+</div>
               </div>
             </div>
 
@@ -1556,12 +1557,7 @@ const ModernSchoolLayout = () => {
                     </p>
                   </div>
 
-                  <div className="w-fit inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600 text-white shadow-lg shadow-indigo-600/15">
-                    <FiTrendingUp className="w-4 h-4" />
-                    <span className="text-xs font-black uppercase tracking-[0.2em]">
-                      Live Metrics
-                    </span>
-                  </div>
+                
                 </div>
 
                 <div className="mt-8 grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6">
