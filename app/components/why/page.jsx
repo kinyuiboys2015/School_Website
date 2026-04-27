@@ -1724,7 +1724,7 @@ const ModernSchoolLayout = () => {
     {/* Minimalist Header - Responsive text sizing */}
     <div className="mb-12 sm:mb-20 border-l-2 border-indigo-500 pl-4 sm:pl-6">
       <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter uppercase italic leading-none">
-        The <span className="text-indigo-500 text-glow">Milestone</span> <br className="sm:hidden" /> Gallery
+        The <span className="text-indigo-500 text-glow">School </span> <br className="sm:hidden" /> Recent Achievements
       </h2>
       <p className="text-slate-400 font-medium mt-4 max-w-md uppercase tracking-[0.15em] text-[9px] sm:text-[11px] leading-relaxed">
         A comprehensive visual record of institutional excellence and academic milestones.
@@ -1751,7 +1751,7 @@ const ModernSchoolLayout = () => {
                     src={item.image} 
                     alt={item.title} 
                     fill 
-                    className="object-cover transition-transform duration-1000 group-hover:scale-110" 
+                    className="object-cover transition-transform duration-1000 group-hover:scale-100" 
                   />
                 ) : (
                   <div className="w-full h-full bg-slate-800 flex items-center justify-center">
@@ -1908,7 +1908,7 @@ const ModernSchoolLayout = () => {
                   }`}
                 >
                   <div
-                    className={`w-14 h-14 rounded-2xl ${c.light} ${c.text} flex items-center justify-center mb-8 group-hover:scale-110 transition-transform`}
+                    className={`w-14 h-14 rounded-2xl ${c.light} ${c.text} flex items-center justify-center mb-8 group-hover:scale-100 transition-transform`}
                   >
                     {item.icon}
                   </div>
