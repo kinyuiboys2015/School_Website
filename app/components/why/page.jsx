@@ -22,21 +22,28 @@ import {
   FiEye,
   FiBookOpen,
   FiLoader,
-  FiCheckCircle,  // ← ADD THIS (missing)
+  FiCheckCircle,
   FiExternalLink,
   FiLayers,
   FiCpu,
   FiActivity,
   FiPenTool,
   FiDroplet,
-  FiX,            // ← ADD THIS (missing)
+  FiX,
+  FiZap,
+  FiTrendingDown,
+  FiChevronDown,
 } from "react-icons/fi";
 import {
   IoSparkles,
   IoFlaskOutline,
   IoAccessibilityOutline,
   IoNewspaperOutline,
+  IoRibbonSharp,
+  IoRadarOutline,
+  IoAtomOutline,
 } from "react-icons/io5";
+import { HiOutlineSparkles, HiArrowSmallRight } from "react-icons/hi2";
 
 const ModernSchoolLayout = () => {
   const router = useRouter();
@@ -55,31 +62,15 @@ const ModernSchoolLayout = () => {
 const [achievementsData, setAchievementsData] = useState(null);
 const [schoolStatsData, setSchoolStatsData] = useState(null);
 const [achievementsLoading, setAchievementsLoading] = useState(true);
-const [statsLoading, setStatsLoading] = useState(false);
+  const [statsLoading, setStatsLoading] = useState(false);
   // School images for carousel
   const schoolImages = [
-    { src: "/Matungulu/29.jpeg", alt: "Matungulu boys Campus" },
-    { src: "/Matungulu/2.jpeg", alt: "Matungulu boys" },
-    { src: "/Matungulu/30.jpeg", alt: "Matungulu boys Senior School" },
-   { src: "/Matungulu/3.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/4.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/5.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/6.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/7.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/8.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/9.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/10.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/11.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/12.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/13.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/14.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/15.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/16.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/17.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/18.jpeg", alt: "Matungulu boys Senior School" },
-    { src: "/Matungulu/19.jpeg", alt: "Matungulu boys Senior School" },
-
-
+    { src: "/cumpus.jpg", alt: "Campus life" },
+    { src: "/academics.jpg", alt: "Academic focus" },
+    { src: "/student.jpg", alt: "Students learning" },
+    { src: "/view.jpg", alt: "School environment" },
+    { src: "/worship.jpg", alt: "Community moment" },
+    { src: "/displine.jpg", alt: "Student leadership" },
   ];
 
   // Fetch school data
@@ -144,18 +135,18 @@ const [statsLoading, setStatsLoading] = useState(false);
     document.body.style.overflow = "auto";
   };
 
-  const schoolName = schoolData?.name || "Matungulu boys Senior School";
-  const motto = schoolData?.motto || "Strive to Excel";
+  const schoolName = schoolData?.name || "Senior School";
+  const motto = schoolData?.motto || "Excellence With Integrity";
   const vision =
     schoolData?.vision ||
-    "To be a center of excellence in nurturing holistic, God-fearing, and academically empowered young women for global leadership.";
+    "To nurture curious, capable learners prepared for leadership and service.";
   const mission =
     schoolData?.mission ||
-    "To provide quality education that fosters academic excellence, moral integrity, and personal growth in a supportive Christian environment.";
+    "To provide a supportive, future-ready education that builds knowledge, character, and skill.";
   const description = schoolData?.description;
-  const studentCount = schoolData?.studentCount || 1200;
-  const contactEmail = schoolData?.admissionContactEmail || "matunguluboys@gmail.com";
-  const contactPhone = schoolData?.admissionContactPhone || "+254 720 123 456";
+  const studentCount = schoolData?.studentCount || 400;
+  const contactEmail = schoolData?.admissionContactEmail || "";
+  const contactPhone = schoolData?.admissionContactPhone || "";
 
   // Double images for seamless scrolling
   const scrollImages = [...uniImages, ...uniImages];
@@ -262,7 +253,7 @@ const getAchievements = () => {
             icon: getCategoryIcon(achievement.category),
             image: achievement.images && achievement.images.length > 0 
               ? achievement.images[0].url 
-              : "/hero/MatG1.jpg",
+              : "/hero/env.jpeg",
             highlights: achievement.recipients || []
           });
         });
@@ -346,56 +337,56 @@ const getSchoolStats = () => {
       color: "emerald",
       title: "Academic Excellence",
       shortDescription:
-        "Consistently ranked among top-performing boys' schools in Machakos County.",
+        "A rigorous learning culture supported by mentorship and clear standards.",
       description:
-        "Consistently ranked among top-performing boys' schools in Machakos County with impressive KCSE results and university placements. Our students achieve mean scores above 8.0 with over 80% qualifying for direct university entry.",
-      metrics: "Top Performer",
+        "A rigorous learning culture supported by mentorship, structured revision programs, and a focus on mastery. Learners are guided to set goals, track progress, and build strong academic habits.",
+      metrics: "High Achievement",
       icon: <FiAward size={20} />,
-      image: "/Matungulu/7.jpeg",
+      image: "/academics.jpg",
     },
     {
       id: 2,
       color: "emerald",
       title: "Holistic Development",
       shortDescription:
-        "Balancing academic rigor with spiritual growth and co-curricular activities.",
+        "Clubs, sports, arts, and leadership alongside strong academics.",
       description:
-        "Balancing academic rigor with spiritual growth, sports, music, drama, and leadership programs for well-rounded individuals. We offer over 15 clubs and societies for talent development.",
-      metrics: "Complete Education",
+        "Clubs, sports, arts, and leadership programs complement classroom learning. Students grow confidence, teamwork, and communication through structured co-curricular experiences.",
+      metrics: "Beyond Classroom",
       icon: <FiUsers size={20} />,
-      image: "/Matungulu/22.jpeg",
+      image: "/hero/sports.jpeg",
     },
     {
       id: 3,
       color: "emerald",
-      title: "National School Status",
+      title: "Student Support",
       shortDescription:
-        "Elevated to National School status in April 2026.",
+        "Guidance, mentorship, and a culture that helps learners thrive.",
       description:
-        "In recognition of consistent excellence, the Ministry of Education conferred Category One (C1) National School status during our 60th-anniversary celebrations in April 2026.",
-      metrics: "National School",
+        "Guidance, mentorship, and a culture of care help students thrive academically and personally. We prioritize wellbeing, discipline, and student leadership development.",
+      metrics: "Mentorship",
       icon: <FiShield size={20} />,
-      image: "/Matungulu/21.jpeg",
+      image: "/student.jpg",
     },
     {
       id: 4,
       color: "emerald",
       title: "Modern Facilities",
-      shortDescription: "Well-equipped laboratories, computer labs, and library.",
+      shortDescription: "Practical spaces for science, tech, arts, and independent study.",
       description:
-        "Well-equipped science laboratories, computer labs, library, and serene learning environment in Matungulu's beautiful landscape with modern boarding facilities.",
-      metrics: "Premier Infrastructure",
+        "Practical spaces for science, tech, arts, and independent study. Facilities are designed to support hands-on learning, research, and collaboration.",
+      metrics: "Learning Spaces",
       icon: <FiGlobe size={20} />,
-      image: "/Matungulu/30.jpeg",
+      image: "/cumpus.jpg",
     },
   ];
 
   const schoolFeatures = [
   {
   title: "Academic Excellence",
-  gradient: "from-emerald-600 to-emerald-500",
+  gradient: "from-indigo-600 to-sky-500",
   description:
-    "Matungulu boys fosters a culture of academic excellence through holistic learning, critical thinking, and consistent student growth across all disciplines.",
+    "A culture of high expectations supported by mentorship, structure, and a strong learning community.",
   highlight: "Excellence in Learning",
   details: ["Holistic Education", "Critical Thinking", "Student Growth", "Strong Academic Culture"],
   metrics: ["8.0+ Mean", "80%+ Uni", "90% Pass"],
@@ -404,9 +395,9 @@ const getSchoolStats = () => {
 },
     {
       title: "Experienced Faculty",
-      gradient: "from-emerald-600 to-emerald-500",
+      gradient: "from-emerald-600 to-teal-500",
       description:
-        "Our team comprises qualified educators with specialized training in girl-child education and personalized mentorship.",
+        "Qualified educators focused on clarity, consistency, and personalized support for every learner.",
       highlight: "Qualified Educators",
       details: ["TSC Certified", "Subject Specialists", "Mentorship", "Training"],
       metrics: ["45 Teachers", "18+ Years", "100% TSC"],
@@ -415,9 +406,9 @@ const getSchoolStats = () => {
     },
     {
       title: "Modern Learning Environment",
-      gradient: "from-emerald-600 to-emerald-500",
+      gradient: "from-violet-600 to-fuchsia-500",
       description:
-        "Our School features well-equipped science laboratories, computer labs, and digital resources in scenic Matungulu.",
+        "Learning spaces built for practical work, collaboration, and technology-enabled instruction.",
       highlight: "Advanced Facilities",
       details: ["3 Science Labs", "2 Computer Labs", "Library", "Sports Fields"],
       metrics: ["3 Labs", "2 Comp Labs", "8,000 Books"],
@@ -426,7 +417,7 @@ const getSchoolStats = () => {
     },
     {
       title: "Co-curricular Activities",
-      gradient: "from-emerald-600 to-emerald-500",
+      gradient: "from-amber-600 to-orange-500",
       description:
         "We offer diverse extracurricular activities including sports, music, drama, clubs, and leadership programs.",
       highlight: "15+ Activities",
@@ -436,19 +427,19 @@ const getSchoolStats = () => {
       isPremium: false,
     },
     {
-      title: "Spiritual & Moral Formation",
-      gradient: "from-emerald-600 to-emerald-500",
+      title: "Values & Character",
+      gradient: "from-slate-800 to-slate-600",
       description:
-        "As a Christian institution, we emphasize spiritual growth, moral values, and character development.",
-      highlight: "Values Education",
-      details: ["Christian Teachings", "Character Building", "Community Service", "Retreats"],
-      metrics: ["Weekly Mass", "Retreats", "Outreach"],
+        "We emphasize integrity, discipline, and service—building character and leadership alongside academic growth.",
+      highlight: "Character Building",
+      details: ["Integrity", "Discipline", "Service", "Leadership"],
+      metrics: ["Leadership", "Service", "Discipline"],
       icon: <FiHeart />,
       isPremium: false,
     },
     {
       title: "University & Career Preparation",
-      gradient: "from-emerald-700 to-emerald-600",
+      gradient: "from-emerald-700 to-teal-600",
       description:
         "We provide comprehensive career guidance and university linkage programs for smooth transition to higher education.",
       highlight: "University Pathways",
@@ -459,92 +450,91 @@ const getSchoolStats = () => {
     },
   ];
 
-const achievements = [
+  const achievements = [
   {
     year: "2026",
-    title: "National School Status",
-    shortDescription: "Elevated to Category One (C1) National School status by Ministry of Education",
-    description: "In a historic milestone during our 60th-anniversary celebrations in April 2026,Kinyui boys Senior School was officially conferred Category One (C1) National School status by the Ministry of Education. This prestigious recognition places us among the elite institutions in Kenya, allowing us to admit students from all 47 counties. The elevation came after a rigorous assessment of our infrastructure, academic performance, co-curricular achievements, and governance structures. As a National School, we now have enhanced resources, expanded capacity, and greater opportunities to shape young women from across the nation into future leaders. This transformation marks the beginning of a new chapter in our 60-year legacy of excellence.",
-    impact: "Admission from all 47 counties, enhanced resources, national recognition",
-    stats: "Category One (C1) Status | 60th Anniversary | April 2026",
+    title: "National Recognition",
+    shortDescription:
+      "Recognized for excellence in learning outcomes and student support.",
+    description: `In April 2026, ${schoolName} was recognized for sustained improvement across academics, co-curricular performance, and student support systems. The recognition followed a comprehensive review of learning outcomes, infrastructure, and leadership structures—marking a new chapter in our journey toward excellence.`,
+    impact: "Higher standards, stronger partnerships, broader opportunities",
+    stats: "Recognition | April 2026",
     icon: <FiAward className="w-5 h-5" />,
-    image: "/hero/MatG1.jpg",
+    image: "/hero/env.jpeg",
     highlights: [
-      "Conferred during 60th-anniversary celebrations",
-      "Allows admission from all 47 counties",
-      "Enhanced government funding and resources",
-      "Rigorous assessment by Ministry of Education",
-      "One of only a few National Schools in Machakos County"
+      "Comprehensive review of outcomes and systems",
+      "Improved learning resources and support programs",
+      "Stronger partnerships and community engagement",
+      "A new chapter focused on excellence and impact"
     ]
   },
   {
     year: "2025",
-    title: "Record KCSE Performance",
-    shortDescription: "Mean score of 8.14 (B plain), 84% university transition rate, 1 A (plain) and 15 A- grades",
-    description: "The 2025 KCSE results marked a historic turning point for Matungulu boys. With a mean score of 8.14 (B plain), we achieved the highest academic performance in our school's history. One candidate scored an A (plain), 15 candidates earned A- grades, and over 60% of candidates scored B+ and above. The 84% university transition rate means that 8 out of every 10 students qualified for direct entry to public universities. This outstanding performance was driven by our intensive revision programs, dedicated faculty mentorship, and the resilience of our candidates. The results placed us as the best-performing boys' school in Machakos County and among the top 50 nationally. Our top-performing student scored an A and has since joined the University of Nairobi to pursue Medicine.",
-    impact: "Best performance in school history, top county ranking",
-    stats: "Mean 8.14 | 84% Uni Transition | 1 A | 15 A- | 60% B+",
+    title: "Record Academic Performance",
+    shortDescription:
+      "Strong results and improved university and career readiness outcomes.",
+    description: `The 2025 results reflected steady growth in performance, consistency, and learner confidence. Through structured revision, mentoring, and targeted support, ${schoolName} strengthened outcomes across the grade distribution and improved transitions to the next level.`,
+    impact: "Improved results, stronger consistency, better transitions",
+    stats: "Academic Milestone | 2025",
     icon: <FiTrendingUp className="w-5 h-5" />,
-    image: "/Matungulu/9.jpeg",
+    image: "/academics.jpg",
     highlights: [
-      "Highest mean score in school history (8.14)",
-      "84% of students qualified for direct university entry",
-      "1 student scored A (plain)",
-      "15 students scored A-",
-      "Over 60% scored B+ and above",
-      "Top student joined University of Nairobi for Medicine"
+      "Structured revision and mentorship programs",
+      "Improved performance consistency across subjects",
+      "Stronger learner confidence and exam readiness",
+      "Better transitions to the next level"
     ]
   },
   {
     year: "2025",
     title: "Top County Ranking",
-    shortDescription: "Best-performing boys' school in category, second-best public school in Machakos County",
-    description: "Beyond our individual performance,Kinyui boys was officially recognized as the best-performing boys' school in our category and the second-best public school overall in Machakos County. This ranking, released by the County Education Office, considered not only KCSE results but also consistency in performance, student retention rates, and co-curricular achievements. We surpassed 15 other boys' schools in the county and stood only behind a long-standing national school. This recognition affirmed our position as a center of academic excellence in the lower Eastern region and attracted applications from students across Machakos, Makueni, Kitui, and beyond. The County Director of Education personally visited our school to present the award and commend our teachers and students for their dedication.",
-    impact: "Top 2 in Machakos County, benchmark for other schools",
-    stats: "2nd Best Public School | Top boys' School | Surpassed 15 Schools",
+    shortDescription:
+      "Recognized among the top-performing public schools in the county.",
+    description: `Beyond individual performance, ${schoolName} was recognized among leading public schools based on learning outcomes, consistency, retention, and co-curricular achievement. The recognition affirmed our commitment to high standards and continuous improvement.`,
+    impact: "Higher visibility, stronger confidence, community trust",
+    stats: "County Ranking | 2025",
     icon: <FiStar className="w-5 h-5" />,
-    image: "/Matungulu/29.jpeg",
+    image: "/view.jpg",
     highlights: [
-      "Best-performing boys' school in Machakos County",
-      "2nd best public school overall in the county",
-      "Surpassed 15 other boys' schools",
-      "Recognition from County Education Office",
-      "Increased applications from neighboring counties"
+      "Recognition for consistent learning outcomes",
+      "Strong student retention and wellbeing support",
+      "Balanced performance in academics and activities",
+      "Increased community trust and applications"
     ]
   },
   {
     year: "2024",
     title: "Most Improved School",
-    shortDescription: "Recognized as most improved secondary school in Machakos County",
-    description: "The 2024 'Most Improved School' award from the Machakos County Government celebrated our remarkable transformation journey. Over three years, our mean score improved by 1.8 points — from 6.34 in 2022 to 8.14 in 2025. This improvement was the largest margin among all secondary schools in the county. The award recognized not just academic gains but improvements in infrastructure, student enrollment, teacher retention, and community engagement. Our strategic interventions, including remedial classes, parent-teacher partnerships, and student wellness programs, were cited as best practices for other schools to emulate. The award was presented during the county's Education Week celebrations, with our Principal delivering a keynote speech on our transformation strategies.",
-    impact: "Largest improvement margin in county (+1.8 points)",
-    stats: "1.8 Point Gain | 2022: 6.34 → 2025: 8.14 | County Recognition",
+    shortDescription:
+      "Recognized for measurable improvement in outcomes and systems.",
+    description:
+      "A sustained improvement journey led to recognition for measurable gains in learning outcomes, student support systems, and school-wide culture. Strategic interventions and strong home–school collaboration helped accelerate progress.",
+    impact: "Demonstrated growth, stronger systems, higher confidence",
+    stats: "Improvement Award | 2024",
     icon: <FiTrendingUp className="w-5 h-5" />,
-    image: "/Matungulu/37.jpeg",
+    image: "/cumpus.jpg",
     highlights: [
-      "Largest improvement margin in Machakos County",
-      "1.8 point gain over three years",
-      "Improved from 6.34 to 8.14 mean score",
-      "Recognized for academic and infrastructure improvements",
-      "Principal delivered keynote at Education Week"
+      "Measurable gains over multiple years",
+      "Stronger support programs and learning routines",
+      "Improved infrastructure and learning resources",
+      "Enhanced community engagement"
     ]
   },
   {
     year: "2024",
     title: "National Science Fair",
-    shortDescription: "Won National Science and Engineering Fair, top position nationally",
-    description: "Our students made history at the 2024 National Science and Engineering Fair by securing the top position nationally in the 'Innovations for Sustainable Energy' category. The winning project, 'Biogas from Market Waste: A Renewable Energy Solution for Schools,' was developed by three Form 3 students under the mentorship of our Chemistry and Biology departments. The project demonstrated how organic waste from local markets could be converted into clean cooking fuel, reducing deforestation and improving sanitation. Beyond the national award, the project earned a sponsorship from the Kenya Climate Innovation Center (KCIC) for further development. This achievement placedKinyui boys on the map as a hub for scientific innovation and problem-solving among boys' schools nationally. The students have since been invited to present their project at the East Africa Science Symposium.",
-    impact: "National champions, sponsorship from KCIC",
-    stats: "1st Place | Sustainable Energy Category | National Champions",
+    shortDescription: "Awarded for innovation and problem-solving in STEM.",
+    description:
+      "Students delivered an award-winning innovation project that showcased practical problem-solving and teamwork. The experience strengthened research skills, presentation confidence, and real-world application of STEM learning.",
+    impact: "Innovation culture, stronger STEM visibility, mentorship wins",
+    stats: "STEM Innovation | 2024",
     icon: <FiAward className="w-5 h-5" />,
-    image: "/Matungulu/26.jpeg",
+    image: "/hero/env.jpeg",
     highlights: [
-      "Top position nationally in Sustainable Energy category",
-      "Project: Biogas from Market Waste",
-      "Developed by three Form 3 students",
-      "Sponsorship from Kenya Climate Innovation Center",
-      "Invited to East Africa Science Symposium",
-      "Mentored by Chemistry and Biology departments"
+      "Award-winning innovation project",
+      "Strong mentorship and teamwork",
+      "Improved research and presentation skills",
+      "Real-world application of STEM learning"
     ]
   },
 ];
@@ -1086,16 +1076,120 @@ const achievements = [
   ];
 
   return (
-    <div className="bg-white overflow-hidden">
-      {/* ===== HERO SECTION ===== */}
-      <section className="relative bg-gradient-to-br from-white via-emerald-50/30 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Column - Text Content */}
+    <div className="min-h-screen bg-[#f6f7fb] text-slate-900 overflow-x-hidden">
+      {/* ===== HERO (Bento Modern) ===== */}
+      <section className="relative py-16 sm:py-20 lg:py-24">
+        {/* Decorative Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-32 left-1/2 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-gradient-to-br from-indigo-200/70 via-sky-200/40 to-emerald-200/30 blur-3xl" />
+          <div className="absolute -bottom-28 left-10 h-[22rem] w-[22rem] rounded-full bg-gradient-to-br from-violet-200/40 to-fuchsia-200/20 blur-3xl" />
+          <div className="absolute top-24 right-10 h-[20rem] w-[20rem] rounded-full bg-gradient-to-br from-sky-200/35 to-indigo-200/20 blur-3xl" />
+        </div>
 
-            {/* Right Column - Image Carousel */}
-            <div className="lg:col-span-7">
-              <div className="relative aspect-[4/3] sm:aspect-[16/10] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl group">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+            
+            {/* Left Card */}
+            <div className="order-2 lg:order-1 lg:col-span-5">
+              <div className="h-full rounded-3xl border border-slate-200/70 bg-white/70 backdrop-blur p-6 sm:p-8 shadow-[0_20px_50px_rgba(2,6,23,0.08)]">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700">
+                <IoSparkles className="w-4 h-4 text-indigo-600" />
+                Why this school
+              </div>
+
+              {/* Heading */}
+              <div className="mt-5 space-y-4">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-[1.05] tracking-tight">
+                  {loading ? (
+                    <span className="inline-flex items-center gap-2">
+                      <FiLoader className="w-6 h-6 animate-spin text-indigo-600" />{" "}
+                      Loading...
+                    </span>
+                  ) : (
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
+                      Why {schoolName}
+                    </span>
+                  )}
+                </h1>
+                <p className="text-slate-600 text-base sm:text-lg leading-relaxed font-medium max-w-xl">
+                  {description ||
+                    "A future-ready learning community focused on academic growth, character, and real-world skills."}
+                </p>
+              </div>
+
+              {/* Key Metrics */}
+              <div className="mt-6 grid grid-cols-3 gap-3">
+                {(() => {
+                  const stats = getSchoolStats();
+                  const items = [
+                    {
+                      label: "Students",
+                      value: `${studentCount}+`,
+                      icon: FiUsers,
+                      tone: "from-sky-500 to-indigo-600",
+                    },
+                    {
+                      label: "Mean",
+                      value: stats.meanScore?.toFixed(2) || "—",
+                      icon: FiTrendingUp,
+                      tone: "from-emerald-500 to-teal-600",
+                    },
+                    {
+                      label: "Target",
+                      value: stats.targetMean?.toFixed(2) || "—",
+                      icon: FiTarget,
+                      tone: "from-amber-500 to-orange-600",
+                    },
+                  ];
+
+                  return items.map((stat, idx) => {
+                    const Icon = stat.icon;
+                    return (
+                      <div
+                        key={idx}
+                        className="rounded-2xl border border-slate-200 bg-white/70 px-3 py-3 shadow-sm"
+                      >
+                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">
+                          {stat.label}
+                        </p>
+                        <div className="mt-2 flex items-center gap-2">
+                          <span
+                            className={`inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br ${stat.tone} text-white shadow-sm`}
+                          >
+                            <Icon className="w-4 h-4" />
+                          </span>
+                          <p className="text-lg sm:text-xl font-black text-slate-900">
+                            {stat.value}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="mt-7 flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={handleExplorePathways}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600 hover:from-indigo-700 hover:via-sky-700 hover:to-emerald-700 text-white font-black text-sm tracking-tight transition-all shadow-lg shadow-indigo-600/20 active:scale-[0.99]"
+                >
+                  Admissions <FiArrowRight className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => router.push("/pages/AboutUs")}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-900 font-black text-sm tracking-tight transition-all border border-slate-200 shadow-sm"
+                >
+                  About Us
+                </button>
+              </div>
+              </div>
+            </div>
+
+            {/* Right Column - Dynamic Carousel with New Style */}
+            <div className="order-1 lg:order-2 lg:col-span-7">
+              <div className="relative w-full aspect-[4/3] sm:aspect-square rounded-3xl overflow-hidden border border-slate-200 bg-white shadow-[0_25px_70px_rgba(2,6,23,0.12)] group">
                 {schoolImages.map((image, idx) => (
                   <div
                     key={idx}
@@ -1116,85 +1210,158 @@ const achievements = [
                 ))}
 
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/45 via-transparent to-slate-950/10" />
 
-                {/* Navigation Arrows */}
+                {/* Navigation Buttons - Redesigned */}
                 <button
                   onClick={prevImage}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-white/30 z-10"
+                  className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-white/30 z-10 shadow-lg border border-white/20"
                   aria-label="Previous"
                 >
-                  <FiChevronLeft size={20} />
+                  <FiChevronLeft size={22} className="strokeWidth={1}" />
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-white/30 z-10"
+                  className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-white/30 z-10 shadow-lg border border-white/20"
                   aria-label="Next"
                 >
-                  <FiChevronRight size={20} />
+                  <FiChevronRight size={22} className="strokeWidth={1}" />
                 </button>
 
-                {/* Dots Indicator */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                {/* Dots Indicator - New Style */}
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-10 backdrop-blur-sm px-4 py-2 rounded-full bg-white/15 border border-white/20">
                   {schoolImages.map((_, idx) => (
                     <button
                       key={idx}
                       onClick={() => setCurrentImageIndex(idx)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                      className={`transition-all duration-300 rounded-full ${
                         idx === currentImageIndex
-                          ? "w-6 bg-white"
-                          : "w-1.5 bg-white/40 hover:bg-white/70"
+                          ? "w-3 h-3 bg-white shadow-lg"
+                          : "w-2 h-2 bg-white/50 hover:bg-white/70"
                       }`}
                     />
                   ))}
                 </div>
-
-                {/* Overlay Text */}
-                <div className="absolute bottom-12 left-4 right-4 sm:left-5 sm:right-auto z-10">
-                  <div className="backdrop-blur-xl bg-white/10 border border-white/20 px-4 py-3 rounded-xl max-w-xs">
-                    <p className="text-white font-black text-sm sm:text-base tracking-tight leading-snug">
-                      🏆{schoolName}
-                    </p>
-                    <p className="text-white/60 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mt-0.5">
-                      {motto}
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
-            <div className="lg:col-span-5 space-y-6 sm:space-y-7">
-              {/* Status Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-full border border-emerald-200 w-fit">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span className="text-[10px] sm:text-xs font-semibold tracking-wider text-emerald-700 uppercase">
-                  Now a National School (2026)
-                </span>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== WHY CHOOSE US - REDESIGNED SECTION ===== */}
+      <section className="relative py-16 sm:py-20 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-44 right-10 w-[28rem] h-[28rem] bg-indigo-200/35 rounded-full blur-3xl" />
+          <div className="absolute -bottom-44 left-16 w-[26rem] h-[26rem] bg-emerald-200/25 rounded-full blur-3xl" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Section Header */}
+          <div className="text-center mb-14 sm:mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 mb-5">
+              <FiStar className="text-indigo-600 w-4 h-4" />
+              Why Choose Us
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-tight mb-4 tracking-tight">
+              A bolder way to{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
+                learn and grow
+              </span>
+            </h2>
+            <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-medium">
+              Distinctive advantages that shape learning, character, and future readiness.
+            </p>
+          </div>
+
+          {/* Cards Grid - New Flowing Design */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mb-10">
+            {whyChooseUs.map((item) => (
+              <div
+                key={item.id}
+                className="group relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200 hover:from-indigo-200 hover:via-white hover:to-emerald-200 transition-colors duration-300"
+              >
+                <div className="relative h-full rounded-[calc(1.5rem-1px)] bg-white/80 backdrop-blur border border-white/60 p-6 shadow-sm hover:shadow-xl transition-shadow">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-600 to-sky-500 text-white flex items-center justify-center shadow-md">
+                      {item.icon}
+                    </div>
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black tracking-[0.2em] uppercase bg-slate-50 border border-slate-200 text-slate-600">
+                      {item.metrics}
+                    </span>
+                  </div>
+
+                  <h3 className="mt-4 text-lg font-black text-slate-900 tracking-tight">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-2 text-sm text-slate-600 font-medium leading-relaxed">
+                    {expandedCards[item.id] ? item.description : item.shortDescription}
+                  </p>
+
+                  <button
+                    onClick={() => toggleReadMore(item.id)}
+                    className="mt-4 inline-flex items-center gap-1 text-xs font-black tracking-widest uppercase text-indigo-600 hover:text-indigo-700 transition-colors"
+                  >
+                    {expandedCards[item.id] ? "Show Less" : "Read More"}
+                    <FiChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        expandedCards[item.id] ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA Row */}
+          <div className="text-center">
+            <button
+              onClick={handleExplorePathways}
+              className="inline-flex items-center gap-2 px-8 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600 hover:from-indigo-700 hover:via-sky-700 hover:to-emerald-700 text-white font-black text-sm tracking-tight transition-all shadow-lg shadow-indigo-600/20 active:scale-[0.99]"
+            >
+              Explore Our Pathways <FiArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SNAPSHOT SECTION (Wrapper Fix) ===== */}
+      <section className="relative py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-3xl border border-slate-200/70 bg-white/70 backdrop-blur p-6 sm:p-8 shadow-[0_20px_50px_rgba(2,6,23,0.08)]">
+            <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-indigo-200/35 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-emerald-200/25 blur-3xl" />
+
+          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="lg:col-span-7 space-y-6">
+              {/* Snapshot Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 w-fit">
+                <FiZap className="w-4 h-4 text-indigo-600" />
+                Snapshot
               </div>
 
               {/* Heading */}
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 leading-tight tracking-tight">
                 {loading ? (
                   <span className="inline-flex items-center gap-2">
-                    <FiLoader className="w-5 h-5 animate-spin text-emerald-500" />{" "}
+                    <FiLoader className="w-5 h-5 animate-spin text-indigo-600" />{" "}
                     Loading...
                   </span>
                 ) : (
                   <>
-                    {schoolName.split(" ").slice(0, -2).join(" ")}{" "}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">
-                      {schoolName.split(" ").slice(-2).join(" ")}
+                    Admissions &amp; Enquiries at{" "}
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
+                      {schoolName}
                     </span>
                   </>
                 )}
-              </h1>
+              </h2>
 
               {/* Description (FIXED DARKER TEXT ✅) */}
-              <p className="text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl font-medium">
+              <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl font-medium">
                 {description ||
-                  "Located in the heart of Matungulu, Machakos County, we are dedicated to nurturing young women into confident, compassionate, and accomplished leaders through academic excellence and character formation."}
+                  "A future-ready learning community focused on academic growth, character, and real-world skills."}
               </p>
 
               {/* Contact Pills */}
@@ -1207,14 +1374,14 @@ const achievements = [
         label: "Students",
         value: `${studentCount}+`,
         icon: <FiUsers className="w-4 h-4" />,
-        color: "text-blue-600",
-        bgColor: "bg-blue-50",
+        color: "text-indigo-700",
+        bgColor: "bg-indigo-50",
       },
       {
-        label: "KCSE Mean",
-        value: stats.meanScore?.toFixed(2) || "8.14",
+        label: "Mean Score",
+        value: stats.meanScore?.toFixed(2) || "—",
         icon: <FiBookOpen className="w-4 h-4" />,
-        color: "text-emerald-600",
+        color: "text-emerald-700",
         bgColor: "bg-emerald-50",
         trend: stats.lastYearMean ? (
           <span className={`text-[10px] font-bold ml-1 ${
@@ -1228,9 +1395,9 @@ const achievements = [
       },
       {
         label: "Target Mean",
-        value: stats.targetMean?.toFixed(2) || "8.50",
+        value: stats.targetMean?.toFixed(2) || "—",
         icon: <FiTarget className="w-4 h-4" />,
-        color: "text-amber-600",
+        color: "text-amber-700",
         bgColor: "bg-amber-50",
         progress: stats.meanScore && stats.targetMean ? (
           <span className="text-[10px] font-bold ml-1 text-amber-600">
@@ -1242,15 +1409,15 @@ const achievements = [
         label: "Slogan",
         value: stats.slogan || motto,
         icon: <FiStar className="w-4 h-4" />,
-        color: "text-purple-600",
-        bgColor: "bg-purple-50",
+        color: "text-violet-700",
+        bgColor: "bg-violet-50",
       },
     ];
 
     return statItems.map((stat, idx) => (
       <div
         key={idx}
-        className="relative p-4 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between min-h-[90px] group"
+        className="relative p-4 bg-white/70 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between min-h-[90px] group overflow-hidden"
       >
         {/* Background Accent */}
         <div className={`absolute top-0 right-0 w-16 h-16 ${stat.bgColor} rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-0`} />
@@ -1281,7 +1448,7 @@ const achievements = [
         </p>
 
         {/* Hover Indicator */}
-        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-indigo-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
     ));
   })()}
@@ -1290,31 +1457,31 @@ const achievements = [
             
 <div className="flex flex-col md:flex-row gap-3">
   {/* Phone Card */}
-  <div className="bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 shadow-sm hover:shadow-md transition-all flex items-center sm:items-start gap-3">
-    <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl bg-blue-50 shrink-0">
-      <FiPhone className="text-blue-600 w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+  <div className="bg-white/70 border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow flex items-center gap-3">
+    <div className="w-10 h-10 flex items-center justify-center rounded-2xl bg-sky-50 border border-sky-100 shrink-0">
+      <FiPhone className="text-sky-700 w-4 h-4" />
     </div>
     <div className="min-w-0">
-      <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-gray-500">
+      <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">
         Phone
       </p>
-      <p className="text-[11px] sm:text-xs font-semibold text-gray-900 truncate">
+      <p className="text-sm font-bold text-slate-900 truncate">
         {contactPhone || "Add phone number"}
       </p>
     </div>
   </div>
 
   {/* Email Card */}
-  <div className="bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 shadow-sm hover:shadow-md transition-all flex items-center sm:items-start gap-3">
-    <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl bg-purple-50 shrink-0">
-      <FiMail className="text-purple-600 w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+  <div className="bg-white/70 border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow flex items-center gap-3">
+    <div className="w-10 h-10 flex items-center justify-center rounded-2xl bg-violet-50 border border-violet-100 shrink-0">
+      <FiMail className="text-violet-700 w-4 h-4" />
     </div>
     <div className="min-w-0">
-      <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-gray-500">
+      <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">
         Email
       </p>
-      <p className="text-[11px] sm:text-xs font-semibold text-gray-900 break-all">
-        matunguluboys@gmail.com
+      <p className="text-sm font-bold text-slate-900 break-all">
+        {contactEmail || "Add email"}
       </p>
     </div>
   </div>
@@ -1326,46 +1493,49 @@ const achievements = [
               <div className="flex flex-nowrap gap-3 pt-2 w-full">
                 <button
                   onClick={handleExplorePathways}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl font-semibold text-sm transition-all active:scale-[0.98] shadow-lg shadow-emerald-600/20"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600 hover:from-indigo-700 hover:via-sky-700 hover:to-emerald-700 text-white font-black text-sm tracking-tight transition-all shadow-lg shadow-indigo-600/20 active:scale-[0.99]"
                 >
-                  Admission <FiArrowRight size={16} />
+                  Admissions <FiArrowRight size={16} />
                 </button>
 
                 <button
                   onClick={() => router.push("/pages/AboutUs")}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-white hover:bg-gray-50 text-gray-800 rounded-xl font-semibold text-sm transition-all border border-gray-300"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-900 font-black text-sm tracking-tight transition-all border border-slate-200 shadow-sm"
                 >
                   Discover More
                 </button>
               </div>
             </div>
           </div>
+          </div>
         </div>
       </section>
+      
 
 {/* ===== VISION / MISSION / MOTTO SECTION (Compact Institutional Layout) ===== */}
-<section className="relative bg-white py-8 sm:py-10 overflow-hidden">
+<section className="relative py-16 sm:py-20 overflow-hidden">
   {/* Decorative Background Element */}
-  <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-emerald-50 rounded-full blur-3xl opacity-50" />
+  <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-indigo-200/35 rounded-full blur-3xl opacity-60" />
+  <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-96 h-96 bg-emerald-200/20 rounded-full blur-3xl opacity-60" />
   
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
       
       {/* Left Side: Section Header */}
       <div className="lg:col-span-4 space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100">
-          <IoSparkles className="text-emerald-600 w-3 h-3" />
-          <span className="text-[9px] font-bold uppercase tracking-widest text-emerald-700">Core Foundations</span>
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200">
+          <IoSparkles className="text-indigo-600 w-3.5 h-3.5" />
+          <span className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-700">Core Foundations</span>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">
-          Nurturing Excellence <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">
-            Through Purpose
+        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight tracking-tight">
+          Foundations that guide{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
+            how we learn
           </span>
         </h2>
-     <p className="text-slate-500 text-xs sm:text-sm leading-relaxed max-w-sm">
-  Guiding principles for the {new Date().getFullYear()} academic landscape. For us atKinyui boys Senior School, the champions — our slogan.
-</p>
+        <p className="text-slate-600 text-sm leading-relaxed max-w-sm font-medium">
+          Guiding principles for the {new Date().getFullYear()} academic year—what we believe, and how we build learners.
+        </p>
       </div>
 
       {/* Right Side: Interactive Cards (Reduced Height) */}
@@ -1375,31 +1545,31 @@ const achievements = [
             label: "Our Motto",
             value: motto,
             icon: <FiTarget />,
-            gradient: "from-emerald-600 to-teal-600",
+            gradient: "from-indigo-600 to-sky-500",
+            shadow: "shadow-indigo-200/50",
+            bg: "bg-indigo-50",
+            border: "border-indigo-100",
+            text: "text-indigo-700"
+          },
+          {
+            label: "Our Vision",
+            value: vision,
+            icon: <FiEye />,
+            gradient: "from-emerald-600 to-teal-500",
             shadow: "shadow-emerald-200/50",
             bg: "bg-emerald-50",
             border: "border-emerald-100",
             text: "text-emerald-700"
           },
           {
-            label: "Our Vision",
-            value: vision,
-            icon: <FiEye />,
-            gradient: "from-blue-600 to-indigo-600",
-            shadow: "shadow-blue-200/50",
-            bg: "bg-blue-50",
-            border: "border-blue-100",
-            text: "text-blue-700"
-          },
-          {
             label: "Our Mission",
             value: mission,
             icon: <FiBookOpen />,
-            gradient: "from-teal-600 to-emerald-600",
-            shadow: "shadow-teal-200/50",
-            bg: "bg-teal-50",
-            border: "border-teal-100",
-            text: "text-teal-700",
+            gradient: "from-violet-600 to-fuchsia-500",
+            shadow: "shadow-violet-200/50",
+            bg: "bg-violet-50",
+            border: "border-violet-100",
+            text: "text-violet-700",
             span: "md:col-span-2" 
           },
         ].map((item, idx) => (
@@ -1407,7 +1577,7 @@ const achievements = [
             key={idx} 
             className={`group relative p-[1px] rounded-[1.5rem] bg-gradient-to-b from-slate-200 to-white shadow-lg transition-all duration-200 ${item.span || ""}`}
           >
-            <div className="relative h-full bg-white rounded-[1.45rem] p-5 border border-white overflow-hidden">
+            <div className="relative h-full bg-white/80 backdrop-blur rounded-[1.45rem] p-5 border border-slate-200/60 overflow-hidden">
               {/* Corner Accent - Scaled Down */}
               <div className={`absolute -top-8 -right-8 w-16 h-16 bg-gradient-to-br ${item.gradient} opacity-5 group-hover:opacity-15 transition-opacity rounded-full`} />
               
@@ -1419,7 +1589,7 @@ const achievements = [
 
                 <div className="flex-1 space-y-1">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-emerald-600 transition-colors">
+                    <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-indigo-600 transition-colors">
                       {item.label}
                     </h3>
                     <div className={`px-2 py-0.5 rounded-full ${item.bg} ${item.border} ${item.text} text-[8px] font-bold uppercase`}>
@@ -1443,85 +1613,175 @@ const achievements = [
 
 {/* ===== PERFORMANCE METRICS SECTION ===== */}
 {!statsLoading && schoolStatsData && (
-  <section className="bg-[#f8fafc] py-12">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="bg-white rounded-[32px] p-6 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-slate-100 relative overflow-hidden">
-        
-        {/* Header Section */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="space-y-1">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-600/80">Academic Intelligence</p>
-            <h3 className="text-2xl font-black text-slate-900 flex items-center gap-2 tracking-tight">
-              <div className="p-2 bg-emerald-50 rounded-xl">
-                <FiTrendingUp className="text-emerald-600" size={20} />
+  <section className="relative py-16 sm:py-20 overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute -top-44 left-1/2 h-[26rem] w-[26rem] -translate-x-1/2 rounded-full bg-gradient-to-br from-sky-200/45 via-indigo-200/30 to-emerald-200/20 blur-3xl" />
+      <div className="absolute -bottom-48 right-6 h-[24rem] w-[24rem] rounded-full bg-gradient-to-br from-violet-200/30 to-fuchsia-200/15 blur-3xl" />
+    </div>
+
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200">
+        <div className="rounded-[calc(1.5rem-1px)] bg-white/80 backdrop-blur border border-white/60 p-6 sm:p-8 shadow-[0_20px_50px_rgba(2,6,23,0.06)]">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700">
+                <FiActivity className="w-4 h-4 text-indigo-600" />
+                Performance
               </div>
-              Performance Metrics
-            </h3>
+              <h3 className="mt-4 text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+                Academic metrics, at a glance
+              </h3>
+              <p className="mt-2 text-sm sm:text-base text-slate-600 font-medium max-w-2xl leading-relaxed">
+                Live statistics from our academic dashboard and targets for the current cycle.
+              </p>
+            </div>
+
+            <div className="w-fit inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600 text-white shadow-lg shadow-indigo-600/15">
+              <FiTrendingUp className="w-4 h-4" />
+              <span className="text-xs font-black uppercase tracking-[0.2em]">
+                Live Metrics
+              </span>
+            </div>
           </div>
-          <div className="hidden md:block px-4 py-1.5 bg-slate-50 rounded-full border border-slate-100">
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Live Statistics</p>
+
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6">
+            {/* Current Mean (Primary) */}
+            {schoolStatsData.meanScore && (
+              <div className="md:col-span-5">
+                <div className="relative h-full rounded-3xl border border-slate-200 overflow-hidden p-6 text-white bg-slate-950">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/40 via-sky-600/25 to-emerald-600/25" />
+                  <div className="relative">
+                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-white/70">
+                      Current Mean
+                    </p>
+
+                    <div className="mt-3 flex flex-wrap items-end gap-3">
+                      <p className="text-5xl sm:text-6xl font-black tracking-tight">
+                        {schoolStatsData.meanScore.toFixed(2)}
+                      </p>
+
+                      {schoolStatsData.lastYearMean && (
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-black ${
+                            schoolStatsData.meanScore > schoolStatsData.lastYearMean
+                              ? "bg-emerald-500/20 text-emerald-100 border border-emerald-400/30"
+                              : "bg-rose-500/20 text-rose-100 border border-rose-400/30"
+                          }`}
+                        >
+                          {schoolStatsData.meanScore > schoolStatsData.lastYearMean ? (
+                            <FiTrendingUp className="w-4 h-4" />
+                          ) : (
+                            <FiTrendingDown className="w-4 h-4" />
+                          )}
+                          {Math.abs(
+                            schoolStatsData.meanScore - schoolStatsData.lastYearMean
+                          ).toFixed(2)}
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="mt-2 text-sm text-white/75 font-medium leading-relaxed">
+                      A snapshot of current academic performance, updated as data is published.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Secondary Tiles */}
+            <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              {schoolStatsData.lastYearMean && (
+                <div className="rounded-3xl border border-slate-200 bg-white/70 p-6 shadow-sm hover:shadow-lg transition-shadow">
+                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500">
+                    Previous Year
+                  </p>
+                  <p className="mt-3 text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                    {schoolStatsData.lastYearMean.toFixed(2)}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-600 font-medium">
+                    Baseline reference for trend comparisons.
+                  </p>
+                </div>
+              )}
+
+              {schoolStatsData.targetMean && (
+                <div className="rounded-3xl border border-slate-200 bg-white/70 p-6 shadow-sm hover:shadow-lg transition-shadow">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500">
+                        Target Mean
+                      </p>
+                      <p className="mt-3 text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                        {schoolStatsData.targetMean.toFixed(2)}
+                      </p>
+                    </div>
+
+                    {schoolStatsData.meanScore && (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[11px] font-black">
+                        {Math.min(
+                          100,
+                          (schoolStatsData.meanScore / schoolStatsData.targetMean) * 100
+                        ).toFixed(0)}
+                        %
+                      </span>
+                    )}
+                  </div>
+
+                  {schoolStatsData.meanScore && (
+                    <div className="mt-4">
+                      <div className="h-2 w-full rounded-full bg-slate-200 overflow-hidden">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-1000 ease-out"
+                          style={{
+                            width: `${Math.min(
+                              100,
+                              (schoolStatsData.meanScore / schoolStatsData.targetMean) * 100
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                      <p className="mt-2 text-sm text-slate-600 font-medium">
+                        Progress toward the target mean.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {(schoolStatsData.slogan ||
+                schoolStatsData.sloganDescription ||
+                schoolStatsData.sloganAuthor) && (
+                <div className="sm:col-span-2 rounded-3xl border border-slate-200 bg-white/70 p-6 shadow-sm hover:shadow-lg transition-shadow">
+                  <div className="flex items-start gap-3">
+                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-sm shrink-0">
+                      <FiStar className="w-5 h-5" />
+                    </span>
+
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500">
+                        Slogan
+                      </p>
+                      <p className="mt-2 text-lg font-black text-slate-900 leading-tight">
+                        {schoolStatsData.slogan || motto}
+                      </p>
+
+                      {schoolStatsData.sloganDescription && (
+                        <p className="mt-2 text-sm text-slate-600 font-medium leading-relaxed">
+                          {schoolStatsData.sloganDescription}
+                        </p>
+                      )}
+
+                      {schoolStatsData.sloganAuthor && (
+                        <p className="mt-2 text-xs text-slate-500 font-semibold">
+                          — {schoolStatsData.sloganAuthor}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-        
-        {/* The Grid: Forced 2-column layout on mobile */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          
-          {/* Last Year Mean Card */}
-          {schoolStatsData.lastYearMean && (
-            <div className="group relative rounded-2xl bg-slate-50/50 border border-slate-100 p-5 transition-all hover:bg-white hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-200">
-              <p className="text-[11px] font-black uppercase tracking-wider text-blue-600 mb-2">Previous Year</p>
-              <div className="flex items-baseline gap-1">
-                <span className="text-3xl sm:text-4xl font-black text-slate-800">{schoolStatsData.lastYearMean.toFixed(2)}</span>
-                <span className="text-[10px] font-bold text-slate-400">MEAN</span>
-              </div>
-            </div>
-          )}
-          
-          {/* Current Mean Card - High Focus */}
-          {schoolStatsData.meanScore && (
-            <div className="group relative col-span-2 lg:col-span-1 rounded-2xl bg-emerald-50 border-2 border-emerald-100 p-5 transition-all hover:shadow-xl hover:shadow-emerald-500/10">
-              <p className="text-[11px] font-black uppercase tracking-wider text-emerald-700 mb-2">Current Standard</p>
-              <div className="flex items-center justify-between">
-                <span className="text-4xl sm:text-5xl font-black text-emerald-600 tracking-tighter">
-                  {schoolStatsData.meanScore.toFixed(2)}
-                </span>
-                {schoolStatsData.lastYearMean && (
-                  <div className={`flex items-center gap-0.5 text-[11px] font-black px-2 py-1 rounded-lg ${
-                    schoolStatsData.meanScore > schoolStatsData.lastYearMean 
-                      ? 'bg-emerald-600 text-white' 
-                      : 'bg-red-500 text-white'
-                  }`}>
-                    {schoolStatsData.meanScore > schoolStatsData.lastYearMean ? '↑' : '↓'}
-                    {Math.abs(schoolStatsData.meanScore - schoolStatsData.lastYearMean).toFixed(2)}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-          
-          {/* Target Mean Card */}
-          {schoolStatsData.targetMean && (
-            <div className="group relative col-span-2 lg:col-span-1 rounded-2xl bg-slate-50/50 border border-slate-100 p-5 transition-all hover:bg-white hover:shadow-xl hover:shadow-amber-500/10 hover:border-amber-200">
-               <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <p className="text-[11px] font-black uppercase tracking-wider text-amber-600 mb-1">Strategic Goal</p>
-                    <span className="text-3xl font-black text-slate-800">{schoolStatsData.targetMean.toFixed(2)}</span>
-                  </div>
-                  <div className="bg-amber-100 px-2 py-1 rounded-md">
-                     <p className="text-xs font-black text-amber-700 leading-none">
-                        {((schoolStatsData.meanScore / schoolStatsData.targetMean) * 100).toFixed(0)}%
-                     </p>
-                  </div>
-               </div>
-               {/* Minimalist Progress Bar */}
-               <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-amber-500 transition-all duration-1000 ease-out" 
-                    style={{ width: `${(schoolStatsData.meanScore / schoolStatsData.targetMean) * 100}%` }}
-                  />
-               </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
@@ -1529,90 +1789,135 @@ const achievements = [
 )}
 
 {/* ===== ACHIEVEMENTS TIMELINE: MODERNIZED ===== */}
-<section className="bg-[#fcfcfd] py-20 overflow-hidden">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    
-    {/* Header: Centered & Minimalist */}
-    <div className="text-center max-w-3xl mx-auto mb-16">
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 mb-4">
-        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">Chronicle of Success</span>
+<section className="relative py-16 sm:py-20 overflow-hidden">
+  <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    <div className="absolute -top-40 left-10 h-[22rem] w-[22rem] rounded-full bg-gradient-to-br from-indigo-200/35 to-sky-200/25 blur-3xl" />
+    <div className="absolute -bottom-44 right-12 h-[26rem] w-[26rem] rounded-full bg-gradient-to-br from-emerald-200/25 to-indigo-200/15 blur-3xl" />
+  </div>
+
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 mb-5">
+        <FiAward className="w-4 h-4 text-indigo-600" />
+        Achievements
       </div>
       <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight mb-4">
-        Milestones of <span className="text-emerald-600">Excellence</span>
+        Milestones worth{" "}
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
+          celebrating
+        </span>
       </h2>
-      <p className="text-slate-500 text-base sm:text-lg font-medium leading-relaxed">
-        A legacy built on innovation and character, charting our progress from 2019 to the present.
+      <p className="text-slate-600 text-base sm:text-lg font-medium leading-relaxed">
+        A timeline of wins and moments that reflect our learning culture.
       </p>
     </div>
 
     {achievementsLoading ? (
-      <div className="flex flex-col items-center justify-center py-20">
-        <FiLoader className="w-10 h-10 animate-spin text-emerald-600 mb-4" />
-        <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Syncing Data...</p>
+      <div className="flex flex-col items-center justify-center py-16">
+        <FiLoader className="w-10 h-10 animate-spin text-indigo-600 mb-4" />
+        <p className="text-slate-500 font-black uppercase tracking-[0.2em] text-xs">
+          Loading achievements...
+        </p>
       </div>
     ) : (
       <div className="relative">
-        {/* Timeline Path: Thin & Sophisticated */}
-        <div className="absolute left-4 sm:left-1/2 transform sm:-translate-x-1/2 h-full w-px bg-slate-200"></div>
+        <div className="absolute left-4 sm:left-1/2 sm:-translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-slate-200 via-slate-200 to-transparent" />
 
-        <div className="space-y-12">
-          {getAchievements().map((item, idx) => (
-            <div
-              key={idx}
-              className={`relative flex items-center justify-between w-full mb-8 ${
-                idx % 2 === 0 ? "sm:flex-row-reverse" : "sm:flex-row"
-              }`}
-            >
-              {/* Spacer for Desktop */}
-              <div className="hidden sm:block w-[45%]" />
+        <div className="space-y-10 sm:space-y-12">
+          {getAchievements().map((item, idx) => {
+            const isRight = idx % 2 === 0;
+            return (
+              <div
+                key={idx}
+                className={`relative flex items-start justify-between w-full ${
+                  isRight ? "sm:flex-row-reverse" : "sm:flex-row"
+                }`}
+              >
+                <div className="hidden sm:block w-[45%]" />
 
-              {/* Timeline Indicator */}
-              <div className="absolute left-4 sm:left-1/2 transform -translate-x-1/2 z-20">
-                <div className="w-8 h-8 rounded-full bg-white border-2 border-emerald-500 flex items-center justify-center shadow-sm">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                </div>
-              </div>
-
-              {/* Card Content */}
-              <div className="w-full sm:w-[45%] pl-12 sm:pl-0 group">
-                <div className="relative p-6 sm:p-8 rounded-[28px] bg-white border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] transition-all duration-500 hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1">
-                  
-                  {/* Floating Year Tag */}
-                  <div className={`absolute top-0 -translate-y-1/2 flex items-center gap-2 ${
-                    idx % 2 === 0 ? "sm:right-8" : "sm:left-8"
-                  }`}>
-                    <span className="px-4 py-1 rounded-full bg-[#172033] text-white text-[11px] font-black tracking-widest uppercase shadow-lg">
-                      {item.year}
-                    </span>
+                <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 z-20">
+                  <div className="w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center">
+                    <div className="w-3 h-3 rounded-full bg-gradient-to-br from-indigo-600 via-sky-600 to-emerald-600" />
                   </div>
+                </div>
 
-                  <div className={`flex flex-col ${idx % 2 === 0 ? "sm:items-start" : "sm:items-end"} text-left ${idx % 2 === 0 ? "sm:text-left" : "sm:text-right"}`}>
-                    {/* Icon Plate */}
-                    <div className="mb-4 p-3 rounded-2xl bg-emerald-50 text-emerald-600 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
-                      {item.icon || <FiAward size={20} />}
+                <div className="w-full sm:w-[45%] pl-12 sm:pl-0">
+                  <div className="group relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200 hover:from-indigo-200 hover:via-white hover:to-emerald-200 transition-colors duration-300">
+                    <div className="relative rounded-[calc(1.5rem-1px)] bg-white/80 backdrop-blur border border-white/60 p-6 sm:p-8 shadow-sm hover:shadow-xl transition-shadow">
+                      {item.year && (
+                        <div
+                          className={`absolute -top-3 ${
+                            isRight ? "sm:right-8" : "sm:left-8"
+                          } left-6 sm:left-auto`}
+                        >
+                          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.25em] shadow-lg">
+                            <FiCalendar className="w-3.5 h-3.5 text-white/80" />
+                            {item.year}
+                          </span>
+                        </div>
+                      )}
+
+                      <div
+                        className={`flex flex-col ${
+                          isRight
+                            ? "sm:items-start sm:text-left"
+                            : "sm:items-end sm:text-right"
+                        } text-left`}
+                      >
+                        <div className="inline-flex items-center gap-3 flex-wrap">
+                          <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 via-sky-600 to-emerald-600 text-white shadow-md">
+                            {item.icon || <FiAward className="w-5 h-5" />}
+                          </span>
+
+                          {item.stats && (
+                            <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-slate-50 border border-slate-200 text-slate-600">
+                              {item.stats}
+                            </span>
+                          )}
+                        </div>
+
+                        <h4 className="mt-4 text-xl sm:text-2xl font-black text-slate-900 leading-tight">
+                          {item.title}
+                        </h4>
+
+                        <p className="mt-2 text-slate-600 text-sm sm:text-base font-medium leading-relaxed line-clamp-3">
+                          {item.shortDescription ||
+                            (item.description &&
+                              item.description.substring(0, 120) + "...")}
+                        </p>
+
+                        <div
+                          className={`mt-5 flex items-center justify-start ${
+                            isRight ? "sm:justify-start" : "sm:justify-end"
+                          }`}
+                        >
+                          <button
+                            onClick={() => openAchievementModal(item)}
+                            className="group/btn inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-slate-900 text-white text-xs font-black uppercase tracking-[0.2em] hover:bg-slate-800 transition-colors"
+                          >
+                            View details
+                            <FiArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {item.image && (
+                        <div className="mt-6 relative h-40 sm:h-44 w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
+                          <Image
+                            src={item.image}
+                            alt={item.title}
+                            fill
+                            className="object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent" />
+                        </div>
+                      )}
                     </div>
-
-                    <h4 className="text-xl font-black text-slate-900 mb-2 leading-tight">
-                      {item.title}
-                    </h4>
-
-                    <p className="text-slate-500 text-sm leading-relaxed font-medium mb-5 line-clamp-3">
-                      {item.shortDescription || (item.description && item.description.substring(0, 120) + '...')}
-                    </p>
-
-                    <button
-                      onClick={() => openAchievementModal(item)}
-                      className="group/btn inline-flex items-center gap-2 text-emerald-600 text-xs font-black uppercase tracking-widest hover:text-emerald-700 transition-colors"
-                    >
-                      View Intelligence
-                      <FiArrowRight size={14} className="transition-transform group-hover/btn:translate-x-1" />
-                    </button>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     )}
@@ -1620,128 +1925,210 @@ const achievements = [
 </section>
 
       {/* ===== WHY CHOOSE US ===== */}
-<section className="bg-white py-20">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    
-    {/* Header with your signature tracking */}
-    <div className="text-center max-w-3xl mx-auto mb-16">
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 mb-4">
-        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-700">The Institution of Choice</span>
-      </div>
-      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight mb-4">
-        TheKinyui boys Slogan—<span className="text-emerald-600">The Champions</span>
-      </h2>
-      <p className="text-slate-500 text-base sm:text-lg font-medium">
-        Discover what makesKinyui boys the premier choice for your daughter's future.
-      </p>
-    </div>
+      <section className="relative py-16 sm:py-20 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-44 right-10 h-[26rem] w-[26rem] rounded-full bg-gradient-to-br from-indigo-200/35 to-sky-200/25 blur-3xl" />
+          <div className="absolute -bottom-44 left-12 h-[24rem] w-[24rem] rounded-full bg-gradient-to-br from-emerald-200/25 to-indigo-200/15 blur-3xl" />
+        </div>
 
-    {/* Modernized Grid: 2 columns on mobile, 4 on desktop */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {whyChooseUs.map((item) => {
-        const c = colorMap[item.color];
-        return (
-          <div
-            key={item.id}
-            className="group relative flex flex-col h-full bg-white rounded-[32px] border border-slate-100 overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.02)] transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-2"
-          >
-            {/* 1. Image Layer with Metric Plate */}
-            {item.image && (
-              <div className="relative h-44 sm:h-52 overflow-hidden">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#172033]/80 via-transparent to-transparent" />
-                
-                {/* Floating Metric Tag */}
-                <div className="absolute top-4 left-4">
-                  <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-xl backdrop-blur-md shadow-lg ${c.bg} text-white border border-white/20`}>
-                    {item.metrics}
-                  </span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+            {/* Left: Signature Card */}
+            <div className="lg:col-span-4">
+              <div className="lg:sticky lg:top-8 rounded-3xl border border-slate-200 bg-white/70 backdrop-blur p-6 sm:p-7 shadow-[0_20px_50px_rgba(2,6,23,0.06)]">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700">
+                  <HiOutlineSparkles className="w-4 h-4 text-indigo-600" />
+                  Signature Experience
                 </div>
-              </div>
-            )}
 
-            {/* 2. Content Area */}
-            <div className="p-6 flex flex-col flex-1">
-              <div className="flex items-start gap-4 mb-4">
-                {!item.image && (
-                  <div className={`w-12 h-12 rounded-2xl ${c.light} ${c.text} flex items-center justify-center flex-shrink-0 shadow-inner`}>
-                    {item.icon}
-                  </div>
-                )}
-                <h4 className="font-black text-slate-900 text-lg leading-tight tracking-tight group-hover:text-emerald-600 transition-colors">
-                  {item.title}
-                </h4>
-              </div>
+                <h2 className="mt-4 text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+                  What learners experience at{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
+                    {schoolName}
+                  </span>
+                </h2>
 
-              <p className="text-slate-500 text-sm leading-relaxed font-medium mb-6 line-clamp-3">
-                {expandedCards[item.id] ? item.description : item.shortDescription}
-              </p>
+                <p className="mt-3 text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
+                  Designed for growth: strong academics, structured support, and
+                  real-world readiness.
+                </p>
 
-              {/* 3. Action Layer (Bottom) */}
-              <div className="mt-auto">
-                {item.description !== item.shortDescription && (
-                  <button
-                    onClick={() => openAchievementModal(item)}
-                    className="group/btn inline-flex items-center gap-2 text-[#172033] text-[11px] font-black uppercase tracking-widest hover:text-emerald-600 transition-colors"
-                  >
-                    Explore Detail
-                    <div className="p-1.5 rounded-full bg-slate-50 group-hover/btn:bg-emerald-50 transition-colors">
-                      <FiArrowRight size={14} className="transition-transform group-hover/btn:translate-x-1" />
+                <div className="mt-6 relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-950 p-5 text-white">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/35 via-sky-600/25 to-emerald-600/25" />
+                  <div className="relative">
+                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-white/70">
+                      Motto
+                    </p>
+                    <p className="mt-2 text-lg font-black leading-snug">
+                      &ldquo;{motto}&rdquo;
+                    </p>
+                    <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-bold text-white/70">
+                      <span className="inline-flex items-center gap-1">
+                        <FiShield className="w-4 h-4" /> Support
+                      </span>
+                      <span className="text-white/40">•</span>
+                      <span className="inline-flex items-center gap-1">
+                        <FiTarget className="w-4 h-4" /> Focus
+                      </span>
+                      <span className="text-white/40">•</span>
+                      <span className="inline-flex items-center gap-1">
+                        <FiTrendingUp className="w-4 h-4" /> Progress
+                      </span>
                     </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={handleExplorePathways}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600 hover:from-indigo-700 hover:via-sky-700 hover:to-emerald-700 text-white font-black text-sm tracking-tight transition-all shadow-lg shadow-indigo-600/20 active:scale-[0.99]"
+                  >
+                    Admissions <FiArrowRight className="w-4 h-4" />
                   </button>
-                )}
+                  <button
+                    onClick={() => router.push("/pages/AboutUs")}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-900 font-black text-sm tracking-tight transition-all border border-slate-200 shadow-sm"
+                  >
+                    About Us
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* Subtle inner border for glass effect */}
-            <div className="absolute inset-0 border border-white/10 rounded-[32px] pointer-events-none" />
+            {/* Right: Accordion List */}
+            <div className="lg:col-span-8">
+              <div className="space-y-4">
+                {whyChooseUs.map((item) => {
+                  const c = colorMap[item.color] || colorMap.emerald;
+                  const expandedKey = `s2-${item.id}`;
+                  const isOpen = !!expandedCards[expandedKey];
+
+                  return (
+                    <div
+                      key={item.id}
+                      className="group relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200 hover:from-indigo-200 hover:via-white hover:to-emerald-200 transition-colors duration-300"
+                    >
+                      <div className="rounded-[calc(1.5rem-1px)] bg-white/80 backdrop-blur border border-white/60 p-5 sm:p-6 shadow-sm hover:shadow-xl transition-shadow">
+                        <div className="flex items-start gap-4">
+                          <div
+                            className={`mt-0.5 w-12 h-12 rounded-2xl ${c.light} ${c.text} flex items-center justify-center shadow-inner border border-slate-200/60 shrink-0`}
+                          >
+                            {item.icon}
+                          </div>
+
+                          <div className="min-w-0 flex-1">
+                            <button
+                              type="button"
+                              onClick={() => toggleReadMore(expandedKey)}
+                              className="w-full text-left"
+                              aria-expanded={isOpen}
+                            >
+                              <div className="flex items-start justify-between gap-3">
+                                <div>
+                                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">
+                                    {item.metrics}
+                                  </span>
+                                  <h3 className="mt-1 text-lg sm:text-xl font-black text-slate-900 leading-tight">
+                                    {item.title}
+                                  </h3>
+                                </div>
+
+                                <span
+                                  className={`mt-1 inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-white border border-slate-200 text-slate-700 transition-transform ${
+                                    isOpen ? "rotate-180" : ""
+                                  }`}
+                                >
+                                  <FiChevronDown className="w-4 h-4" />
+                                </span>
+                              </div>
+
+                              <p className="mt-2 text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
+                                {isOpen ? item.description : item.shortDescription}
+                              </p>
+                            </button>
+
+                            <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                              <button
+                                onClick={() =>
+                                  openAchievementModal({
+                                    ...item,
+                                    year: item.year || "Feature",
+                                    stats: item.stats || item.metrics || "",
+                                    impact: item.impact || "Student experience",
+                                    highlights: item.highlights || [],
+                                  })
+                                }
+                                className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-slate-900 hover:text-indigo-700 transition-colors w-fit"
+                              >
+                                View details <HiArrowSmallRight className="w-4 h-4" />
+                              </button>
+
+                              {item.image && (
+                                <div className="relative h-14 w-full sm:w-32 rounded-2xl overflow-hidden border border-slate-200 bg-slate-100">
+                                  <Image
+                                    src={item.image}
+                                    alt={item.title}
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 640px) 100vw, 128px"
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-transparent" />
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
-        );
-      })}
-    </div>
-  </div>
-</section>
+        </div>
+      </section>
 
       {/* CBC Pathways & Subjects Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="relative rounded-3xl border p-6 md:p-12 overflow-hidden shadow-sm">
+      <section className="relative py-16 sm:py-20 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-44 left-10 h-[24rem] w-[24rem] rounded-full bg-gradient-to-br from-sky-200/35 to-indigo-200/25 blur-3xl" />
+          <div className="absolute -bottom-44 right-10 h-[26rem] w-[26rem] rounded-full bg-gradient-to-br from-emerald-200/25 to-sky-200/15 blur-3xl" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200">
+            <div className="relative rounded-[calc(1.5rem-1px)] bg-white/80 backdrop-blur border border-white/60 p-6 md:p-10 overflow-hidden shadow-[0_20px_50px_rgba(2,6,23,0.06)]">
           {/* Logo watermark */}
           <img
-            src="/hero/MatG1.jpg"
+            src="/hero/env.jpeg"
             alt=""
             className="absolute right-4 bottom-4 w-28 md:w-40 opacity-[0.03] pointer-events-none select-none"
           />
 
           {/* Header Section */}
           <div className="max-w-3xl mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-teal-100 rounded-full mb-4">
-              <FiBookOpen className="text-teal-800 text-lg" />
-              <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-teal-700">
-                CBC Framework
-              </span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 mb-5">
+              <FiBookOpen className="w-4 h-4 text-indigo-600" />
+              CBC Framework
             </div>
 
             <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">
-              CBC <span className="text-teal-800">Learning Tracks</span> &
-              Subjects
+              CBC Tracks &{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
+                Subjects
+              </span>
             </h3>
 
-            <p className="text-slate-700 text-lg font-medium leading-relaxed">
+            <p className="text-slate-600 text-base sm:text-lg font-medium leading-relaxed">
               The Competency Based Curriculum organizes learning around three
               main pathways, each tailored to different student strengths and
               career goals at{" "}
-              <span className="text-emerald-700 font-bold">Matungulu</span>{" "}
-              boys.
+              <span className="text-slate-900 font-black">{schoolName}</span>.
             </p>
 
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-slate-200 shadow-sm mt-6">
-              <IoSparkles className="text-teal-500" />
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-slate-950 text-white shadow-lg shadow-slate-900/10 border border-white/10 mt-6">
+              <IoSparkles className="text-white/80" />
+              <span className="text-xs font-black uppercase tracking-[0.2em]">
                 7+ Core Competencies
               </span>
             </div>
@@ -1756,14 +2143,19 @@ const achievements = [
               return (
                 <div
                   key={idx}
-                  className={`group relative flex flex-col rounded-2xl overflow-hidden border transition-all duration-300 hover:shadow-xl ${
-                    isDark ? "bg-slate-900 border-slate-700" : "bg-white border-slate-200"
-                  }`}
+                  className="group relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200 hover:from-indigo-200 hover:via-white hover:to-emerald-200 transition-colors duration-300"
                 >
                   {/* Top Color Bar */}
-                  <div className={`h-1.5 w-full bg-gradient-to-r ${path.color}`} />
+                  <div
+                    className={`relative h-full rounded-[calc(1.5rem-1px)] overflow-hidden border border-white/60 backdrop-blur ${
+                      isDark ? "bg-slate-950 text-white" : "bg-white/80 text-slate-900"
+                    }`}
+                  >
+                    <div
+                      className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${path.color}`}
+                    />
 
-                  <div className="p-6 flex flex-col h-full">
+                    <div className="p-6 flex flex-col h-full">
                     <div className="flex items-start justify-between mb-4">
                       <div
                         className={`p-3 rounded-xl ${
@@ -1835,7 +2227,7 @@ const achievements = [
                     >
                       <p
                         className={`text-[10px] font-black uppercase tracking-widest mb-3 ${
-                          isDark ? "text-emerald-400" : "text-emerald-600"
+                          isDark ? "text-sky-300" : "text-indigo-600"
                         }`}
                       >
                         Popular Careers
@@ -1862,8 +2254,8 @@ const achievements = [
                         onClick={() => openModal(path)}
                         className={`inline-flex items-center gap-1 text-xs font-bold mt-1 transition-colors ${
                           isDark
-                            ? "text-emerald-400 hover:text-emerald-300"
-                            : "text-emerald-600 hover:text-emerald-700"
+                            ? "text-sky-300 hover:text-sky-200"
+                            : "text-indigo-600 hover:text-indigo-700"
                         }`}
                       >
                         Read More Careers
@@ -1872,12 +2264,14 @@ const achievements = [
                     </div>
                   </div>
                 </div>
+                </div>
               );
             })}
           </div>
 
           {/* CBC Core Subjects Row */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm">
+          <div className="relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200">
+            <div className="rounded-[calc(1.5rem-1px)] bg-white/70 backdrop-blur border border-white/60 p-6 md:p-8 shadow-sm">
             <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
               <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
                 <FiLayers className="text-white text-xl" />
@@ -1910,9 +2304,9 @@ const achievements = [
                 return (
                   <div
                     key={i}
-                    className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100 hover:border-teal-200 hover:bg-white transition-colors"
+                    className="flex items-center gap-3 p-3 bg-white/70 rounded-xl border border-slate-200 hover:border-indigo-200 hover:bg-white transition-colors"
                   >
-                    <SubjIcon className="text-teal-700 text-base shrink-0" />
+                    <SubjIcon className="text-indigo-700 text-base shrink-0" />
                     <span className="text-xs font-bold text-slate-700">
                       {subj.name}
                     </span>
@@ -1920,30 +2314,39 @@ const achievements = [
                 );
               })}
             </div>
+            </div>
+          </div>
           </div>
         </div>
+      </div>
       </section>
 
       {/* ===== EDUCATIONAL PILLARS - BENTO GRID ===== */}
-      <section className="bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-          {/* Header */}
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-            <span className="inline-block text-sm font-extrabold uppercase tracking-[0.2em] text-emerald-700 mb-3">
-              Our Foundation
-            </span>
+      <section className="relative py-16 sm:py-20 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-44 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-gradient-to-br from-indigo-200/30 via-sky-200/25 to-emerald-200/15 blur-3xl" />
+          <div className="absolute -bottom-52 left-10 h-[24rem] w-[24rem] rounded-full bg-gradient-to-br from-violet-200/25 to-fuchsia-200/10 blur-3xl" />
+        </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
-              Educational Pillars
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 mb-5">
+              <FiLayers className="w-4 h-4 text-indigo-600" />
+              Our Foundation
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">
+              Educational{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
+                pillars
+              </span>
             </h2>
 
-            <p className="text-gray-700 text-base sm:text-lg font-medium">
-              Building academic excellence, strong character, and future-ready
-              skills
+            <p className="text-slate-600 text-base sm:text-lg font-medium leading-relaxed">
+              Building academic excellence, strong character, and future-ready skills.
             </p>
           </div>
 
-          {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-6 gap-5">
             {schoolFeatures.map((feature, index) => {
               const spans = [
@@ -1960,96 +2363,98 @@ const achievements = [
               return (
                 <div
                   key={index}
-                  className={`${spans[index] || "md:col-span-2"} relative overflow-hidden ${
-                    isDark
-                      ? "bg-gradient-to-br from-emerald-900 to-teal-900 text-white"
-                      : "bg-white text-gray-900"
-                  } border ${
-                    isDark ? "border-emerald-800" : "border-gray-200"
-                  } rounded-2xl p-6 group hover:border-emerald-400 transition-all duration-300 shadow-sm hover:shadow-lg`}
+                  className={`${
+                    spans[index] || "md:col-span-2"
+                  } group relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200 hover:from-indigo-200 hover:via-white hover:to-emerald-200 transition-colors duration-300`}
                 >
-                  {/* Background glow */}
                   <div
-                    className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.gradient} opacity-[0.05] group-hover:opacity-15 transition-opacity rounded-bl-full`}
-                  ></div>
-
-                  <div className="relative z-10 flex flex-col h-full">
-                    {/* Icon */}
+                    className={`relative h-full rounded-[calc(1.5rem-1px)] overflow-hidden border border-white/60 backdrop-blur p-6 shadow-sm hover:shadow-xl transition-shadow ${
+                      isDark ? "bg-slate-950 text-white" : "bg-white/80 text-slate-900"
+                    }`}
+                  >
                     <div
-                      className={`w-11 h-11 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white shadow-md mb-4`}
-                    >
-                      {feature.icon &&
-                        React.cloneElement(feature.icon, {
-                          className: "w-6 h-6",
-                        })}
-                    </div>
+                      className={`absolute -top-10 -right-10 h-44 w-44 rounded-full bg-gradient-to-br ${feature.gradient} opacity-[0.18] blur-2xl`}
+                    />
 
-                    {/* Content */}
-                    <div className="mb-4">
-                      <span
-                        className={`text-[10px] font-extrabold ${
-                          isDark ? "text-emerald-300" : "text-emerald-700"
-                        } uppercase tracking-widest mb-1 block`}
-                      >
-                        {feature.highlight}
-                      </span>
-
-                      <h4 className="text-lg sm:text-xl font-extrabold tracking-tight leading-snug mb-2">
-                        {feature.title}
-                      </h4>
-
-                      {/* ✅ DARKER + BIGGER DESCRIPTION */}
-                      <p
-                        className={`${
-                          isDark ? "text-white/90" : "text-gray-800"
-                        } text-sm sm:text-base font-medium leading-relaxed line-clamp-3`}
-                      >
-                        {feature.description}
-                      </p>
-                    </div>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mt-auto pt-3">
-                      {feature.details.map((detail, dIdx) => (
-                        <span
-                          key={dIdx}
-                          className={`px-3 py-1 ${
-                            isDark
-                              ? "bg-emerald-800 text-emerald-100"
-                              : "bg-gray-100 text-gray-700"
-                          } border ${
-                            isDark ? "border-emerald-700" : "border-gray-200"
-                          } rounded-full text-[10px] font-semibold uppercase`}
+                    <div className="relative z-10 flex flex-col h-full">
+                      <div className="flex items-start justify-between gap-3">
+                        <div
+                          className={`w-11 h-11 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white shadow-md`}
                         >
-                          {detail}
-                        </span>
-                      ))}
-                    </div>
+                          {feature.icon &&
+                            React.cloneElement(feature.icon, {
+                              className: "w-6 h-6",
+                            })}
+                        </div>
 
-                    {/* Metrics */}
-                    <div
-                      className={`mt-5 flex items-center justify-between border-t ${
-                        isDark ? "border-emerald-800" : "border-gray-200"
-                      } pt-3`}
-                    >
-                      {feature.metrics.map((metric, mIdx) => (
-                        <div key={mIdx} className="text-center">
-                          <p
-                            className={`text-sm font-extrabold ${
-                              isDark ? "text-white" : "text-gray-900"
+                        {isDark && (
+                          <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-white/10 border border-white/15 text-white/80">
+                            Premium
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="mt-4 mb-4">
+                        <span
+                          className={`text-[10px] font-black uppercase tracking-[0.25em] ${
+                            isDark ? "text-sky-200" : "text-indigo-700"
+                          } block`}
+                        >
+                          {feature.highlight}
+                        </span>
+
+                        <h4 className="mt-2 text-lg sm:text-xl font-black tracking-tight leading-snug">
+                          {feature.title}
+                        </h4>
+
+                        <p
+                          className={`mt-2 text-sm sm:text-base font-medium leading-relaxed line-clamp-3 ${
+                            isDark ? "text-white/85" : "text-slate-600"
+                          }`}
+                        >
+                          {feature.description}
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2 mt-auto pt-3">
+                        {feature.details.map((detail, dIdx) => (
+                          <span
+                            key={dIdx}
+                            className={`px-3 py-1 rounded-full text-[10px] font-semibold uppercase border ${
+                              isDark
+                                ? "bg-white/10 text-white/80 border-white/15"
+                                : "bg-slate-50 text-slate-700 border-slate-200"
                             }`}
                           >
-                            {metric.split(" ")[0]}
-                          </p>
-                          <p
-                            className={`text-[10px] ${
-                              isDark ? "text-emerald-300" : "text-gray-600"
-                            } font-semibold uppercase tracking-wide`}
-                          >
-                            {metric.split(" ").slice(1).join(" ")}
-                          </p>
-                        </div>
-                      ))}
+                            {detail}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div
+                        className={`mt-5 flex items-center justify-between border-t ${
+                          isDark ? "border-white/10" : "border-slate-200"
+                        } pt-3`}
+                      >
+                        {feature.metrics.map((metric, mIdx) => (
+                          <div key={mIdx} className="text-center">
+                            <p
+                              className={`text-sm font-black ${
+                                isDark ? "text-white" : "text-slate-900"
+                              }`}
+                            >
+                              {metric.split(" ")[0]}
+                            </p>
+                            <p
+                              className={`text-[10px] font-semibold uppercase tracking-wide ${
+                                isDark ? "text-white/70" : "text-slate-500"
+                              }`}
+                            >
+                              {metric.split(" ").slice(1).join(" ")}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2059,81 +2464,97 @@ const achievements = [
         </div>
       </section>
 {/* ===== UNIVERSITY PARTNERS ===== */}
-<section className="bg-gray-50 border-t border-gray-200 py-16 sm:py-20 overflow-hidden">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    
-    {/* Header with modernized text */}
+<section className="relative py-16 sm:py-20 overflow-hidden">
+  <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    <div className="absolute -top-44 right-10 h-[26rem] w-[26rem] rounded-full bg-gradient-to-br from-indigo-200/35 to-sky-200/25 blur-3xl" />
+    <div className="absolute -bottom-52 left-10 h-[28rem] w-[28rem] rounded-full bg-gradient-to-br from-emerald-200/25 to-indigo-200/15 blur-3xl" />
+  </div>
+
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div className="text-center mb-12">
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100/50 border border-emerald-200 mb-4">
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
-        </span>
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-700">
-          Global Pathways
-        </span>
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 mb-5">
+        <FiExternalLink className="w-4 h-4 text-indigo-600" />
+        University Pathways
       </div>
-      
+
       <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
-        Academic <br className="sm:hidden" />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-800">
-          Success Partners.. Universities
+        Partners for{" "}
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
+          next steps
         </span>
       </h3>
-      
-      <p className="mt-6 text-slate-500 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed font-medium">
-        Empowering our graduates through strategic transitions. We collaborate with world-class institutions to ensure every Matungulu girl is prepared for the rigors of global higher education.
+
+      <p className="mt-6 text-slate-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed font-medium">
+        We collaborate with institutions and networks to support confident transitions to higher education and beyond.
       </p>
     </div>
 
     {imagesLoading ? (
       <div className="flex flex-col items-center justify-center py-12">
-        <FiLoader className="w-10 h-10 animate-spin text-emerald-600 mb-4" />
-        <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Synchronizing Partners...</span>
+        <FiLoader className="w-10 h-10 animate-spin text-indigo-600 mb-4" />
+        <span className="text-xs font-black text-slate-500 uppercase tracking-[0.2em]">
+          Loading partners...
+        </span>
       </div>
     ) : uniImages.length > 0 ? (
-      <div className="relative group">
-        {/* Modern Gradient Overlays for Marquee Edges */}
-        <div className="absolute inset-y-0 left-0 w-20 sm:w-40 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-20 sm:w-40 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none" />
+      <div className="relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200">
+        <div className="relative rounded-[calc(1.5rem-1px)] bg-white/80 backdrop-blur border border-white/60 p-6 sm:p-8 overflow-hidden shadow-sm">
+          <div className="flex items-center justify-between gap-4 mb-5">
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-600">
+              Scroll to explore
+            </p>
+            <p className="hidden sm:block text-xs font-semibold text-slate-500">
+              Hover to pause
+            </p>
+          </div>
 
-        <div className="relative overflow-hidden py-4">
-          <div
-            className="flex gap-6 sm:gap-10 animate-marquee whitespace-nowrap"
-            style={{
-              animation: "marquee 120s linear infinite",  /* ← Speed reduced by half (60s → 120s) */
-              width: "max-content",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = "paused")}
-            onMouseLeave={(e) => (e.currentTarget.style.animationPlayState = "running")}
-          >
-            {scrollImages.map((img, idx) => (
-              <div
-                key={idx}
-                className="relative w-36 h-20 sm:w-44 sm:h-24 flex-shrink-0 bg-white/40 backdrop-blur-sm rounded-2xl border border-white shadow-sm flex items-center justify-center p-4 group/logo transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white"
-              >
-                {/* Logo - FULL COLOR (no grayscale) */}
-                <div className="relative w-full h-full">
-                  <Image
-                    src={img}
-                    alt={`Partner University ${idx}`}
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 640px) 144px, 176px"
-                    onError={(e) => {
-                      const parent = e.currentTarget.parentElement?.parentElement;
-                      if (parent) parent.style.display = "none";
-                    }}
-                  />
+          <div className="relative overflow-hidden py-4">
+            <div className="absolute inset-y-0 left-0 w-16 sm:w-28 bg-gradient-to-r from-white/90 to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-16 sm:w-28 bg-gradient-to-l from-white/90 to-transparent z-10 pointer-events-none" />
+
+            <div
+              className="flex gap-6 sm:gap-10 animate-marquee whitespace-nowrap"
+              style={{
+                animation: "marquee 120s linear infinite",
+                width: "max-content",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.animationPlayState = "paused")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.animationPlayState = "running")
+              }
+            >
+              {scrollImages.map((img, idx) => (
+                <div
+                  key={idx}
+                  className="relative w-36 h-20 sm:w-44 sm:h-24 flex-shrink-0 bg-white/70 backdrop-blur rounded-2xl border border-slate-200 shadow-sm flex items-center justify-center p-4 group/logo transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white"
+                >
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={img}
+                      alt={`Partner logo ${idx + 1}`}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 640px) 144px, 176px"
+                      onError={(e) => {
+                        const parent =
+                          e.currentTarget.parentElement?.parentElement;
+                        if (parent) parent.style.display = "none";
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
     ) : (
-      <div className="text-center py-12 border-2 border-dashed border-gray-200 rounded-3xl">
-        <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Network Under Maintenance</p>
+      <div className="text-center py-12 rounded-3xl border border-slate-200 bg-white/70">
+        <p className="text-sm font-black text-slate-600 uppercase tracking-[0.2em]">
+          No partners to display yet
+        </p>
       </div>
     )}
   </div>
@@ -2146,33 +2567,45 @@ const achievements = [
     onClick={closeAchievementModal}
   >
     <div
-      className="relative bg-white rounded-2xl max-w-3xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300 flex flex-col"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="achievement-modal-title"
+      className="relative bg-white/95 backdrop-blur rounded-3xl max-w-3xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300 flex flex-col border border-white/20"
       onClick={(e) => e.stopPropagation()}
     >
-      {/* Modal Header with Gradient */}
-      <div className="bg-gradient-to-r from-emerald-700 to-teal-700 p-4 sm:p-6 text-white shrink-0">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center shrink-0">
-              {/* Ensure icon scales if it's an SVG */}
+      {/* Header */}
+      <div className="relative p-4 sm:p-6 text-white shrink-0 bg-slate-950">
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/40 via-sky-600/25 to-emerald-600/25" />
+        <div className="relative flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 border border-white/15 rounded-2xl flex items-center justify-center shrink-0">
               <div className="scale-75 sm:scale-100">
-                {selectedAchievement.icon}
+                {selectedAchievement.icon || <FiAward className="w-5 h-5" />}
               </div>
             </div>
+
             <div className="min-w-0">
               <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                <span className="w-fit text-[10px] font-bold bg-white/20 px-2 py-0.5 rounded-full uppercase">
-                  {selectedAchievement.year}
-                </span>
-                <h3 className="text-lg sm:text-xl font-bold truncate pr-2">
-                  {selectedAchievement.title}
+                {selectedAchievement.year ? (
+                  <span className="w-fit text-[10px] font-black bg-white/10 border border-white/15 px-2 py-0.5 rounded-full uppercase tracking-[0.2em] text-white/90">
+                    {selectedAchievement.year}
+                  </span>
+                ) : null}
+
+                <h3
+                  id="achievement-modal-title"
+                  className="text-lg sm:text-xl font-black truncate pr-2"
+                >
+                  {selectedAchievement.title || "Details"}
                 </h3>
               </div>
             </div>
           </div>
+
           <button
             onClick={closeAchievementModal}
-            className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors shrink-0"
+            aria-label="Close dialog"
+            className="w-9 h-9 rounded-full bg-white/10 border border-white/15 hover:bg-white/15 flex items-center justify-center transition-colors shrink-0"
           >
             <FiX className="w-5 h-5" />
           </button>
@@ -2196,41 +2629,50 @@ const achievements = [
 
         <div className="p-4 sm:p-6">
           {/* Stats Badges - Improved Wrap/Overlap */}
-          <div className="flex flex-wrap gap-2 sm:gap-3 mb-6">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 rounded-full border border-emerald-100">
-              <FiAward className="text-emerald-600 w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span className="text-[10px] sm:text-xs font-bold text-emerald-700">
-                {selectedAchievement.stats}
-              </span>
+          {(selectedAchievement.stats || selectedAchievement.impact) && (
+            <div className="flex flex-wrap gap-2 sm:gap-3 mb-6">
+              {selectedAchievement.stats ? (
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-full border border-slate-200">
+                  <FiAward className="text-indigo-600 w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span className="text-[10px] sm:text-xs font-black text-slate-700 uppercase tracking-[0.12em]">
+                    {selectedAchievement.stats}
+                  </span>
+                </div>
+              ) : null}
+
+              {selectedAchievement.impact ? (
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-sky-50 rounded-full border border-sky-200/60">
+                  <FiTrendingUp className="text-sky-600 w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span className="text-[10px] sm:text-xs font-black text-slate-700 uppercase tracking-[0.12em]">
+                    {selectedAchievement.impact}
+                  </span>
+                </div>
+              ) : null}
             </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-full border border-blue-100">
-              <FiTrendingUp className="text-blue-600 w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span className="text-[10px] sm:text-xs font-bold text-blue-700">
-                {selectedAchievement.impact}
-              </span>
-            </div>
-          </div>
+          )}
 
           {/* Deep Explanation */}
-          <h4 className="text-md sm:text-lg font-bold text-gray-900 mb-2 sm:mb-3 flex items-center gap-2">
-            <FiBookOpen className="text-emerald-600 w-4 h-4 sm:w-5 sm:h-5" />
-            Full Story
+          <h4 className="text-base sm:text-lg font-black text-slate-900 mb-2 sm:mb-3 flex items-center gap-2">
+            <FiBookOpen className="text-indigo-600 w-4 h-4 sm:w-5 sm:h-5" />
+            Story
           </h4>
-          <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-6">
-            {selectedAchievement.description}
+          <p className="text-sm sm:text-base text-slate-700 leading-relaxed mb-6">
+            {selectedAchievement.description ||
+              selectedAchievement.shortDescription ||
+              "Details will appear here as the record is published."}
           </p>
 
           {/* Key Highlights Section */}
           {selectedAchievement.highlights && selectedAchievement.highlights.length > 0 && (
-            <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100">
-              <h5 className="font-bold text-emerald-800 text-xs sm:text-sm mb-3 flex items-center gap-2">
-                <FiCheckCircle className="w-4 h-4" />
-                Key Highlights
+            <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+              <h5 className="font-black text-slate-900 text-xs sm:text-sm mb-3 flex items-center gap-2 uppercase tracking-[0.2em]">
+                <FiCheckCircle className="w-4 h-4 text-emerald-600" />
+                Highlights
               </h5>
               <ul className="space-y-2.5">
                 {selectedAchievement.highlights.map((highlight, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700">
-                    <span className="text-emerald-600 mt-0.5 font-bold">✓</span>
+                  <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-slate-700">
+                    <FiCheckCircle className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
                     <span>{highlight}</span>
                   </li>
                 ))}
@@ -2241,9 +2683,9 @@ const achievements = [
       </div>
 
       {/* Modal Footer */}
-      <div className="p-3 sm:p-4 border-t border-gray-100 bg-gray-50 shrink-0">
-        <p className="text-[10px] sm:text-xs text-gray-500 text-center italic">
-         Kinyui boys Senior School — Celebrating Excellence Since 1955
+      <div className="p-3 sm:p-4 border-t border-slate-200 bg-slate-50 shrink-0">
+        <p className="text-[10px] sm:text-xs text-slate-500 text-center italic">
+         {schoolName} — Celebrating Excellence
         </p>
       </div>
     </div>
@@ -2253,24 +2695,30 @@ const achievements = [
 {/* ===== CAREERS MODAL ===== */}
 {modalOpen && selectedPathway && (
   <div
-    className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm transition-all duration-300"
+    className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-sm transition-all duration-300"
     onClick={closeModal}
   >
     <div
-      className="relative bg-white rounded-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[85vh] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300 flex flex-col"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pathway-modal-title"
+      className="relative bg-white/95 backdrop-blur rounded-3xl max-w-2xl w-full max-h-[95vh] sm:max-h-[85vh] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300 flex flex-col border border-white/20"
       onClick={(e) => e.stopPropagation()}
     >
       {/* Modal Header */}
       <div className={`bg-gradient-to-r ${selectedPathway.color} p-4 sm:p-6 text-white shrink-0`}>
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 border border-white/15 rounded-2xl flex items-center justify-center shrink-0">
               {React.createElement(selectedPathway.icon, {
                 className: "w-5 h-5 sm:w-6 sm:h-6",
               })}
             </div>
             <div className="min-w-0">
-              <h3 className="text-lg sm:text-xl font-bold truncate">
+              <h3
+                id="pathway-modal-title"
+                className="text-lg sm:text-xl font-black truncate"
+              >
                 {selectedPathway.name}
               </h3>
               <p className="text-white/80 text-[11px] sm:text-sm line-clamp-1 sm:line-clamp-none">
@@ -2280,7 +2728,8 @@ const achievements = [
           </div>
           <button
             onClick={closeModal}
-            className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors shrink-0"
+            aria-label="Close dialog"
+            className="w-9 h-9 rounded-full bg-white/10 border border-white/15 hover:bg-white/15 flex items-center justify-center transition-colors shrink-0"
           >
             <FiX className="w-5 h-5" />
           </button>
@@ -2291,15 +2740,15 @@ const achievements = [
       <div className="p-4 sm:p-6 overflow-y-auto flex-1">
         {/* Subjects Section */}
         <div className="mb-6">
-          <h4 className="font-bold text-gray-900 text-md sm:text-lg mb-3 flex items-center gap-2">
-            <FiBook className="text-emerald-600 w-4 h-4 sm:w-5 sm:h-5" />
+          <h4 className="font-black text-slate-900 text-base sm:text-lg mb-3 flex items-center gap-2">
+            <FiBook className="text-indigo-600 w-4 h-4 sm:w-5 sm:h-5" />
             Core Subjects
           </h4>
           <div className="flex flex-wrap gap-2">
             {selectedPathway.subjects.map((subject, idx) => (
               <span
                 key={idx}
-                className="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-[11px] sm:text-sm font-semibold border border-emerald-100/50"
+                className="px-3 py-1 bg-slate-50 text-slate-700 rounded-full text-[11px] sm:text-sm font-semibold border border-slate-200"
               >
                 {subject}
               </span>
@@ -2309,19 +2758,19 @@ const achievements = [
 
         {/* Careers Section */}
         <div>
-          <h4 className="font-bold text-gray-900 text-md sm:text-lg mb-3 flex items-center gap-2">
-            <FiTrendingUp className="text-emerald-600 w-4 h-4 sm:w-5 sm:h-5" />
-            Common <span className="text-emerald-800">Career Paths</span>
+          <h4 className="font-black text-slate-900 text-base sm:text-lg mb-3 flex items-center gap-2">
+            <FiTrendingUp className="text-indigo-600 w-4 h-4 sm:w-5 sm:h-5" />
+            Career Paths
           </h4>
           {/* Force 2 columns on small tablets, 1 column on tiny phones */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 gap-1.5 sm:gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {selectedPathway.careers.map((career, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-2 p-2 rounded-lg bg-gray-50/50 sm:hover:bg-gray-50 transition-colors border border-transparent sm:hover:border-gray-100"
+                className="flex items-center gap-2 p-2.5 rounded-2xl bg-white/70 transition-colors border border-slate-200 hover:bg-white hover:shadow-sm"
               >
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                <span className="text-gray-700 text-[12px] sm:text-sm font-medium">
+                <div className="w-1.5 h-1.5 rounded-full bg-indigo-600 shrink-0" />
+                <span className="text-slate-700 text-[12px] sm:text-sm font-medium">
                   {career}
                 </span>
               </div>
@@ -2331,10 +2780,9 @@ const achievements = [
       </div>
 
       {/* Fixed Modal Footer */}
-      <div className="p-3 sm:p-4 border-t border-gray-100 bg-gray-50 shrink-0">
-        <p className="text-[10px] sm:text-xs text-gray-500 text-center leading-tight">
-          These career pathways are aligned with Kinyui boys' CBC
-          curriculum and university preparation programs.
+      <div className="p-3 sm:p-4 border-t border-slate-200 bg-slate-50 shrink-0">
+        <p className="text-[10px] sm:text-xs text-slate-500 text-center leading-tight">
+          These career pathways are aligned with the {schoolName} curriculum and preparation programs.
         </p>
       </div>
     </div>
