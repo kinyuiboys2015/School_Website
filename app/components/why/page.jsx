@@ -2333,7 +2333,7 @@ const achievements = [
       {/* Fixed Modal Footer */}
       <div className="p-3 sm:p-4 border-t border-gray-100 bg-gray-50 shrink-0">
         <p className="text-[10px] sm:text-xs text-gray-500 text-center leading-tight">
-          These career pathways are aligned with Matungulu boys' CBC
+          These career pathways are aligned with Kinyui boys' CBC
           curriculum and university preparation programs.
         </p>
       </div>

@@ -325,19 +325,81 @@ const KinyuiStatsPanel = ({ stats, achievements }) => {
         </div>
       </div>
 
-      {/* Upload Stats Section */}
-      <div className="rounded-[2rem] border-2 border-dashed border-emerald-300 bg-emerald-50 p-6 text-center">
-        <div className="w-12 h-12 rounded-xl bg-emerald-200 flex items-center justify-center mx-auto mb-3">
-          <FiUpload className="text-emerald-700 text-xl" />
-        </div>
-        <h4 className="text-sm font-black text-emerald-900 mb-2">Add Achievements</h4>
-        <p className="text-xs text-emerald-700 mb-4 leading-relaxed">
-          Upload and manage school achievements, stats, and descriptions
-        </p>
-        <button className="w-full py-2.5 bg-emerald-600 text-white rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-emerald-700 transition-colors active:scale-95">
-          Upload Stats
-        </button>
+<div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-[32px] p-6 border border-amber-500/20 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+  {/* Animated Border Effect */}
+  <div className="absolute inset-0 rounded-[32px] bg-gradient-to-r from-amber-500/0 via-amber-500/20 to-amber-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+  
+  <div className="relative">
+    {/* Header Section */}
+    <div className="flex items-center gap-3 mb-5">
+      <div className="p-2.5 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+        <FiCamera className="text-white text-lg" />
       </div>
+      <div>
+        <h4 className="font-black text-white text-lg tracking-tight">Visual Journey</h4>
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-400">Kinyui Boys Senior School</p>
+      </div>
+    </div>
+    
+    <div className="space-y-4">
+      {/* Main Description */}
+      <p className="text-gray-300 text-sm leading-relaxed font-medium">
+        Welcome to the official <span className="font-black text-amber-400">Kinyui Boys Senior School</span> photo gallery. 
+        A visual chronicle of excellence, discipline, and brotherhood in Matungulu, Machakos County.
+      </p>
+      
+      {/* Quote Section with School Colors */}
+      <div className="relative pl-4 border-l-2 border-amber-500 bg-amber-500/5 rounded-r-xl py-2 pr-3">
+        <p className="text-gray-200 text-sm leading-relaxed italic">
+          "From triumphant sports victories and solemn prize-giving days to focused classroom 
+          sessions and innovative laboratory experiments — these images capture the spirit of 
+          what makes Kinyui Boys a citadel of learning and character formation."
+        </p>
+      </div>
+      
+      {/* Core Values Grid - Updated for Kinyui Boys */}
+      <div className="grid grid-cols-2 gap-2 pt-2">
+        <div className="flex items-center gap-2 p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 hover:bg-amber-500/20 transition-all">
+          <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
+          <span className="text-[10px] font-black text-amber-400 uppercase tracking-wider">Academic Excellence</span>
+        </div>
+        <div className="flex items-center gap-2 p-2.5 bg-orange-500/10 rounded-xl border border-orange-500/20 hover:bg-orange-500/20 transition-all">
+          <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+          <span className="text-[10px] font-black text-orange-400 uppercase tracking-wider">Discipline</span>
+        </div>
+        <div className="flex items-center gap-2 p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 hover:bg-amber-500/20 transition-all">
+          <div className="w-2 h-2 rounded-full bg-amber-500"></div>
+          <span className="text-[10px] font-black text-amber-400 uppercase tracking-wider">Brotherhood</span>
+        </div>
+        <div className="flex items-center gap-2 p-2.5 bg-orange-500/10 rounded-xl border border-orange-500/20 hover:bg-orange-500/20 transition-all">
+          <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+          <span className="text-[10px] font-black text-orange-400 uppercase tracking-wider">Integrity</span>
+        </div>
+      </div>
+      
+      {/* Call to Action */}
+      <p className="text-gray-300 text-sm leading-relaxed pt-2 border-t border-amber-500/20 mt-2">
+        Explore our extensive collections, relive cherished moments, download memories, and share 
+        them with the Kinyui community. <span className="font-bold text-amber-400">Every picture tells a story of excellence.</span>
+      </p>
+      
+      {/* Footer with School Motto */}
+      <div className="flex items-center justify-between pt-3 mt-1">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-md">
+            <span className="text-[9px] font-black text-white">KB</span>
+          </div>
+          <span className="text-[9px] font-black text-amber-500/60 uppercase tracking-wider">Est. 1976</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
+          <span className="text-[9px] font-black text-amber-400 uppercase tracking-wider italic">Strive for Excellence</span>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+</div>
 
       {/* Quick Description */}
       <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
