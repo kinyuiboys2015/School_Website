@@ -121,7 +121,7 @@ const KinyuiBoys404 = () => {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'contain',
-            opacity: 0.60, // Reduced opacity for subtle effect
+            opacity: 0.70, // Reduced opacity for subtle effect
           }}
         ></div>
         
@@ -294,7 +294,7 @@ const KinyuiBoys404 = () => {
                           "
                         >
                           {/* Gradient hover effect */}
-                          <div className={`absolute inset-0 bg-gradient-to-r ${link.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
+                          <div className={`absolute inset-0 bg-gradient-to-r ${link.color} opacity-0 group-hover:opacity-5 transition-opacity duration-200`}></div>
                           
                           <div className="relative p-4">
                             <div className="flex items-start gap-3">
