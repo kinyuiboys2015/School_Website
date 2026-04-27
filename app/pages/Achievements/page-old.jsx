@@ -30,7 +30,10 @@ import {
   FiHeart,
   FiShield,
   FiClock,
-  FiCopy
+  FiCopy,
+  FiUpload,
+  FiBarChart2,
+  FiActivity
 } from 'react-icons/fi';
 import {
   IoCalendarClearOutline,
@@ -45,36 +48,36 @@ import {
   IoPersonOutline,
   IoSchoolOutline,
   IoTrophyOutline,
-  IoNewspaperOutline
+  IoNewspaperOutline,
+  IoMedalOutline,
+  IoFire,
+  IoSwapVertical
 } from 'react-icons/io5';
 import { CircularProgress, Box, Typography, Stack } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaFacebookF, FaTwitter, FaWhatsapp, FaTelegram, FaEnvelope } from 'react-icons/fa';
 
-// ------------------------------
-// Modern UI Components (reused from counseling page)
-// ------------------------------
-
+// Modern Modal Component
 const ModernModal = ({ children, open, onClose, maxWidth = '800px', blur = true }) => {
   if (!open) return null;
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${blur ? 'backdrop-blur-md' : 'bg-black/50'}`}>
       <div
-        className="relative bg-white/95 rounded-[2.5rem] shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden border border-emerald-100/40"
+        className="relative bg-white/95 rounded-3xl shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden border border-white/40"
         style={{
           width: '90%',
           maxWidth: maxWidth,
           maxHeight: '90vh',
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.98) 100%)'
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%)'
         }}
       >
         <div className="absolute top-4 right-4 z-10">
           <button
             onClick={onClose}
-            className="p-2.5 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white cursor-pointer border border-emerald-100 shadow-sm"
+            className="p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white cursor-pointer border border-gray-200 shadow-sm"
           >
-            <FiX className="text-emerald-700 w-4 h-4" />
+            <FiX className="text-gray-600 w-5 h-5" />
           </button>
         </div>
         {children}
@@ -83,161 +86,99 @@ const ModernModal = ({ children, open, onClose, maxWidth = '800px', blur = true 
   );
 };
 
+// Glass Card Component
 const GlassCard = ({ children, className = '' }) => (
-  <div className={`bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-900/5 ${className}`}>
+  <div className={`bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-lg shadow-black/5 ${className}`}>
     {children}
   </div>
 );
 
-const ModernStatCard = ({ stat }) => {
-  const iconMap = {
-    trophy: IoTrophyOutline,
-    trending: FiTrendingUp,
-    target: FiTarget,
-    award: FiAward
-  };
-  
-  const Icon = iconMap[stat.iconKey] || FiAward;
-  
-  return (
-    <div className="relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-[#d9d0c3] bg-white p-4 md:p-6 shadow-[0_20px_50px_-42px_rgba(15,23,42,0.4)]">
-      <div className="flex items-start justify-between mb-4 md:mb-6">
-        <div className="p-3 md:p-4 rounded-xl md:rounded-2xl bg-[#fcfaf6] text-[#172033] ring-1 ring-[#e8dfd3]">
-          <Icon className="text-lg md:text-xl" />
-        </div>
-      </div>
-      <div className="space-y-1">
-        <p className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">
-          {stat.label}
-        </p>
-        <div className="flex items-baseline gap-1">
-          <h3 className="text-xl md:text-2xl lg:text-3xl font-black tracking-tight text-slate-900">
-            {stat.number}
-          </h3>
-        </div>
-        <p className="text-[10px] md:text-xs font-medium text-slate-500 leading-tight line-clamp-1">
-          {stat.sublabel}
-        </p>
-      </div>
-    </div>
-  );
-};
+// Modern Achievement Card - Like Events & News
+const ModernAchievementCard = ({ achievement, onView, viewMode = 'grid' }) => {
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
-// ------------------------------
-// Achievement Card (Grid & List)
-// ------------------------------
-
-const AchievementCard = ({ achievement, onView, viewMode = 'grid' }) => {
   const getCategoryStyle = (category) => {
     const styles = {
-      Academic: {
-        gradient: 'from-emerald-500 to-emerald-600',
-        bg: 'bg-emerald-50',
-        text: 'text-emerald-700',
-        border: 'border-emerald-200',
-        iconBg: 'bg-emerald-100',
-        iconColor: 'text-emerald-600'
-      },
-      Sports: {
-        gradient: 'from-emerald-500 to-emerald-600',
-        bg: 'bg-emerald-50',
-        text: 'text-emerald-700',
-        border: 'border-emerald-200',
-        iconBg: 'bg-emerald-100',
-        iconColor: 'text-emerald-600'
-      },
-      Arts: {
-        gradient: 'from-emerald-500 to-emerald-600',
-        bg: 'bg-emerald-50',
-        text: 'text-emerald-700',
-        border: 'border-emerald-200',
-        iconBg: 'bg-emerald-100',
-        iconColor: 'text-emerald-600'
-      },
-      Leadership: {
-        gradient: 'from-emerald-500 to-emerald-600',
-        bg: 'bg-emerald-50',
-        text: 'text-emerald-700',
-        border: 'border-emerald-200',
-        iconBg: 'bg-emerald-100',
-        iconColor: 'text-emerald-600'
-      },
-      Other: {
-        gradient: 'from-emerald-500 to-emerald-600',
-        bg: 'bg-emerald-50',
-        text: 'text-emerald-700',
-        border: 'border-emerald-200',
-        iconBg: 'bg-emerald-100',
-        iconColor: 'text-emerald-600'
-      }
+      Academic: { gradient: 'from-blue-600 to-indigo-600', shadow: 'shadow-blue-500/20', text: 'text-blue-700', bg: 'bg-blue-50' },
+      Sports: { gradient: 'from-rose-600 to-red-600', shadow: 'shadow-rose-500/20', text: 'text-rose-700', bg: 'bg-rose-50' },
+      Arts: { gradient: 'from-purple-600 to-pink-600', shadow: 'shadow-purple-500/20', text: 'text-purple-700', bg: 'bg-purple-50' },
+      Leadership: { gradient: 'from-amber-600 to-orange-600', shadow: 'shadow-amber-500/20', text: 'text-amber-700', bg: 'bg-amber-50' },
+      Cultural: { gradient: 'from-green-600 to-emerald-600', shadow: 'shadow-green-500/20', text: 'text-green-700', bg: 'bg-green-50' },
+      Debate: { gradient: 'from-cyan-600 to-blue-600', shadow: 'shadow-cyan-500/20', text: 'text-cyan-700', bg: 'bg-cyan-50' },
+      Other: { gradient: 'from-slate-600 to-slate-700', shadow: 'shadow-slate-500/20', text: 'text-slate-700', bg: 'bg-slate-50' }
     };
     return styles[category] || styles.Other;
   };
 
   const theme = getCategoryStyle(achievement.category);
-  const firstImage = achievement.images?.[0]?.url;
 
   if (viewMode === 'grid') {
     return (
       <div
         onClick={() => onView(achievement)}
-        className="relative bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-900/5 overflow-hidden cursor-pointer transition-transform hover:-translate-y-1 duration-300"
+        className="group relative bg-white rounded-[2rem] border border-slate-100 p-4 pb-6 transition-all duration-200 cursor-pointer hover:shadow-xl"
       >
-        <div className="relative h-48 w-full shrink-0">
-          {firstImage ? (
-            <img src={firstImage} alt={achievement.title} className="w-full h-full object-cover" />
-          ) : (
-            <div className={`w-full h-full bg-gradient-to-br ${theme.gradient}`} />
-          )}
-          <div className="absolute top-4 left-4 flex flex-col gap-2">
-            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm border ${theme.bg} ${theme.text} ${theme.border}`}>
-              {achievement.category}
+        {/* Image with Floating Date */}
+        <div className="relative h-56 w-full rounded-[1.5rem] overflow-hidden mb-6">
+          <img
+            src={achievement.images?.[0]?.url || '/default-achievement.jpg'}
+            alt={achievement.title}
+            className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+          />
+
+          {/* Floating Year Badge */}
+          <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md rounded-2xl p-2 min-w-[60px] flex flex-col items-center shadow-xl border border-white/20">
+            <span className="text-[10px] font-black uppercase tracking-tighter text-slate-400">
+              Year
             </span>
-            {achievement.featured && (
-              <span className="px-3 py-1 bg-emerald-900/90 backdrop-blur-md text-white rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1 shadow-sm">
-                <IoSparkles className="text-emerald-400" /> Featured
-              </span>
-            )}
-          </div>
-          <div className="absolute bottom-0 inset-x-0 h-12 bg-gradient-to-t from-black/40 to-transparent flex items-end p-4">
-            <span className="text-[10px] font-black text-white uppercase tracking-widest">
+            <span className="text-xl font-black text-slate-900 leading-none">
               {achievement.year}
+            </span>
+          </div>
+
+          {/* Bookmark Button */}
+          <div className="absolute top-4 right-4">
+            <button
+              onClick={(e) => { e.stopPropagation(); setIsBookmarked(!isBookmarked); }}
+              className={`p-3 rounded-2xl backdrop-blur-md transition-all ${isBookmarked ? 'bg-amber-500 text-white' : 'bg-black/20 text-white hover:bg-black/40'}`}
+            >
+              <FiBookmark className={isBookmarked ? 'fill-current' : ''} />
+            </button>
+          </div>
+
+          {/* Category Badge */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+            <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-white bg-gradient-to-r ${theme.gradient} ${theme.shadow} shadow-lg`}>
+              {achievement.category}
             </span>
           </div>
         </div>
 
-        <div className="p-6">
-          <h3 className="text-lg font-black text-slate-900 mb-2 line-clamp-2 leading-tight tracking-tight">
+        {/* Content Section */}
+        <div className="px-2">
+          <h3 className="text-lg font-black text-slate-900 mb-2 leading-tight line-clamp-2 group-hover:text-rose-900 transition-colors">
             {achievement.title}
           </h3>
-          <p className="text-slate-500 text-xs mb-6 line-clamp-2 leading-relaxed">
-            {achievement.description || 'Proud achievement by Matungulu Girls.'}
+
+          <p className="text-slate-500 text-sm mb-4 line-clamp-2">
+            {achievement.description || 'Proud achievement by Kinyui Boys Senior School.'}
           </p>
 
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            <div className="flex items-center gap-2.5 p-2 rounded-xl bg-slate-50 border border-slate-100">
-              <div className={`p-1.5 rounded-lg ${theme.iconBg}`}>
-                <FiAward className={theme.iconColor} size={14} />
-              </div>
-              <span className="text-[10px] font-black text-slate-700 uppercase tracking-tight whitespace-nowrap">
-                {achievement.awardingBody || 'School Award'}
-              </span>
+          <div className="flex flex-wrap gap-3 mb-6">
+            <div className="flex items-center gap-1.5 text-slate-600">
+              <IoMedalOutline className="text-amber-500" size={16} />
+              <span className="text-xs font-bold">{achievement.awardingBody || 'School Award'}</span>
             </div>
-            <div className="flex items-center gap-2.5 p-2 rounded-xl bg-slate-50 border border-slate-100">
-              <div className={`p-1.5 rounded-lg ${theme.iconBg}`}>
-                <FiCalendar className={theme.iconColor} size={14} />
+            {achievement.recipients?.length > 0 && (
+              <div className="flex items-center gap-1.5 text-slate-600">
+                <FiUsers className="text-blue-500" size={14} />
+                <span className="text-xs font-bold">{achievement.recipients.length} Recipient(s)</span>
               </div>
-              <span className="text-[10px] font-black text-slate-700 uppercase tracking-tight whitespace-nowrap">
-                {achievement.achievedDate
-                  ? new Date(achievement.achievedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                  : achievement.year}
-              </span>
-            </div>
+            )}
           </div>
 
-          <button className="w-full py-3 bg-emerald-600 text-white rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 active:scale-[0.98] transition-transform shadow-lg shadow-emerald-900/20">
+          <button className="w-full py-3 bg-slate-900 text-white rounded-[1.25rem] text-xs font-black uppercase tracking-widest hover:bg-black transition-colors active:scale-95">
             View Details
-            <FiArrowRight size={12} className="text-emerald-200" />
           </button>
         </div>
       </div>
@@ -248,73 +189,183 @@ const AchievementCard = ({ achievement, onView, viewMode = 'grid' }) => {
   return (
     <div
       onClick={() => onView(achievement)}
-      className="relative bg-white rounded-[2rem] border border-slate-100 p-4 shadow-xl shadow-slate-900/5 cursor-pointer transition-colors active:bg-slate-50"
+      className="group flex flex-col sm:flex-row items-center gap-6 bg-white p-5 rounded-[2rem] border border-slate-100 hover:shadow-xl transition-all cursor-pointer"
     >
-      <div className="flex gap-5">
-        <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 shadow-sm">
-          {firstImage ? (
-            <img src={firstImage} alt={achievement.title} className="w-full h-full object-cover" />
-          ) : (
-            <div className={`w-full h-full bg-gradient-to-br ${getCategoryStyle(achievement.category).gradient}`} />
-          )}
+      <div className="relative w-full sm:w-40 h-32 rounded-2xl overflow-hidden shrink-0">
+        <img
+          src={achievement.images?.[0]?.url || '/default-achievement.jpg'}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          alt={achievement.title}
+        />
+        <div className={`absolute top-2 left-2 px-3 py-1 rounded-lg text-[9px] font-black text-white bg-gradient-to-r ${theme.gradient}`}>
+          {achievement.category}
         </div>
-        <div className="flex-1 min-w-0 flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-2">
-                <span className={`px-2 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-widest border ${
-                  getCategoryStyle(achievement.category).bg
-                } ${getCategoryStyle(achievement.category).text} ${
-                  getCategoryStyle(achievement.category).border
-                }`}>
-                  {achievement.category}
-                </span>
-                <span className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">
-                  {achievement.year}
-                </span>
-              </div>
-            </div>
-            <h3 className="text-sm font-black text-slate-900 leading-snug line-clamp-1 mb-1 tracking-tight">
-              {achievement.title}
-            </h3>
-            <p className="text-slate-500 text-[10px] line-clamp-1 mb-2">
-              {achievement.awardingBody}
-            </p>
+      </div>
+
+      <div className="flex-1 w-full">
+        <h3 className="text-lg font-black text-slate-900 mb-2">{achievement.title}</h3>
+        <p className="text-sm text-slate-500 line-clamp-1 mb-4">{achievement.description}</p>
+
+        <div className="flex items-center gap-4 flex-wrap">
+          <div className={`px-3 py-1.5 rounded-xl ${theme.bg} ${theme.text} text-[10px] font-bold`}>
+            {achievement.year}
           </div>
-          <div className="flex items-center justify-between mt-auto">
-            <div className="flex items-center gap-2 text-[10px] text-slate-500">
-              {achievement.recipients?.length > 0 && (
-                <div className="flex items-center gap-1 whitespace-nowrap">
-                  <FiUsers className="text-slate-400" size={10} />
-                  <span className="font-semibold">{achievement.recipients.length} recipient(s)</span>
-                </div>
-              )}
-            </div>
-            <div className="flex items-center gap-1 text-emerald-600 font-black text-[8px] uppercase tracking-wider">
-              View
-              <FiArrowRight size={10} />
-            </div>
+          <div className="flex items-center gap-1.5 text-slate-600 text-xs font-bold">
+            <IoMedalOutline /> {achievement.awardingBody || 'Award'}
           </div>
+        </div>
+      </div>
+
+      <div className="hidden md:block">
+        <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-all">
+          <FiArrowRight className="text-xl" />
         </div>
       </div>
     </div>
   );
 };
 
-// ------------------------------
-// Achievement Detail Modal
-// ------------------------------
+// Left Sidebar Stats Panel
+const KinyuiStatsPanel = ({ stats, achievements }) => {
+  const totalAchievements = achievements?.length || 0;
+  const featuredCount = achievements?.filter(a => a.featured)?.length || 0;
 
+  return (
+    <div className="space-y-6">
+      {/* Header Card */}
+      <div className="relative overflow-hidden rounded-[2rem] border border-emerald-200 bg-gradient-to-br from-emerald-600 to-emerald-700 p-6 text-white shadow-lg">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rounded-full -mr-16 -mt-16" />
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
+              <IoTrophyOutline className="text-2xl text-amber-300" />
+            </div>
+            <div>
+              <h3 className="text-lg font-black tracking-tight">Kinyui Boys</h3>
+              <p className="text-[10px] text-emerald-100 font-bold">Senior School</p>
+            </div>
+          </div>
+          <p className="text-[13px] leading-relaxed font-semibold text-white/80">
+            Celebrating Excellence in All Endeavors
+          </p>
+        </div>
+      </div>
+
+      {/* Main Stats Grid */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.15em] text-emerald-600 mb-2">Total</p>
+          <p className="text-3xl font-black text-emerald-900">{totalAchievements}</p>
+          <p className="text-[10px] text-emerald-700 mt-1 font-semibold">Achievements</p>
+        </div>
+        <div className="rounded-[1.5rem] border border-amber-200 bg-amber-50 p-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.15em] text-amber-600 mb-2">Featured</p>
+          <p className="text-3xl font-black text-amber-900">{featuredCount}</p>
+          <p className="text-[10px] text-amber-700 mt-1 font-semibold">Honors</p>
+        </div>
+      </div>
+
+      {/* Performance Stats */}
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <h4 className="text-sm font-black text-slate-900 mb-4 flex items-center gap-2">
+          <IoStatsChart className="text-blue-600" size={18} />
+          School Performance
+        </h4>
+        <div className="space-y-3">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-slate-600">Mean Score</span>
+              <span className="text-sm font-black text-blue-700">{stats?.meanScore?.toFixed(2) || '—'}</span>
+            </div>
+            <div className="w-full bg-slate-200 rounded-full h-2">
+              <div
+                className="bg-blue-600 h-2 rounded-full transition-all"
+                style={{ width: `${Math.min((stats?.meanScore || 0) / 5 * 100, 100)}%` }}
+              />
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-slate-600">Target Mean</span>
+              <span className="text-sm font-black text-emerald-700">{stats?.targetMean?.toFixed(2) || '—'}</span>
+            </div>
+            <div className="w-full bg-slate-200 rounded-full h-2">
+              <div
+                className="bg-emerald-600 h-2 rounded-full"
+                style={{ width: `${Math.min((stats?.targetMean || 0) / 5 * 100, 100)}%` }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* School Info Card */}
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <h4 className="text-sm font-black text-slate-900 mb-4 flex items-center gap-2">
+          <IoSchoolOutline className="text-purple-600" size={18} />
+          School Identity
+        </h4>
+        <div className="space-y-3">
+          <div className="pb-3 border-b border-slate-100">
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Motto</p>
+            <p className="text-sm font-black text-slate-900 italic">
+              {stats?.slogan || '"Excellence Through Integrity"'}
+            </p>
+          </div>
+          <div className="pb-3 border-b border-slate-100">
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Established</p>
+            <p className="text-sm font-bold text-slate-700">{stats?.yearEstablished || '2010'}</p>
+          </div>
+          <div>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Vision</p>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              {stats?.vision || 'To develop holistic, self-reliant individuals with international standards'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Upload Stats Section */}
+      <div className="rounded-[2rem] border-2 border-dashed border-emerald-300 bg-emerald-50 p-6 text-center">
+        <div className="w-12 h-12 rounded-xl bg-emerald-200 flex items-center justify-center mx-auto mb-3">
+          <FiUpload className="text-emerald-700 text-xl" />
+        </div>
+        <h4 className="text-sm font-black text-emerald-900 mb-2">Add Achievements</h4>
+        <p className="text-xs text-emerald-700 mb-4 leading-relaxed">
+          Upload and manage school achievements, stats, and descriptions
+        </p>
+        <button className="w-full py-2.5 bg-emerald-600 text-white rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-emerald-700 transition-colors active:scale-95">
+          Upload Stats
+        </button>
+      </div>
+
+      {/* Quick Description */}
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <h4 className="text-sm font-black text-slate-900 mb-3 flex items-center gap-2">
+          <FiInfo className="text-slate-600" size={18} />
+          About Us
+        </h4>
+        <p className="text-xs text-slate-600 leading-relaxed">
+          Kinyui Boys Senior School is committed to fostering academic excellence, character development, and leadership skills in all our students. We celebrate every achievement as a testament to our collective dedication.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// Achievement Detail Modal
 const AchievementDetailModal = ({ achievement, onClose }) => {
   if (!achievement) return null;
 
   const getCategoryStyle = (category) => {
     const styles = {
-      Academic: { gradient: 'from-emerald-500 to-emerald-600', icon: FiBookOpen },
-      Sports: { gradient: 'from-emerald-500 to-emerald-600', icon: FiAward },
-      Arts: { gradient: 'from-emerald-500 to-emerald-600', icon: FiStar },
-      Leadership: { gradient: 'from-emerald-500 to-emerald-600', icon: FiUsers },
-      Other: { gradient: 'from-emerald-500 to-emerald-600', icon: FiAward }
+      Academic: { gradient: 'from-blue-500 to-indigo-600', icon: FiBookOpen },
+      Sports: { gradient: 'from-rose-500 to-red-600', icon: FiAward },
+      Arts: { gradient: 'from-purple-500 to-pink-600', icon: FiStar },
+      Leadership: { gradient: 'from-amber-500 to-orange-600', icon: FiUsers },
+      Cultural: { gradient: 'from-green-500 to-emerald-600', icon: IoSparkles },
+      Debate: { gradient: 'from-cyan-500 to-blue-600', icon: FiAward },
+      Other: { gradient: 'from-slate-500 to-slate-600', icon: FiAward }
     };
     return styles[achievement.category] || styles.Other;
   };
@@ -323,128 +374,101 @@ const AchievementDetailModal = ({ achievement, onClose }) => {
   const CategoryIcon = categoryStyle.icon;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 bg-[#172033]/80 backdrop-blur-md">
-      <div className="relative flex h-full w-full flex-col overflow-hidden bg-[#fcfaf6] shadow-2xl sm:h-auto sm:max-h-[90vh] sm:max-w-3xl sm:rounded-[2.5rem] sm:border sm:border-[#d9d0c3]">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 sm:top-5 sm:right-5 z-50 p-2 bg-[#172033]/70 backdrop-blur-md text-white rounded-full border border-white/20 transition-all active:scale-90"
-        >
-          <IoClose size={18} className="sm:size-[22px]" />
-        </button>
-
-        <div className="relative h-[30vh] sm:h-[300px] w-full shrink-0">
-          {achievement.images?.[0]?.url ? (
-            <img
-              src={achievement.images[0].url}
-              alt={achievement.title}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className={`w-full h-full bg-gradient-to-r ${categoryStyle.gradient}`} />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#fcfaf6] via-transparent to-black/10" />
-          <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 flex flex-wrap gap-2">
-            <span className="px-3 py-1 sm:px-4 sm:py-1.5 bg-white shadow-xl rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#172033] border border-[#d9d0c3]">
-              {achievement.category}
+    <ModernModal open={true} onClose={onClose} maxWidth="700px">
+      <div className="relative h-80 w-full">
+        {achievement.images?.[0]?.url ? (
+          <img
+            src={achievement.images[0].url}
+            alt={achievement.title}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className={`w-full h-full bg-gradient-to-br ${categoryStyle.gradient}`} />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute bottom-6 left-6 flex gap-2">
+          <span className="px-4 py-2 bg-white text-slate-900 rounded-full text-sm font-black">
+            {achievement.category}
+          </span>
+          {achievement.featured && (
+            <span className="px-4 py-2 bg-amber-500 text-white rounded-full text-sm font-black flex items-center gap-2">
+              <IoSparkles /> Featured
             </span>
-            {achievement.featured && (
-              <span className="px-3 py-1 sm:px-4 sm:py-1.5 bg-[#172033] text-white rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest flex items-center gap-1">
-                <IoSparkles className="text-[#f2c357]" size={12} /> Featured
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-6 sm:p-10 bg-[#fcfaf6]">
-          <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8">
-            <section className="space-y-3 sm:space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="rounded-xl sm:rounded-2xl border border-[#e8dfd3] bg-white p-2 sm:p-3 shadow-sm">
-                  <CategoryIcon className="text-[#172033] text-xl sm:text-2xl" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-3xl font-black text-slate-900 leading-tight tracking-tight">
-                    {achievement.title}
-                  </h2>
-                  <p className="text-slate-600 text-xs sm:text-sm">{achievement.awardingBody}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-y-2 gap-x-4 sm:gap-x-6 text-[10px] sm:text-xs font-black text-slate-500">
-                <div className="flex items-center gap-1.5 whitespace-nowrap">
-                  <IoCalendarClearOutline className="text-[#172033] text-sm sm:text-base" />
-                  {achievement.achievedDate
-                    ? new Date(achievement.achievedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-                    : achievement.year}
-                </div>
-                {achievement.recipients?.length > 0 && (
-                  <div className="flex items-center gap-1.5">
-                    <IoPeopleCircle className="text-[#172033] text-sm sm:text-base" />
-                    {achievement.recipients.length} recipient(s)
-                  </div>
-                )}
-              </div>
-            </section>
-
-            <section className="space-y-3 sm:space-y-4">
-              <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">About this achievement</h3>
-              <div className="text-slate-700 leading-relaxed text-xs sm:text-sm">
-                {achievement.description || 'No description provided.'}
-              </div>
-            </section>
-
-            {achievement.recipients && achievement.recipients.length > 0 && (
-              <section className="space-y-3">
-                <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Recipients</h3>
-                <div className="flex flex-wrap gap-2">
-                  {achievement.recipients.map((rec, idx) => (
-                    <span key={idx} className="px-3 py-1.5 bg-white border border-[#e8dfd3] rounded-full text-xs font-bold text-slate-700">
-                      {rec}
-                    </span>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {achievement.images && achievement.images.length > 1 && (
-              <section className="space-y-3">
-                <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Gallery</h3>
-                <div className="grid grid-cols-3 gap-3">
-                  {achievement.images.slice(1).map((img, idx) => (
-                    <img
-                      key={idx}
-                      src={img.url}
-                      alt={img.caption || ''}
-                      className="w-full h-24 object-cover rounded-xl border border-[#e8dfd3]"
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
-          </div>
-        </div>
-
-        <div className="shrink-0 p-4 sm:p-6 bg-white/80 backdrop-blur-md border-t border-[#e8dfd3]">
-          <div className="max-w-2xl mx-auto flex gap-2 sm:gap-3">
-            <button
-              onClick={onClose}
-              className="flex-1 h-12 sm:h-14 bg-[#172033] text-white rounded-xl sm:rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg"
-            >
-              <IoClose size={16} />
-              Close
-            </button>
-          </div>
+          )}
         </div>
       </div>
-    </div>
+
+      <div className="p-8 space-y-6">
+        <div>
+          <h2 className="text-3xl font-black text-slate-900 mb-2">{achievement.title}</h2>
+          <p className="text-slate-600 text-sm font-semibold">{achievement.awardingBody}</p>
+        </div>
+
+        <div className="flex flex-wrap gap-6">
+          <div className="flex items-center gap-2">
+            <FiCalendar className="text-blue-600" size={16} />
+            <span className="text-sm font-bold text-slate-700">{achievement.year}</span>
+          </div>
+          {achievement.recipients?.length > 0 && (
+            <div className="flex items-center gap-2">
+              <FiUsers className="text-emerald-600" size={16} />
+              <span className="text-sm font-bold text-slate-700">{achievement.recipients.length} Recipient(s)</span>
+            </div>
+          )}
+        </div>
+
+        <div>
+          <h3 className="text-sm font-black text-slate-900 mb-3 uppercase tracking-wider">Description</h3>
+          <p className="text-slate-600 leading-relaxed">
+            {achievement.description || 'No description provided.'}
+          </p>
+        </div>
+
+        {achievement.recipients?.length > 0 && (
+          <div>
+            <h3 className="text-sm font-black text-slate-900 mb-3 uppercase tracking-wider">Recipients</h3>
+            <div className="flex flex-wrap gap-2">
+              {achievement.recipients.map((rec, idx) => (
+                <span key={idx} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-full text-xs font-bold">
+                  {rec}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {achievement.images && achievement.images.length > 1 && (
+          <div>
+            <h3 className="text-sm font-black text-slate-900 mb-3 uppercase tracking-wider">Gallery</h3>
+            <div className="grid grid-cols-3 gap-3">
+              {achievement.images.slice(1).map((img, idx) => (
+                <img
+                  key={idx}
+                  src={img.url}
+                  alt={img.caption || ''}
+                  className="w-full h-24 object-cover rounded-xl border border-slate-200"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        <button
+          onClick={onClose}
+          className="w-full py-3 bg-slate-900 text-white rounded-xl font-black text-sm uppercase tracking-wider hover:bg-black transition-colors"
+        >
+          Close
+        </button>
+      </div>
+    </ModernModal>
   );
 };
 
-// ------------------------------
-// Main Component
-// ------------------------------
+// Missing FiInfo import fallback
+const FiInfo = FiZap;
 
-export default function StudentAchievements() {
+// Main Component
+export default function KinyuiAchievements() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [schoolStats, setSchoolStats] = useState(null);
@@ -453,6 +477,8 @@ export default function StudentAchievements() {
     Sports: [],
     Arts: [],
     Leadership: [],
+    Cultural: [],
+    Debate: [],
     Other: []
   });
   const [selectedAchievement, setSelectedAchievement] = useState(null);
@@ -466,15 +492,16 @@ export default function StudentAchievements() {
     { id: 'Sports', name: 'Sports', icon: FiAward },
     { id: 'Arts', name: 'Arts', icon: FiStar },
     { id: 'Leadership', name: 'Leadership', icon: FiUsers },
+    { id: 'Cultural', name: 'Cultural', icon: IoSparkles },
+    { id: 'Debate', name: 'Debate', icon: FiTarget },
     { id: 'Other', name: 'Other', icon: FiAward }
   ];
 
   const loadData = async () => {
     try {
-      // Fetch achievements
       const achRes = await fetch('/api/achievements');
       const achData = await achRes.json();
-      let categorized = { Academic: [], Sports: [], Arts: [], Leadership: [], Other: [] };
+      let categorized = { Academic: [], Sports: [], Arts: [], Leadership: [], Cultural: [], Debate: [], Other: [] };
       if (achData.success && achData.achievements) {
         Object.entries(achData.achievements).forEach(([cat, items]) => {
           if (categorized.hasOwnProperty(cat)) {
@@ -484,7 +511,6 @@ export default function StudentAchievements() {
       }
       setAchievementsByCategory(categorized);
 
-      // Fetch school stats
       const statsRes = await fetch('/api/school-stats');
       const statsData = await statsRes.json();
       if (statsData.success && statsData.stats) {
@@ -525,284 +551,160 @@ export default function StudentAchievements() {
   const totalAchievements = getAllAchievements().length;
   const featuredCount = getAllAchievements().filter(a => a.featured).length;
 
-  const statsCards = [
-    {
-      iconKey: 'trophy',
-      number: totalAchievements.toString(),
-      label: 'Total Achievements',
-      sublabel: `${featuredCount} featured`
-    },
-    {
-      iconKey: 'trending',
-      number: schoolStats?.meanScore ? schoolStats.meanScore.toFixed(2) : '—',
-      label: 'Current Mean Score',
-      sublabel: schoolStats?.lastYearMean && schoolStats?.meanScore
-        ? `${schoolStats.meanScore > schoolStats.lastYearMean ? '↑' : '↓'} ${Math.abs(schoolStats.meanScore - schoolStats.lastYearMean).toFixed(2)} from last year`
-        : 'Academic excellence'
-    },
-    {
-      iconKey: 'target',
-      number: schoolStats?.targetMean ? schoolStats.targetMean.toFixed(2) : '—',
-      label: 'Target Mean',
-      sublabel: schoolStats?.meanScore && schoolStats?.targetMean
-        ? `${((schoolStats.meanScore / schoolStats.targetMean) * 100).toFixed(1)}% achieved`
-        : 'Goal for the year'
-    },
-    {
-      iconKey: 'award',
-      number: Object.keys(achievementsByCategory).length.toString(),
-      label: 'Categories',
-      sublabel: 'Diverse excellence'
-    }
-  ];
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f7f2ea] flex items-center justify-center">
-        <Stack spacing={2} alignItems="center" className="mx-auto flex min-h-[70vh] w-full max-w-sm justify-center rounded-[30px] border px-10 py-12 shadow-[0_28px_70px_-52px_rgba(15,23,42,0.48)]">
-          <Box className="relative flex items-center justify-center scale-75 sm:scale-100 transition-transform">
-            <CircularProgress variant="determinate" value={100} size={56} thickness={4} sx={{ color: '#efe6d8' }} />
-            <CircularProgress
-              variant="indeterminate"
-              disableShrink
-              size={56}
-              thickness={4}
-              sx={{ color: '#172033', animationDuration: '800ms', position: 'absolute', left: 0 }}
-            />
-            <Box className="absolute">
-              <IoTrophyOutline className="text-[#b68424] text-lg animate-pulse" />
-            </Box>
-          </Box>
-          <div className="text-center space-y-1">
-            <h3 className="text-slate-900 font-black text-sm sm:text-base tracking-tight">Loading achievements...</h3>
-            <p className="text-slate-500 text-[10px] sm:text-xs font-medium">Fetching latest honors and stats</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+        <div className="text-center space-y-4">
+          <div className="relative w-16 h-16 mx-auto">
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur opacity-75 animate-pulse" />
+            <div className="relative w-full h-full bg-white rounded-full flex items-center justify-center">
+              <IoTrophyOutline className="text-emerald-600 text-2xl animate-bounce" />
+            </div>
           </div>
-        </Stack>
+          <h2 className="text-xl font-black text-slate-900">Loading Achievements...</h2>
+          <p className="text-sm text-slate-600">Fetching Kinyui Boys honors and stats</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f2ea] p-4 md:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-6">
       <Toaster position="top-right" richColors />
 
-      <div className="w-full md:w-[90%] lg:w-[90%] xl:w-[80%] mx-auto space-y-6">
-        {/* Hero Header */}
-        <div className="relative mb-8 overflow-hidden rounded-lg border border-[#d9d0c3] bg-[#172033] p-6 text-white shadow-[0_30px_80px_-50px_rgba(15,23,42,0.82)] md:p-10">
-          <div className="absolute top-0 right-0 h-96 w-96 rounded-full bg-[#f2c357]/10 blur-3xl" />
-          <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
-          <div className="absolute inset-y-0 right-[36%] hidden w-px bg-white/10 lg:block" />
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Hero Section */}
+        <div className="relative overflow-hidden rounded-[2.5rem] border border-emerald-200 bg-gradient-to-br from-emerald-600 to-emerald-800 p-8 md:p-12 text-white shadow-xl">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 blur-3xl rounded-full -mr-48 -mt-48" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/10 blur-3xl rounded-full -ml-48 -mb-48" />
 
-          <div className="relative z-10 grid gap-0 lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="p-0 lg:pr-10">
-              <div className="flex flex-col justify-between gap-6 lg:min-h-[320px]">
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="h-8 w-1 rounded-full bg-[#f2c357] shadow-[0_0_15px_rgba(242,195,87,0.5)]" />
-                    <div>
-                      <h2 className="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] text-[#f2c357]">
-                        Matungulu Girls Senior School
-                      </h2>
-                      <p className="text-[8px] sm:text-[10px] italic font-medium text-white/45 tracking-widest uppercase">
-                        "Strive to Excel"
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-xl border border-white/10 bg-white/10 p-2 backdrop-blur-md">
-                      <IoTrophyOutline className="text-xl sm:text-2xl md:text-3xl text-[#f2c357]" />
-                    </div>
-                    <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight">
-                      Achievements & <span className="bg-gradient-to-r from-[#f2c357] to-[#fff3c4] bg-clip-text text-transparent">Honors</span>
+          <div className="relative z-10 grid gap-8 lg:grid-cols-[1fr_0.8fr]">
+            <div className="space-y-6">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <IoTrophyOutline className="text-3xl text-amber-300" />
+                  <div>
+                    <h1 className="text-4xl md:text-5xl font-black tracking-tight">
+                      Our Achievements
                     </h1>
-                  </div>
-                  <p className="mt-5 max-w-2xl text-sm leading-7 text-white/70 sm:text-base">
-                    Celebrating excellence across academics, sports, arts, and leadership. Proud moments that define our legacy.
-                  </p>
-                </div>
-
-                <div className="flex flex-nowrap items-center gap-2 sm:gap-3">
-                  <button
-                    onClick={refreshData}
-                    disabled={refreshing}
-                    className="flex items-center justify-center gap-2 bg-white/10 backdrop-blur-xl border border-white/20 h-10 px-4 sm:px-5 rounded-xl font-bold text-[10px] sm:text-xs tracking-widest text-white hover:bg-white/20 transition-all disabled:opacity-70 disabled:cursor-not-allowed shrink-0"
-                  >
-                    {refreshing ? (
-                      <>
-                        <svg className="animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <span>REFRESHING...</span>
-                      </>
-                    ) : (
-                      <>
-                        <FiRotateCw className="text-sm sm:text-base" />
-                        <span>REFRESH</span>
-                      </>
-                    )}
-                  </button>
-
-                  <div className="flex bg-white/10 backdrop-blur-xl rounded-xl p-1 border border-white/20 h-12 items-center">
-                    <button
-                      onClick={() => setViewMode('grid')}
-                      className={`h-8 w-8 flex items-center justify-center rounded-lg transition-all ${
-                        viewMode === 'grid' ? 'bg-white text-[#172033] shadow-lg' : 'text-white/60 hover:text-white'
-                      }`}
-                    >
-                      <FiGrid size={14} className="sm:size-[16px]" />
-                    </button>
-                    <button
-                      onClick={() => setViewMode('list')}
-                      className={`h-8 w-8 flex items-center justify-center rounded-lg transition-all ${
-                        viewMode === 'list' ? 'bg-white text-[#172033] shadow-lg' : 'text-white/60 hover:text-white'
-                      }`}
-                    >
-                      <FiList size={14} className="sm:size-[16px]" />
-                    </button>
+                    <p className="text-emerald-100 text-sm font-bold mt-1">Kinyui Boys Senior School</p>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="border-t border-white/10 p-0 pt-6 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
-              <div className="mb-4 sm:mb-6 px-1">
-                <p className="text-white/75 text-xs sm:text-base font-medium leading-relaxed sm:leading-loose">
-                  <span className="text-white font-black text-base sm:text-xl md:text-2xl underline decoration-[#f2c357]/50 underline-offset-4 mr-1">
-                    {totalAchievements}
-                  </span>
-                  <span className="tracking-tight sm:tracking-normal">achievements across</span>
-                  <span className="text-white font-black text-base sm:text-xl md:text-2xl underline decoration-[#fff3c4]/40 underline-offset-4 ml-1 mr-1">
-                    {Object.keys(achievementsByCategory).length}
-                  </span>
-                  <span className="tracking-tight sm:tracking-normal">categories</span>
+                <p className="text-lg text-white/90 leading-relaxed max-w-xl mt-4">
+                  Celebrating excellence across academics, sports, arts, leadership, and cultural endeavors. Every achievement represents our commitment to holistic excellence.
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
-                <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                  <p className="text-[10px] sm:text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Total</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-black text-white">{totalAchievements}</p>
-                </div>
-                <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                  <p className="text-[10px] sm:text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Featured</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-black text-white">{featuredCount}</p>
-                </div>
-                <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                  <p className="text-[10px] sm:text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Mean Score</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-black text-white">{schoolStats?.meanScore?.toFixed(2) || '—'}</p>
-                </div>
-                <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                  <p className="text-[10px] sm:text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Target</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-black text-white">{schoolStats?.targetMean?.toFixed(2) || '—'}</p>
-                </div>
-              </div>
-
-              {schoolStats?.slogan && (
-                <div className="mt-4 text-xs sm:text-sm text-white/70">
-                  <span className="inline-flex items-center gap-1">
-                    <IoSparkles className="text-[#f2c357]" size={14} />
-                    "{schoolStats?.slogan}" — {schoolStats?.sloganAuthor || 'School Motto'}
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 mb-10">
-          {statsCards.map((stat, index) => (
-            <ModernStatCard key={index} stat={stat} />
-          ))}
-        </div>
-
-        {/* Main Content */}
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Column: Achievements */}
-          <div className="flex-1 min-w-0 space-y-8">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 px-1">
-              <div className="flex items-center gap-4">
-                <div className="rounded-2xl bg-[#172033] p-3 shadow-lg">
-                  <FiAward className="text-[#f2c357] text-xl" />
-                </div>
-                <div>
-                  <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Honor Roll</h2>
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
-                    {filteredAchievements.length} Achievements
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Search & Filters */}
-            <div className="rounded-[30px] border border-[#d9d0c3] bg-white p-4 shadow-[0_24px_60px_-48px_rgba(15,23,42,0.38)]">
-              <div className="flex flex-col md:flex-row items-center gap-3">
-                <div className="relative w-full flex-1">
-                  <div className="relative flex items-center rounded-2xl border border-[#e8dfd3] bg-[#fcfaf6] transition-all focus-within:border-[#172033]">
-                    <div className="pl-4 pr-2 flex items-center justify-center pointer-events-none">
-                      <FiSearch className="text-slate-400" size={16} />
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Search achievements..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full py-3 bg-transparent text-[#172033] placeholder:text-slate-400 font-medium text-xs focus:outline-none"
-                    />
-                    {searchTerm && (
-                      <button onClick={() => setSearchTerm('')} className="pr-3 text-slate-400 hover:text-slate-600">
-                        <FiX size={14} />
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                <div className="relative w-full md:w-44">
-                  <select
-                    value={activeCategory}
-                    onChange={(e) => setActiveCategory(e.target.value)}
-                    className="w-full appearance-none rounded-2xl border border-[#e8dfd3] bg-[#fcfaf6] px-4 py-3 font-semibold text-[#172033] text-xs uppercase tracking-[0.12em] cursor-pointer transition-all focus:border-[#172033]"
-                  >
-                    {categories.map((cat) => (
-                      <option key={cat.id} value={cat.id}>{cat.name}</option>
-                    ))}
-                  </select>
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-                  </div>
-                </div>
-
+              <div className="flex flex-wrap gap-3">
                 <button
-                  onClick={() => { setSearchTerm(''); setActiveCategory('all'); }}
-                  className="px-4 sm:px-5 py-3 bg-[#172033] text-white rounded-2xl font-black text-[9px] uppercase tracking-wider shadow-lg hover:bg-[#101827] active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                  onClick={refreshData}
+                  disabled={refreshing}
+                  className="flex items-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-white font-bold text-sm hover:bg-white/30 transition-all disabled:opacity-50"
                 >
-                  <FiFilter size={12} />
-                  <span>Reset</span>
+                  {refreshing ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Refreshing...
+                    </>
+                  ) : (
+                    <>
+                      <FiRotateCw />
+                      Refresh
+                    </>
+                  )}
                 </button>
               </div>
             </div>
 
-            {/* Achievements Display */}
-            {filteredAchievements.length === 0 ? (
-              <div className="rounded-[30px] border border-dashed border-[#d9d0c3] bg-white py-16 text-center shadow-[0_24px_60px_-48px_rgba(15,23,42,0.38)]">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#fcfaf6] shadow-sm ring-1 ring-[#e8dfd3]">
-                  <FiAward className="text-slate-300 text-xl" />
+            {/* Right Stats */}
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 space-y-4">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-white/70 text-sm font-semibold mb-1">Total Achievements</p>
+                  <p className="text-4xl font-black text-white">{totalAchievements}</p>
                 </div>
-                <h3 className="text-base font-black text-slate-900">No achievements found</h3>
-                <p className="text-slate-500 text-xs mt-1 mb-4">Try adjusting your filters or search.</p>
+                <IoMedalOutline className="text-amber-300 text-3xl" />
+              </div>
+              <div className="border-t border-white/20 pt-4">
+                <p className="text-white/70 text-sm font-semibold mb-1">Featured Honors</p>
+                <p className="text-3xl font-black text-amber-300">{featuredCount}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Layout - Sidebar + Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8">
+          {/* Left Sidebar */}
+          <div className="hidden lg:block">
+            <KinyuiStatsPanel stats={schoolStats} achievements={getAllAchievements()} />
+          </div>
+
+          {/* Main Content */}
+          <div className="space-y-6">
+            {/* Search & Filter */}
+            <div className="bg-white rounded-[2rem] border border-slate-200 p-4 shadow-sm">
+              <div className="flex flex-col md:flex-row gap-3">
+                <div className="flex-1 relative">
+                  <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                  <input
+                    type="text"
+                    placeholder="Search achievements..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                  />
+                </div>
+
+                <select
+                  value={activeCategory}
+                  onChange={(e) => setActiveCategory(e.target.value)}
+                  className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-semibold text-sm"
+                >
+                  {categories.map(cat => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  ))}
+                </select>
+
                 <button
                   onClick={() => { setSearchTerm(''); setActiveCategory('all'); }}
-                  className="rounded-full border border-[#d9d0c3] bg-[#fcfaf6] px-5 py-2.5 font-black text-[#172033] transition-all text-[10px] uppercase tracking-wider"
+                  className="px-6 py-3 bg-emerald-600 text-white rounded-xl font-bold text-sm hover:bg-emerald-700 transition-colors flex items-center gap-2 whitespace-nowrap"
+                >
+                  <FiFilter size={16} />
+                  Reset
+                </button>
+
+                <button
+                  onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+                  className="p-3 bg-slate-100 border border-slate-200 rounded-xl hover:bg-slate-200 transition-colors"
+                >
+                  {viewMode === 'grid' ? <FiList size={18} /> : <FiGrid size={18} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Achievements Grid */}
+            {filteredAchievements.length === 0 ? (
+              <div className="bg-white rounded-[2rem] border border-slate-200 p-12 text-center shadow-sm">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FiAward className="text-slate-300 text-2xl" />
+                </div>
+                <h3 className="text-xl font-black text-slate-900 mb-2">No achievements found</h3>
+                <p className="text-slate-600 mb-6">Try adjusting your filters or search terms.</p>
+                <button
+                  onClick={() => { setSearchTerm(''); setActiveCategory('all'); }}
+                  className="px-6 py-2.5 bg-emerald-600 text-white rounded-lg font-bold text-sm hover:bg-emerald-700 transition-colors"
                 >
                   Reset Filters
                 </button>
               </div>
             ) : (
               <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 gap-6' : 'space-y-4'}>
-                {filteredAchievements.map((achievement) => (
-                  <AchievementCard
+                {filteredAchievements.map(achievement => (
+                  <ModernAchievementCard
                     key={achievement.id}
                     achievement={achievement}
                     onView={setSelectedAchievement}
@@ -812,100 +714,21 @@ export default function StudentAchievements() {
               </div>
             )}
           </div>
-
-          {/* Right Column: Quick Actions & Motto */}
-          <div className="lg:w-[320px] space-y-6">
-            <div className="lg:sticky lg:top-24 space-y-6">
-              <div className="rounded-[30px] border border-[#d9d0c3] bg-white p-6 shadow-[0_24px_60px_-48px_rgba(15,23,42,0.38)]">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="rounded-2xl bg-[#172033] p-2.5">
-                    <FiZap className="text-[#f2c357] text-lg" />
-                  </div>
-                  <h2 className="text-base font-black text-slate-900 tracking-tight">Quick Facts</h2>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between p-3.5 bg-[#fcfaf6] rounded-2xl border border-[#e8dfd3]">
-                    <span className="text-xs font-bold">Total Achievements</span>
-                    <span className="font-black text-emerald-700">{totalAchievements}</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3.5 bg-[#fcfaf6] rounded-2xl border border-[#e8dfd3]">
-                    <span className="text-xs font-bold">Featured Honors</span>
-                    <span className="font-black text-emerald-700">{featuredCount}</span>
-                  </div>
-                  {schoolStats?.lastYearMean && (
-                    <div className="flex items-center justify-between p-3.5 bg-[#fcfaf6] rounded-2xl border border-[#e8dfd3]">
-                      <span className="text-xs font-bold">Current Year Mean</span>
-                      <span className="font-black text-emerald-700">{schoolStats?.currentYearMean?.toFixed(2) || '—'}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Motto / Slogan Card */}
-              <div className="relative overflow-hidden rounded-[30px] border border-[#1f2a40] bg-[#172033] p-6 text-white shadow-[0_30px_80px_-50px_rgba(15,23,42,0.82)]">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 blur-[50px]" />
-                <div className="relative z-10">
-                  <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4">
-                    <IoTrophyOutline className="text-white text-xl" />
-                  </div>
-                  <h4 className="text-base font-black mb-2 tracking-tight">Our Slogan</h4>
-                  <p className="text-xs text-white/70 mb-4 leading-relaxed italic">
-                    "{schoolStats?.slogan || 'Strive to Excel'}"
-                  </p>
-                  {schoolStats?.sloganDescription && (
-                    <p className="text-[10px] text-white/50 mb-2">{schoolStats.sloganDescription}</p>
-                  )}
-                  {schoolStats?.sloganAuthor && (
-                    <p className="text-[10px] font-black text-[#f2c357] uppercase tracking-wider">— {schoolStats.sloganAuthor}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
-        {/* Footer Banner */}
-        <div className="relative overflow-hidden rounded-[34px] border border-[#1f2a40] bg-[#172033] p-6 md:p-8 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.82)]">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 blur-[80px] rounded-full -mr-24 -mt-24" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#f2c357]/10 blur-[80px] rounded-full -ml-24 -mb-24" />
-          <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-8">
-            <div className="shrink-0">
-              <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-white flex items-center justify-center shadow-lg">
-                <FiHeart className="text-[#172033] text-2xl md:text-3xl" />
-              </div>
-            </div>
-            <div className="flex-1 text-center md:text-left">
-              <h3 className="text-lg md:text-xl font-black text-white mb-2 tracking-tight">
-                Excellence in Every Endeavor
-              </h3>
-              <p className="text-emerald-200 text-xs md:text-sm leading-relaxed max-w-xl mx-auto md:mx-0">
-                Each achievement represents the dedication of our students and staff. We celebrate every milestone on our journey to greatness.
-              </p>
-            </div>
-          </div>
+        {/* Mobile Sidebar - Below Content */}
+        <div className="lg:hidden">
+          <KinyuiStatsPanel stats={schoolStats} achievements={getAllAchievements()} />
         </div>
       </div>
 
-      {/* Achievement Detail Modal */}
+      {/* Detail Modal */}
       {selectedAchievement && (
         <AchievementDetailModal achievement={selectedAchievement} onClose={() => setSelectedAchievement(null)} />
       )}
 
       <style jsx global>{`
         input, select, textarea { font-size: 16px !important; }
-        button, a { min-height: 44px; min-width: 44px; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        @media (max-width: 640px) {
-          .rounded-[2.5rem] { border-radius: 1.5rem !important; }
-          .rounded-[2rem] { border-radius: 1.25rem !important; }
-        }
-        @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fade-in 0.5s ease-out; }
-        @keyframes zoom-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .animate-in { animation-duration: 0.3s; animation-fill-mode: both; }
-        .fade-in { animation-name: fade-in; }
-        .zoom-in { animation-name: zoom-in; }
       `}</style>
     </div>
   );
