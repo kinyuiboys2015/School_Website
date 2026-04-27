@@ -1746,7 +1746,7 @@ const ModernSchoolLayout = () => {
     
     {/* Minimalist Header - Responsive text sizing */}
     <div className="mb-12 sm:mb-20 border-l-2 border-indigo-500 pl-4 sm:pl-6">
-      <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter uppercase italic leading-none">
+      <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tighter uppercase italic leading-none">
         The <span className="text-indigo-500 text-glow">School </span> <br className="sm:hidden" /> Recent Achievements
       </h2>
       <p className="text-slate-400 font-medium mt-4 max-w-md uppercase tracking-[0.15em] text-[9px] sm:text-[11px] leading-relaxed">
