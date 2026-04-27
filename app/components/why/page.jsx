@@ -471,17 +471,6 @@ const ModernSchoolLayout = () => {
       isPremium: false,
     },
     {
-      title: "Co‑curricular Activities",
-      gradient: "from-amber-600 to-orange-500",
-      description:
-        "We offer diverse extracurricular activities including sports, music, drama, clubs, and leadership programs.",
-      highlight: "15+ Activities",
-      details: ["Athletics", "Ball Games", "Music & Drama", "Journalism"],
-      metrics: ["8 Sports", "15 Clubs", "Events"],
-      icon: <FiStar />,
-      isPremium: false,
-    },
-    {
       title: "Values & Character",
       gradient: "from-slate-800 to-slate-600",
       description:
@@ -1207,9 +1196,9 @@ const ModernSchoolLayout = () => {
             {whyChooseUs.map((item) => (
               <div
                 key={item.id}
-                className="relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200 sm:from-slate-200 sm:via-white sm:to-slate-200 from-amber-200 via-white to-rose-200"
+                className="relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate- sm:from-slate-200 sm:via-white sm:to-slate-200 from-amber-200 via-white to-rose-200"
               >
-                <div className="relative h-full rounded-[calc(1.5rem-1px)] bg-white/80 backdrop-blur border border-white/60 p-6 shadow-sm">
+                <div className="relative h-full rounded-[calc(1.5rem-1px)] bg200-white/80 backdrop-blur border border-white/60 p-6 shadow-sm">
                   <div className="flex items-start justify-between gap-3">
                     <div className="w-11 h-11 rounded-2xl bg-gradient-to-br sm:from-indigo-600 sm:to-sky-500 from-amber-700 to-amber-600 text-white flex items-center justify-center shadow-md">
                       {item.icon}
