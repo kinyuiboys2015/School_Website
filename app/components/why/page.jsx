@@ -1726,146 +1726,110 @@ const ModernSchoolLayout = () => {
         </section>
       )}
 
-      {/* ACHIEVEMENTS TIMELINE */}
-      <section className="relative py-16 sm:py-20 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -top-40 left-10 h-[22rem] w-[22rem] rounded-full bg-gradient-to-br from-indigo-200/35 to-sky-200/25 blur-3xl" />
-          <div className="absolute -bottom-44 right-12 h-[26rem] w-[26rem] rounded-full bg-gradient-to-br from-emerald-200/25 to-indigo-200/15 blur-3xl" />
-        </div>
+<section className="relative py-16 sm:py-24 bg-[#050505] overflow-hidden text-white">
+  {/* Subtle Grain Overlay */}
+  <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 mb-5">
-              <FiAward className="w-4 h-4 text-indigo-600" />
-              Achievements
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight mb-4">
-              Milestones worth{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
-                celebrating
-              </span>
-            </h2>
-            <p className="text-slate-600 text-base sm:text-lg font-medium leading-relaxed">
-              A timeline of wins and moments that reflect our learning culture.
-            </p>
-          </div>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    
+    {/* Minimalist Header - Responsive text sizing */}
+    <div className="mb-12 sm:mb-20 border-l-2 border-indigo-500 pl-4 sm:pl-6">
+      <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter uppercase italic leading-none">
+        The <span className="text-indigo-500 text-glow">Milestone</span> <br className="sm:hidden" /> Gallery
+      </h2>
+      <p className="text-slate-400 font-medium mt-4 max-w-md uppercase tracking-[0.15em] text-[9px] sm:text-[11px] leading-relaxed">
+        A comprehensive visual record of institutional excellence and academic milestones.
+      </p>
+    </div>
 
-          {achievementsLoading ? (
-            <div className="flex flex-col items-center justify-center py-16">
-              <FiLoader className="w-10 h-10 animate-spin text-indigo-600 mb-4" />
-              <p className="text-slate-500 font-black uppercase tracking-[0.2em] text-xs">
-                Loading achievements...
-              </p>
-            </div>
-          ) : (
-            <div className="relative">
-              <div className="absolute left-4 sm:left-1/2 sm:-translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-slate-200 via-slate-200 to-transparent" />
+    {achievementsLoading ? (
+       <div className="py-20 text-center animate-pulse font-black uppercase text-[10px] tracking-widest text-slate-500">
+         Synchronizing Data...
+       </div>
+    ) : (
+      /* Grid: 1 column on mobile, 2 on tablet, 3 on desktop */
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+        {getAchievements().map((item, idx) => (
+          <div key={idx} className="group relative flex flex-col h-full">
+            
+            {/* The "Polaroid" Card - No fixed height on mobile to allow for long text */}
+            <div className="flex flex-col h-full relative overflow-hidden rounded-[2rem] bg-slate-900/40 border border-white/10 transition-all duration-500 group-hover:border-indigo-500/40 group-hover:bg-slate-900/60">
+              
+              {/* IMAGE SECTION - Responsive Aspect Ratio */}
+              <div className="relative aspect-video sm:h-64 w-full overflow-hidden shrink-0">
+                {item.image ? (
+                  <Image 
+                    src={item.image} 
+                    alt={item.title} 
+                    fill 
+                    className="object-cover transition-transform duration-1000 group-hover:scale-110" 
+                  />
+                ) : (
+                  <div className="w-full h-full bg-slate-800 flex items-center justify-center">
+                    <FiAward className="text-4xl text-slate-700" />
+                  </div>
+                )}
+                
+                {/* Floating Year Tag */}
+                <div className="absolute top-4 left-4 z-20">
+                  <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur text-black text-[10px] font-black shadow-xl">
+                    {item.year}
+                  </span>
+                </div>
+                
+                {/* Gradient Overlay for legibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />
+              </div>
 
-              <div className="space-y-10 sm:space-y-12">
-                {getAchievements().map((item, idx) => {
-                  const isRight = idx % 2 === 0;
-                  return (
-                    <div
-                      key={idx}
-                      className={`relative flex items-start justify-between w-full ${
-                        isRight ? "sm:flex-row-reverse" : "sm:flex-row"
-                      }`}
-                    >
-                      <div className="hidden sm:block w-[45%]" />
+              {/* CONTENT SECTION - Flex grow ensures all cards match height in a row */}
+              <div className="p-6 sm:p-8 flex flex-col flex-grow">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="h-[1px] w-6 bg-indigo-500" />
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-indigo-400">
+                    {item.stats || "Global Recognition"}
+                  </span>
+                </div>
 
-                      <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 z-20">
-                        <div className="w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center">
-                          <div className="w-3 h-3 rounded-full bg-gradient-to-br from-indigo-600 via-sky-600 to-emerald-600" />
-                        </div>
-                      </div>
+                <h4 className="text-xl sm:text-2xl font-black tracking-tight mb-4 group-hover:text-indigo-300 transition-colors">
+                  {item.title}
+                </h4>
 
-                      <div className="w-full sm:w-[45%] pl-12 sm:pl-0">
-                        <div className="group relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200 hover:from-indigo-200 hover:via-white hover:to-emerald-200 transition-colors duration-300">
-                          <div className="relative rounded-[calc(1.5rem-1px)] bg-white/80 backdrop-blur border border-white/60 p-6 sm:p-8 shadow-sm hover:shadow-xl transition-shadow">
-                            {item.year && (
-                              <div
-                                className={`absolute -top-3 ${
-                                  isRight ? "sm:right-8" : "sm:left-8"
-                                } left-6 sm:left-auto`}
-                              >
-                                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.25em] shadow-lg">
-                                  <FiCalendar className="w-3.5 h-3.5 text-white/80" />
-                                  {item.year}
-                                </span>
-                              </div>
-                            )}
+                {/* LONG DESCRIPTION - No line-clamp, responsive leading */}
+                <p className="text-slate-400 text-sm sm:text-base leading-relaxed sm:leading-loose mb-8 font-medium">
+                  {item.description || "Our commitment to excellence has consistently yielded exceptional results across various academic and co-curricular spheres. This achievement marks a significant step in our journey to redefine educational standards in Machakos County and beyond, proving that with the right guidance and support, our students can compete on a global stage while maintaining strong local roots and values."}
+                </p>
 
-                            <div
-                              className={`flex flex-col ${
-                                isRight
-                                  ? "sm:items-start sm:text-left"
-                                  : "sm:items-end sm:text-right"
-                              } text-left`}
-                            >
-                              <div className="inline-flex items-center gap-3 flex-wrap">
-                                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 via-sky-600 to-emerald-600 text-white shadow-md">
-                                  {item.icon || (
-                                    <FiAward className="w-5 h-5" />
-                                  )}
-                                </span>
-
-                                {item.stats && (
-                                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-slate-50 border border-slate-200 text-slate-600">
-                                    {item.stats}
-                                  </span>
-                                )}
-                              </div>
-
-                              <h4 className="mt-4 text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-                                {item.title}
-                              </h4>
-
-                              <p className="mt-2 text-slate-600 text-sm sm:text-base font-medium leading-relaxed line-clamp-3">
-                                {item.shortDescription ||
-                                  (item.description &&
-                                    item.description.substring(0, 120) +
-                                      "...")}
-                              </p>
-
-                              <div
-                                className={`mt-5 flex items-center justify-start ${
-                                  isRight
-                                    ? "sm:justify-start"
-                                    : "sm:justify-end"
-                                }`}
-                              >
-                                <button
-                                  onClick={() => openAchievementModal(item)}
-                                  className="group/btn inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-slate-900 text-white text-xs font-black uppercase tracking-[0.2em] hover:bg-slate-800 transition-colors"
-                                >
-                                  View details
-                                  <FiArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
-                                </button>
-                              </div>
-                            </div>
-
-                            {item.image && (
-                              <div className="mt-6 relative h-40 sm:h-44 w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
-                                <Image
-                                  src={item.image}
-                                  alt={item.title}
-                                  fill
-                                  className="object-cover"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent" />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                {/* Action Link - Pushed to bottom of card */}
+                <div className="mt-auto pt-4">
+                  <button 
+                    onClick={() => openAchievementModal(item)}
+                    className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-indigo-400 transition-all border-b border-white/10 pb-1"
+                  >
+                    Deep Analysis <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
+                  </button>
+                </div>
               </div>
             </div>
-          )}
-        </div>
-      </section>
+
+            {/* Background Decorative Number - Hidden on very small screens to avoid clutter */}
+            <span className="hidden sm:block absolute -bottom-6 -right-2 text-9xl font-black text-white/[0.02] pointer-events-none select-none transition-all group-hover:text-indigo-500/[0.05]">
+              0{idx + 1}
+            </span>
+          </div>
+        ))}
+      </div>
+    )}
+
+    {/* Bottom Navigation - Fully Mobile Responsive */}
+    <div className="mt-16 sm:mt-24 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10 border-t border-white/5 pt-12">
+       <span className="hidden sm:block h-[1px] flex-1 bg-gradient-to-r from-transparent to-white/10" />
+       <button className="w-full sm:w-auto px-10 py-4 rounded-full border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 hover:text-white hover:border-indigo-500 hover:bg-indigo-500/5 transition-all">
+          Explore Archive
+       </button>
+       <span className="hidden sm:block h-[1px] flex-1 bg-gradient-to-l from-transparent to-white/10" />
+    </div>
+  </div>
+</section>
 
       {/* WHY CHOOSE US - SHUFFLED MOSAIC */}
       <section className="relative py-24 bg-[#fafbfc] overflow-hidden">
