@@ -12,6 +12,7 @@ import {
   FiUsers,
   FiGlobe,
   FiMapPin,
+  FiCamera,
   FiArrowRight,
   FiSearch,
   FiFilter,
