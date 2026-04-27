@@ -1224,7 +1224,7 @@ const ModernSchoolLayout = () => {
                   >
                     {expandedCards[item.id] ? "Show Less" : "Read More"}
                     <FiChevronDown
-                      className={`w-4 h-4 transition-transform ${
+                      className={`w-4 h-4  ${
                         expandedCards[item.id] ? "rotate-180" : ""
                       }`}
                     />
@@ -1742,7 +1742,7 @@ const ModernSchoolLayout = () => {
           <div key={idx} className="group relative flex flex-col h-full">
             
             {/* The "Polaroid" Card - No fixed height on mobile to allow for long text */}
-            <div className="flex flex-col h-full relative overflow-hidden rounded-[1rem] bg-slate-900/40 border border-white/10 transition-all duration-500 group-hover:border-indigo-500/40 group-hover:bg-slate-900/60">
+            <div className="flex flex-col h-full relative overflow-hidden rounded-[1rem] bg-slate-900/40 border border-white/10  group-hover:border-indigo-500/40 group-hover:bg-slate-900/60">
               
               {/* IMAGE SECTION - Responsive Aspect Ratio */}
               <div className="relative aspect-video sm:h-64 w-full overflow-hidden shrink-0">
@@ -1751,7 +1751,7 @@ const ModernSchoolLayout = () => {
                     src={item.image} 
                     alt={item.title} 
                     fill 
-                    className="object-cover transition-transform duration-1000 group-hover:scale-100" 
+                    className="object-cover  duration-1000 group-hover:scale-100" 
                   />
                 ) : (
                   <div className="w-full h-full bg-slate-800 flex items-center justify-center">
@@ -1794,7 +1794,7 @@ const ModernSchoolLayout = () => {
                     onClick={() => openAchievementModal(item)}
                     className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-indigo-400 transition-all border-b border-white/10 pb-1"
                   >
-                    Deep Analysis <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
+                    Deep Analysis <FiArrowRight className="group-hover:translate-x-2 " />
                   </button>
                 </div>
               </div>
@@ -1915,12 +1915,12 @@ const ModernSchoolLayout = () => {
               return (
                 <div
                   key={item.id}
-                  className={`group bg-white border border-slate-100 rounded-[1rem] p-8 hover:shadow-lg hover:shadow-slate-200/60 transition-all duration-500 ${
+                  className={`group bg-white border border-slate-100 rounded-[1rem] p-8 hover:shadow-lg hover:shadow-slate-200/60  ${
                     isSpanned ? "lg:row-span-1" : ""
                   }`}
                 >
                   <div
-                    className={`w-14 h-14 rounded-2xl ${c.light} ${c.text} flex items-center justify-center mb-8 group-hover:scale-100 transition-transform`}
+                    className={`w-14 h-14 rounded-2xl ${c.light} ${c.text} flex items-center justify-center mb-8 group-hover:scale-100 `}
                   >
                     {item.icon}
                   </div>
@@ -2029,7 +2029,7 @@ const ModernSchoolLayout = () => {
                       className="pt-4 flex items-center gap-2 text-xs font-bold text-gray-700 group-hover:text-indigo-600 transition-colors"
                     >
                       Explore Track{" "}
-                      <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+                      <FiArrowRight className="" />
                     </button>
                   </div>
                 </div>
@@ -2168,7 +2168,7 @@ const ModernSchoolLayout = () => {
           return (
             <div
               key={index}
-              className={`group relative overflow-hidden rounded-[1rem] border transition-all duration-500 ${
+              className={`group relative overflow-hidden rounded-[1rem] border  ${
                 isPremium
                   ? "bg-slate-950 border-white/10 p-6 sm:p-10"
                   : "bg-white border-slate-100 p-6 sm:p-8 hover:border-indigo-200 hover:shadow-lg"
