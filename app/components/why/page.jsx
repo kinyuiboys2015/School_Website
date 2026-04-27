@@ -7,7 +7,8 @@ import {
   FiAward, FiHeart, FiMapPin, FiUsers, FiCalendar,
   FiStar, FiMail, FiPhone, FiArrowRight, FiMonitor,
   FiCpu, FiChevronLeft, FiChevronRight, FiChevronDown,
-  FiTarget, FiEye, FiBookOpen, FiLoader,FiTrendingUp 
+  FiTarget, FiEye, FiBookOpen, FiLoader,FiTrendingUp, FiPlusCircle
+   
 } from 'react-icons/fi';
 
 const ModernSchoolLayout = () => {
