@@ -100,7 +100,6 @@ const CONTACT_INFO = {
   ],
   email: [
     { icon: FiMail, text: 'kinyuiboys2015@gmail.com', detail: 'General Inquiries', href: 'mailto:kinyuiboys2015@gmail.com' },
-    { icon: FiMail, text: 'admissions@kinyuiboys.ac.ke', detail: 'Admissions Office', href: 'mailto:admissions@kinyuiboys.ac.ke' }
   ],
   hours: [
     { icon: FiClock, text: 'Mon - Fri: 7:30 AM - 5:00 PM', detail: 'Saturday: 8:00 AM - 1:00 PM', href: '#' }
@@ -110,9 +109,9 @@ const CONTACT_INFO = {
 // School Stats
 const SCHOOL_STATS = [
   { value: 45, label: 'Qualified Teachers', icon: FiUsers, trend: '+5' },
-  { value: 1200, label: 'Enrolled Students', icon: FiBookOpen, trend: '+12%' },
-  { value: 98, label: 'Pass Rate', icon: FiTrendingUp, trend: '+3%' },
-  { value: 48, label: 'Years of Excellence', icon: FiAward, trend: 'Since 1976' },
+  { value: 400, label: 'Enrolled Students', icon: FiBookOpen, trend: '+12%' },
+  { value: 60, label: 'Pass Rate', icon: FiTrendingUp, trend: '+3%' },
+  { value: 80, label: 'Years of Excellence', icon: FiAward, trend: 'Since 1976' },
 ];
 
 // ----------------------------------------------------------------------
