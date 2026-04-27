@@ -2090,7 +2090,7 @@ const getSchoolStats = () => {
 
 
 {/* CBC Framework - Structural Shuffle */}
-<section className="relative py-16 sm:py-24 bg-[#0a0a0b] overflow-hidden text-slate-200">
+<section className="relative py-16 sm:py-24 text-[#0a0a0b] overflow-hidden bg-slate-200">
   {/* Ambient background glow */}
   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#312e81_0%,transparent_50%)] opacity-40" />
 
