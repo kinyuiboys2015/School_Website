@@ -227,30 +227,39 @@ const ContactSection = () => (
 
 // Modern Link Group Component
 const LinkGroup = ({ title, icon: Icon, links, gradient = 'from-amber-500 to-teal-600' }) => (
-  <div className="space-y-4">
-    <div className="flex items-center gap-2 pb-3 border-b border-white/10">
-      <div className={`p-1.5 bg-gradient-to-r ${gradient} rounded-lg`}>
+  <div className="space-y-3 md:space-y-2"> 
+    {/* Header: Centered on small screens for better thumb reach */}
+    <div className="flex items-center gap-2 pb-2 border-b border-white/10">
+      <div className={`p-1.5 bg-gradient-to-r ${gradient} rounded-lg shrink-0`}>
         <Icon className="text-white text-sm" />
       </div>
-      <h4 className="text-base font-bold text-white uppercase tracking-wide">{title}</h4>
+      <h4 className="text-sm md:text-base font-bold text-white uppercase tracking-wide truncate">
+        {title}
+      </h4>
     </div>
-    <div className="space-y-2">
+    
+    {/* Links Container */}
+    <div className="space-y-1">
       {links.map((link, idx) => {
         const LinkIcon = link.icon;
         return (
           <a
             key={idx}
             href={link.href}
-            className="group flex items-center justify-between p-2 rounded-xl hover:bg-white/5 transition-all duration-300"
+            /* Mobile: py-2 for better touch target (44px height rule)
+               Desktop: md:py-1 for that tight look you wanted
+            */
+            className="group flex items-center justify-between px-3 py-2 md:px-2 md:py-1 rounded-lg hover:bg-white/5 active:bg-white/10 transition-all duration-200"
           >
-            <div className="flex items-center gap-3">
-              <LinkIcon className="text-white/40 text-sm group-hover:text-amber-400 transition-colors" />
-              <span className="text-white/70 text-sm font-medium group-hover:text-white transition-colors">
+            <div className="flex items-center gap-3 min-w-0">
+              <LinkIcon className="text-white/40 text-sm group-hover:text-amber-400 shrink-0" />
+              <span className="text-white/70 text-sm font-medium group-hover:text-white truncate">
                 {link.name}
               </span>
             </div>
+            
             {link.badge && (
-              <span className="text-[9px] font-black bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full">
+              <span className="ml-2 text-[9px] font-black bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full uppercase shrink-0">
                 {link.badge}
               </span>
             )}
