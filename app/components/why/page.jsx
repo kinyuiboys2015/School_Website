@@ -1937,16 +1937,16 @@ const ModernSchoolLayout = () => {
                     </button>
                   </div>
 
-                  {item.image && (
-                    <div className="mt-8 relative h-32 w-full rounded-2xl overflow-hidden border border-slate-100 grayscale hover:grayscale-0 transition-all duration-700">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  )}
+               {item.image && (
+  <div className="mt-8 relative h-32 w-full rounded-2xl overflow-hidden border border-slate-100 transition-all duration-700">
+    <Image
+      src={item.image}
+      alt={item.title}
+      fill
+      className="object-cover"
+    />
+  </div>
+)}
                 </div>
               );
             })}
