@@ -2087,240 +2087,146 @@ const getSchoolStats = () => {
           </div>
         </div>
       </section>
+{/* CBC Pathways & Subjects Section */}
+<section className="relative py-20 bg-[#020617] overflow-hidden text-white">
+  {/* Modern Grid Overlay Background */}
+  <div className="absolute inset-0 opacity-10 [mask-image:radial-gradient(ellipse_at_center,black,transparent)]">
+    <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+  </div>
 
-      {/* CBC Pathways & Subjects Section */}
-      <section className="relative py-16 sm:py-20 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -top-44 left-10 h-[24rem] w-[24rem] rounded-full bg-gradient-to-br from-sky-200/35 to-indigo-200/25 blur-3xl" />
-          <div className="absolute -bottom-44 right-10 h-[26rem] w-[26rem] rounded-full bg-gradient-to-br from-emerald-200/25 to-sky-200/15 blur-3xl" />
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    {/* Header Section - Centered & Bold */}
+    <div className="text-center max-w-4xl mx-auto mb-20">
+      <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-widest mb-6">
+        <FiBookOpen className="w-4 h-4" />
+        Academic Architecture
+      </div>
+
+      <h3 className="text-4xl md:text-6xl font-black tracking-tighter mb-6 leading-none">
+        CBC Pathways & <span className="text-indigo-500">Learning Tracks</span>
+      </h3>
+
+      <p className="text-slate-400 text-lg font-medium max-w-2xl mx-auto">
+        Tailored educational journeys at <span className="text-white font-bold">{schoolName}</span> designed to bridge the gap between classroom theory and global careers.
+      </p>
+    </div>
+
+    {/* Pathways - Side-by-Side Modern Cards */}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+      {pathways.map((path, idx) => {
+        const PathIcon = path.icon;
+        return (
+          <div
+            key={idx}
+            className="relative group bg-slate-900/50 border border-slate-800 rounded-3xl p-8 hover:border-indigo-500/50 transition-all duration-500"
+          >
+            {/* Corner Accent */}
+            <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${path.color} opacity-10 blur-2xl rounded-full group-hover:opacity-30 transition-opacity`} />
+            
+            <div className="relative z-10 h-full flex flex-col">
+              <div className="flex items-center justify-between mb-8">
+                <div className="p-4 bg-slate-800 rounded-2xl group-hover:bg-indigo-600 transition-colors duration-500">
+                  <PathIcon className="text-2xl text-white" />
+                </div>
+                <span className="text-4xl font-black text-slate-800 select-none">0{idx + 1}</span>
+              </div>
+
+              <h4 className="text-2xl font-black mb-3 group-hover:text-indigo-400 transition-colors">
+                {path.name}
+              </h4>
+              
+              <p className="text-slate-400 text-sm leading-relaxed mb-8">
+                {path.description}
+              </p>
+
+              {/* Tags Section */}
+              <div className="space-y-6 mt-auto">
+                <div>
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Core Units</p>
+                  <div className="flex flex-wrap gap-2">
+                    {path.subjects.slice(0, 3).map((subj, i) => (
+                      <span key={i} className="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 text-[10px] font-bold border border-slate-700">
+                        {subj}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-6 border-t border-slate-800">
+                  <div className="grid grid-cols-1 gap-2">
+                    {path.careers.slice(0, 3).map((career, cIdx) => (
+                      <div key={cIdx} className="flex items-center gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+                        <span className="text-xs font-semibold text-slate-300">{career}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => openModal(path)}
+                    className="mt-6 flex items-center gap-2 text-xs font-black text-white hover:text-indigo-400 uppercase tracking-widest transition-colors"
+                  >
+                    View Curriculum <FiArrowRight />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    {/* Mandatory Subjects - Horizontal Bento Bar */}
+    <div className="bg-gradient-to-r from-indigo-900/20 to-slate-900/40 border border-indigo-500/20 rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden">
+      {/* Decorative Blur */}
+      <div className="absolute -left-20 -top-20 w-64 h-64 bg-indigo-600/10 blur-[100px] rounded-full" />
+      
+      <div className="relative z-10">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-10">
+          <div className="max-w-xl">
+            <h4 className="text-2xl font-black mb-2 flex items-center gap-3">
+              <FiLayers className="text-indigo-500" /> Universal Foundation
+            </h4>
+            <p className="text-slate-400 text-sm font-medium">
+              Every student at {schoolName} masters these essential core competencies, ensuring a well-rounded baseline for any chosen pathway.
+            </p>
+          </div>
+          <div className="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/10">
+            <IoSparkles className="text-amber-400" />
+            <span className="text-xs font-black uppercase tracking-widest">7+ Core Competencies</span>
+          </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200">
-            <div className="relative rounded-[calc(1.5rem-1px)] bg-white/80 backdrop-blur border border-white/60 p-6 md:p-10 overflow-hidden shadow-[0_20px_50px_rgba(2,6,23,0.06)]">
-          {/* Logo watermark */}
-          <img
-            src="/hero/env.jpeg"
-            alt=""
-            className="absolute right-4 bottom-4 w-28 md:w-40 opacity-[0.03] pointer-events-none select-none"
-          />
-
-          {/* Header Section */}
-          <div className="max-w-3xl mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 mb-5">
-              <FiBookOpen className="w-4 h-4 text-indigo-600" />
-              CBC Framework
-            </div>
-
-            <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">
-              CBC Tracks &{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
-                Subjects
-              </span>
-            </h3>
-
-            <p className="text-slate-600 text-base sm:text-lg font-medium leading-relaxed">
-              The Competency Based Curriculum organizes learning around three
-              main pathways, each tailored to different student strengths and
-              career goals at{" "}
-              <span className="text-slate-900 font-black">{schoolName}</span>.
-            </p>
-
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-slate-950 text-white shadow-lg shadow-slate-900/10 border border-white/10 mt-6">
-              <IoSparkles className="text-white/80" />
-              <span className="text-xs font-black uppercase tracking-[0.2em]">
-                7+ Core Competencies
-              </span>
-            </div>
-          </div>
-
-          {/* CBC Pathways — Grid Layout (Prevents Overlap) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            {pathways.map((path, idx) => {
-              const PathIcon = path.icon;
-              const isDark = idx === 1; // Middle card style
-
-              return (
-                <div
-                  key={idx}
-                  className="group relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200 hover:from-indigo-200 hover:via-white hover:to-emerald-200 transition-colors duration-300"
-                >
-                  {/* Top Color Bar */}
-                  <div
-                    className={`relative h-full rounded-[calc(1.5rem-1px)] overflow-hidden border border-white/60 backdrop-blur ${
-                      isDark ? "bg-slate-950 text-white" : "bg-white/80 text-slate-900"
-                    }`}
-                  >
-                    <div
-                      className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${path.color}`}
-                    />
-
-                    <div className="p-6 flex flex-col h-full">
-                    <div className="flex items-start justify-between mb-4">
-                      <div
-                        className={`p-3 rounded-xl ${
-                          isDark ? "bg-white/10" : "bg-slate-100"
-                        }`}
-                      >
-                        <PathIcon
-                          className={`text-2xl ${
-                            isDark ? "text-white" : "text-slate-700"
-                          }`}
-                        />
-                      </div>
-                      <span
-                        className={`text-2xl font-black opacity-10 ${
-                          isDark ? "text-white" : "text-slate-900"
-                        }`}
-                      >
-                        0{idx + 1}
-                      </span>
-                    </div>
-
-                    <h4
-                      className={`font-bold text-xl mb-1 ${
-                        isDark ? "text-white" : "text-slate-900"
-                      }`}
-                    >
-                      {path.name}
-                    </h4>
-                    <p
-                      className={`text-sm font-medium mb-6 ${
-                        isDark ? "text-slate-400" : "text-slate-600"
-                      }`}
-                    >
-                      {path.description}
-                    </p>
-
-                    {/* Subjects Tags - Only showing first 3 as preview */}
-                    <div className="flex flex-wrap gap-1.5 mb-6">
-                      {path.subjects.slice(0, 3).map((subj, i) => (
-                        <span
-                          key={i}
-                          className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase border ${
-                            isDark
-                              ? "bg-white/5 text-slate-300 border-white/10"
-                              : "bg-slate-50 text-slate-600 border-slate-100"
-                          }`}
-                        >
-                          {subj}
-                        </span>
-                      ))}
-                      {path.subjects.length > 3 && (
-                        <span
-                          className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase border ${
-                            isDark
-                              ? "bg-white/5 text-slate-300 border-white/10"
-                              : "bg-slate-50 text-slate-600 border-slate-100"
-                          }`}
-                        >
-                          +{path.subjects.length - 3}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Careers Section - Preview with 4 careers + Read More button */}
-                    <div
-                      className={`mt-auto pt-4 border-t ${
-                        isDark ? "border-white/10" : "border-slate-100"
-                      }`}
-                    >
-                      <p
-                        className={`text-[10px] font-black uppercase tracking-widest mb-3 ${
-                          isDark ? "text-sky-300" : "text-indigo-600"
-                        }`}
-                      >
-                        Popular Careers
-                      </p>
-                      <div className="grid grid-cols-2 gap-y-1 gap-x-2 mb-3">
-                        {path.careers.slice(0, 4).map((career, cIdx) => (
-                          <div key={cIdx} className="flex items-center gap-1.5">
-                            <div
-                              className={`w-1 h-1 rounded-full shrink-0 ${
-                                isDark ? "bg-slate-500" : "bg-slate-400"
-                              }`}
-                            />
-                            <span
-                              className={`text-[11px] leading-tight font-semibold truncate ${
-                                isDark ? "text-slate-300" : "text-slate-700"
-                              }`}
-                            >
-                              {career}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                      <button
-                        onClick={() => openModal(path)}
-                        className={`inline-flex items-center gap-1 text-xs font-bold mt-1 transition-colors ${
-                          isDark
-                            ? "text-sky-300 hover:text-sky-200"
-                            : "text-indigo-600 hover:text-indigo-700"
-                        }`}
-                      >
-                        Read More Careers
-                        <FiArrowRight size={12} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* CBC Core Subjects Row */}
-          <div className="relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate-200">
-            <div className="rounded-[calc(1.5rem-1px)] bg-white/70 backdrop-blur border border-white/60 p-6 md:p-8 shadow-sm">
-            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
-              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
-                <FiLayers className="text-white text-xl" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          {[
+            { name: "Mathematics", icon: FiCpu },
+            { name: "English", icon: FiBook },
+            { name: "Kiswahili", icon: FiGlobe },
+            { name: "Integrated Science", icon: FiActivity },
+            { name: "Social Studies", icon: FiUsers },
+            { name: "Religious Education", icon: FiHeart },
+            { name: "Creative Arts", icon: FiPenTool },
+            { name: "Agriculture", icon: FiDroplet },
+            { name: "Life Skills", icon: FiStar },
+            { name: "Physical Education", icon: FiTarget },
+          ].map((subj, i) => {
+            const SubjIcon = subj.icon;
+            return (
+              <div
+                key={i}
+                className="group flex flex-col gap-3 p-4 bg-slate-950/50 rounded-2xl border border-slate-800 hover:border-indigo-500/50 hover:bg-slate-900 transition-all cursor-default"
+              >
+                <SubjIcon className="text-indigo-400 group-hover:scale-110 transition-transform" />
+                <span className="text-xs font-bold text-slate-300 group-hover:text-white transition-colors">
+                  {subj.name}
+                </span>
               </div>
-              <div>
-                <h4 className="font-bold text-slate-900 text-lg">
-                  Mandatory Core Subjects
-                </h4>
-                <p className="text-sm sm:text-base font-medium leading-relaxed line-clamp-3">
-                  Foundational learning required for every student regardless of
-                  pathway
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-              {[
-                 { name: "Mathematics", icon: FiCpu },
-                { name: "English", icon: FiBook },
-                { name: "Kiswahili", icon: FiGlobe },
-                { name: "Integrated Science", icon: FiActivity },
-                { name: "Social Studies", icon: FiUsers },
-                { name: "Religious Education", icon: FiHeart },
-                { name: "Creative Arts", icon: FiPenTool },
-                { name: "Agriculture", icon: FiDroplet },
-                { name: "Life Skills", icon: FiStar },
-                { name: "Physical Education", icon: FiTarget },
-              ].map((subj, i) => {
-                const SubjIcon = subj.icon;
-                return (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3 p-3 bg-white/70 rounded-xl border border-slate-200 hover:border-indigo-200 hover:bg-white transition-colors"
-                  >
-                    <SubjIcon className="text-indigo-700 text-base shrink-0" />
-                    <span className="text-xs font-bold text-slate-700">
-                      {subj.name}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-            </div>
-          </div>
-          </div>
+            );
+          })}
         </div>
       </div>
-      </section>
-
+    </div>
+  </div>
+</section>
       {/* ===== EDUCATIONAL PILLARS - BENTO GRID ===== */}
       <section className="relative py-16 sm:py-20 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
