@@ -582,125 +582,109 @@ export default function StudentAchievements() {
     <div className="min-h-screen bg-[#f7f2ea] p-4 md:p-6">
       <Toaster position="top-right" richColors />
 
-      <div className="w-full md:w-[90%] lg:w-[90%] xl:w-[80%] mx-auto space-y-6">
-        {/* Hero Header */}
-        <div className="relative mb-8 overflow-hidden rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-900 via-blue-700 to-blue-600 p-6 text-white shadow-[0_30px_80px_-50px_rgba(30,64,175,0.82)] md:p-10">
-          <div className="absolute top-0 right-0 h-96 w-96 rounded-full bg-blue-400/10 blur-3xl" />
-          <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
-          <div className="absolute inset-y-0 right-[36%] hidden w-px bg-white/10 lg:block" />
+      <div className="w-full md:w-[85%] mx-auto space-y-6">
+        {/* Hero Header - Reduced height by half and streamlined */}
+        <div className="relative mb-8 overflow-hidden rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-900 via-blue-700 to-blue-600 p-4 text-white shadow-[0_30px_80px_-50px_rgba(30,64,175,0.82)] sm:p-6">
+          <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-blue-400/10 blur-3xl" />
+          <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
 
-          <div className="relative z-10 grid gap-0 lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="p-0 lg:pr-10">
-              <div className="flex flex-col justify-between gap-6 lg:min-h-[320px]">
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="h-8 w-1 rounded-full bg-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
-                    <div>
-                      <h2 className="text-[12px] sm:text-sm font-black uppercase tracking-[0.3em] text-blue-200 drop-shadow-lg">
-                        Kinyui Boys Senior School
-                      </h2>
-                      <div className="flex items-center gap-2 mt-1">
-                        <FiZap className="text-blue-300 text-lg" />
-                        <span className="text-base sm:text-lg font-extrabold text-white tracking-widest uppercase drop-shadow-lg">Soaring To Excellence</span>
-                      </div>
-                    </div>
-                  </div>
+          <div className="relative z-10 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+            {/* Left Column - Main Content */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="h-6 w-0.5 rounded-full bg-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
+                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-200">
+                  Kinyui Boys Senior School
+                </h2>
+              </div>
 
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-2xl border border-blue-200 bg-blue-100/20 p-2 backdrop-blur-md">
-                      <IoTrophyOutline className="text-xl sm:text-2xl md:text-3xl text-blue-300" />
-                    </div>
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight drop-shadow-lg">
-                      Achievements & <span className="bg-gradient-to-r from-blue-200 to-blue-100 bg-clip-text text-transparent">Honors</span>
-                    </h1>
-                  </div>
-                  <p className="mt-5 max-w-2xl text-base leading-7 text-white/80 sm:text-lg">
-                    Celebrating excellence in academics, sports, arts, and leadership. Proud moments that define the Kinyui Boys Senior School legacy.
-                  </p>
+              <div className="flex items-center gap-2">
+                <div className="rounded-xl border border-blue-200 bg-blue-100/20 p-1.5 backdrop-blur-md">
+                  <IoTrophyOutline className="text-base text-blue-300" />
                 </div>
+                <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                  Achievements & <span className="bg-gradient-to-r from-blue-200 to-blue-100 bg-clip-text text-transparent">Honors</span>
+                </h1>
+              </div>
+              
+              <p className="max-w-xl text-xs leading-relaxed text-white/80 sm:text-sm">
+                Celebrating excellence in academics, sports, arts, and leadership. Proud moments that define the Kinyui Boys legacy.
+              </p>
 
-                <div className="flex flex-nowrap items-center gap-2 sm:gap-3">
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <button
+                  onClick={refreshData}
+                  disabled={refreshing}
+                  className="flex items-center justify-center gap-1.5 bg-blue-200/20 backdrop-blur-xl border border-blue-200 h-8 px-3 rounded-xl font-bold text-[9px] tracking-wider text-white hover:bg-blue-300/30 transition-all disabled:opacity-70"
+                >
+                  {refreshing ? (
+                    <>
+                      <svg className="animate-spin h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span>REFRESHING...</span>
+                    </>
+                  ) : (
+                    <>
+                      <FiRotateCw className="text-xs" />
+                      <span>REFRESH</span>
+                    </>
+                  )}
+                </button>
+
+                <div className="flex bg-blue-200/20 backdrop-blur-xl rounded-xl p-0.5 border border-blue-200 h-8 items-center">
                   <button
-                    onClick={refreshData}
-                    disabled={refreshing}
-                    className="flex items-center justify-center gap-2 bg-blue-200/20 backdrop-blur-xl border border-blue-200 h-10 px-4 sm:px-5 rounded-2xl font-bold text-[10px] sm:text-xs tracking-widest text-white hover:bg-blue-300/30 transition-all disabled:opacity-70 disabled:cursor-not-allowed shrink-0"
+                    onClick={() => setViewMode('grid')}
+                    className={`h-7 w-7 flex items-center justify-center rounded-lg transition-all ${
+                      viewMode === 'grid' ? 'bg-white text-blue-900 shadow-lg' : 'text-white/60 hover:text-white'
+                    }`}
                   >
-                    {refreshing ? (
-                      <>
-                        <svg className="animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <span>REFRESHING...</span>
-                      </>
-                    ) : (
-                      <>
-                        <FiRotateCw className="text-sm sm:text-base" />
-                        <span>REFRESH</span>
-                      </>
-                    )}
+                    <FiGrid size={14} />
                   </button>
-
-                  <div className="flex bg-blue-200/20 backdrop-blur-xl rounded-2xl p-1 border border-blue-200 h-12 items-center">
-                    <button
-                      onClick={() => setViewMode('grid')}
-                      className={`h-8 w-8 flex items-center justify-center rounded-xl transition-all ${
-                        viewMode === 'grid' ? 'bg-white text-blue-900 shadow-lg' : 'text-white/60 hover:text-white'
-                      }`}
-                    >
-                      <FiGrid size={16} className="sm:size-[18px]" />
-                    </button>
-                    <button
-                      onClick={() => setViewMode('list')}
-                      className={`h-8 w-8 flex items-center justify-center rounded-xl transition-all ${
-                        viewMode === 'list' ? 'bg-white text-blue-900 shadow-lg' : 'text-white/60 hover:text-white'
-                      }`}
-                    >
-                      <FiList size={16} className="sm:size-[18px]" />
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => setViewMode('list')}
+                    className={`h-7 w-7 flex items-center justify-center rounded-lg transition-all ${
+                      viewMode === 'list' ? 'bg-white text-blue-900 shadow-lg' : 'text-white/60 hover:text-white'
+                    }`}
+                  >
+                    <FiList size={14} />
+                  </button>
                 </div>
               </div>
             </div>
 
-            <div className="border-t border-white/10 p-0 pt-6 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
-              <div className="mb-4 sm:mb-6 px-1">
-                <p className="text-white/75 text-xs sm:text-base font-medium leading-relaxed sm:leading-loose">
-                  <span className="text-white font-black text-base sm:text-xl md:text-2xl underline decoration-[#f2c357]/50 underline-offset-4 mr-1">
-                    {totalAchievements}
-                  </span>
-                  <span className="tracking-tight sm:tracking-normal">achievements across</span>
-                  <span className="text-white font-black text-base sm:text-xl md:text-2xl underline decoration-[#fff3c4]/40 underline-offset-4 ml-1 mr-1">
-                    {Object.keys(achievementsByCategory).length}
-                  </span>
-                  <span className="tracking-tight sm:tracking-normal">categories</span>
+            {/* Right Column - Stats Cards (Streamlined) */}
+            <div className="border-t border-white/10 pt-3 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+              <div className="mb-2">
+                <p className="text-white/70 text-xs font-medium">
+                  <span className="text-white font-black text-base mr-1">{totalAchievements}</span>
+                  achievements across
+                  <span className="text-white font-black text-base mx-1">{Object.keys(achievementsByCategory).length}</span>
+                  categories
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
-                <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                  <p className="text-[10px] sm:text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Total</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-black text-white">{totalAchievements}</p>
+              <div className="grid grid-cols-3 gap-2">
+                <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+                  <p className="text-[8px] font-bold text-white/40 uppercase tracking-wider mb-0.5">Total</p>
+                  <p className="text-sm font-black text-white">{totalAchievements}</p>
                 </div>
-                <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                  <p className="text-[10px] sm:text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Featured</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-black text-white">{featuredCount}</p>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+                  <p className="text-[8px] font-bold text-white/40 uppercase tracking-wider mb-0.5">Featured</p>
+                  <p className="text-sm font-black text-white">{featuredCount}</p>
                 </div>
-                <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                  <p className="text-[10px] sm:text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Mean Score</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-black text-white">{schoolStats?.meanScore?.toFixed(2) || '—'}</p>
-                </div>
-                <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                  <p className="text-[10px] sm:text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Target</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-black text-white">{schoolStats?.targetMean?.toFixed(2) || '—'}</p>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+                  <p className="text-[8px] font-bold text-white/40 uppercase tracking-wider mb-0.5">Mean Score</p>
+                  <p className="text-sm font-black text-white">{schoolStats?.meanScore?.toFixed(2) || '—'}</p>
                 </div>
               </div>
 
               {schoolStats?.slogan && (
-                <div className="mt-4 text-xs sm:text-sm text-white/70">
+                <div className="mt-2 text-[10px] text-white/60">
                   <span className="inline-flex items-center gap-1">
-                    <IoSparkles className="text-[#f2c357]" size={14} />
-                    "{schoolStats?.slogan}" — {schoolStats?.sloganAuthor || 'School Motto'}
+                    <IoSparkles className="text-[#f2c357]" size={10} />
+                    "{schoolStats?.slogan}"
                   </span>
                 </div>
               )}
