@@ -634,79 +634,101 @@ export default function KinyuiAchievements() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-6">
       <Toaster position="top-right" richColors />
 
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="w-full md:w-[85%] mx-auto space-y-6">
 {/* Hero Section */}
-<div className="mx-auto w-full lg:w-[90%] relative overflow-hidden rounded-[2rem] border border-white/5 bg-[#1a1412] p-6 md:p-14 text-white shadow-2xl">
-  {/* Modern Ambient Blobs */}
-  <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-600/10 blur-[120px] rounded-full -mr-64 -mt-64" />
-  <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-900/20 blur-[120px] rounded-full -ml-64 -mb-64" />
+<div className="relative mx-auto w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#17110f] p-5 md:p-10 text-white shadow-xl">
+  {/* Ambient Blobs */}
+  <div className="absolute -right-40 -top-40 h-[360px] w-[360px] rounded-full bg-amber-500/10 blur-[100px]" />
+  <div className="absolute -bottom-40 -left-40 h-[360px] w-[360px] rounded-full bg-orange-800/20 blur-[100px]" />
 
-  <div className="relative z-10 grid gap-12 lg:grid-cols-[1.2fr_0.8fr] items-center">
-    <div className="space-y-8">
+  <div className="relative z-10 grid items-center gap-8 lg:grid-cols-[1.25fr_0.75fr]">
+    <div className="space-y-6">
       <div>
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
-          <IoTrophyOutline className="text-amber-500 text-lg" />
-          <span className="text-amber-200 text-xs font-bold uppercase tracking-widest">Excellence Unveiled</span>
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1">
+          <IoTrophyOutline className="text-base text-amber-400" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-200">
+            Excellence Unveiled
+          </span>
         </div>
-        
-        <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9]">
-          Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-amber-500">Achievements</span>
+
+        <h1 className="text-4xl font-black leading-[0.95] tracking-tight md:text-6xl">
+          Our{" "}
+          <span className="bg-gradient-to-r from-rose-400 to-amber-400 bg-clip-text text-transparent">
+            Achievements
+          </span>
         </h1>
-        
-        <p className="text-stone-400 text-lg md:text-xl font-medium mt-6 max-w-lg leading-relaxed">
-         Celebrating Kinyui Boys Senior School's commitment to <span className="text-white">holistic excellence</span> across academics, sports, and cultural leadership.
+
+        <p className="mt-4 max-w-xl text-sm font-medium leading-7 text-stone-400 md:text-base">
+          Celebrating Kinyui Boys Senior School's commitment to{" "}
+          <span className="text-white">holistic excellence</span> across academics,
+          sports, and cultural leadership.
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-4">
-        <button
-          onClick={refreshData}
-          disabled={refreshing}
-          className="group flex items-center gap-3 px-8 py-4 bg-white text-black rounded-2xl font-bold text-sm hover:bg-amber-400 transition-all duration-300 disabled:opacity-50"
-        >
-          {refreshing ? (
-            <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-            </svg>
-          ) : (
-            <FiRotateCw className="group-hover:rotate-180 transition-transform duration-500" />
-          )}
-          {refreshing ? "Updating..." : "Refresh Stats"}
-        </button>
-      </div>
+      <button
+        onClick={refreshData}
+        disabled={refreshing}
+        className="group inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-xs font-bold text-black transition-all duration-300 hover:bg-amber-400 disabled:opacity-50"
+      >
+        {refreshing ? (
+          <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            />
+          </svg>
+        ) : (
+          <FiRotateCw className="transition-transform duration-500 group-hover:rotate-180" />
+        )}
+        {refreshing ? "Updating..." : "Refresh Stats"}
+      </button>
     </div>
 
-    {/* Right Stats - Glassmorphism Card */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-      <div className="group bg-white/[0.03] backdrop-blur-xl rounded-[2rem] border border-white/10 p-8 transition-hover duration-500 hover:bg-white/[0.05]">
-        <div className="flex items-center justify-between mb-4">
-          <div className="p-3 bg-amber-500/10 rounded-2xl">
-            <IoMedalOutline className="text-amber-400 text-3xl" />
+    {/* Compact Stats */}
+    <div className="grid grid-cols-2 gap-3 lg:grid-cols-1">
+      <div className="group rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl transition-all duration-300 hover:bg-white/[0.07]">
+        <div className="mb-4 flex items-center justify-between">
+          <div className="rounded-xl bg-amber-400/10 p-2.5">
+            <IoMedalOutline className="text-2xl text-amber-400" />
           </div>
-          <span className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Lifetime</span>
+          <span className="text-[9px] font-bold uppercase tracking-widest text-stone-500">
+            Lifetime
+          </span>
         </div>
-        <div>
-          <p className="text-stone-400 text-xs font-bold uppercase tracking-wider mb-1">Total Achievements</p>
-          <p className="text-6xl font-black text-white tabular-nums tracking-tighter">
-            {totalAchievements}
-          </p>
-        </div>
+
+        <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-stone-400">
+          Total Achievements
+        </p>
+        <p className="text-4xl font-black tracking-tight text-white md:text-5xl">
+          {totalAchievements}
+        </p>
       </div>
 
-      <div className="group bg-white/[0.03] backdrop-blur-xl rounded-[2rem] border border-white/10 p-8 transition-hover duration-500 hover:bg-white/[0.05]">
-        <div className="flex items-center justify-between mb-4">
-          <div className="p-3 bg-white/5 rounded-2xl">
-            <IoTrophyOutline className="text-white/70 text-3xl" />
+      <div className="group rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl transition-all duration-300 hover:bg-white/[0.07]">
+        <div className="mb-4 flex items-center justify-between">
+          <div className="rounded-xl bg-white/5 p-2.5">
+            <IoTrophyOutline className="text-2xl text-white/70" />
           </div>
-          <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest">Featured</span>
+          <span className="text-[9px] font-bold uppercase tracking-widest text-amber-400">
+            Featured
+          </span>
         </div>
-        <div>
-          <p className="text-stone-400 text-xs font-bold uppercase tracking-wider mb-1">Honors & Awards</p>
-          <p className="text-6xl font-black text-amber-400 tabular-nums tracking-tighter">
-            {featuredCount}
-          </p>
-        </div>
+
+        <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-stone-400">
+          Honors & Awards
+        </p>
+        <p className="text-4xl font-black tracking-tight text-amber-400 md:text-5xl">
+          {featuredCount}
+        </p>
       </div>
     </div>
   </div>
