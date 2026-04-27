@@ -96,7 +96,6 @@ const CONTACT_INFO = {
   ],
   phone: [
     { icon: FiPhone, text: '+254 733 587223', detail: 'Main Office', href: 'tel:0733587223' },
-    { icon: FiPhone, text: '+254 710 894150', detail: 'Admissions', href: 'tel:0710894150' }
   ],
   email: [
     { icon: FiMail, text: 'kinyuiboys2015@gmail.com', detail: 'General Inquiries', href: 'mailto:kinyuiboys2015@gmail.com' },
@@ -106,49 +105,9 @@ const CONTACT_INFO = {
   ]
 };
 
-// School Stats
-const SCHOOL_STATS = [
-  { value: 45, label: 'Qualified Teachers', icon: FiUsers, trend: '+5' },
-  { value: 400, label: 'Enrolled Students', icon: FiBookOpen, trend: '+12%' },
-  { value: 60, label: 'Pass Rate', icon: FiTrendingUp, trend: '+3%' },
-  { value: 80, label: 'Years of Excellence', icon: FiAward, trend: 'Since 1976' },
-];
 
-// ----------------------------------------------------------------------
-// Components
-// ----------------------------------------------------------------------
 
-// Modern Stat Card
-const StatCard = ({ value, label, icon: Icon, trend }) => {
-  const [count, setCount] = useState(0);
-  
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (count < value) {
-        setCount(prev => Math.min(prev + Math.ceil(value / 40), value));
-      }
-    }, 20);
-    return () => clearTimeout(timer);
-  }, [count, value]);
 
-  return (
-    <div className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-4 text-center hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-amber-500/50">
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-500/0 to-amber-500/0 group-hover:from-amber-500/5 group-hover:to-amber-500/10 rounded-2xl transition-all duration-500" />
-      <div className="relative z-10">
-        <div className="flex justify-center mb-3">
-          <div className="p-2.5 bg-gradient-to-br from-amber-500 to-teal-600 rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-            <Icon className="text-white text-xl" />
-          </div>
-        </div>
-        <p className="text-3xl font-black text-white">{count}+</p>
-        <p className="text-xs text-amber-400 font-bold uppercase tracking-wide mt-1">{label}</p>
-        {trend && (
-          <p className="text-[9px] text-white/40 mt-1 font-mono">{trend}</p>
-        )}
-      </div>
-    </div>
-  );
-};
 
 // Brand Section - Redesigned
 const BrandSection = () => (
