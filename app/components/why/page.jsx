@@ -2043,17 +2043,17 @@ const getSchoolStats = () => {
   </div>
 </section>
 
-{/* CBC Framework - Structural Shuffle */}
-<section className="relative py-16 sm:py-24 text-[#0a0a0b] overflow-hidden bg-slate-200">
-  {/* Ambient background glow */}
-  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#312e81_0%,transparent_50%)] opacity-40" />
+{/* CBC Framework - Clean Light Version */}
+<section className="relative py-16 sm:py-24 text-gray-900 overflow-hidden bg-white">
+  {/* Subtle ambient background */}
+  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#6366f1_0%,transparent_50%)] opacity-[0.03]" />
 
   <div className="w-full md:w-4/5 lg:w-3/5 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     
     {/* 1. THE PILLARS (Pathways First) */}
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-16">
       {/* Dynamic Title Card - Integrated into the Grid */}
-      <div className="lg:col-span-1 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[2rem] p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/20">
+      <div className="lg:col-span-1 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[2rem] p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/10">
         <div>
           <FiBookOpen className="text-4xl text-white/90 mb-6" />
           <h3 className="text-3xl font-black text-white leading-tight">
@@ -2071,26 +2071,26 @@ const getSchoolStats = () => {
       {pathways.map((path, idx) => {
         const PathIcon = path.icon;
         return (
-          <div key={idx} className="lg:col-span-1 bg-slate-900/40 backdrop-blur-md border border-white/5 rounded-[2rem] p-7 hover:bg-slate-800/60 transition-all group">
-            <div className={`w-12 h-12 rounded-2xl bg-gradient-to-r ${path.color} flex items-center justify-center mb-6 shadow-lg shadow-black/20`}>
+          <div key={idx} className="lg:col-span-1 bg-white border border-gray-200 rounded-[2rem] p-7 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-500/5 transition-all group">
+            <div className={`w-12 h-12 rounded-2xl bg-gradient-to-r ${path.color} flex items-center justify-center mb-6 shadow-lg shadow-black/10`}>
               <PathIcon className="text-white text-xl" />
             </div>
             
-            <h4 className="text-xl font-bold text-white mb-2">{path.name}</h4>
-            <p className="text-slate-400 text-xs leading-relaxed mb-6 line-clamp-3">
+            <h4 className="text-xl font-bold text-gray-900 mb-2">{path.name}</h4>
+            <p className="text-gray-500 text-xs leading-relaxed mb-6 line-clamp-3">
               {path.description}
             </p>
 
             <div className="space-y-2 mt-auto">
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Key Careers</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Key Careers</p>
               <div className="flex flex-wrap gap-2">
                 {path.careers.slice(0, 2).map((career, i) => (
-                  <span key={i} className="text-[11px] text-indigo-400 font-bold"># {career}</span>
+                  <span key={i} className="text-[11px] text-indigo-600 font-bold"># {career}</span>
                 ))}
               </div>
               <button 
                 onClick={() => openModal(path)}
-                className="pt-4 flex items-center gap-2 text-xs font-bold text-white group-hover:text-indigo-400 transition-colors"
+                className="pt-4 flex items-center gap-2 text-xs font-bold text-gray-700 group-hover:text-indigo-600 transition-colors"
               >
                 Explore Track <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
               </button>
@@ -2104,12 +2104,12 @@ const getSchoolStats = () => {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
       
       {/* Core Subjects Grid - Compact Bento */}
-      <div className="lg:col-span-8 bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-8">
+      <div className="lg:col-span-8 bg-white border border-gray-200 rounded-[2.5rem] p-8 shadow-sm">
         <div className="flex items-center gap-3 mb-8">
-          <div className="p-2 bg-amber-500/10 rounded-lg">
-            <IoSparkles className="text-amber-500" />
+          <div className="p-2 bg-amber-100 rounded-lg">
+            <IoSparkles className="text-amber-600" />
           </div>
-          <h4 className="font-bold text-white uppercase tracking-widest text-sm">Mandatory Core Subjects</h4>
+          <h4 className="font-bold text-gray-800 uppercase tracking-widest text-sm">Mandatory Core Subjects</h4>
         </div>
         
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
@@ -2127,9 +2127,9 @@ const getSchoolStats = () => {
           ].map((subj, i) => {
             const SubjIcon = subj.icon;
             return (
-              <div key={i} className="flex flex-col items-center justify-center p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-white/20 transition-all">
-                <SubjIcon className="text-slate-400 mb-2" />
-                <span className="text-[10px] font-bold text-center text-slate-300">{subj.name}</span>
+              <div key={i} className="flex flex-col items-center justify-center p-4 rounded-2xl bg-gray-50 border border-gray-100 hover:border-indigo-200 hover:bg-white transition-all">
+                <SubjIcon className="text-gray-500 mb-2 group-hover:text-indigo-500 transition-colors" />
+                <span className="text-[10px] font-bold text-center text-gray-600">{subj.name}</span>
               </div>
             );
           })}
@@ -2137,20 +2137,20 @@ const getSchoolStats = () => {
       </div>
 
       {/* 3. CONTEXTUAL OVERVIEW (The "Why" - Moved to Side/Bottom) */}
-      <div className="lg:col-span-4 flex flex-col justify-center p-8 bg-indigo-500/5 border border-indigo-500/10 rounded-[2.5rem] relative overflow-hidden">
-        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-indigo-500/10 blur-3xl rounded-full" />
-        <h5 className="text-lg font-bold text-white mb-4">Framework Overview</h5>
-        <p className="text-sm text-slate-400 leading-relaxed font-medium">
+      <div className="lg:col-span-4 flex flex-col justify-center p-8 bg-indigo-50/50 border border-indigo-100 rounded-[2.5rem] relative overflow-hidden">
+        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-indigo-200/20 blur-3xl rounded-full" />
+        <h5 className="text-lg font-bold text-gray-900 mb-4">Framework Overview</h5>
+        <p className="text-sm text-gray-600 leading-relaxed font-medium">
           The Competency Based Curriculum (CBC) shifts the focus from "what you know" to "what you can do." 
           Every student follows a core foundation before specializing in their chosen pathway.
         </p>
         <div className="mt-8 flex items-center gap-4">
           <div className="flex -space-x-2">
             {[1, 2, 3].map(i => (
-              <div key={i} className="w-8 h-8 rounded-full border-2 border-[#0a0a0b] bg-slate-800" />
+              <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-indigo-100 shadow-sm" />
             ))}
           </div>
-          <span className="text-[10px] font-bold uppercase text-indigo-400">Join 500+ Students</span>
+          <span className="text-[10px] font-bold uppercase text-indigo-600">Join {studentCount}+ Students</span>
         </div>
       </div>
 
