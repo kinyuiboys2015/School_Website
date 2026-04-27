@@ -121,7 +121,7 @@ const KinyuiBoys404 = () => {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'contain',
-            opacity: 0.40, // Reduced opacity for subtle effect
+            opacity: 0.60, // Reduced opacity for subtle effect
           }}
         ></div>
         
