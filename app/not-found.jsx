@@ -105,15 +105,15 @@ const KinyuiBoys404 = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 overflow-hidden relative font-sans text-slate-900 antialiased">
       
-      {/* Background Logo with Gradient Overlay */}
-      <div className="absolute inset-0 pointer-events-none z-0">
+      {/* Background Logo with Gradient Overlay - FIXED FOR ALL SCREENS */}
+      <div className="fixed inset-0 pointer-events-none z-0">
         {/* Gradient overlay on top of logo */}
         <div className="absolute inset-0 bg-gradient-to-br from-amber-50/90 via-orange-50/85 to-yellow-50/90 z-10"></div>
         
         {/* Second gradient overlay for better blending */}
         <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-amber-100/30 z-10"></div>
         
-        {/* The logo image */}
+        {/* The logo image - responsive sizing */}
         <div 
           className="absolute inset-0 flex items-center justify-center z-0"
           style={{
@@ -121,21 +121,9 @@ const KinyuiBoys404 = () => {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'contain',
-            opacity: 0.70, // Reduced opacity for subtle effect
+            opacity: 0.70,
           }}
         ></div>
-        
-        {/* Alternative: If you want the logo to repeat as a pattern */}
-        {/* <div 
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: `url('/kbss.png')`,
-            backgroundPosition: 'center',
-            backgroundRepeat: 'repeat',
-            backgroundSize: '200px',
-            opacity: 0.08,
-          }}
-        ></div> */}
       </div>
 
       {/* Decorative Background Elements */}
@@ -204,7 +192,7 @@ const KinyuiBoys404 = () => {
                     rounded-xl md:rounded-2xl
                     transition-all duration-300
                     shadow-lg shadow-amber-200/50
-                    hover:shadow-xl hover:scale-101
+                    hover:shadow-xl
                     active:scale-99
                   "
                 >
@@ -239,7 +227,7 @@ const KinyuiBoys404 = () => {
               </div>
             </div>
 
-            {/* Directory Section - Redesigned */}
+            {/* Directory Section - Redesigned (NO SCALING EFFECTS) */}
             <div className="w-full lg:w-1/2 order-2 lg:order-1">
               <div className="relative h-full">
                 <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-tr from-amber-100 via-white to-orange-100 rounded-[2rem] sm:rounded-[3rem] blur-xl opacity-60 -z-10"></div>
@@ -271,7 +259,7 @@ const KinyuiBoys404 = () => {
                     </div>
                   </div>
 
-                  {/* Modern grid layout with card design */}
+                  {/* Modern grid layout with card design - NO SCALING EFFECTS */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                     {quickLinks.map((link, idx) => {
                       const Icon = link.icon;
@@ -288,8 +276,7 @@ const KinyuiBoys404 = () => {
                             border border-amber-100
                             bg-white
                             transition-all duration-300
-                            hover:shadow-lg hover:scale-[1.02]
-                            active:scale-[0.98]
+                            hover:shadow-lg
                             cursor-pointer
                           "
                         >
@@ -298,14 +285,12 @@ const KinyuiBoys404 = () => {
                           
                           <div className="relative p-4">
                             <div className="flex items-start gap-3">
-                              {/* Icon with gradient background */}
+                              {/* Icon with gradient background - NO SCALING ON HOVER */}
                               <div className={`
                                 p-2.5 rounded-lg
                                 bg-gradient-to-br ${link.color}
                                 shadow-md
                                 transition-all duration-300
-                                group-hover:scale-110
-                                group-hover:shadow-lg
                               `}>
                                 <Icon className="text-white text-lg" />
                               </div>
@@ -375,7 +360,6 @@ const KinyuiBoys404 = () => {
                               hover:bg-white/20
                               hover:border-amber-400
                               transition-all duration-300
-                              hover:scale-101
                             "
                           >
                             <FiMail className="text-amber-300" />
