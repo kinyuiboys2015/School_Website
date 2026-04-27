@@ -186,6 +186,50 @@ const BrandSection = () => (
   </div>
 );
 
+
+
+
+const NewsletterForm = ({ email, setEmail, isSubmitting, showSuccess, errorMsg, handleSubscribe }) => (
+  <div className="p-5 bg-gradient-to-br from-emerald-950/50 to-teal-950/50 rounded-xl border border-emerald-500/20">
+    <div className="text-center mb-4">
+      <div className="inline-flex p-2 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full mb-3">
+        <FiBell className="text-white text-lg" />
+      </div>
+      <h4 className="text-lg font-semibold text-white">School Newsletter</h4>
+      <p className="text-white text-xs mt-1">Get academic events & announcements</p>
+    </div>
+    <form onSubmit={handleSubscribe} className="space-y-3">
+      <div className="relative">
+        <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-400 text-sm" />
+        <input
+          type="email"
+          placeholder="your@email.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full pl-9 pr-3 py-2 bg-black/30 border border-emerald-500/30 rounded-lg text-white placeholder-emerald-300/40 focus:outline-none focus:border-emerald-400 transition-colors text-sm"
+        />
+      </div>
+      <button
+        type="submit"
+        disabled={isSubmitting || !email}
+        className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 disabled:opacity-50 text-white py-2 rounded-lg font-medium text-sm hover:shadow-lg transition-all"
+      >
+        {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+      </button>
+    </form>
+    {showSuccess && (
+      <div className="mt-3 p-2 bg-emerald-500/20 border border-emerald-500 rounded-lg">
+        <p className="text-emerald-300 text-xs text-center">✓ Successfully subscribed!</p>
+      </div>
+    )}
+    {errorMsg && (
+      <div className="mt-3 p-2 bg-red-500/20 border border-red-500 rounded-lg text-red-300 text-xs text-center">
+        {errorMsg}
+      </div>
+    )}
+  </div>
+);
 // Contact Info Section - Modern Grid Layout
 const ContactSection = () => (
   <div className="space-y-4">
