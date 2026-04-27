@@ -52,7 +52,7 @@ import { FaLinkedin, FaTiktok } from 'react-icons/fa';
 
 // Main Navigation Links
 const MAIN_NAVIGATION = [
-  { name: 'Home', href: '/', icon: FiHome, color: 'emerald' },
+  { name: 'Home', href: '/', icon: FiHome, color: 'amber' },
   { name: 'About Us', href: '/pages/AboutUs', icon: FiUsers, color: 'blue' },
   { name: 'Admissions', href: '/pages/admissions', icon: FiUserCheck, color: 'purple' },
   { name: 'Academics', href: '/pages/academics', icon: FiBook, color: 'amber' },
@@ -132,16 +132,16 @@ const StatCard = ({ value, label, icon: Icon, trend }) => {
   }, [count, value]);
 
   return (
-    <div className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-4 text-center hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-emerald-500/50">
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 to-emerald-500/0 group-hover:from-emerald-500/5 group-hover:to-emerald-500/10 rounded-2xl transition-all duration-500" />
+    <div className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-4 text-center hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-amber-500/50">
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-500/0 to-amber-500/0 group-hover:from-amber-500/5 group-hover:to-amber-500/10 rounded-2xl transition-all duration-500" />
       <div className="relative z-10">
         <div className="flex justify-center mb-3">
-          <div className="p-2.5 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+          <div className="p-2.5 bg-gradient-to-br from-amber-500 to-teal-600 rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300">
             <Icon className="text-white text-xl" />
           </div>
         </div>
         <p className="text-3xl font-black text-white">{count}+</p>
-        <p className="text-xs text-emerald-400 font-bold uppercase tracking-wide mt-1">{label}</p>
+        <p className="text-xs text-amber-400 font-bold uppercase tracking-wide mt-1">{label}</p>
         {trend && (
           <p className="text-[9px] text-white/40 mt-1 font-mono">{trend}</p>
         )}
@@ -155,8 +155,8 @@ const BrandSection = () => (
   <div className="space-y-6">
     <div className="flex flex-col items-start gap-4">
       <div className="relative group">
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
-        <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-600 to-teal-700 p-0.5">
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-amber-500 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-amber-600 to-teal-700 p-0.5">
           <div className="w-full h-full rounded-2xl overflow-hidden bg-gray-900 flex items-center justify-center">
             <img
               src="/kinyui.png"
@@ -165,27 +165,21 @@ const BrandSection = () => (
             />
           </div>
         </div>
-        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-gray-900" />
+        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-amber-500 rounded-full border-2 border-gray-900" />
       </div>
       
       <div>
         <h3 className="text-2xl font-black text-white tracking-tight">
-          Kinyui Boys <span className="text-emerald-400">Senior School</span>
+          Kinyui Boys <span className="text-amber-400">Senior School</span>
         </h3>
         <p className="text-white/50 text-xs font-bold uppercase tracking-wider mt-1">
-          Excellence in Education • Discipline • Integrity
+          Soaring To Excellence in 
         </p>
       </div>
     </div>
+      
     
-    {/* Stats Grid */}
-    <div className="grid grid-cols-2 gap-3">
-      {SCHOOL_STATS.map((stat, idx) => (
-        <StatCard key={idx} {...stat} />
-      ))}
-    </div>
-    
-    <p className="text-white/60 text-sm leading-relaxed border-l-2 border-emerald-500 pl-4 italic">
+    <p className="text-white/60 text-sm leading-relaxed border-l-2 border-amber-500 pl-4 italic">
       "An Extra County learning institution dedicated to academic excellence, 
       holistic development, and nurturing future leaders since 1976."
     </p>
@@ -196,7 +190,7 @@ const BrandSection = () => (
 const ContactSection = () => (
   <div className="space-y-4">
     <div className="flex items-center gap-2 pb-3 border-b border-white/10">
-      <div className="p-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg">
+      <div className="p-1.5 bg-gradient-to-r from-amber-500 to-teal-600 rounded-lg">
         <FiMapPin className="text-white text-sm" />
       </div>
       <h4 className="text-base font-bold text-white uppercase tracking-wide">Get in Touch</h4>
@@ -209,8 +203,8 @@ const ContactSection = () => (
           const Icon = item.icon;
           return (
             <a key={idx} href={item.href} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 p-2 rounded-xl hover:bg-white/5 transition-all group">
-              <div className="p-2 bg-emerald-500/20 rounded-lg group-hover:bg-emerald-500/30 transition-colors">
-                <Icon className="text-emerald-400 text-sm" />
+              <div className="p-2 bg-amber-500/20 rounded-lg group-hover:bg-amber-500/30 transition-colors">
+                <Icon className="text-amber-400 text-sm" />
               </div>
               <div>
                 <p className="text-white font-medium text-sm">{item.text}</p>
@@ -277,7 +271,7 @@ const ContactSection = () => (
 );
 
 // Modern Link Group Component
-const LinkGroup = ({ title, icon: Icon, links, gradient = 'from-emerald-500 to-teal-600' }) => (
+const LinkGroup = ({ title, icon: Icon, links, gradient = 'from-amber-500 to-teal-600' }) => (
   <div className="space-y-4">
     <div className="flex items-center gap-2 pb-3 border-b border-white/10">
       <div className={`p-1.5 bg-gradient-to-r ${gradient} rounded-lg`}>
@@ -295,13 +289,13 @@ const LinkGroup = ({ title, icon: Icon, links, gradient = 'from-emerald-500 to-t
             className="group flex items-center justify-between p-2 rounded-xl hover:bg-white/5 transition-all duration-300"
           >
             <div className="flex items-center gap-3">
-              <LinkIcon className="text-white/40 text-sm group-hover:text-emerald-400 transition-colors" />
+              <LinkIcon className="text-white/40 text-sm group-hover:text-amber-400 transition-colors" />
               <span className="text-white/70 text-sm font-medium group-hover:text-white transition-colors">
                 {link.name}
               </span>
             </div>
             {link.badge && (
-              <span className="text-[9px] font-black bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">
+              <span className="text-[9px] font-black bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full">
                 {link.badge}
               </span>
             )}
@@ -346,12 +340,12 @@ const SocialLinksGroup = () => (
 
 // Newsletter Section - Redesigned
 const NewsletterSection = ({ email, setEmail, isSubmitting, showSuccess, errorMsg, handleSubscribe }) => (
-  <div className="relative bg-gradient-to-br from-emerald-900/50 via-gray-900 to-teal-900/50 rounded-2xl p-6 border border-emerald-500/20 overflow-hidden">
-    <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl" />
+  <div className="relative bg-gradient-to-br from-amber-900/50 via-gray-900 to-teal-900/50 rounded-2xl p-6 border border-amber-500/20 overflow-hidden">
+    <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl" />
     <div className="absolute bottom-0 left-0 w-32 h-32 bg-teal-500/10 rounded-full blur-3xl" />
     
     <div className="relative z-10 text-center mb-4">
-      <div className="inline-flex p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl mb-3 shadow-lg">
+      <div className="inline-flex p-2 bg-gradient-to-r from-amber-500 to-teal-600 rounded-xl mb-3 shadow-lg">
         <FiBell className="text-white text-lg" />
       </div>
       <h4 className="text-lg font-black text-white">Stay Updated</h4>
@@ -369,13 +363,13 @@ const NewsletterSection = ({ email, setEmail, isSubmitting, showSuccess, errorMs
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full pl-10 pr-3 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+          className="w-full pl-10 pr-3 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all text-sm"
         />
       </div>
       <button
         type="submit"
         disabled={isSubmitting || !email}
-        className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 disabled:opacity-50 text-white py-3 rounded-xl font-bold text-sm hover:shadow-lg transition-all active:scale-95"
+        className="w-full bg-gradient-to-r from-amber-500 to-teal-600 disabled:opacity-50 text-white py-3 rounded-xl font-bold text-sm hover:shadow-lg transition-all active:scale-95"
       >
         {isSubmitting ? (
           <div className="flex items-center justify-center gap-2">
@@ -391,9 +385,9 @@ const NewsletterSection = ({ email, setEmail, isSubmitting, showSuccess, errorMs
     {(showSuccess || errorMsg) && (
       <div className="mt-3 relative z-10">
         {showSuccess && (
-          <div className="p-2 bg-emerald-500/20 border border-emerald-500 rounded-lg">
-            <p className="text-emerald-300 text-xs text-center flex items-center justify-center gap-1">
-              <FiCheckCircle className="text-emerald-400 text-xs" />
+          <div className="p-2 bg-amber-500/20 border border-amber-500 rounded-lg">
+            <p className="text-amber-300 text-xs text-center flex items-center justify-center gap-1">
+              <FiCheckCircle className="text-amber-400 text-xs" />
               Successfully subscribed!
             </p>
           </div>
@@ -429,7 +423,7 @@ const ScrollToTop = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 right-6 p-3 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full shadow-lg z-50 hover:scale-110 transition-all duration-300 group"
+      className="fixed bottom-6 right-6 p-3 bg-gradient-to-r from-amber-500 to-teal-600 rounded-full shadow-lg z-50 hover:scale-110 transition-all duration-300 group"
     >
       <FiArrowUp className="text-white text-xl group-hover:-translate-y-1 transition-transform" />
     </button>
@@ -441,7 +435,7 @@ const FooterBottom = ({ currentYear, onShowSitemap, onShowPrivacy }) => (
   <div className="mt-8 pt-6 border-t border-white/10">
     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
       <div className="flex items-center gap-3">
-        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+        <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
         <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
           © {currentYear} Kinyui Boys Senior School
         </p>
@@ -466,7 +460,7 @@ const FooterBottom = ({ currentYear, onShowSitemap, onShowPrivacy }) => (
           href="https://www.linkedin.com/in/emmanuel-makau-40a12028b/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white/50 hover:text-emerald-400 text-xs font-medium transition-colors flex items-center gap-1"
+          className="text-white/50 hover:text-amber-400 text-xs font-medium transition-colors flex items-center gap-1"
         >
           <FiExternalLink size={10} />
           Developed by Emmanuel Makau
@@ -493,7 +487,7 @@ const PrivacyModal = ({ isOpen, onClose }) => {
       <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl max-w-md w-full p-6 animate-in zoom-in-95 duration-300">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold flex items-center gap-2">
-            <FiShield className="text-emerald-400" />
+            <FiShield className="text-amber-400" />
             Privacy Policy
           </h2>
           <button onClick={onClose} className="p-1 hover:bg-white/10 rounded-full transition-colors">
@@ -504,12 +498,12 @@ const PrivacyModal = ({ isOpen, onClose }) => {
           <p>Kinyui Boys Senior School is committed to protecting your privacy and personal information.</p>
           <p>All data is collected and processed in compliance with the Kenyan Data Protection Act (DPA) of 2019.</p>
           <p>We do not share your personal information with third parties without your consent.</p>
-          <div className="mt-4 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
-            <p className="text-emerald-400 text-xs font-bold">Contact DPO:</p>
+          <div className="mt-4 p-3 bg-amber-500/10 rounded-lg border border-amber-500/20">
+            <p className="text-amber-400 text-xs font-bold">Contact DPO:</p>
             <p className="text-white/60 text-xs">dpo@kinyuiboys.ac.ke</p>
           </div>
         </div>
-        <button onClick={onClose} className="mt-4 w-full bg-emerald-600 hover:bg-emerald-700 py-2 rounded-lg font-bold transition-colors">
+        <button onClick={onClose} className="mt-4 w-full bg-amber-600 hover:bg-amber-700 py-2 rounded-lg font-bold transition-colors">
           Close
         </button>
       </div>
@@ -525,7 +519,7 @@ const SitemapModal = ({ isOpen, onClose }) => {
       <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl max-w-md w-full p-6 animate-in zoom-in-95 duration-300">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold flex items-center gap-2">
-            <FiCompass className="text-emerald-400" />
+            <FiCompass className="text-amber-400" />
             Site Map
           </h2>
           <button onClick={onClose} className="p-1 hover:bg-white/10 rounded-full transition-colors">
@@ -534,17 +528,17 @@ const SitemapModal = ({ isOpen, onClose }) => {
         </div>
         <div className="grid grid-cols-2 gap-4 max-h-96 overflow-y-auto">
           <div>
-            <h3 className="text-emerald-400 text-xs font-bold uppercase mb-2">Main</h3>
+            <h3 className="text-amber-400 text-xs font-bold uppercase mb-2">Main</h3>
             {MAIN_NAVIGATION.map((link, idx) => (
-              <a key={idx} href={link.href} onClick={onClose} className="block text-gray-300 hover:text-emerald-400 py-1 text-sm transition-colors">
+              <a key={idx} href={link.href} onClick={onClose} className="block text-gray-300 hover:text-amber-400 py-1 text-sm transition-colors">
                 {link.name}
               </a>
             ))}
           </div>
           <div>
-            <h3 className="text-emerald-400 text-xs font-bold uppercase mb-2">Resources</h3>
+            <h3 className="text-amber-400 text-xs font-bold uppercase mb-2">Resources</h3>
             {QUICK_RESOURCES.slice(0, 5).map((link, idx) => (
-              <a key={idx} href={link.href} onClick={onClose} className="block text-gray-300 hover:text-emerald-400 py-1 text-sm transition-colors">
+              <a key={idx} href={link.href} onClick={onClose} className="block text-gray-300 hover:text-amber-400 py-1 text-sm transition-colors">
                 {link.name}
               </a>
             ))}
@@ -598,7 +592,7 @@ export default function ModernFooter() {
       <footer className="relative bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 overflow-hidden">
         {/* Animated Background */}
         <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 -left-4 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
+          <div className="absolute top-0 -left-4 w-72 h-72 bg-amber-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
           <div className="absolute bottom-0 -right-4 w-72 h-72 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000" />
         </div>
         
@@ -616,7 +610,7 @@ export default function ModernFooter() {
                   title="Quick Navigation" 
                   icon={FiCompass} 
                   links={MAIN_NAVIGATION}
-                  gradient="from-emerald-500 to-teal-600"
+                  gradient="from-amber-500 to-teal-600"
                 />
                 
                 {/* Column 3: Resources & Social */}
