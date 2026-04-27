@@ -1235,15 +1235,41 @@ const ModernSchoolLayout = () => {
             ))}
           </div>
 
-          {/* CTA Row */}
-          <div className="text-center">
-            <button
-              onClick={handleExplorePathways}
-              className="inline-flex items-center gap-2 px-8 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600 hover:from-indigo-700 hover:via-sky-700 hover:to-emerald-700 text-white font-black text-sm tracking-tight transition-all shadow-lg shadow-indigo-600/20 active:scale-[0.99]"
-            >
-              Explore Our Pathways <FiArrowRight className="w-4 h-4" />
-            </button>
-          </div>
+   {/* CTA Narrative Header - Framed by Typography */}
+<div className="mt-16 sm:mt-24 max-w-3xl mx-auto px-4 text-center sm:text-left">
+  
+  {/* Modern Framed Title */}
+  <div className="relative inline-block mb-6">
+    <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-indigo-500/30" />
+    <h3 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tighter uppercase italic">
+      The <span className="text-indigo-600">Pathway</span> Strategy
+    </h3>
+    <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-indigo-500/30" />
+  </div>
+
+  {/* Framed Description without visible div borders */}
+  <div className="relative mt-8 group cursor-default">
+    {/* Subtle Vertical Accent Line */}
+    <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-indigo-500 via-sky-500 to-transparent opacity-40 group-hover:opacity-100 transition-opacity" />
+    
+    <div className="pl-6 sm:pl-10">
+      <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
+        Our curriculum is meticulously structured to move beyond rote learning. 
+        By aligning academic rigor with individual talent discovery, we ensure 
+        that every student finds their unique trajectory toward excellence and 
+        purpose-driven leadership.
+      </p>
+      
+      {/* Ghost-style Action Link (Optional but keeps the logic) */}
+      <div 
+        onClick={handleExplorePathways}
+        className="mt-6 inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-indigo-600 hover:text-sky-600 cursor-pointer transition-colors"
+      >
+        Initiate Discovery <FiArrowRight className="w-4 h-4 translate-y-[-1px]" />
+      </div>
+    </div>
+  </div>
+</div>
         </div>
       </section>
 
