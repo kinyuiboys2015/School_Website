@@ -1873,27 +1873,39 @@ const ModernSchoolLayout = () => {
           {/* REASONS GRID (Shuffled Staggered Layout) */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* MOTTO CARD */}
-            <div className="lg:col-span-1 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[1rem] p-8 text-white flex flex-col justify-between shadow-xl shadow-indigo-200 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-10">
-                <FiStar className="w-32 h-32" />
-              </div>
-              <div className="relative">
-                <span className="text-[10px] font-black uppercase tracking-widest text-indigo-200">
-                  Our Guiding Star
-                </span>
-                <h3 className="mt-4 text-2xl font-black italic leading-tight">
-                  "{motto}"
-                </h3>
-              </div>
-              <div className="mt-12 space-y-4 relative">
-                <div className="h-[1px] bg-white/20 w-full" />
-                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-indigo-100">
-                  <span>Support</span>
-                  <span>Focus</span>
-                  <span>Progress</span>
-                </div>
-              </div>
-            </div>
+         <div className="lg:col-span-1 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[1rem] p-8 text-white flex flex-col justify-between shadow-xl shadow-indigo-200 relative overflow-hidden">
+  {/* Decorative Background Icon */}
+  <div className="absolute top-0 right-0 p-4 opacity-10">
+    <FiPlus className="w-32 h-32 rotate-12" /> {/* Using FiPlus as a minimalist cross */}
+  </div>
+
+  <div className="relative">
+    <div className="flex items-center gap-2 mb-4">
+       <span className="w-8 h-[1px] bg-indigo-300" />
+       <span className="text-[10px] font-black uppercase tracking-widest text-indigo-200">
+         Our Spiritual Foundation
+       </span>
+    </div>
+    
+    {/* The Statement of Faith */}
+    <h3 className="text-2xl font-black italic leading-tight mb-4">
+      "{motto}"
+    </h3>
+    
+    <p className="text-sm font-medium text-indigo-100/90 leading-relaxed max-w-[200px]">
+      Rooted in faith, we believe in <span className="text-white font-black">Jesus Christ</span> as our Lord and Savior, guiding every step of our journey.
+    </p>
+  </div>
+
+  <div className="mt-12 space-y-4 relative">
+    <div className="h-[1px] bg-white/20 w-full" />
+    <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-indigo-100">
+      <span>Faith</span>
+      <span>Wisdom</span>
+      <span>Service</span>
+    </div>
+  </div>
+</div>
 
             {/* DYNAMIC FEATURE CARDS */}
             {whyChooseUs.map((item, idx) => {
