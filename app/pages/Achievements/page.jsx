@@ -588,11 +588,11 @@ export default function KinyuiAchievements() {
         </div>
         
         <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9]">
-          Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">Achievements</span>
+          Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-amber-500">Achievements</span>
         </h1>
         
         <p className="text-stone-400 text-lg md:text-xl font-medium mt-6 max-w-lg leading-relaxed">
-          Celebrating Kinyui Boys Senior School's commitment to <span className="text-white">holistic excellence</span> across academics, sports, and cultural leadership.
+         Celebrating Kinyui Boys Senior School's commitment to <span className="text-white">holistic excellence</span> across academics, sports, and cultural leadership.
         </p>
       </div>
 
