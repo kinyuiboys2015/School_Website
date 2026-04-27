@@ -12,6 +12,7 @@ import {
   FiShield,
   FiStar,
   FiTrendingUp,
+  FiPlus,
   FiGlobe,
   FiMail,
   FiPhone,
