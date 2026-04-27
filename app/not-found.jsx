@@ -168,7 +168,7 @@ const KinyuiBoys404 = () => {
             <div className="w-full lg:w-1/2 order-1 lg:order-2 text-center lg:text-left space-y-6 md:space-y-8 flex flex-col justify-center backdrop-blur-sm bg-white/10 rounded-2xl p-6 lg:p-8">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 rounded-full text-sm font-semibold tracking-wide border border-amber-200 w-fit mx-auto lg:mx-0">
                 <FiBell className="text-base" />
-                <span>Kinyui Boys Announcement</span>
+                <span>Kinyui Boys Senior Announcement</span>
               </div>
 
               <div className="relative">
