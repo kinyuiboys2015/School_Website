@@ -1097,7 +1097,7 @@ const ModernSchoolLayout = () => {
                   </button>
                   <button
                     onClick={() => router.push("/pages/AboutUs")}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-900 font-black text-sm tracking-tight transition-all border border-slate-200 shadow-sm"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white text-slate-900 font-black text-sm tracking-tight border border-slate-200 shadow-sm"
                   >
                     About Us
                   </button>
@@ -1742,7 +1742,7 @@ const ModernSchoolLayout = () => {
           <div key={idx} className="group relative flex flex-col h-full">
             
             {/* The "Polaroid" Card - No fixed height on mobile to allow for long text */}
-            <div className="flex flex-col h-full relative overflow-hidden rounded-[2rem] bg-slate-900/40 border border-white/10 transition-all duration-500 group-hover:border-indigo-500/40 group-hover:bg-slate-900/60">
+            <div className="flex flex-col h-full relative overflow-hidden rounded-[1rem] bg-slate-900/40 border border-white/10 transition-all duration-500 group-hover:border-indigo-500/40 group-hover:bg-slate-900/60">
               
               {/* IMAGE SECTION - Responsive Aspect Ratio */}
               <div className="relative aspect-video sm:h-64 w-full overflow-hidden shrink-0">
@@ -1962,8 +1962,8 @@ const ModernSchoolLayout = () => {
           {/* THE PILLARS (Pathways First) */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-16">
             {/* Dynamic Title Card */}
-            <div className="lg:col-span-1 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[2rem] p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/10">
-              <div>
+            <div className="lg:col-span-1 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[1rem] p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/10">
+              <div className="w-full flex items-center display-flex">
                 <FiBookOpen className="text-4xl text-white/90 mb-6" />
                 <h3 className="text-3xl font-black text-white leading-tight">
                   CBC <br />
@@ -1983,7 +1983,7 @@ const ModernSchoolLayout = () => {
               return (
                 <div
                   key={idx}
-                  className="lg:col-span-1 bg-white border border-gray-200 rounded-[2rem] p-7 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-500/5 transition-all group"
+                  className="lg:col-span-1 bg-white border border-gray-200 rounded-[1rem] p-7 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-500/5 transition-all group"
                 >
                   <div
                     className={`w-12 h-12 rounded-2xl bg-gradient-to-r ${path.color} flex items-center justify-center mb-6 shadow-lg shadow-black/10`}
@@ -2129,7 +2129,7 @@ const ModernSchoolLayout = () => {
         </p>
 
         {/* Global School Stat - Full width on mobile */}
-        <div className="p-6 sm:p-8 bg-slate-900 rounded-[2rem] sm:rounded-[2.5rem] text-white shadow-2xl shadow-indigo-100">
+        <div className="p-6 sm:p-8 bg-slate-900 rounded-[1.5rem] sm:rounded-[0.5rem] text-white shadow-2xl shadow-indigo-100">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-xl sm:rounded-2xl flex items-center justify-center">
               <FiStar className="text-amber-400 text-lg sm:text-xl" />
@@ -2156,7 +2156,7 @@ const ModernSchoolLayout = () => {
           return (
             <div
               key={index}
-              className={`group relative overflow-hidden rounded-[2rem] border transition-all duration-500 ${
+              className={`group relative overflow-hidden rounded-[1rem] border transition-all duration-500 ${
                 isPremium
                   ? "bg-slate-950 border-white/10 p-6 sm:p-10"
                   : "bg-white border-slate-100 p-6 sm:p-8 hover:border-indigo-200 hover:shadow-xl"
