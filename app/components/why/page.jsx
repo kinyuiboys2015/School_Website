@@ -1873,7 +1873,7 @@ const ModernSchoolLayout = () => {
           {/* REASONS GRID (Shuffled Staggered Layout) */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* MOTTO CARD */}
-            <div className="lg:col-span-1 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[2.5rem] p-8 text-white flex flex-col justify-between shadow-xl shadow-indigo-200 relative overflow-hidden">
+            <div className="lg:col-span-1 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[1rem] p-8 text-white flex flex-col justify-between shadow-xl shadow-indigo-200 relative overflow-hidden">
               <div className="absolute top-0 right-0 p-4 opacity-10">
                 <FiStar className="w-32 h-32" />
               </div>
@@ -1903,7 +1903,7 @@ const ModernSchoolLayout = () => {
               return (
                 <div
                   key={item.id}
-                  className={`group bg-white border border-slate-100 rounded-[2.5rem] p-8 hover:shadow-2xl hover:shadow-slate-200/60 transition-all duration-500 ${
+                  className={`group bg-white border border-slate-100 rounded-[1rem] p-8 hover:shadow-lg hover:shadow-slate-200/60 transition-all duration-500 ${
                     isSpanned ? "lg:row-span-1" : ""
                   }`}
                 >
@@ -1983,7 +1983,7 @@ const ModernSchoolLayout = () => {
               return (
                 <div
                   key={idx}
-                  className="lg:col-span-1 bg-white border border-gray-200 rounded-[1rem] p-7 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-500/5 transition-all group"
+                  className="lg:col-span-1 bg-white border border-gray-200 rounded-[1rem] p-7 hover:border-indigo-200 hover:shadow-lg hover:shadow-indigo-500/5 transition-all group"
                 >
                   <div
                     className={`w-12 h-12 rounded-2xl bg-gradient-to-r ${path.color} flex items-center justify-center mb-6 shadow-lg shadow-black/10`}
@@ -2028,7 +2028,7 @@ const ModernSchoolLayout = () => {
 {/* CORE COMPETENCIES */}
 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
   {/* Core Subjects Grid */}
-  <div className="lg:col-span-8 bg-white border border-gray-200 rounded-[2.5rem] p-8 shadow-sm">
+  <div className="lg:col-span-8 bg-white border border-gray-200 rounded-[1rem] p-8 shadow-sm">
     <div className="flex items-center gap-3 mb-8">
       <div className="p-2 bg-amber-100 rounded-lg">
         <IoSparkles className="text-amber-600" />
@@ -2055,7 +2055,7 @@ const ModernSchoolLayout = () => {
         return (
           <div
             key={i}
-            className="group flex flex-col items-center justify-center p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:border-indigo-500 hover:bg-white hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1 transition-all duration-300"
+            className="group flex flex-col items-center justify-center p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:border-indigo-500 hover:bg-white hover:shadow-lg hover:shadow-indigo-500/10 hover:-translate-y-1 transition-all duration-300"
           >
             <SubjIcon className="text-2xl text-slate-400 group-hover:text-indigo-600 transition-colors mb-3" />
             <span className="text-[11px] font-black text-center text-slate-900 uppercase tracking-tight">
@@ -2068,7 +2068,7 @@ const ModernSchoolLayout = () => {
   </div>
 
   {/* CONTEXTUAL OVERVIEW */}
-  <div className="lg:col-span-4 flex flex-col justify-center p-8 sm:p-10 bg-indigo-600 border border-indigo-500 rounded-[2.5rem] relative overflow-hidden text-white shadow-2xl shadow-indigo-200">
+  <div className="lg:col-span-4 flex flex-col justify-center p-8 sm:p-10 bg-indigo-600 border border-indigo-500 rounded-[1rem] relative overflow-hidden text-white shadow-2xl shadow-indigo-200">
     <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 blur-3xl rounded-full" />
     <div className="absolute -top-10 -left-10 w-32 h-32 bg-indigo-400/20 blur-2xl rounded-full" />
     
@@ -2159,7 +2159,7 @@ const ModernSchoolLayout = () => {
               className={`group relative overflow-hidden rounded-[1rem] border transition-all duration-500 ${
                 isPremium
                   ? "bg-slate-950 border-white/10 p-6 sm:p-10"
-                  : "bg-white border-slate-100 p-6 sm:p-8 hover:border-indigo-200 hover:shadow-xl"
+                  : "bg-white border-slate-100 p-6 sm:p-8 hover:border-indigo-200 hover:shadow-lg"
               }`}
             >
               {/* Feature Gradient Glow */}
@@ -2329,7 +2329,7 @@ const ModernSchoolLayout = () => {
                     {scrollImages.map((img, idx) => (
                       <div
                         key={idx}
-                        className="relative w-36 h-20 sm:w-44 sm:h-24 flex-shrink-0 bg-white/70 backdrop-blur rounded-2xl border border-slate-200 shadow-sm flex items-center justify-center p-4 group/logo transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white"
+                        className="relative w-36 h-20 sm:w-44 sm:h-24 flex-shrink-0 bg-white/70 backdrop-blur rounded-2xl border border-slate-200 shadow-sm flex items-center justify-center p-4 group/logo transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:bg-white"
                       >
                         <div className="relative w-full h-full">
                           <Image
