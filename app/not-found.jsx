@@ -204,8 +204,8 @@ const KinyuiBoys404 = () => {
                     rounded-xl md:rounded-2xl
                     transition-all duration-300
                     shadow-lg shadow-amber-200/50
-                    hover:shadow-xl hover:scale-105
-                    active:scale-95
+                    hover:shadow-xl hover:scale-101
+                    active:scale-99
                   "
                 >
                   <FiHome className="text-sm sm:text-xl" />
@@ -228,7 +228,7 @@ const KinyuiBoys404 = () => {
                     transition-all duration-300
                     shadow-sm
                     hover:shadow-md hover:bg-slate-50
-                    active:scale-95
+                    active:scale-99
                   "
                 >
                   <FiArrowLeft className="text-sm sm:text-xl" />
@@ -375,7 +375,7 @@ const KinyuiBoys404 = () => {
                               hover:bg-white/20
                               hover:border-amber-400
                               transition-all duration-300
-                              hover:scale-105
+                              hover:scale-101
                             "
                           >
                             <FiMail className="text-amber-300" />
