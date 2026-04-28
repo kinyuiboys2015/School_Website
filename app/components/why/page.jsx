@@ -1997,20 +1997,33 @@ const ModernSchoolLayout = () => {
           {/* THE PILLARS (Pathways First) */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-16">
             {/* Dynamic Title Card */}
-            <div className="lg:col-span-1 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[1rem] p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/10">
-              <div className="w-full flex items-center display-flex">
-                <FiBookOpen className="text-4xl text-white/90 mb-6" />
-                <h3 className="text-3xl font-black text-white leading-tight">
-                  CBC <br />
-                  <span className="text-indigo-200">Learning</span> <br />
-                  Pathways
-                </h3>
-              </div>
-              <p className="text-indigo-100 text-sm font-medium leading-relaxed opacity-80">
-                Tailored tracks designed for specific student strengths at{" "}
-                {schoolName}.
-              </p>
-            </div>
+<div className="lg:col-span-1 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[2rem] p-6 sm:p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/20 relative overflow-hidden group">
+  {/* Decorative Background Glow */}
+  <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 blur-3xl rounded-full" />
+  
+  <div className="relative">
+    {/* Icon with modern glass backdrop */}
+    <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center mb-6 border border-white/20 backdrop-blur-sm">
+      <FiBookOpen className="text-2xl text-white" />
+    </div>
+
+    {/* Responsive Typography */}
+    <h3 className="text-2xl sm:text-3xl font-black text-white leading-[1.1] tracking-tighter uppercase italic">
+      CBC <br />
+      <span className="text-indigo-200 not-italic">Learning</span> <br />
+      Pathways
+    </h3>
+  </div>
+
+  {/* Description with improved contrast */}
+  <div className="mt-8">
+    <div className="w-10 h-[2px] bg-indigo-300 mb-4" />
+    <p className="text-indigo-50 text-xs sm:text-sm font-bold leading-relaxed">
+      Tailored tracks designed for specific student strengths at{" "}
+      <span className="text-white font-black">{schoolName}</span>.
+    </p>
+  </div>
+</div>
 
             {/* Pathway Cards Mapping */}
             {pathways.map((path, idx) => {
