@@ -2077,14 +2077,21 @@ const ModernSchoolLayout = () => {
 <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-stretch">
   {/* Core Subjects Grid */}
   <div className="lg:col-span-8 bg-white border border-slate-200 rounded-[2rem] p-6 sm:p-8 shadow-sm">
-    <div className="flex items-center gap-3 mb-8">
-      <div className="p-2 bg-amber-100 rounded-lg">
-        <IoSparkles className="text-amber-600" />
-      </div>
-      <h4 className="font-black text-slate-900 uppercase tracking-[0.2em] text-[10px] sm:text-xs">
-        Mandatory Core Subjects
-      </h4>
-    </div>
+ <div className="flex items-center gap-4 mb-8">
+  {/* Substantially increased for mobile: w-12 h-12 with text-2xl */}
+  <div className="w-12 h-12 sm:w-10 sm:h-10 shrink-0 bg-amber-100 rounded-2xl sm:rounded-xl flex items-center justify-center shadow-sm">
+    <IoSparkles className="text-2xl sm:text-xl text-amber-600" />
+  </div>
+  
+  <div className="flex flex-col">
+    <h4 className="font-black text-slate-900 uppercase tracking-[0.22em] text-[12px] sm:text-xs leading-none mb-1">
+      Mandatory
+    </h4>
+    <span className="font-black text-slate-500 uppercase tracking-[0.15em] text-[10px] sm:text-[9px]">
+      Core Subjects
+    </span>
+  </div>
+</div>
 
     {/* Grid: 2 columns on tiny phones, 3 on medium, 5 on desktop */}
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
