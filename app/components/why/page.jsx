@@ -2073,20 +2073,21 @@ const ModernSchoolLayout = () => {
             })}
           </div>
 
-{/* CORE COMPETENCIES */}
-<div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+{/* CORE COMPETENCIES - MOBILE OPTIMIZED (STILL) */}
+<div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-stretch">
   {/* Core Subjects Grid */}
-  <div className="lg:col-span-8 bg-white border border-gray-200 rounded-[1rem] p-8 shadow-sm">
+  <div className="lg:col-span-8 bg-white border border-slate-200 rounded-[2rem] p-6 sm:p-8 shadow-sm">
     <div className="flex items-center gap-3 mb-8">
       <div className="p-2 bg-amber-100 rounded-lg">
         <IoSparkles className="text-amber-600" />
       </div>
-      <h4 className="font-black text-slate-900 uppercase tracking-[0.2em] text-xs">
+      <h4 className="font-black text-slate-900 uppercase tracking-[0.2em] text-[10px] sm:text-xs">
         Mandatory Core Subjects
       </h4>
     </div>
 
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+    {/* Grid: 2 columns on tiny phones, 3 on medium, 5 on desktop */}
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
       {[
         { name: "Math", icon: FiCpu },
         { name: "English", icon: FiBook },
@@ -2103,10 +2104,10 @@ const ModernSchoolLayout = () => {
         return (
           <div
             key={i}
-            className="group flex flex-col items-center justify-center p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:border-indigo-500 hover:bg-white hover:shadow-lg hover:shadow-indigo-500/10 hover:-translate-y-1 transition-all duration-300"
+            className="flex flex-col items-center justify-center p-4 sm:p-5 rounded-[1.5rem] bg-slate-50 border border-slate-100 transition-none"
           >
-            <SubjIcon className="text-2xl text-slate-400 group-hover:text-indigo-600 transition-colors mb-3" />
-            <span className="text-[11px] font-black text-center text-slate-900 uppercase tracking-tight">
+            <SubjIcon className="text-xl sm:text-2xl text-indigo-600 mb-2 sm:mb-3" />
+            <span className="text-[10px] sm:text-[11px] font-black text-center text-slate-900 uppercase tracking-tight">
               {subj.name}
             </span>
           </div>
@@ -2116,17 +2117,17 @@ const ModernSchoolLayout = () => {
   </div>
 
   {/* CONTEXTUAL OVERVIEW */}
-  <div className="lg:col-span-4 flex flex-col justify-center p-8 sm:p-10 bg-indigo-600 border border-indigo-500 rounded-[1rem] relative overflow-hidden text-white shadow-2xl shadow-indigo-200">
+  <div className="lg:col-span-4 flex flex-col justify-center p-8 sm:p-10 bg-indigo-600 border border-indigo-500 rounded-[2rem] relative overflow-hidden text-white shadow-xl shadow-indigo-100">
     <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 blur-3xl rounded-full" />
     <div className="absolute -top-10 -left-10 w-32 h-32 bg-indigo-400/20 blur-2xl rounded-full" />
     
-    <h5 className="text-xl font-black mb-4 tracking-tight">
-      Framework Overview
+    <h5 className="text-xl font-black mb-4 tracking-tight uppercase italic">
+      Framework <span className="text-indigo-200">Overview</span>
     </h5>
     <p className="text-sm text-indigo-50 leading-relaxed font-medium mb-8">
       The Competency Based Curriculum (CBC) shifts the focus from
       "what you know" to "what you can do." Every student follows a
-      core foundation before specializing in their chosen pathway.
+      core foundation.
     </p>
     
     <div className="flex items-center gap-4">
@@ -2134,11 +2135,11 @@ const ModernSchoolLayout = () => {
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="w-9 h-9 rounded-full border-2 border-indigo-600 bg-indigo-100 shadow-sm"
+            className="w-8 h-8 rounded-full border-2 border-indigo-600 bg-indigo-100"
           />
         ))}
       </div>
-      <span className="text-[10px] font-black uppercase tracking-widest text-indigo-200">
+      <span className="text-[9px] font-black uppercase tracking-widest text-indigo-200">
         Join {studentCount}+ Students
       </span>
     </div>
