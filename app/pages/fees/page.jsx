@@ -32,7 +32,9 @@ import {
   FiWifi,
   FiCoffee,
   FiAward,
-  FiAlertTriangle
+  FiAlertTriangle,
+  FiZap,
+  FiEye
 } from 'react-icons/fi';
 import { 
   IoNewspaperOutline,
@@ -228,7 +230,7 @@ const PDFCard = ({ title, pdfUrl, fileName, fileSize, uploadDate, description, o
   );
 };
 
-// Table Distribution Component - Similar to School Policies page
+// Table Distribution Component
 const TableDistribution = ({ title, data, totalAmount, year, onDownload }) => {
   const [expanded, setExpanded] = useState(true);
 
@@ -345,11 +347,11 @@ export default function ModernFeesPage() {
   const [documentData, setDocumentData] = useState(null);
   const [selectedFeeItem, setSelectedFeeItem] = useState(null);
   const [showInfoModal, setShowInfoModal] = useState(false);
-  const [activeTab, setActiveTab] = useState('boarding'); // Changed to boarding as default
+  const [activeTab, setActiveTab] = useState('boarding');
   const [searchTerm, setSearchTerm] = useState('');
   const [showTableView, setShowTableView] = useState(true);
 
-  // Tabs configuration - Day fees removed
+  // Tabs configuration
   const tabs = [
     { id: 'boarding', name: 'Boarding Fees', icon: IoBedOutline, color: 'purple' },
     { id: 'admission', name: 'Admission Fees', icon: MdOutlineAdUnits, color: 'amber' }
@@ -357,49 +359,6 @@ export default function ModernFeesPage() {
 
   const router = useRouter();
   const year = new Date().getFullYear();
-
-  // Table data for fee distribution (like school policies page)
-  const getTableDataForTab = () => {
-    const items = getCurrentFeeItems();
-    if (!items.length) return null;
-
-    // Transform fee items into table format
-    const terms = [
-      { term: "Term 1", tag: "Opening", amount: 0, breakdown: [] },
-      { term: "Term 2", tag: "Mid Year", amount: 0, breakdown: [] },
-      { term: "Term 3", tag: "Final", amount: 0, breakdown: [] }
-    ];
-
-    // Distribute amounts across terms (example distribution logic)
-    items.forEach(item => {
-      const perTermAmount = Math.round(item.amount / 3);
-      terms.forEach((term, idx) => {
-        term.amount += perTermAmount;
-        term.breakdown.push({
-          voteHead: item.name,
-          amount: perTermAmount
-        });
-      });
-    });
-
-    // Add total for each breakdown item
-    terms.forEach(term => {
-      term.breakdown = term.breakdown.map((item, idx) => ({
-        ...item,
-        total: item.amount * 3
-      }));
-    });
-
-    return {
-      terms,
-      total: terms.reduce((sum, t) => sum + t.amount, 0),
-      items: items.map(item => ({
-        voteHead: item.name,
-        total: item.amount,
-        ...terms.reduce((acc, term, idx) => ({ ...acc, [`term${idx + 1}`]: Math.round(item.amount / 3) }), {})
-      }))
-    };
-  };
 
   // Fetch document data
   const fetchDocuments = async (showRefresh = false) => {
@@ -417,7 +376,7 @@ export default function ModernFeesPage() {
       }
     } catch (error) {
       console.error('Error fetching documents:', error);
-      toast.error('Failed to load fees information');
+      if (showRefresh) toast.error('Failed to refresh fees data');
     } finally {
       if (showRefresh) setRefreshing(false);
       setLoading(false);
@@ -472,6 +431,41 @@ export default function ModernFeesPage() {
       default:
         return null;
     }
+  };
+
+  // Table data for fee distribution
+  const getTableDataForTab = () => {
+    const items = getCurrentFeeItems();
+    if (!items.length) return null;
+
+    const terms = [
+      { term: "Term 1", tag: "Opening", amount: 0, breakdown: [] },
+      { term: "Term 2", tag: "Mid Year", amount: 0, breakdown: [] },
+      { term: "Term 3", tag: "Final", amount: 0, breakdown: [] }
+    ];
+
+    items.forEach(item => {
+      const perTermAmount = Math.round(item.amount / 3);
+      terms.forEach((term, idx) => {
+        term.amount += perTermAmount;
+        term.breakdown.push({
+          voteHead: item.name,
+          amount: perTermAmount
+        });
+      });
+    });
+
+    terms.forEach(term => {
+      term.breakdown = term.breakdown.map((item) => ({
+        ...item,
+        total: item.amount * 3
+      }));
+    });
+
+    return {
+      terms,
+      total: terms.reduce((sum, t) => sum + t.amount, 0),
+    };
   };
 
   // Filter fee items based on search
@@ -557,7 +551,6 @@ export default function ModernFeesPage() {
   }
 
   const pdfInfo = getCurrentPDFInfo();
-  const currentItems = getCurrentFeeItems();
   const totalAmount = getCurrentTotal();
   const tableData = getTableDataForTab();
 
@@ -565,145 +558,117 @@ export default function ModernFeesPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
       <Toaster position="top-right" richColors />
 
-{/* ===== HERO (Bento Modern) ===== */}
-<section className="relative bg-slate-950 p-6 sm:p-10 overflow-hidden">
-  {/* Glow Effects */}
-  <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-600/20 rounded-full blur-[120px]" />
-  <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-purple-600/10 rounded-full blur-[120px]" />
-  
-  {/* Additional ambient glows for depth */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-indigo-600/5 rounded-full blur-[150px]" />
-  <div className="absolute -bottom-32 left-0 w-96 h-96 bg-sky-500/10 rounded-full blur-[130px]" />
+      {/* ===== HERO (School Fees Hero) ===== */}
+      <section className="relative bg-slate-950 p-6 sm:p-10 overflow-hidden">
+        {/* Glow Effects */}
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-600/20 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-purple-600/10 rounded-full blur-[120px]" />
 
-  <div className="max-w-7xl mx-auto relative z-10">
-    <div className="space-y-6">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="space-y-6">
 
-      {/* Badge */}
-      <div className="inline-flex items-center gap-2 px-3 py-1.5 
-                      bg-white/10 backdrop-blur-xl rounded-full border border-white/20">
-        <IoSparkles className="text-blue-400 text-xs sm:text-sm animate-pulse" />
-        <span className="text-blue-100 font-black text-[10px] sm:text-xs uppercase tracking-[0.2em]">
-          {motto}
-        </span>
-      </div>
-
-      {/* Top Row */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-
-        {/* LEFT */}
-        <div className="max-w-2xl">
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.1]">
-            {loading ? (
-              <span className="inline-flex items-center gap-2">
-                <FiLoader className="w-6 h-6 animate-spin text-blue-400" />{" "}
-                Loading...
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 
+                            bg-white/10 backdrop-blur-xl rounded-full border border-white/20">
+              <IoSparkles className="text-blue-400 text-xs sm:text-sm animate-pulse" />
+              <span className="text-blue-100 font-black text-[10px] sm:text-xs uppercase tracking-[0.2em]">
+                Fee Structure {year}
               </span>
-            ) : (
-              <>Welcome to{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-400 to-indigo-400">
-                  {schoolName}
-                </span>
-              </>
-            )}
-          </h1>
-          <p className="text-slate-400 text-sm sm:text-lg mt-3 font-medium">
-            {description ||
-              "A future-ready learning community focused on academic growth, character, and real-world skills."}
-          </p>
+            </div>
 
-          {/* Mini Highlights */}
-          <div className="flex flex-wrap items-center gap-4 mt-4 text-xs sm:text-sm text-slate-300">
-            <span className="flex items-center gap-1">
-              <FiCheckCircle className="text-blue-400" /> {studentCount}+ Students
-            </span>
-            <span className="flex items-center gap-1">
-              <FiShield className="text-emerald-400" /> Verified School
-            </span>
-            <span className="flex items-center gap-1">
-              <FiStar className="text-purple-400" /> {motto}
-            </span>
+            {/* Top Row */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+
+              {/* LEFT */}
+              <div className="max-w-2xl">
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.1]">
+                  Our School Fees
+                </h1>
+                <p className="text-slate-400 text-sm sm:text-lg mt-3 font-medium">
+                  Transparent fee structure for all students at 
+                  <span className="text-white font-semibold"> Kinyui Boys Senior School</span>.
+                </p>
+
+                {/* Mini Highlights */}
+                <div className="flex flex-wrap items-center gap-4 mt-4 text-xs sm:text-sm text-slate-300">
+                  <span className="flex items-center gap-1">
+                    <FiCheckCircle className="text-blue-400" /> Updated {year}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <FiShield className="text-emerald-400" /> Verified data
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <FiDownload className="text-purple-400" /> PDF available
+                  </span>
+                </div>
+              </div>
+
+              {/* RIGHT ACTIONS - Simple Design */}
+              <div className="flex flex-row gap-3 w-full sm:w-auto flex-shrink-0">
+                {/* Simple Refresh Button */}
+                <button
+                  onClick={refreshData}
+                  disabled={refreshing}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl 
+                             bg-white/10 hover:bg-white/20 
+                             text-white font-medium text-sm
+                             border border-white/10 hover:border-white/20
+                             transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {refreshing ? (
+                    <CircularProgress size={16} thickness={5} sx={{ color: "white" }} />
+                  ) : (
+                    <FiRotateCw className="w-4 h-4" />
+                  )}
+                  <span>{refreshing ? "Refreshing..." : "Refresh"}</span>
+                </button>
+
+                {/* Preview PDF Button */}
+                {pdfInfo?.url && (
+                  <button
+                    onClick={() => handleViewPDF(pdfInfo.url)}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl 
+                               bg-white hover:bg-blue-50 
+                               text-slate-900 font-medium text-sm
+                               transition-all active:scale-95"
+                  >
+                    <IoEyeOutline className="w-4 h-4" />
+                    <span>Preview</span>
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Bottom Stats Strip */}
+            <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-4 border-t border-white/10">
+              <div>
+                <p className="text-lg sm:text-2xl font-black text-white">
+                  KSh {totalAmount.toLocaleString()}
+                </p>
+                <p className="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider">Total Fees (KSh)</p>
+              </div>
+
+              <div>
+                <p className="text-lg sm:text-2xl font-black text-white">
+                  {getCurrentFeeItems().length}
+                </p>
+                <p className="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider">Fee Items</p>
+              </div>
+
+              <div>
+                <p className="text-lg sm:text-2xl font-black text-white">
+                  {tabs.find(t => t.id === activeTab)?.name.split(" ")[0]}
+                </p>
+                <p className="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider">Category</p>
+              </div>
+            </div>
+
           </div>
         </div>
-
-        {/* RIGHT ACTIONS */}
-        <div className="flex flex-row gap-3 w-full sm:w-auto flex-shrink-0">
-          {/* Admissions Button */}
-          <button
-            onClick={handleExplorePathways}
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 
-                       px-5 py-3 sm:px-7 sm:py-4 
-                       rounded-xl sm:rounded-2xl 
-                       bg-white hover:bg-blue-50 
-                       text-slate-950 font-black 
-                       text-xs sm:text-sm 
-                       uppercase tracking-widest 
-                       transition-all active:scale-95 
-                       shadow-[0_0_20px_rgba(255,255,255,0.1)]"
-          >
-            <FiBookOpen className="w-4 h-4" />
-            <span>Admissions</span>
-          </button>
-
-          {/* About Button */}
-          <button
-            onClick={() => router.push("/pages/AboutUs")}
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 
-                       px-5 py-3 sm:px-7 sm:py-4 
-                       rounded-xl sm:rounded-2xl 
-                       border border-white/20 
-                       text-white font-black 
-                       text-xs sm:text-sm 
-                       uppercase tracking-widest 
-                       hover:bg-white/10 transition-all"
-          >
-            <FiEye className="w-4 h-4" />
-            <span>About Us</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Bottom Stats Strip */}
-      <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-4 border-t border-white/10">
-        <div>
-          <p className="text-lg sm:text-2xl font-black text-white">
-            {studentCount}+
-          </p>
-          <p className="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider">Students</p>
-        </div>
-
-        <div>
-          <p className="text-lg sm:text-2xl font-black text-white">
-            {getSchoolStats().meanScore?.toFixed(2) || "—"}
-          </p>
-          <p className="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider">Mean Score</p>
-        </div>
-
-        <div>
-          <p className="text-lg sm:text-2xl font-black text-white">
-            {new Date().getFullYear()}
-          </p>
-          <p className="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider">Academic Year</p>
-        </div>
-      </div>
-
-      {/* Carousel Preview (Optional - small version) */}
-      <div className="hidden lg:block absolute -right-4 top-1/2 -translate-y-1/2 w-48 h-48 rounded-2xl overflow-hidden border border-white/10 opacity-30">
-        {schoolImages[currentImageIndex] && (
-          <Image
-            src={schoolImages[currentImageIndex].src}
-            alt="Campus preview"
-            fill
-            className="object-cover"
-          />
-        )}
-      </div>
-
-    </div>
-  </div>
-</section>
+      </section>
 
       <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-8">
-        {/* Stats Cards - Day scholars card removed */}
+        {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
           <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-100 p-4 sm:p-5 md:p-6 shadow-sm">
             <div className="flex items-center justify-between mb-3 sm:mb-4">
@@ -878,7 +843,7 @@ export default function ModernFeesPage() {
                 </div>
               )}
 
-              {/* Total Card - Responsive */}
+              {/* Total Card */}
               <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 text-white mt-3 sm:mt-4">
                 <div className="flex items-center justify-between mb-3 sm:mb-4 gap-2">
                   <div className="p-2 sm:p-3 bg-white/10 rounded-lg sm:rounded-xl border border-white/20 flex-shrink-0">
@@ -950,7 +915,7 @@ export default function ModernFeesPage() {
           </div>
         </div>
 
-        {/* Footer Banner - Responsive */}
+        {/* Footer Banner */}
         <div className="relative overflow-hidden bg-slate-900 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl mt-6 sm:mt-8">
           <div className="absolute top-0 right-0 w-32 h-32 sm:w-48 sm:h-48 bg-blue-500/5 blur-[80px] rounded-full -mr-16 sm:-mr-24 -mt-16 sm:-mt-24" />
           <div className="absolute bottom-0 left-0 w-32 h-32 sm:w-48 sm:h-48 bg-purple-500/5 blur-[80px] rounded-full -ml-16 sm:-ml-24 -mb-16 sm:-mb-24" />
@@ -1015,7 +980,7 @@ export default function ModernFeesPage() {
 
               {selectedFeeItem.boardingOnly && (
                 <div className="p-3 bg-purple-50 rounded-xl border border-purple-200">
-                  <p className="text-xs font-bold text-amber-800">Boarding students only</p>
+                  <p className="text-xs font-bold text-purple-800">Boarding students only</p>
                 </div>
               )}
             </div>
