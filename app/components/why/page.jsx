@@ -434,7 +434,7 @@ const ModernSchoolLayout = () => {
 
 const schoolFeatures = [
   {
-    title: "Scholarly Distinction",
+    title: "Academia Focused",
     gradient: "from-indigo-500 to-cyan-500",
     description:
       "An environment engineered for deep learning, intellectual discipline, and consistent academic performance.",
