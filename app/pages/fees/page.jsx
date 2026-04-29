@@ -565,123 +565,142 @@ export default function ModernFeesPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
       <Toaster position="top-right" richColors />
 
-      {/* Hero Section */}
-      <div className="relative bg-slate-950 p-6 sm:p-10 overflow-hidden">
-        {/* Glow Effects */}
-        <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-600/20 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-purple-600/10 rounded-full blur-[120px]" />
+{/* ===== HERO (Bento Modern) ===== */}
+<section className="relative bg-slate-950 p-6 sm:p-10 overflow-hidden">
+  {/* Glow Effects */}
+  <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-600/20 rounded-full blur-[120px]" />
+  <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-purple-600/10 rounded-full blur-[120px]" />
+  
+  {/* Additional ambient glows for depth */}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-indigo-600/5 rounded-full blur-[150px]" />
+  <div className="absolute -bottom-32 left-0 w-96 h-96 bg-sky-500/10 rounded-full blur-[130px]" />
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="space-y-6">
+  <div className="max-w-7xl mx-auto relative z-10">
+    <div className="space-y-6">
 
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 
-                            bg-white/10 backdrop-blur-xl rounded-full border border-white/20">
-              <IoWalletOutline className="text-blue-400 text-xs sm:text-sm animate-pulse" />
-              <span className="text-blue-100 font-black text-[10px] sm:text-xs uppercase tracking-[0.2em]">
-                Fee Structure {year}
+      {/* Badge */}
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 
+                      bg-white/10 backdrop-blur-xl rounded-full border border-white/20">
+        <IoSparkles className="text-blue-400 text-xs sm:text-sm animate-pulse" />
+        <span className="text-blue-100 font-black text-[10px] sm:text-xs uppercase tracking-[0.2em]">
+          {motto}
+        </span>
+      </div>
+
+      {/* Top Row */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+
+        {/* LEFT */}
+        <div className="max-w-2xl">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.1]">
+            {loading ? (
+              <span className="inline-flex items-center gap-2">
+                <FiLoader className="w-6 h-6 animate-spin text-blue-400" />{" "}
+                Loading...
               </span>
-            </div>
+            ) : (
+              <>Welcome to{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-400 to-indigo-400">
+                  {schoolName}
+                </span>
+              </>
+            )}
+          </h1>
+          <p className="text-slate-400 text-sm sm:text-lg mt-3 font-medium">
+            {description ||
+              "A future-ready learning community focused on academic growth, character, and real-world skills."}
+          </p>
 
-            {/* Top Row */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-
-              {/* LEFT */}
-              <div className="max-w-2xl">
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.1]">
-                  Our School Fees
-                </h1>
-                <p className="text-slate-400 text-sm sm:text-lg mt-3 font-medium">
-                  Transparent fee structure for all boarders at 
-                  <span className="text-white font-semibold"> Kinyui Boys Senior School</span>.
-                </p>
-
-                {/* Mini Highlights */}
-                <div className="flex flex-wrap items-center gap-4 mt-4 text-xs sm:text-sm text-slate-300">
-                  <span className="flex items-center gap-1">
-                    <FiCheckCircle className="text-blue-400" /> Updated {year}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <FiShield className="text-emerald-400" /> Verified data
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <FiDownload className="text-purple-400" /> PDF available
-                  </span>
-                </div>
-              </div>
-
-              {/* RIGHT ACTIONS - Always in flex display */}
-              <div className="flex flex-row gap-3 w-full sm:w-auto flex-shrink-0">
-                {/* Refresh Button */}
-                <button
-                  onClick={refreshData}
-                  disabled={refreshing}
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 
-                             px-5 py-3 sm:px-7 sm:py-4 
-                             rounded-xl sm:rounded-2xl 
-                             bg-white hover:bg-blue-50 
-                             text-slate-950 font-black 
-                             text-xs sm:text-sm 
-                             uppercase tracking-widest 
-                             transition-all active:scale-95 
-                             disabled:opacity-50
-                             shadow-[0_0_20px_rgba(255,255,255,0.1)]"
-                >
-                  {refreshing && (
-                    <CircularProgress size={18} thickness={5} sx={{ color: "#0f172a" }} />
-                  )}
-                  <span>
-                    {refreshing ? "Refreshing..." : "Refresh"}
-                  </span>
-                </button>
-
-                {/* Preview Button */}
-                {pdfInfo?.url && (
-                  <button
-                    onClick={() => handleViewPDF(pdfInfo.url)}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 
-                               px-5 py-3 sm:px-7 sm:py-4 
-                               rounded-xl sm:rounded-2xl 
-                               border border-white/20 
-                               text-white font-black 
-                               text-xs sm:text-sm 
-                               uppercase tracking-widest 
-                               hover:bg-white/10 transition-all"
-                  >
-                    <IoEyeOutline />
-                    Preview
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Bottom Stats Strip */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-4 border-t border-white/10">
-              <div>
-                <p className="text-lg sm:text-2xl font-black text-white">
-                  {getCurrentTotal().toLocaleString()}
-                </p>
-                <p className="text-[10px] sm:text-xs text-slate-400 uppercase">Total Fees (KSh)</p>
-              </div>
-
-              <div>
-                <p className="text-lg sm:text-2xl font-black text-white">
-                  {getCurrentFeeItems().length}
-                </p>
-                <p className="text-[10px] sm:text-xs text-slate-400 uppercase">Fee Items</p>
-              </div>
-
-              <div>
-                <p className="text-lg sm:text-2xl font-black text-white">
-                  {tabs.find(t => t.id === activeTab)?.name.split(" ")[0]}
-                </p>
-                <p className="text-[10px] sm:text-xs text-slate-400 uppercase">Category</p>
-              </div>
-            </div>
-
+          {/* Mini Highlights */}
+          <div className="flex flex-wrap items-center gap-4 mt-4 text-xs sm:text-sm text-slate-300">
+            <span className="flex items-center gap-1">
+              <FiCheckCircle className="text-blue-400" /> {studentCount}+ Students
+            </span>
+            <span className="flex items-center gap-1">
+              <FiShield className="text-emerald-400" /> Verified School
+            </span>
+            <span className="flex items-center gap-1">
+              <FiStar className="text-purple-400" /> {motto}
+            </span>
           </div>
         </div>
+
+        {/* RIGHT ACTIONS */}
+        <div className="flex flex-row gap-3 w-full sm:w-auto flex-shrink-0">
+          {/* Admissions Button */}
+          <button
+            onClick={handleExplorePathways}
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 
+                       px-5 py-3 sm:px-7 sm:py-4 
+                       rounded-xl sm:rounded-2xl 
+                       bg-white hover:bg-blue-50 
+                       text-slate-950 font-black 
+                       text-xs sm:text-sm 
+                       uppercase tracking-widest 
+                       transition-all active:scale-95 
+                       shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+          >
+            <FiBookOpen className="w-4 h-4" />
+            <span>Admissions</span>
+          </button>
+
+          {/* About Button */}
+          <button
+            onClick={() => router.push("/pages/AboutUs")}
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 
+                       px-5 py-3 sm:px-7 sm:py-4 
+                       rounded-xl sm:rounded-2xl 
+                       border border-white/20 
+                       text-white font-black 
+                       text-xs sm:text-sm 
+                       uppercase tracking-widest 
+                       hover:bg-white/10 transition-all"
+          >
+            <FiEye className="w-4 h-4" />
+            <span>About Us</span>
+          </button>
+        </div>
       </div>
+
+      {/* Bottom Stats Strip */}
+      <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-4 border-t border-white/10">
+        <div>
+          <p className="text-lg sm:text-2xl font-black text-white">
+            {studentCount}+
+          </p>
+          <p className="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider">Students</p>
+        </div>
+
+        <div>
+          <p className="text-lg sm:text-2xl font-black text-white">
+            {getSchoolStats().meanScore?.toFixed(2) || "—"}
+          </p>
+          <p className="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider">Mean Score</p>
+        </div>
+
+        <div>
+          <p className="text-lg sm:text-2xl font-black text-white">
+            {new Date().getFullYear()}
+          </p>
+          <p className="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider">Academic Year</p>
+        </div>
+      </div>
+
+      {/* Carousel Preview (Optional - small version) */}
+      <div className="hidden lg:block absolute -right-4 top-1/2 -translate-y-1/2 w-48 h-48 rounded-2xl overflow-hidden border border-white/10 opacity-30">
+        {schoolImages[currentImageIndex] && (
+          <Image
+            src={schoolImages[currentImageIndex].src}
+            alt="Campus preview"
+            fill
+            className="object-cover"
+          />
+        )}
+      </div>
+
+    </div>
+  </div>
+</section>
 
       <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-8">
         {/* Stats Cards - Day scholars card removed */}
