@@ -868,7 +868,7 @@ useEffect(() => {
         // Clear only authentication data
         possibleUserKeys.forEach(key => localStorage.removeItem(key));
         possibleAdminTokenKeys.forEach(key => localStorage.removeItem(key));
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
         return;
       }
       
@@ -899,7 +899,7 @@ useEffect(() => {
           // Clear only authentication data
           possibleUserKeys.forEach(key => localStorage.removeItem(key));
           possibleAdminTokenKeys.forEach(key => localStorage.removeItem(key));
-          window.location.href = '/pages/adminLogin';
+          window.location.href = '/pages/Sign In';
           return;
         }
         
@@ -911,7 +911,7 @@ useEffect(() => {
         // Clear only authentication data
         possibleUserKeys.forEach(key => localStorage.removeItem(key));
         possibleAdminTokenKeys.forEach(key => localStorage.removeItem(key));
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
         return;
       }
       
@@ -921,7 +921,7 @@ useEffect(() => {
       if (!userData) {
         console.log('❌ No user data found in localStorage');
         toast.error('Please login to access the dashboard');
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
         return;
       }
       
@@ -937,7 +937,7 @@ useEffect(() => {
       } catch (parseError) {
         console.log('❌ Error parsing user data:', parseError);
         toast.error('Invalid user data. Please login again.');
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
         return;
       }
       
@@ -953,7 +953,7 @@ useEffect(() => {
         
         possibleUserKeys.forEach(key => localStorage.removeItem(key));
         possibleAdminTokenKeys.forEach(key => localStorage.removeItem(key));
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
         return;
       }
       
@@ -1060,7 +1060,7 @@ useEffect(() => {
       possibleUserKeys.forEach(key => localStorage.removeItem(key));
       possibleAdminTokenKeys.forEach(key => localStorage.removeItem(key));
       
-      window.location.href = '/pages/adminLogin';
+      window.location.href = '/pages/Sign In';
       
     } finally {
       setLoading(false);
@@ -1109,7 +1109,7 @@ const handleLogout = () => {
       toast.success('Logged out. Your device is still recognized.');
       
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 500);
       
     } catch (error) {

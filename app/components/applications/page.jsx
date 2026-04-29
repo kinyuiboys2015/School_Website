@@ -1101,7 +1101,7 @@ else if (decisionType === 'INTERVIEW_SCHEDULED') {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1500);
       
     } else if (error.message.includes('permission')) {
@@ -1205,7 +1205,7 @@ const updateBulkApplicationStatus = async () => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1500);
       
     } else {
@@ -1280,7 +1280,7 @@ const deleteApplications = async () => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1500);
       
     } else if (error.message.includes('Failed to delete application')) {

@@ -4,12 +4,12 @@ export default function robots() {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/MainDashboard', '/pages/adminLogin', '/api/', '/_next/'],
+        disallow: ['/MainDashboard', '/pages/Sign In', '/api/', '/_next/'],
       },
       {
         userAgent: 'Googlebot',
         allow: ['/', '/pages/', '/images/'],
-        disallow: ['/MainDashboard', '/pages/adminLogin'],
+        disallow: ['/MainDashboard', '/pages/Sign In'],
       },
       {
         userAgent: 'Googlebot-Image',
@@ -17,7 +17,7 @@ export default function robots() {
       },
       {
         userAgent: 'Bingbot',
-        disallow: ['/MainDashboard', '/pages/adminLogin'],
+        disallow: ['/MainDashboard', '/pages/Sign In'],
       },
     ],
     sitemap: 'https://kinyui-senior.vercel.app/sitemap.xml',

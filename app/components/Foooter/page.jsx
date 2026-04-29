@@ -75,7 +75,7 @@ const SUPPORT_LINKS = [
   { name: 'School Policies', href: '/pages/OurSchoolPolicies', icon: FiShield },
   { name: 'Career Services', href: '/pages/careers', icon: FiBriefcase },
   { name: 'Gallery', href: '/pages/gallery', icon: FiImage },
-  { name: 'Admin Login', href: '/pages/adminLogin', icon: FiLock },
+  { name: 'Admin Login', href: '/pages/Sign In', icon: FiLock },
   { name: 'Contact Us', href: '/pages/contact', icon: FiMail },
 ];
 

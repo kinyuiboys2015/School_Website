@@ -49,7 +49,7 @@ const ResetPasswordContent = () => {
   useEffect(() => {
     if (resetSuccess) {
       const timer = setTimeout(() => {
-        router.push("/pages/adminLogin");
+        router.push("/pages/Sign In");
       }, 3000);
       return () => clearTimeout(timer);
     }
@@ -149,7 +149,7 @@ const ResetPasswordContent = () => {
                 Request New Reset Link
               </button>
               <button
-                onClick={() => router.push("/pages/adminLogin")}
+                onClick={() => router.push("/pages/Sign In")}
                 className="mt-3 w-full flex items-center justify-center gap-2 h-12 sm:h-14 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base text-slate-600 bg-white border-2 border-slate-200 hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98] transition-all"
               >
                 <ArrowLeft size={16} /> Back to Login
@@ -177,7 +177,7 @@ const ResetPasswordContent = () => {
 
         {/* Back link */}
         <button
-          onClick={() => router.push("/pages/adminLogin")}
+          onClick={() => router.push("/pages/Sign In")}
           className="flex items-center gap-2 text-slate-500 hover:text-slate-800 text-sm font-medium mb-8 transition-colors group"
         >
           <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
@@ -241,7 +241,7 @@ const ResetPasswordContent = () => {
                 </div>
 
                 <button
-                  onClick={() => router.push("/pages/adminLogin")}
+                  onClick={() => router.push("/pages/Sign In")}
                   className="w-full flex items-center justify-center gap-2.5 h-12 sm:h-14 rounded-xl sm:rounded-2xl text-white font-bold text-sm sm:text-base bg-[#1a1a2e] hover:bg-[#2a2a3e] shadow-lg shadow-slate-300 active:scale-[0.98] transition-all"
                 >
                   Go to Login Now

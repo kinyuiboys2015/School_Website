@@ -2758,13 +2758,13 @@ const handleSubmitAfterReview = async () => {
     // Check if tokens exist
     if (!adminToken) {
       toast.error('Authentication required. Please login to save documents.');
-      window.location.href = '/pages/adminLogin';
+      window.location.href = '/pages/Sign In';
       return;
     }
     
     if (!deviceToken) {
       toast.error('Device verification required. Please login with verification.');
-      window.location.href = '/pages/adminLogin';
+      window.location.href = '/pages/Sign In';
       return;
     }
     
@@ -2858,7 +2858,7 @@ const handleSubmitAfterReview = async () => {
         localStorage.removeItem('admin_user');
         localStorage.removeItem('device_token');
         toast.error('Session expired. Please login again.');
-        setTimeout(() => window.location.href = '/pages/adminLogin', 1000);
+        setTimeout(() => window.location.href = '/pages/Sign In', 1000);
         return;
       }
       
@@ -3502,13 +3502,13 @@ const handleDeleteDocument = async () => {
     // Check if tokens exist
     if (!adminToken) {
       toast.error('Authentication required. Please login to delete documents.');
-      window.location.href = '/pages/adminLogin';
+      window.location.href = '/pages/Sign In';
       return;
     }
     
     if (!deviceToken) {
       toast.error('Device verification required. Please login with verification.');
-      window.location.href = '/pages/adminLogin';
+      window.location.href = '/pages/Sign In';
       return;
     }
     
@@ -3527,7 +3527,7 @@ const handleDeleteDocument = async () => {
         localStorage.removeItem('admin_user');
         localStorage.removeItem('device_token');
         toast.error('Session expired. Please login again.');
-        setTimeout(() => window.location.href = '/pages/adminLogin', 1000);
+        setTimeout(() => window.location.href = '/pages/Sign In', 1000);
         return;
       }
       

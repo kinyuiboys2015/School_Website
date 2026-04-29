@@ -2059,7 +2059,7 @@ export default function AssignmentsManager() {
           error.message.includes('Session expired')) {
         showNotification('error', 'Authentication Required', 'Please login to continue');
         setTimeout(() => {
-          window.location.href = '/pages/adminLogin';
+          window.location.href = '/pages/Sign In';
         }, 2000);
       } else {
         showNotification('error', 'Delete Failed', 'Failed to delete assignment');
@@ -2255,7 +2255,7 @@ export default function AssignmentsManager() {
           error.message.includes('Session expired')) {
         showNotification('error', 'Authentication Required', 'Please login to continue');
         setTimeout(() => {
-          window.location.href = '/pages/adminLogin';
+          window.location.href = '/pages/Sign In';
         }, 2000);
       } else {
         showNotification('error', 'Save Failed', error.message || `Failed to ${id ? 'update' : 'create'} assignment`);

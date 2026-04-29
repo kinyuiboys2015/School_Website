@@ -1002,7 +1002,7 @@ const [memberDetailModal, setMemberDetailModal] = useState({
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1000);
       
     } else {
@@ -1798,7 +1798,7 @@ const handleSubmit = async (e) => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1000);
       
     } else {
@@ -2388,7 +2388,7 @@ const handleSubmit = async (e) => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1000);
       
     } else {
@@ -3158,7 +3158,7 @@ const confirmDeleteMember = async () => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1000);
       
     } else {
@@ -3253,7 +3253,7 @@ const confirmDelete = async () => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1000);
       
     } else {
@@ -3352,7 +3352,7 @@ const confirmDeleteTeam = async () => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1000);
       
     } else {

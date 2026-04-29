@@ -186,7 +186,7 @@ export default function ModernNavbar() {
 
       {
       name: 'Admin Login',
-      href: '/pages/adminLogin',
+      href: '/pages/Sign In',
       icon: FiLock,
       description: 'Secure portal for administrators',
       isHighlighted: true
@@ -421,7 +421,7 @@ export default function ModernNavbar() {
                     className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.85rem] xs:text-[0.9rem] tracking-wide whitespace-nowrap px-1.5 xs:px-2 py-2 relative ${
                       isResourcesDropdownOpen || 
                       isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/adminLogin')||
+                      isActiveLink('/pages/Sign In')||
                       isActiveLink('/pages/staff') 
                         ? 'text-amber-200' 
                         : 'text-white/80 hover:text-amber-200'
@@ -436,7 +436,7 @@ export default function ModernNavbar() {
                     }`} />
                     
                     {(isResourcesDropdownOpen || 
-                       isActiveLink('/pages/adminLogin')||
+                       isActiveLink('/pages/Sign In')||
                       isActiveLink('/pages/careers') ||
                       isActiveLink('/pages/staff')  
 
@@ -649,7 +649,7 @@ export default function ModernNavbar() {
                       isMobileResourcesDropdownOpen ||
                       isActiveLink('/pages/staff') ||
                       isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/adminLogin')
+                      isActiveLink('/pages/Sign In')
                         ? 'bg-white/10 text-amber-200'
                         : 'text-white/90 hover:bg-white/5'
                     }`}

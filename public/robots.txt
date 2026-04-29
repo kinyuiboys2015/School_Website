@@ -7,7 +7,7 @@ User-agent: *
 Allow: /
 # Disallow private/admin areas - these should not be indexed
 Disallow: /MainDashboard
-Disallow: /pages/adminLogin
+Disallow: /pages/Sign In
 Disallow: /api/
 Disallow: /_next/
 Disallow: /private/
@@ -29,7 +29,7 @@ Allow: /
 Allow: /pages/
 Allow: /images/
 Disallow: /MainDashboard
-Disallow: /pages/adminLogin
+Disallow: /pages/Sign In
 Disallow: /*?*
 Crawl-delay: 1
 
@@ -47,35 +47,35 @@ Disallow: /
 User-agent: Bingbot
 Allow: /
 Disallow: /MainDashboard
-Disallow: /pages/adminLogin
+Disallow: /pages/Sign In
 Crawl-delay: 1
 
 # Yahoo (uses Slurp)
 User-agent: Slurp
 Allow: /
 Disallow: /MainDashboard
-Disallow: /pages/adminLogin
+Disallow: /pages/Sign In
 Crawl-delay: 1
 
 # Baidu (China)
 User-agent: Baiduspider
 Allow: /
 Disallow: /MainDashboard
-Disallow: /pages/adminLogin
+Disallow: /pages/Sign In
 Crawl-delay: 2
 
 # Yandex (Russia)
 User-agent: Yandex
 Allow: /
 Disallow: /MainDashboard
-Disallow: /pages/adminLogin
+Disallow: /pages/Sign In
 Crawl-delay: 1
 
 # DuckDuckGo
 User-agent: DuckDuckBot
 Allow: /
 Disallow: /MainDashboard
-Disallow: /pages/adminLogin
+Disallow: /pages/Sign In
 
 # Facebook (for link previews)
 User-agent: FacebookExternalHit
@@ -92,7 +92,7 @@ Crawl-delay: 1
 # Prevent search engines from showing cached versions of admin pages
 User-agent: *
 Noarchive: /MainDashboard
-Noarchive: /pages/adminLogin
+Noarchive: /pages/Sign In
 
 # --- IMPORTANT: SITEMAP LOCATION ---
 Sitemap: https://kinyui-senior.vercel.app/sitemap.xml

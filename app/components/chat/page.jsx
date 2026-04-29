@@ -337,7 +337,7 @@ P.O. Box 363 – 90131 Tala, Kenya
       { label: 'Contact', path: '/pages/contact', icon: 'phone' },
       { label: 'Staff Directory', path: '/pages/staff', icon: 'users' },
       { label: 'Careers', path: '/pages/career', icon: 'briefcase' },
-      { label: 'Admin Login', path: '/pages/adminLogin', icon: 'login' }
+      { label: 'Admin Login', path: '/pages/Sign In', icon: 'login' }
     ]
   }
 };

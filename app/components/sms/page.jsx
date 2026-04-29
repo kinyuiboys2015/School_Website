@@ -995,7 +995,7 @@ const updateStats = (campaignsList) => {
         localStorage.removeItem("admin_token");
         localStorage.removeItem("device_token");
         localStorage.removeItem("admin_user");
-        window.location.href = "/pages/adminLogin";
+        window.location.href = "/pages/Sign In";
       }, 1000);
       return true;
     }

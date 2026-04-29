@@ -1048,7 +1048,7 @@ const handleCreateJob = async (formData) => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1000);
       
     } else {
@@ -1125,7 +1125,7 @@ const handleUpdateJob = async (formData) => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1000);
       
     } else {
@@ -1201,7 +1201,7 @@ const handleDeleteJob = async () => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1000);
       
     } else {

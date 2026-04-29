@@ -864,7 +864,7 @@ try {
 } catch (error) {
   // Handle missing tokens
   toast.error(error.message);
-  window.location.href = '/pages/adminLogin';
+  window.location.href = '/pages/Sign In';
 }
 
 
@@ -973,7 +973,7 @@ const handleFormSubmit = async (e) => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1000);
       
     } else {
@@ -1782,7 +1782,7 @@ const handleDeleteSchool = async () => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1000);
       
     } else {

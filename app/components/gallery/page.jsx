@@ -540,7 +540,7 @@ const handleCreate = async () => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1500);
       
     } else if (error.message.includes('permission')) {
@@ -663,7 +663,7 @@ const handleUpdate = async () => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1500);
       
     } else if (error.message.includes('permission')) {
@@ -755,7 +755,7 @@ const confirmDelete = async () => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1500);
       
     } else if (error.message.includes('permission')) {
@@ -821,7 +821,7 @@ const handleBulkDelete = async () => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       }, 1500);
       
     } else {

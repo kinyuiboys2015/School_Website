@@ -683,7 +683,7 @@ const [admissionGrowth, setAdmissionGrowth] = useState({});
     
     if (!user) {
       console.log('❌ No user data found');
-      window.location.href = '/pages/adminLogin';
+      window.location.href = '/pages/Sign In';
       return null;
     }
     
@@ -692,7 +692,7 @@ const [admissionGrowth, setAdmissionGrowth] = useState({});
       try {
         const tokenPayload = decodeJWTToken(token);
         if (!tokenPayload) {
-          window.location.href = '/pages/adminLogin';
+          window.location.href = '/pages/Sign In';
           return null;
         }
         
@@ -700,7 +700,7 @@ const [admissionGrowth, setAdmissionGrowth] = useState({});
         if (tokenPayload.exp && tokenPayload.exp < currentTime) {
           possibleUserKeys.forEach(key => localStorage.removeItem(key));
           possibleTokenKeys.forEach(key => localStorage.removeItem(key));
-          window.location.href = '/pages/adminLogin';
+          window.location.href = '/pages/Sign In';
           return null;
         }
         
@@ -725,7 +725,7 @@ const [admissionGrowth, setAdmissionGrowth] = useState({});
     const validRoles = ['ADMIN', 'SUPER_ADMIN', 'administrator', 'TEACHER', 'PRINCIPAL', 'STAFF'];
     
     if (!userRole || !validRoles.includes(userRole.toUpperCase())) {
-      window.location.href = '/pages/adminLogin';
+      window.location.href = '/pages/Sign In';
       return null;
     }
     

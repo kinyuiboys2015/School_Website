@@ -75,7 +75,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, sidebarOpen, set
         
         if (!userData) {
           console.log('❌ Sidebar: No user data found in localStorage');
-          window.location.href = '/pages/adminLogin';
+          window.location.href = '/pages/Sign In';
           return;
         }
 
@@ -94,7 +94,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, sidebarOpen, set
               // Clear all auth data
               possibleUserKeys.forEach(key => localStorage.removeItem(key));
               possibleTokenKeys.forEach(key => localStorage.removeItem(key));
-              window.location.href = '/pages/adminLogin';
+              window.location.href = '/pages/Sign In';
               return;
             }
             console.log('✅ Sidebar: Token is valid');
@@ -109,7 +109,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, sidebarOpen, set
         
         if (!userRole || !validRoles.includes(userRole.toUpperCase())) {
           console.log('❌ Sidebar: User does not have valid role:', userRole);
-          window.location.href = '/pages/adminLogin';
+          window.location.href = '/pages/Sign In';
           return;
         }
 
@@ -120,7 +120,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, sidebarOpen, set
         console.error('❌ Sidebar: Error initializing user:', error);
         // Clear all auth data on error
         localStorage.clear();
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign In';
       } finally {
         setLoading(false);
       }
@@ -185,7 +185,7 @@ const handleLogout = () => {
     window.toast.success('Logged out. Device remains trusted.');
   }
   
-  window.location.href = '/pages/adminLogin';
+  window.location.href = '/pages/Sign In';
 };
 
   const handleTabClick = (tabId) => {

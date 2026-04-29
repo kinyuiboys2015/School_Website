@@ -58,7 +58,7 @@ export function SessionProvider({ children }) {
 
   const signOut = () => {
     clearSession();
-    window.location.href = '/pages/adminLogin';
+    window.location.href = '/pages/Sign In';
   };
 
   const clearSession = () => {

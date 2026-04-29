@@ -2306,7 +2306,7 @@ const handleAuthError = (error, showNotification) => {
   
   // Redirect after delay
   setTimeout(() => {
-    window.location.href = '/pages/adminLogin';
+    window.location.href = '/pages/Sign In';
   }, 2000);
 };
 // In ModernSchoolFeesManagement component, REPLACE these functions:

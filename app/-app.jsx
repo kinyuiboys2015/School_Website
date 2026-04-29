@@ -10,7 +10,7 @@ export default function ClientLayoutWrapper({ children }) {
 
   const isMainDashboard = pathname === "/MainDashboard";
   const isStudentPortal = pathname === "/pages/StudentPortal";
-  const isAdminLogin = pathname === "/pages/adminLogin";
+  const isAdminLogin = pathname === "/pages/Sign In";
 
   // Add or remove zoom class based on route
   useEffect(() => {
