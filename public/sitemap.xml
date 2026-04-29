@@ -7,25 +7,25 @@
   <!-- Home Page - Highest Priority -->
   <url>
     <loc>https://kinyui-senior.vercel.app/</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>SA kinyui boys Senior School - Home</image:title>
-      <image:caption>Official school logo and emblem</image:caption>
+      <image:title>SA Kinyui Boys Senior School - Home</image:title>
+      <image:caption>Official school logo and emblem - Excellence With Integrity</image:caption>
     </image:image>
   </url>
 
   <url>
     <loc>https://kinyui-senior.vercel.app/pages/AboutUs</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>About kinyui boys Senior School</image:title>
-      <image:caption>Our history, mission, and values</image:caption>
+      <image:title>About Kinyui Boys Senior School</image:title>
+      <image:caption>Our history, mission, vision, and core values</image:caption>
     </image:image>
   </url>
 
@@ -34,39 +34,54 @@
   <!-- Student Portal -->
   <url>
     <loc>https://kinyui-senior.vercel.app/pages/StudentPortal</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>Student Portal</image:title>
-      <image:caption>Access student resources and information</image:caption>
+      <image:title>Student Portal - Kinyui Boys</image:title>
+      <image:caption>Access student resources, results, and learning materials</image:caption>
     </image:image>
   </url>
 
   <!-- Guidance & Counselling -->
   <url>
     <loc>https://kinyui-senior.vercel.app/pages/Guidance-and-Counselling</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>Guidance and Counselling</image:title>
-      <image:caption>Student support and wellness services</image:caption>
+      <image:title>Guidance and Counselling Services</image:title>
+      <image:caption>Student support, mentorship, and wellness programs</image:caption>
     </image:image>
   </url>
 
   <!-- School Rules & Policies -->
   <url>
     <loc>https://kinyui-senior.vercel.app/pages/OurSchoolPolicies</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
       <image:title>School Rules and Policies</image:title>
-      <image:caption>School regulations and guidelines</image:caption>
+      <image:caption>Official school regulations, code of conduct, and guidelines</image:caption>
+    </image:image>
+  </url>
+
+  <!-- ==================== ACHIEVEMENTS SECTION (NEW) ==================== -->
+  
+  <!-- School Achievements & Milestones -->
+  <url>
+    <loc>https://kinyui-senior.vercel.app/pages/Achievements</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
+      <image:title>School Achievements &amp; Milestones</image:title>
+      <image:caption>Academic excellence, county rankings, national recognition, and STEM innovation awards</image:caption>
     </image:image>
   </url>
 
@@ -75,95 +90,112 @@
   <!-- Admissions Main -->
   <url>
     <loc>https://kinyui-senior.vercel.app/pages/admissions</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>Admissions Information</image:title>
-      <image:caption>Join kinyui boys Senior School</image:caption>
+      <image:title>Admissions Information - Kinyui Boys</image:title>
+      <image:caption>Join Kinyui Boys Senior School - CBC pathways and enrollment</image:caption>
     </image:image>
   </url>
 
   <!-- Apply for Admissions -->
   <url>
-    <loc>https://kinyui-senior.vercel.app/pages//Apply Now</loc>
-    <lastmod>2026-03-17</lastmod>
+    <loc>https://kinyui-senior.vercel.app/pages/Apply Now</loc>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>Apply for Admissions</image:title>
-      <image:caption>Start your application today</image:caption>
+      <image:title>Apply for Admissions - Kinyui Boys</image:title>
+      <image:caption>Start your application for the upcoming academic year</image:caption>
     </image:image>
   </url>
 
-  <!-- Fees Structure -->
+  <!-- ==================== FEES SECTION (ENHANCED) ==================== -->
+  
+  <!-- Fees Structure - Boarding & Admission Fees -->
   <url>
     <loc>https://kinyui-senior.vercel.app/pages/fees</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>School Fees Structure</image:title>
-      <image:caption>Current fee structure for all forms</image:caption>
+      <image:title>School Fees Structure 2026</image:title>
+      <image:caption>Transparent fee breakdown - Boarding fees, admission fees, and payment methods (Bank, MPesa Paybill 522522)</image:caption>
     </image:image>
   </url>
 
   <!-- ==================== SCHOOL LIFE ==================== -->
   
-  <!-- Gallery -->
+  <!-- Gallery - Campus Life & Activities -->
   <url>
     <loc>https://kinyui-senior.vercel.app/pages/gallery</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>School Gallery</image:title>
-      <image:caption>Campus life and activities</image:caption>
+      <image:title>School Gallery - Campus Life</image:title>
+      <image:caption>Visual showcase of campus facilities, student activities, sports, and school events</image:caption>
     </image:image>
   </url>
 
   <!-- News & Events -->
   <url>
     <loc>https://kinyui-senior.vercel.app/pages/eventsandnews</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>Latest News and Events</image:title>
-      <image:caption>Stay updated with school activities</image:caption>
+      <image:title>Latest News and Upcoming Events</image:title>
+      <image:caption>Stay updated with school announcements, academic calendars, and event schedules</image:caption>
+    </image:image>
+  </url>
+
+  <!-- ==================== MAGAZINE SECTION (NEW) ==================== -->
+  
+  <!-- School Magazine & Publications -->
+  <url>
+    <loc>https://kinyui-senior.vercel.app/pages/Magazine</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>quarterly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
+      <image:title>School Magazine - The Kinyui Chronicle</image:title>
+      <image:caption>Student publications, creative writing, school news, and academic highlights</image:caption>
     </image:image>
   </url>
 
   <!-- ==================== RESOURCES ==================== -->
   
-  <!-- Staff Directory -->
+  <!-- Staff Directory - Leadership & Faculty -->
   <url>
     <loc>https://kinyui-senior.vercel.app/pages/staff</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>Staff Directory</image:title>
-      <image:caption>Meet our dedicated team</image:caption>
+      <image:title>Staff Directory - Our Faculty</image:title>
+      <image:caption>Meet our dedicated teaching staff, leadership team, and support personnel</image:caption>
     </image:image>
   </url>
 
-  <!-- Careers -->
+  <!-- Careers - Join Our Team -->
   <url>
     <loc>https://kinyui-senior.vercel.app/pages/careers</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>Careers at kinyui boys</image:title>
-      <image:caption>Join our teaching staff</image:caption>
+      <image:title>Careers at Kinyui Boys Senior School</image:title>
+      <image:caption>Current job openings, teaching positions, and staff recruitment</image:caption>
     </image:image>
   </url>
 
@@ -172,13 +204,13 @@
   <!-- Contact Us -->
   <url>
     <loc>https://kinyui-senior.vercel.app/pages/contact</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>Contact Us</image:title>
-      <image:caption>Get in touch with the school</image:caption>
+      <image:title>Contact Kinyui Boys Senior School</image:title>
+      <image:caption>Get in touch - Phone, email, location, and inquiry form</image:caption>
     </image:image>
   </url>
 
@@ -187,13 +219,13 @@
   <!-- Admin Login -->
   <url>
     <loc>https://kinyui-senior.vercel.app/pages/Sign In</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
     <image:image>
       <image:loc>https://kinyui-senior.vercel.app/kinyui.png</image:loc>
-      <image:title>Administrator Login</image:title>
-      <image:caption>Staff login portal</image:caption>
+      <image:title>Administrator Login Portal</image:title>
+      <image:caption>Secure staff and administrator login access</image:caption>
     </image:image>
   </url>
 
