@@ -1009,6 +1009,35 @@ export default function ModernGallery() {
 
           {/* ========== MAIN CONTENT LAYOUT ========== */}
           <div className="flex flex-col lg:flex-row gap-8">
+
+               {/* Right Column: Sidebar */}
+            <div className="lg:w-[380px] space-y-6">
+              <div className="lg:sticky lg:top-24 space-y-6">
+
+                {/* Year Info Banner */}
+                <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
+                  <div className="flex items-center gap-3 mb-4"><div className="p-2 bg-blue-50 rounded-xl"><FiCalendar className="text-blue-600" /></div><div><h4 className="font-bold text-slate-900">Gallery Years</h4><p className="text-xs text-slate-500">Browse by year</p></div></div>
+                  <div className="space-y-3"><div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100"><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div><span className="text-sm font-medium text-slate-700">All Years</span></div><span className="text-xs font-bold text-blue-600">{transformedGalleries.length}</span></div>{years.slice(0, 3).map(year => (<div key={year} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100"><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div><span className="text-sm font-medium text-slate-700">{year}</span></div><span className="text-xs font-bold text-blue-600">{transformedGalleries.filter(g => g.year === year).length}</span></div>))}</div>
+                </div>
+
+                {/* About Our Gallery */}
+                <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-slate-50 rounded-xl"><FiCamera className="text-slate-700 text-lg" /></div>
+                    <h4 className="font-bold text-slate-900">About Our Gallery</h4>
+                  </div>
+                  <p className="text-slate-600 text-sm leading-relaxed mb-4">
+                    Welcome to the official Kinyui Boys Senior School photo gallery. A visual journey through our school&apos;s vibrant life in Matungulu, Machakos County.
+                  </p>
+                  <p className="text-slate-500 text-sm leading-relaxed mb-4">
+                    From spirited sports days and proud graduation ceremonies to everyday classroom moments and hands-on laboratory sessions, these photos capture the heart of what makes Kinyui special.
+                  </p>
+                  <p className="text-slate-500 text-sm leading-relaxed">
+                    Browse through our collections, download your favourite memories, and share them with family and friends. Every image tells the story of academic excellence, discipline, and community.
+                  </p>
+                </div>
+              </div>
+            </div>
             
             {/* Left Column: Galleries Feed */}
             <div className="flex-1 min-w-0 space-y-4 sm:space-y-8">
@@ -1074,34 +1103,7 @@ export default function ModernGallery() {
               </div>
             </div>
 
-            {/* Right Column: Sidebar */}
-            <div className="lg:w-[380px] space-y-6">
-              <div className="lg:sticky lg:top-24 space-y-6">
-
-                {/* Year Info Banner */}
-                <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
-                  <div className="flex items-center gap-3 mb-4"><div className="p-2 bg-blue-50 rounded-xl"><FiCalendar className="text-blue-600" /></div><div><h4 className="font-bold text-slate-900">Gallery Years</h4><p className="text-xs text-slate-500">Browse by year</p></div></div>
-                  <div className="space-y-3"><div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100"><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div><span className="text-sm font-medium text-slate-700">All Years</span></div><span className="text-xs font-bold text-blue-600">{transformedGalleries.length}</span></div>{years.slice(0, 3).map(year => (<div key={year} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100"><div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div><span className="text-sm font-medium text-slate-700">{year}</span></div><span className="text-xs font-bold text-blue-600">{transformedGalleries.filter(g => g.year === year).length}</span></div>))}</div>
-                </div>
-
-                {/* About Our Gallery */}
-                <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-slate-50 rounded-xl"><FiCamera className="text-slate-700 text-lg" /></div>
-                    <h4 className="font-bold text-slate-900">About Our Gallery</h4>
-                  </div>
-                  <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                    Welcome to the official Kinyui Boys Senior School photo gallery. A visual journey through our school&apos;s vibrant life in Matungulu, Machakos County.
-                  </p>
-                  <p className="text-slate-500 text-sm leading-relaxed mb-4">
-                    From spirited sports days and proud graduation ceremonies to everyday classroom moments and hands-on laboratory sessions, these photos capture the heart of what makes Kinyui special.
-                  </p>
-                  <p className="text-slate-500 text-sm leading-relaxed">
-                    Browse through our collections, download your favourite memories, and share them with family and friends. Every image tells the story of academic excellence, discipline, and community.
-                  </p>
-                </div>
-              </div>
-            </div>
+         
           </div>
 
         </div>
