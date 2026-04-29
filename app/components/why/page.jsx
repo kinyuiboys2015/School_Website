@@ -2126,7 +2126,7 @@ const schoolFeatures = [
   </div>
 
   {/* CONTEXTUAL OVERVIEW */}
-  <div className="lg:col-span-4 flex flex-col justify-center p-8 sm:p-10 bg-indigo-600 border border-indigo-500 rounded-[2rem] relative overflow-hidden text-white shadow-xl shadow-indigo-100">
+  <div className="lg:col-span-4 flex flex-col justify-center p-8 sm:p-10 bg-amber-900 border border-rose-500 rounded-[2rem] relative overflow-hidden text-white shadow-xl shadow-indigo-100">
     <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 blur-3xl rounded-full" />
     <div className="absolute -top-10 -left-10 w-32 h-32 bg-indigo-400/20 blur-2xl rounded-full" />
     
