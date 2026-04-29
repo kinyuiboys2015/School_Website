@@ -432,73 +432,75 @@ const ModernSchoolLayout = () => {
     },
   ];
 
-  const schoolFeatures = [
-    {
-      title: "Academic Excellence",
-      gradient: "from-indigo-600 to-sky-500",
-      description:
-        "A culture of high expectations supported by mentorship, structure, and a strong learning community.",
-      highlight: "Excellence in Learning",
-      details: [
-        "Holistic Education",
-        "Critical Thinking",
-        "Student Growth",
-        "Strong Academic Culture",
-      ],
-      metrics: ["8.0+ Mean", "80%+ Uni", "90% Pass"],
-      icon: <FiAward />,
-      isPremium: false,
-    },
-    {
-      title: "Experienced Faculty",
-      gradient: "from-emerald-600 to-teal-500",
-      description:
-        "Qualified educators focused on clarity, consistency, and personalized support for every learner.",
-      highlight: "Qualified Educators",
-      details: ["TSC Certified", "Subject Specialists", "Mentorship", "Training"],
-      metrics: ["45 Teachers", "18+ Years", "100% TSC"],
-      icon: <FiUsers />,
-      isPremium: false,
-    },
-    {
-      title: "Modern Learning Environment",
-      gradient: "from-amber-600 to-orange-500",
-      description:
-        "Learning spaces built for practical work, collaboration, and technology-enabled instruction.",
-      highlight: "Advanced Facilities",
-      details: ["3 Science Labs", "2 Computer Labs", "Library", "Sports Fields"],
-      metrics: ["3 Labs", "2 Comp Labs", "8,000 Books"],
-      icon: <FiMapPin />,
-      isPremium: false,
-    },
-    {
-      title: "Values & Character",
-      gradient: "from-slate-800 to-slate-600",
-      description:
-        "We emphasize integrity, discipline, and service—building character and leadership alongside academic growth.",
-      highlight: "Character Building",
-      details: ["Integrity", "Discipline", "Service", "Leadership"],
-      metrics: ["Leadership", "Service", "Discipline"],
-      icon: <FiHeart />,
-      isPremium: false,
-    },
-    {
-      title: "University & Career Preparation",
-      gradient: "from-emerald-700 to-teal-600",
-      description:
-        "We provide comprehensive career guidance and university linkage programs for smooth transition to higher education.",
-      highlight: "University Pathways",
-      details: [
-        "Career Counseling",
-        "University Tours",
-        "Alumni Network",
-        "Scholarships",
-      ],
-      metrics: ["15+ Partners", "Career Fairs", "Success"],
-      icon: <FiTrendingUp />,
-      isPremium: true,
-    },
-  ];
+const schoolFeatures = [
+  {
+    title: "Scholarly Distinction",
+    gradient: "from-indigo-500 to-cyan-500",
+    description:
+      "An environment engineered for deep learning, intellectual discipline, and consistent academic performance.",
+    highlight: "Elite Learning Standard",
+    details: [
+      "Structured Learning Systems",
+      "Performance Tracking",
+      "Exam Mastery",
+      "Academic Mentorship",
+    ],
+    metrics: ["Top Performance", "Consistent Results", "High Transition"],
+    icon: <FiAward />,
+    isPremium: false,
+  },
+
+  {
+    title: "Expert Teaching Team",
+    gradient: "from-emerald-500 to-teal-500",
+    description:
+      "A dedicated team of professionals delivering clarity, guidance, and personalized academic support.",
+    highlight: "Professional Educators",
+    details: [
+      "Certified Instructors",
+      "Subject Mastery",
+      "Student Mentorship",
+      "Continuous Training",
+    ],
+    metrics: ["Highly Qualified", "Experienced", "Student-Focused"],
+    icon: <FiUsers />,
+    isPremium: false,
+  },
+
+  {
+    title: "Character & Purpose",
+    gradient: "from-slate-700 to-slate-500",
+    description:
+      "We nurture integrity, discipline, and leadership while grounding students in strong moral and spiritual values In Christ Jesus.",
+    highlight: "Values-Driven Growth",
+    details: [
+      "Integrity First",
+      "Self-Discipline",
+      "Leadership Mindset",
+      "Faith Foundation",
+    ],
+    metrics: ["Leadership", "Discipline", "Service"],
+    icon: <FiHeart />,
+    isPremium: false,
+  },
+
+  {
+    title: "CBC Pathways",
+    gradient: "from-emerald-600 to-green-500",
+    description:
+      "Focused preparation for university and beyond through career guidance, exposure, and strategic partnerships.",
+    highlight: "Career Readiness",
+    details: [
+      "Career Strategy",
+      "University Placement",
+      "Alumni Guidance",
+      "Scholarship Access",
+    ],
+    metrics: ["Global Opportunities", "Career Ready", "Strong Network"],
+    icon: <FiTrendingUp />,
+    isPremium: true,
+  },
+];
 
   const pathways = [
     {
