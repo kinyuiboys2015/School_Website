@@ -3032,7 +3032,7 @@ return (
                   <div className="absolute inset-0 w-2 h-2 rounded-full bg-amber-500 animate-ping opacity-20" />
                 </div>
                 
-                <p className="text-[12px] md:text-[13px] font-bold text-slate-900 leading-relaxed transition-colors group-hover:text-white">
+                <p className="text-[12px] md:text-[13px] font-bold text-slate-100 leading-relaxed transition-colors group-hover:text-white">
                   {note}
                 </p>
               </div>
@@ -3093,13 +3093,13 @@ return (
               </div>
             </div>
             
-            <p className="text-slate-900 text-xs md:text-sm font-bold leading-relaxed">
+            <p className="text-slate-100 text-xs md:text-sm font-bold leading-relaxed">
               {step.description}
             </p>
             
             {/* Requirements List */}
             <div className="pt-4 border-t border-white/5 space-y-3">
-              <span className="text-[9px] font-black text-slate-700 uppercase tracking-[0.2em]">Checklist</span>
+              <span className="text-[9px] font-black text-slate-200 uppercase tracking-[0.2em]">Checklist</span>
               <ul className="space-y-2.5">
                 {step.requirements.map((req, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-[11px] md:text-xs text-slate-300 font-medium">
@@ -3242,7 +3242,7 @@ return (
               Start Your <span className="text-teal-400">Journey With Us</span>
             </h2>
             
-            <p className="text-slate-900 mb-6 md:mb-8 text-sm md:text-base leading-relaxed max-w-lg mx-auto text-balance">
+            <p className="text-slate-100 mb-6 md:mb-8 text-sm md:text-base leading-relaxed max-w-lg mx-auto text-balance">
               Have questions about enrollment, fees, or student life? Our admissions team is ready to guide you through every step.
             </p>
 
@@ -3260,7 +3260,7 @@ return (
               </button>
             </div>
 
-            <p className="mt-4 md:mt-6 text-[10px] uppercase tracking-widest text-slate-700 font-bold opacity-60">
+            <p className="mt-4 md:mt-6 text-[10px] uppercase tracking-widest text-slate-50 font-bold opacity-60">
               Application takes few minutes
             </p>
           </div>
