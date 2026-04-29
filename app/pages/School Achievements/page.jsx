@@ -1,4 +1,3 @@
-// app/pages/School Achievements/page.jsx - SERVER COMPONENT (alias to Achievements)
 import ClientAchievements from '../../components/ach/page';
 
 export const metadata = {
@@ -17,4 +16,3 @@ export const metadata = {
 export default function SchoolAchievementsPage() {
   return <ClientAchievements />;
 }
-

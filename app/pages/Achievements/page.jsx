@@ -1,4 +1,3 @@
-// app/pages/Achievements/page.jsx - SERVER COMPONENT (matches Gallery structure)
 import ClientAchievements from '../../components/ach/page';
 
 export const metadata = {
@@ -14,7 +13,6 @@ export const metadata = {
   },
 };
 
-export default function AchievementsPage() {
+export default function SchoolAchievementsPage() {
   return <ClientAchievements />;
 }
-
