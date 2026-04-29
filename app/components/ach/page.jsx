@@ -965,8 +965,8 @@ export default function KinyuiAchievements() {
                       <span className="text-lg font-black text-emerald-600">{schoolStats?.targetMean?.toFixed(2) || '—'}</span>
                     </div>
                     <div className="p-3 bg-amber-50 rounded-xl">
-                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Motto</p>
-                      <p className="text-sm font-black text-slate-900 italic">"{schoolStats?.slogan || 'Excellence Through Integrity'}"</p>
+                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Our Slogan</p>
+                      <p className="text-sm font-black text-slate-900 italic">"{schoolStats?.slogan || 'We are the Eagles'}"</p>
                     </div>
                   </div>
                 </div>
