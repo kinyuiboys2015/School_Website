@@ -173,8 +173,8 @@ export default function ModernNavbar() {
       description: 'Celebrating our students\' successes & milestones'
     },
       {
-      name: 'Alumni page',
-      href: 'https://www.facebook.com/groups/53636547389',
+      name: 'Our Alumni page',
+      href: 'https://www.facebook.com/KinyuiBoysHighSchool/',
       icon: FiHeart,
       description: 'Connect with fellow alumnae'
     }
