@@ -6,6 +6,7 @@ export const metadata = {
     'Explore the official achievements of Kinyui Boys Senior School in Matungulu, Machakos County — academics, sports, arts, leadership, and more.',
   alternates: {
     canonical: 'https://kinyui-senior.vercel.app/pages/Achievements',
+    
   },
   robots: {
     index: true,
