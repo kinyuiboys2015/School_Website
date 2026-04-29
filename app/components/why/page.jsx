@@ -445,7 +445,7 @@ const schoolFeatures = [
       "Exam Mastery",
       "Academic Mentorship",
     ],
-    metrics: ["Top Performance", "Consistent Results", "High Transition"],
+    metrics: ["Good Performance", "Consistent Results", "good Improovement"],
     icon: <FiAward />,
     isPremium: false,
   },
