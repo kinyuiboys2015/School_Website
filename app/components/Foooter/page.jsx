@@ -66,7 +66,7 @@ const QUICK_RESOURCES = [
   { name: 'Staff Directory', href: '/pages/staff', icon: FiUsers, badge: 'Contact' },
   { name: 'Fees Structure', href: '/pages/fees', icon: FiCompass, badge: '2025' },
   { name: 'School Calendar', href: '/pages/eventsandnews', icon: FiCalendar },
-  { name: 'Apply Now', href: '/pages/apply-for-admissions', icon: FiUserPlus, badge: 'Open' },
+  { name: 'Apply Now', href: '/pages//Apply Now', icon: FiUserPlus, badge: 'Open' },
 ];
 
 // Support & Policies

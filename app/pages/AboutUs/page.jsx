@@ -114,7 +114,7 @@ export default function AboutPage() {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <Link href="/pages/apply-for-admissions">
+              <Link href="/pages//Apply Now">
                 <button className="px-6 sm:px-8 py-3 sm:py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs sm:text-sm font-black rounded-xl shadow-lg shadow-orange-900/30 flex items-center gap-2 hover:shadow-xl transition-all active:scale-95">
                   Apply Now <ArrowRight size={16} />
                 </button>

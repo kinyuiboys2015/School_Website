@@ -156,7 +156,7 @@ export default function ModernNavbar() {
     },
     {
       name: 'Apply Now',
-      href: '/pages/apply-for-admissions',
+      href: '/pages//Apply Now',
       icon: FiUserPlus,
       description: 'Start your application process'
     },
