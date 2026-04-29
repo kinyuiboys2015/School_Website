@@ -1441,7 +1441,7 @@ export default function AdminLoginPage() {
                     <span>&copy; {new Date().getFullYear()} Kinyui Boys' Senior</span>
                     <span className="flex items-center gap-2">
                       <Server size={10} />
-                      Secure Node: 041
+                      We Believe in God Through Christ
                     </span>
                   </div>
                 </div>
