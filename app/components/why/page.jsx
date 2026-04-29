@@ -374,8 +374,8 @@ const ModernSchoolLayout = () => {
       border: "border-emerald-200",
     },
     blue: {
-      bg: "bg-blue-600",
-      light: "bg-blue-50",
+      bg: "bg-orange-900",
+      light: "bg-amber-50",
       text: "text-blue-600",
       border: "border-blue-200",
     },
@@ -462,7 +462,7 @@ const ModernSchoolLayout = () => {
     },
     {
       title: "Modern Learning Environment",
-      gradient: "from-violet-600 to-fuchsia-500",
+      gradient: "from-amber-600 to-orange-500",
       description:
         "Learning spaces built for practical work, collaboration, and technology-enabled instruction.",
       highlight: "Advanced Facilities",
@@ -1002,7 +1002,7 @@ const ModernSchoolLayout = () => {
       <section className="relative py-16 sm:py-20 lg:py-24">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-32 left-1/2 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full sm:bg-gradient-to-br sm:from-indigo-200/70 sm:via-sky-200/40 sm:to-emerald-200/30 bg-gradient-to-br from-amber-200/60 via-amber-100/30 to-rose-200/25 blur-3xl" />
-          <div className="absolute -bottom-28 left-10 h-[22rem] w-[22rem] rounded-full sm:bg-gradient-to-br sm:from-violet-200/40 sm:to-fuchsia-200/20 bg-gradient-to-br from-rose-200/30 to-rose-100/15 blur-3xl" />
+          <div className="absolute -bottom-28 left-10 h-[22rem] w-[22rem] rounded-full sm:bg-gradient-to-br sm:from-amber-200/40 sm:to-orange-200/20 bg-gradient-to-br from-rose-200/30 to-rose-100/15 blur-3xl" />
           <div className="absolute top-24 right-10 h-[20rem] w-[20rem] rounded-full sm:bg-gradient-to-br sm:from-sky-200/35 sm:to-indigo-200/20 bg-gradient-to-br from-amber-100/35 to-amber-50/15 blur-3xl" />
         </div>
 
@@ -1365,8 +1365,8 @@ const ModernSchoolLayout = () => {
                         label: "Slogan",
                         value: stats.slogan || motto,
                         icon: <FiStar className="w-4 h-4" />,
-                        color: "text-violet-700",
-                        bgColor: "bg-violet-50",
+                        color: "text-amber-700",
+                        bgColor: "bg-amber-50",
                       },
                     ];
 
@@ -1424,8 +1424,8 @@ const ModernSchoolLayout = () => {
 
                   {/* Email Card */}
                   <div className="bg-white/70 border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center gap-3 flex-1 sm:flex-initial">
-                    <div className="w-10 h-10 flex items-center justify-center rounded-2xl sm:bg-violet-50 sm:border-violet-100 bg-rose-50 border-rose-100 shrink-0">
-                      <FiMail className="sm:text-violet-700 text-rose-700 w-4 h-4" />
+                    <div className="w-10 h-10 flex items-center justify-center rounded-2xl sm:bg-amber-50 sm:border-amber-100 bg-rose-50 border-rose-100 shrink-0">
+                      <FiMail className="sm:text-amber-700 text-rose-700 w-4 h-4" />
                     </div>
                     <div className="min-w-0">
                       <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">
@@ -1509,10 +1509,10 @@ const ModernSchoolLayout = () => {
                   label: "Our Mission",
                   value: mission,
                   icon: FiBookOpen,
-                  gradient: "from-violet-600 to-fuchsia-500",
-                  bg: "bg-violet-50",
-                  text: "text-violet-700",
-                  border: "border-violet-100",
+                  gradient: "from-amber-600 to-orange-500",
+                  bg: "bg-amber-50",
+                  text: "text-amber-700",
+                  border: "border-amber-100",
                   span: "md:col-span-2",
                 },
               ].map((item, idx) => {
@@ -1564,7 +1564,7 @@ const ModernSchoolLayout = () => {
         <section className="relative py-16 sm:py-20 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute -top-44 left-1/2 h-[26rem] w-[26rem] -translate-x-1/2 rounded-full bg-gradient-to-br from-sky-200/45 via-indigo-200/30 to-emerald-200/20 blur-3xl" />
-            <div className="absolute -bottom-48 right-6 h-[24rem] w-[24rem] rounded-full bg-gradient-to-br from-violet-200/30 to-fuchsia-200/15 blur-3xl" />
+            <div className="absolute -bottom-48 right-6 h-[24rem] w-[24rem] rounded-full bg-gradient-to-br from-amber-200/30 to-orange-200/15 blur-3xl" />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -1896,7 +1896,7 @@ const ModernSchoolLayout = () => {
           {/* REASONS GRID (Shuffled Staggered Layout) */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* MOTTO CARD */}
-         <div className="lg:col-span-1 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[1rem] p-8 text-white flex flex-col justify-between shadow-xl shadow-indigo-200 relative overflow-hidden">
+         <div className="lg:col-span-1 bg-gradient-to-br from-amber-900 to-orange-900 rounded-[1rem] p-8 text-white flex flex-col justify-between shadow-xl shadow-indigo-200 relative overflow-hidden">
   {/* Decorative Background Icon */}
   <div className="absolute top-0 right-0 p-4 opacity-10">
     <FiPlus className="w-32 h-32 rotate-12" /> {/* Using FiPlus as a minimalist cross */}
@@ -1997,7 +1997,7 @@ const ModernSchoolLayout = () => {
           {/* THE PILLARS (Pathways First) */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-16">
             {/* Dynamic Title Card */}
-<div className="lg:col-span-1 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[2rem] p-6 sm:p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/20 relative overflow-hidden group">
+<div className="lg:col-span-1 bg-gradient-to-br from-amber-900 to-orange-900 rounded-[2rem] p-6 sm:p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/20 relative overflow-hidden group">
   {/* Decorative Background Glow */}
   <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 blur-3xl rounded-full" />
   
