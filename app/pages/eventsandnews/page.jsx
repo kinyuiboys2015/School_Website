@@ -1342,37 +1342,37 @@ if (loading) {
       </div>
     </div>
 
-    {/* Right Side: Typography & Features */}
-    <div className="flex-1 text-center md:text-left">
-      <h3 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight">
-        Stay Connected.
-      </h3>
-      <p className="text-slate-500 text-base md:text-xl font-medium leading-relaxed max-w-2xl mx-auto md:mx-0">
-        The central hub for school updates. Sync schedules, collaborate with peers, and stay on track with ease.
-      </p>
+{/* Right Side: Typography & Features */}
+<div className="flex-1 text-center md:text-left">
+  <h3 className="text-xl md:text-3xl font-black text-slate-900 mb-3 tracking-tight">
+    Stay Connected.
+  </h3>
+  <p className="text-slate-500 text-sm md:text-base font-medium leading-relaxed max-w-2xl mx-auto md:mx-0">
+    The central hub for school updates. Sync schedules, collaborate with peers, and stay on track with ease.
+  </p>
 
-      {/* Feature Grid: Borderless & Minimalist */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
-        {[
-          { label: 'Sharing', icon: FiShare2, color: 'text-blue-600', bg: 'bg-blue-50' },
-          { label: 'Sync', icon: FiCalendar, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-          { label: 'Save', icon: FiBookmark, color: 'text-amber-600', bg: 'bg-amber-50' },
-          { label: 'Alerts', icon: FiBell, color: 'text-purple-600', bg: 'bg-purple-50' }
-        ].map((feature, idx) => (
-          <div 
-            key={idx} 
-            className="flex items-center gap-3 p-4 bg-slate-50/40 rounded-[1.5rem] group hover:bg-white hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-500"
-          >
-            <div className={`p-2.5 rounded-xl ${feature.bg} ${feature.color} shrink-0 shadow-sm`}>
-              <feature.icon size={20} />
-            </div>
-            <span className="text-[11px] md:text-xs font-black uppercase tracking-widest text-slate-800">
-              {feature.label}
-            </span>
-          </div>
-        ))}
+  {/* Feature Grid: Borderless & Minimalist */}
+  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-6">
+    {[
+      { label: 'Sharing', icon: FiShare2, color: 'text-blue-600', bg: 'bg-blue-50' },
+      { label: 'Sync', icon: FiCalendar, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+      { label: 'Save', icon: FiBookmark, color: 'text-amber-600', bg: 'bg-amber-50' },
+      { label: 'Alerts', icon: FiBell, color: 'text-purple-600', bg: 'bg-purple-50' }
+    ].map((feature, idx) => (
+      <div 
+        key={idx} 
+        className="flex items-center gap-2 p-3 bg-slate-50/40 rounded-xl group hover:bg-white hover:shadow-lg hover:shadow-slate-200/40 transition-all duration-500"
+      >
+        <div className={`p-2 rounded-lg ${feature.bg} ${feature.color} shrink-0 shadow-sm`}>
+          <feature.icon size={16} />
+        </div>
+        <span className="text-[10px] md:text-[11px] font-black uppercase tracking-wider text-slate-800">
+          {feature.label}
+        </span>
       </div>
-    </div>
+    ))}
+  </div>
+</div>
   </div>
 </div>
 
