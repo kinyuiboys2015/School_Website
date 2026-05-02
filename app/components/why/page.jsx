@@ -2113,9 +2113,9 @@ const schoolFeatures = [
         return (
           <div
             key={i}
-            className="flex flex-col items-center justify-center p-4 sm:p-5 rounded-[1.5rem] bg-slate-50 border border-slate-100 transition-none"
+            className="flex flex-col items-center justify-center p-4 sm:p-5 rounded-[1.5rem] bg-rose-100 border border-slate-100 transition-none"
           >
-            <SubjIcon className="text-xl sm:text-2xl text-orange-800 mb-2 sm:mb-3" />
+            <SubjIcon className="text-xl sm:text-2xl text-rose-800 mb-2 sm:mb-3" />
             <span className="text-[10px] sm:text-[11px] font-black text-center text-slate-900 uppercase tracking-tight">
               {subj.name}
             </span>
@@ -2131,7 +2131,7 @@ const schoolFeatures = [
     <div className="absolute -top-10 -left-10 w-32 h-32 bg-indigo-400/20 blur-2xl rounded-full" />
     
     <h5 className="text-xl font-black mb-4 tracking-tight uppercase italic">
-      Framework <span className="text-indigo-200">Overview</span>
+      Framework <span className="text-indigo-400">Overview</span>
     </h5>
     <p className="text-sm text-indigo-50 leading-relaxed font-medium mb-8">
       The Competency Based Curriculum (CBC) shifts the focus from
@@ -2148,7 +2148,7 @@ const schoolFeatures = [
           />
         ))}
       </div>
-      <span className="text-[9px] font-black uppercase tracking-widest text-indigo-200">
+      <span className="text-[9px] font-black uppercase tracking-widest text-indigo-400">
         Join {studentCount}+ Students
       </span>
     </div>
