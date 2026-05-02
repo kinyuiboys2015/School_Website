@@ -435,7 +435,7 @@ const handleLogout = () => {
             <div className="flex items-center gap-3">
               <div className="relative">
 <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-maroon-700 via-amber-900 to-maroon-800 rounded-2xl flex items-center justify-center shadow-2xl shadow-maroon-900/30">                  <img 
-                    src="/kinyui.png" 
+                    src="/kinyui.jpeg" 
                     alt="School Logo" 
                     className="w-full h-full object-contain p-2"
                   />

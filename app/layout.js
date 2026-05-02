@@ -148,7 +148,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/seo/kinyui.png",
+        url: "/seo/kinyui.jpeg",
         width: 1200,
         height: 630,
         alt: "S.A kinyui boys Senior School",
@@ -161,7 +161,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "S.A kinyui boys Senior School",
     description: "Empowering students through education and faith in Machakos County.",
-    images: ["/seo/kinyui.png"],
+    images: ["/seo/kinyui.jpeg"],
   },
 
   /* Search Engine Bot Instructions */
@@ -177,8 +177,8 @@ export const metadata = {
   },
 
   icons: {
-    icon: "/seo/kinyui.png",
-    apple: "/seo/kinyui.png",
+    icon: "/seo/kinyui.jpeg",
+    apple: "/seo/kinyui.jpeg",
   },
 
   verification: {
@@ -198,8 +198,8 @@ export default function RootLayout({ children }) {
     "name": "S.A kinyui boys Senior School",
     "alternateName": "kinyui boys Senior School",
     "url": "https://kinyui-senior.vercel.app",
-    "logo": "https://kinyui-senior.vercel.app/seo/kinyui.png",
-    "image": "https://kinyui-senior.vercel.app/seo/kinyui.png",
+    "logo": "https://kinyui-senior.vercel.app/seo/kinyui.jpeg",
+    "image": "https://kinyui-senior.vercel.app/seo/kinyui.jpeg",
     "description": "A public Senior school in Matungulu, Machakos County, Kenya.",
     "address": {
       "@type": "PostalAddress",

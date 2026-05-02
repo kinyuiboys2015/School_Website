@@ -194,7 +194,7 @@ const ModernHero = () => {
       </div>
       {/* Logo watermark overlay */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-        <img src="/kinyui.png" alt="Kinyui Logo" className="w-1/2 max-w-xs opacity-10" />
+        <img src="/kinyui.jpeg" alt="Kinyui Logo" className="w-1/2 max-w-xs opacity-10" />
       </div>
 
       {/* Overlay with adjusted padding for content */}

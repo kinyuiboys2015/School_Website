@@ -113,7 +113,7 @@ const BrandSection = () => (
         <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-amber-600 to-rose-700 p-0.5">
           <div className="w-full h-full rounded-2xl overflow-hidden bg-gray-900 flex items-center justify-center">
             <img
-              src="/kinyui.png"
+              src="/kinyui.jpeg"
               alt="Kinyui Boys Senior School Logo"
               className="w-full h-full object-cover"
             />

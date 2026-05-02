@@ -255,7 +255,7 @@ export default function ModernNavbar() {
                 shadow-lg border border-white/20 overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
                 <Image
-                  src="/kinyui.png"
+                  src="/kinyui.jpeg"
                   alt="kinyui boys Senior School Logo"
                   width={48}
                   height={48}

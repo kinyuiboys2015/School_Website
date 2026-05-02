@@ -35,7 +35,7 @@ export async function generateMetadata({ params }) {
         description: "Professional educators dedicated to student success",
         images: [
           {
-            url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyui-senior.vercel.app'}/seo/kinyui.png`,
+            url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyui-senior.vercel.app'}/seo/kinyui.jpeg`,
             width: 1200,
             height: 630,
             alt: 'kinyui boys Senior School Staff'
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }) {
       : staff.image.startsWith('/')
         ? `${baseUrl}${staff.image}`
         : `${baseUrl}/images/staff/${staff.image}`
-    : `${baseUrl}//seo/kinyui.png`;
+    : `${baseUrl}//seo/kinyui.jpeg`;
 
   return {
     title,

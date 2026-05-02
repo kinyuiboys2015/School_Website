@@ -2167,14 +2167,14 @@ export default function ComprehensiveAdmissions() {
     {/* Left Panel - Dark Branded Section */}
     <div className="relative bg-slate-900 p-5 sm:p-6 md:p-8 md:w-[55%] overflow-hidden">
       {/* Logo Watermark Background */}
-      <img src="/kinyui.png" alt="" className="absolute right-0 bottom-0 w-40 md:w-56 opacity-[0.04] pointer-events-none select-none translate-x-8 translate-y-8" />
+      <img src="/kinyui.jpeg" alt="" className="absolute right-0 bottom-0 w-40 md:w-56 opacity-[0.04] pointer-events-none select-none translate-x-8 translate-y-8" />
       {/* Decorative Gradient Orb */}
       <div className="absolute -top-20 -left-20 w-52 h-52 bg-teal-500/15 blur-[80px] rounded-full" />
       
       <div className="relative z-10">
         {/* School Identity Row */}
         <div className="flex items-center gap-3 mb-5">
-          <img src="/kinyui.png" alt="School Logo" className="w-10 h-10 md:w-11 md:h-11 rounded-xl object-contain bg-white/10 p-1 border border-white/10" />
+          <img src="/kinyui.jpeg" alt="School Logo" className="w-10 h-10 md:w-11 md:h-11 rounded-xl object-contain bg-white/10 p-1 border border-white/10" />
           <div className="flex flex-col min-w-0">
             <h2 className="text-sm md:text-base font-bold text-white leading-tight truncate">
               {schoolData?.name || 'Kinyui Boys Senior School'}
@@ -2226,7 +2226,7 @@ export default function ComprehensiveAdmissions() {
     {/* Right Panel - Admission Highlights */}
     <div className="relative bg-white p-5 sm:p-6 md:p-8 md:w-[45%] flex flex-col justify-center">
       {/* Logo Watermark */}
-      <img src="/kinyui.png" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 md:w-44 opacity-[0.03] pointer-events-none select-none" />
+      <img src="/kinyui.jpeg" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 md:w-44 opacity-[0.03] pointer-events-none select-none" />
       
       <div className="relative z-10 space-y-4">
         <p className="text-[10px] font-bold uppercase tracking-wider text-slate-900 mb-1">Why Apply Here</p>
@@ -2400,7 +2400,7 @@ return (
     {/* 1. Hero / Introduction Section */}
     <div className="relative pt-4 pb-2 text-center px-4 overflow-hidden">
       {/* Logo watermark */}
-      <img src="/kinyui.png" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-44 md:w-56 opacity-[0.03] pointer-events-none select-none" />
+      <img src="/kinyui.jpeg" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-44 md:w-56 opacity-[0.03] pointer-events-none select-none" />
       
       <div className="relative z-10">
       <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-200 mb-4 md:mb-6">
@@ -2436,7 +2436,7 @@ return (
 {/* 3. Admission Paths - Full Bleed on Mobile */}
 <section className="relative overflow-hidden py-12 md:py-16 bg-stone-50 rounded-none md:rounded-3xl md:mx-4 px-0 md:px-8">
   {/* Logo Watermark */}
-  <img src="/kinyui.png" alt="" className="absolute right-4 bottom-4 w-28 md:w-40 opacity-[0.03] pointer-events-none select-none" />
+  <img src="/kinyui.jpeg" alt="" className="absolute right-4 bottom-4 w-28 md:w-40 opacity-[0.03] pointer-events-none select-none" />
   <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-64 h-64 bg-teal-200/20 blur-3xl rounded-full" />
   
   <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-0">
@@ -2488,7 +2488,7 @@ return (
   {/* Large feature card — spans 7 cols */}
 <div className="md:col-span-7 group relative bg-slate-900 rounded-2xl md:rounded-3xl overflow-hidden p-6 md:p-8 min-h-[220px] flex flex-col justify-end">
   <div className="absolute top-0 right-0 w-48 h-48 bg-teal-500/10 blur-[60px] rounded-full -mr-16 -mt-16" />
-  <img src="/kinyui.png" alt="" className="absolute right-4 bottom-4 w-24 md:w-32 opacity-[0.04] pointer-events-none select-none" />
+  <img src="/kinyui.jpeg" alt="" className="absolute right-4 bottom-4 w-24 md:w-32 opacity-[0.04] pointer-events-none select-none" />
   <div className="relative z-10">
     <div className="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-500/20 flex items-center justify-center mb-4">
       <IoBulbOutline className="text-teal-500 text-lg" />
@@ -2720,7 +2720,7 @@ return (
     {/* Hero Section */}
     <div className="relative text-center px-4 overflow-hidden">
       {/* Logo watermark behind hero */}
-      <img src="/kinyui.png" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 opacity-[0.03] pointer-events-none select-none" />
+      <img src="/kinyui.jpeg" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 opacity-[0.03] pointer-events-none select-none" />
       <div className="relative z-10">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-50 border border-teal-200 rounded-lg mb-6">
           <FiBriefcase className="text-teal-800 text-xs" />
@@ -2738,7 +2738,7 @@ return (
     {/* CBC Pathways & Subjects Section */}
     <section className="relative bg-gradient-to-br from-slate-50 to-teal-50/30 rounded-2xl md:rounded-3xl border border-slate-200/60 p-5 md:p-10 overflow-hidden">
       {/* Logo watermark */}
-      <img src="/kinyui.png" alt="" className="absolute right-4 bottom-4 w-28 md:w-40 opacity-[0.03] pointer-events-none select-none" />
+      <img src="/kinyui.jpeg" alt="" className="absolute right-4 bottom-4 w-28 md:w-40 opacity-[0.03] pointer-events-none select-none" />
       
       <div className="relative z-10">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -2876,7 +2876,7 @@ return (
     {/* Career Guidance Banner - Full Width on Mobile */}
     <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 md:rounded-[2.5rem] p-8 md:p-12 text-white w-full">
       {/* Logo watermark */}
-      <img src="/kinyui.png" alt="" className="absolute right-6 bottom-6 w-32 md:w-48 opacity-[0.04] pointer-events-none select-none" />
+      <img src="/kinyui.jpeg" alt="" className="absolute right-6 bottom-6 w-32 md:w-48 opacity-[0.04] pointer-events-none select-none" />
       <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-teal-500/10 blur-[60px] md:blur-[100px] rounded-full -mr-32 -mt-32" />
       
       <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
@@ -3224,7 +3224,7 @@ return (
         <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl md:rounded-[24px] p-6 md:p-12 text-center shadow-2xl">
           
           {/* School Logo Watermark */}
-          <img src="/kinyui.png" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 md:w-64 opacity-[0.04] pointer-events-none select-none" />
+          <img src="/kinyui.jpeg" alt="" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 md:w-64 opacity-[0.04] pointer-events-none select-none" />
           {/* Decorative Glow */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-2xl bg-teal-500/8 blur-[80px] rounded-full pointer-events-none" />
           

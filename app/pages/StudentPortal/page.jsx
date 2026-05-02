@@ -365,7 +365,7 @@ function LandingPage({ onOpenLogin, router }) {
           <div className="flex items-center gap-2.5">
             <div className="relative">
               <div className="absolute inset-0 bg-slate-400/20 rounded-lg blur-sm" />
-              <Image src="/kinyui.png" alt="Kinyui Boys Logo" width={36} height={36}
+              <Image src="/kinyui.jpeg" alt="Kinyui Boys Logo" width={36} height={36}
                 className="relative rounded-lg w-8 h-8 sm:w-9 sm:h-9" priority />
             </div>
             <div>

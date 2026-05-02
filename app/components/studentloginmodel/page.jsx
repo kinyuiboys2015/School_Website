@@ -132,7 +132,7 @@ export default function StudentLoginModal({
                 <div className="relative w-14 h-14 bg-gray-800 rounded-full p-1 shadow-xl">
                   <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
                     <Image 
-                      src="/kinyui.png" 
+                      src="/kinyui.jpeg" 
                       alt="Kinyui Boys' School Logo" 
                       width={48}
                       height={48}
