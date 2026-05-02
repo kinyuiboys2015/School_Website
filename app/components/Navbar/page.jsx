@@ -266,7 +266,7 @@ export default function ModernNavbar() {
                 />
               </div>
               <div className="sm:block">
-                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-amber-200 to-yellow-300 bg-clip-text text-transparent whitespace-nowrap tracking-tight">
+                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-rose-600 to-orange-600 bg-clip-text text-transparent whitespace-nowrap tracking-tight">
                    Kinyui Boys
                 </h1>
                 <p className="text-xs sm:text-sm text-amber-100/90 font-medium tracking-wide whitespace-nowrap">
