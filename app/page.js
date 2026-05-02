@@ -120,17 +120,17 @@ const ModernLoadingScreen = () => {
     <div className="fixed inset-0 bg-white z-50 flex items-center justify-center overflow-hidden">
       {/* Dynamic Background Effect */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Animated Gradient Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-indigo-400/10 to-blue-400/10 rounded-full blur-3xl animate-spin-slow"></div>
+        {/* Animated Gradient Orbs - Changed to Dark Orange/Amber */}
+        <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-gradient-to-r from-amber-600/20 to-orange-600/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-orange-600/20 to-amber-700/20 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-amber-700/10 to-orange-600/10 rounded-full blur-3xl animate-spin-slow"></div>
         
-        {/* Moving Light Beams - TV Channel Style */}
+        {/* Moving Light Beams - Changed to Dark Orange/Amber */}
         <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-beam"></div>
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent animate-beam animation-delay-500"></div>
-          <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-transparent via-purple-500 to-transparent animate-beam-vertical"></div>
-          <div className="absolute right-0 top-0 w-1 h-full bg-gradient-to-b from-transparent via-pink-500 to-transparent animate-beam-vertical animation-delay-300"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-600 to-transparent animate-beam"></div>
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-orange-600 to-transparent animate-beam animation-delay-500"></div>
+          <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-transparent via-amber-700 to-transparent animate-beam-vertical"></div>
+          <div className="absolute right-0 top-0 w-1 h-full bg-gradient-to-b from-transparent via-orange-600 to-transparent animate-beam-vertical animation-delay-300"></div>
         </div>
 
         {/* Diagonal Scanning Lines */}
@@ -142,17 +142,17 @@ const ModernLoadingScreen = () => {
       <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl px-6">
         {/* Logo Container */}
         <div className="relative mb-6 md:mb-10">
-          {/* Glowing Background */}
+          {/* Glowing Background - Changed to Orange/Amber */}
           <div 
-            className="absolute inset-0 bg-gradient-to-r from-blue-500 via-cyan-500 to-purple-500 rounded-full blur-2xl transition-all duration-300"
+            className="absolute inset-0 bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 rounded-full blur-2xl transition-all duration-300"
             style={{ 
               opacity: 0.3 + (glowIntensity / 100) * 0.3,
               transform: `scale(${1 + (glowIntensity / 100) * 0.1})`
             }}
           ></div>
           
-          {/* Logo Container */}
-          <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 p-1 shadow-2xl">
+          {/* Logo Container - Changed to Orange/Amber gradient */}
+          <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-amber-600 to-orange-700 p-1 shadow-2xl">
             <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/10 pointer-events-none"></div>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
@@ -166,89 +166,89 @@ const ModernLoadingScreen = () => {
           </div>
         </div>
 
-  {/* School Name */}
-<div className="text-center mb-4 md:mb-5">
-  <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-wider text-gray-800">
-    {schoolName}
-  </h1>
-  
-  {/* Animated Gradient Underline */}
-  <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-underline"></div>
-  
-  <p className="text-gray-900 text-[10px] md:text-base mt-3 tracking-wider">
-    EST. 1976 | CENTRE OF EXCELLENCE
-  </p>
-</div>
+        {/* School Name */}
+        <div className="text-center mb-4 md:mb-5">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-wider text-gray-800">
+            {schoolName}
+          </h1>
+          
+          {/* Animated Gradient Underline - Changed to Orange/Amber */}
+          <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-600 to-transparent animate-underline"></div>
+          
+          <p className="text-gray-900 text-[10px] md:text-base mt-3 tracking-wider">
+            EST. 1976 | CENTRE OF EXCELLENCE
+          </p>
+        </div>
 
-{/* Motto */}
-<div className="text-center mb-5 md:mb-6">
-  <p className="text-lg md:text-2xl lg:text-3xl font-bold italic tracking-wide text-gray-800">
-    {motto}
-  </p>
-</div>
+        {/* Motto */}
+        <div className="text-center mb-5 md:mb-6">
+          <p className="text-lg md:text-2xl lg:text-3xl font-bold italic tracking-wide text-gray-800">
+            {motto}
+          </p>
+        </div>
 
-{/* Loading Indicators */}
-<div className="flex flex-col items-center gap-2">
-  {/* Progress Ring */}
-  <div className="relative w-10 h-10 md:w-12 md:h-12">
-    <svg className="w-full h-full transform -rotate-90">
-      <circle
-        cx="50%"
-        cy="50%"
-        r="45%"
-        fill="none"
-        stroke="#e5e7eb"
-        strokeWidth="2.5"
-        className="opacity-30"
-      />
-      <circle
-        cx="50%"
-        cy="50%"
-        r="45%"
-        fill="none"
-        stroke="url(#gradient)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        className="animate-progress-ring"
-        style={{
-          strokeDasharray: 283,
-          strokeDashoffset: `calc(283 - (283 * ${(Date.now() % 3000) / 3000}))`
-        }}
-      />
-      <defs>
-        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#3b82f6" />
-          <stop offset="50%" stopColor="#06b6d4" />
-          <stop offset="100%" stopColor="#8b5cf6" />
-        </linearGradient>
-      </defs>
-    </svg>
-    <div className="absolute inset-0 flex items-center justify-center">
-      <div className="w-1.5 h-1.5 md:w-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
-    </div>
-  </div>
+        {/* Loading Indicators */}
+        <div className="flex flex-col items-center gap-2">
+          {/* Progress Ring - Changed to Orange/Amber gradient */}
+          <div className="relative w-10 h-10 md:w-12 md:h-12">
+            <svg className="w-full h-full transform -rotate-90">
+              <circle
+                cx="50%"
+                cy="50%"
+                r="45%"
+                fill="none"
+                stroke="#e5e7eb"
+                strokeWidth="2.5"
+                className="opacity-30"
+              />
+              <circle
+                cx="50%"
+                cy="50%"
+                r="45%"
+                fill="none"
+                stroke="url(#gradient)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                className="animate-progress-ring"
+                style={{
+                  strokeDasharray: 283,
+                  strokeDashoffset: `calc(283 - (283 * ${(Date.now() % 3000) / 3000}))`
+                }}
+              />
+              <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#d97706" />
+                  <stop offset="50%" stopColor="#ea580c" />
+                  <stop offset="100%" stopColor="#b45309" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-1.5 h-1.5 md:w-2 bg-gradient-to-r from-amber-600 to-orange-600 rounded-full animate-pulse"></div>
+            </div>
+          </div>
 
-  {/* Loading Text */}
-  <div className="flex items-center gap-1 text-gray-500 text-[10px] md:text-xs font-medium">
-    <span>Loading experience</span>
-    <span className="flex gap-0.5">
-      <span className="animate-bounce" style={{ animationDelay: '0s' }}>.</span>
-      <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>.</span>
-      <span className="animate-bounce" style={{ animationDelay: '0.4s' }}>.</span>
-    </span>
-  </div>
-</div>
+          {/* Loading Text */}
+          <div className="flex items-center gap-1 text-gray-500 text-[10px] md:text-xs font-medium">
+            <span>Loading experience</span>
+            <span className="flex gap-0.5">
+              <span className="animate-bounce" style={{ animationDelay: '0s' }}>.</span>
+              <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>.</span>
+              <span className="animate-bounce" style={{ animationDelay: '0.4s' }}>.</span>
+            </span>
+          </div>
+        </div>
 
-{/* Decorative Bottom Bar */}
-<div className="absolute bottom-5 left-0 right-0 flex justify-center gap-1.5">
-  {[...Array(4)].map((_, i) => (
-    <div
-      key={i}
-      className="w-0.5 h-0.5 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 animate-pulse"
-      style={{ animationDelay: `${i * 0.15}s` }}
-    />
-  ))}
-</div>
+        {/* Decorative Bottom Bar - Changed to Orange/Amber */}
+        <div className="absolute bottom-5 left-0 right-0 flex justify-center gap-1.5">
+          {[...Array(4)].map((_, i) => (
+            <div
+              key={i}
+              className="w-0.5 h-0.5 rounded-full bg-gradient-to-r from-amber-600 to-orange-600 animate-pulse"
+              style={{ animationDelay: `${i * 0.15}s` }}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Custom Animations */}
@@ -351,7 +351,6 @@ const ModernLoadingScreen = () => {
     </div>
   );
 };
-
 export default function ModernHero() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showVideoModal, setShowVideoModal] = useState(false);
