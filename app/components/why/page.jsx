@@ -1858,14 +1858,14 @@ const schoolFeatures = [
             <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-indigo-50/30 to-transparent pointer-events-none" />
 
             <div className="max-w-3xl relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-600 text-[10px] font-black uppercase tracking-[0.2em] text-white mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-800 text-[10px] font-black uppercase tracking-[0.2em] text-white mb-6">
                 <HiOutlineSparkles className="w-4 h-4" />
                 The Signature Experience
               </div>
 
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-[1.1] mb-6">
                 What defines the journey at <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-900 via-rose-800 to-orange-800">
                   {schoolName}?
                 </span>
               </h2>
