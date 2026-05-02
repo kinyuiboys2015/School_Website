@@ -279,7 +279,7 @@ export default function ModernNavbar() {
     <div className="flex items-center gap-2 mt-1">
       <span className="h-[1px] w-4 bg-amber-500/50"></span>
       <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] font-semibold text-slate-300 italic">
-        Endless Possibilities
+        THE EAGLES 🦅🦅
       </p>
     </div>
   </div>
