@@ -1747,9 +1747,9 @@ const schoolFeatures = [
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     
     {/* Minimalist Header - Responsive text sizing */}
-    <div className="mb-12 sm:mb-20 border-l-2 border-indigo-500 pl-4 sm:pl-6">
+    <div className="mb-12 sm:mb-20 border-l-2 border-amber-600 pl-4 sm:pl-6">
       <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tighter uppercase italic leading-none">
-        The <span className="text-indigo-500 text-glow">School </span> <br className="sm:hidden" /> Recent Achievements
+        The <span className="text-amber-500 text-glow">School </span> <br className="sm:hidden" /> Recent Achievements
       </h2>
       <p className="text-slate-400 font-medium mt-4 max-w-md uppercase tracking-[0.15em] text-[9px] sm:text-[11px] leading-relaxed">
         A comprehensive visual record of institutional excellence and academic milestones.
@@ -1767,7 +1767,7 @@ const schoolFeatures = [
           <div key={idx} className="group relative flex flex-col h-full">
             
             {/* The "Polaroid" Card - No fixed height on mobile to allow for long text */}
-            <div className="flex flex-col h-full relative overflow-hidden rounded-[1rem] bg-slate-900/40 border border-white/10  group-hover:border-indigo-500/40 group-hover:bg-slate-900/60">
+            <div className="flex flex-col h-full relative overflow-hidden rounded-[1rem] bg-slate-900/40 border border-white/10  group-hover:border-amber-600/40 group-hover:bg-slate-900/60">
               
               {/* IMAGE SECTION - Responsive Aspect Ratio */}
               <div className="relative aspect-video sm:h-64 w-full overflow-hidden shrink-0">
@@ -1795,29 +1795,27 @@ const schoolFeatures = [
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />
               </div>
 
-              {/* CONTENT SECTION - Flex grow ensures all cards match height in a row */}
+              {/* CONTENT SECTION */}
               <div className="p-6 sm:p-8 flex flex-col flex-grow">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="h-[1px] w-6 bg-indigo-500" />
-                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-indigo-400">
+                  <div className="h-[1px] w-6 bg-amber-500" />
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-amber-400">
                     {item.stats || "Global Recognition"}
                   </span>
                 </div>
 
-                <h4 className="text-xl sm:text-2xl font-black tracking-tight mb-4 group-hover:text-indigo-300 transition-colors">
+                <h4 className="text-xl sm:text-2xl font-black tracking-tight mb-4 group-hover:text-amber-300 transition-colors">
                   {item.title}
                 </h4>
 
-                {/* LONG DESCRIPTION - No line-clamp, responsive leading */}
                 <p className="text-slate-400 text-sm sm:text-base leading-relaxed sm:leading-loose mb-8 font-medium">
                   {item.description || "Our commitment to excellence has consistently yielded exceptional results across various academic and co-curricular spheres. This achievement marks a significant step in our journey to redefine educational standards in Machakos County and beyond, proving that with the right guidance and support, our students can compete on a global stage while maintaining strong local roots and values."}
                 </p>
 
-                {/* Action Link - Pushed to bottom of card */}
                 <div className="mt-auto pt-4">
                   <button 
                     onClick={() => openAchievementModal(item)}
-                    className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-indigo-400 transition-all border-b border-white/10 pb-1"
+                    className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-amber-400 transition-all border-b border-white/10 pb-1"
                   >
                     Deep Analysis <FiArrowRight className="group-hover:translate-x-2 " />
                   </button>
@@ -1825,8 +1823,8 @@ const schoolFeatures = [
               </div>
             </div>
 
-            {/* Background Decorative Number - Hidden on very small screens to avoid clutter */}
-            <span className="hidden sm:block absolute -bottom-6 -right-2 text-9xl font-black text-white/[0.02] pointer-events-none select-none transition-all group-hover:text-indigo-500/[0.05]">
+            {/* Background Decorative Number */}
+            <span className="hidden sm:block absolute -bottom-6 -right-2 text-9xl font-black text-white/[0.02] pointer-events-none select-none transition-all group-hover:text-amber-500/[0.05]">
               0{idx + 1}
             </span>
           </div>
@@ -1834,16 +1832,17 @@ const schoolFeatures = [
       </div>
     )}
 
-    {/* Bottom Navigation - Fully Mobile Responsive */}
+    {/* Bottom Navigation */}
     <div className="mt-16 sm:mt-24 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10 border-t border-white/5 pt-12">
        <span className="hidden sm:block h-[1px] flex-1 bg-gradient-to-r from-transparent to-white/10" />
-       <button className="w-full sm:w-auto px-10 py-4 rounded-full border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 hover:text-white hover:border-indigo-500 hover:bg-indigo-500/5 transition-all">
+       <button className="w-full sm:w-auto px-10 py-4 rounded-full border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 hover:text-white hover:border-amber-600 hover:bg-amber-600/5 transition-all">
           Explore Archive
        </button>
        <span className="hidden sm:block h-[1px] flex-1 bg-gradient-to-l from-transparent to-white/10" />
     </div>
   </div>
 </section>
+
 
       {/* WHY CHOOSE US - SHUFFLED MOSAIC */}
       <section className="relative py-24 bg-[#fafbfc] overflow-hidden">
