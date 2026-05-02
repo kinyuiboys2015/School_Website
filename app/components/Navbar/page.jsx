@@ -244,7 +244,7 @@ export default function ModernNavbar() {
             
 {/* Logo Section */}
 <div 
-  className="flex items-center gap-3 md:gap-4 cursor-pointer group"
+  className="flex items-center gap-3 my-10 md:gap-4 cursor-pointer group"
   onClick={handleLogoClick}
   role="button"
   tabIndex={0}
