@@ -2175,7 +2175,7 @@ const schoolFeatures = [
 
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tighter leading-[1] sm:leading-[0.9] mb-6 sm:mb-8">
           Educational <br className="hidden sm:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-sky-600">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-800 to-orange-800">
             Pillars
           </span>
         </h2>
