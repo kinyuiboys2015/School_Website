@@ -2342,7 +2342,7 @@ const schoolFeatures = [
               </span>
             </h3>
 
-        <p className="mt-6 text-slate-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed font-medium">
+        <p className="mt-6 text-slate-600 text-sm sm:text-base md:w-[70%] w-full mx-auto leading-relaxed font-medium">
   We collaborate with a wide range of universities across Kenya, as well as academic institutions and professional networks, to support confident and well-informed transitions into higher education and beyond. Through these partnerships, students gain exposure to diverse academic pathways, career opportunities, and mentorship programs that prepare them for success in university life and future professions. Our approach ensures that every learner is guided not only in selecting the right institution, but also in developing the skills, mindset, and clarity needed to thrive in a dynamic and competitive global environment.
 </p>
           </div>
