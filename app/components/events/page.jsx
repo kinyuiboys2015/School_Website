@@ -192,11 +192,11 @@ const ModernEventsNewsSection = () => {
         <div className="text-center mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white rounded-full border border-gray-200 shadow-sm mb-4">
             <span className="text-base">🦅</span>
-            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.15em] text-blue-600">Eagles Updates</span>
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.15em] text-orange-800">Eagles Updates</span>
           </div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight mb-2 sm:mb-3">
             Events{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">&amp; News</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-900 to-orange-900">&amp; News</span>
           </h1>
           <p className="text-gray-500 text-sm sm:text-base max-w-xl mx-auto">
             Stay updated with the latest from Kinyui Boys Senior School
@@ -284,7 +284,7 @@ const ModernEventsNewsSection = () => {
                     {/* Description */}
                     <div className="md:col-span-3">
                       <h4 className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-[0.15em] mb-2 sm:mb-3 flex items-center gap-1.5">
-                        <FiBookOpen className="text-blue-500 w-3.5 h-3.5" />
+                        <FiBookOpen className="text-amber-800 w-3.5 h-3.5" />
                         {tab === 'events' ? 'Event Details' : 'Article Summary'}
                       </h4>
                       <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
