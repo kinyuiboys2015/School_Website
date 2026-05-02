@@ -43,6 +43,15 @@ const ModernStaffLeadership = () => {
   const [adminDeputy, setAdminDeputy] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedLeader, setSelectedLeader] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const fetchStaff = async () => {
@@ -65,6 +74,7 @@ const ModernStaffLeadership = () => {
           ) || allStaff[0];
 
           setPrincipal(foundPrincipal);
+          setSelectedLeader(foundPrincipal);
 
           // Find Deputy Academics
           const foundAcademicsDeputy = allStaff.find(
@@ -99,6 +109,19 @@ const ModernStaffLeadership = () => {
     fetchStaff();
   }, []);
 
+  const handleLeaderClick = (leader) => {
+    setSelectedLeader(leader);
+    // Scroll to top on mobile when selecting a new leader
+    if (isMobile) {
+      setTimeout(() => {
+        const mainCard = document.getElementById('featured-leader-card');
+        if (mainCard) {
+          mainCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  };
+
   const getRoleColor = (role) => {
     if (!role) return 'from-amber-600 to-orange-600';
     const roleLower = role.toLowerCase();
@@ -107,11 +130,22 @@ const ModernStaffLeadership = () => {
     return 'from-amber-600 to-orange-600';
   };
 
-  const getRoleTitle = (staffMember) => {
-    if (!staffMember) return 'Staff Member';
-    if (staffMember.position) return staffMember.position;
-    if (staffMember.role) return staffMember.role;
+  const getLeaderTitle = (leader) => {
+    if (!leader) return 'Staff Member';
+    if (leader === principal) return 'Chief Principal';
+    if (leader === academicsDeputy) return 'Deputy Principal - Academics';
+    if (leader === adminDeputy) return 'Deputy Principal - Administration';
+    if (leader.position) return leader.position;
+    if (leader.role) return leader.role;
     return 'Staff Member';
+  };
+
+  const getLeaderSubtitle = (leader) => {
+    if (!leader) return '';
+    if (leader === principal) return 'Executive Leadership';
+    if (leader === academicsDeputy) return 'Academics & Curriculum';
+    if (leader === adminDeputy) return 'Administration & Student Affairs';
+    return leader.department || 'School Administration';
   };
 
   if (loading) {
@@ -160,16 +194,18 @@ const ModernStaffLeadership = () => {
   }
 
   const leadershipTeam = [
-    { staff: principal, label: 'Chief Principal', color: 'from-amber-700 to-orange-700', isPrincipal: true },
-    { staff: academicsDeputy, label: 'Deputy Principal - Academics', color: 'from-amber-600 to-orange-600', isPrincipal: false },
-    { staff: adminDeputy, label: 'Deputy Principal - Administration', color: 'from-amber-600 to-orange-600', isPrincipal: false },
+    { staff: principal, label: 'Chief Principal', color: 'from-amber-700 to-orange-700', isPrincipal: true, subtitle: 'Executive Leadership' },
+    { staff: academicsDeputy, label: 'Deputy Principal - Academics', color: 'from-amber-600 to-orange-600', isPrincipal: false, subtitle: 'Academics & Curriculum' },
+    { staff: adminDeputy, label: 'Deputy Principal - Administration', color: 'from-amber-600 to-orange-600', isPrincipal: false, subtitle: 'Administration & Student Affairs' },
   ].filter((item) => item.staff !== null);
+
+  const currentLeader = selectedLeader || principal;
 
   return (
     <div className="min-h-screen bg-white text-slate-900 overflow-x-hidden">
       
       {/* Hero Section */}
-      <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
+      <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-32 left-1/2 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-gradient-to-br from-amber-200/70 via-orange-200/40 to-amber-200/30 blur-3xl" />
           <div className="absolute -bottom-28 left-10 h-[22rem] w-[22rem] rounded-full bg-gradient-to-br from-orange-200/40 to-amber-200/20 blur-3xl" />
@@ -177,320 +213,290 @@ const ModernStaffLeadership = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8 md:mb-12">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 mb-5">
               <IoPeopleOutline className="w-4 h-4 text-amber-600" />
               Executive Leadership
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-tight mb-4 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 leading-tight mb-3 md:mb-4 tracking-tight">
               Meet Our{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700">
                 Executive Leadership
               </span>
             </h1>
-            <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-medium">
+            <p className="text-slate-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-medium px-4">
               Visionary leaders dedicated to academic excellence, student development, and institutional transformation.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Staff Overview Description Section */}
-      <section className="relative py-12 sm:py-16 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          {/* Animated Card */}
-          <div className="relative group">
-            {/* Glow Effect */}
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-orange-600 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
-            
-            {/* Main Content Card */}
-            <div className="relative bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 md:p-10 shadow-lg">
-              
-              <div className="relative">
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-[10px] font-black uppercase tracking-[0.25em] text-amber-700 mb-6">
-                  <GiGraduateCap className="w-4 h-4 text-amber-600" />
-                  School Administration
-                </div>
-
-                {/* Title */}
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 mb-4 tracking-tight">
-                  The Pillars of{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700">
-                    Kinyui's Success
-                  </span>
-                </h2>
-
-                {/* Description Paragraphs */}
-                <div className="space-y-4 text-slate-600 leading-relaxed">
-                  <p className="text-sm sm:text-base">
-                    At <span className="font-bold text-amber-600">Kinyui Boys Senior School</span>, our executive leadership team brings 
-                    decades of combined experience in educational management, curriculum development, and institutional 
-                    governance. The <span className="font-bold text-amber-600">Chief Principal, Deputy Principal (Academics), and Deputy 
-                    Principal (Administration)</span> form the core decision-making body that steers the school towards 
-                    its vision of excellence.
-                  </p>
-
-                  <p className="text-sm sm:text-base">
-                    Together, this leadership triad oversees all aspects of school operations, from academic performance 
-                    monitoring and curriculum implementation to student welfare, staff management, and strategic planning. 
-                    Their collaborative approach ensures that every student receives quality education in a conducive 
-                    environment that promotes holistic development.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 relative z-10">
-        
-        {/* Principal - Special Prominent Card */}
-        {principal && (
-          <div className="mb-16">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-200 text-[11px] font-black uppercase tracking-[0.2em] text-amber-800">
-                <IoShieldOutline className="w-4 h-4" />
-                Chief Executive Officer
-              </div>
-            </div>
-            
-            <div className="relative group bg-white rounded-[2rem] border-2 border-amber-200 shadow-[0_20px_50px_rgba(245,158,11,0.15)] overflow-hidden">
-              {/* Special Golden Accent Bar */}
-              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 z-10" />
-              
-              <div className="grid grid-cols-1 lg:grid-cols-2">
-                {/* Image Side */}
-                <div className="relative h-96 lg:h-full lg:min-h-[550px]">
-                  {getImageUrl(principal?.image) ? (
+      {/* Mobile: Deputy Selector Cards (Visible only on mobile) */}
+      {isMobile && (
+        <div className="md:hidden px-4 mb-6">
+          <div className="flex flex-col gap-3">
+            {leadershipTeam.slice(1).map(({ staff, label, color, subtitle }) => (
+              <button
+                key={staff.id}
+                onClick={() => handleLeaderClick(staff)}
+                className={`flex items-center gap-4 p-4 rounded-2xl border transition-all text-left ${
+                  selectedLeader?.id === staff.id
+                    ? 'border-amber-500 bg-amber-50 ring-2 ring-amber-200'
+                    : 'border-slate-200 bg-white hover:border-amber-300 hover:bg-amber-50/30'
+                }`}
+              >
+                <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0">
+                  {getImageUrl(staff.image) ? (
                     <img
-                      src={getImageUrl(principal.image)}
-                      alt={principal?.name}
-                      className="w-full h-full object-cover object-top"
+                      src={getImageUrl(staff.image)}
+                      alt={staff.name}
+                      className="w-full h-full object-cover"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                          principal?.name || 'Principal'
-                        )}&background=d97706&color=fff&bold=true&size=512`;
+                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(staff.name)}&background=d97706&color=fff&bold=true&size=80`;
                       }}
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-amber-700 to-orange-700 flex items-center justify-center">
-                      <GiGraduateCap className="text-9xl text-white/40" />
+                    <div className={`w-full h-full bg-gradient-to-br ${color} flex items-center justify-center`}>
+                      <GiGraduateCap className="text-white text-2xl" />
                     </div>
                   )}
-                  
-                  {/* Special Crown Badge */}
-                  <div className="absolute top-6 left-6">
-                    <div className="px-4 py-2 rounded-full bg-amber-500 text-white text-[10px] font-black uppercase tracking-wider shadow-lg flex items-center gap-2">
-                      <IoSparkles className="w-3 h-3" />
-                      Chief Principal
-                    </div>
-                  </div>
-                  
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 lg:hidden">
-                    <h2 className="text-2xl font-black text-white mb-1">{principal?.name}</h2>
-                    <p className="text-amber-300/90 text-sm">{principal?.department || 'School Administration'}</p>
-                  </div>
                 </div>
+                <div className="flex-1">
+                  <p className="text-[10px] font-black text-amber-600 uppercase tracking-wider">{label}</p>
+                  <h3 className="font-black text-slate-900 text-sm">{staff.name}</h3>
+                  <p className="text-slate-500 text-xs">{subtitle}</p>
+                </div>
+                {selectedLeader?.id === staff.id && (
+                  <div className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center">
+                    <FiCheck className="text-white text-xs" />
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
-                {/* Content Side */}
-                <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
-                  <div>
-                    <div className="hidden lg:block mb-6">
-                      <div className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 text-[10px] font-black uppercase tracking-wider border border-amber-200">
-                        Executive Leadership
-                      </div>
-                    </div>
-                    <h2 className="hidden lg:block text-3xl sm:text-4xl font-black text-slate-900 mb-2">{principal?.name}</h2>
-                    <p className="hidden lg:block text-amber-600 font-bold text-base mb-8">{principal?.position || 'Chief Principal'}</p>
-
-                    {/* Quote */}
-                    {principal?.quote && (
-                      <div className="rounded-2xl border-l-4 border-amber-500 bg-amber-50/50 p-5 mb-6">
-                        <div className="flex items-start gap-3">
-                          <FiMessageSquare className="text-amber-500 text-lg mt-0.5 shrink-0" />
-                          <div>
-                            <span className="text-[10px] font-black text-amber-600 uppercase tracking-wider block mb-1.5">
-                              Leadership Philosophy
-                            </span>
-                            <p className="text-slate-700 font-medium text-sm sm:text-base leading-relaxed italic">
-                              "{principal.quote}"
-                            </p>
-                          </div>
-                        </div>
+      {/* Main Featured Leader Card */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 md:pb-20 relative z-10">
+        
+        {/* Desktop: Side by side deputies (Hidden on mobile) */}
+        {!isMobile && leadershipTeam.length > 1 && (
+          <div className="hidden md:grid grid-cols-2 gap-6 mb-12">
+            {leadershipTeam.slice(1).map(({ staff, label, color, subtitle }) => (
+              <button
+                key={staff.id}
+                onClick={() => handleLeaderClick(staff)}
+                className={`group bg-white rounded-2xl border overflow-hidden transition-all text-left hover:shadow-xl ${
+                  selectedLeader?.id === staff.id
+                    ? 'border-amber-500 ring-2 ring-amber-200'
+                    : 'border-slate-200 hover:border-amber-300'
+                }`}
+              >
+                <div className="flex items-center gap-4 p-5">
+                  <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0">
+                    {getImageUrl(staff.image) ? (
+                      <img
+                        src={getImageUrl(staff.image)}
+                        alt={staff.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(staff.name)}&background=d97706&color=fff&bold=true&size=96`;
+                        }}
+                      />
+                    ) : (
+                      <div className={`w-full h-full bg-gradient-to-br ${color} flex items-center justify-center`}>
+                        <GiGraduateCap className="text-white text-2xl" />
                       </div>
                     )}
-
-                    {/* Bio */}
-                    <div className="mb-6">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center">
-                          <FiUser className="text-white text-xs" />
-                        </div>
-                        <h3 className="text-[11px] font-black text-slate-700 uppercase tracking-wider">
-                          Executive Profile
-                        </h3>
-                      </div>
-                      <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                        <p className="text-slate-700 text-sm leading-relaxed">
-                          {principal?.bio ||
-                            `${principal?.name} serves as the Chief Principal of Kinyui Boys Senior School, bringing visionary leadership and decades of educational experience to the institution. Under their stewardship, the school has achieved remarkable milestones in academic excellence and holistic student development.`}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Key Statistics */}
-                    <div className="grid grid-cols-3 gap-3 mt-6">
-                      <div className="text-center p-3 bg-amber-50 rounded-xl border border-amber-100">
-                        <p className="text-lg font-black text-amber-600">25+</p>
-                        <p className="text-[9px] font-bold text-slate-600">Years Experience</p>
-                      </div>
-                      <div className="text-center p-3 bg-amber-50 rounded-xl border border-amber-100">
-                        <p className="text-lg font-black text-amber-600">8.2</p>
-                        <p className="text-[9px] font-bold text-slate-600">Mean Score</p>
-                      </div>
-                      <div className="text-center p-3 bg-amber-50 rounded-xl border border-amber-100">
-                        <p className="text-lg font-black text-amber-600">1200+</p>
-                        <p className="text-[9px] font-bold text-slate-600">Students</p>
-                      </div>
-                    </div>
                   </div>
-
-                  {/* Contact */}
-                  <div className="mt-6 pt-4 border-t border-slate-200">
-                    {principal?.email && (
-                      <a
-                        href={`mailto:${principal.email}`}
-                        className="inline-flex items-center gap-2 text-amber-600 font-bold text-sm hover:text-amber-700 transition-colors"
-                      >
-                        <div className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center">
-                          <FiMail className="text-sm" />
-                        </div>
-                        {principal.email}
-                      </a>
-                    )}
+                  <div className="flex-1">
+                    <p className="text-[10px] font-black text-amber-600 uppercase tracking-wider">{label}</p>
+                    <h3 className="font-black text-slate-900 text-base">{staff.name}</h3>
+                    <p className="text-slate-500 text-xs">{subtitle}</p>
                   </div>
+                  {selectedLeader?.id === staff.id && (
+                    <div className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center">
+                      <FiCheck className="text-white text-xs" />
+                    </div>
+                  )}
                 </div>
-              </div>
-            </div>
+              </button>
+            ))}
           </div>
         )}
 
-        {/* Deputy Principals Grid */}
-        <div className="mb-16">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-600">
-              <FiUsers className="w-3 h-3" />
-              Deputy Leadership
+        {/* Main Featured Card - Shows selected leader */}
+        <div id="featured-leader-card" className="relative group bg-white rounded-[2rem] border-2 border-amber-200 shadow-[0_20px_50px_rgba(245,158,11,0.12)] overflow-hidden">
+          {/* Special Golden Accent Bar */}
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 z-10" />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            {/* Image Side */}
+            <div className="relative h-80 md:h-96 lg:h-full lg:min-h-[550px]">
+              {getImageUrl(currentLeader?.image) ? (
+                <img
+                  src={getImageUrl(currentLeader.image)}
+                  alt={currentLeader?.name}
+                  className="w-full h-full object-cover object-top"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                      currentLeader?.name || 'Leader'
+                    )}&background=d97706&color=fff&bold=true&size=512`;
+                  }}
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-amber-700 to-orange-700 flex items-center justify-center">
+                  <GiGraduateCap className="text-8xl md:text-9xl text-white/40" />
+                </div>
+              )}
+              
+              {/* Special Crown Badge for Principal */}
+              {currentLeader === principal && (
+                <div className="absolute top-4 left-4 md:top-6 md:left-6">
+                  <div className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-amber-500 text-white text-[8px] md:text-[10px] font-black uppercase tracking-wider shadow-lg flex items-center gap-1 md:gap-2">
+                    <IoSparkles className="w-2 h-2 md:w-3 md:h-3" />
+                    Chief Principal
+                  </div>
+                </div>
+              )}
+              
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 lg:hidden">
+                <h2 className="text-xl md:text-2xl font-black text-white mb-1">{currentLeader?.name}</h2>
+                <p className="text-amber-300/90 text-xs md:text-sm">{getLeaderSubtitle(currentLeader)}</p>
+              </div>
             </div>
-            <h3 className="text-2xl font-black text-slate-900 mt-4">Supporting Executive Leadership</h3>
-            <p className="text-slate-500 text-sm max-w-md mx-auto mt-2">
-              Dedicated deputies ensuring academic excellence and operational efficiency
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {academicsDeputy && (
-              <div className="group bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl transition-all duration-300">
-                <div className="relative h-64 overflow-hidden">
-                  {getImageUrl(academicsDeputy.image) ? (
-                    <img
-                      src={getImageUrl(academicsDeputy.image)}
-                      alt={academicsDeputy.name}
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(academicsDeputy.name)}&background=d97706&color=fff&bold=true&size=400`;
-                      }}
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center">
-                      <GiGraduateCap className="text-6xl text-white/40" />
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <div className="px-3 py-1 rounded-full bg-amber-500 text-white text-[9px] font-black uppercase tracking-wider">
-                      Deputy Principal
-                    </div>
+            {/* Content Side */}
+            <div className="p-5 sm:p-6 md:p-8 lg:p-10 flex flex-col justify-between">
+              <div>
+                <div className="hidden lg:block mb-4 md:mb-6">
+                  <div className="inline-block px-3 py-1 md:px-4 md:py-1.5 rounded-full bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 text-[9px] md:text-[10px] font-black uppercase tracking-wider border border-amber-200">
+                    {getLeaderTitle(currentLeader)}
                   </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-black text-slate-900 mb-1">{academicsDeputy.name}</h3>
-                  <p className="text-amber-600 text-sm font-bold mb-4">Academics</p>
-                  <p className="text-slate-600 text-sm leading-relaxed">
-                    {academicsDeputy.bio?.substring(0, 120) || "Oversees curriculum implementation, academic performance monitoring, and examination coordination."}
-                  </p>
-                  {academicsDeputy.email && (
-                    <a href={`mailto:${academicsDeputy.email}`} className="inline-flex items-center gap-2 mt-4 text-amber-600 text-sm font-bold hover:text-amber-700">
-                      <FiMail className="text-xs" /> Contact Deputy
-                    </a>
-                  )}
-                </div>
-              </div>
-            )}
+                <h2 className="hidden lg:block text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 mb-1 md:mb-2">{currentLeader?.name}</h2>
+                <p className="hidden lg:block text-amber-600 font-bold text-sm md:text-base mb-6 md:mb-8">{getLeaderSubtitle(currentLeader)}</p>
 
-            {adminDeputy && (
-              <div className="group bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl transition-all duration-300">
-                <div className="relative h-64 overflow-hidden">
-                  {getImageUrl(adminDeputy.image) ? (
-                    <img
-                      src={getImageUrl(adminDeputy.image)}
-                      alt={adminDeputy.name}
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(adminDeputy.name)}&background=d97706&color=fff&bold=true&size=400`;
-                      }}
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center">
-                      <GiGraduateCap className="text-6xl text-white/40" />
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <div className="px-3 py-1 rounded-full bg-amber-500 text-white text-[9px] font-black uppercase tracking-wider">
-                      Deputy Principal
+                {/* Quote */}
+                {currentLeader?.quote && (
+                  <div className="rounded-2xl border-l-4 border-amber-500 bg-amber-50/50 p-4 md:p-5 mb-5 md:mb-6">
+                    <div className="flex items-start gap-2 md:gap-3">
+                      <FiMessageSquare className="text-amber-500 text-base md:text-lg mt-0.5 shrink-0" />
+                      <div>
+                        <span className="text-[9px] md:text-[10px] font-black text-amber-600 uppercase tracking-wider block mb-1 md:mb-1.5">
+                          Leadership Philosophy
+                        </span>
+                        <p className="text-slate-700 font-medium text-xs sm:text-sm md:text-base leading-relaxed italic">
+                          "{currentLeader.quote}"
+                        </p>
+                      </div>
                     </div>
                   </div>
+                )}
+
+                {/* Bio */}
+                <div className="mb-5 md:mb-6">
+                  <div className="flex items-center gap-2 mb-2 md:mb-3">
+                    <div className="w-6 h-6 md:w-7 md:h-7 rounded-lg bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center">
+                      <FiUser className="text-white text-[10px] md:text-xs" />
+                    </div>
+                    <h3 className="text-[10px] md:text-[11px] font-black text-slate-700 uppercase tracking-wider">
+                      Professional Profile
+                    </h3>
+                  </div>
+                  <div className="bg-slate-50 rounded-xl p-3 md:p-4 border border-slate-100">
+                    <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                      {currentLeader?.bio ||
+                        (currentLeader === principal 
+                          ? `${currentLeader?.name} serves as the Chief Principal of Kinyui Boys Senior School, bringing visionary leadership and decades of educational experience to the institution. Under their stewardship, the school has achieved remarkable milestones in academic excellence and holistic student development.`
+                          : `${currentLeader?.name} is a dedicated member of our executive leadership team, committed to excellence in ${currentLeader === academicsDeputy ? 'academic affairs and curriculum development' : 'administration and student welfare'}.`)}
+                    </p>
+                  </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-black text-slate-900 mb-1">{adminDeputy.name}</h3>
-                  <p className="text-amber-600 text-sm font-bold mb-4">Administration</p>
-                  <p className="text-slate-600 text-sm leading-relaxed">
-                    {adminDeputy.bio?.substring(0, 120) || "Manages student affairs, discipline, co-curricular activities, and daily school operations."}
-                  </p>
-                  {adminDeputy.email && (
-                    <a href={`mailto:${adminDeputy.email}`} className="inline-flex items-center gap-2 mt-4 text-amber-600 text-sm font-bold hover:text-amber-700">
-                      <FiMail className="text-xs" /> Contact Deputy
-                    </a>
-                  )}
-                </div>
+
+                {/* Key Statistics - Only for Principal */}
+                {currentLeader === principal && (
+                  <div className="grid grid-cols-3 gap-2 md:gap-3 mt-4 md:mt-6">
+                    <div className="text-center p-2 md:p-3 bg-amber-50 rounded-xl border border-amber-100">
+                      <p className="text-base md:text-lg font-black text-amber-600">25+</p>
+                      <p className="text-[8px] md:text-[9px] font-bold text-slate-600">Years Exp.</p>
+                    </div>
+                    <div className="text-center p-2 md:p-3 bg-amber-50 rounded-xl border border-amber-100">
+                      <p className="text-base md:text-lg font-black text-amber-600">8.2</p>
+                      <p className="text-[8px] md:text-[9px] font-bold text-slate-600">Mean Score</p>
+                    </div>
+                    <div className="text-center p-2 md:p-3 bg-amber-50 rounded-xl border border-amber-100">
+                      <p className="text-base md:text-lg font-black text-amber-600">1200+</p>
+                      <p className="text-[8px] md:text-[9px] font-bold text-slate-600">Students</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Key Responsibilities - For Deputies */}
+                {currentLeader !== principal && currentLeader?.responsibilities && currentLeader.responsibilities.length > 0 && (
+                  <div className="mt-4 md:mt-6">
+                    <h3 className="text-[10px] md:text-[11px] font-black text-slate-700 uppercase tracking-wider mb-2 md:mb-3">Key Responsibilities</h3>
+                    <div className="flex flex-wrap gap-1.5 md:gap-2">
+                      {currentLeader.responsibilities.slice(0, 3).map((resp, idx) => (
+                        <span key={idx} className="px-2 py-1 md:px-3 md:py-1.5 bg-slate-100 text-slate-700 text-[9px] md:text-[10px] font-bold rounded-lg">
+                          {resp}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
+
+              {/* Contact */}
+              <div className="mt-5 md:mt-6 pt-3 md:pt-4 border-t border-slate-200">
+                {currentLeader?.email && (
+                  <a
+                    href={`mailto:${currentLeader.email}`}
+                    className="inline-flex items-center gap-2 text-amber-600 font-bold text-xs md:text-sm hover:text-amber-700 transition-colors"
+                  >
+                    <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-amber-50 flex items-center justify-center">
+                      <FiMail className="text-sm md:text-base" />
+                    </div>
+                    {currentLeader.email}
+                  </a>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
+        {/* Mobile: Back to Principal Button (only shows when viewing a deputy) */}
+        {isMobile && selectedLeader !== principal && (
+          <div className="mt-6 flex justify-center">
+            <button
+              onClick={() => handleLeaderClick(principal)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 font-black text-xs uppercase tracking-wider hover:bg-amber-100 transition-all"
+            >
+              <FiArrowLeft size={12} />
+              Back to Principal
+            </button>
+          </div>
+        )}
+
         {/* View All Staff Button */}
-        <div className="text-center mt-12 pt-8 border-t border-slate-200">
-          <div className="inline-flex flex-col items-center gap-4">
-            <div className="w-12 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+        <div className="text-center mt-12 md:mt-16 pt-6 md:pt-8 border-t border-slate-200">
+          <div className="inline-flex flex-col items-center gap-3 md:gap-4">
+            <div className="w-10 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
             <button
               onClick={() => router.push('/pages/staff')}
-              className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white border-2 border-amber-600 text-amber-700 font-black text-sm tracking-wide hover:bg-gradient-to-r hover:from-amber-600 hover:to-orange-600 hover:text-white hover:border-transparent transition-all duration-300 shadow-md hover:shadow-xl"
+              className="group inline-flex items-center gap-2 md:gap-3 px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl bg-white border-2 border-amber-600 text-amber-700 font-black text-xs md:text-sm tracking-wide hover:bg-gradient-to-r hover:from-amber-600 hover:to-orange-600 hover:text-white hover:border-transparent transition-all duration-300 shadow-md hover:shadow-xl"
             >
-              <FiEye className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <FiEye className="w-4 h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform" />
               View Complete Staff Directory
-              <FiChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <FiChevronRight className="w-3 h-3 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
             </button>
-            <p className="text-xs text-slate-500 font-medium">
+            <p className="text-[10px] md:text-xs text-slate-500 font-medium">
               Explore our full faculty directory including HODs, teachers, and support staff
             </p>
           </div>
