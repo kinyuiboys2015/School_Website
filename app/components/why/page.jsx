@@ -376,7 +376,7 @@ const ModernSchoolLayout = () => {
     blue: {
       bg: "bg-orange-900",
       light: "bg-amber-50",
-      text: "text-blue-600",
+      text: "text-rose-800",
       border: "border-blue-200",
     },
   };
@@ -1015,7 +1015,7 @@ const schoolFeatures = [
               <div className="h-full rounded-3xl border border-slate-200/70 bg-white/70 backdrop-blur p-6 sm:p-8 shadow-[0_20px_50px_rgba(2,6,23,0.08)]">
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] sm:text-slate-700 text-amber-900">
-                  <IoSparkles className="w-4 h-4 sm:text-indigo-600 text-amber-800" />
+                  <IoSparkles className="w-4 h-4 sm:text-orange-800 text-amber-800" />
                   Why this school
                 </div>
 
@@ -1024,11 +1024,11 @@ const schoolFeatures = [
                   <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-[1.05] tracking-tight">
                     {loading ? (
                       <span className="inline-flex items-center gap-2">
-                        <FiLoader className="w-6 h-6 animate-spin text-indigo-600" />{" "}
+                        <FiLoader className="w-6 h-6 animate-spin text-orange-800" />{" "}
                         Loading...
                       </span>
                     ) : (
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r sm:from-indigo-600 sm:via-sky-600 sm:to-emerald-600 from-amber-900 via-amber-800 to-rose-900">
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r  from-amber-900 via-amber-800 to-rose-900">
                         Why {schoolName}
                       </span>
                     )}
@@ -1181,12 +1181,12 @@ const schoolFeatures = [
           {/* Section Header */}
           <div className="text-center mb-14 sm:mb-16">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] sm:text-slate-700 text-amber-900 mb-5">
-              <FiStar className="sm:text-indigo-600 text-amber-800 w-4 h-4" />
+              <FiStar className="sm:text-orange-800 text-amber-800 w-4 h-4" />
               Why Choose Us
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-tight mb-4 tracking-tight">
               A bolder way to{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r sm:from-indigo-600 sm:via-sky-600 sm:to-emerald-600 from-amber-900 via-amber-800 to-rose-900">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r  from-amber-900 via-orange-800 to-rose-900">
                 learn and grow
               </span>
             </h2>
@@ -1224,7 +1224,7 @@ const schoolFeatures = [
 
                   <button
                     onClick={() => toggleReadMore(item.id)}
-                    className="mt-4 inline-flex items-center gap-1 text-xs font-black tracking-widest uppercase text-indigo-600 hover:text-indigo-700 transition-colors"
+                    className="mt-4 inline-flex items-center gap-1 text-xs font-black tracking-widest uppercase text-orange-800 hover:text-indigo-700 transition-colors"
                   >
                     {expandedCards[item.id] ? "Show Less" : "Read More"}
                     <FiChevronDown
@@ -1245,7 +1245,7 @@ const schoolFeatures = [
   <div className="relative inline-block mb-6">
     <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-indigo-500/30" />
     <h3 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tighter uppercase italic">
-      The <span className="text-indigo-600">Pathway</span> Strategy
+      The <span className="text-orange-800">Pathway</span> Strategy
     </h3>
     <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-indigo-500/30" />
   </div>
@@ -1266,7 +1266,7 @@ const schoolFeatures = [
       {/* Ghost-style Action Link (Optional but keeps the logic) */}
       <div 
         onClick={handleExplorePathways}
-        className="mt-6 inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-indigo-600 hover:text-sky-600 cursor-pointer transition-colors"
+        className="mt-6 inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-orange-800 hover:text-sky-600 cursor-pointer transition-colors"
       >
         Initiate Discovery <FiArrowRight className="w-4 h-4 translate-y-[-1px]" />
       </div>
@@ -1287,7 +1287,7 @@ const schoolFeatures = [
               <div className="lg:col-span-7 space-y-6">
                 {/* Snapshot Badge */}
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 w-fit">
-                  <FiZap className="w-4 h-4 text-indigo-600" />
+                  <FiZap className="w-4 h-4 text-orange-800" />
                   Snapshot
                 </div>
 
@@ -1295,7 +1295,7 @@ const schoolFeatures = [
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 leading-tight tracking-tight">
                   {loading ? (
                     <span className="inline-flex items-center gap-2">
-                      <FiLoader className="w-5 h-5 animate-spin text-indigo-600" />{" "}
+                      <FiLoader className="w-5 h-5 animate-spin text-orange-800" />{" "}
                       Loading...
                     </span>
                   ) : (
@@ -1444,7 +1444,7 @@ const schoolFeatures = [
                 <div className="flex flex-nowrap gap-3 pt-2 w-full">
                   <button
                     onClick={handleExplorePathways}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r sm:from-indigo-600 sm:via-sky-600 sm:to-emerald-600 from-amber-900 via-amber-800 to-rose-900 text-white font-black text-sm tracking-tight shadow-lg sm:shadow-indigo-600/20 shadow-amber-900/20"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r  from-amber-900 via-amber-800 to-rose-900 text-white font-black text-sm tracking-tight shadow-lg sm:shadow-indigo-600/20 shadow-amber-900/20"
                   >
                     Admissions <FiArrowRight size={16} />
                   </button>
@@ -1471,14 +1471,14 @@ const schoolFeatures = [
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-4 space-y-3">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200">
-                <IoSparkles className="sm:text-indigo-600 text-amber-700 w-3.5 h-3.5" />
+                <IoSparkles className="sm:text-orange-800 text-amber-700 w-3.5 h-3.5" />
                 <span className="text-[10px] font-black uppercase tracking-[0.25em] sm:text-slate-700 text-amber-900">
                   Core Foundations
                 </span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight tracking-tight">
                 Foundations that guide{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r sm:from-indigo-600 sm:via-sky-600 sm:to-emerald-600 from-amber-900 via-amber-800 to-rose-900">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r  from-amber-900 via-amber-800 to-rose-900">
                   how we learn
                 </span>
               </h2>
@@ -1575,7 +1575,7 @@ const schoolFeatures = [
                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                   <div>
                     <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700">
-                      <FiActivity className="w-4 h-4 text-indigo-600" />
+                      <FiActivity className="w-4 h-4 text-orange-800" />
                       Performance
                     </div>
                     <h3 className="mt-4 text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
@@ -1968,7 +1968,7 @@ const schoolFeatures = [
 
                     <button
                       onClick={() => openAchievementModal(item)}
-                      className="pt-4 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-indigo-600 group-hover:gap-3 transition-all"
+                      className="pt-4 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-orange-800 group-hover:gap-3 transition-all"
                     >
                       Deep Dive <FiArrowRight />
                     </button>
@@ -2056,7 +2056,7 @@ const schoolFeatures = [
                       {path.careers.slice(0, 2).map((career, i) => (
                         <span
                           key={i}
-                          className="text-[11px] text-indigo-600 font-bold"
+                          className="text-[11px] text-orange-800 font-bold"
                         >
                           # {career}
                         </span>
@@ -2064,7 +2064,7 @@ const schoolFeatures = [
                     </div>
                     <button
                       onClick={() => openModal(path)}
-                      className="pt-4 flex items-center gap-2 text-xs font-bold text-gray-700 group-hover:text-indigo-600 transition-colors"
+                      className="pt-4 flex items-center gap-2 text-xs font-bold text-gray-700 group-hover:text-orange-800 transition-colors"
                     >
                       Explore Track{" "}
                       <FiArrowRight className="" />
@@ -2115,7 +2115,7 @@ const schoolFeatures = [
             key={i}
             className="flex flex-col items-center justify-center p-4 sm:p-5 rounded-[1.5rem] bg-slate-50 border border-slate-100 transition-none"
           >
-            <SubjIcon className="text-xl sm:text-2xl text-indigo-600 mb-2 sm:mb-3" />
+            <SubjIcon className="text-xl sm:text-2xl text-orange-800 mb-2 sm:mb-3" />
             <span className="text-[10px] sm:text-[11px] font-black text-center text-slate-900 uppercase tracking-tight">
               {subj.name}
             </span>
@@ -2168,7 +2168,7 @@ const schoolFeatures = [
       
       {/* LEFT COLUMN: Sticky Header */}
       <div className="lg:col-span-5 lg:sticky lg:top-24">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-[10px] font-black uppercase tracking-widest text-indigo-600 mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-[10px] font-black uppercase tracking-widest text-orange-800 mb-6">
           <FiLayers className="w-4 h-4" />
           The Foundation
         </div>
@@ -2242,7 +2242,7 @@ const schoolFeatures = [
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
                     <span
                       className={`text-[9px] sm:text-[10px] font-black uppercase tracking-widest ${
-                        isPremium ? "text-sky-300" : "text-indigo-600"
+                        isPremium ? "text-sky-300" : "text-orange-800"
                       }`}
                     >
                       {feature.highlight}
@@ -2331,7 +2331,7 @@ const schoolFeatures = [
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 mb-5">
-              <FiExternalLink className="w-4 h-4 text-indigo-600" />
+              <FiExternalLink className="w-4 h-4 text-orange-800" />
               University Pathways
             </div>
 
@@ -2350,7 +2350,7 @@ const schoolFeatures = [
 
           {imagesLoading ? (
             <div className="flex flex-col items-center justify-center py-12">
-              <FiLoader className="w-10 h-10 animate-spin text-indigo-600 mb-4" />
+              <FiLoader className="w-10 h-10 animate-spin text-orange-800 mb-4" />
               <span className="text-xs font-black text-slate-500 uppercase tracking-[0.2em]">
                 Loading partners...
               </span>
@@ -2492,7 +2492,7 @@ const schoolFeatures = [
                   <div className="flex flex-wrap gap-2 sm:gap-3 mb-6">
                     {selectedAchievement.stats ? (
                       <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-full border border-slate-200">
-                        <FiAward className="text-indigo-600 w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        <FiAward className="text-orange-800 w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         <span className="text-[10px] sm:text-xs font-black text-slate-700 uppercase tracking-[0.12em]">
                           {selectedAchievement.stats}
                         </span>
@@ -2511,7 +2511,7 @@ const schoolFeatures = [
                 )}
 
                 <h4 className="text-base sm:text-lg font-black text-slate-900 mb-2 sm:mb-3 flex items-center gap-2">
-                  <FiBookOpen className="text-indigo-600 w-4 h-4 sm:w-5 sm:h-5" />
+                  <FiBookOpen className="text-orange-800 w-4 h-4 sm:w-5 sm:h-5" />
                   Story
                 </h4>
                 <p className="text-sm sm:text-base text-slate-700 leading-relaxed mb-6">
@@ -2606,7 +2606,7 @@ const schoolFeatures = [
               {/* Subjects Section */}
               <div className="mb-6">
                 <h4 className="font-black text-slate-900 text-base sm:text-lg mb-3 flex items-center gap-2">
-                  <FiBook className="text-indigo-600 w-4 h-4 sm:w-5 sm:h-5" />
+                  <FiBook className="text-orange-800 w-4 h-4 sm:w-5 sm:h-5" />
                   Core Subjects
                 </h4>
                 <div className="flex flex-wrap gap-2">
@@ -2624,7 +2624,7 @@ const schoolFeatures = [
               {/* Careers Section */}
               <div>
                 <h4 className="font-black text-slate-900 text-base sm:text-lg mb-3 flex items-center gap-2">
-                  <FiTrendingUp className="text-indigo-600 w-4 h-4 sm:w-5 sm:h-5" />
+                  <FiTrendingUp className="text-orange-800 w-4 h-4 sm:w-5 sm:h-5" />
                   Career Paths
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
