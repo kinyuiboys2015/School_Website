@@ -2337,7 +2337,7 @@ const schoolFeatures = [
 
             <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
               Partners for{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-800 via-amber-600 to-emerald-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-800 via-amber-600 to-orange-900">
                 next steps
               </span>
             </h3>
