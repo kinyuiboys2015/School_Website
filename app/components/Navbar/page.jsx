@@ -242,38 +242,48 @@ export default function ModernNavbar() {
         <div className="w-full px-3 xs:px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between min-h-[4.5rem] sm:min-h-[5.2rem]">
             
-            {/* Logo Section */}
-            <div 
-              className="flex items-center gap-2 xs:gap-3 cursor-pointer hover:opacity-90 transition-opacity"
-              onClick={handleLogoClick}
-              role="button"
-              tabIndex={0}
-              onKeyDown={handleLogoKeyDown}
-            >
-              <div className="relative w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 
-                bg-white/10 rounded-lg xs:rounded-xl flex items-center justify-center 
-                shadow-lg border border-white/20 overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
-                <Image
-                  src="/kinyui.jpeg"
-                  alt="kinyui boys Senior School Logo"
-                  width={48}
-                  height={48}
-                  className="relative z-10 cursor-pointer filter drop-shadow-sm group-hover:scale-100 transition-transform duration-300 w-10 h-10 xs:w-12 xs:h-12 sm:w-14 sm:h-14"
-                  href="/"
-                  priority
-                  sizes="(max-width: 480px) 48px, (max-width: 640px) 56px, 64px"
-                />
-              </div>
-              <div className="sm:block">
-                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-rose-600 to-orange-600 bg-clip-text text-transparent whitespace-nowrap tracking-tight">
-                   Kinyui Boys
-                </h1>
-                <p className="text-xs sm:text-sm text-slate-100/90 font-medium tracking-wide whitespace-nowrap">
-                  Soaring to Excellence
-                </p>
-              </div>
-            </div>
+{/* Logo Section */}
+<div 
+  className="flex items-center gap-3 md:gap-4 cursor-pointer group"
+  onClick={handleLogoClick}
+  role="button"
+  tabIndex={0}
+  onKeyDown={handleLogoKeyDown}
+>
+  {/* Hexagon/Shield Container for the Logo */}
+  <div className="relative flex items-center justify-center">
+    <div className="absolute -inset-1 bg-gradient-to-tr from-amber-500 to-yellow-200 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
+    <div className="relative w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 bg-slate-900 rounded-xl flex items-center justify-center border border-white/10 shadow-2xl overflow-hidden">
+      {/* Subtle background pattern/glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent)]"></div>
+      
+      <Image
+        src="/kinyui.jpeg"
+        alt="Kinyui Boys Senior School Logo"
+        width={64}
+        height={64}
+        className="relative z-10 w-10 h-10 xs:w-12 xs:h-12 sm:w-14 sm:h-14 object-contain transition-transform duration-500 group-hover:scale-110"
+        priority
+      />
+    </div>
+  </div>
+
+  {/* Text Content */}
+  <div className="flex flex-col justify-center">
+    <div className="overflow-hidden">
+      <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tighter text-white leading-none">
+        KINYUI <span className="text-amber-500">BOYS</span>
+      </h1>
+    </div>
+    
+    <div className="flex items-center gap-2 mt-1">
+      <span className="h-[1px] w-4 bg-amber-500/50"></span>
+      <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] font-semibold text-slate-300 italic">
+        Endless Possibilities
+      </p>
+    </div>
+  </div>
+</div>
 
             {/* Desktop Navigation - NO UPPERCASE */}
             <div className="hidden lg:flex items-center justify-center flex-1 mx-8 min-w-0">
