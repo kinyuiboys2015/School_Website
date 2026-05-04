@@ -35,9 +35,9 @@ const heroSlides = [
     title: "Eastern",
     titleAccent: "Pride",
     subtitle: "Regional Excellence",
-    description: "A C3 public senior school serving Matungulu, Machakos, and the greater Eastern Region. Day/boarding options with strong community ties and academic track record.",
+    description: "A C3 public senior school serving Matungulu, Machakos, and the greater Eastern Region. Boarding options with strong community ties and academic track record.",
     image: "/hero/kin2.jpeg",
-    tags: ["Community", "Regional", "Day/Boarding", "Excellence"],
+    tags: ["Community", "Regional", "Boarding", "Excellence"],
     cta: "Contact Us",
     link: "/pages/contact",
     accent: "amber",
@@ -352,7 +352,7 @@ const ModernHero = () => {
                 <span className="text-gray-400">Status:</span>
                 <span className="text-white">Active</span>
                 <span className="text-gray-400">Type:</span>
-                <span className="text-white">Day/Boarding</span>
+                <span className="text-white">Boarding</span>
               </div>
             </div>
             
