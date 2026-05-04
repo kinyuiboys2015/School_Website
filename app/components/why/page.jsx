@@ -135,8 +135,8 @@ const ModernSchoolLayout = () => {
     document.body.style.overflow = "auto";
   };
 
-  const schoolName = schoolData?.name || "Senior School";
-  const motto = schoolData?.motto || "Excellence With Integrity";
+  const schoolName = schoolData?.name || "Kinyui Senior School";
+  const motto = schoolData?.motto || "Soaring To Excellence";
   const vision =
     schoolData?.vision ||
     "To nurture curious, capable learners prepared for leadership and service.";
