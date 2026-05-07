@@ -46,7 +46,7 @@ export const metadata = {
   openGraph: {
     title: 'SA kinyui boys Senior School - Photo Gallery',
     description: 'Browse through our collection of school photos, events, and memorable moments.',
-    url: 'https://kinyui-senior.vercel.app/pages/gallery',
+    url: 'https://kinyuiboyssenior.school/pages/gallery',
     siteName: 'SA kinyui boys Senior School',
     images: [
       {
@@ -68,7 +68,7 @@ export const metadata = {
   },
   
   alternates: {
-    canonical: 'https://kinyui-senior.vercel.app/pages/gallery',
+    canonical: 'https://kinyuiboyssenior.school/pages/gallery',
   },
   
   robots: {

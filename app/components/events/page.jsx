@@ -55,7 +55,7 @@ const FallbackImage = ({ src, alt, className, fallbackIcon }) => {
 
 // ─── Share helpers ───────────────────────────────────────────
 
-const SHARE_URL = 'https://kinyui-senior.vercel.app/eventsandnews';
+const SHARE_URL = 'https://kinyuiboyssenior.school/eventsandnews';
 
 const shareLinks = (title) => ({
   whatsapp: `https://wa.me/?text=${encodeURIComponent(`Check out "${title}" ${SHARE_URL}`)}`,

@@ -20,7 +20,7 @@ export default function robots() {
         disallow: ['/MainDashboard', '/pages/Sign In'],
       },
     ],
-    sitemap: 'https://kinyui-senior.vercel.app/sitemap.xml',
-    host: 'https://kinyui-senior.vercel.app',
+    sitemap: 'https://kinyuiboyssenior.school/sitemap.xml',
+    host: 'https://kinyuiboyssenior.school',
   }
 }

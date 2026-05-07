@@ -291,7 +291,7 @@ const emailTemplates = {
               
               <!-- CTA Button -->
               <div style="text-align: center; margin: 8% 0;">
-                <a href="https://kinyui-senior.vercel.app/pages//Apply Now" 
+                <a href="https://kinyuiboyssenior.school/pages//Apply Now" 
                    style="display: inline-block; 
                           width: 100%; 
                           max-width: 300px; 

@@ -935,7 +935,7 @@ export default function ModernGallery() {
     "@type": "CollectionPage",
     "name": "Kinyui Boys Senior School Gallery",
     "description": "Official photo and video gallery of Kinyui Boys Senior School in Matungulu, Machakos County, Kenya",
-    "url": "https://kinyui-senior.vercel.app/pages/gallery",
+    "url": "https://kinyuiboyssenior.school/pages/gallery",
     "isPartOf": { "@type": "School", "name": "Kinyui Boys Senior School" },
     "about": { "@type": "EducationalOrganization", "name": "Kinyui Boys Senior School", "address": { "@type": "PostalAddress", "addressLocality": "Matungulu", "addressRegion": "Machakos County", "addressCountry": "KE" } }
   };

@@ -31,7 +31,7 @@ export const viewport = {
 /* METADATA                                  */
 /* -------------------------------------------------------------------------- */
 export const metadata = {
-  metadataBase: new URL("https://kinyui-senior.vercel.app"),
+  metadataBase: new URL("https://kinyuiboyssenior.school"),
 
   title: {
     default: "S.A kinyui boys Senior School",
@@ -142,7 +142,7 @@ export const metadata = {
   openGraph: {
     title: "S.A kinyui boys School",
     description: "Official school website.",
-    url: "https://kinyui-senior.vercel.app",
+    url: "https://kinyuiboyssenior.school",
     siteName: "kinyui boys Senior School",
     locale: "en_KE",
     type: "website",
@@ -197,9 +197,9 @@ export default function RootLayout({ children }) {
     "@type": "School",
     "name": "S.A kinyui boys Senior School",
     "alternateName": "kinyui boys Senior School",
-    "url": "https://kinyui-senior.vercel.app",
-    "logo": "https://kinyui-senior.vercel.app/seo/kinyui.jpeg",
-    "image": "https://kinyui-senior.vercel.app/seo/kinyui.jpeg",
+    "url": "https://kinyuiboyssenior.school",
+    "logo": "https://kinyuiboyssenior.school/seo/kinyui.jpeg",
+    "image": "https://kinyuiboyssenior.school/seo/kinyui.jpeg",
     "description": "A public Senior school in Matungulu, Machakos County, Kenya.",
     "address": {
       "@type": "PostalAddress",

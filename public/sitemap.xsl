@@ -41,7 +41,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta name="description" content="Complete sitemap for Kinyui Boys Senior School - Find all pages, admissions info, fees structure, gallery, and more."/>
         <meta name="robots" content="noindex, follow"/>
-        <link rel="canonical" href="https://kinyui-senior.vercel.app/sitemap.xml"/>
+        <link rel="canonical" href="https://kinyuiboyssenior.school/sitemap.xml"/>
         
         <!-- Font Awesome Icons (CDN) -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
@@ -997,12 +997,12 @@
                         <a class="url" href="{loc}" target="_blank" rel="noopener noreferrer">
                           <span class="url-icon">
                             <xsl:choose>
-                              <xsl:when test="contains($loc, '/') and string-length(substring-after($loc, 'https://kinyui-senior.vercel.app')) > 1">📄</xsl:when>
+                              <xsl:when test="contains($loc, '/') and string-length(substring-after($loc, 'https://kinyuiboyssenior.school')) > 1">📄</xsl:when>
                               <xsl:otherwise>🏠</xsl:otherwise>
                             </xsl:choose>
                           </span>
                           <span>
-                            <xsl:value-of select="substring-after($loc, 'https://kinyui-senior.vercel.app')"/>
+                            <xsl:value-of select="substring-after($loc, 'https://kinyuiboyssenior.school')"/>
                           </span>
                         </a>
                       </td>
@@ -1046,15 +1046,15 @@
               <strong>Kinyui Boys Senior School</strong> | Matungulu, Machakos County, Kenya
             </p>
             <div class="footer-links">
-              <a href="https://kinyui-senior.vercel.app" target="_blank" rel="noopener">🏠 Visit Website</a>
+              <a href="https://kinyuiboyssenior.school" target="_blank" rel="noopener">🏠 Visit Website</a>
               <span class="footer-divider">|</span>
-              <a href="https://kinyui-senior.vercel.app/pages/contact" target="_blank" rel="noopener">📧 Contact Us</a>
+              <a href="https://kinyuiboyssenior.school/pages/contact" target="_blank" rel="noopener">📧 Contact Us</a>
               <span class="footer-divider">|</span>
-              <a href="https://kinyui-senior.vercel.app/pages/admissions" target="_blank" rel="noopener">🎓 Admissions</a>
+              <a href="https://kinyuiboyssenior.school/pages/admissions" target="_blank" rel="noopener">🎓 Admissions</a>
               <span class="footer-divider">|</span>
-              <a href="https://kinyui-senior.vercel.app/pages/fees" target="_blank" rel="noopener">💰 Fee Structure</a>
+              <a href="https://kinyuiboyssenior.school/pages/fees" target="_blank" rel="noopener">💰 Fee Structure</a>
               <span class="footer-divider">|</span>
-              <a href="https://kinyui-senior.vercel.app/sitemap.xml" target="_blank" rel="noopener">🗺️ XML Sitemap</a>
+              <a href="https://kinyuiboyssenior.school/sitemap.xml" target="_blank" rel="noopener">🗺️ XML Sitemap</a>
             </div>
             <small>
               Generated: <xsl:value-of select="urlset/url[1]/lastmod"/> | 

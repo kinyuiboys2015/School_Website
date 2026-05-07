@@ -185,8 +185,8 @@ export default function StaffProfilePage() {
       `Experienced educator specializing in ${staff.expertise?.slice(0, 3).join(', ') || 'education'}. ` +
       `View full profile, qualifications, and contact information.`;
     
-    const profileUrl = `https://kinyui-senior.vercel.app/pages/staff/${id}`;
-    const imageUrl = staff.image?.startsWith('http') ? staff.image : `https://kinyui-senior.vercel.app${staff.image}`;
+    const profileUrl = `https://kinyuiboyssenior.school/pages/staff/${id}`;
+    const imageUrl = staff.image?.startsWith('http') ? staff.image : `https://kinyuiboyssenior.school${staff.image}`;
     
     return (
       <Head>
@@ -243,7 +243,7 @@ export default function StaffProfilePage() {
                 "name": schoolName,
                 "alternateName": ["kinyui boys High School", "SA kinyui boys", "Katz School"],
                 "description": schoolDescription,
-                "url": "https://kinyui-senior.vercel.app",
+                "url": "https://kinyuiboyssenior.school",
                 "address": {
                   "@type": "PostalAddress",
                   "addressLocality": "Matungulu",
@@ -274,7 +274,7 @@ export default function StaffProfilePage() {
               },
               "sameAs": [
                 profileUrl,
-                `https://kinyui-senior.vercel.app/pages/staff`
+                `https://kinyuiboyssenior.school/pages/staff`
               ]
             })
           }}
@@ -292,13 +292,13 @@ export default function StaffProfilePage() {
                   "@type": "ListItem",
                   "position": 1,
                   "name": "Home",
-                  "item": "https://kinyui-senior.vercel.app"
+                  "item": "https://kinyuiboyssenior.school"
                 },
                 {
                   "@type": "ListItem",
                   "position": 2,
                   "name": "Staff Directory",
-                  "item": "https://kinyui-senior.vercel.app/pages/staff"
+                  "item": "https://kinyuiboyssenior.school/pages/staff"
                 },
                 {
                   "@type": "ListItem",
