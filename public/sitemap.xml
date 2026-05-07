@@ -4,7 +4,6 @@
 
   <!-- ==================== MAIN PAGES ==================== -->
   
-  <!-- Home Page - Highest Priority -->
   <url>
     <loc>https://kinyuiboyssenior.school/</loc>
     <lastmod>2026-04-29</lastmod>
@@ -29,9 +28,6 @@
     </image:image>
   </url>
 
-  <!-- ==================== ACADEMICS SECTION ==================== -->
-  
-  <!-- Student Portal -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/StudentPortal</loc>
     <lastmod>2026-04-29</lastmod>
@@ -44,7 +40,6 @@
     </image:image>
   </url>
 
-  <!-- Guidance & Counselling -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/Guidance-and-Counselling</loc>
     <lastmod>2026-04-29</lastmod>
@@ -57,7 +52,6 @@
     </image:image>
   </url>
 
-  <!-- School Rules & Policies -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/OurSchoolPolicies</loc>
     <lastmod>2026-04-29</lastmod>
@@ -70,9 +64,6 @@
     </image:image>
   </url>
 
-  <!-- ==================== ACHIEVEMENTS SECTION ==================== -->
-  
-  <!-- School Achievements & Milestones -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/Achievements</loc>
     <lastmod>2026-04-29</lastmod>
@@ -85,9 +76,6 @@
     </image:image>
   </url>
 
-  <!-- ==================== ADMISSIONS SECTION ==================== -->
-  
-  <!-- Admissions Main -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/admissions</loc>
     <lastmod>2026-04-29</lastmod>
@@ -100,7 +88,6 @@
     </image:image>
   </url>
 
-  <!-- Apply for Admissions -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/Apply-Now</loc>
     <lastmod>2026-04-29</lastmod>
@@ -113,9 +100,6 @@
     </image:image>
   </url>
 
-  <!-- ==================== FEES SECTION ==================== -->
-  
-  <!-- Fees Structure -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/fees</loc>
     <lastmod>2026-04-29</lastmod>
@@ -128,9 +112,6 @@
     </image:image>
   </url>
 
-  <!-- ==================== SCHOOL LIFE ==================== -->
-  
-  <!-- Gallery -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/gallery</loc>
     <lastmod>2026-04-29</lastmod>
@@ -143,7 +124,6 @@
     </image:image>
   </url>
 
-  <!-- News & Events -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/eventsandnews</loc>
     <lastmod>2026-04-29</lastmod>
@@ -156,9 +136,6 @@
     </image:image>
   </url>
 
-  <!-- ==================== MAGAZINE SECTION ==================== -->
-  
-  <!-- School Magazine -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/Magazine</loc>
     <lastmod>2026-04-29</lastmod>
@@ -171,9 +148,6 @@
     </image:image>
   </url>
 
-  <!-- ==================== RESOURCES ==================== -->
-  
-  <!-- Staff Directory -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/staff</loc>
     <lastmod>2026-04-29</lastmod>
@@ -186,7 +160,6 @@
     </image:image>
   </url>
 
-  <!-- Careers -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/careers</loc>
     <lastmod>2026-04-29</lastmod>
@@ -199,9 +172,6 @@
     </image:image>
   </url>
 
-  <!-- ==================== CONTACT ==================== -->
-  
-  <!-- Contact Us -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/contact</loc>
     <lastmod>2026-04-29</lastmod>
@@ -214,9 +184,6 @@
     </image:image>
   </url>
 
-  <!-- ==================== ADMIN PAGES ==================== -->
-  
-  <!-- Admin Login -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/Sign-In</loc>
     <lastmod>2026-04-29</lastmod>
