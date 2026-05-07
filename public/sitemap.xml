@@ -70,7 +70,7 @@
     </image:image>
   </url>
 
-  <!-- ==================== ACHIEVEMENTS SECTION (NEW) ==================== -->
+  <!-- ==================== ACHIEVEMENTS SECTION ==================== -->
   
   <!-- School Achievements & Milestones -->
   <url>
@@ -100,7 +100,7 @@
     </image:image>
   </url>
 
-  <!-- Apply for Admissions - FIXED: Removed space from URL -->
+  <!-- Apply for Admissions -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/Apply-Now</loc>
     <lastmod>2026-04-29</lastmod>
@@ -113,9 +113,9 @@
     </image:image>
   </url>
 
-  <!-- ==================== FEES SECTION (ENHANCED) ==================== -->
+  <!-- ==================== FEES SECTION ==================== -->
   
-  <!-- Fees Structure - Boarding & Admission Fees -->
+  <!-- Fees Structure -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/fees</loc>
     <lastmod>2026-04-29</lastmod>
@@ -124,13 +124,13 @@
     <image:image>
       <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
       <image:title>School Fees Structure 2026</image:title>
-      <image:caption>Transparent fee breakdown - Boarding fees, admission fees, and payment methods (Bank, MPesa Paybill 522522)</image:caption>
+      <image:caption>Transparent fee breakdown - Boarding fees, admission fees, and payment methods</image:caption>
     </image:image>
   </url>
 
   <!-- ==================== SCHOOL LIFE ==================== -->
   
-  <!-- Gallery - Campus Life & Activities -->
+  <!-- Gallery -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/gallery</loc>
     <lastmod>2026-04-29</lastmod>
@@ -156,9 +156,9 @@
     </image:image>
   </url>
 
-  <!-- ==================== MAGAZINE SECTION (NEW) ==================== -->
+  <!-- ==================== MAGAZINE SECTION ==================== -->
   
-  <!-- School Magazine & Publications -->
+  <!-- School Magazine -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/Magazine</loc>
     <lastmod>2026-04-29</lastmod>
@@ -173,7 +173,7 @@
 
   <!-- ==================== RESOURCES ==================== -->
   
-  <!-- Staff Directory - Leadership & Faculty -->
+  <!-- Staff Directory -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/staff</loc>
     <lastmod>2026-04-29</lastmod>
@@ -186,7 +186,7 @@
     </image:image>
   </url>
 
-  <!-- Careers - Join Our Team -->
+  <!-- Careers -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/careers</loc>
     <lastmod>2026-04-29</lastmod>
@@ -214,9 +214,9 @@
     </image:image>
   </url>
 
-  <!-- ==================== ADMIN PAGES (Low Priority) ==================== -->
+  <!-- ==================== ADMIN PAGES ==================== -->
   
-  <!-- Admin Login - FIXED: Removed space from URL -->
+  <!-- Admin Login -->
   <url>
     <loc>https://kinyuiboyssenior.school/pages/Sign-In</loc>
     <lastmod>2026-04-29</lastmod>
