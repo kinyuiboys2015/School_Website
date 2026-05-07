@@ -1,1298 +1,891 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import { Toaster, toast } from 'sonner';
-import { 
-  FaTrophy, FaEdit, FaTrash, FaPlus, FaTimes, FaSave,
-  FaImage, FaCalendar, FaUsers, FaStar, FaMedal,
-  FaGraduationCap, FaFutbol, FaPalette, FaUsersCog,
-  FaChartLine, FaBullseye, FaQuoteRight, FaSync,
-  FaChevronDown, FaChevronUp, FaEye, FaEyeSlash
-} from 'react-icons/fa';
-import {FiAward } from "react-icons/fi"
-import { FiUpload, FiX, FiCheck } from 'react-icons/fi';
-import { CircularProgress, Modal, Box, TextareaAutosize } from '@mui/material';
 
-// ==================== LOADING SPINNER ====================
-function ModernLoadingSpinner({ message = "Loading achievements...", size = "medium" }) {
-  const sizes = {
-    small: { outer: 48, inner: 24 },
-    medium: { outer: 64, inner: 32 },
-    large: { outer: 80, inner: 40 }
-  };
+import { useState, useEffect } from 'react';
+import { toast, Toaster } from 'sonner';
+import {
+  FiCalendar,
+  FiAward,
+  FiStar,
+  FiTrendingUp,
+  FiTarget,
+  FiBookOpen,
+  FiUsers,
+  FiGlobe,
+  FiMapPin,
+  FiArrowRight,
+  FiSearch,
+  FiFilter,
+  FiRotateCw,
+  FiGrid,
+  FiList,
+  FiX,
+  FiEye,
+  FiChevronRight,
+  FiChevronLeft,
+  FiBookmark,
+  FiShare2,
+  FiDownload,
+  FiExternalLink,
+  FiZap,
+  FiHeart,
+  FiShield
+} from 'react-icons/fi';
+import {
+  IoCalendarClearOutline,
+  IoSparkles,
+  IoRibbonOutline,
+  IoPeopleCircle,
+  IoStatsChart,
+  IoShareSocialOutline,
+  IoClose,
+  IoLocationOutline,
+  IoTimeOutline,
+  IoPersonOutline,
+  IoSchoolOutline,
+  IoTrophyOutline
+} from 'react-icons/io5';
+import { CircularProgress, Box, Typography, Stack } from '@mui/material';
+import Image from 'next/image';
+import Link from 'next/link';
 
-  const { outer, inner } = sizes[size];
+// ------------------------------
+// Modern UI Components (reused from counseling page)
+// ------------------------------
 
+const ModernModal = ({ children, open, onClose, maxWidth = '800px', blur = true }) => {
+  if (!open) return null;
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-gray-50 via-green-50/30 to-yellow-50/20 flex items-center justify-center z-50">
-      <div className="text-center">
-        <div className="relative inline-block">
-          <CircularProgress 
-            size={outer} 
-            thickness={5}
-            className="text-green-600"
-          />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="bg-gradient-to-r from-green-500 to-yellow-600 rounded-full animate-ping opacity-25"
-                 style={{ width: inner, height: inner }}></div>
-          </div>
-        </div>
-        <div className="mt-6 space-y-3">
-          <span className="block text-lg font-bold text-gray-800">{message}</span>
-          <div className="flex justify-center space-x-1.5">
-            {[0, 1, 2].map(i => (
-              <div key={i} className="w-2 h-2 bg-green-500 rounded-full animate-bounce" 
-                   style={{ animationDelay: `${i * 0.15}s` }}></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ==================== TAG INPUT COMPONENT ====================
-function TagInput({ label, tags, onTagsChange, placeholder = "Type and press Enter..." }) {
-  const [inputValue, setInputValue] = useState('');
-
-  const handleInputKeyDown = (e) => {
-    if (e.key === 'Enter' && inputValue.trim()) {
-      e.preventDefault();
-      const newTags = [...tags, inputValue.trim()];
-      onTagsChange(newTags);
-      setInputValue('');
-    }
-  };
-
-  const handleRemoveTag = (indexToRemove) => {
-    const newTags = tags.filter((_, index) => index !== indexToRemove);
-    onTagsChange(newTags);
-  };
-
-  return (
-    <div className="space-y-3">
-      <label className="block text-sm font-bold text-gray-700 mb-2">{label}</label>
-      <div className="relative">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={handleInputKeyDown}
-          placeholder={placeholder}
-          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 bg-white text-sm font-bold"
-        />
-        <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400">
-          Press Enter to add
-        </span>
-      </div>
-      
-      {tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-2">
-          {tags.map((tag, index) => (
-            <div
-              key={index}
-              className="inline-flex items-center gap-1 bg-gradient-to-r from-green-50 to-green-100 text-green-700 px-3 py-2 rounded-lg border border-green-200 text-sm font-bold"
-            >
-              {tag}
-              <button
-                type="button"
-                onClick={() => handleRemoveTag(index)}
-                className="ml-1 text-green-500 hover:text-green-700 transition-colors"
-              >
-                <FaTimes className="w-3 h-3" />
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ==================== IMAGE UPLOAD COMPONENT ====================
-function ImageUpload({ images, onImagesChange, maxImages = 5 }) {
-  const [dragOver, setDragOver] = useState(false);
-  const fileInputRef = useRef(null);
-
-  const handleFileSelect = (e) => {
-    const files = Array.from(e.target.files);
-    const newImages = [...images];
-    
-    files.forEach(file => {
-      if (newImages.length >= maxImages) {
-        toast.warning(`Maximum ${maxImages} images allowed`);
-        return;
-      }
-      
-      if (!file.type.startsWith('image/')) {
-        toast.error('Only image files are allowed');
-        return;
-      }
-      
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('Image size must be less than 5MB');
-        return;
-      }
-      
-      const preview = URL.createObjectURL(file);
-      newImages.push({
-        file,
-        preview,
-        caption: ''
-      });
-    });
-    
-    onImagesChange(newImages);
-  };
-
-  const handleRemoveImage = (index) => {
-    const newImages = [...images];
-    if (newImages[index].preview) {
-      URL.revokeObjectURL(newImages[index].preview);
-    }
-    newImages.splice(index, 1);
-    onImagesChange(newImages);
-  };
-
-  const handleCaptionChange = (index, caption) => {
-    const newImages = [...images];
-    newImages[index].caption = caption;
-    onImagesChange(newImages);
-  };
-
-  return (
-    <div className="space-y-4">
-      <label className="block text-sm font-bold text-gray-700">Images ({images.length}/{maxImages})</label>
-      
+    <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${blur ? 'backdrop-blur-md' : 'bg-black/50'}`}>
       <div
-        className={`border-3 border-dashed rounded-xl p-6 text-center transition-all duration-300 cursor-pointer ${
-          dragOver 
-            ? 'border-green-500 bg-green-50' 
-            : 'border-gray-300 hover:border-green-400 bg-gray-50/50'
-        } ${images.length >= maxImages ? 'opacity-50 cursor-not-allowed' : ''}`}
-        onDrop={(e) => {
-          e.preventDefault();
-          setDragOver(false);
-          if (images.length < maxImages) {
-            const files = Array.from(e.dataTransfer.files);
-            handleFileSelect({ target: { files } });
-          }
+        className="relative bg-white/95 rounded-[2.5rem] shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden border border-emerald-100/40"
+        style={{
+          width: '90%',
+          maxWidth: maxWidth,
+          maxHeight: '90vh',
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.98) 100%)'
         }}
-        onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-        onDragLeave={() => setDragOver(false)}
-        onClick={() => images.length < maxImages && fileInputRef.current?.click()}
       >
-        <FaImage className="mx-auto text-4xl text-gray-400 mb-2" />
-        <p className="text-gray-700 font-bold">Click or drag to upload images</p>
-        <p className="text-sm text-gray-500">PNG, JPG, JPEG (Max 5MB each)</p>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={handleFileSelect}
-          className="hidden"
-          disabled={images.length >= maxImages}
-        />
-      </div>
-      
-      {images.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {images.map((image, index) => (
-            <div key={index} className="relative group">
-              <img
-                src={image.preview || image.url}
-                alt={image.caption || 'Achievement image'}
-                className="w-full h-32 object-cover rounded-lg border border-gray-200"
-              />
-              <button
-                type="button"
-                onClick={() => handleRemoveImage(index)}
-                className="absolute -top-2 -right-2 bg-teal-500 text-white rounded-full p-1 hover:bg-teal-600 transition"
-              >
-                <FaTimes className="w-3 h-3" />
-              </button>
-              <input
-                type="text"
-                value={image.caption || ''}
-                onChange={(e) => handleCaptionChange(index, e.target.value)}
-                placeholder="Caption"
-                className="w-full mt-1 px-2 py-1 text-xs border border-gray-200 rounded focus:ring-1 focus:ring-green-500"
-              />
-            </div>
-          ))}
+        <div className="absolute top-4 right-4 z-10">
+          <button
+            onClick={onClose}
+            className="p-2.5 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white cursor-pointer border border-emerald-100 shadow-sm"
+          >
+            <FiX className="text-emerald-700 w-4 h-4" />
+          </button>
         </div>
-      )}
+        {children}
+      </div>
     </div>
   );
-}
+};
 
-// ==================== ACHIEVEMENT MODAL ====================
-function AchievementModal({ onClose, onSave, achievement, loading }) {
-  const isEditMode = !!achievement;
-  const [formData, setFormData] = useState({
-    title: achievement?.title || '',
-    description: achievement?.description || '',
-    category: achievement?.category || 'Academic',
-    year: achievement?.year?.toString() || new Date().getFullYear().toString(),
-    awardingBody: achievement?.awardingBody || '',
-    recipients: achievement?.recipients || [],
-    featuteal: achievement?.featuteal || false,
-    isActive: achievement?.isActive !== false,
-    displayOrder: achievement?.displayOrder?.toString() || '0',
-    achievedDate: achievement?.achievedDate ? new Date(achievement.achievedDate).toISOString().split('T')[0] : ''
-  });
-  
-  const [images, setImages] = useState(() => {
-    if (achievement?.images) {
-      return achievement.images.map(img => ({
-        ...img,
-        preview: img.url
-      }));
-    }
-    return [];
-  });
-  
-  const [imagesToDelete, setImagesToDelete] = useState([]);
-  const [actionLoading, setActionLoading] = useState(false);
+const GlassCard = ({ children, className = '' }) => (
+  <div className={`bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-900/5 ${className}`}>
+    {children}
+  </div>
+);
 
-  const categories = ['Academic', 'Sports', 'Arts', 'Leadership', 'Other'];
-
-  const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+const ModernStatCard = ({ stat }) => {
+  const iconMap = {
+    trophy: IoTrophyOutline,
+    trending: FiTrendingUp,
+    target: FiTarget,
+    award: FiAward
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!formData.title || !formData.category || !formData.year) {
-      toast.error('Please fill in all requiteal fields');
-      return;
-    }
-    
-    setActionLoading(true);
-    
-    try {
-      const adminToken = localStorage.getItem('admin_token');
-      const deviceToken = localStorage.getItem('device_token');
-      
-      if (!adminToken || !deviceToken) {
-        throw new Error('Authentication requiteal. Please login again.');
-      }
-      
-      const formDataObj = new FormData();
-      
-      if (isEditMode) {
-        formDataObj.append('id', achievement.id);
-      }
-      
-      formDataObj.append('title', formData.title);
-      formDataObj.append('description', formData.description);
-      formDataObj.append('category', formData.category);
-      formDataObj.append('year', formData.year);
-      formDataObj.append('awardingBody', formData.awardingBody);
-      formDataObj.append('recipients', JSON.stringify(formData.recipients));
-      formDataObj.append('featuteal', formData.featuteal);
-      formDataObj.append('isActive', formData.isActive);
-      formDataObj.append('displayOrder', formData.displayOrder);
-      formDataObj.append('achievedDate', formData.achievedDate);
-      
-      // Add new images
-      images.forEach(img => {
-        if (img.file) {
-          formDataObj.append('images', img.file);
-        }
-      });
-      
-      // Handle existing images
-      if (isEditMode) {
-        formDataObj.append('keepExistingImages', 'true');
-        if (imagesToDelete.length > 0) {
-          formDataObj.append('imagesToDelete', JSON.stringify(imagesToDelete));
-        }
-      }
-      
-      const method = isEditMode ? 'PUT' : 'POST';
-      
-      const response = await fetch('/api/achievements', {
-        method,
-        headers: {
-          'Authorization': `Bearer ${adminToken}`,
-          'x-device-token': deviceToken
-        },
-        body: formDataObj
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error('Session expiteal. Please login again.');
-        }
-        throw new Error(data.error || 'Failed to save achievement');
-      }
-      
-      toast.success(data.message);
-      onSave(data.achievement);
-      onClose();
-      
-    } catch (error) {
-      console.error('Save error:', error);
-      toast.error(error.message);
-    } finally {
-      setActionLoading(false);
-    }
-  };
-
+  
+  const Icon = iconMap[stat.iconKey] || FiAward;
+  
   return (
-    <Modal open={true} onClose={onClose}>
-      <Box sx={{
-        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-        width: '95vw', maxWidth: '700px', maxHeight: '90vh',
-        bgcolor: 'background.paper', borderRadius: 3, boxShadow: 24,
-        overflow: 'hidden', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)'
-      }}>
-        <div className="bg-gradient-to-r from-green-600 to-yellow-600 p-5 text-white">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <FaTrophy className="text-2xl" />
-              <h2 className="text-xl font-bold">{isEditMode ? 'Edit Achievement' : 'Add Achievement'}</h2>
-            </div>
-            <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-lg transition">
-              <FaTimes className="text-xl" />
-            </button>
-          </div>
+    <div className="relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-[#d9d0c3] bg-white p-4 md:p-6 shadow-[0_20px_50px_-42px_rgba(15,23,42,0.4)]">
+      <div className="flex items-start justify-between mb-4 md:mb-6">
+        <div className="p-3 md:p-4 rounded-xl md:rounded-2xl bg-[#fcfaf6] text-[#172033] ring-1 ring-[#e8dfd3]">
+          <Icon className="text-lg md:text-xl" />
         </div>
-        
-        <div className="max-h-[calc(90vh-80px)] overflow-y-auto p-6">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
-                <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Title <span className="text-teal-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.title}
-                  onChange={(e) => handleChange('title', e.target.value)}
-                  placeholder="e.g., National Science Fair Winner"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  requiteal
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Category <span className="text-teal-500">*</span>
-                </label>
-                <select
-                  value={formData.category}
-                  onChange={(e) => handleChange('category', e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  requiteal
-                >
-                  {categories.map(cat => (
-                    <option key={cat} value={cat}>{cat}</option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Year <span className="text-teal-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  value={formData.year}
-                  onChange={(e) => handleChange('year', e.target.value)}
-                  min="2000"
-                  max={new Date().getFullYear() + 1}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  requiteal
-                />
-              </div>
-              
-              <div className="col-span-2">
-                <label className="block text-sm font-bold text-gray-700 mb-2">Description</label>
-                <TextareaAutosize
-                  minRows={3}
-                  value={formData.description}
-                  onChange={(e) => handleChange('description', e.target.value)}
-                  placeholder="Describe the achievement..."
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">Awarding Body</label>
-                <input
-                  type="text"
-                  value={formData.awardingBody}
-                  onChange={(e) => handleChange('awardingBody', e.target.value)}
-                  placeholder="e.g., Kenya Science Association"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">Achievement Date</label>
-                <input
-                  type="date"
-                  value={formData.achievedDate}
-                  onChange={(e) => handleChange('achievedDate', e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                />
-              </div>
-              
-              <div className="col-span-2">
-                <TagInput
-                  label="Recipients"
-                  tags={formData.recipients}
-                  onTagsChange={(tags) => handleChange('recipients', tags)}
-                  placeholder="Type recipient name and press Enter..."
-                />
-              </div>
-              
-              <div className="col-span-2">
-                <ImageUpload
-                  images={images}
-                  onImagesChange={setImages}
-                  maxImages={5}
-                />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Display Order</label>
-                  <input
-                    type="number"
-                    value={formData.displayOrder}
-                    onChange={(e) => handleChange('displayOrder', e.target.value)}
-                    min="0"
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  />
-                </div>
-                
-                <div className="flex items-center gap-4 pt-8">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={formData.featuteal}
-                      onChange={(e) => handleChange('featuteal', e.target.checked)}
-                      className="w-4 h-4 text-green-600 rounded"
-                    />
-                    <span className="text-sm font-bold text-gray-700">Featuteal</span>
-                  </label>
-                  
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={formData.isActive}
-                      onChange={(e) => handleChange('isActive', e.target.checked)}
-                      className="w-4 h-4 text-green-600 rounded"
-                    />
-                    <span className="text-sm font-bold text-gray-700">Active</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex gap-3 pt-4 border-t border-gray-200">
-              <button
-                type="button"
-                onClick={onClose}
-                className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-bold"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={actionLoading}
-                className="flex-1 bg-gradient-to-r from-green-600 to-yellow-600 text-white px-4 py-3 rounded-xl hover:from-green-700 hover:to-yellow-700 transition font-bold disabled:opacity-50"
-              >
-                {actionLoading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <CircularProgress size={16} className="text-white" />
-                    Saving...
-                  </span>
-                ) : (
-                  <span className="flex items-center justify-center gap-2">
-                    <FaSave />
-                    {isEditMode ? 'Update' : 'Create'} Achievement
-                  </span>
-                )}
-              </button>
-            </div>
-          </form>
+      </div>
+      <div className="space-y-1">
+        <p className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">
+          {stat.label}
+        </p>
+        <div className="flex items-baseline gap-1">
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-black tracking-tight text-slate-900">
+            {stat.number}
+          </h3>
         </div>
-      </Box>
-    </Modal>
+        <p className="text-[10px] md:text-xs font-medium text-slate-500 leading-tight line-clamp-1">
+          {stat.sublabel}
+        </p>
+      </div>
+    </div>
   );
-}
+};
 
-// ==================== SCHOOL STATS MODAL ====================
-function SchoolStatsModal({ onClose, onSave, stats, loading }) {
-  const [formData, setFormData] = useState({
-    meanScore: stats?.meanScore?.toString() || '',
-    lastYearMean: stats?.lastYearMean?.toString() || '',
-    targetMean: stats?.targetMean?.toString() || '',
-    slogan: stats?.slogan || '',
-    sloganDescription: stats?.sloganDescription || '',
-    sloganAuthor: stats?.sloganAuthor || ''
-  });
-  
-  const [actionLoading, setActionLoading] = useState(false);
-  const isEditMode = !!stats;
+// ------------------------------
+// Achievement Card (Grid & List)
+// ------------------------------
 
-  const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+const AchievementCard = ({ achievement, onView, viewMode = 'grid' }) => {
+  const getCategoryStyle = (category) => {
+    const styles = {
+      Academic: {
+        gradient: 'from-emerald-500 to-emerald-600',
+        bg: 'bg-emerald-50',
+        text: 'text-emerald-700',
+        border: 'border-emerald-200',
+        iconBg: 'bg-emerald-100',
+        iconColor: 'text-emerald-600'
+      },
+      Sports: {
+        gradient: 'from-emerald-500 to-emerald-600',
+        bg: 'bg-emerald-50',
+        text: 'text-emerald-700',
+        border: 'border-emerald-200',
+        iconBg: 'bg-emerald-100',
+        iconColor: 'text-emerald-600'
+      },
+      Arts: {
+        gradient: 'from-emerald-500 to-emerald-600',
+        bg: 'bg-emerald-50',
+        text: 'text-emerald-700',
+        border: 'border-emerald-200',
+        iconBg: 'bg-emerald-100',
+        iconColor: 'text-emerald-600'
+      },
+      Leadership: {
+        gradient: 'from-emerald-500 to-emerald-600',
+        bg: 'bg-emerald-50',
+        text: 'text-emerald-700',
+        border: 'border-emerald-200',
+        iconBg: 'bg-emerald-100',
+        iconColor: 'text-emerald-600'
+      },
+      Other: {
+        gradient: 'from-emerald-500 to-emerald-600',
+        bg: 'bg-emerald-50',
+        text: 'text-emerald-700',
+        border: 'border-emerald-200',
+        iconBg: 'bg-emerald-100',
+        iconColor: 'text-emerald-600'
+      }
+    };
+    return styles[category] || styles.Other;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setActionLoading(true);
-    
-    try {
-      const adminToken = localStorage.getItem('admin_token');
-      const deviceToken = localStorage.getItem('device_token');
-      
-      if (!adminToken || !deviceToken) {
-        throw new Error('Authentication requiteal. Please login again.');
-      }
-      
-      const method = isEditMode ? 'PUT' : 'POST';
-      
-      const response = await fetch('/api/school-stats', {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${adminToken}`,
-          'x-device-token': deviceToken
-        },
-        body: JSON.stringify({
-          meanScore: formData.meanScore ? parseFloat(formData.meanScore) : null,
-          lastYearMean: formData.lastYearMean ? parseFloat(formData.lastYearMean) : null,
-          targetMean: formData.targetMean ? parseFloat(formData.targetMean) : null,
-          slogan: formData.slogan || null,
-          sloganDescription: formData.sloganDescription || null,
-          sloganAuthor: formData.sloganAuthor || null
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error('Session expiteal. Please login again.');
-        }
-        throw new Error(data.error || 'Failed to save school stats');
-      }
-      
-      toast.success(data.message);
-      onSave(data.stats);
-      onClose();
-      
-    } catch (error) {
-      console.error('Save error:', error);
-      toast.error(error.message);
-    } finally {
-      setActionLoading(false);
-    }
-  };
+  const theme = getCategoryStyle(achievement.category);
+  const firstImage = achievement.images?.[0]?.url;
 
-  return (
-    <Modal open={true} onClose={onClose}>
-      <Box sx={{
-        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-        width: '95vw', maxWidth: '500px', maxHeight: '90vh',
-        bgcolor: 'background.paper', borderRadius: 3, boxShadow: 24,
-        overflow: 'hidden', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)'
-      }}>
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-5 text-white">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <FaChartLine className="text-2xl" />
-              <h2 className="text-xl font-bold">{isEditMode ? 'Edit School Stats' : 'Set School Stats'}</h2>
-            </div>
-            <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-lg transition">
-              <FaTimes className="text-xl" />
-            </button>
+  if (viewMode === 'grid') {
+    return (
+      <div
+        onClick={() => onView(achievement)}
+        className="relative bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-900/5 overflow-hidden cursor-pointer transition-transform hover:-translate-y-1 duration-300"
+      >
+        <div className="relative h-48 w-full shrink-0">
+          {firstImage ? (
+            <img src={firstImage} alt={achievement.title} className="w-full h-full object-cover" />
+          ) : (
+            <div className={`w-full h-full bg-gradient-to-br ${theme.gradient}`} />
+          )}
+          <div className="absolute top-4 left-4 flex flex-col gap-2">
+            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm border ${theme.bg} ${theme.text} ${theme.border}`}>
+              {achievement.category}
+            </span>
+            {achievement.featured && (
+              <span className="px-3 py-1 bg-emerald-900/90 backdrop-blur-md text-white rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1 shadow-sm">
+                <IoSparkles className="text-emerald-400" /> Featured
+              </span>
+            )}
+          </div>
+          <div className="absolute bottom-0 inset-x-0 h-12 bg-gradient-to-t from-black/40 to-transparent flex items-end p-4">
+            <span className="text-[10px] font-black text-white uppercase tracking-widest">
+              {achievement.year}
+            </span>
           </div>
         </div>
-        
-        <div className="max-h-[calc(90vh-80px)] overflow-y-auto p-6">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">
-                <FaChartLine className="inline mr-2 text-emerald-600" />
-                Current Mean Score
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                value={formData.meanScore}
-                onChange={(e) => handleChange('meanScore', e.target.value)}
-                placeholder="e.g., 8.75"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Last Year Mean
-                </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={formData.lastYearMean}
-                  onChange={(e) => handleChange('lastYearMean', e.target.value)}
-                  placeholder="e.g., 8.25"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
-                  <FaBullseye className="inline mr-2 text-emerald-600" />
-                  Target Mean
-                </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={formData.targetMean}
-                  onChange={(e) => handleChange('targetMean', e.target.value)}
-                  placeholder="e.g., 9.00"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                />
-              </div>
-            </div>
-            
-            <div className="border-t border-gray-200 pt-4">
-              <label className="block text-sm font-bold text-gray-700 mb-2">
-                <FaQuoteRight className="inline mr-2 text-emerald-600" />
-                School Slogan
-              </label>
-              <input
-                type="text"
-                value={formData.slogan}
-                onChange={(e) => handleChange('slogan', e.target.value)}
-                placeholder="e.g., Strive for Excellence"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Slogan Description</label>
-              <TextareaAutosize
-                minRows={2}
-                value={formData.sloganDescription}
-                onChange={(e) => handleChange('sloganDescription', e.target.value)}
-                placeholder="Explain the meaning of the slogan..."
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 resize-none"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Slogan Author</label>
-              <input
-                type="text"
-                value={formData.sloganAuthor}
-                onChange={(e) => handleChange('sloganAuthor', e.target.value)}
-                placeholder="e.g., School Administrator"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-              />
-            </div>
-            
-            <div className="flex gap-3 pt-4 border-t border-gray-200">
-              <button
-                type="button"
-                onClick={onClose}
-                className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-bold"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={actionLoading}
-                className="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-4 py-3 rounded-xl hover:from-emerald-700 hover:to-teal-700 transition font-bold disabled:opacity-50"
-              >
-                {actionLoading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <CircularProgress size={16} className="text-white" />
-                    Saving...
-                  </span>
-                ) : (
-                  <span className="flex items-center justify-center gap-2">
-                    <FaSave />
-                    {isEditMode ? 'Update' : 'Save'} Stats
-                  </span>
-                )}
-              </button>
-            </div>
-          </form>
-        </div>
-      </Box>
-    </Modal>
-  );
-}
 
-// ==================== DELETE CONFIRMATION MODAL ====================
-function DeleteConfirmationModal({ onClose, onConfirm, title, loading }) {
-  return (
-    <Modal open={true} onClose={onClose}>
-      <Box sx={{
-        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-        width: '95vw', maxWidth: '400px',
-        bgcolor: 'background.paper', borderRadius: 3, boxShadow: 24,
-        overflow: 'hidden'
-      }}>
-        <div className="bg-gradient-to-r from-teal-600 to-teal-600 p-5 text-white">
-          <div className="flex items-center gap-3">
-            <FaTrash className="text-xl" />
-            <h2 className="text-lg font-bold">Confirm Deletion</h2>
-          </div>
-        </div>
-        
         <div className="p-6">
-          <p className="text-gray-700 mb-6">
-            Are you sure you want to delete <span className="font-bold">"{title}"</span>? This action cannot be undone.
+          <h3 className="text-lg font-black text-slate-900 mb-2 line-clamp-2 leading-tight tracking-tight">
+            {achievement.title}
+          </h3>
+          <p className="text-slate-500 text-xs mb-6 line-clamp-2 leading-relaxed">
+            {achievement.description || 'Proud achievement by Matungulu Girls.'}
           </p>
-          
-          <div className="flex gap-3">
+
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            <div className="flex items-center gap-2.5 p-2 rounded-xl bg-slate-50 border border-slate-100">
+              <div className={`p-1.5 rounded-lg ${theme.iconBg}`}>
+                <FiAward className={theme.iconColor} size={14} />
+              </div>
+              <span className="text-[10px] font-black text-slate-700 uppercase tracking-tight whitespace-nowrap">
+                {achievement.awardingBody || 'School Award'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5 p-2 rounded-xl bg-slate-50 border border-slate-100">
+              <div className={`p-1.5 rounded-lg ${theme.iconBg}`}>
+                <FiCalendar className={theme.iconColor} size={14} />
+              </div>
+              <span className="text-[10px] font-black text-slate-700 uppercase tracking-tight whitespace-nowrap">
+                {achievement.achievedDate
+                  ? new Date(achievement.achievedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                  : achievement.year}
+              </span>
+            </div>
+          </div>
+
+          <button className="w-full py-3 bg-emerald-600 text-white rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 active:scale-[0.98] transition-transform shadow-lg shadow-emerald-900/20">
+            View Details
+            <FiArrowRight size={12} className="text-emerald-200" />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // List View
+  return (
+    <div
+      onClick={() => onView(achievement)}
+      className="relative bg-white rounded-[2rem] border border-slate-100 p-4 shadow-xl shadow-slate-900/5 cursor-pointer transition-colors active:bg-slate-50"
+    >
+      <div className="flex gap-5">
+        <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 shadow-sm">
+          {firstImage ? (
+            <img src={firstImage} alt={achievement.title} className="w-full h-full object-cover" />
+          ) : (
+            <div className={`w-full h-full bg-gradient-to-br ${getCategoryStyle(achievement.category).gradient}`} />
+          )}
+        </div>
+        <div className="flex-1 min-w-0 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-2">
+                <span className={`px-2 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-widest border ${
+                  getCategoryStyle(achievement.category).bg
+                } ${getCategoryStyle(achievement.category).text} ${
+                  getCategoryStyle(achievement.category).border
+                }`}>
+                  {achievement.category}
+                </span>
+                <span className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">
+                  {achievement.year}
+                </span>
+              </div>
+            </div>
+            <h3 className="text-sm font-black text-slate-900 leading-snug line-clamp-1 mb-1 tracking-tight">
+              {achievement.title}
+            </h3>
+            <p className="text-slate-500 text-[10px] line-clamp-1 mb-2">
+              {achievement.awardingBody}
+            </p>
+          </div>
+          <div className="flex items-center justify-between mt-auto">
+            <div className="flex items-center gap-2 text-[10px] text-slate-500">
+              {achievement.recipients?.length > 0 && (
+                <div className="flex items-center gap-1 whitespace-nowrap">
+                  <FiUsers className="text-slate-400" size={10} />
+                  <span className="font-semibold">{achievement.recipients.length} recipient(s)</span>
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-1 text-emerald-600 font-black text-[8px] uppercase tracking-wider">
+              View
+              <FiArrowRight size={10} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ------------------------------
+// Achievement Detail Modal
+// ------------------------------
+
+const AchievementDetailModal = ({ achievement, onClose }) => {
+  if (!achievement) return null;
+
+  const getCategoryStyle = (category) => {
+    const styles = {
+      Academic: { gradient: 'from-emerald-500 to-emerald-600', icon: FiBookOpen },
+      Sports: { gradient: 'from-emerald-500 to-emerald-600', icon: FiAward },
+      Arts: { gradient: 'from-emerald-500 to-emerald-600', icon: FiStar },
+      Leadership: { gradient: 'from-emerald-500 to-emerald-600', icon: FiUsers },
+      Other: { gradient: 'from-emerald-500 to-emerald-600', icon: FiAward }
+    };
+    return styles[achievement.category] || styles.Other;
+  };
+
+  const categoryStyle = getCategoryStyle(achievement.category);
+  const CategoryIcon = categoryStyle.icon;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 bg-[#172033]/80 backdrop-blur-md">
+      <div className="relative flex h-full w-full flex-col overflow-hidden bg-[#fcfaf6] shadow-2xl sm:h-auto sm:max-h-[90vh] sm:max-w-3xl sm:rounded-[2.5rem] sm:border sm:border-[#d9d0c3]">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 z-50 p-2 bg-[#172033]/70 backdrop-blur-md text-white rounded-full border border-white/20 transition-all active:scale-90"
+        >
+          <IoClose size={18} className="sm:size-[22px]" />
+        </button>
+
+        <div className="relative h-[30vh] sm:h-[300px] w-full shrink-0">
+          {achievement.images?.[0]?.url ? (
+            <img
+              src={achievement.images[0].url}
+              alt={achievement.title}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className={`w-full h-full bg-gradient-to-r ${categoryStyle.gradient}`} />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#fcfaf6] via-transparent to-black/10" />
+          <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 flex flex-wrap gap-2">
+            <span className="px-3 py-1 sm:px-4 sm:py-1.5 bg-white shadow-xl rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#172033] border border-[#d9d0c3]">
+              {achievement.category}
+            </span>
+            {achievement.featured && (
+              <span className="px-3 py-1 sm:px-4 sm:py-1.5 bg-[#172033] text-white rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest flex items-center gap-1">
+                <IoSparkles className="text-[#f2c357]" size={12} /> Featured
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-6 sm:p-10 bg-[#fcfaf6]">
+          <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8">
+            <section className="space-y-3 sm:space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="rounded-xl sm:rounded-2xl border border-[#e8dfd3] bg-white p-2 sm:p-3 shadow-sm">
+                  <CategoryIcon className="text-[#172033] text-xl sm:text-2xl" />
+                </div>
+                <div>
+                  <h2 className="text-xl sm:text-3xl font-black text-slate-900 leading-tight tracking-tight">
+                    {achievement.title}
+                  </h2>
+                  <p className="text-slate-600 text-xs sm:text-sm">{achievement.awardingBody}</p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-y-2 gap-x-4 sm:gap-x-6 text-[10px] sm:text-xs font-black text-slate-500">
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
+                  <IoCalendarClearOutline className="text-[#172033] text-sm sm:text-base" />
+                  {achievement.achievedDate
+                    ? new Date(achievement.achievedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                    : achievement.year}
+                </div>
+                {achievement.recipients?.length > 0 && (
+                  <div className="flex items-center gap-1.5">
+                    <IoPeopleCircle className="text-[#172033] text-sm sm:text-base" />
+                    {achievement.recipients.length} recipient(s)
+                  </div>
+                )}
+              </div>
+            </section>
+
+            <section className="space-y-3 sm:space-y-4">
+              <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">About this achievement</h3>
+              <div className="text-slate-700 leading-relaxed text-xs sm:text-sm">
+                {achievement.description || 'No description provided.'}
+              </div>
+            </section>
+
+            {achievement.recipients && achievement.recipients.length > 0 && (
+              <section className="space-y-3">
+                <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Recipients</h3>
+                <div className="flex flex-wrap gap-2">
+                  {achievement.recipients.map((rec, idx) => (
+                    <span key={idx} className="px-3 py-1.5 bg-white border border-[#e8dfd3] rounded-full text-xs font-bold text-slate-700">
+                      {rec}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {achievement.images && achievement.images.length > 1 && (
+              <section className="space-y-3">
+                <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Gallery</h3>
+                <div className="grid grid-cols-3 gap-3">
+                  {achievement.images.slice(1).map((img, idx) => (
+                    <img
+                      key={idx}
+                      src={img.url}
+                      alt={img.caption || ''}
+                      className="w-full h-24 object-cover rounded-xl border border-[#e8dfd3]"
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
+        </div>
+
+        <div className="shrink-0 p-4 sm:p-6 bg-white/80 backdrop-blur-md border-t border-[#e8dfd3]">
+          <div className="max-w-2xl mx-auto flex gap-2 sm:gap-3">
             <button
               onClick={onClose}
-              className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-bold"
+              className="flex-1 h-12 sm:h-14 bg-[#172033] text-white rounded-xl sm:rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg"
             >
-              Cancel
-            </button>
-            <button
-              onClick={onConfirm}
-              disabled={loading}
-              className="flex-1 bg-gradient-to-r from-teal-600 to-teal-600 text-white px-4 py-3 rounded-xl hover:from-teal-700 hover:to-teal-700 transition font-bold disabled:opacity-50"
-            >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <CircularProgress size={16} className="text-white" />
-                  Deleting...
-                </span>
-              ) : (
-                'Delete'
-              )}
+              <IoClose size={16} />
+              Close
             </button>
           </div>
         </div>
-      </Box>
-    </Modal>
+      </div>
+    </div>
   );
-}
+};
 
-// ==================== MAIN COMPONENT ====================
-export default function AchievementsPage() {
-  const [achievements, setAchievements] = useState({
-    Academic: [], Sports: [], Arts: [], Leadership: [], Other: []
-  });
-  const [schoolStats, setSchoolStats] = useState(null);
+// ------------------------------
+// Main Component
+// ------------------------------
+
+export default function StudentAchievements() {
   const [loading, setLoading] = useState(true);
-  const [showAchievementModal, setShowAchievementModal] = useState(false);
-  const [showStatsModal, setShowStatsModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedAchievement, setSelectedAchievement] = useState(null);
-  const [deleteId, setDeleteId] = useState(null);
-  const [deleteTitle, setDeleteTitle] = useState('');
-  const [expandedCategories, setExpandedCategories] = useState({
-    Academic: true, Sports: true, Arts: true, Leadership: true, Other: true
-  });
   const [refreshing, setRefreshing] = useState(false);
+  const [schoolStats, setSchoolStats] = useState(null);
+  const [achievementsByCategory, setAchievementsByCategory] = useState({
+    Academic: [],
+    Sports: [],
+    Arts: [],
+    Leadership: [],
+    Other: []
+  });
+  const [selectedAchievement, setSelectedAchievement] = useState(null);
+  const [viewMode, setViewMode] = useState('grid');
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const categoryIcons = {
-    Academic: FaGraduationCap,
-    Sports: FaFutbol,
-    Arts: FaPalette,
-    Leadership: FaUsersCog,
-    Other: FaMedal
-  };
+  const categories = [
+    { id: 'all', name: 'All Achievements', icon: FiAward },
+    { id: 'Academic', name: 'Academic', icon: FiBookOpen },
+    { id: 'Sports', name: 'Sports', icon: FiAward },
+    { id: 'Arts', name: 'Arts', icon: FiStar },
+    { id: 'Leadership', name: 'Leadership', icon: FiUsers },
+    { id: 'Other', name: 'Other', icon: FiAward }
+  ];
 
-  const categoryColors = {
-    Academic: 'from-blue-600 to-cyan-600',
-    Sports: 'from-green-600 to-emerald-600',
-    Arts: 'from-purple-600 to-pink-600',
-    Leadership: 'from-green-600 to-teal-600',
-    Other: 'from-gray-600 to-slate-600'
+  const loadData = async () => {
+    try {
+      // Fetch achievements
+      const achRes = await fetch('/api/achievements');
+      const achData = await achRes.json();
+      let categorized = { Academic: [], Sports: [], Arts: [], Leadership: [], Other: [] };
+      if (achData.success && achData.achievements) {
+        Object.entries(achData.achievements).forEach(([cat, items]) => {
+          if (categorized.hasOwnProperty(cat)) {
+            categorized[cat] = items;
+          }
+        });
+      }
+      setAchievementsByCategory(categorized);
+
+      // Fetch school stats
+      const statsRes = await fetch('/api/school-stats');
+      const statsData = await statsRes.json();
+      if (statsData.success && statsData.stats) {
+        setSchoolStats(statsData.stats);
+      }
+    } catch (error) {
+      console.error('Error loading data:', error);
+      toast.error('Failed to load achievements');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     loadData();
   }, []);
 
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      
-      // Load achievements
-      const achievementsRes = await fetch('/api/achievements');
-      const achievementsData = await achievementsRes.json();
-      
-      if (achievementsData.success) {
-        setAchievements(achievementsData.achievements);
-      }
-      
-      // Load school stats
-      const statsRes = await fetch('/api/school-stats');
-      const statsData = await statsRes.json();
-      
-      if (statsData.success) {
-        setSchoolStats(statsData.stats);
-      }
-      
-    } catch (error) {
-      console.error('Error loading data:', error);
-      toast.error('Failed to load data');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRefresh = async () => {
+  const refreshData = async () => {
     setRefreshing(true);
     await loadData();
     setRefreshing(false);
+    toast.success('Data refreshed!');
   };
 
-  const handleSaveAchievement = (achievement) => {
-    loadData();
+  const getAllAchievements = () => {
+    return Object.values(achievementsByCategory).flat();
   };
 
-  const handleSaveStats = (stats) => {
-    setSchoolStats(stats);
-  };
+  const filteredAchievements = getAllAchievements().filter(ach => {
+    const matchesCat = activeCategory === 'all' || ach.category === activeCategory;
+    const matchesSearch = searchTerm === '' ||
+      ach.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ach.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ach.awardingBody?.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCat && matchesSearch;
+  });
 
-  const handleDeleteClick = (id, title) => {
-    setDeleteId(id);
-    setDeleteTitle(title);
-    setShowDeleteModal(true);
-  };
+  const totalAchievements = getAllAchievements().length;
+  const featuredCount = getAllAchievements().filter(a => a.featured).length;
 
-  const handleDeleteConfirm = async () => {
-    try {
-      const adminToken = localStorage.getItem('admin_token');
-      const deviceToken = localStorage.getItem('device_token');
-      
-      if (!adminToken || !deviceToken) {
-        throw new Error('Authentication requiteal. Please login again.');
-      }
-      
-      const response = await fetch(`/api/achievements?id=${deleteId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${adminToken}`,
-          'x-device-token': deviceToken
-        }
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to delete achievement');
-      }
-      
-      toast.success('Achievement deleted successfully');
-      setShowDeleteModal(false);
-      setDeleteId(null);
-      setDeleteTitle('');
-      loadData();
-      
-    } catch (error) {
-      console.error('Delete error:', error);
-      toast.error(error.message);
+  const statsCards = [
+    {
+      iconKey: 'trophy',
+      number: totalAchievements.toString(),
+      label: 'Total Achievements',
+      sublabel: `${featuredCount} featured`
+    },
+    {
+      iconKey: 'trending',
+      number: schoolStats?.meanScore ? schoolStats.meanScore.toFixed(2) : '—',
+      label: 'Current Mean Score',
+      sublabel: schoolStats?.lastYearMean && schoolStats?.meanScore
+        ? `${schoolStats.meanScore > schoolStats.lastYearMean ? '↑' : '↓'} ${Math.abs(schoolStats.meanScore - schoolStats.lastYearMean).toFixed(2)} from last year`
+        : 'Academic excellence'
+    },
+    {
+      iconKey: 'target',
+      number: schoolStats?.targetMean ? schoolStats.targetMean.toFixed(2) : '—',
+      label: 'Target Mean',
+      sublabel: schoolStats?.meanScore && schoolStats?.targetMean
+        ? `${((schoolStats.meanScore / schoolStats.targetMean) * 100).toFixed(1)}% achieved`
+        : 'Goal for the year'
+    },
+    {
+      iconKey: 'award',
+      number: Object.keys(achievementsByCategory).length.toString(),
+      label: 'Categories',
+      sublabel: 'Diverse excellence'
     }
-  };
+  ];
 
-  const toggleCategory = (category) => {
-    setExpandedCategories(prev => ({
-      ...prev,
-      [category]: !prev[category]
-    }));
-  };
-
-  if (loading && Object.values(achievements).every(arr => arr.length === 0)) {
-    return <ModernLoadingSpinner message="Loading achievements..." />;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#f7f2ea] flex items-center justify-center">
+        <Stack spacing={2} alignItems="center" className="mx-auto flex min-h-[70vh] w-full max-w-sm justify-center rounded-[30px] border px-10 py-12 shadow-[0_28px_70px_-52px_rgba(15,23,42,0.48)]">
+          <Box className="relative flex items-center justify-center scale-75 sm:scale-100 transition-transform">
+            <CircularProgress variant="determinate" value={100} size={56} thickness={4} sx={{ color: '#efe6d8' }} />
+            <CircularProgress
+              variant="indeterminate"
+              disableShrink
+              size={56}
+              thickness={4}
+              sx={{ color: '#172033', animationDuration: '800ms', position: 'absolute', left: 0 }}
+            />
+            <Box className="absolute">
+              <IoTrophyOutline className="text-[#b68424] text-lg animate-pulse" />
+            </Box>
+          </Box>
+          <div className="text-center space-y-1">
+            <h3 className="text-slate-900 font-black text-sm sm:text-base tracking-tight">Loading achievements...</h3>
+            <p className="text-slate-500 text-[10px] sm:text-xs font-medium">Fetching latest honors and stats</p>
+          </div>
+        </Stack>
+      </div>
+    );
   }
 
-  const totalAchievements = Object.values(achievements).reduce((sum, arr) => sum + arr.length, 0);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-yellow-50 p-4 md:p-6">
+    <div className="min-h-screen bg-[#f7f2ea] p-4 md:p-6">
       <Toaster position="top-right" richColors />
-      
-      {/* Header */}
-      <div className="bg-gradient-to-br from-green-600 via-teal-600 to-yellow-600 rounded-3xl shadow-xl p-6 md:p-8 mb-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <FaTrophy className="text-white text-3xl" />
-              <h1 className="text-3xl md:text-4xl font-black text-white">Achievements</h1>
+
+      <div className="w-full md:w-[90%] lg:w-[90%] xl:w-[80%] mx-auto space-y-6">
+        {/* Hero Header (matches Guidance & Counselling header styling) */}
+        <div className="relative bg-slate-950 p-4 sm:p-8 overflow-hidden rounded-md md:rounded-lg mb-8">
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-purple-600/20 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="flex flex-col gap-4 mb-6 sm:mb-10">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-md border border-white/20">
+                  <IoSparkles className="text-amber-400 text-sm" />
+                  <span className="text-slate-200 font-normal text-xs uppercase tracking-wider">School Highlights</span>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <div className="max-w-full">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
+                      Kinyui Boys Senior School{' '}
+                      <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+                        Achievements &amp; Honors
+                      </span>
+                    </h1>
+                    <p className="text-slate-300 text-sm sm:text-base mt-2 font-normal leading-relaxed max-w-2xl">
+                      Celebrating excellence across academics, sports, arts, and leadership. Proud moments that define our legacy.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 w-full sm:w-auto mt-4">
+                    <button
+                      onClick={refreshData}
+                      disabled={refreshing}
+                      className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-white hover:bg-slate-50 text-slate-900 font-medium text-sm transition-all active:scale-95 disabled:opacity-70 shadow-sm"
+                    >
+                      {refreshing ? (
+                        <div className="w-3.5 h-3.5 border-2 border-slate-900/20 border-t-slate-900 rounded-full animate-spin" />
+                      ) : (
+                        <FiRotateCw className="text-sm" />
+                      )}
+                      <span>{refreshing ? 'Updating...' : 'Refresh Updates'}</span>
+                    </button>
+
+                    <div className="flex bg-white/10 backdrop-blur-md rounded-lg p-1 border border-white/10">
+                      <button
+                        onClick={() => setViewMode('grid')}
+                        className={`p-2 rounded-md transition-colors ${
+                          viewMode === 'grid' ? 'bg-white text-slate-900' : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        <FiGrid size={18} />
+                      </button>
+                      <button
+                        onClick={() => setViewMode('list')}
+                        className={`p-2 rounded-md transition-colors ${
+                          viewMode === 'list' ? 'bg-white text-slate-900' : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        <FiList size={18} />
+                      </button>
+                    </div>
+                  </div>
+              </div>
             </div>
-            <p className="text-green-100">Celebrating our school's excellence and success stories</p>
-            
-            {/* School Slogan */}
-            {schoolStats?.slogan && (
-              <div className="mt-4 bg-white/10 backdrop-blur-sm rounded-xl p-4 inline-block">
-                <FaQuoteRight className="text-green-200 mb-2" />
-                <p className="text-white text-lg font-bold italic">"{schoolStats.slogan}"</p>
-                {schoolStats.sloganAuthor && (
-                  <p className="text-green-200 text-sm mt-1">— {schoolStats.sloganAuthor}</p>
-                )}
+
+            {/* (intentionally empty) */}
+              <div className="mb-4 sm:mb-6 px-1">
+                <p className="text-white/75 text-xs sm:text-base font-medium leading-relaxed sm:leading-loose">
+                  <span className="text-white font-black text-base sm:text-xl md:text-2xl underline decoration-[#f2c357]/50 underline-offset-4 mr-1">
+                    {totalAchievements}
+                  </span>
+                  <span className="tracking-tight sm:tracking-normal">achievements across</span>
+                  <span className="text-white font-black text-base sm:text-xl md:text-2xl underline decoration-[#fff3c4]/40 underline-offset-4 ml-1 mr-1">
+                    {Object.keys(achievementsByCategory).length}
+                  </span>
+                  <span className="tracking-tight sm:tracking-normal">categories</span>
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+                <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
+                  <p className="text-[10px] sm:text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Total</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-black text-white">{totalAchievements}</p>
+                </div>
+                <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
+                  <p className="text-[10px] sm:text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Featured</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-black text-white">{featuredCount}</p>
+                </div>
+                <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
+                  <p className="text-[10px] sm:text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Mean Score</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-black text-white">{schoolStats?.meanScore?.toFixed(2) || '—'}</p>
+                </div>
+                <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
+                  <p className="text-[10px] sm:text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Target</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-black text-white">{schoolStats?.targetMean?.toFixed(2) || '—'}</p>
+                </div>
+              </div>
+
+              {schoolStats?.slogan && (
+                <div className="mt-4 text-xs sm:text-sm text-white/70">
+                  <span className="inline-flex items-center gap-1">
+                    <IoSparkles className="text-[#f2c357]" size={14} />
+                    "{schoolStats?.slogan}" — {schoolStats?.sloganAuthor || 'School Motto'}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 mb-10">
+          {statsCards.map((stat, index) => (
+            <ModernStatCard key={index} stat={stat} />
+          ))}
+        </div>
+
+        {/* Main Content */}
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Left Column: Achievements */}
+          <div className="flex-1 min-w-0 space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 px-1">
+              <div className="flex items-center gap-4">
+                <div className="rounded-2xl bg-[#172033] p-3 shadow-lg">
+                  <FiAward className="text-[#f2c357] text-xl" />
+                </div>
+                <div>
+                  <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Honor Roll</h2>
+                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                    {filteredAchievements.length} Achievements
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Search & Filters */}
+            <div className="rounded-[30px] border border-[#d9d0c3] bg-white p-4 shadow-[0_24px_60px_-48px_rgba(15,23,42,0.38)]">
+              <div className="flex flex-col md:flex-row items-center gap-3">
+                <div className="relative w-full flex-1">
+                  <div className="relative flex items-center rounded-2xl border border-[#e8dfd3] bg-[#fcfaf6] transition-all focus-within:border-[#172033]">
+                    <div className="pl-4 pr-2 flex items-center justify-center pointer-events-none">
+                      <FiSearch className="text-slate-400" size={16} />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Search achievements..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full py-3 bg-transparent text-[#172033] placeholder:text-slate-400 font-medium text-xs focus:outline-none"
+                    />
+                    {searchTerm && (
+                      <button onClick={() => setSearchTerm('')} className="pr-3 text-slate-400 hover:text-slate-600">
+                        <FiX size={14} />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="relative w-full md:w-44">
+                  <select
+                    value={activeCategory}
+                    onChange={(e) => setActiveCategory(e.target.value)}
+                    className="w-full appearance-none rounded-2xl border border-[#e8dfd3] bg-[#fcfaf6] px-4 py-3 font-semibold text-[#172033] text-xs uppercase tracking-[0.12em] cursor-pointer transition-all focus:border-[#172033]"
+                  >
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))}
+                  </select>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => { setSearchTerm(''); setActiveCategory('all'); }}
+                  className="px-4 sm:px-5 py-3 bg-[#172033] text-white rounded-2xl font-black text-[9px] uppercase tracking-wider shadow-lg hover:bg-[#101827] active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                >
+                  <FiFilter size={12} />
+                  <span>Reset</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Achievements Display */}
+            {filteredAchievements.length === 0 ? (
+              <div className="rounded-[30px] border border-dashed border-[#d9d0c3] bg-white py-16 text-center shadow-[0_24px_60px_-48px_rgba(15,23,42,0.38)]">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#fcfaf6] shadow-sm ring-1 ring-[#e8dfd3]">
+                  <FiAward className="text-slate-300 text-xl" />
+                </div>
+                <h3 className="text-base font-black text-slate-900">No achievements found</h3>
+                <p className="text-slate-500 text-xs mt-1 mb-4">Try adjusting your filters or search.</p>
+                <button
+                  onClick={() => { setSearchTerm(''); setActiveCategory('all'); }}
+                  className="rounded-full border border-[#d9d0c3] bg-[#fcfaf6] px-5 py-2.5 font-black text-[#172033] transition-all text-[10px] uppercase tracking-wider"
+                >
+                  Reset Filters
+                </button>
+              </div>
+            ) : (
+              <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 gap-6' : 'space-y-4'}>
+                {filteredAchievements.map((achievement) => (
+                  <AchievementCard
+                    key={achievement.id}
+                    achievement={achievement}
+                    onView={setSelectedAchievement}
+                    viewMode={viewMode}
+                  />
+                ))}
               </div>
             )}
           </div>
-          
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={handleRefresh}
-              disabled={refreshing}
-              className="bg-white/20 backdrop-blur-sm text-white px-5 py-3 rounded-xl hover:bg-white/30 transition font-bold flex items-center gap-2"
-            >
-              <FaSync className={refreshing ? 'animate-spin' : ''} />
-              Refresh
-            </button>
-            
-            <button
-              onClick={() => setShowStatsModal(true)}
-              className="bg-white/20 backdrop-blur-sm text-white px-5 py-3 rounded-xl hover:bg-white/30 transition font-bold flex items-center gap-2"
-            >
-              <FaChartLine />
-              {schoolStats ? 'Edit Stats' : 'Set Stats'}
-            </button>
-            
-            <button
-              onClick={() => {
-                setSelectedAchievement(null);
-                setShowAchievementModal(true);
-              }}
-              className="bg-white text-green-700 px-6 py-3 rounded-xl hover:bg-green-50 transition font-bold flex items-center gap-2 shadow-lg"
-            >
-              <FaPlus />
-              Add Achievement
-            </button>
-          </div>
-        </div>
-        
-     {/* --- MODERN GLASS-BENTO STATS --- */}
-<div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
-  
-  {/* Achievements Card */}
-  <div className="relative group bg-white/5 backdrop-blur-xl rounded-[2rem] p-6 border border-white/10 overflow-hidden shadow-2xl">
-    {/* Decorative Soft Glow */}
-    <div className="absolute -top-10 -right-10 w-24 h-24 bg-emerald-500/20 blur-[40px] pointer-events-none" />
-    
-    <div className="relative z-10 flex flex-col gap-6">
-      <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-        <FiAward className="text-emerald-400 text-xl" />
-      </div>
-      <div>
-        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-200/60 mb-1">
-          Total Achievements
-        </p>
-        <p className="text-4xl font-serif font-bold text-white italic leading-none">
-          {totalAchievements}
-        </p>
-      </div>
-    </div>
-  </div>
 
-  {/* Mean Score Card */}
-  {schoolStats?.meanScore && (
-    <div className="relative bg-white/5 backdrop-blur-xl rounded-[2rem] p-6 border border-white/10 overflow-hidden shadow-2xl">
-      <div className="absolute -top-10 -right-10 w-24 h-24 bg-blue-500/20 blur-[40px] pointer-events-none" />
-      
-      <div className="relative z-10 flex flex-col gap-6">
-        <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
-          <FiTrendingUp className="text-blue-400 text-xl" />
-        </div>
-        <div>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-200/60 mb-1">
-            Current Mean Score
-          </p>
-          <div className="flex items-baseline gap-2">
-            <p className="text-4xl font-serif font-bold text-white italic leading-none">
-              {schoolStats.meanScore}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  )}
-
-  {/* Target Mean Card */}
-  {schoolStats?.targetMean && (
-    <div className="relative bg-white/5 backdrop-blur-xl rounded-[2rem] p-6 border border-white/10 overflow-hidden shadow-2xl">
-      <div className="absolute -top-10 -right-10 w-24 h-24 bg-amber-500/20 blur-[40px] pointer-events-none" />
-      
-      <div className="relative z-10 flex flex-col gap-6">
-        <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
-          <FiTarget className="text-amber-400 text-xl" />
-        </div>
-        <div>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-200/60 mb-1">
-            School Target
-          </p>
-          <p className="text-4xl font-serif font-bold text-white italic leading-none">
-            {schoolStats.targetMean}
-          </p>
-        </div>
-      </div>
-    </div>
-  )}
-</div>
-      </div>
-      
-{/* --- MODERN PERFORMANCE METRICS BENTO --- */}
-{schoolStats && (schoolStats.meanScore || schoolStats.lastYearMean || schoolStats.targetMean) && (
-  <section className="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-slate-50 mb-10">
-    
-    {/* Header with Subtitle */}
-    <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
-      <div className="space-y-1">
-        <div className="flex items-center gap-2 text-emerald-600">
-          <FaChartLine className="text-xl" />
-          <span className="text-[10px] font-black uppercase tracking-[0.3em]">Academic Analytics</span>
-        </div>
-        <h2 className="text-3xl font-serif font-medium text-slate-900">
-          Performance <span className="italic text-slate-400">Tracking</span>
-        </h2>
-      </div>
-      
-      <div className="px-4 py-2 bg-slate-50 rounded-2xl border border-slate-100">
-        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Reporting Cycle</p>
-        <p className="text-xs font-bold text-slate-700">Annual Academic Audit 2026</p>
-      </div>
-    </div>
-
-    {/* Bento Grid Layout */}
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-      
-      {/* 1. Last Year Mean (Compact) */}
-      {schoolStats.lastYearMean && (
-        <div className="md:col-span-3 p-6 bg-slate-50 rounded-[2rem] border border-slate-100 flex flex-col justify-between">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Prev. Cycle</p>
-          <div>
-            <p className="text-4xl font-serif font-bold text-slate-400 italic">{schoolStats.lastYearMean}</p>
-            <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase">2025 Mean Score</p>
-          </div>
-        </div>
-      )}
-
-      {/* 2. Current Mean (Hero Focus) */}
-      {schoolStats.meanScore && (
-        <div className="md:col-span-5 p-8 bg-slate-900 rounded-[2.5rem] text-white relative overflow-hidden shadow-2xl shadow-slate-900/20">
-          {/* Subtle Glow Background */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-[50px] -z-0" />
-          
-          <div className="relative z-10 flex flex-col h-full justify-between">
-            <div className="flex justify-between items-start">
-              <p className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em]">Active Performance</p>
-              {schoolStats.lastYearMean && (
-                <div className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-black ${
-                  schoolStats.meanScore > schoolStats.lastYearMean ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'
-                }`}>
-                  {schoolStats.meanScore > schoolStats.lastYearMean ? '↑' : '↓'}
-                  {Math.abs(schoolStats.meanScore - schoolStats.lastYearMean).toFixed(2)}
-                </div>
-              )}
-            </div>
-
-            <div className="mt-8">
-              <p className="text-6xl font-serif font-bold tracking-tighter italic">
-                {schoolStats.meanScore}
-              </p>
-              <p className="text-xs font-medium text-slate-400 mt-2">Current Institutional Mean</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 3. Target Mean (Progress View) */}
-      {schoolStats.targetMean && (
-        <div className="md:col-span-4 p-8 bg-emerald-50 rounded-[2.5rem] border border-emerald-100 flex flex-col justify-between">
-          <div>
-            <p className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">Growth Target</p>
-            <p className="text-4xl font-serif font-bold text-emerald-700 mt-2">{schoolStats.targetMean}</p>
-          </div>
-
-          <div className="space-y-3">
-             <div className="flex justify-between items-end">
-                <p className="text-[10px] font-black text-emerald-600 uppercase">Achievement</p>
-                <p className="text-lg font-serif font-bold text-emerald-700">
-                  {((schoolStats.meanScore / schoolStats.targetMean) * 100).toFixed(1)}%
-                </p>
-             </div>
-             {/* Custom Progress Bar */}
-             <div className="h-3 w-full bg-white rounded-full p-1 overflow-hidden border border-emerald-200">
-                <div 
-                  className="h-full bg-emerald-500 rounded-full"
-                  style={{ width: `${Math.min((schoolStats.meanScore / schoolStats.targetMean) * 100, 100)}%` }}
-                />
-             </div>
-          </div>
-        </div>
-      )}
-
-    </div>
-  </section>
-)}
-      {/* Achievements by Category */}
-      <div className="space-y-4">
-        {Object.entries(achievements).map(([category, items]) => {
-          const Icon = categoryIcons[category];
-          const gradientClass = categoryColors[category];
-          
-          if (items.length === 0) return null;
-          
-          return (
-            <div key={category} className="bg-white rounded-2xl shadow-lg overflow-hidden">
-              <button
-                onClick={() => toggleCategory(category)}
-                className={`w-full bg-gradient-to-r ${gradientClass} p-4 flex items-center justify-between text-white`}
-              >
-                <div className="flex items-center gap-3">
-                  <Icon className="text-xl" />
-                  <h2 className="text-lg font-bold">{category} Achievements</h2>
-                  <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
-                    {items.length}
-                  </span>
-                </div>
-                {expandedCategories[category] ? <FaChevronUp /> : <FaChevronDown />}
-              </button>
-              
-              {expandedCategories[category] && (
-                <div className="p-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {items.map((achievement) => (
-                      <div
-                        key={achievement.id}
-                        className="border border-gray-200 rounded-xl p-4 hover:shadow-md transition group"
-                      >
-                        {achievement.images && achievement.images.length > 0 && (
-                          <div className="mb-3 h-40 overflow-hidden rounded-lg">
-                            <img
-                              src={achievement.images[0].url}
-                              alt={achievement.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                            />
-                          </div>
-                        )}
-                        
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <h3 className="font-bold text-gray-800 mb-1">{achievement.title}</h3>
-                            <p className="text-sm text-gray-500 mb-2">
-                              {achievement.year}
-                              {achievement.awardingBody && ` • ${achievement.awardingBody}`}
-                            </p>
-                            {achievement.description && (
-                              <p className="text-sm text-gray-600 line-clamp-2">{achievement.description}</p>
-                            )}
-                            {achievement.recipients && achievement.recipients.length > 0 && (
-                              <div className="mt-2 flex flex-wrap gap-1">
-                                {achievement.recipients.slice(0, 3).map((recipient, i) => (
-                                  <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded">
-                                    {recipient}
-                                  </span>
-                                ))}
-                                {achievement.recipients.length > 3 && (
-                                  <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                                    +{achievement.recipients.length - 3} more
-                                  </span>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                          
-                          <div className="flex gap-1 ml-2">
-                            {achievement.featuteal && (
-                              <FaStar className="text-yellow-500" title="Featuteal" />
-                            )}
-                            {!achievement.isActive && (
-                              <FaEyeSlash className="text-gray-400" title="Inactive" />
-                            )}
-                          </div>
-                        </div>
-                        
-                        <div className="flex gap-2 mt-4 pt-3 border-t border-gray-100">
-                          <button
-                            onClick={() => {
-                              setSelectedAchievement(achievement);
-                              setShowAchievementModal(true);
-                            }}
-                            className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition text-sm font-bold"
-                          >
-                            <FaEdit className="text-xs" /> Edit
-                          </button>
-                          <button
-                            onClick={() => handleDeleteClick(achievement.id, achievement.title)}
-                            className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-teal-50 text-teal-700 rounded-lg hover:bg-teal-100 transition text-sm font-bold"
-                          >
-                            <FaTrash className="text-xs" /> Delete
-                          </button>
-                        </div>
-                      </div>
-                    ))}
+          {/* Right Column: Quick Actions & Motto */}
+          <div className="lg:w-[320px] space-y-6">
+            <div className="lg:sticky lg:top-24 space-y-6">
+              <div className="rounded-[30px] border border-[#d9d0c3] bg-white p-6 shadow-[0_24px_60px_-48px_rgba(15,23,42,0.38)]">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="rounded-2xl bg-[#172033] p-2.5">
+                    <FiZap className="text-[#f2c357] text-lg" />
                   </div>
+                  <h2 className="text-base font-black text-slate-900 tracking-tight">Quick Facts</h2>
                 </div>
-              )}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between p-3.5 bg-[#fcfaf6] rounded-2xl border border-[#e8dfd3]">
+                    <span className="text-xs font-bold">Total Achievements</span>
+                    <span className="font-black text-emerald-700">{totalAchievements}</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3.5 bg-[#fcfaf6] rounded-2xl border border-[#e8dfd3]">
+                    <span className="text-xs font-bold">Featured Honors</span>
+                    <span className="font-black text-emerald-700">{featuredCount}</span>
+                  </div>
+                  {schoolStats?.lastYearMean && (
+                    <div className="flex items-center justify-between p-3.5 bg-[#fcfaf6] rounded-2xl border border-[#e8dfd3]">
+                      <span className="text-xs font-bold">Current Year Mean</span>
+                      <span className="font-black text-emerald-700">{schoolStats?.currentYearMean?.toFixed(2) || '—'}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Motto / Slogan Card */}
+              <div className="relative overflow-hidden rounded-[30px] border border-[#1f2a40] bg-[#172033] p-6 text-white shadow-[0_30px_80px_-50px_rgba(15,23,42,0.82)]">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 blur-[50px]" />
+                <div className="relative z-10">
+                  <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4">
+                    <IoTrophyOutline className="text-white text-xl" />
+                  </div>
+                  <h4 className="text-base font-black mb-2 tracking-tight">Our Slogan</h4>
+                  <p className="text-xs text-white/70 mb-4 leading-relaxed italic">
+                    "{schoolStats?.slogan || 'Committed to Excellence'}"
+                  </p>
+                  {schoolStats?.sloganDescription && (
+                    <p className="text-[10px] text-white/50 mb-2">{schoolStats.sloganDescription}</p>
+                  )}
+                  {schoolStats?.sloganAuthor && (
+                    <p className="text-[10px] font-black text-[#f2c357] uppercase tracking-wider">— {schoolStats.sloganAuthor}</p>
+                  )}
+                </div>
+              </div>
             </div>
-          );
-        })}
-      </div>
-      
-      {totalAchievements === 0 && (
-        <div className="bg-white rounded-3xl shadow-xl p-12 text-center">
-          <FaTrophy className="text-6xl text-green-300 mx-auto mb-4" />
-          <h3 className="text-2xl font-bold text-gray-800 mb-2">No Achievements Yet</h3>
-          <p className="text-gray-500 mb-6">Start adding your school's achievements to showcase excellence!</p>
-          <button
-            onClick={() => {
-              setSelectedAchievement(null);
-              setShowAchievementModal(true);
-            }}
-            className="bg-gradient-to-r from-green-600 to-yellow-600 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-yellow-700 transition font-bold inline-flex items-center gap-2"
-          >
-            <FaPlus /> Add First Achievement
-          </button>
+          </div>
         </div>
+
+        {/* Footer Banner */}
+        <div className="relative overflow-hidden rounded-[34px] border border-[#1f2a40] bg-[#172033] p-6 md:p-8 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.82)]">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 blur-[80px] rounded-full -mr-24 -mt-24" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#f2c357]/10 blur-[80px] rounded-full -ml-24 -mb-24" />
+          <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-8">
+            <div className="shrink-0">
+              <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-white flex items-center justify-center shadow-lg">
+                <FiHeart className="text-[#172033] text-2xl md:text-3xl" />
+              </div>
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-lg md:text-xl font-black text-white mb-2 tracking-tight">
+                Excellence in Every Endeavor
+              </h3>
+              <p className="text-emerald-200 text-xs md:text-sm leading-relaxed max-w-xl mx-auto md:mx-0">
+                Each achievement represents the dedication of our students and staff. We celebrate every milestone on our journey to greatness.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Achievement Detail Modal */}
+      {selectedAchievement && (
+        <AchievementDetailModal achievement={selectedAchievement} onClose={() => setSelectedAchievement(null)} />
       )}
-      
-      {/* Modals */}
-      {showAchievementModal && (
-        <AchievementModal
-          onClose={() => {
-            setShowAchievementModal(false);
-            setSelectedAchievement(null);
-          }}
-          onSave={handleSaveAchievement}
-          achievement={selectedAchievement}
-        />
-      )}
-      
-      {showStatsModal && (
-        <SchoolStatsModal
-          onClose={() => setShowStatsModal(false)}
-          onSave={handleSaveStats}
-          stats={schoolStats}
-        />
-      )}
-      
-      {showDeleteModal && (
-        <DeleteConfirmationModal
-          onClose={() => {
-            setShowDeleteModal(false);
-            setDeleteId(null);
-            setDeleteTitle('');
-          }}
-          onConfirm={handleDeleteConfirm}
-          title={deleteTitle}
-        />
-      )}
+
+      <style jsx global>{`
+        input, select, textarea { font-size: 16px !important; }
+        button, a { min-height: 44px; min-width: 44px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @media (max-width: 640px) {
+          .rounded-[2.5rem] { border-radius: 1.5rem !important; }
+          .rounded-[2rem] { border-radius: 1.25rem !important; }
+        }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fade-in 0.5s ease-out; }
+        @keyframes zoom-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .animate-in { animation-duration: 0.3s; animation-fill-mode: both; }
+        .fade-in { animation-name: fade-in; }
+        .zoom-in { animation-name: zoom-in; }
+      `}</style>
     </div>
   );
 }

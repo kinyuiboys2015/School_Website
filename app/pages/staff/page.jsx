@@ -462,7 +462,7 @@ export default function StaffDirectory() {
         teacherPosition: selectedStaff.position
       };
 
-      const response = await fetch('/api/teacher-consultation', {
+      const response = await fetch('/api/contactTeacher', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
