@@ -80,7 +80,7 @@
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>School Achievements &amp; Milestones</image:title>
+      <image:title>School Achievements and Milestones</image:title>
       <image:caption>Academic excellence, county rankings, national recognition, and STEM innovation awards</image:caption>
     </image:image>
   </url>
@@ -100,9 +100,9 @@
     </image:image>
   </url>
 
-  <!-- Apply for Admissions -->
+  <!-- Apply for Admissions - FIXED: Removed space from URL -->
   <url>
-    <loc>https://kinyuiboyssenior.school/pages/Apply Now</loc>
+    <loc>https://kinyuiboyssenior.school/pages/Apply-Now</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -216,9 +216,9 @@
 
   <!-- ==================== ADMIN PAGES (Low Priority) ==================== -->
   
-  <!-- Admin Login -->
+  <!-- Admin Login - FIXED: Removed space from URL -->
   <url>
-    <loc>https://kinyuiboyssenior.school/pages/Sign In</loc>
+    <loc>https://kinyuiboyssenior.school/pages/Sign-In</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
