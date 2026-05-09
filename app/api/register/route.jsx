@@ -472,7 +472,7 @@ export async function POST(request) {
       dbRole = 'ADMIN';
     }
 
-    // Only allow ADMIN or SUPERADMIN to create users (unless no users exist yet)
+    // Only allow SUPER_ADMIN to create users (unless no users exist yet)
     const userCount = await prisma.user.count();
     let auth = null;
     if (userCount > 0) {
@@ -480,14 +480,13 @@ export async function POST(request) {
       if (!auth.authenticated) {
         return auth.response;
       }
-      const allowedRoles = ['ADMIN', 'SUPER_ADMIN'];
       const requesterRole = (auth.user.role || '').toUpperCase();
-      if (!allowedRoles.includes(requesterRole)) {
+      if (requesterRole !== 'SUPER_ADMIN') {
         return NextResponse.json(
           {
             success: false,
             error: "Permission Denied",
-            message: "Only ADMIN or SUPER_ADMIN users can create new users."
+            message: "Only SUPER_ADMIN users can create new admin accounts."
           },
           { status: 403 }
         );

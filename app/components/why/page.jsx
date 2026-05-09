@@ -328,10 +328,10 @@ const ModernSchoolLayout = () => {
       });
       const sorted = allAchievements
         .sort((a, b) => (b.year || 0) - (a.year || 0))
-        .slice(0, 5);
+        .slice(0, 4);
       return sorted.length > 0 ? sorted : achievements;
     }
-    return achievements;
+    return achievements.slice(0, 4);
   };
 
   const getCategoryIcon = (category) => {
@@ -1170,6 +1170,78 @@ const schoolFeatures = [
         </div>
       </section>
 
+      {/* CBC PATHWAYS SPOTLIGHT */}
+      <section className="relative py-8 sm:py-10 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white/75 backdrop-blur-xl shadow-[0_20px_60px_rgba(15,23,42,0.07)]">
+            <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-amber-50/80 via-white/20 to-transparent pointer-events-none" />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 relative">
+              <div className="lg:col-span-4 p-6 sm:p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-slate-200">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.25em] mb-5">
+                  <FiBookOpen className="w-4 h-4 text-amber-300" />
+                  CBC Pathways
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight leading-[1.05]">
+                  Pick a track with{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-900 via-orange-800 to-rose-900">
+                    purpose
+                  </span>
+                </h2>
+                <p className="mt-4 text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
+                  Students explore CBC pathways early, connect subjects to careers, and receive guidance before applying for senior-school placement.
+                </p>
+                <button
+                  onClick={handleExplorePathways}
+                  className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-orange-900 px-5 py-3 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-orange-900/15 active:scale-95"
+                >
+                  Admissions Guide <FiArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="lg:col-span-8 p-4 sm:p-6 lg:p-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {pathways.map((path, idx) => {
+                    const PathIcon = path.icon;
+                    return (
+                      <button
+                        key={path.id || idx}
+                        onClick={() => openModal(path)}
+                        className="group text-left rounded-[1.5rem] border border-slate-200 bg-white/80 p-5 shadow-sm transition-all hover:-translate-y-1 hover:border-orange-200 hover:shadow-xl hover:shadow-slate-200/70"
+                      >
+                        <div className="flex items-center justify-between gap-4">
+                          <span
+                            className={`inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${path.color} text-white shadow-lg shadow-slate-200`}
+                          >
+                            <PathIcon className="text-xl" />
+                          </span>
+                          <FiArrowRight className="w-4 h-4 text-slate-300 transition-transform group-hover:translate-x-1 group-hover:text-orange-800" />
+                        </div>
+                        <h3 className="mt-5 text-lg font-black text-slate-950 tracking-tight">
+                          {path.name}
+                        </h3>
+                        <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
+                          {path.description}
+                        </p>
+                        <div className="mt-5 flex flex-wrap gap-2">
+                          {path.careers.slice(0, 3).map((career, i) => (
+                            <span
+                              key={i}
+                              className="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-black text-orange-900"
+                            >
+                              {career}
+                            </span>
+                          ))}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* WHY CHOOSE US - REDESIGNED */}
       <section className="relative py-16 sm:py-20 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -1202,7 +1274,7 @@ const schoolFeatures = [
                 key={item.id}
                 className="relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate- sm:from-slate-200 sm:via-white sm:to-slate-200 from-amber-200 via-white to-rose-200"
               >
-                <div className="relative h-full rounded-[calc(1.5rem-1px)] bg200-white/80 backdrop-blur border border-white/60 p-6 shadow-sm">
+                <div className="relative h-full rounded-[calc(1.5rem-1px)] bg-white/80 backdrop-blur border border-white/60 p-6 shadow-sm">
                   <div className="flex items-start justify-between gap-3">
                     <div className="w-11 h-11 rounded-2xl bg-gradient-to-br sm:from-indigo-600 sm:to-sky-500 from-amber-700 to-amber-600 text-white flex items-center justify-center shadow-md">
                       {item.icon}
@@ -1761,22 +1833,22 @@ const schoolFeatures = [
          Synchronizing Data...
        </div>
     ) : (
-      /* Grid: 1 column on mobile, 2 on tablet, 3 on desktop */
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+      /* Grid: 1 column on mobile, 2 on tablet, 4 on desktop */
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-6">
         {getAchievements().map((item, idx) => (
           <div key={idx} className="group relative flex flex-col h-full">
             
             {/* The "Polaroid" Card - No fixed height on mobile to allow for long text */}
-            <div className="flex flex-col h-full relative overflow-hidden rounded-[1rem] bg-slate-900/40 border border-white/10  group-hover:border-amber-600/40 group-hover:bg-slate-900/60">
+            <div className="flex flex-col h-full relative overflow-hidden rounded-[1.25rem] bg-white/[0.03] border border-white/10 group-hover:border-amber-600/50 group-hover:bg-white/[0.06] transition-all">
               
               {/* IMAGE SECTION - Responsive Aspect Ratio */}
-              <div className="relative aspect-video sm:h-64 w-full overflow-hidden shrink-0">
+              <div className="relative aspect-[4/3] w-full overflow-hidden shrink-0">
                 {item.image ? (
                   <Image 
                     src={item.image} 
                     alt={item.title} 
                     fill 
-                    className="object-cover  duration-1000 group-hover:scale-100" 
+                    className="object-cover duration-700 group-hover:scale-105"
                   />
                 ) : (
                   <div className="w-full h-full bg-slate-800 flex items-center justify-center">
@@ -1796,7 +1868,7 @@ const schoolFeatures = [
               </div>
 
               {/* CONTENT SECTION */}
-              <div className="p-6 sm:p-8 flex flex-col flex-grow">
+              <div className="p-5 sm:p-6 flex flex-col flex-grow">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="h-[1px] w-6 bg-amber-500" />
                   <span className="text-[9px] font-black uppercase tracking-[0.2em] text-amber-400">
@@ -1804,12 +1876,12 @@ const schoolFeatures = [
                   </span>
                 </div>
 
-                <h4 className="text-xl sm:text-2xl font-black tracking-tight mb-4 group-hover:text-amber-300 transition-colors">
+                <h4 className="text-lg sm:text-xl font-black tracking-tight mb-3 group-hover:text-amber-300 transition-colors">
                   {item.title}
                 </h4>
 
-                <p className="text-slate-400 text-sm sm:text-base leading-relaxed sm:leading-loose mb-8 font-medium">
-                  {item.description || "Our commitment to excellence has consistently yielded exceptional results across various academic and co-curricular spheres. This achievement marks a significant step in our journey to redefine educational standards in Machakos County and beyond, proving that with the right guidance and support, our students can compete on a global stage while maintaining strong local roots and values."}
+                <p className="text-slate-400 text-sm leading-relaxed mb-6 font-medium">
+                  {item.shortDescription || item.description || "A milestone from our academic and co-curricular journey, reflecting steady progress, stronger systems, and student confidence."}
                 </p>
 
                 <div className="mt-auto pt-4">
@@ -1817,7 +1889,7 @@ const schoolFeatures = [
                     onClick={() => openAchievementModal(item)}
                     className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-amber-400 transition-all border-b border-white/10 pb-1"
                   >
-                    Deep Analysis <FiArrowRight className="group-hover:translate-x-2 " />
+                    View Details <FiArrowRight className="group-hover:translate-x-2 " />
                   </button>
                 </div>
               </div>
@@ -1835,7 +1907,10 @@ const schoolFeatures = [
     {/* Bottom Navigation */}
     <div className="mt-16 sm:mt-24 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10 border-t border-white/5 pt-12">
        <span className="hidden sm:block h-[1px] flex-1 bg-gradient-to-r from-transparent to-white/10" />
-       <button className="w-full sm:w-auto px-10 py-4 rounded-full border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 hover:text-white hover:border-amber-600 hover:bg-amber-600/5 transition-all">
+       <button
+         onClick={() => router.push("/pages/Achievements")}
+         className="w-full sm:w-auto px-10 py-4 rounded-full border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 hover:text-white hover:border-amber-600 hover:bg-amber-600/5 transition-all"
+       >
           Explore Archive
        </button>
        <span className="hidden sm:block h-[1px] flex-1 bg-gradient-to-l from-transparent to-white/10" />
@@ -1994,9 +2069,9 @@ const schoolFeatures = [
       <section className="relative py-16 sm:py-24 text-gray-900 overflow-hidden bg-white">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#6366f1_0%,transparent_50%)] opacity-[0.03]" />
 
-        <div className="w-full md:w-4/5 lg:w-3/5 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* THE PILLARS (Pathways First) */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 sm:gap-6 mb-16">
             {/* Dynamic Title Card */}
 <div className="lg:col-span-1 bg-gradient-to-br from-amber-900 to-orange-900 rounded-[2rem] p-6 sm:p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/20 relative overflow-hidden group">
   {/* Decorative Background Glow */}
@@ -2032,7 +2107,7 @@ const schoolFeatures = [
               return (
                 <div
                   key={idx}
-                  className="lg:col-span-1 bg-white border border-gray-200 rounded-[1rem] p-7 hover:border-indigo-200 hover:shadow-lg hover:shadow-indigo-500/5 transition-all group"
+                  className="lg:col-span-1 bg-white border border-gray-200 rounded-[1.25rem] p-6 hover:border-orange-200 hover:shadow-xl hover:shadow-slate-200/70 transition-all group"
                 >
                   <div
                     className={`w-12 h-12 rounded-2xl bg-gradient-to-r ${path.color} flex items-center justify-center mb-6 shadow-lg shadow-black/10`}
@@ -2043,7 +2118,7 @@ const schoolFeatures = [
                   <h4 className="text-xl font-bold text-gray-900 mb-2">
                     {path.name}
                   </h4>
-                  <p className="text-gray-500 text-xs leading-relaxed mb-6 line-clamp-3">
+                  <p className="text-gray-500 text-xs leading-relaxed mb-6">
                     {path.description}
                   </p>
 
@@ -2341,9 +2416,49 @@ const schoolFeatures = [
               </span>
             </h3>
 
-        <p className="mt-6 text-slate-600 text-sm sm:text-base md:w-[70%] w-full mx-auto leading-relaxed font-medium">
-  We collaborate with a wide range of universities across Kenya, as well as academic institutions and professional networks, to support confident and well-informed transitions into higher education and beyond. Through these partnerships, students gain exposure to diverse academic pathways, career opportunities, and mentorship programs that prepare them for success in university life and future professions. Our approach ensures that every learner is guided not only in selecting the right institution, but also in developing the skills, mindset, and clarity needed to thrive in a dynamic and competitive global environment.
-</p>
+            <p className="mt-5 text-slate-600 text-sm sm:text-base md:w-[62%] w-full mx-auto leading-relaxed font-medium">
+              Career guidance at Kinyui connects CBC pathways with universities, mentors, and real opportunities after senior school.
+            </p>
+
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl mx-auto text-left">
+              {[
+                {
+                  label: "Pathway Matching",
+                  text: "Students connect subject strengths to realistic university and career routes.",
+                  icon: FiTarget,
+                },
+                {
+                  label: "Mentorship",
+                  text: "Teachers, alumni, and partners help learners make informed decisions.",
+                  icon: FiUsers,
+                },
+                {
+                  label: "Next Step Readiness",
+                  text: "Application confidence, exposure, and planning are built before transition.",
+                  icon: FiArrowRight,
+                },
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.label}
+                    className="rounded-2xl border border-slate-200 bg-white/75 p-4 shadow-sm"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-orange-900">
+                        <Icon className="w-4 h-4" />
+                      </span>
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-900">
+                        {item.label}
+                      </p>
+                    </div>
+                    <p className="mt-3 text-sm font-medium leading-relaxed text-slate-600">
+                      {item.text}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {imagesLoading ? (

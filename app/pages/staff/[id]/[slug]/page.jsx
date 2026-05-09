@@ -28,11 +28,11 @@ export async function generateMetadata({ params }) {
   if (!staff) {
     // Return generic metadata that works for all staff pages
     return {
-      title: "Staff Profile | kinyui boys Senior School",
-      description: "Meet our dedicated educators and staff members at kinyui boys Senior School",
+      title: "Staff Profile | Kinyui Boys Senior School",
+      description: "Meet the leadership staff of S.A. Kinyui Boys Senior School in Matungulu, Machakos County.",
       openGraph: {
-        title: "Staff Profile | kinyui boys Senior School",
-        description: "Professional educators dedicated to student success",
+        title: "Staff Profile | Kinyui Boys Senior School",
+        description: "Leadership profiles from S.A. Kinyui Boys Senior School.",
         images: [
           {
             url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyuiboyssenior.school'}/seo/kinyui.jpeg`,
@@ -44,14 +44,14 @@ export async function generateMetadata({ params }) {
       },
       twitter: {
         card: 'summary_large_image',
-        title: "Staff Profile | kinyui boys Senior School",
-        description: "Professional educators dedicated to student success",
+        title: "Staff Profile | Kinyui Boys Senior School",
+        description: "Leadership profiles from S.A. Kinyui Boys Senior School.",
       }
     };
   }
 
-  const title = `${staff.name} | ${staff.position} | kinyui boys Senior School`;
-  const description = staff.bio || `Meet ${staff.name}, a dedicated ${staff.position} at kinyui boys Senior School specializing in ${staff.department}.`;
+  const title = `${staff.name} | ${staff.position} | Kinyui Boys Senior School`;
+  const description = staff.bio || `Meet ${staff.name}, a dedicated ${staff.position} at S.A. Kinyui Boys Senior School specializing in ${staff.department}.`;
   
   // Fix the image URL
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyuiboyssenior.school';
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }) {
       : staff.image.startsWith('/')
         ? `${baseUrl}${staff.image}`
         : `${baseUrl}/images/staff/${staff.image}`
-    : `${baseUrl}//seo/kinyui.jpeg`;
+    : `${baseUrl}/seo/kinyui.jpeg`;
 
   return {
     title,
@@ -95,7 +95,7 @@ export async function generateMetadata({ params }) {
       follow: true,
     },
     alternates: {
-      canonical: `${baseUrl}/staff/${id}`,
+      canonical: `${baseUrl}/pages/staff/${id}/${params.slug}`,
     }
   };
 }

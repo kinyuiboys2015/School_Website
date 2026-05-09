@@ -156,7 +156,7 @@ export default function ModernNavbar() {
     },
     {
       name: 'Apply Now',
-      href: '/pages//Apply Now',
+      href: '/pages/Apply Now',
       icon: FiUserPlus,
       description: 'Start your application process'
     },
@@ -232,11 +232,11 @@ export default function ModernNavbar() {
 
   return (
     <>
-      <nav 
+      <nav
         className={`fixed w-full z-50 transition-all duration-300 ${
-          isScrolled 
-            ? 'bg-gradient-to-br from-[#2a0a0a] to-[#1a0505] backdrop-blur-lg shadow-xl border-b border-white/10' 
-            : 'bg-gradient-to-br from-[#3a0f0f] to-[#1f0606] shadow-lg'
+          isScrolled
+            ? 'bg-slate-950/92 backdrop-blur-xl shadow-xl shadow-slate-950/20 border-b border-white/10'
+            : 'bg-gradient-to-r from-slate-950 via-[#2a0a0a] to-slate-950 shadow-lg'
         }`}
       >
         <div className="w-full px-3 xs:px-4 sm:px-6 lg:px-8">
@@ -244,7 +244,7 @@ export default function ModernNavbar() {
             
 {/* Logo Section */}
 <div 
-  className="flex items-center gap-3   md:gap-4 cursor-pointer group"
+  className="flex items-center gap-3 md:gap-4 cursor-pointer group min-w-0"
   onClick={handleLogoClick}
   role="button"
   tabIndex={0}
@@ -252,42 +252,42 @@ export default function ModernNavbar() {
 >
   {/* Hexagon/Shield Container for the Logo */}
   <div className="relative flex items-center justify-center">
-    <div className="absolute -inset-1 bg-gradient-to-tr from-amber-500 to-yellow-200 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
-    <div className="relative w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 bg-slate-900 rounded-xl flex items-center justify-center border border-white/10 shadow-2xl overflow-hidden">
+    <div className="absolute -inset-1 bg-gradient-to-tr from-amber-500 to-yellow-200 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
+    <div className="relative w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 bg-white rounded-2xl flex items-center justify-center border border-amber-200/40 shadow-2xl overflow-hidden">
       {/* Subtle background pattern/glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(245,158,11,0.18),transparent)]"></div>
       
       <Image
-        src="/kinyui.jpeg"
+        src="/seo/kinyui.png"
         alt="Kinyui Boys Senior School Logo"
         width={64}
         height={64}
-        className="relative z-10 w-10 h-10 xs:w-12 xs:h-12 sm:w-14 sm:h-14 object-contain transition-transform duration-500 group-hover:scale-110"
+        className="relative z-10 w-10 h-10 xs:w-12 xs:h-12 sm:w-14 sm:h-14 object-contain transition-transform duration-500 group-hover:scale-105"
         priority
       />
     </div>
   </div>
 
   {/* Text Content */}
-  <div className="flex flex-col justify-center">
+  <div className="flex flex-col justify-center min-w-0">
     <div className="overflow-hidden">
-      <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tighter text-white leading-none">
+      <h1 className="text-lg xs:text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tighter text-white leading-none truncate">
         KINYUI <span className="text-amber-500">BOYS</span>
       </h1>
     </div>
     
-    <div className="flex items-center gap-2 mt-1">
+    <div className="flex items-center gap-2 mt-1 min-w-0">
       <span className="h-[1px] w-4 bg-amber-500/50"></span>
-      <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] font-semibold text-slate-300 italic">
-        THE EAGLES 🦅🦅
+      <p className="text-[9px] xs:text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.2em] font-semibold text-slate-300 italic truncate">
+        Blessed and Favoured
       </p>
     </div>
   </div>
 </div>
 
             {/* Desktop Navigation - NO UPPERCASE */}
-            <div className="hidden lg:flex items-center justify-center flex-1 mx-8 min-w-0">
-              <div className="flex items-center justify-between w-full max-w-7xl gap-0.5">
+            <div className="hidden lg:flex items-center justify-center flex-1 mx-6 min-w-0">
+              <div className="flex items-center justify-center w-full max-w-7xl gap-1 rounded-full border border-white/10 bg-white/[0.04] px-2 py-2 backdrop-blur">
                 {mainNavigation.map((item) => {
                   const isActive = isActiveLink(item.href, item.exact);
                   
@@ -301,10 +301,10 @@ export default function ModernNavbar() {
                         onMouseLeave={() => setIsAcademicDropdownOpen(false)}
                       >
                         <button
-                          className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.85rem] xs:text-[0.9rem] tracking-wide whitespace-nowrap px-1.5 xs:px-2 py-2 relative ${
+                          className={`group flex items-center gap-1.5 font-bold transition-all text-[0.84rem] tracking-wide whitespace-nowrap px-3 py-2 rounded-full relative ${
                             isActive || isAcademicDropdownOpen
-                              ? 'text-amber-200' 
-                              : 'text-white/80 hover:text-amber-200'
+                              ? 'text-slate-950 bg-amber-300'
+                              : 'text-white/80 hover:text-white hover:bg-white/10'
                           }`}
                           aria-expanded={isAcademicDropdownOpen}
                           aria-haspopup="true"
@@ -316,7 +316,7 @@ export default function ModernNavbar() {
                           }`} />
                           
                           {(isActive || isAcademicDropdownOpen) && (
-                            <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-amber-400 rounded-full"></span>
+                            <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-6 h-0.5 bg-amber-400 rounded-full"></span>
                           )}
                         </button>
 
@@ -402,39 +402,39 @@ export default function ModernNavbar() {
                     <a
                       key={item.name}
                       href={item.href}
-                      className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.85rem] xs:text-[0.9rem] tracking-wide whitespace-nowrap px-1.5 xs:px-2 py-2 relative ${
-                        isActive 
-                          ? 'text-amber-200' 
-                          : 'text-white/80 hover:text-amber-200'
+                      className={`group flex items-center gap-1.5 font-bold transition-all text-[0.84rem] tracking-wide whitespace-nowrap px-3 py-2 rounded-full relative ${
+                        isActive
+                          ? 'text-slate-950 bg-amber-300'
+                          : 'text-white/80 hover:text-white hover:bg-white/10'
                       }`}
                     >
                       <item.icon className="text-xs flex-shrink-0" />
                       <span className="truncate">{item.name}</span>
-                      
+
                       {isActive && (
-                        <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-5 h-0.5 bg-amber-400 rounded-full"></span>
+                        <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-5 h-0.5 bg-amber-400 rounded-full"></span>
                       )}
-                      
-                      <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-amber-400/50 rounded-full group-hover:w-5 transition-all duration-300"></span>
+
+                      <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-amber-400/50 rounded-full group-hover:w-5 transition-all duration-300"></span>
                     </a>
                   );
                 })}
-                
+
                 {/* Resources Dropdown - UPDATED WITH DESCRIPTIONS AND NEW LAYOUT */}
-                <div 
+                <div
                   className="relative"
                   ref={resourcesDropdownRef}
                   onMouseEnter={() => setIsResourcesDropdownOpen(true)}
                   onMouseLeave={() => setIsResourcesDropdownOpen(false)}
                 >
                   <button
-                    className={`group flex items-center gap-0.5 xs:gap-1 font-bold transition-all text-[0.85rem] xs:text-[0.9rem] tracking-wide whitespace-nowrap px-1.5 xs:px-2 py-2 relative ${
-                      isResourcesDropdownOpen || 
+                    className={`group flex items-center gap-1.5 font-bold transition-all text-[0.84rem] tracking-wide whitespace-nowrap px-3 py-2 rounded-full relative ${
+                      isResourcesDropdownOpen ||
                       isActiveLink('/pages/careers') ||
                       isActiveLink('/pages/Sign In')||
-                      isActiveLink('/pages/staff') 
-                        ? 'text-amber-200' 
-                        : 'text-white/80 hover:text-amber-200'
+                      isActiveLink('/pages/staff')
+                        ? 'text-slate-950 bg-amber-300'
+                        : 'text-white/80 hover:text-white hover:bg-white/10'
                     }`}
                     aria-expanded={isResourcesDropdownOpen}
                     aria-haspopup="true"
@@ -451,7 +451,7 @@ export default function ModernNavbar() {
                       isActiveLink('/pages/staff')  
 
             ) && (
-                      <span className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-amber-400 rounded-full"></span>
+                      <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-amber-400 rounded-full"></span>
                     )}
                   </button>
 
@@ -556,7 +556,7 @@ export default function ModernNavbar() {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="lg:hidden bg-gradient-to-b from-[#2a0a0a] to-[#1a0505] border-t border-white/10">
+          <div className="lg:hidden bg-gradient-to-b from-slate-950 to-[#1a0505] border-t border-white/10">
             <div className="px-3 xs:px-4 sm:px-6 py-6 xs:py-8 max-w-2xl mx-auto">
               <div className="space-y-1.5 xs:space-y-2 mb-6 xs:mb-8">
                 {mainNavigation.map((item) => {
@@ -715,7 +715,7 @@ export default function ModernNavbar() {
               {/* Mobile Footer - CAPITALIZED "The" */}
               <div className="mt-6 xs:mt-8 pt-4 xs:pt-6 border-t border-white/20 text-center">
                 <p className="text-white/70 text-xs xs:text-sm font-medium">
-Soaring To Excellence             
+Blessed and Favoured
    </p>
               </div>
             </div>

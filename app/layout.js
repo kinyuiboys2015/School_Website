@@ -18,6 +18,10 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const SITE_URL = "https://kinyuiboyssenior.school";
+const SEO_LOGO_JPEG = `${SITE_URL}/seo/kinyui.jpeg`;
+const SEO_LOGO_PNG = `${SITE_URL}/seo/kinyui.png`;
+
 /* -------------------------------------------------------------------------- */
 /* VIEWPORT                                  */
 /* -------------------------------------------------------------------------- */
@@ -35,12 +39,12 @@ export const metadata = {
   applicationName: "S.A. Kinyui Boys Senior School",
 
   title: {
-    default: "S.A. Kinyui Boys Senior School",
+    default: "S.A. Kinyui Boys Senior School | Admissions, CBC Pathways, Academics & School Life",
     template: "%s | Kinyui Boys Senior School",
   },
 
   description:
-    "Official website of S.A. Kinyui Boys Senior School in Matungulu, Machakos County. Explore admissions, academics, school news, events, achievements, staff departments, and student resources.",
+    "Official website of S.A. Kinyui Boys Senior School in Matungulu, Machakos County. Explore admissions, CBC pathways, academics, achievements, staff, gallery, fees, news, events, guidance, policies, resources, and the student portal.",
   
 "keywords": [
     // Core Names & Official Identity
@@ -67,6 +71,24 @@ export const metadata = {
     "kinyui boys Senior School",
     "Kinyui School",
     "Kinyui",
+    "Kinyui Boys Senior School official website",
+    "Kinyui Boys Senior School admissions",
+    "Kinyui Boys Senior School CBC pathways",
+    "Kinyui Boys Senior School STEM pathway",
+    "Kinyui Boys Senior School social sciences pathway",
+    "Kinyui Boys Senior School arts and sports pathway",
+    "Kinyui Boys Senior School academics",
+    "Kinyui Boys Senior School fee structure",
+    "Kinyui Boys Senior School student portal",
+    "Kinyui Boys Senior School gallery",
+    "Kinyui Boys Senior School news and events",
+    "Kinyui Boys Senior School achievements and awards",
+    "Kinyui Boys Senior School staff and departments",
+    "Kinyui Boys Senior School guidance and counselling",
+    "Kinyui Boys Senior School policies",
+    "Kinyui Boys Senior School magazine",
+    "Kinyui Boys Senior School careers",
+    "Kinyui Boys Senior School contact",
 
     // Institutional Specifics (New & Essential)
     "kinyui boys Boarding School",
@@ -143,19 +165,25 @@ export const metadata = {
 
   /* Open Graph (Social Media Sharing) */
   openGraph: {
-    title: "S.A. Kinyui Boys Senior School",
+    title: "S.A. Kinyui Boys Senior School | Admissions, CBC Pathways, Academics & School Life",
     description:
-      "Admissions, academics, achievements, news, events, and school information from S.A. Kinyui Boys Senior School.",
+      "Discover admissions, CBC pathways, academics, achievements, staff, gallery, fees, news, events, guidance, policies, resources, and student portal services from S.A. Kinyui Boys Senior School.",
     url: "https://kinyuiboyssenior.school",
     siteName: "Kinyui Boys Senior School",
     locale: "en_KE",
     type: "website",
     images: [
       {
-        url: "https://kinyuiboyssenior.school/seo/kinyui.jpeg",
+        url: SEO_LOGO_JPEG,
         width: 1200,
         height: 630,
         alt: "S.A. Kinyui Boys Senior School logo",
+      },
+      {
+        url: SEO_LOGO_PNG,
+        width: 1200,
+        height: 1200,
+        alt: "Kinyui Boys Senior School official logo",
       },
     ],
   },
@@ -163,9 +191,9 @@ export const metadata = {
   /* Twitter Card */
   twitter: {
     card: "summary_large_image",
-    title: "S.A. Kinyui Boys Senior School",
-    description: "Official updates, admissions, academics, and resources for Kinyui Boys Senior School.",
-    images: ["https://kinyuiboyssenior.school/seo/kinyui.jpeg"],
+    title: "S.A. Kinyui Boys Senior School | Admissions, CBC Pathways & Academics",
+    description: "Official admissions, CBC pathways, academics, achievements, gallery, fees, news, events, guidance, and resources for Kinyui Boys Senior School.",
+    images: [SEO_LOGO_JPEG],
   },
 
   /* Search Engine Bot Instructions */
@@ -183,15 +211,25 @@ export const metadata = {
   icons: {
     icon: [
       { url: "/seo/kinyui.jpeg", type: "image/jpeg" },
-      { url: "/Kinyui_school_logo.png", type: "image/png" },
+      { url: "/seo/kinyui.png", type: "image/png" },
     ],
-    apple: "/Kinyui_school_logo.png",
-    shortcut: "/seo/kinyui.jpeg",
+    apple: "/seo/kinyui.png",
+    shortcut: "/seo/kinyui.png",
   },
 
   verification: {
     google: "google16e979b115c09244",
     
+  },
+
+  category: "Education",
+  classification: "Public boys senior school, secondary education, CBC pathways, admissions, academics, student services",
+
+  other: {
+    "geo.region": "KE-22",
+    "geo.placename": "Matungulu, Machakos County, Kenya",
+    "school:curriculum": "CBC, 8-4-4",
+    "school:programs": "Admissions, CBC Pathways, STEM, Social Sciences, Arts and Sports, Guidance and Counselling, Student Portal, Fees, Gallery, Achievements",
   },
 };
 
@@ -205,10 +243,11 @@ export default function RootLayout({ children }) {
     "@type": "School",
     "name": "S.A. Kinyui Boys Senior School",
     "alternateName": "Kinyui Boys Senior School",
-    "url": "https://kinyuiboyssenior.school",
-    "logo": "https://kinyuiboyssenior.school/seo/kinyui.jpeg",
-    "image": "https://kinyuiboyssenior.school/seo/kinyui.jpeg",
-    "description": "A public Senior school in Matungulu, Machakos County, Kenya.",
+    "url": SITE_URL,
+    "logo": SEO_LOGO_PNG,
+    "image": [SEO_LOGO_JPEG, SEO_LOGO_PNG],
+    "description": "A public boys senior school in Matungulu, Machakos County, Kenya offering admissions, CBC pathways, academics, guidance, co-curricular activities, achievements, school news, student resources, and community updates.",
+    "slogan": "Soaring To Excellence",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Matungulu",
@@ -222,7 +261,32 @@ export default function RootLayout({ children }) {
     },
     "hasMap": "https://maps.app.goo.gl/TEkuDUZZnXfaE1YC8", 
     "telephone": "+254 733 587223", // Update with official school phone
-    "priceRange": "N/A"
+    "email": "kinyuiboys2015@gmail.com",
+    "priceRange": "N/A",
+    "areaServed": ["Matungulu", "Machakos County", "Kenya"],
+    "sameAs": [
+      "https://www.facebook.com/KinyuiBoysHighSchool/"
+    ],
+    "department": [
+      { "@type": "EducationalOrganization", "name": "Admissions Office", "url": "https://kinyuiboyssenior.school/pages/admissions" },
+      { "@type": "EducationalOrganization", "name": "CBC Pathways", "url": "https://kinyuiboyssenior.school/pages/admissions" },
+      { "@type": "EducationalOrganization", "name": "Guidance and Counselling", "url": "https://kinyuiboyssenior.school/pages/Guidance-and-Councelling" },
+      { "@type": "EducationalOrganization", "name": "School Achievements", "url": "https://kinyuiboyssenior.school/pages/Achievements" },
+      { "@type": "EducationalOrganization", "name": "Staff and Departments", "url": "https://kinyuiboyssenior.school/pages/staff" }
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Kinyui Boys Senior School Key Areas",
+      "itemListElement": [
+        { "@type": "Offer", "name": "Admissions and Application", "url": "https://kinyuiboyssenior.school/pages/admissions" },
+        { "@type": "Offer", "name": "CBC Pathways", "url": "https://kinyuiboyssenior.school/pages/admissions" },
+        { "@type": "Offer", "name": "Academics and Student Resources", "url": "https://kinyuiboyssenior.school/pages/StudentPortal" },
+        { "@type": "Offer", "name": "Fees Information", "url": "https://kinyuiboyssenior.school/pages/fees" },
+        { "@type": "Offer", "name": "News and Events", "url": "https://kinyuiboyssenior.school/pages/eventsandnews" },
+        { "@type": "Offer", "name": "Gallery and School Life", "url": "https://kinyuiboyssenior.school/pages/gallery" },
+        { "@type": "Offer", "name": "Achievements and Awards", "url": "https://kinyuiboyssenior.school/pages/Achievements" }
+      ]
+    }
   };
 
   return (
