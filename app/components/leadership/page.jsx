@@ -3,24 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  FiMail,
-  FiPhone,
-  FiAward,
-  FiBookOpen,
-  FiUsers,
-  FiStar,
-  FiChevronRight,
-  FiHeart,
-  FiUser,
-  FiCheck,
-  FiArrowLeft,
-  FiMessageSquare,
-  FiTarget,
-  FiLoader,
-  FiExternalLink,
-  FiMapPin,
-  FiCalendar,
-  FiEye,
+  FiMail, FiPhone, FiAward, FiBookOpen, FiUsers, FiStar,
+  FiChevronRight, FiHeart, FiUser, FiCheck, FiArrowLeft,
+  FiMessageSquare, FiTarget, FiLoader, FiExternalLink,
+  FiMapPin, FiCalendar, FiEye,
 } from 'react-icons/fi';
 import { IoPeopleOutline, IoSparkles, IoMailOutline, IoCallOutline, IoShieldOutline } from 'react-icons/io5';
 import { GiGraduateCap } from 'react-icons/gi';
@@ -64,7 +50,7 @@ const ModernStaffLeadership = () => {
           const allStaff = data.staff;
           setStaff(allStaff);
 
-          // Find Principal (Chief Principal)
+          // 1. Find Principal (Chief Principal)
           const foundPrincipal = allStaff.find(
             (s) =>
               s.position?.toLowerCase() === 'chief principal' ||
@@ -76,25 +62,46 @@ const ModernStaffLeadership = () => {
           setPrincipal(foundPrincipal);
           setSelectedLeader(foundPrincipal);
 
-          // Find Deputy Academics
-          const foundAcademicsDeputy = allStaff.find(
-            (s) =>
-              s.position?.toLowerCase().includes('deputy') &&
-              (s.position?.toLowerCase().includes('academic') ||
-               s.role?.toLowerCase().includes('academic'))
+          // 2. Find ALL deputies (exclude the principal)
+          const allDeputies = allStaff.filter(
+            (member) =>
+              member.id !== foundPrincipal?.id &&
+              (member.role?.toLowerCase().includes('deputy') ||
+               member.position?.toLowerCase().includes('deputy'))
           );
 
-          // Find Deputy Administration
-          const foundAdminDeputy = allStaff.find(
-            (s) =>
-              s.position?.toLowerCase().includes('deputy') &&
-              (s.position?.toLowerCase().includes('admin') ||
-               s.role?.toLowerCase().includes('admin') ||
-               s.position?.toLowerCase().includes('administration'))
-          );
+          // 3. Assign Academics & Administration deputies
+          let academic = null;
+          let admin = null;
 
-          setAcademicsDeputy(foundAcademicsDeputy || null);
-          setAdminDeputy(foundAdminDeputy || null);
+          if (allDeputies.length === 1) {
+            // Only one deputy available: use it for BOTH roles
+            academic = allDeputies[0];
+            admin = allDeputies[0];
+          } else if (allDeputies.length >= 2) {
+            // Try to match by keywords (academic / admin)
+            academic = allDeputies.find(
+              (d) =>
+                d.position?.toLowerCase().includes('academic') ||
+                d.role?.toLowerCase().includes('academic')
+            );
+            admin = allDeputies.find(
+              (d) =>
+                d.position?.toLowerCase().includes('admin') ||
+                d.role?.toLowerCase().includes('admin') ||
+                d.position?.toLowerCase().includes('administration')
+            );
+            // If a specific keyword match fails, fallback to first two distinct deputies
+            if (!academic) academic = allDeputies[0];
+            if (!admin) admin = allDeputies[1] || allDeputies[0];
+          } else {
+            // No deputy in the API – leave both null
+            academic = null;
+            admin = null;
+          }
+
+          setAcademicsDeputy(academic);
+          setAdminDeputy(admin);
         } else {
           throw new Error('Format error: Expected successful staff array');
         }
@@ -111,7 +118,6 @@ const ModernStaffLeadership = () => {
 
   const handleLeaderClick = (leader) => {
     setSelectedLeader(leader);
-    // Scroll to top on mobile when selecting a new leader
     if (isMobile) {
       setTimeout(() => {
         const mainCard = document.getElementById('featured-leader-card');
@@ -193,17 +199,17 @@ const ModernStaffLeadership = () => {
     );
   }
 
+  // Build the two Deputy sections – both will be present even if they point to the same staff object
   const leadershipTeam = [
-    { staff: principal, label: 'Chief Principal', color: 'from-amber-700 to-orange-700', isPrincipal: true, subtitle: 'Executive Leadership' },
     { staff: academicsDeputy, label: 'Deputy Principal - Academics', color: 'from-amber-600 to-orange-600', isPrincipal: false, subtitle: 'Academics & Curriculum' },
-    { staff: adminDeputy, label: 'Deputy Principal - Administration', color: 'from-amber-600 to-orange-600', isPrincipal: false, subtitle: 'Administration & Student Affairs' },
+    { staff: adminDeputy,      label: 'Deputy Principal - Administration', color: 'from-amber-600 to-orange-600', isPrincipal: false, subtitle: 'Administration & Student Affairs' },
   ].filter((item) => item.staff !== null);
 
+  // For the main card – always show the Principal by default, but allow selecting any deputy
   const currentLeader = selectedLeader || principal;
 
   return (
     <div className="min-h-screen bg-white text-slate-900 overflow-x-hidden">
-      
       {/* Hero Section */}
       <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -232,13 +238,13 @@ const ModernStaffLeadership = () => {
         </div>
       </section>
 
-      {/* Mobile: Deputy Selector Cards (Visible only on mobile) */}
-      {isMobile && (
+      {/* Mobile: Deputy Selector Cards */}
+      {isMobile && leadershipTeam.length > 0 && (
         <div className="md:hidden px-4 mb-6">
           <div className="flex flex-col gap-3">
-            {leadershipTeam.slice(1).map(({ staff, label, color, subtitle }) => (
+            {leadershipTeam.map(({ staff, label, color, subtitle }) => (
               <button
-                key={staff.id}
+                key={`mobile-${staff.id}-${label}`}
                 onClick={() => handleLeaderClick(staff)}
                 className={`flex items-center gap-4 p-4 rounded-2xl border transition-all text-left ${
                   selectedLeader?.id === staff.id
@@ -282,12 +288,12 @@ const ModernStaffLeadership = () => {
       {/* Main Featured Leader Card */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 md:pb-20 relative z-10">
         
-        {/* Desktop: Side by side deputies (Hidden on mobile) */}
-        {!isMobile && leadershipTeam.length > 1 && (
+        {/* Desktop: Two Deputy Cards (always shown side‑by‑side) */}
+        {!isMobile && leadershipTeam.length > 0 && (
           <div className="hidden md:grid grid-cols-2 gap-6 mb-12">
-            {leadershipTeam.slice(1).map(({ staff, label, color, subtitle }) => (
+            {leadershipTeam.map(({ staff, label, color, subtitle }) => (
               <button
-                key={staff.id}
+                key={`desktop-${staff.id}-${label}`}
                 onClick={() => handleLeaderClick(staff)}
                 className={`group bg-white rounded-2xl border overflow-hidden transition-all text-left hover:shadow-xl ${
                   selectedLeader?.id === staff.id
@@ -329,9 +335,8 @@ const ModernStaffLeadership = () => {
           </div>
         )}
 
-        {/* Main Featured Card - Shows selected leader */}
+        {/* Main Featured Card – shows Principal or selected Deputy */}
         <div id="featured-leader-card" className="relative group bg-white rounded-[2rem] border-2 border-amber-200 shadow-[0_20px_50px_rgba(245,158,11,0.12)] overflow-hidden">
-          {/* Special Golden Accent Bar */}
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 z-10" />
           
           <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -355,7 +360,6 @@ const ModernStaffLeadership = () => {
                 </div>
               )}
               
-              {/* Special Crown Badge for Principal */}
               {currentLeader === principal && (
                 <div className="absolute top-4 left-4 md:top-6 md:left-6">
                   <div className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-amber-500 text-white text-[8px] md:text-[10px] font-black uppercase tracking-wider shadow-lg flex items-center gap-1 md:gap-2">
@@ -383,7 +387,6 @@ const ModernStaffLeadership = () => {
                 <h2 className="hidden lg:block text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 mb-1 md:mb-2">{currentLeader?.name}</h2>
                 <p className="hidden lg:block text-amber-600 font-bold text-sm md:text-base mb-6 md:mb-8">{getLeaderSubtitle(currentLeader)}</p>
 
-                {/* Quote */}
                 {currentLeader?.quote && (
                   <div className="rounded-2xl border-l-4 border-amber-500 bg-amber-50/50 p-4 md:p-5 mb-5 md:mb-6">
                     <div className="flex items-start gap-2 md:gap-3">
@@ -400,7 +403,6 @@ const ModernStaffLeadership = () => {
                   </div>
                 )}
 
-                {/* Bio */}
                 <div className="mb-5 md:mb-6">
                   <div className="flex items-center gap-2 mb-2 md:mb-3">
                     <div className="w-6 h-6 md:w-7 md:h-7 rounded-lg bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center">
@@ -420,7 +422,6 @@ const ModernStaffLeadership = () => {
                   </div>
                 </div>
 
-                {/* Key Statistics - Only for Principal */}
                 {currentLeader === principal && (
                   <div className="grid grid-cols-3 gap-2 md:gap-3 mt-4 md:mt-6">
                     <div className="text-center p-2 md:p-3 bg-amber-50 rounded-xl border border-amber-100">
@@ -438,7 +439,6 @@ const ModernStaffLeadership = () => {
                   </div>
                 )}
 
-                {/* Key Responsibilities - For Deputies */}
                 {currentLeader !== principal && currentLeader?.responsibilities && currentLeader.responsibilities.length > 0 && (
                   <div className="mt-4 md:mt-6">
                     <h3 className="text-[10px] md:text-[11px] font-black text-slate-700 uppercase tracking-wider mb-2 md:mb-3">Key Responsibilities</h3>
@@ -453,9 +453,8 @@ const ModernStaffLeadership = () => {
                 )}
               </div>
 
-              {/* Contact */}
-              <div className="mt-5 md:mt-6 pt-3 md:pt-4 border-t border-slate-200">
-                {currentLeader?.email && (
+              {currentLeader?.email && (
+                <div className="mt-5 md:mt-6 pt-3 md:pt-4 border-t border-slate-200">
                   <a
                     href={`mailto:${currentLeader.email}`}
                     className="inline-flex items-center gap-2 text-amber-600 font-bold text-xs md:text-sm hover:text-amber-700 transition-colors"
@@ -465,13 +464,13 @@ const ModernStaffLeadership = () => {
                     </div>
                     {currentLeader.email}
                   </a>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Mobile: Back to Principal Button (only shows when viewing a deputy) */}
+        {/* Mobile: Back to Principal button */}
         {isMobile && selectedLeader !== principal && (
           <div className="mt-6 flex justify-center">
             <button
