@@ -175,7 +175,7 @@ const ModernStaffLeadership = () => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-white">
-        <FiLoader className="w-10 h-10 text-amber-600 animate-spin" />
+        <FiLoader className="w-10 h-10 text-amber-900 animate-spin" />
         <p className="mt-4 text-slate-500 font-medium">Loading leadership data...</p>
       </div>
     );
@@ -225,7 +225,7 @@ const ModernStaffLeadership = () => {
         <div className="max-w-7xl mx-auto px-4 pt-8 flex justify-end">
           <button
             onClick={() => setLayoutMode('featured')}
-            className="flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-700 rounded-xl text-sm font-bold"
+            className="flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-900 rounded-xl text-sm font-bold"
           >
             <MdOutlineDashboard /> Switch to Featured Layout
           </button>
@@ -243,7 +243,7 @@ const ModernStaffLeadership = () => {
               <div
                 key={leader.staff.id}
                 className={`group bg-white rounded-2xl overflow-hidden shadow-lg transition-all hover:shadow-xl hover:-translate-y-1 ${
-                  isSameStaff(leader.staff, principal) ? 'ring-2 ring-amber-500' : 'border border-slate-200'
+                  isSameStaff(leader.staff, principal) ? 'ring-2 ring-amber-900' : 'border border-slate-200'
                 }`}
               >
                 <div className={`h-2 bg-gradient-to-r ${leader.color}`} />
@@ -271,11 +271,11 @@ const ModernStaffLeadership = () => {
                 </div>
                 <div className="p-5">
                   <h3 className="text-xl font-black text-slate-900">{leader.staff.name}</h3>
-                  <p className="text-amber-600 font-bold text-sm mt-1">{leader.label}</p>
+                  <p className="text-amber-900 font-bold text-sm mt-1">{leader.label}</p>
                   <p className="text-slate-500 text-xs">{leader.subtitle}</p>
 
                   {leader.staff.quote && (
-                    <div className="mt-3 text-sm italic text-slate-600 border-l-3 border-amber-500 pl-3">
+                    <div className="mt-3 text-sm italic text-slate-600 border-l-3 border-amber-900 pl-3">
                       "{leader.staff.quote.substring(0, 80)}"
                     </div>
                   )}
@@ -283,18 +283,18 @@ const ModernStaffLeadership = () => {
                   <div className="mt-4 pt-3 border-t border-slate-100 space-y-1">
                     {leader.staff.department && (
                       <div className="flex items-center gap-2 text-xs text-slate-600">
-                        <FiMapPin className="text-amber-500" size={12} />
+                        <FiMapPin className="text-amber-900" size={12} />
                         <span>{leader.staff.department}</span>
                       </div>
                     )}
                     {leader.staff.joinDate && (
                       <div className="flex items-center gap-2 text-xs text-slate-600">
-                        <FiCalendar className="text-amber-500" size={12} />
+                        <FiCalendar className="text-amber-900" size={12} />
                         <span>Joined: {new Date(leader.staff.joinDate).getFullYear()}</span>
                       </div>
                     )}
                     {leader.staff.email && (
-                      <a href={`mailto:${leader.staff.email}`} className="flex items-center gap-2 text-xs text-amber-600 mt-2">
+                      <a href={`mailto:${leader.staff.email}`} className="flex items-center gap-2 text-xs text-amber-900 mt-2">
                         <FiMail size={12} /> {leader.staff.email}
                       </a>
                     )}
@@ -327,7 +327,7 @@ const ModernStaffLeadership = () => {
       <div className="max-w-7xl mx-auto px-4 pt-6 flex justify-end">
         <button
           onClick={() => setLayoutMode('grid')}
-          className="flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-700 rounded-xl text-sm font-bold"
+          className="flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-900 rounded-xl text-sm font-bold"
         >
           <GiCrown /> Switch to Grid Layout
         </button>
@@ -338,12 +338,12 @@ const ModernStaffLeadership = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-orange-50" />
         <div className="max-w-7xl mx-auto px-4 relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase mb-5">
-            <IoPeopleOutline className="text-amber-600" />
+            <IoPeopleOutline className="text-amber-900" />
             Executive Leadership
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-slate-900">
             Meet Our{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-900 to-orange-900">
               Executive Leadership
             </span>
           </h1>
@@ -363,7 +363,7 @@ const ModernStaffLeadership = () => {
                 onClick={() => handleLeaderClick(staff)}
                 className={`flex items-center gap-4 p-4 rounded-2xl border transition-all w-full text-left ${
                   selectedLeader?.id === staff.id
-                    ? 'border-amber-500 bg-amber-50 ring-2 ring-amber-200'
+                    ? 'border-amber-900 bg-amber-50 ring-2 ring-amber-900'
                     : 'border-slate-200 bg-white'
                 }`}
               >
@@ -377,11 +377,11 @@ const ModernStaffLeadership = () => {
                   )}
                 </div>
                 <div className="flex-1">
-                  <p className="text-[10px] font-black text-amber-600 uppercase">{label}</p>
+                  <p className="text-[10px] font-black text-amber-900 uppercase">{label}</p>
                   <h3 className="font-black text-slate-900 text-sm">{staff.name}</h3>
                   <p className="text-slate-500 text-xs">{subtitle}</p>
                 </div>
-                {selectedLeader?.id === staff.id && <FiCheck className="text-amber-500" />}
+                {selectedLeader?.id === staff.id && <FiCheck className="text-amber-900" />}
               </button>
             ))}
           </div>
@@ -396,8 +396,8 @@ const ModernStaffLeadership = () => {
                 onClick={() => handleLeaderClick(staff)}
                 className={`bg-white rounded-2xl border p-5 flex items-center gap-4 transition-all ${
                   selectedLeader?.id === staff.id
-                    ? 'border-amber-500 ring-2 ring-amber-200'
-                    : 'border-slate-200 hover:border-amber-300'
+                    ? 'border-amber-900 ring-2 ring-amber-900'
+                    : 'border-slate-200 hover:border-amber-900'
                 }`}
               >
                 <div className="relative w-16 h-16 rounded-xl overflow-hidden">
@@ -410,18 +410,18 @@ const ModernStaffLeadership = () => {
                   )}
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="text-[10px] font-black text-amber-600 uppercase">{label}</p>
+                  <p className="text-[10px] font-black text-amber-900 uppercase">{label}</p>
                   <h3 className="font-black text-slate-900">{staff.name}</h3>
                   <p className="text-slate-500 text-xs">{subtitle}</p>
                 </div>
-                {selectedLeader?.id === staff.id && <FiCheck className="text-amber-500" />}
+                {selectedLeader?.id === staff.id && <FiCheck className="text-amber-900" />}
               </button>
             ))}
           </div>
         )}
 
         {/* Main Featured Card */}
-        <div id="featured-leader-card" className="bg-white rounded-3xl border-2 border-amber-200 shadow-xl overflow-hidden">
+        <div id="featured-leader-card" className="bg-white rounded-3xl border-2 border-amber-900 shadow-xl overflow-hidden">
           <div className="h-1.5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500" />
           <div className="grid lg:grid-cols-2">
             {/* Image */}
@@ -445,7 +445,7 @@ const ModernStaffLeadership = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               <div className="absolute bottom-0 p-6 lg:hidden">
                 <h2 className="text-white text-2xl font-black">{currentLeader.name}</h2>
-                <p className="text-amber-200 text-sm">{getLeaderSubtitle(currentLeader)}</p>
+                <p className="text-amber-900 text-sm">{getLeaderSubtitle(currentLeader)}</p>
               </div>
             </div>
 
@@ -453,19 +453,19 @@ const ModernStaffLeadership = () => {
             <div className="p-6 lg:p-10 flex flex-col justify-between">
               <div>
                 <div className="hidden lg:block mb-2">
-                  <span className="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-[10px] font-black uppercase">
+                  <span className="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase">
                     {getLeaderTitle(currentLeader)}
                   </span>
                 </div>
                 <h2 className="hidden lg:block text-3xl font-black text-slate-900">{currentLeader.name}</h2>
-                <p className="hidden lg:block text-amber-600 font-bold mt-1 mb-6">{getLeaderSubtitle(currentLeader)}</p>
+                <p className="hidden lg:block text-amber-900 font-bold mt-1 mb-6">{getLeaderSubtitle(currentLeader)}</p>
 
                 {currentLeader.quote && (
-                  <div className="rounded-xl border-l-4 border-amber-500 bg-amber-50/50 p-4 mb-6">
+                  <div className="rounded-xl border-l-4 border-amber-900 bg-amber-50/50 p-4 mb-6">
                     <div className="flex gap-2">
-                      <FiMessageSquare className="text-amber-500 mt-0.5" />
+                      <FiMessageSquare className="text-amber-900 mt-0.5" />
                       <div>
-                        <p className="text-[10px] font-black text-amber-600 uppercase">Leadership Philosophy</p>
+                        <p className="text-[10px] font-black text-amber-900 uppercase">Leadership Philosophy</p>
                         <p className="text-slate-700 text-sm italic">"{currentLeader.quote}"</p>
                       </div>
                     </div>
@@ -493,15 +493,15 @@ const ModernStaffLeadership = () => {
                 {isCurrentPrincipal && (
                   <div className="grid grid-cols-3 gap-3 mt-2">
                     <div className="text-center p-3 bg-amber-50 rounded-xl">
-                      <p className="text-lg font-black text-amber-600">{teachers.length + supportStaff.length}</p>
+                      <p className="text-lg font-black text-amber-900">{teachers.length + supportStaff.length}</p>
                       <p className="text-[9px] font-bold text-slate-600">Total Staff</p>
                     </div>
                     <div className="text-center p-3 bg-amber-50 rounded-xl">
-                      <p className="text-lg font-black text-amber-600">{teachers.length}</p>
+                      <p className="text-lg font-black text-amber-900">{teachers.length}</p>
                       <p className="text-[9px] font-bold text-slate-600">Teachers</p>
                     </div>
                     <div className="text-center p-3 bg-amber-50 rounded-xl">
-                      <p className="text-lg font-black text-amber-600">{supportStaff.length}</p>
+                      <p className="text-lg font-black text-amber-900">{supportStaff.length}</p>
                       <p className="text-[9px] font-bold text-slate-600">Support Staff</p>
                     </div>
                   </div>
@@ -523,7 +523,7 @@ const ModernStaffLeadership = () => {
 
               {currentLeader.email && (
                 <div className="mt-6 pt-4 border-t border-slate-200">
-                  <a href={`mailto:${currentLeader.email}`} className="inline-flex items-center gap-2 text-amber-600 font-bold text-sm">
+                  <a href={`mailto:${currentLeader.email}`} className="inline-flex items-center gap-2 text-amber-900 font-bold text-sm">
                     <div className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center">
                       <FiMail size={14} />
                     </div>
@@ -538,7 +538,7 @@ const ModernStaffLeadership = () => {
         {/* Back to Principal button (mobile) */}
         {isMobile && !isSameStaff(selectedLeader, principal) && (
           <div className="mt-6 flex justify-center">
-            <button onClick={() => handleLeaderClick(principal)} className="flex items-center gap-2 px-5 py-2.5 bg-amber-50 border border-amber-200 text-amber-700 font-black text-xs rounded-xl">
+            <button onClick={() => handleLeaderClick(principal)} className="flex items-center gap-2 px-5 py-2.5 bg-amber-50 border border-amber-900 text-amber-900 font-black text-xs rounded-xl">
               <FiArrowLeft size={12} /> Back to Principal
             </button>
           </div>
@@ -548,7 +548,7 @@ const ModernStaffLeadership = () => {
         <div className="text-center mt-16 pt-8 border-t border-slate-200">
           <button
             onClick={() => router.push('/pages/staff')}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-amber-600 text-amber-700 font-black rounded-xl hover:bg-gradient-to-r hover:from-amber-600 hover:to-orange-600 hover:text-white transition-all"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-amber-900 text-amber-900 font-black rounded-xl hover:bg-gradient-to-r hover:from-amber-600 hover:to-orange-600 hover:text-white transition-all"
           >
             <FiEye /> View Staff Directory <FiChevronRight />
           </button>
