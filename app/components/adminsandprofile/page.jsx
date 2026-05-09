@@ -1214,7 +1214,7 @@ if (loading) {
           <div className="h-8 w-1 bg-gradient-to-b from-emerald-500 via-teal-500 to-green-500 rounded-full shadow-[0_0_15px_rgba(20,184,166,0.5)]" />
           <div>
             <h2 className="text-[10px] font-black uppercase tracking-[0.25em] text-emerald-300">
-              Katwanyaa Senior School
+              Kinyui Boys School
             </h2>
             <p className="text-[9px] italic font-medium text-white/40 tracking-widest uppercase">
               Central Authority Hub
@@ -1846,7 +1846,7 @@ if (loading) {
                 <div className="space-y-4">
                   <div className="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-2xl p-5 border border-teal-200">
                     <label className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
-                      🔐 {editingAdmin ? 'New Password (optional)' : 'Password <span className="text-red-500">*</span>'}
+                      🔐 {editingAdmin ? 'New Password (optional)' : 'Password'}
                       <span className="text-gray-500 text-xs font-normal ml-2">8+ chars, uppercase, lowercase, number & special char</span>
                     </label>
                     <div className="relative">
