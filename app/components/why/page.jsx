@@ -12,7 +12,6 @@ import {
   FiShield,
   FiStar,
   FiTrendingUp,
-  FiPlus,
   FiGlobe,
   FiMail,
   FiPhone,
@@ -431,21 +430,6 @@ const ModernSchoolLayout = () => {
       sloganDescription: "",
       sloganAuthor: "",
     };
-  };
-
-  const colorMap = {
-    emerald: {
-      bg: "bg-emerald-600",
-      light: "bg-emerald-50",
-      text: "text-emerald-600",
-      border: "border-emerald-200",
-    },
-    blue: {
-      bg: "bg-orange-900",
-      light: "bg-amber-50",
-      text: "text-rose-800",
-      border: "border-blue-200",
-    },
   };
 
   const whyChooseUs = [
@@ -1906,95 +1890,146 @@ const ModernSchoolLayout = () => {
         Synchronizing Data...
       </div>
     ) : (
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
-        {getAchievements().map((item, idx) => {
-          const featured = idx === 0;
-          return (
-            <div
-              key={idx}
-              className={`group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] transition-all hover:-translate-y-1 hover:border-amber-400/50 hover:bg-white/[0.07] ${
-                featured ? "lg:col-span-6 lg:row-span-2" : "lg:col-span-3"
-              }`}
-            >
-              <div className={`relative w-full overflow-hidden ${featured ? "aspect-[16/10]" : "aspect-[16/9]"}`}>
-                {item.image ? (
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover duration-700 group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-slate-900">
-                    <FiAward className="text-4xl text-white/20" />
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-                <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[10px] font-black text-slate-950">
-                  {item.year || "Now"}
-                </span>
-              </div>
+      (() => {
+        const milestoneItems = getAchievements().slice(0, 4);
+        const [featuredItem, ...supportItems] = milestoneItems;
 
-              <div className={featured ? "p-6 sm:p-8" : "p-5"}>
-                <p className="text-[9px] font-black uppercase tracking-[0.22em] text-amber-300">
-                  {item.stats || item.impact || "Milestone"}
-                </p>
-                <h3 className={`${featured ? "text-2xl sm:text-3xl" : "text-lg"} mt-3 font-black tracking-tight text-white`}>
-                  {item.title}
-                </h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-white/60">
-                  {item.shortDescription || item.description || "A milestone from our academic and co-curricular journey, reflecting steady progress, stronger systems, and student confidence."}
-                </p>
-                <button
-                  onClick={() => openAchievementModal(item)}
-                  className="mt-5 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-white transition-colors hover:bg-amber-400 hover:text-slate-950"
-                >
-                  View Details <FiArrowRight className="h-3.5 w-3.5" />
-                </button>
+        if (!featuredItem) return null;
+
+        return (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
+            <div className="lg:col-span-6">
+              <div className="group relative h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.05]">
+                <div className="relative aspect-[16/11] w-full overflow-hidden">
+                  {featuredItem.image ? (
+                    <Image
+                      src={featuredItem.image}
+                      alt={featuredItem.title}
+                      fill
+                      className="object-cover duration-700 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-slate-900">
+                      <FiAward className="text-5xl text-white/20" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/35 to-transparent" />
+                  <div className="absolute bottom-5 left-5 right-5">
+                    <span className="rounded-full bg-amber-300 px-3 py-1 text-[10px] font-black text-slate-950">
+                      Featured Milestone
+                    </span>
+                    <h3 className="mt-4 text-2xl sm:text-4xl font-black tracking-tight text-white">
+                      {featuredItem.title}
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="p-6 sm:p-8">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-white/70">
+                      {featuredItem.year || "Now"}
+                    </span>
+                    <span className="rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-amber-200">
+                      {featuredItem.stats || featuredItem.impact || "Achievement"}
+                    </span>
+                  </div>
+                  <p className="mt-4 text-sm sm:text-base font-medium leading-relaxed text-white/65">
+                    {featuredItem.shortDescription || featuredItem.description || "A milestone from our academic and co-curricular journey, reflecting steady progress, stronger systems, and student confidence."}
+                  </p>
+                  <button
+                    onClick={() => openAchievementModal(featuredItem)}
+                    className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-xs font-black uppercase tracking-[0.16em] text-slate-950"
+                  >
+                    View Details <FiArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
             </div>
-          );
-        })}
-      </div>
+
+            <div className="lg:col-span-6 grid grid-cols-1 gap-4">
+              {supportItems.map((item, idx) => (
+                <div
+                  key={`${item.title}-${idx}`}
+                  className="group grid grid-cols-1 sm:grid-cols-[11rem_1fr] overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] transition-all hover:border-amber-300/40 hover:bg-white/[0.07]"
+                >
+                  <div className="relative min-h-44 sm:min-h-full overflow-hidden">
+                    {item.image ? (
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-slate-900">
+                        <FiAward className="text-3xl text-white/20" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent" />
+                  </div>
+
+                  <div className="p-5 sm:p-6">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-[9px] font-black uppercase tracking-[0.22em] text-amber-300">
+                        {item.year || `0${idx + 2}`}
+                      </p>
+                      <span className="rounded-full bg-white/10 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.16em] text-white/50">
+                        {item.stats || "Milestone"}
+                      </span>
+                    </div>
+                    <h3 className="mt-3 text-lg sm:text-xl font-black tracking-tight text-white">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 line-clamp-3 text-sm font-medium leading-relaxed text-white/60">
+                      {item.shortDescription || item.description || "A milestone from our school journey."}
+                    </p>
+                    <button
+                      onClick={() => openAchievementModal(item)}
+                      className="mt-4 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em] text-white hover:text-amber-300"
+                    >
+                      Details <FiArrowRight className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()
     )}
   </div>
 </section>
 
 
-      {/* WHY CHOOSE US - SHUFFLED MOSAIC */}
-      <section className="relative py-24 bg-[#fafbfc] overflow-hidden">
+      {/* SIGNATURE EXPERIENCE */}
+      <section className="relative py-20 sm:py-24 bg-[#fafbfc] overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="absolute top-[-10%] right-[-5%] w-[40rem] h-[40rem] bg-indigo-50/50 rounded-full blur-[120px]" />
           <div className="absolute bottom-[-10%] left-[-5%] w-[35rem] h-[35rem] bg-emerald-50/40 rounded-full blur-[100px]" />
         </div>
 
         <div className="w-full md:w-[85%] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* HERO SIGNATURE CARD */}
-          <div className="relative mb-12 overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-6 sm:p-8 md:p-10 shadow-xl shadow-slate-200/60">
-            <div className="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-amber-100 blur-3xl" />
-            <div className="absolute -bottom-28 left-1/3 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl" />
+          <div className="relative mb-10 overflow-hidden rounded-[2rem] bg-slate-950 p-6 sm:p-8 md:p-10 text-white shadow-2xl shadow-slate-200">
+            <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-amber-500/20 blur-3xl" />
+            <div className="absolute -bottom-28 left-1/3 h-80 w-80 rounded-full bg-sky-500/10 blur-3xl" />
 
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-              <div className="lg:col-span-8">
-                <div className="inline-flex items-center gap-2 rounded-full border border-amber-100 bg-amber-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.22em] text-amber-900">
+              <div className="lg:col-span-7">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.22em] text-amber-200">
                   <HiOutlineSparkles className="w-4 h-4" />
                   The Signature Experience
                 </div>
 
-                <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-black text-slate-950 tracking-tight leading-[1.05]">
-                  What makes the journey at{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-900 via-rose-800 to-orange-800">
-                    {schoolName}
-                  </span>{" "}
-                  different?
+                <h2 className="mt-6 text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[1.05]">
+                  A school journey built around clarity, care, and direction.
                 </h2>
 
-                <p className="mt-5 max-w-2xl text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
-                  Structured academics, character formation, mentorship, and pathway guidance work together so every learner can move with confidence from school life to the next step.
+                <p className="mt-5 max-w-2xl text-sm sm:text-base text-white/65 font-medium leading-relaxed">
+                  At {schoolName}, students are not only taught subjects; they are guided through habits, mentorship, pathways, and values that make learning feel purposeful.
                 </p>
               </div>
 
-              <div className="lg:col-span-4">
+              <div className="lg:col-span-5">
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     ["Subjects", subjects.length],
@@ -2002,23 +2037,23 @@ const ModernSchoolLayout = () => {
                     ["Students", `${studentCount}+`],
                     ["Staff", `${staffCount}+`],
                   ].map(([label, value]) => (
-                    <div key={label} className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-                      <p className="text-xl font-black text-slate-950">{value}</p>
-                      <p className="mt-1 text-[9px] font-black uppercase tracking-[0.18em] text-slate-400">{label}</p>
+                    <div key={label} className="rounded-2xl border border-white/10 bg-white/10 p-4">
+                      <p className="text-2xl font-black text-white">{value}</p>
+                      <p className="mt-1 text-[9px] font-black uppercase tracking-[0.18em] text-white/45">{label}</p>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-4 flex gap-3">
+                <div className="mt-4 flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={handleExplorePathways}
-                    className="flex-1 rounded-2xl bg-slate-950 px-4 py-3 text-xs font-black text-white"
+                    className="flex-1 rounded-2xl bg-white px-4 py-3 text-xs font-black text-slate-950"
                   >
                     Start Admission
                   </button>
                   <button
                     onClick={() => router.push("/pages/AboutUs")}
-                    className="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-xs font-black text-slate-900"
+                    className="flex-1 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-xs font-black text-white"
                   >
                     Our Story
                   </button>
@@ -2027,98 +2062,28 @@ const ModernSchoolLayout = () => {
             </div>
           </div>
 
-          {/* REASONS GRID (Shuffled Staggered Layout) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* MOTTO CARD */}
-         <div className="lg:col-span-1 bg-gradient-to-br from-amber-900 to-orange-900 rounded-[1rem] p-8 text-white flex flex-col justify-between shadow-xl shadow-indigo-200 relative overflow-hidden">
-  {/* Decorative Background Icon */}
-  <div className="absolute top-0 right-0 p-4 opacity-10">
-    <FiPlus className="w-32 h-32 rotate-12" /> {/* Using FiPlus as a minimalist cross */}
-  </div>
-
-  <div className="relative">
-    <div className="flex items-center gap-2 mb-4">
-       <span className="w-8 h-[1px] bg-indigo-300" />
-       <span className="text-[10px] font-black uppercase tracking-widest text-indigo-200">
-         Our Spiritual Foundation
-       </span>
-    </div>
-    
-    {/* The Statement of Faith */}
-    <h3 className="text-2xl font-black italic leading-tight mb-4">
-      "{motto}"
-    </h3>
-    
-    <p className="text-sm font-medium text-indigo-100/90 leading-relaxed max-w-[200px]">
-      Rooted in faith, we believe in <span className="text-white font-black">Jesus Christ</span> as our Lord and Savior, guiding every step of our journey.
-    </p>
-  </div>
-
-  <div className="mt-12 space-y-4 relative">
-    <div className="h-[1px] bg-white/20 w-full" />
-    <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-indigo-100">
-      <span>Faith</span>
-      <span>Wisdom</span>
-      <span>Service</span>
-    </div>
-  </div>
-</div>
-
-            {/* DYNAMIC FEATURE CARDS */}
-            {whyChooseUs.map((item, idx) => {
-              const c = colorMap[item.color] || colorMap.emerald;
-              const isSpanned = idx === 1;
-
-              return (
-                <div
-                  key={item.id}
-                  className={`group bg-white border border-slate-100 rounded-[1rem] p-8 hover:shadow-lg hover:shadow-slate-200/60  ${
-                    isSpanned ? "lg:row-span-1" : ""
-                  }`}
-                >
-                  <div
-                    className={`w-14 h-14 rounded-2xl ${c.light} ${c.text} flex items-center justify-center mb-8 group-hover:scale-100 `}
-                  >
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            {whyChooseUs.map((item) => (
+              <div
+                key={item.id}
+                className="group rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/70"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-900">
                     {item.icon}
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-                        {item.metrics}
-                      </span>
-                      <span className="w-2 h-2 rounded-full bg-slate-200" />
-                    </div>
-
-                    <h4 className="text-2xl font-black text-slate-900 tracking-tight">
-                      {item.title}
-                    </h4>
-
-                    <p className="text-sm text-slate-500 font-medium leading-relaxed">
-                      {item.shortDescription}
-                    </p>
-
-                    <button
-                      onClick={() => openAchievementModal(item)}
-                      className="pt-4 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-orange-800 group-hover:gap-3 transition-all"
-                    >
-                      Deep Dive <FiArrowRight />
-                    </button>
-                  </div>
-
-               {item.image && (
-  <div className="mt-8 relative h-32 w-full rounded-2xl overflow-hidden border border-slate-100 transition-all duration-700">
-    <Image
-      src={item.image}
-      alt={item.title}
-      fill
-      className="object-cover"
-    />
-  </div>
-)}
+                  </span>
+                  <span className="rounded-full bg-slate-50 px-3 py-1 text-[9px] font-black uppercase tracking-[0.16em] text-slate-400">
+                    {item.metrics}
+                  </span>
                 </div>
-              );
-            })}
+                <h3 className="mt-5 text-xl font-black tracking-tight text-slate-950">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-600">
+                  {item.shortDescription}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
