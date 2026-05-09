@@ -1395,8 +1395,13 @@ const ModernSchoolLayout = () => {
         </div>
       </section>
 
-      {/* SNAPSHOT SECTION */}
-      <section className="relative py-16 sm:py-20">
+
+
+
+
+
+
+<section className="relative py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-xl border border-white bg-white/70  p-6 sm:p-8 ">
             <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-indigo-200/35 blur-3xl" />
@@ -1406,7 +1411,7 @@ const ModernSchoolLayout = () => {
               <div className="lg:col-span-7 space-y-6">
                 {/* Snapshot Badge */}
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 w-fit">
-                  <FiZap className="w-4 h-4 text-orange-800" />
+                        <FiZap className="w-4 h-4 text-orange-800" />
                   Snapshot
                 </div>
 
@@ -1580,6 +1585,21 @@ const ModernSchoolLayout = () => {
           </div>
         </div>
       </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       {/* VISION / MISSION / MOTTO */}
       <section className="relative py-16 sm:py-20 overflow-hidden">
@@ -1899,14 +1919,14 @@ const ModernSchoolLayout = () => {
         return (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
             <div className="lg:col-span-6">
-              <div className="group relative h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.05]">
+              <div className="relative h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.05]">
                 <div className="relative aspect-[16/11] w-full overflow-hidden">
                   {featuredItem.image ? (
                     <Image
                       src={featuredItem.image}
                       alt={featuredItem.title}
                       fill
-                      className="object-cover duration-700 group-hover:scale-105"
+                      className="object-cover"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-slate-900">
@@ -1946,19 +1966,19 @@ const ModernSchoolLayout = () => {
               </div>
             </div>
 
-            <div className="lg:col-span-6 grid grid-cols-1 gap-4">
+            <div className="lg:col-span-6 grid grid-cols-2 gap-3 sm:gap-4">
               {supportItems.map((item, idx) => (
                 <div
                   key={`${item.title}-${idx}`}
-                  className="group grid grid-cols-1 sm:grid-cols-[11rem_1fr] overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] transition-all hover:border-amber-300/40 hover:bg-white/[0.07]"
+                  className="grid grid-cols-1 lg:grid-cols-[11rem_1fr] overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem] border border-white/10 bg-white/[0.04]"
                 >
-                  <div className="relative min-h-44 sm:min-h-full overflow-hidden">
+                  <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-full overflow-hidden">
                     {item.image ? (
                       <Image
                         src={item.image}
                         alt={item.title}
                         fill
-                        className="object-cover duration-700 group-hover:scale-105"
+                        className="object-cover"
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center bg-slate-900">
@@ -1968,8 +1988,8 @@ const ModernSchoolLayout = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent" />
                   </div>
 
-                  <div className="p-5 sm:p-6">
-                    <div className="flex items-center justify-between gap-3">
+                  <div className="p-3 sm:p-5 lg:p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
                       <p className="text-[9px] font-black uppercase tracking-[0.22em] text-amber-300">
                         {item.year || `0${idx + 2}`}
                       </p>
@@ -1977,15 +1997,15 @@ const ModernSchoolLayout = () => {
                         {item.stats || "Milestone"}
                       </span>
                     </div>
-                    <h3 className="mt-3 text-lg sm:text-xl font-black tracking-tight text-white">
+                    <h3 className="mt-2 sm:mt-3 text-sm sm:text-lg lg:text-xl font-black tracking-tight text-white">
                       {item.title}
                     </h3>
-                    <p className="mt-2 line-clamp-3 text-sm font-medium leading-relaxed text-white/60">
+                    <p className="mt-2 line-clamp-3 text-[11px] sm:text-sm font-medium leading-relaxed text-white/60">
                       {item.shortDescription || item.description || "A milestone from our school journey."}
                     </p>
                     <button
                       onClick={() => openAchievementModal(item)}
-                      className="mt-4 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em] text-white hover:text-amber-300"
+                      className="mt-3 sm:mt-4 inline-flex items-center gap-2 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.18em] text-white"
                     >
                       Details <FiArrowRight className="h-3.5 w-3.5" />
                     </button>
