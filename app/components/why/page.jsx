@@ -349,7 +349,7 @@ const ModernSchoolLayout = () => {
     if (schoolStatsData) {
       return {
         meanScore: schoolStatsData.meanScore || 4.5,
-        lastYearMean: schoolStatsData.lastYearMean || 7.85,
+        lastYearMean: schoolStatsData.lastYearMean || 4.2,
         targetMean: schoolStatsData.targetMean || 5.0,
         slogan: schoolStatsData.slogan || motto,
         sloganDescription: schoolStatsData.sloganDescription || "",
