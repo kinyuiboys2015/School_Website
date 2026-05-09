@@ -140,13 +140,17 @@ const deleteImageFromCloudinary = async (imageUrl) => {
   if (!imageUrl?.includes('cloudinary.com')) return;
 
   try {
-    const urlMatch = imageUrl.match(/\/upload\/(?:v\d+\/)?(.+)\.\w+$/);
-    if (!urlMatch) return;
-    
-    const publicId = urlMatch[1];
+    const parsedUrl = new URL(imageUrl);
+    const uploadPath = parsedUrl.pathname.split('/upload/')[1];
+    if (!uploadPath) return;
+
+    const publicId = uploadPath
+      .replace(/^v\d+\//, '')
+      .replace(/\.[^/.]+$/, '');
+
     await cloudinary.uploader.destroy(publicId, { resource_type: "image" });
-  } catch {
-    // Silent fail
+  } catch (error) {
+    console.warn("Could not delete Cloudinary news image:", error.message);
   }
 };
 
@@ -279,21 +283,27 @@ export async function PUT(req, { params }) {
     const file = formData.get("image");
     const removeImage = formData.get("removeImage") === "true";
     
+    let oldImageToDelete = null;
+
     if (file && file.size > 0) {
-      // Delete old image if exists
-      if (existingNews.image) {
-        await deleteImageFromCloudinary(existingNews.image);
-      }
-      
-      // Upload new image
       const result = await uploadImageToCloudinary(file);
-      if (result) {
-        updateData.image = result.secure_url;
-        console.log(`📸 Image updated by ${auth.user.name}`);
+      if (!result?.secure_url) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Failed to upload replacement image",
+            authenticated: true,
+          },
+          { status: 500 }
+        );
       }
+
+      updateData.image = result.secure_url;
+      oldImageToDelete = existingNews.image;
+      console.log(`📸 Image uploaded by ${auth.user.name}`);
     } else if (removeImage && existingNews.image) {
-      await deleteImageFromCloudinary(existingNews.image);
       updateData.image = null;
+      oldImageToDelete = existingNews.image;
       console.log(`🗑️ Image removed by ${auth.user.name}`);
     }
 
@@ -314,6 +324,10 @@ export async function PUT(req, { params }) {
         updatedAt: true,
       }
     });
+
+    if (oldImageToDelete && oldImageToDelete !== updatedNews.image) {
+      await deleteImageFromCloudinary(oldImageToDelete);
+    }
 
     return NextResponse.json({ 
       success: true, 

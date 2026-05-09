@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -16,6 +15,7 @@ model User {
   password       String?
   phone          String?
   role           UserRole        @default(ADMIN)
+  status         String          @default("active")
   image          String?
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
@@ -222,6 +222,45 @@ model Staff {
   updatedAt        DateTime @updatedAt
 }
 
+model StaffDepartment {
+  id                Int                    @id @default(autoincrement())
+  name              String                 @db.VarChar(255)
+  category          String                 @db.VarChar(50)
+  description       String?                @db.Text
+  headName          String?                @db.VarChar(255)
+  assistantHeadName String?                @db.VarChar(255)
+  staffCount        Int                    @default(0)
+  image             String?                @db.Text
+  extra             Json?
+  displayOrder      Int                    @default(0)
+  isActive          Boolean                @default(true)
+  images            StaffDepartmentImage[]
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+
+  @@index([category])
+  @@index([isActive])
+  @@index([displayOrder])
+  @@map("staff_departments")
+}
+
+model StaffDepartmentImage {
+  id                Int             @id @default(autoincrement())
+  staffDepartmentId Int
+  url               String          @db.Text
+  publicId          String?         @db.VarChar(255)
+  altText           String?         @db.VarChar(255)
+  caption           String?         @db.Text
+  displayOrder      Int             @default(0)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  department        StaffDepartment @relation(fields: [staffDepartmentId], references: [id], onDelete: Cascade)
+
+  @@index([staffDepartmentId])
+  @@index([displayOrder])
+  @@map("staff_department_images")
+}
+
 model EmailCampaign {
   id            String    @id @default(cuid())
   title         String
@@ -353,29 +392,29 @@ model SchoolInfo {
 
 // Individual Achievement Model
 model Achievement {
-  id                Int       @id @default(autoincrement())
-  title             String    @db.VarChar(255)
-  description       String?   @db.Text
-  category          String    @db.VarChar(100) // e.g., "Academic", "Sports", "Arts", "Leadership"
-  year              Int       // Year the achievement was earned
-  
+  id          Int     @id @default(autoincrement())
+  title       String  @db.VarChar(255)
+  description String? @db.Text
+  category    String  @db.VarChar(100) // e.g., "Academic", "Sports", "Arts", "Leadership"
+  year        Int // Year the achievement was earned
+
   // Images stored as JSON array
-  images            Json      @default("[]") // Array of { url, public_id, caption }
-  
+  images Json @default("[]") // Array of { url, public_id, caption }
+
   // Display options
-  featured          Boolean   @default(false)
-  displayOrder      Int       @default(0)
-  isActive          Boolean   @default(true)
-  
+  featured     Boolean @default(false)
+  displayOrder Int     @default(0)
+  isActive     Boolean @default(true)
+
   // Additional metadata
-  awardingBody      String?   @db.VarChar(255)
-  recipients        Json      @default("[]") // Array of recipient names
-  
+  awardingBody String? @db.VarChar(255)
+  recipients   Json    @default("[]") // Array of recipient names
+
   // Timestamps
-  achievedDate      DateTime?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  
+  achievedDate DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
   @@index([category])
   @@index([year])
   @@index([featured])
@@ -385,27 +424,23 @@ model Achievement {
 
 // School Stats Model (for constant mean and target values)
 model SchoolStats {
-  id                Int       @id @default(autoincrement())
-  
-  meanScore         Float?    // Overall mean score
-  lastYearMean      Float?    // Last year's mean score
-  targetMean        Float?    // Target mean for current year
-  
+  id Int @id @default(autoincrement())
+
+  meanScore    Float? // Overall mean score
+  lastYearMean Float? // Last year's mean score
+  targetMean   Float? // Target mean for current year
+
   // School slogan
-  slogan            String?   @db.Text
-  sloganDescription String?   @db.Text
-  sloganAuthor      String?   @db.VarChar(255)
-  
+  slogan            String? @db.Text
+  sloganDescription String? @db.Text
+  sloganAuthor      String? @db.VarChar(255)
+
   // Timestamps
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("SchoolStats")
 }
-
-
-
-
 
 model SchoolDocument {
   id Int @id @default(autoincrement())

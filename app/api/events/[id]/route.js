@@ -188,13 +188,16 @@ async function uploadImageToCloudinary(file) {
 async function deleteImageFromCloudinary(imageUrl) {
   try {
     if (!imageUrl || !imageUrl.includes('cloudinary.com')) return;
-    
-    // Extract public ID from Cloudinary URL
-    const urlParts = imageUrl.split('/');
-    const fileName = urlParts[urlParts.length - 1];
-    const publicId = fileName.split('.')[0];
-    
-    await cloudinary.uploader.destroy(`school_events/${publicId}`, {
+
+    const parsedUrl = new URL(imageUrl);
+    const uploadPath = parsedUrl.pathname.split('/upload/')[1];
+    if (!uploadPath) return;
+
+    const publicId = uploadPath
+      .replace(/^v\d+\//, '')
+      .replace(/\.[^/.]+$/, '');
+
+    await cloudinary.uploader.destroy(publicId, {
       resource_type: "image",
     });
     console.log(`✅ Deleted event image from Cloudinary: ${publicId}`);
@@ -355,22 +358,30 @@ export async function PUT(req, { params }) {
     const file = formData.get("image");
     const removeImage = formData.get("removeImage") === "true";
     
+    let oldImageToDelete = null;
+
     if (file && file.size > 0) {
-      // Delete old image from Cloudinary if exists
-      if (existingEvent.image) {
-        await deleteImageFromCloudinary(existingEvent.image);
-      }
-      
-      // Upload new image to Cloudinary
+      // Upload the new image first. Only clean up the old asset after the DB
+      // successfully points at the replacement URL.
       const result = await uploadImageToCloudinary(file);
-      if (result) {
-        dataToUpdate.image = result.secure_url;
-        console.log(`✅ Event image updated on Cloudinary by ${auth.user.name}: ${result.secure_url}`);
+      if (!result?.secure_url) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Failed to upload replacement image",
+            authenticated: true,
+          },
+          { status: 500 }
+        );
       }
+
+      dataToUpdate.image = result.secure_url;
+      oldImageToDelete = existingEvent.image;
+      console.log(`✅ Event image uploaded to Cloudinary by ${auth.user.name}: ${result.secure_url}`);
     } else if (removeImage && existingEvent.image) {
       // Remove image if requested
-      await deleteImageFromCloudinary(existingEvent.image);
       dataToUpdate.image = null;
+      oldImageToDelete = existingEvent.image;
       console.log(`🗑️ Event image removed from Cloudinary by ${auth.user.name}`);
     }
 
@@ -396,6 +407,10 @@ export async function PUT(req, { params }) {
        
       }
     });
+
+    if (oldImageToDelete && oldImageToDelete !== updatedEvent.image) {
+      await deleteImageFromCloudinary(oldImageToDelete);
+    }
 
     // Step 6: Return success response
     return NextResponse.json({ 

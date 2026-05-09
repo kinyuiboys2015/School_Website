@@ -594,9 +594,8 @@ const confirmDelete = async () => {
       targetRole: adminToDelete.role
     });
     
-    // ADMIN cannot delete SUPER_ADMIN
-    if (adminToDelete.role === 'SUPER_ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
-      toast.error('Only SUPER_ADMIN can delete other SUPER_ADMIN users');
+    if (currentUser.role !== 'SUPER_ADMIN') {
+      toast.error('Only SUPER_ADMIN can delete admin users');
       setShowDeleteConfirm(false);
       setAdminToDelete(null);
       return;
@@ -1645,17 +1644,14 @@ if (loading) {
       </button>
     )}
     
-    {/* Delete button - Visible to ADMIN and SUPER_ADMIN, but with restrictions */}
-    {(currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN') && session?.user && admin.id !== session.user.id && (
-      // ADMIN can delete other ADMINS, but not SUPER_ADMIN
-      (currentUserRole === 'SUPER_ADMIN' || (currentUserRole === 'ADMIN' && admin.role !== 'SUPER_ADMIN')) && (
+    {/* Delete button - only SUPER_ADMIN can delete admin users */}
+    {currentUserRole === 'SUPER_ADMIN' && session?.user && admin.id !== session.user.id && (
         <button
           onClick={() => handleDelete(admin)}
           className="p-2 bg-gradient-to-r from-red-50 to-red-100 hover:from-red-100 hover:to-red-200 text-red-600 rounded-xl transition-all duration-200 border border-red-200 hover:scale-100 active:scale-95"
         >
           <Trash2 className="text-sm" />
         </button>
-      )
     )}
   </div>
 </td>

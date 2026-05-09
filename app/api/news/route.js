@@ -258,10 +258,18 @@ if (!title || !excerpt || !dateStr) {
     const file = formData.get("image");
     if (file && file.size > 0) {
       const result = await uploadImageToCloudinary(file);
-      if (result) {
-        imageUrl = result.secure_url;
-        console.log(`📸 Image uploaded by ${auth.user.name}`);
+      if (!result?.secure_url) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Failed to upload news image",
+            authenticated: true,
+          },
+          { status: 500 }
+        );
       }
+      imageUrl = result.secure_url;
+      console.log(`📸 Image uploaded by ${auth.user.name}`);
     }
 
     // Create news

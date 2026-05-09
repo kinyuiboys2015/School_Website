@@ -465,40 +465,6 @@ const validateInput = (name, email, password, role) => {
 // Main POST
 export async function POST(request) {
   try {
-    // ===================== TOKEN VERIFICATION DISABLED FOR TESTING =====================
-    // Authentication is disabled to allow user creation for testing purposes.
-    // Uncomment the following block to re-enable admin/device token checks.
-    /*
-    // Authenticate request first - only ADMIN and SUPERADMIN can create users
-    const auth = authenticateRequest(request);
-    if (!auth.authenticated) {
-      return auth.response;
-    }
-    // Check if user has permission to create new users (only ADMIN or SUPERADMIN)
-    const adminRoles = ['ADMIN', 'SUPERADMIN', 'SUPER_ADMIN', 'administrator', 'PRINCIPAL'];
-    if (!adminRoles.includes(auth.user.role?.toUpperCase())) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: "Permission Denied",
-          message: "Only administrators can create new users"
-        },
-        { status: 403 }
-      );
-    }
-    // Log the user creation attempt for audit
-    console.log('👤 User creation attempt:', {
-      createdBy: auth.user.name,
-      createdById: auth.user.id,
-      createdByRole: auth.user.role,
-      device: auth.deviceInfo,
-      timestamp: new Date().toISOString()
-    });
-    */
-    // ===================== END TOKEN VERIFICATION DISABLED =====================
-
-    // ================ REST OF YOUR EXISTING CODE CONTINUES HERE ================
-
     let { name, email, password, phone, role } = await request.json();
     // Normalize role to Prisma enum (ADMIN or SUPER_ADMIN)
     let dbRole = (role || '').toUpperCase().replace(/[- ]/g, '_');
@@ -508,25 +474,35 @@ export async function POST(request) {
 
     // Only allow ADMIN or SUPERADMIN to create users (unless no users exist yet)
     const userCount = await prisma.user.count();
+    let auth = null;
     if (userCount > 0) {
-      // Token verification is DISABLED for user creation (for testing)
-      /*
-      const auth = authenticateRequest(request);
+      auth = authenticateRequest(request);
       if (!auth.authenticated) {
         return auth.response;
       }
-      const allowedRoles = ['ADMIN', 'SUPERADMIN'];
-      if (!allowedRoles.includes((auth.user.role || '').toUpperCase())) {
+      const allowedRoles = ['ADMIN', 'SUPER_ADMIN'];
+      const requesterRole = (auth.user.role || '').toUpperCase();
+      if (!allowedRoles.includes(requesterRole)) {
         return NextResponse.json(
           {
             success: false,
-            error: 'Permission Denied',
-            message: 'Only ADMIN or SUPERADMIN can create new users.'
+            error: "Permission Denied",
+            message: "Only ADMIN or SUPER_ADMIN users can create new users."
           },
           { status: 403 }
         );
       }
-      */
+
+      if (dbRole === 'SUPER_ADMIN' && requesterRole !== 'SUPER_ADMIN') {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Permission Denied",
+            message: "Only SUPER_ADMIN can create another SUPER_ADMIN user."
+          },
+          { status: 403 }
+        );
+      }
     }
 
     // Prevent non-SUPERADMIN role assignment for first user
@@ -586,6 +562,7 @@ export async function POST(request) {
     console.log('✅ User created successfully:', {
       newUser: user.email,
       newUserRole: user.role,
+      createdBy: auth?.user?.email || 'bootstrap',
       timestamp: new Date().toISOString()
     });
 
@@ -616,8 +593,21 @@ export async function POST(request) {
 
 
 // GET users
-export async function GET() {
+export async function GET(request) {
   try {
+    const auth = authenticateRequest(request);
+    if (!auth.authenticated) {
+      return auth.response;
+    }
+
+    const requesterRole = (auth.user.role || '').toUpperCase();
+    if (!['ADMIN', 'SUPER_ADMIN'].includes(requesterRole)) {
+      return NextResponse.json(
+        { success: false, error: "Permission Denied" },
+        { status: 403 }
+      );
+    }
+
     const users = await prisma.user.findMany({
       orderBy: { createdAt: 'desc' },
       select: { 
@@ -625,6 +615,7 @@ export async function GET() {
         name: true, 
         email: true, 
         role: true, 
+        status: true,
         createdAt: true 
       },
     });

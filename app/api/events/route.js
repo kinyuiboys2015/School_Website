@@ -296,10 +296,18 @@ export async function POST(req) {
     const file = formData.get("image");
     if (file && file.size > 0) {
       const result = await uploadImageToCloudinary(file);
-      if (result) {
-        imageUrl = result.secure_url;
-        console.log(`✅ Event image uploaded to Cloudinary by ${auth.user.name}: ${imageUrl}`);
+      if (!result?.secure_url) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Failed to upload event image",
+            authenticated: true,
+          },
+          { status: 500 }
+        );
       }
+      imageUrl = result.secure_url;
+      console.log(`✅ Event image uploaded to Cloudinary by ${auth.user.name}: ${imageUrl}`);
     }
 
     // Step 5: Create the event with creator info

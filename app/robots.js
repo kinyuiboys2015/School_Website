@@ -4,20 +4,21 @@ export default function robots() {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/MainDashboard', '/pages/Sign In', '/api/', '/_next/'],
+        disallow: ['/MainDashboard', '/pages/Sign%20In', '/api/'],
       },
       {
         userAgent: 'Googlebot',
-        allow: ['/', '/pages/', '/images/'],
-        disallow: ['/MainDashboard', '/pages/Sign In'],
+        allow: ['/', '/pages/', '/images/', '/public/', '/seo/'],
+        disallow: ['/MainDashboard', '/pages/Sign%20In', '/api/'],
       },
       {
         userAgent: 'Googlebot-Image',
-        allow: ['/images/', '/*.jpg$', '/*.jpeg$', '/*.png$'],
+        allow: ['/', '/images/', '/seo/', '/*.jpg$', '/*.jpeg$', '/*.png$', '/*.webp$'],
       },
       {
         userAgent: 'Bingbot',
-        disallow: ['/MainDashboard', '/pages/Sign In'],
+        allow: '/',
+        disallow: ['/MainDashboard', '/pages/Sign%20In', '/api/'],
       },
     ],
     sitemap: 'https://kinyuiboyssenior.school/sitemap.xml',

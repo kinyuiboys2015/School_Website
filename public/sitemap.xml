@@ -1,199 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-
-  <!-- ==================== MAIN PAGES ==================== -->
-  
   <url>
     <loc>https://kinyuiboyssenior.school/</loc>
-    <lastmod>2026-04-29</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>SA Kinyui Boys Senior School - Home</image:title>
-      <image:caption>Official school logo and emblem - Excellence With Integrity</image:caption>
+      <image:loc>https://kinyuiboyssenior.school/seo/kinyui.jpeg</image:loc>
+      <image:title>S.A. Kinyui Boys Senior School</image:title>
     </image:image>
   </url>
-
   <url>
     <loc>https://kinyuiboyssenior.school/pages/AboutUs</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>About Kinyui Boys Senior School</image:title>
-      <image:caption>Our history, mission, vision, and core values</image:caption>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://kinyuiboyssenior.school/pages/StudentPortal</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>Student Portal - Kinyui Boys</image:title>
-      <image:caption>Access student resources, results, and learning materials</image:caption>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://kinyuiboyssenior.school/pages/Guidance-and-Counselling</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>Guidance and Counselling Services</image:title>
-      <image:caption>Student support, mentorship, and wellness programs</image:caption>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://kinyuiboyssenior.school/pages/OurSchoolPolicies</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>School Rules and Policies</image:title>
-      <image:caption>Official school regulations, code of conduct, and guidelines</image:caption>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://kinyuiboyssenior.school/pages/Achievements</loc>
-    <lastmod>2026-04-29</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>School Achievements and Milestones</image:title>
-      <image:caption>Academic excellence, county rankings, national recognition, and STEM innovation awards</image:caption>
-    </image:image>
   </url>
-
   <url>
     <loc>https://kinyuiboyssenior.school/pages/admissions</loc>
-    <lastmod>2026-04-29</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>Admissions Information - Kinyui Boys</image:title>
-      <image:caption>Join Kinyui Boys Senior School - CBC pathways and enrollment</image:caption>
-    </image:image>
   </url>
-
   <url>
-    <loc>https://kinyuiboyssenior.school/pages/Apply-Now</loc>
-    <lastmod>2026-04-29</lastmod>
+    <loc>https://kinyuiboyssenior.school/pages/Apply%20Now</loc>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>Apply for Admissions - Kinyui Boys</image:title>
-      <image:caption>Start your application for the upcoming academic year</image:caption>
-    </image:image>
+    <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://kinyuiboyssenior.school/pages/fees</loc>
-    <lastmod>2026-04-29</lastmod>
+    <loc>https://kinyuiboyssenior.school/pages/Achievements</loc>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>School Fees Structure 2026</image:title>
-      <image:caption>Transparent fee breakdown - Boarding fees, admission fees, and payment methods</image:caption>
-    </image:image>
+    <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://kinyuiboyssenior.school/pages/gallery</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>School Gallery - Campus Life</image:title>
-      <image:caption>Visual showcase of campus facilities, student activities, sports, and school events</image:caption>
-    </image:image>
+    <loc>https://kinyuiboyssenior.school/pages/School%20Achievements</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://kinyuiboyssenior.school/pages/eventsandnews</loc>
-    <lastmod>2026-04-29</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>Latest News and Upcoming Events</image:title>
-      <image:caption>Stay updated with school announcements, academic calendars, and event schedules</image:caption>
-    </image:image>
   </url>
-
   <url>
-    <loc>https://kinyuiboyssenior.school/pages/Magazine</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>quarterly</changefreq>
+    <loc>https://kinyuiboyssenior.school/pages/gallery</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>School Magazine - The Kinyui Chronicle</image:title>
-      <image:caption>Student publications, creative writing, school news, and academic highlights</image:caption>
-    </image:image>
   </url>
-
   <url>
     <loc>https://kinyuiboyssenior.school/pages/staff</loc>
-    <lastmod>2026-04-29</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>Staff Directory - Our Faculty</image:title>
-      <image:caption>Meet our dedicated teaching staff, leadership team, and support personnel</image:caption>
-    </image:image>
   </url>
-
   <url>
-    <loc>https://kinyuiboyssenior.school/pages/careers</loc>
-    <lastmod>2026-04-29</lastmod>
+    <loc>https://kinyuiboyssenior.school/pages/StudentPortal</loc>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>Careers at Kinyui Boys Senior School</image:title>
-      <image:caption>Current job openings, teaching positions, and staff recruitment</image:caption>
-    </image:image>
   </url>
-
+  <url>
+    <loc>https://kinyuiboyssenior.school/pages/Guidance-and-Councelling</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kinyuiboyssenior.school/pages/OurSchoolPolicies</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kinyuiboyssenior.school/pages/fees</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kinyuiboyssenior.school/pages/Magazine</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kinyuiboyssenior.school/pages/careers</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
   <url>
     <loc>https://kinyuiboyssenior.school/pages/contact</loc>
-    <lastmod>2026-04-29</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>Contact Kinyui Boys Senior School</image:title>
-      <image:caption>Get in touch - Phone, email, location, and inquiry form</image:caption>
-    </image:image>
+    <priority>0.6</priority>
   </url>
-
-  <url>
-    <loc>https://kinyuiboyssenior.school/pages/Sign-In</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/kinyui.jpeg</image:loc>
-      <image:title>Administrator Login Portal</image:title>
-      <image:caption>Secure staff and administrator login access</image:caption>
-    </image:image>
-  </url>
-
 </urlset>

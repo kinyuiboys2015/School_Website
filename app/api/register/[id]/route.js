@@ -448,6 +448,17 @@ export async function DELETE(req, { params }) {
       );
     }
 
+    if ((auth.user.role || '').toUpperCase() !== 'SUPER_ADMIN') {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Permission Denied",
+          message: "Only SUPER_ADMIN users can delete admin accounts"
+        },
+        { status: 403 }
+      );
+    }
+
     // Check permission
     const permissionCheck = requiresAdminPrivilege('DELETE', targetUser.role, auth.user.role);
     if (!permissionCheck.allowed) {

@@ -865,7 +865,7 @@ function ModernItemModal({ onClose, onSave, item, type, existingItems = [], load
       const result = await response.json();
       if (result.success) {
         showNotification('success', 'Success', `${type === 'news' ? 'News' : 'Event'} saved successfully.`);
-        onSave(result.data || result.item || result);
+        onSave(result.data || result.event || result.item || result.news || result);
         setTimeout(() => onClose(), 1000);
       } else {
         throw new Error(result.error || result.message || 'Save failed');
@@ -1268,6 +1268,11 @@ const fetchEvents = async () => {
   const handleEdit = (item) => {
     setEditingItem(item);
     setShowModal(true);
+  };
+
+  const handleItemSaved = async () => {
+    await fetchData();
+    showNotification('success', 'Saved', `${activeSection === 'news' ? 'News' : 'Event'} saved successfully!`);
   };
 
   const handleView = (item) => {
@@ -1864,9 +1869,10 @@ const getAuthHeaders = () => {
       {showModal && (
         <ModernItemModal 
           onClose={() => setShowModal(false)} 
-          onSave={handleSubmit} 
+          onSave={handleItemSaved} 
           item={editingItem} 
           type={activeSection}
+          existingItems={activeSection === 'news' ? news : events}
           loading={saving} 
         />
       )}

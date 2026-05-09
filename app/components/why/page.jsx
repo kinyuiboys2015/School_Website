@@ -348,18 +348,18 @@ const ModernSchoolLayout = () => {
   const getSchoolStats = () => {
     if (schoolStatsData) {
       return {
-        meanScore: schoolStatsData.meanScore || 8.14,
+        meanScore: schoolStatsData.meanScore || 4.5,
         lastYearMean: schoolStatsData.lastYearMean || 7.85,
-        targetMean: schoolStatsData.targetMean || 8.5,
+        targetMean: schoolStatsData.targetMean || 5.0,
         slogan: schoolStatsData.slogan || motto,
         sloganDescription: schoolStatsData.sloganDescription || "",
         sloganAuthor: schoolStatsData.sloganAuthor || "",
       };
     }
     return {
-      meanScore: 8.14,
+      meanScore: 4.5,
       lastYearMean: 7.85,
-      targetMean: 8.5,
+      targetMean: 5.0,
       slogan: motto,
       sloganDescription: "",
       sloganAuthor: "",

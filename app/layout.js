@@ -32,14 +32,15 @@ export const viewport = {
 /* -------------------------------------------------------------------------- */
 export const metadata = {
   metadataBase: new URL("https://kinyuiboyssenior.school"),
+  applicationName: "S.A. Kinyui Boys Senior School",
 
   title: {
-    default: "S.A kinyui boys Senior School",
-    template: "%s | kinyui boys Senior School",
+    default: "S.A. Kinyui Boys Senior School",
+    template: "%s | Kinyui Boys Senior School",
   },
 
   description:
-    "The official website of S.A kinyui boys Senior School",
+    "Official website of S.A. Kinyui Boys Senior School in Matungulu, Machakos County. Explore admissions, academics, school news, events, achievements, staff departments, and student resources.",
   
 "keywords": [
     // Core Names & Official Identity
@@ -132,7 +133,9 @@ export const metadata = {
     "kinyui boys boys and girls"
   ],
 
-  authors: [{ name: "S.A kinyui boys Senior School" }],
+  authors: [{ name: "S.A. Kinyui Boys Senior School" }],
+  creator: "S.A. Kinyui Boys Senior School",
+  publisher: "S.A. Kinyui Boys Senior School",
   
   alternates: {
     canonical: "/",
@@ -140,18 +143,19 @@ export const metadata = {
 
   /* Open Graph (Social Media Sharing) */
   openGraph: {
-    title: "S.A kinyui boys School",
-    description: "Official school website.",
+    title: "S.A. Kinyui Boys Senior School",
+    description:
+      "Admissions, academics, achievements, news, events, and school information from S.A. Kinyui Boys Senior School.",
     url: "https://kinyuiboyssenior.school",
-    siteName: "kinyui boys Senior School",
+    siteName: "Kinyui Boys Senior School",
     locale: "en_KE",
     type: "website",
     images: [
       {
-        url: "/seo/kinyui.jpeg",
+        url: "https://kinyuiboyssenior.school/seo/kinyui.jpeg",
         width: 1200,
         height: 630,
-        alt: "S.A kinyui boys Senior School",
+        alt: "S.A. Kinyui Boys Senior School logo",
       },
     ],
   },
@@ -159,9 +163,9 @@ export const metadata = {
   /* Twitter Card */
   twitter: {
     card: "summary_large_image",
-    title: "S.A kinyui boys Senior School",
-    description: "Empowering students through education and faith in Machakos County.",
-    images: ["/seo/kinyui.jpeg"],
+    title: "S.A. Kinyui Boys Senior School",
+    description: "Official updates, admissions, academics, and resources for Kinyui Boys Senior School.",
+    images: ["https://kinyuiboyssenior.school/seo/kinyui.jpeg"],
   },
 
   /* Search Engine Bot Instructions */
@@ -177,8 +181,12 @@ export const metadata = {
   },
 
   icons: {
-    icon: "/seo/kinyui.jpeg",
-    apple: "/seo/kinyui.jpeg",
+    icon: [
+      { url: "/seo/kinyui.jpeg", type: "image/jpeg" },
+      { url: "/Kinyui_school_logo.png", type: "image/png" },
+    ],
+    apple: "/Kinyui_school_logo.png",
+    shortcut: "/seo/kinyui.jpeg",
   },
 
   verification: {
@@ -195,8 +203,8 @@ export default function RootLayout({ children }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "School",
-    "name": "S.A kinyui boys Senior School",
-    "alternateName": "kinyui boys Senior School",
+    "name": "S.A. Kinyui Boys Senior School",
+    "alternateName": "Kinyui Boys Senior School",
     "url": "https://kinyuiboyssenior.school",
     "logo": "https://kinyuiboyssenior.school/seo/kinyui.jpeg",
     "image": "https://kinyuiboyssenior.school/seo/kinyui.jpeg",
