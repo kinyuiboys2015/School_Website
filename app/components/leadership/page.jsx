@@ -20,11 +20,58 @@ const getImageUrl = (imagePath) => {
   return null;
 };
 
+const normalizeText = (value) => (value || '').toString().trim().toLowerCase();
+
+const isSameStaff = (a, b) => {
+  if (!a || !b) return false;
+  return a.id === b.id;
+};
+
+const isPrincipalStaff = (staff) => {
+  const role = normalizeText(staff?.role);
+  const position = normalizeText(staff?.position);
+
+  return (
+    role === 'principal' ||
+    role === 'chief principal' ||
+    (role.includes('principal') && !role.includes('deputy')) ||
+    position === 'principal' ||
+    position === 'chief principal' ||
+    (position.includes('principal') && !position.includes('deputy'))
+  );
+};
+
+const isDeputyStaff = (staff) => {
+  if (isPrincipalStaff(staff)) return false;
+
+  const role = normalizeText(staff?.role);
+  const position = normalizeText(staff?.position);
+
+  return role.includes('deputy') || position.includes('deputy');
+};
+
+const getDeputyType = (staff) => {
+  const combined = `${normalizeText(staff?.role)} ${normalizeText(staff?.position)}`;
+
+  if (combined.includes('academic') || combined.includes('academics')) return 'academics';
+  if (combined.includes('admin') || combined.includes('administration')) return 'administration';
+  return 'general';
+};
+
+const uniqueByStaffId = (items) => {
+  const seen = new Set();
+  return items.filter((item) => {
+    const id = item?.staff?.id;
+    if (!id || seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+};
+
 const ModernStaffLeadership = () => {
   const router = useRouter();
   const [principal, setPrincipal] = useState(null);
-  const [academicsDeputy, setAcademicsDeputy] = useState(null);
-  const [adminDeputy, setAdminDeputy] = useState(null);
+  const [deputies, setDeputies] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [supportStaff, setSupportStaff] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,63 +95,32 @@ const ModernStaffLeadership = () => {
         const data = await response.json();
 
         if (data.success && Array.isArray(data.staff)) {
-          const allStaff = data.staff;
+          const allStaff = data.staff.filter(Boolean);
 
           // ----- PRINCIPAL DETECTION -----
-          const foundPrincipal = allStaff.find(
-            (s) =>
-              s.position?.toLowerCase() === 'chief principal' ||
-              s.role?.toLowerCase() === 'principal' ||
-              s.position?.toLowerCase().includes('principal')
-          ) || allStaff[0];
+          const foundPrincipal = allStaff.find(isPrincipalStaff) || null;
           setPrincipal(foundPrincipal);
           setSelectedLeader(foundPrincipal);
 
-          // ----- DEPUTY DETECTION (FIXED) -----
+          // ----- DEPUTY DETECTION -----
           const allDeputies = allStaff.filter(
             (member) =>
-              member.id !== foundPrincipal?.id &&
-              (member.role?.toLowerCase().includes('deputy') ||
-               member.position?.toLowerCase().includes('deputy'))
+              member.id !== foundPrincipal?.id && isDeputyStaff(member)
           );
-
-          let academic = null;
-          let admin = null;
-
-          if (allDeputies.length === 1) {
-            // Only one deputy – use for BOTH roles
-            academic = allDeputies[0];
-            admin = allDeputies[0];
-          } else if (allDeputies.length >= 2) {
-            academic = allDeputies.find(
-              (d) => d.position?.toLowerCase().includes('academic')
-            );
-            admin = allDeputies.find(
-              (d) =>
-                d.position?.toLowerCase().includes('admin') ||
-                d.position?.toLowerCase().includes('administration')
-            );
-            if (!academic) academic = allDeputies[0];
-            if (!admin) admin = allDeputies[1] || allDeputies[0];
-          }
-
-          setAcademicsDeputy(academic);
-          setAdminDeputy(admin);
+          setDeputies(allDeputies);
 
           // ----- TEACHERS & SUPPORT STAFF (for stats) -----
           const allTeachers = allStaff.filter(s =>
             (s.role?.toLowerCase().includes('teacher') ||
              s.position?.toLowerCase().includes('teacher')) &&
-            s.id !== foundPrincipal.id &&
-            (!academic || s.id !== academic.id) &&
-            (!admin || s.id !== admin.id)
+            s.id !== foundPrincipal?.id &&
+            !allDeputies.some((deputy) => deputy.id === s.id)
           );
           setTeachers(allTeachers);
 
           const allSupport = allStaff.filter(s =>
-            s.id !== foundPrincipal.id &&
-            (!academic || s.id !== academic.id) &&
-            (!admin || s.id !== admin.id) &&
+            s.id !== foundPrincipal?.id &&
+            !allDeputies.some((deputy) => deputy.id === s.id) &&
             !allTeachers.includes(s)
           );
           setSupportStaff(allSupport);
@@ -134,17 +150,25 @@ const ModernStaffLeadership = () => {
 
   const getLeaderTitle = (leader) => {
     if (!leader) return 'Staff Member';
-    if (leader === principal) return 'Chief Principal';
-    if (leader === academicsDeputy) return 'Deputy Principal - Academics';
-    if (leader === adminDeputy) return 'Deputy Principal - Administration';
+    if (isSameStaff(leader, principal)) return 'Chief Principal';
+    if (isDeputyStaff(leader)) {
+      const deputyType = getDeputyType(leader);
+      if (deputyType === 'academics') return 'Deputy Principal - Academics';
+      if (deputyType === 'administration') return 'Deputy Principal - Administration';
+      return leader.position || 'Deputy Principal';
+    }
     return leader.position || leader.role || 'Staff Member';
   };
 
   const getLeaderSubtitle = (leader) => {
     if (!leader) return '';
-    if (leader === principal) return 'Executive Leadership';
-    if (leader === academicsDeputy) return 'Academics & Curriculum';
-    if (leader === adminDeputy) return 'Administration & Student Affairs';
+    if (isSameStaff(leader, principal)) return 'Executive Leadership';
+    if (isDeputyStaff(leader)) {
+      const deputyType = getDeputyType(leader);
+      if (deputyType === 'academics') return 'Academics & Curriculum';
+      if (deputyType === 'administration') return 'Administration & Student Affairs';
+      return 'Deputy Leadership';
+    }
     return leader.department || 'School Administration';
   };
 
@@ -173,16 +197,25 @@ const ModernStaffLeadership = () => {
   }
 
   if (!principal) {
-    return <div className="text-center py-20">No staff data available.</div>;
+    return (
+      <div className="text-center py-20">
+        No principal profile is configured in the staff API.
+      </div>
+    );
   }
 
-  const leadershipTeam = [
+  const leadershipTeam = uniqueByStaffId([
     { staff: principal, label: 'Chief Principal', color: 'from-amber-700 to-orange-700', subtitle: 'Executive Leadership' },
-    { staff: academicsDeputy, label: 'Deputy Principal - Academics', color: 'from-amber-600 to-orange-600', subtitle: 'Academics & Curriculum' },
-    { staff: adminDeputy, label: 'Deputy Principal - Administration', color: 'from-amber-600 to-orange-600', subtitle: 'Administration & Student Affairs' },
-  ].filter(item => item.staff !== null);
+    ...deputies.map((deputy) => ({
+      staff: deputy,
+      label: getLeaderTitle(deputy),
+      color: 'from-amber-600 to-orange-600',
+      subtitle: getLeaderSubtitle(deputy),
+    })),
+  ].filter(item => item.staff !== null));
 
   const currentLeader = selectedLeader || principal;
+  const isCurrentPrincipal = isSameStaff(currentLeader, principal);
 
   // ==================== GRID LAYOUT ====================
   if (layoutMode === 'grid') {
@@ -210,7 +243,7 @@ const ModernStaffLeadership = () => {
               <div
                 key={leader.staff.id}
                 className={`group bg-white rounded-2xl overflow-hidden shadow-lg transition-all hover:shadow-xl hover:-translate-y-1 ${
-                  leader.staff === principal ? 'ring-2 ring-amber-500' : 'border border-slate-200'
+                  isSameStaff(leader.staff, principal) ? 'ring-2 ring-amber-500' : 'border border-slate-200'
                 }`}
               >
                 <div className={`h-2 bg-gradient-to-r ${leader.color}`} />
@@ -230,7 +263,7 @@ const ModernStaffLeadership = () => {
                       <GiGraduateCap className="text-white text-6xl opacity-70" />
                     </div>
                   )}
-                  {leader.staff === principal && (
+                  {isSameStaff(leader.staff, principal) && (
                     <div className="absolute top-3 right-3 bg-amber-500 text-white text-[10px] font-black px-2 py-1 rounded-full shadow-lg">
                       Principal
                     </div>
@@ -282,12 +315,6 @@ const ModernStaffLeadership = () => {
             ))}
           </div>
 
-          {/* Notification when only one deputy serves both roles */}
-          {academicsDeputy && adminDeputy && academicsDeputy.id === adminDeputy.id && (
-            <div className="mt-8 text-center text-sm text-amber-700 bg-amber-50 p-3 rounded-lg">
-              ℹ️ The same Deputy currently holds both Academic and Administrative responsibilities.
-            </div>
-          )}
         </div>
       </div>
     );
@@ -410,7 +437,7 @@ const ModernStaffLeadership = () => {
                   <GiGraduateCap className="text-8xl text-white/40" />
                 </div>
               )}
-              {currentLeader === principal && (
+              {isCurrentPrincipal && (
                 <div className="absolute top-4 left-4 bg-amber-500 text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
                   <IoSparkles size={12} /> Chief Principal
                 </div>
@@ -455,7 +482,7 @@ const ModernStaffLeadership = () => {
                   <div className="bg-slate-50 rounded-xl p-4">
                     <p className="text-slate-700 text-sm leading-relaxed">
                       {currentLeader.bio ||
-                        (currentLeader === principal
+                        (isCurrentPrincipal
                           ? `${currentLeader.name} serves as the Chief Principal, bringing visionary leadership and commitment to excellence.`
                           : `${currentLeader.name} is a dedicated member of our executive leadership team.`)}
                     </p>
@@ -463,7 +490,7 @@ const ModernStaffLeadership = () => {
                 </div>
 
                 {/* Dynamic Stats (from real data) */}
-                {currentLeader === principal && (
+                {isCurrentPrincipal && (
                   <div className="grid grid-cols-3 gap-3 mt-2">
                     <div className="text-center p-3 bg-amber-50 rounded-xl">
                       <p className="text-lg font-black text-amber-600">{teachers.length + supportStaff.length}</p>
@@ -480,7 +507,7 @@ const ModernStaffLeadership = () => {
                   </div>
                 )}
 
-                {currentLeader !== principal && currentLeader.responsibilities?.length > 0 && (
+                {!isCurrentPrincipal && currentLeader.responsibilities?.length > 0 && (
                   <div className="mt-4">
                     <h3 className="text-[10px] font-black text-slate-700 uppercase mb-2">Key Responsibilities</h3>
                     <div className="flex flex-wrap gap-1.5">
@@ -509,7 +536,7 @@ const ModernStaffLeadership = () => {
         </div>
 
         {/* Back to Principal button (mobile) */}
-        {isMobile && selectedLeader !== principal && (
+        {isMobile && !isSameStaff(selectedLeader, principal) && (
           <div className="mt-6 flex justify-center">
             <button onClick={() => handleLeaderClick(principal)} className="flex items-center gap-2 px-5 py-2.5 bg-amber-50 border border-amber-200 text-amber-700 font-black text-xs rounded-xl">
               <FiArrowLeft size={12} /> Back to Principal
