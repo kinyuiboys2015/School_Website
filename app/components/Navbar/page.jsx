@@ -28,7 +28,6 @@ import { usePathname } from 'next/navigation';
 
 export default function ModernNavbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isAcademicDropdownOpen, setIsAcademicDropdownOpen] = useState(false);
   const [isResourcesDropdownOpen, setIsResourcesDropdownOpen] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
@@ -41,10 +40,6 @@ export default function ModernNavbar() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
-    };
-
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
         setIsOpen(false);
@@ -53,11 +48,9 @@ export default function ModernNavbar() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
     
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
@@ -232,13 +225,7 @@ export default function ModernNavbar() {
 
   return (
     <>
-      <nav
-        className={`fixed w-full z-50 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-slate-950/92 backdrop-blur-xl shadow-xl shadow-slate-950/20 border-b border-white/10'
-            : 'bg-gradient-to-r from-slate-950 via-[#2a0a0a] to-slate-950 shadow-lg'
-        }`}
-      >
+      <nav className="fixed w-full z-50 bg-[#3b1e0a] shadow-xl">
         <div className="w-full px-3 xs:px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between min-h-[4.5rem] sm:min-h-[5.2rem]">
             
@@ -556,7 +543,7 @@ export default function ModernNavbar() {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="lg:hidden bg-gradient-to-b from-slate-950 to-[#1a0505] border-t border-white/10">
+          <div className="lg:hidden bg-[#3b1e0a] border-t border-white/10">
             <div className="px-3 xs:px-4 sm:px-6 py-6 xs:py-8 max-w-2xl mx-auto">
               <div className="space-y-1.5 xs:space-y-2 mb-6 xs:mb-8">
                 {mainNavigation.map((item) => {
