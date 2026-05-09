@@ -523,7 +523,7 @@ const ModernStaffLeadership = () => {
             onClick={() => router.push('/pages/staff')}
             className="inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-amber-600 text-amber-700 font-black rounded-xl hover:bg-gradient-to-r hover:from-amber-600 hover:to-orange-600 hover:text-white transition-all"
           >
-            <FiEye /> View Complete Staff Directory <FiChevronRight />
+            <FiEye /> View Staff Directory <FiChevronRight />
           </button>
         </div>
       </div>
