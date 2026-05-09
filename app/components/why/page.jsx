@@ -499,76 +499,6 @@ const ModernSchoolLayout = () => {
     },
   ];
 
-const schoolFeatures = [
-  {
-    title: "Academia Focused",
-    gradient: "from-indigo-500 to-cyan-500",
-    description:
-      "An environment engineered for deep learning, intellectual discipline, and consistent academic performance.",
-    highlight: "Elite Learning Standard",
-    details: [
-      "Structured Learning Systems",
-      "Performance Tracking",
-      "Exam Mastery",
-      "Academic Mentorship",
-    ],
-    metrics: ["Good Performance", "Consistent Results", "good Improovement"],
-    icon: <FiAward />,
-    isPremium: false,
-  },
-
-  {
-    title: "Expert Teaching Team",
-    gradient: "from-emerald-500 to-teal-500",
-    description:
-      "A dedicated team of professionals delivering clarity, guidance, and personalized academic support.",
-    highlight: "Professional Educators",
-    details: [
-      "Certified Instructors",
-      "Subject Mastery",
-      "Student Mentorship",
-      "Continuous Training",
-    ],
-    metrics: ["Highly Qualified", "Experienced", "Student-Focused"],
-    icon: <FiUsers />,
-    isPremium: false,
-  },
-
-  {
-    title: "Character & Purpose",
-    gradient: "from-slate-700 to-slate-500",
-    description:
-      "We nurture integrity, discipline, and leadership while grounding students in strong moral and spiritual values In Christ Jesus.",
-    highlight: "Values-Driven Growth",
-    details: [
-      "Integrity First",
-      "Self-Discipline",
-      "Leadership Mindset",
-      "Faith Foundation",
-    ],
-    metrics: ["Leadership", "Discipline", "Service"],
-    icon: <FiHeart />,
-    isPremium: false,
-  },
-
-  {
-    title: "CBC Pathways",
-    gradient: "from-emerald-600 to-green-500",
-    description:
-      "Focused preparation for university and beyond through career guidance, exposure, and strategic partnerships.",
-    highlight: "Career Readiness",
-    details: [
-      "Career Strategy",
-      "University Placement",
-      "Alumni Guidance",
-      "Scholarship Access",
-    ],
-    metrics: ["Global Opportunities", "Career Ready", "Strong Network"],
-    icon: <FiTrendingUp />,
-    isPremium: true,
-  },
-];
-
   const pathways = [
     {
       id: "stem",
@@ -1945,109 +1875,88 @@ const schoolFeatures = [
         </section>
       )}
 
-<section className="relative py-16 sm:py-24 bg-[#050505] overflow-hidden text-white">
-  {/* Subtle Grain Overlay */}
-  <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+<section className="relative py-16 sm:py-24 bg-slate-950 overflow-hidden text-white">
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,#92400e_0%,transparent_35%),radial-gradient(circle_at_bottom_right,#0f172a_0%,transparent_45%)] opacity-70" />
 
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    
-    {/* Minimalist Header - Responsive text sizing */}
-    <div className="mb-12 sm:mb-20 border-l-2 border-amber-600 pl-4 sm:pl-6">
-      <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tighter uppercase italic leading-none">
-        The <span className="text-amber-500 text-glow">School </span> <br className="sm:hidden" /> Recent Achievements
-      </h2>
-      <p className="text-slate-400 font-medium mt-4 max-w-md uppercase tracking-[0.15em] text-[9px] sm:text-[11px] leading-relaxed">
-        A comprehensive visual record of institutional excellence and academic milestones.
-      </p>
+  <div className="w-full md:w-[85%] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="mb-10 sm:mb-14 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+      <div className="max-w-2xl">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.24em] text-amber-200">
+          <FiAward className="h-4 w-4" />
+          School Milestones
+        </div>
+        <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+          Recent wins, visible progress, and moments worth remembering.
+        </h2>
+        <p className="mt-4 text-sm sm:text-base font-medium leading-relaxed text-white/60">
+          A cleaner record of academic, co-curricular, and institutional achievements from the live achievements API, with defaults when records are still being published.
+        </p>
+      </div>
+
+      <button
+        onClick={() => router.push("/pages/Achievements")}
+        className="inline-flex w-fit items-center gap-2 rounded-2xl border border-white/10 bg-white px-5 py-3 text-sm font-black text-slate-950 shadow-xl shadow-black/20"
+      >
+        Explore Archive <FiArrowRight className="h-4 w-4" />
+      </button>
     </div>
 
     {achievementsLoading ? (
-       <div className="py-20 text-center animate-pulse font-black uppercase text-[10px] tracking-widest text-slate-500">
-         Synchronizing Data...
-       </div>
+      <div className="py-20 text-center animate-pulse font-black uppercase text-[10px] tracking-widest text-white/40">
+        Synchronizing Data...
+      </div>
     ) : (
-      /* Grid: 1 column on mobile, 2 on tablet, 4 on desktop */
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-6">
-        {getAchievements().map((item, idx) => (
-          <div key={idx} className="group relative flex flex-col h-full">
-            
-            {/* The "Polaroid" Card - No fixed height on mobile to allow for long text */}
-            <div className="flex flex-col h-full relative overflow-hidden rounded-[1.25rem] bg-white/[0.03] border border-white/10 group-hover:border-amber-600/50 group-hover:bg-white/[0.06] transition-all">
-              
-              {/* IMAGE SECTION - Responsive Aspect Ratio */}
-              <div className="relative aspect-[4/3] w-full overflow-hidden shrink-0">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
+        {getAchievements().map((item, idx) => {
+          const featured = idx === 0;
+          return (
+            <div
+              key={idx}
+              className={`group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] transition-all hover:-translate-y-1 hover:border-amber-400/50 hover:bg-white/[0.07] ${
+                featured ? "lg:col-span-6 lg:row-span-2" : "lg:col-span-3"
+              }`}
+            >
+              <div className={`relative w-full overflow-hidden ${featured ? "aspect-[16/10]" : "aspect-[16/9]"}`}>
                 {item.image ? (
-                  <Image 
-                    src={item.image} 
-                    alt={item.title} 
-                    fill 
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
                     className="object-cover duration-700 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="w-full h-full bg-slate-800 flex items-center justify-center">
-                    <FiAward className="text-4xl text-slate-700" />
+                  <div className="flex h-full w-full items-center justify-center bg-slate-900">
+                    <FiAward className="text-4xl text-white/20" />
                   </div>
                 )}
-                
-                {/* Floating Year Tag */}
-                <div className="absolute top-4 left-4 z-20">
-                  <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur text-black text-[10px] font-black shadow-xl">
-                    {item.year}
-                  </span>
-                </div>
-                
-                {/* Gradient Overlay for legibility */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[10px] font-black text-slate-950">
+                  {item.year || "Now"}
+                </span>
               </div>
 
-              {/* CONTENT SECTION */}
-              <div className="p-5 sm:p-6 flex flex-col flex-grow">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="h-[1px] w-6 bg-amber-500" />
-                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-amber-400">
-                    {item.stats || "Global Recognition"}
-                  </span>
-                </div>
-
-                <h4 className="text-lg sm:text-xl font-black tracking-tight mb-3 group-hover:text-amber-300 transition-colors">
+              <div className={featured ? "p-6 sm:p-8" : "p-5"}>
+                <p className="text-[9px] font-black uppercase tracking-[0.22em] text-amber-300">
+                  {item.stats || item.impact || "Milestone"}
+                </p>
+                <h3 className={`${featured ? "text-2xl sm:text-3xl" : "text-lg"} mt-3 font-black tracking-tight text-white`}>
                   {item.title}
-                </h4>
-
-                <p className="text-slate-400 text-sm leading-relaxed mb-6 font-medium">
+                </h3>
+                <p className="mt-3 text-sm font-medium leading-relaxed text-white/60">
                   {item.shortDescription || item.description || "A milestone from our academic and co-curricular journey, reflecting steady progress, stronger systems, and student confidence."}
                 </p>
-
-                <div className="mt-auto pt-4">
-                  <button 
-                    onClick={() => openAchievementModal(item)}
-                    className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-amber-400 transition-all border-b border-white/10 pb-1"
-                  >
-                    View Details <FiArrowRight className="group-hover:translate-x-2 " />
-                  </button>
-                </div>
+                <button
+                  onClick={() => openAchievementModal(item)}
+                  className="mt-5 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-white transition-colors hover:bg-amber-400 hover:text-slate-950"
+                >
+                  View Details <FiArrowRight className="h-3.5 w-3.5" />
+                </button>
               </div>
             </div>
-
-            {/* Background Decorative Number */}
-            <span className="hidden sm:block absolute -bottom-6 -right-2 text-9xl font-black text-white/[0.02] pointer-events-none select-none transition-all group-hover:text-amber-500/[0.05]">
-              0{idx + 1}
-            </span>
-          </div>
-        ))}
+          );
+        })}
       </div>
     )}
-
-    {/* Bottom Navigation */}
-    <div className="mt-16 sm:mt-24 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10 border-t border-white/5 pt-12">
-       <span className="hidden sm:block h-[1px] flex-1 bg-gradient-to-r from-transparent to-white/10" />
-       <button
-         onClick={() => router.push("/pages/Achievements")}
-         className="w-full sm:w-auto px-10 py-4 rounded-full border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 hover:text-white hover:border-amber-600 hover:bg-amber-600/5 transition-all"
-       >
-          Explore Archive
-       </button>
-       <span className="hidden sm:block h-[1px] flex-1 bg-gradient-to-l from-transparent to-white/10" />
-    </div>
   </div>
 </section>
 
@@ -2059,41 +1968,57 @@ const schoolFeatures = [
           <div className="absolute bottom-[-10%] left-[-5%] w-[35rem] h-[35rem] bg-emerald-50/40 rounded-full blur-[100px]" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="w-full md:w-[85%] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* HERO SIGNATURE CARD */}
-          <div className="relative mb-12 rounded-[3rem] border border-slate-200 bg-white/40 backdrop-blur-xl p-8 md:p-12 shadow-2xl shadow-slate-200/50 overflow-hidden">
-            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-indigo-50/30 to-transparent pointer-events-none" />
+          <div className="relative mb-12 overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-6 sm:p-8 md:p-10 shadow-xl shadow-slate-200/60">
+            <div className="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-amber-100 blur-3xl" />
+            <div className="absolute -bottom-28 left-1/3 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl" />
 
-            <div className="max-w-3xl relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-800 text-[10px] font-black uppercase tracking-[0.2em] text-white mb-6">
-                <HiOutlineSparkles className="w-4 h-4" />
-                The Signature Experience
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+              <div className="lg:col-span-8">
+                <div className="inline-flex items-center gap-2 rounded-full border border-amber-100 bg-amber-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.22em] text-amber-900">
+                  <HiOutlineSparkles className="w-4 h-4" />
+                  The Signature Experience
+                </div>
+
+                <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-black text-slate-950 tracking-tight leading-[1.05]">
+                  What makes the journey at{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-900 via-rose-800 to-orange-800">
+                    {schoolName}
+                  </span>{" "}
+                  different?
+                </h2>
+
+                <p className="mt-5 max-w-2xl text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
+                  Structured academics, character formation, mentorship, and pathway guidance work together so every learner can move with confidence from school life to the next step.
+                </p>
               </div>
 
-              <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-[1.1] mb-6">
-                What defines the journey at <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-900 via-rose-800 to-orange-800">
-                  {schoolName}?
-                </span>
-              </h2>
+              <div className="lg:col-span-4">
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    ["Subjects", subjects.length],
+                    ["Departments", departments.length],
+                    ["Students", `${studentCount}+`],
+                    ["Staff", `${staffCount}+`],
+                  ].map(([label, value]) => (
+                    <div key={label} className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
+                      <p className="text-xl font-black text-slate-950">{value}</p>
+                      <p className="mt-1 text-[9px] font-black uppercase tracking-[0.18em] text-slate-400">{label}</p>
+                    </div>
+                  ))}
+                </div>
 
-              <div className="flex flex-col md:flex-row md:items-center gap-6">
-                <p className="text-lg text-slate-600 font-medium leading-relaxed flex-1">
-                  We’ve engineered an environment where structured support meets
-                  academic rigor, ensuring every learner is ready for the world
-                  beyond our gates.
-                </p>
-
-                <div className="flex items-center gap-3 shrink-0">
+                <div className="mt-4 flex gap-3">
                   <button
                     onClick={handleExplorePathways}
-                    className="px-6 py-4 rounded-2xl bg-slate-900 text-white font-bold text-sm hover:bg-indigo-600 transition-all active:scale-95 shadow-xl shadow-slate-200"
+                    className="flex-1 rounded-2xl bg-slate-950 px-4 py-3 text-xs font-black text-white"
                   >
                     Start Admission
                   </button>
                   <button
                     onClick={() => router.push("/pages/AboutUs")}
-                    className="p-4 rounded-2xl bg-white border border-slate-200 text-slate-900 font-bold text-sm hover:bg-slate-50 transition-all"
+                    className="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-xs font-black text-slate-900"
                   >
                     Our Story
                   </button>
@@ -2360,170 +2285,6 @@ const schoolFeatures = [
 </div>
         </div>
       </section>
-
-{/* EDUCATIONAL PILLARS - BENTO GRID (RESPONSIVE OPTIMIZED) */}
-<section className="relative py-16 sm:py-24 bg-white overflow-hidden">
-  {/* Decorative Background Elements - Adjusted for mobile */}
-  <div className="absolute top-0 right-0 w-full sm:w-1/3 h-full bg-slate-50/50 -z-0" />
-  <div className="absolute top-10 left-10 w-32 h-32 sm:w-64 sm:h-64 bg-indigo-50 blur-[60px] sm:blur-[100px] rounded-full" />
-
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-      
-      {/* LEFT COLUMN: Sticky Header */}
-      <div className="lg:col-span-5 lg:sticky lg:top-24">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-[10px] font-black uppercase tracking-widest text-orange-800 mb-6">
-          <FiLayers className="w-4 h-4" />
-          The Foundation
-        </div>
-
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tighter leading-[1] sm:leading-[0.9] mb-6 sm:mb-8">
-          Educational <br className="hidden sm:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-800 to-orange-800">
-            Pillars
-          </span>
-        </h2>
-
-        <p className="text-slate-600 text-base sm:text-lg font-medium leading-relaxed max-w-md mb-8 sm:mb-10">
-          We don't just teach; we build. Our framework is designed to
-          cultivate academic mastery and character resilience in every
-          student.
-        </p>
-
-        {/* Global School Stat - Full width on mobile */}
-        <div className="p-6 sm:p-8 bg-slate-900 rounded-[1.5rem] sm:rounded-[0.5rem] text-white shadow-2xl shadow-indigo-100">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-xl sm:rounded-2xl flex items-center justify-center">
-              <FiStar className="text-amber-400 text-lg sm:text-xl" />
-            </div>
-            <div>
-              <p className="text-xl sm:text-2xl font-black italic leading-none">Excellence</p>
-              <p className="text-white/50 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest mt-1">
-                As our Standard
-              </p>
-            </div>
-          </div>
-          <p className="text-xs sm:text-sm text-white/70 leading-relaxed">
-            Integrating modern technology with traditional values to create
-            a holistic learning environment.
-          </p>
-        </div>
-      </div>
-
-      {/* RIGHT COLUMN: Feature Cards */}
-      <div className="lg:col-span-7 space-y-4 sm:space-y-6">
-        {schoolFeatures.map((feature, index) => {
-          const isPremium = feature.isPremium;
-
-          return (
-            <div
-              key={index}
-              className={`group relative overflow-hidden rounded-[1rem] border  ${
-                isPremium
-                  ? "bg-slate-950 border-white/10 p-6 sm:p-10"
-                  : "bg-white border-slate-100 p-6 sm:p-8 hover:border-indigo-200 hover:shadow-lg"
-              }`}
-            >
-              {/* Feature Gradient Glow */}
-              <div
-                className={`absolute -right-20 -top-20 w-64 h-64 bg-gradient-to-br ${feature.gradient} opacity-[0.08] blur-3xl`}
-              />
-
-              <div className="relative z-10 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
-                {/* Icon & Badge */}
-                <div className="shrink-0">
-                  <div
-                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white shadow-lg`}
-                  >
-                    {React.cloneElement(feature.icon, {
-                      className: "w-6 h-6 sm:w-7 sm:h-7",
-                    })}
-                  </div>
-                </div>
-
-                {/* Content Area */}
-                <div className="flex-1">
-                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
-                    <span
-                      className={`text-[9px] sm:text-[10px] font-black uppercase tracking-widest ${
-                        isPremium ? "text-sky-300" : "text-orange-800"
-                      }`}
-                    >
-                      {feature.highlight}
-                    </span>
-                    {isPremium && (
-                      <span className="px-2 py-0.5 rounded-md bg-white/10 text-[8px] sm:text-[9px] font-bold text-white/60 border border-white/10">
-                        PREMIUM TRACK
-                      </span>
-                    )}
-                  </div>
-
-                  <h4
-                    className={`text-xl sm:text-2xl font-black mb-3 tracking-tight ${
-                      isPremium ? "text-white" : "text-slate-900"
-                    }`}
-                  >
-                    {feature.title}
-                  </h4>
-
-                  <p
-                    className={`text-xs sm:text-sm leading-relaxed mb-6 font-medium ${
-                      isPremium ? "text-white/70" : "text-slate-500"
-                    }`}
-                  >
-                    {feature.description}
-                  </p>
-
-                  {/* Details Pills */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {feature.details.map((detail, dIdx) => (
-                      <span
-                        key={dIdx}
-                        className={`px-3 py-1 rounded-lg text-[9px] sm:text-[10px] font-black border ${
-                          isPremium
-                            ? "bg-white/5 border-white/10 text-white/60"
-                            : "bg-slate-50 border-slate-100 text-slate-600"
-                        }`}
-                      >
-                        {detail}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Metrics Row - Responsive columns */}
-                  <div
-                    className={`grid grid-cols-2 gap-4 sm:flex sm:gap-8 pt-6 border-t ${
-                      isPremium ? "border-white/10" : "border-slate-100"
-                    }`}
-                  >
-                    {feature.metrics.map((metric, mIdx) => (
-                      <div key={mIdx}>
-                        <p
-                          className={`text-lg sm:text-xl font-black ${
-                            isPremium ? "text-white" : "text-slate-900"
-                          }`}
-                        >
-                          {metric.split(" ")[0]}
-                        </p>
-                        <p
-                          className={`text-[8px] sm:text-[10px] font-bold uppercase tracking-wider ${
-                            isPremium ? "text-white/40" : "text-slate-400"
-                          }`}
-                        >
-                          {metric.split(" ").slice(1).join(" ")}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  </div>
-</section>
 
       {/* UNIVERSITY PARTNERS */}
       <section className="relative py-16 sm:py-20 overflow-hidden">
