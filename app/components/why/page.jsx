@@ -1067,7 +1067,7 @@ const ModernSchoolLayout = () => {
       return (
         <div
           key={idx}
-          className="rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm w-full transition-all hover:border-indigo-300"
+          className="rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm w-full"
         >
           <p className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-500 mb-3">
             {stat.label}
@@ -1343,7 +1343,7 @@ const ModernSchoolLayout = () => {
 
                   <button
                     onClick={() => toggleReadMore(item.id)}
-                    className="mt-4 inline-flex items-center gap-1 text-xs font-black tracking-widest uppercase text-orange-800 hover:text-indigo-700 transition-colors"
+                    className="mt-4 inline-flex items-center gap-1 text-xs font-black tracking-widest uppercase text-orange-800"
                   >
                     {expandedCards[item.id] ? "Show Less" : "Read More"}
                     <FiChevronDown
@@ -1370,9 +1370,9 @@ const ModernSchoolLayout = () => {
   </div>
 
   {/* Framed Description without visible div borders */}
-  <div className="relative mt-8 group cursor-default">
+  <div className="relative mt-8 cursor-default">
     {/* Subtle Vertical Accent Line */}
-    <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-indigo-500 via-sky-500 to-transparent opacity-40 group-hover:opacity-100 transition-opacity" />
+    <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-indigo-500 via-sky-500 to-transparent opacity-40" />
     
     <div className="pl-6 sm:pl-10">
       <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
@@ -1385,7 +1385,7 @@ const ModernSchoolLayout = () => {
       {/* Ghost-style Action Link (Optional but keeps the logic) */}
       <div 
         onClick={handleExplorePathways}
-        className="mt-6 inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-orange-800 hover:text-sky-600 cursor-pointer transition-colors"
+        className="mt-6 inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-orange-800 cursor-pointer"
       >
         Initiate Discovery <FiArrowRight className="w-4 h-4 translate-y-[-1px]" />
       </div>
@@ -1394,212 +1394,6 @@ const ModernSchoolLayout = () => {
 </div>
         </div>
       </section>
-
-
-
-
-
-
-
-<section className="relative py-16 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-xl border border-white bg-white/70  p-6 sm:p-8 ">
-            <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-indigo-200/35 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-emerald-200/25 blur-3xl" />
-
-            <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              <div className="lg:col-span-7 space-y-6">
-                {/* Snapshot Badge */}
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.25em] text-slate-700 w-fit">
-                        <FiZap className="w-4 h-4 text-orange-800" />
-                  Snapshot
-                </div>
-
-                {/* Heading */}
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 leading-tight tracking-tight">
-                  {loading ? (
-                    <span className="inline-flex items-center gap-2">
-                      <FiLoader className="w-5 h-5 animate-spin text-orange-800" />{" "}
-                      Loading...
-                    </span>
-                  ) : (
-                    <>
-                      Admissions &amp; Enquiries at{" "}
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-emerald-600">
-                        {schoolName}
-                      </span>
-                    </>
-                  )}
-                </h2>
-
-                {/* Description */}
-                <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl font-medium">
-                  {description ||
-                    "A future-ready learning community focused on academic growth, character, and real-world skills."}
-                </p>
-
-                {/* Stats Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 pt-2">
-                  {(() => {
-                    const stats = getSchoolStats();
-                    const statItems = [
-                      {
-                        label: "Students",
-                        value: `${studentCount}+`,
-                        icon: <FiUsers className="w-4 h-4" />,
-                        color: "text-indigo-700",
-                        bgColor: "bg-indigo-50",
-                      },
-                      {
-                        label: "Mean Score",
-                        value: stats.meanScore?.toFixed(2) || "—",
-                        icon: <FiBookOpen className="w-4 h-4" />,
-                        color: "text-emerald-700",
-                        bgColor: "bg-emerald-50",
-                        trend: stats.lastYearMean ? (
-                          <span
-                            className={`text-[10px] font-bold ml-1 ${
-                              (stats.meanScore || 0) > (stats.lastYearMean || 0)
-                                ? "text-green-600"
-                                : "text-red-600"
-                            }`}
-                          >
-                            {(stats.meanScore || 0) > (stats.lastYearMean || 0)
-                              ? "↑"
-                              : "↓"}
-                          </span>
-                        ) : null,
-                      },
-                      {
-                        label: "Target Mean",
-                        value: stats.targetMean?.toFixed(2) || "—",
-                        icon: <FiTarget className="w-4 h-4" />,
-                        color: "text-amber-700",
-                        bgColor: "bg-amber-50",
-                        progress:
-                          stats.meanScore && stats.targetMean ? (
-                            <span className="text-[10px] font-bold ml-1 text-amber-600">
-                              {(
-                                (stats.meanScore / stats.targetMean) *
-                                100
-                              ).toFixed(0)}
-                              %
-                            </span>
-                          ) : null,
-                      },
-                      {
-                        label: "Slogan",
-                        value: stats.slogan || motto,
-                        icon: <FiStar className="w-4 h-4" />,
-                        color: "text-amber-700",
-                        bgColor: "bg-amber-50",
-                      },
-                    ];
-
-                    return statItems.map((stat, idx) => (
-                      <div
-                        key={idx}
-                        className="relative p-4 bg-white/70 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between min-h-[90px] overflow-hidden w-full"
-                      >
-                        {/* Icon */}
-                        <span
-                          className={`absolute top-2 right-2 text-sm opacity-30 ${stat.color}`}
-                        >
-                          {stat.icon}
-                        </span>
-
-                        {/* Value with optional trend/progress */}
-                        <div className="relative z-10">
-                          <p
-                            className={`font-bold ${stat.color} leading-tight flex items-center ${
-                              stat.label === "Slogan"
-                                ? "text-xs sm:text-sm"
-                                : "text-lg sm:text-xl md:text-2xl"
-                            }`}
-                          >
-                            {stat.value}
-                            {stat.trend}
-                            {stat.progress}
-                          </p>
-                        </div>
-
-                        {/* Label */}
-                        <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-gray-500 mt-1 relative z-10">
-                          {stat.label}
-                        </p>
-                      </div>
-                    ));
-                  })()}
-                </div>
-
-                <div className="flex flex-col md:flex-row gap-3 w-full sm:w-auto">
-                  {/* Phone Card */}
-                  <div className="bg-white/70 border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center gap-3 flex-1 sm:flex-initial">
-                    <div className="w-10 h-10 flex items-center justify-center rounded-2xl sm:bg-sky-50 sm:border-sky-100 bg-amber-50 border-amber-100 shrink-0">
-                      <FiPhone className="sm:text-sky-700 text-amber-700 w-4 h-4" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">
-                        Phone
-                      </p>
-                      <p className="text-sm font-bold text-slate-900 truncate">
-                        {contactPhone || "Add phone number"}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Email Card */}
-                  <div className="bg-white/70 border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center gap-3 flex-1 sm:flex-initial">
-                    <div className="w-10 h-10 flex items-center justify-center rounded-2xl sm:bg-amber-50 sm:border-amber-100 bg-rose-50 border-rose-100 shrink-0">
-                      <FiMail className="sm:text-amber-700 text-rose-700 w-4 h-4" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">
-                        Email
-                      </p>
-                      <p className="text-sm font-bold text-slate-900 break-all">
-                        {contactEmail || "Add email"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* CTA Buttons */}
-                <div className="flex flex-nowrap gap-3 pt-2 w-full">
-                  <button
-                    onClick={handleExplorePathways}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r  from-amber-900 via-amber-800 to-rose-900 text-white font-black text-sm tracking-tight shadow-lg sm:shadow-indigo-600/20 shadow-amber-900/20"
-                  >
-                    Admissions <FiArrowRight size={16} />
-                  </button>
-
-                  <button
-                    onClick={() => router.push("/pages/AboutUs")}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white text-slate-900 font-black text-sm tracking-tight border border-slate-200 shadow-sm"
-                  >
-                    Discover More
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       {/* VISION / MISSION / MOTTO */}
       <section className="relative py-16 sm:py-20 overflow-hidden">
@@ -1778,7 +1572,7 @@ const ModernSchoolLayout = () => {
                   {/* Secondary Tiles */}
                   <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     {schoolStatsData.lastYearMean && (
-                      <div className="rounded-3xl border border-slate-200 bg-white/70 p-6 shadow-sm hover:shadow-lg transition-shadow">
+                      <div className="rounded-3xl border border-slate-200 bg-white/70 p-6 shadow-sm">
                         <p className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500">
                           Previous Year
                         </p>
@@ -1792,7 +1586,7 @@ const ModernSchoolLayout = () => {
                     )}
 
                     {schoolStatsData.targetMean && (
-                      <div className="rounded-3xl border border-slate-200 bg-white/70 p-6 shadow-sm hover:shadow-lg transition-shadow">
+                      <div className="rounded-3xl border border-slate-200 bg-white/70 p-6 shadow-sm">
                         <div className="flex items-start justify-between gap-3">
                           <div>
                             <p className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500">
@@ -1842,7 +1636,7 @@ const ModernSchoolLayout = () => {
                     {(schoolStatsData.slogan ||
                       schoolStatsData.sloganDescription ||
                       schoolStatsData.sloganAuthor) && (
-                      <div className="sm:col-span-2 rounded-3xl border border-slate-200 bg-white/70 p-6 shadow-sm hover:shadow-lg transition-shadow">
+                      <div className="sm:col-span-2 rounded-3xl border border-slate-200 bg-white/70 p-6 shadow-sm">
                         <div className="flex items-start gap-3">
                           <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-sm shrink-0">
                             <FiStar className="w-5 h-5" />
@@ -1911,7 +1705,7 @@ const ModernSchoolLayout = () => {
       </div>
     ) : (
       (() => {
-        const milestoneItems = getAchievements().slice(0, 4);
+        const milestoneItems = getAchievements().slice(0, 5);
         const [featuredItem, ...supportItems] = milestoneItems;
 
         if (!featuredItem) return null;
@@ -2086,7 +1880,7 @@ const ModernSchoolLayout = () => {
             {whyChooseUs.map((item) => (
               <div
                 key={item.id}
-                className="group rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/70"
+                className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm"
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-900">
@@ -2147,7 +1941,7 @@ const ModernSchoolLayout = () => {
               return (
                 <div
                   key={idx}
-                  className="relative overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-amber-200 hover:shadow-xl hover:shadow-slate-200/70 group"
+                  className="relative overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm"
                 >
                   <div className={`absolute -right-20 -top-20 h-48 w-48 rounded-full bg-gradient-to-br ${path.color} opacity-10 blur-3xl`} />
                   <div
@@ -2187,7 +1981,7 @@ const ModernSchoolLayout = () => {
                     </div>
                     <button
                       onClick={() => openModal(path)}
-                      className="inline-flex items-center gap-2 rounded-xl border border-amber-100 bg-amber-50 px-3 py-2 text-xs font-black text-amber-900 transition-colors hover:bg-amber-100"
+                      className="inline-flex items-center gap-2 rounded-xl border border-amber-100 bg-amber-50 px-3 py-2 text-xs font-black text-amber-900"
                     >
                       Explore <FiArrowRight className="h-3.5 w-3.5" />
                     </button>
@@ -2366,17 +2160,11 @@ const ModernSchoolLayout = () => {
                       animation: "marquee 120s linear infinite",
                       width: "max-content",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.animationPlayState = "paused")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.animationPlayState = "running")
-                    }
                   >
                     {scrollImages.map((img, idx) => (
                       <div
                         key={idx}
-                        className="relative w-36 h-20 sm:w-44 sm:h-24 flex-shrink-0 bg-white/70 backdrop-blur rounded-2xl border border-slate-200 shadow-sm flex items-center justify-center p-4 group/logo transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:bg-white"
+                        className="relative w-36 h-20 sm:w-44 sm:h-24 flex-shrink-0 bg-white/70 backdrop-blur rounded-2xl border border-slate-200 shadow-sm flex items-center justify-center p-4"
                       >
                         <div className="relative w-full h-full">
                           <Image
@@ -2455,7 +2243,7 @@ const ModernSchoolLayout = () => {
                 <button
                   onClick={closeAchievementModal}
                   aria-label="Close dialog"
-                  className="w-9 h-9 rounded-full bg-white/10 border border-white/15 hover:bg-white/15 flex items-center justify-center transition-colors shrink-0"
+                  className="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center shrink-0"
                 >
                   <FiX className="w-5 h-5" />
                 </button>
@@ -2583,7 +2371,7 @@ const ModernSchoolLayout = () => {
                 <button
                   onClick={closeModal}
                   aria-label="Close dialog"
-                  className="w-9 h-9 rounded-full bg-white/10 border border-white/15 hover:bg-white/15 flex items-center justify-center transition-colors shrink-0"
+                  className="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center shrink-0"
                 >
                   <FiX className="w-5 h-5" />
                 </button>
@@ -2620,7 +2408,7 @@ const ModernSchoolLayout = () => {
                   {selectedPathway.careers.map((career, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-2 p-2.5 rounded-2xl bg-white/70 transition-colors border border-slate-200 hover:bg-white hover:shadow-sm"
+                      className="flex items-center gap-2 p-2.5 rounded-2xl bg-white/70 border border-slate-200"
                     >
                       <div className="w-1.5 h-1.5 rounded-full bg-indigo-600 shrink-0" />
                       <span className="text-slate-700 text-[12px] sm:text-sm font-medium">

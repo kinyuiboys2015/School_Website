@@ -129,6 +129,9 @@ const BrandSection = () => (
         <p className="text-white/50 text-xs font-bold uppercase tracking-wider mt-1">
           Soaring To Excellence
         </p>
+        <p className="mt-2 text-[10px] font-black uppercase tracking-[0.2em] text-amber-300/90">
+          Official website of Kinyui Boys Senior School
+        </p>
       </div>
     </div>
       
@@ -395,7 +398,7 @@ const FooterBottom = ({ currentYear, onShowSitemap, onShowPrivacy }) => (
       <div className="flex items-center gap-3">
         <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
         <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
-          © {currentYear} Kinyui Boys Senior School
+          © {currentYear} Kinyui Boys Senior School official website
         </p>
       </div>
       

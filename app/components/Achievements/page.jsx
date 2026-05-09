@@ -96,7 +96,7 @@ function TagInput({ label, tags, onTagsChange, placeholder = "Type and press Ent
               <button
                 type="button"
                 onClick={() => handleRemoveTag(index)}
-                className="ml-1 text-green-500 hover:text-green-700 transition-colors"
+                className="ml-1 text-green-500"
               >
                 <FaTimes className="w-3 h-3" />
               </button>
@@ -167,7 +167,7 @@ function ImageUpload({ images, onImagesChange, maxImages = 5 }) {
         className={`border-3 border-dashed rounded-xl p-6 text-center transition-all duration-300 cursor-pointer ${
           dragOver 
             ? 'border-green-500 bg-green-50' 
-            : 'border-gray-300 hover:border-green-400 bg-gray-50/50'
+            : 'border-gray-300 bg-gray-50/50'
         } ${images.length >= maxImages ? 'opacity-50 cursor-not-allowed' : ''}`}
         onDrop={(e) => {
           e.preventDefault();
@@ -207,7 +207,7 @@ function ImageUpload({ images, onImagesChange, maxImages = 5 }) {
               <button
                 type="button"
                 onClick={() => handleRemoveImage(index)}
-                className="absolute -top-2 -right-2 bg-teal-500 text-white rounded-full p-1 hover:bg-teal-600 transition"
+                className="absolute -top-2 -right-2 bg-teal-500 text-white rounded-full p-1"
               >
                 <FaTimes className="w-3 h-3" />
               </button>
@@ -357,7 +357,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
               <FaTrophy className="text-2xl" />
               <h2 className="text-xl font-bold">{isEditMode ? 'Edit Achievement' : 'Add Achievement'}</h2>
             </div>
-            <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-lg transition">
+            <button onClick={onClose} className="p-2 rounded-lg">
               <FaTimes className="text-xl" />
             </button>
           </div>
@@ -500,14 +500,14 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-bold"
+                className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-bold"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={actionLoading}
-                className="flex-1 bg-gradient-to-r from-green-600 to-yellow-600 text-white px-4 py-3 rounded-xl hover:from-green-700 hover:to-yellow-700 transition font-bold disabled:opacity-50"
+                className="flex-1 bg-gradient-to-r from-green-600 to-yellow-600 text-white px-4 py-3 rounded-xl font-bold disabled:opacity-50"
               >
                 {actionLoading ? (
                   <span className="flex items-center justify-center gap-2">
@@ -613,7 +613,7 @@ function SchoolStatsModal({ onClose, onSave, stats, loading }) {
               <FaChartLine className="text-2xl" />
               <h2 className="text-xl font-bold">{isEditMode ? 'Edit School Stats' : 'Set School Stats'}</h2>
             </div>
-            <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-lg transition">
+            <button onClick={onClose} className="p-2 rounded-lg">
               <FaTimes className="text-xl" />
             </button>
           </div>
@@ -707,14 +707,14 @@ function SchoolStatsModal({ onClose, onSave, stats, loading }) {
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-bold"
+                className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-bold"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={actionLoading}
-                className="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-4 py-3 rounded-xl hover:from-emerald-700 hover:to-teal-700 transition font-bold disabled:opacity-50"
+                className="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-4 py-3 rounded-xl font-bold disabled:opacity-50"
               >
                 {actionLoading ? (
                   <span className="flex items-center justify-center gap-2">
@@ -761,14 +761,14 @@ function DeleteConfirmationModal({ onClose, onConfirm, title, loading }) {
           <div className="flex gap-3">
             <button
               onClick={onClose}
-              className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-bold"
+              className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-bold"
             >
               Cancel
             </button>
             <button
               onClick={onConfirm}
               disabled={loading}
-              className="flex-1 bg-gradient-to-r from-teal-600 to-teal-600 text-white px-4 py-3 rounded-xl hover:from-teal-700 hover:to-teal-700 transition font-bold disabled:opacity-50"
+              className="flex-1 bg-gradient-to-r from-teal-600 to-teal-600 text-white px-4 py-3 rounded-xl font-bold disabled:opacity-50"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -925,7 +925,7 @@ export default function AchievementsPage() {
       <Toaster position="top-right" richColors />
       
 {/* Header */}
-      <div className="group relative mb-8 overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] bg-gradient-to-br from-orange-900 via-amber-900 to-orange-900 p-6 md:p-8 shadow-xl sm:shadow-2xl">
+      <div className="relative mb-8 overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] bg-gradient-to-br from-orange-900 via-amber-900 to-orange-900 p-6 md:p-8 shadow-xl sm:shadow-2xl">
         {/* Abstract Gradient Orbs */}
         <div className="absolute top-[-25%] right-[-10%] w-[250px] h-[250px] md:w-[420px] md:h-[420px] bg-gradient-to-br from-amber-500/30 via-orange-500/20 to-yellow-500/30 rounded-full blur-[100px] pointer-events-none animate-pulse" />
         <div className="absolute bottom-[-25%] left-[-10%] w-[200px] h-[200px] md:w-[340px] md:h-[340px] bg-gradient-to-tr from-orange-500/20 via-amber-500/10 to-orange-500/20 rounded-full blur-[80px] pointer-events-none" />
@@ -940,12 +940,6 @@ export default function AchievementsPage() {
           }}
         />
 
-        {/* Shine Effect Overlay */}
-        <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full"
-          style={{ transform: 'skewX(-20deg)' }}
-        />
-        
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
@@ -970,7 +964,7 @@ export default function AchievementsPage() {
             <button
               onClick={handleRefresh}
               disabled={refreshing}
-              className="bg-white/20 backdrop-blur-sm text-white px-5 py-3 rounded-xl hover:bg-white/30 transition font-bold flex items-center gap-2"
+              className="bg-white/20 backdrop-blur-sm text-white px-5 py-3 rounded-xl font-bold flex items-center gap-2"
             >
               <FaSync className={refreshing ? 'animate-spin' : ''} />
               Refresh
@@ -978,7 +972,7 @@ export default function AchievementsPage() {
             
             <button
               onClick={() => setShowStatsModal(true)}
-              className="bg-white/20 backdrop-blur-sm text-white px-5 py-3 rounded-xl hover:bg-white/30 transition font-bold flex items-center gap-2"
+              className="bg-white/20 backdrop-blur-sm text-white px-5 py-3 rounded-xl font-bold flex items-center gap-2"
             >
               <FaChartLine />
               {schoolStats ? 'Edit Stats' : 'Set Stats'}
@@ -989,7 +983,7 @@ export default function AchievementsPage() {
                 setSelectedAchievement(null);
                 setShowAchievementModal(true);
               }}
-              className="bg-white text-orange-900 px-6 py-3 rounded-xl hover:bg-orange-50 transition font-bold flex items-center gap-2 shadow-lg"
+              className="bg-white text-orange-900 px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg"
             >
               <FaPlus />
               Add Achievement
@@ -1104,45 +1098,52 @@ export default function AchievementsPage() {
             <div key={category} className="bg-white rounded-2xl shadow-lg overflow-hidden">
               <button
                 onClick={() => toggleCategory(category)}
-                className={`w-full bg-gradient-to-r ${gradientClass} p-4 flex items-center justify-between text-white`}
+                className={`w-full bg-gradient-to-r ${gradientClass} p-4 flex items-center justify-between gap-3 text-white`}
               >
-                <div className="flex items-center gap-3">
-                  <Icon className="text-xl" />
-                  <h2 className="text-lg font-bold">{category} Achievements</h2>
-                  <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
+                <div className="min-w-0 flex items-center gap-3">
+                  <Icon className="text-xl shrink-0" />
+                  <h2 className="truncate text-base sm:text-lg font-bold">{category} Achievements</h2>
+                  <span className="shrink-0 bg-white/20 px-3 py-1 rounded-full text-sm">
                     {items.length}
                   </span>
                 </div>
-                {expandedCategories[category] ? <FaChevronUp /> : <FaChevronDown />}
+                <span className="shrink-0">
+                  {expandedCategories[category] ? <FaChevronUp /> : <FaChevronDown />}
+                </span>
               </button>
               
               {expandedCategories[category] && (
                 <div className="p-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {items.map((achievement) => (
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                    {items.map((achievement, index) => {
+                      const isFeatured = index === 0;
+
+                      return (
                       <div
                         key={achievement.id}
-                        className="border border-gray-200 rounded-xl p-4 hover:shadow-md transition group"
+                        className={`${isFeatured ? 'col-span-2 lg:col-span-1' : ''} border border-gray-200 rounded-xl p-3 sm:p-4 bg-white`}
                       >
                         {achievement.images && achievement.images.length > 0 && (
-                          <div className="mb-3 h-40 overflow-hidden rounded-lg">
+                          <div className={`${isFeatured ? 'h-44 sm:h-52 lg:h-40' : 'h-28 sm:h-40'} mb-3 overflow-hidden rounded-lg`}>
                             <img
                               src={achievement.images[0].url}
                               alt={achievement.title}
-                              className="w-full h-full object-cover transition duration-300"
+                              className="w-full h-full object-cover"
                             />
                           </div>
                         )}
                         
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <h3 className="font-bold text-gray-800 mb-1">{achievement.title}</h3>
-                            <p className="text-sm text-gray-500 mb-2">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0 flex-1">
+                            <h3 className={`${isFeatured ? 'text-base sm:text-lg' : 'text-sm sm:text-base'} font-bold text-gray-800 mb-1 line-clamp-2`}>
+                              {achievement.title}
+                            </h3>
+                            <p className="text-xs sm:text-sm text-gray-500 mb-2">
                               {achievement.year}
                               {achievement.awardingBody && ` • ${achievement.awardingBody}`}
                             </p>
                             {achievement.description && (
-                              <p className="text-sm text-gray-600 line-clamp-2">{achievement.description}</p>
+                              <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">{achievement.description}</p>
                             )}
                             {achievement.recipients && achievement.recipients.length > 0 && (
                               <div className="mt-2 flex flex-wrap gap-1">
@@ -1160,7 +1161,7 @@ export default function AchievementsPage() {
                             )}
                           </div>
                           
-                          <div className="flex gap-1 ml-2">
+                          <div className="flex shrink-0 gap-1">
                             {achievement.featuteal && (
                               <FaStar className="text-yellow-500" title="Featuteal" />
                             )}
@@ -1170,25 +1171,26 @@ export default function AchievementsPage() {
                           </div>
                         </div>
                         
-                        <div className="flex gap-2 mt-4 pt-3 border-t border-gray-100">
+                        <div className="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-gray-100">
                           <button
                             onClick={() => {
                               setSelectedAchievement(achievement);
                               setShowAchievementModal(true);
                             }}
-                            className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition text-sm font-bold"
+                            className="flex items-center justify-center gap-1 px-2 sm:px-3 py-2 bg-green-50 text-green-700 rounded-lg text-xs sm:text-sm font-bold"
                           >
                             <FaEdit className="text-xs" /> Edit
                           </button>
                           <button
                             onClick={() => handleDeleteClick(achievement.id, achievement.title)}
-                            className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-teal-50 text-teal-700 rounded-lg hover:bg-teal-100 transition text-sm font-bold"
+                            className="flex items-center justify-center gap-1 px-2 sm:px-3 py-2 bg-teal-50 text-teal-700 rounded-lg text-xs sm:text-sm font-bold"
                           >
                             <FaTrash className="text-xs" /> Delete
                           </button>
                         </div>
                       </div>
-                    ))}
+                    );
+                    })}
                   </div>
                 </div>
               )}
@@ -1207,7 +1209,7 @@ export default function AchievementsPage() {
               setSelectedAchievement(null);
               setShowAchievementModal(true);
             }}
-            className="bg-gradient-to-r from-green-600 to-yellow-600 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-yellow-700 transition font-bold inline-flex items-center gap-2"
+            className="bg-gradient-to-r from-green-600 to-yellow-600 text-white px-6 py-3 rounded-xl font-bold inline-flex items-center gap-2"
           >
             <FaPlus /> Add First Achievement
           </button>
