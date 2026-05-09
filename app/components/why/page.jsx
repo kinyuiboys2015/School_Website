@@ -1170,77 +1170,7 @@ const schoolFeatures = [
         </div>
       </section>
 
-      {/* CBC PATHWAYS SPOTLIGHT */}
-      <section className="relative py-8 sm:py-10 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white/75 backdrop-blur-xl shadow-[0_20px_60px_rgba(15,23,42,0.07)]">
-            <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-amber-50/80 via-white/20 to-transparent pointer-events-none" />
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 relative">
-              <div className="lg:col-span-4 p-6 sm:p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-slate-200">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.25em] mb-5">
-                  <FiBookOpen className="w-4 h-4 text-amber-300" />
-                  CBC Pathways
-                </div>
-                <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight leading-[1.05]">
-                  Pick a track with{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-900 via-orange-800 to-rose-900">
-                    purpose
-                  </span>
-                </h2>
-                <p className="mt-4 text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
-                  Students explore CBC pathways early, connect subjects to careers, and receive guidance before applying for senior-school placement.
-                </p>
-                <button
-                  onClick={handleExplorePathways}
-                  className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-orange-900 px-5 py-3 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-orange-900/15 active:scale-95"
-                >
-                  Admissions Guide <FiArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="lg:col-span-8 p-4 sm:p-6 lg:p-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {pathways.map((path, idx) => {
-                    const PathIcon = path.icon;
-                    return (
-                      <button
-                        key={path.id || idx}
-                        onClick={() => openModal(path)}
-                        className="group text-left rounded-[1.5rem] border border-slate-200 bg-white/80 p-5 shadow-sm transition-all hover:-translate-y-1 hover:border-orange-200 hover:shadow-xl hover:shadow-slate-200/70"
-                      >
-                        <div className="flex items-center justify-between gap-4">
-                          <span
-                            className={`inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${path.color} text-white shadow-lg shadow-slate-200`}
-                          >
-                            <PathIcon className="text-xl" />
-                          </span>
-                          <FiArrowRight className="w-4 h-4 text-slate-300 transition-transform group-hover:translate-x-1 group-hover:text-orange-800" />
-                        </div>
-                        <h3 className="mt-5 text-lg font-black text-slate-950 tracking-tight">
-                          {path.name}
-                        </h3>
-                        <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
-                          {path.description}
-                        </p>
-                        <div className="mt-5 flex flex-wrap gap-2">
-                          {path.careers.slice(0, 3).map((career, i) => (
-                            <span
-                              key={i}
-                              className="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-black text-orange-900"
-                            >
-                              {career}
-                            </span>
-                          ))}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    
 
       {/* WHY CHOOSE US - REDESIGNED */}
       <section className="relative py-16 sm:py-20 overflow-hidden">
