@@ -17,8 +17,6 @@ import {
   FiMail,
   FiPhone,
   FiArrowRight,
-  FiChevronRight,
-  FiChevronLeft,
   FiTarget,
   FiEye,
   FiBookOpen,
@@ -46,13 +44,90 @@ import {
 } from "react-icons/io5";
 import { HiOutlineSparkles, HiArrowSmallRight } from "react-icons/hi2";
 
+const DEFAULT_SUBJECTS = [
+  "Mathematics",
+  "English",
+  "Kiswahili",
+  "Integrated Science",
+  "Social Studies",
+  "Religious Education",
+  "Agriculture",
+  "Computer Science",
+  "Business Studies",
+  "Physical Education",
+];
+
+const DEFAULT_DEPARTMENTS = [
+  "Sciences",
+  "Mathematics",
+  "Languages",
+  "Humanities",
+  "Technical & Applied Learning",
+  "Guidance & Counselling",
+];
+
+const DEFAULT_ADMISSION_REQUIREMENTS = [
+  "Completed junior school or equivalent approved transition level.",
+  "Official assessment results and previous school records.",
+  "Birth certificate or approved identification document.",
+  "Parent or guardian contact details.",
+  "Medical information and any special learning support notes.",
+];
+
+const DEFAULT_ADMISSION_DOCUMENTS = [
+  "Assessment results",
+  "Birth certificate",
+  "Previous school report",
+  "Medical record",
+];
+
+const normalizeList = (value, fallback = []) => {
+  const source = Array.isArray(value)
+    ? value
+    : typeof value === "string"
+      ? value.split(/[\n,;]+/)
+      : [];
+
+  const cleaned = source
+    .map((item) => {
+      if (typeof item === "string") return item.trim();
+      if (item?.name) return item.name.toString().trim();
+      if (item?.title) return item.title.toString().trim();
+      return "";
+    })
+    .filter(Boolean);
+
+  return cleaned.length ? cleaned : fallback;
+};
+
+const normalizeRequirementLines = (value) => {
+  if (!value || typeof value !== "string") return DEFAULT_ADMISSION_REQUIREMENTS;
+
+  const lines = value
+    .split(/\r?\n|•/)
+    .map((line) => line.replace(/^[-*]\s*/, "").trim())
+    .filter(Boolean);
+
+  return lines.length ? lines : DEFAULT_ADMISSION_REQUIREMENTS;
+};
+
+const formatSchoolDate = (value, fallback = "To be announced") => {
+  if (!value) return fallback;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return fallback;
+  return date.toLocaleDateString("en-KE", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+};
+
 const ModernSchoolLayout = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [schoolData, setSchoolData] = useState(null);
   const [uniImages, setUniImages] = useState([]);
   const [imagesLoading, setImagesLoading] = useState(true);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [expandedCards, setExpandedCards] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPathway, setSelectedPathway] = useState(null);
@@ -62,16 +137,6 @@ const ModernSchoolLayout = () => {
   const [schoolStatsData, setSchoolStatsData] = useState(null);
   const [achievementsLoading, setAchievementsLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(false);
-
-  // School images for carousel
-  const schoolImages = [
-    { src: "/cumpus.jpg", alt: "Campus life" },
-    { src: "/academics.jpg", alt: "Academic focus" },
-    { src: "/student.jpg", alt: "Students learning" },
-    { src: "/view.jpg", alt: "School environment" },
-    { src: "/worship.jpg", alt: "Community moment" },
-    { src: "/displine.jpg", alt: "Student leadership" },
-  ];
 
   // Fetch school data
   useEffect(() => {
@@ -99,21 +164,6 @@ const ModernSchoolLayout = () => {
       .catch(() => setUniImages([]))
       .finally(() => setImagesLoading(false));
   }, []);
-
-  // Auto‑advance carousel
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % schoolImages.length);
-    }, 8000);
-    return () => clearInterval(timer);
-  }, [schoolImages.length]);
-
-  const nextImage = () =>
-    setCurrentImageIndex((prev) => (prev + 1) % schoolImages.length);
-  const prevImage = () =>
-    setCurrentImageIndex(
-      (prev) => (prev - 1 + schoolImages.length) % schoolImages.length
-    );
 
   const toggleReadMore = (id) => {
     setExpandedCards((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -145,8 +195,25 @@ const ModernSchoolLayout = () => {
     "To provide a supportive, future-ready education that builds knowledge, character, and skill.";
   const description = schoolData?.description;
   const studentCount = schoolData?.studentCount || 400;
+  const staffCount = schoolData?.staffCount || 35;
   const contactEmail = schoolData?.admissionContactEmail || "";
   const contactPhone = schoolData?.admissionContactPhone || "";
+  const subjects = normalizeList(schoolData?.subjects, DEFAULT_SUBJECTS);
+  const departments = normalizeList(schoolData?.departments, DEFAULT_DEPARTMENTS);
+  const admissionRequirements = normalizeRequirementLines(
+    schoolData?.admissionRequirements
+  );
+  const admissionDocuments = normalizeList(
+    schoolData?.admissionDocumentsRequired,
+    DEFAULT_ADMISSION_DOCUMENTS
+  );
+  const admissionMeta = {
+    capacity: schoolData?.admissionCapacity || "Open",
+    opens: formatSchoolDate(schoolData?.admissionOpenDate),
+    closes: formatSchoolDate(schoolData?.admissionCloseDate),
+    location: schoolData?.admissionLocation || "Admissions Office",
+    hours: schoolData?.admissionOfficeHours || "Weekdays during school hours",
+  };
 
   // Double images for seamless scrolling
   const scrollImages = [...uniImages, ...uniImages];
@@ -998,6 +1065,24 @@ const schoolFeatures = [
     },
   ];
 
+  const subjectIconPool = [
+    FiCpu,
+    FiBook,
+    FiGlobe,
+    FiActivity,
+    FiUsers,
+    FiHeart,
+    FiPenTool,
+    FiDroplet,
+    FiStar,
+    FiTarget,
+  ];
+
+  const coreSubjectCards = subjects.slice(0, 10).map((subject, index) => ({
+    name: subject,
+    icon: subjectIconPool[index % subjectIconPool.length],
+  }));
+
   return (
     <div className="min-h-screen bg-[#f6f7fb] text-slate-900 overflow-x-hidden">
       {/* HERO (Bento Modern) */}
@@ -1109,60 +1194,178 @@ const schoolFeatures = [
               </div>
             </div>
 
-            {/* Right Column - Dynamic Carousel */}
+            {/* Right Column - API-backed school information */}
             <div className="order-1 lg:order-2 lg:col-span-7">
-              <div className="relative w-full aspect-[4/3] sm:aspect-square rounded-3xl overflow-hidden border border-slate-200 bg-white shadow-[0_25px_70px_rgba(2,6,23,0.12)]">
-                {schoolImages.map((image, idx) => (
-                  <div
-                    key={idx}
-                    className={`absolute inset-0 transition-all duration-700 ease-in-out ${
-                      idx === currentImageIndex
-                        ? "opacity-100 scale-100"
-                        : "opacity-0 scale-105"
-                    }`}
-                  >
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      fill
-                      className="object-cover"
-                      priority={idx === 0}
-                    />
+              <div className="h-full rounded-3xl border border-slate-200 bg-white/85 p-4 sm:p-5 shadow-[0_25px_70px_rgba(2,6,23,0.08)] backdrop-blur">
+                <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 h-full">
+                  <div className="xl:col-span-7 rounded-[1.35rem] bg-slate-950 p-5 sm:p-6 text-white overflow-hidden relative">
+                    <div className="absolute -top-24 -right-24 h-60 w-60 rounded-full bg-amber-500/20 blur-3xl" />
+                    <div className="absolute -bottom-24 -left-16 h-56 w-56 rounded-full bg-sky-500/15 blur-3xl" />
+
+                    <div className="relative">
+                      <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.22em] text-white/70">
+                        <FiLayers className="h-3.5 w-3.5 text-amber-300" />
+                        School Info
+                      </div>
+
+                      <h2 className="mt-5 text-2xl sm:text-3xl font-black leading-tight tracking-tight">
+                        Academics, admissions, and learner support in one place.
+                      </h2>
+
+                      <p className="mt-3 text-sm font-medium leading-relaxed text-white/70">
+                        Live school information from the school profile API, with sensible defaults when records are still being updated.
+                      </p>
+
+                      <div className="mt-6 grid grid-cols-2 gap-3">
+                        {[
+                          {
+                            label: "Subjects",
+                            value: subjects.length,
+                            icon: FiBookOpen,
+                          },
+                          {
+                            label: "Departments",
+                            value: departments.length,
+                            icon: FiLayers,
+                          },
+                          {
+                            label: "Staff",
+                            value: `${staffCount}+`,
+                            icon: FiUsers,
+                          },
+                          {
+                            label: "Capacity",
+                            value: admissionMeta.capacity,
+                            icon: FiTarget,
+                          },
+                        ].map((item) => {
+                          const Icon = item.icon;
+                          return (
+                            <div
+                              key={item.label}
+                              className="rounded-2xl border border-white/10 bg-white/10 p-4"
+                            >
+                              <Icon className="h-4 w-4 text-amber-300" />
+                              <p className="mt-3 text-xl font-black text-white">
+                                {item.value}
+                              </p>
+                              <p className="mt-1 text-[9px] font-black uppercase tracking-[0.18em] text-white/45">
+                                {item.label}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
-                ))}
 
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/45 via-transparent to-slate-950/10" />
+                  <div className="xl:col-span-5 grid grid-cols-1 gap-4">
+                    <div className="rounded-[1.35rem] border border-slate-200 bg-white p-5">
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                            Admission Window
+                          </p>
+                          <h3 className="mt-1 text-lg font-black text-slate-900">
+                            Requirements & dates
+                          </h3>
+                        </div>
+                        <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-900">
+                          <FiCheckCircle className="h-5 w-5" />
+                        </span>
+                      </div>
 
-                {/* Navigation Buttons */}
-                <button
-                  onClick={prevImage}
-                  className="hidden sm:flex absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-md text-white items-center justify-center z-10 shadow-lg border border-white/20"
-                  aria-label="Previous"
-                >
-                  <FiChevronLeft size={22} />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="hidden sm:flex absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-md text-white items-center justify-center z-10 shadow-lg border border-white/20"
-                  aria-label="Next"
-                >
-                  <FiChevronRight size={22} />
-                </button>
+                      <div className="mt-5 grid grid-cols-2 gap-3">
+                        {[
+                          ["Opens", admissionMeta.opens],
+                          ["Closes", admissionMeta.closes],
+                          ["Location", admissionMeta.location],
+                          ["Office Hours", admissionMeta.hours],
+                        ].map(([label, value]) => (
+                          <div
+                            key={label}
+                            className="rounded-2xl border border-slate-100 bg-slate-50 p-3"
+                          >
+                            <p className="text-[9px] font-black uppercase tracking-[0.18em] text-slate-400">
+                              {label}
+                            </p>
+                            <p className="mt-1 text-xs font-black leading-snug text-slate-800">
+                              {value}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
-                {/* Dots Indicator */}
-                <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-3 z-10 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/15 border border-white/20">
-                  {schoolImages.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentImageIndex(idx)}
-                      className={`transition-all duration-300 rounded-full ${
-                        idx === currentImageIndex
-                          ? "w-3 h-3 bg-white shadow-lg"
-                          : "w-2 h-2 bg-white/50 hover:bg-white/70"
-                      }`}
-                    />
-                  ))}
+                    <div className="rounded-[1.35rem] border border-slate-200 bg-white p-5">
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                        Quick Admission Requirements
+                      </p>
+                      <div className="mt-4 space-y-2.5">
+                        {admissionRequirements.slice(0, 4).map((item) => (
+                          <div key={item} className="flex gap-2">
+                            <FiCheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                            <p className="text-xs font-semibold leading-relaxed text-slate-700">
+                              {item}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="xl:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="rounded-[1.35rem] border border-slate-200 bg-white p-5 md:col-span-1">
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                        Departments
+                      </p>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {departments.slice(0, 8).map((department) => (
+                          <span
+                            key={department}
+                            className="rounded-full border border-amber-100 bg-amber-50 px-3 py-1.5 text-[11px] font-black text-amber-900"
+                          >
+                            {department}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="rounded-[1.35rem] border border-slate-200 bg-white p-5 md:col-span-1">
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                        Subjects
+                      </p>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {subjects.slice(0, 10).map((subject) => (
+                          <span
+                            key={subject}
+                            className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[11px] font-black text-slate-800"
+                          >
+                            {subject}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="rounded-[1.35rem] border border-slate-200 bg-white p-5 md:col-span-1">
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                        Documents
+                      </p>
+                      <div className="mt-4 space-y-2">
+                        {admissionDocuments.slice(0, 4).map((document) => (
+                          <div
+                            key={document}
+                            className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2"
+                          >
+                            <FiShield className="h-4 w-4 text-slate-500" />
+                            <span className="text-xs font-bold text-slate-700">
+                              {document}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1995,41 +2198,38 @@ const schoolFeatures = [
         </div>
       </section>
 
-      {/* CBC Framework - Clean Light Version */}
+      {/* CBC Framework */}
       <section className="relative py-16 sm:py-24 text-gray-900 overflow-hidden bg-white">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#6366f1_0%,transparent_50%)] opacity-[0.03]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,#f59e0b_0%,transparent_45%)] opacity-[0.08]" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="mb-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-amber-100 bg-amber-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.24em] text-amber-900">
+                <FiBookOpen className="h-4 w-4" />
+                CBC Pathways
+              </div>
+              <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-950">
+                Pathway planning that connects{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-900 to-rose-900">
+                  subjects, strengths, and careers
+                </span>
+              </h2>
+              <p className="mt-4 text-sm sm:text-base font-medium leading-relaxed text-slate-600">
+                Students keep a strong core while exploring specialized routes in STEM, Arts & Sports, and Social Sciences.
+              </p>
+            </div>
+
+            <button
+              onClick={handleExplorePathways}
+              className="inline-flex w-fit items-center justify-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-black text-white shadow-lg shadow-slate-200"
+            >
+              Admissions Pathways <FiArrowRight className="h-4 w-4 text-amber-300" />
+            </button>
+          </div>
+
           {/* THE PILLARS (Pathways First) */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 sm:gap-6 mb-16">
-            {/* Dynamic Title Card */}
-<div className="lg:col-span-1 bg-gradient-to-br from-amber-900 to-orange-900 rounded-[2rem] p-6 sm:p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/20 relative overflow-hidden group">
-  {/* Decorative Background Glow */}
-  <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 blur-3xl rounded-full" />
-  
-  <div className="relative">
-    {/* Icon with modern glass backdrop */}
-    <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center mb-6 border border-white/20 backdrop-blur-sm">
-      <FiBookOpen className="text-2xl text-white" />
-    </div>
-
-    {/* Responsive Typography */}
-    <h3 className="text-2xl sm:text-3xl font-black text-white leading-[1.1] tracking-tighter uppercase italic">
-      CBC <br />
-      <span className="text-indigo-200 not-italic">Learning</span> <br />
-      Pathways
-    </h3>
-  </div>
-
-  {/* Description with improved contrast */}
-  <div className="mt-8">
-    <div className="w-10 h-[2px] bg-indigo-300 mb-4" />
-    <p className="text-indigo-50 text-xs sm:text-sm font-bold leading-relaxed">
-      Tailored tracks designed for specific student strengths at{" "}
-      <span className="text-white font-black">{schoolName}</span>.
-    </p>
-  </div>
-</div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 mb-16">
 
             {/* Pathway Cards Mapping */}
             {pathways.map((path, idx) => {
@@ -2037,41 +2237,49 @@ const schoolFeatures = [
               return (
                 <div
                   key={idx}
-                  className="lg:col-span-1 bg-white border border-gray-200 rounded-[1.25rem] p-6 hover:border-orange-200 hover:shadow-xl hover:shadow-slate-200/70 transition-all group"
+                  className="relative overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-amber-200 hover:shadow-xl hover:shadow-slate-200/70 group"
                 >
+                  <div className={`absolute -right-20 -top-20 h-48 w-48 rounded-full bg-gradient-to-br ${path.color} opacity-10 blur-3xl`} />
                   <div
-                    className={`w-12 h-12 rounded-2xl bg-gradient-to-r ${path.color} flex items-center justify-center mb-6 shadow-lg shadow-black/10`}
+                    className={`relative w-12 h-12 rounded-2xl bg-gradient-to-r ${path.color} flex items-center justify-center mb-6 shadow-lg shadow-black/10`}
                   >
                     <PathIcon className="text-white text-xl" />
                   </div>
 
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">
+                  <h4 className="relative text-xl font-black text-slate-950 mb-2">
                     {path.name}
                   </h4>
-                  <p className="text-gray-500 text-xs leading-relaxed mb-6">
+                  <p className="relative text-slate-600 text-sm font-medium leading-relaxed mb-5">
                     {path.description}
                   </p>
 
-                  <div className="space-y-2 mt-auto">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">
-                      Key Careers
+                  <div className="relative mb-5">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                      Subject Focus
                     </p>
-                    <div className="flex flex-wrap gap-2">
-                      {path.careers.slice(0, 2).map((career, i) => (
-                        <span
-                          key={i}
-                          className="text-[11px] text-orange-800 font-bold"
-                        >
-                          # {career}
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {path.subjects.slice(0, 5).map((subject) => (
+                        <span key={subject} className="rounded-full bg-slate-50 border border-slate-200 px-3 py-1 text-[11px] font-black text-slate-700">
+                          {subject}
                         </span>
                       ))}
                     </div>
+                  </div>
+
+                  <div className="relative flex items-center justify-between gap-4 border-t border-slate-100 pt-4">
+                    <div>
+                      <p className="text-2xl font-black text-slate-950">
+                        {path.careers.length}+
+                      </p>
+                      <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">
+                        career routes
+                      </p>
+                    </div>
                     <button
                       onClick={() => openModal(path)}
-                      className="pt-4 flex items-center gap-2 text-xs font-bold text-gray-700 group-hover:text-orange-800 transition-colors"
+                      className="inline-flex items-center gap-2 rounded-xl border border-amber-100 bg-amber-50 px-3 py-2 text-xs font-black text-amber-900 transition-colors hover:bg-amber-100"
                     >
-                      Explore Track{" "}
-                      <FiArrowRight className="" />
+                      Explore <FiArrowRight className="h-3.5 w-3.5" />
                     </button>
                   </div>
                 </div>
@@ -2091,28 +2299,16 @@ const schoolFeatures = [
   
   <div className="flex flex-col">
     <h4 className="font-black text-slate-900 uppercase tracking-[0.22em] text-[12px] sm:text-xs leading-none mb-1">
-      Mandatory
+      Subjects Offered
     </h4>
     <span className="font-black text-slate-500 uppercase tracking-[0.15em] text-[10px] sm:text-[9px]">
-      Core Subjects
+      From school info
     </span>
   </div>
 </div>
 
-    {/* Grid: 2 columns on tiny phones, 3 on medium, 5 on desktop */}
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-      {[
-        { name: "Math", icon: FiCpu },
-        { name: "English", icon: FiBook },
-        { name: "Kiswahili", icon: FiGlobe },
-        { name: "Science", icon: FiActivity },
-        { name: "Social", icon: FiUsers },
-        { name: "Religion", icon: FiHeart },
-        { name: "Arts", icon: FiPenTool },
-        { name: "Agri", icon: FiDroplet },
-        { name: "Life Skills", icon: FiStar },
-        { name: "P.E.", icon: FiTarget },
-      ].map((subj, i) => {
+      {coreSubjectCards.map((subj, i) => {
         const SubjIcon = subj.icon;
         return (
           <div
@@ -2135,24 +2331,28 @@ const schoolFeatures = [
     <div className="absolute -top-10 -left-10 w-32 h-32 bg-indigo-400/20 blur-2xl rounded-full" />
     
     <h5 className="text-xl font-black mb-4 tracking-tight uppercase italic">
-      Framework <span className="text-indigo-400">Overview</span>
+      Department <span className="text-amber-200">Map</span>
     </h5>
-    <p className="text-sm text-indigo-50 leading-relaxed font-medium mb-8">
-      The Competency Based Curriculum (CBC) shifts the focus from
-      "what you know" to "what you can do." Every student follows a
-      core foundation.
+    <p className="text-sm text-amber-50 leading-relaxed font-medium mb-6">
+      Departments guide subject delivery, mentorship, practical learning, and pathway selection across the school.
     </p>
-    
-    <div className="flex items-center gap-4">
-      <div className="flex -space-x-2">
-        {[1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className="w-8 h-8 rounded-full border-2 border-indigo-600 bg-indigo-100"
-          />
-        ))}
+
+    <div className="flex flex-wrap gap-2">
+      {departments.slice(0, 6).map((department) => (
+        <span
+          key={department}
+          className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-black text-white/85"
+        >
+          {department}
+        </span>
+      ))}
+    </div>
+
+    <div className="mt-7 flex items-center gap-4">
+      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10">
+        <FiUsers className="h-5 w-5 text-amber-200" />
       </div>
-      <span className="text-[9px] font-black uppercase tracking-widest text-indigo-400">
+      <span className="text-[9px] font-black uppercase tracking-widest text-amber-100">
         Join {studentCount}+ Students
       </span>
     </div>
