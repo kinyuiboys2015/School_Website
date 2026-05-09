@@ -631,7 +631,7 @@ function SchoolStatsModal({ onClose, onSave, stats, loading }) {
                 step="0.01"
                 value={formData.meanScore}
                 onChange={(e) => handleChange('meanScore', e.target.value)}
-                placeholder="e.g., 8.75"
+                placeholder="e.g., 5.6"
                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
               />
             </div>
@@ -646,7 +646,7 @@ function SchoolStatsModal({ onClose, onSave, stats, loading }) {
                   step="0.01"
                   value={formData.lastYearMean}
                   onChange={(e) => handleChange('lastYearMean', e.target.value)}
-                  placeholder="e.g., 8.25"
+                  placeholder="e.g., 5.6"
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                 />
               </div>
@@ -661,7 +661,7 @@ function SchoolStatsModal({ onClose, onSave, stats, loading }) {
                   step="0.01"
                   value={formData.targetMean}
                   onChange={(e) => handleChange('targetMean', e.target.value)}
-                  placeholder="e.g., 9.00"
+                  placeholder="e.g., 7.00"
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                 />
               </div>
