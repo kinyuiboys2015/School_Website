@@ -452,6 +452,15 @@ const ModernStaffLeadership = () => {
             {/* Content */}
             <div className="p-6 lg:p-10 flex flex-col justify-between">
               <div>
+                {!isCurrentPrincipal && (
+                  <button
+                    onClick={() => handleLeaderClick(principal)}
+                    className="mb-5 inline-flex items-center gap-2 rounded-xl border border-amber-900 bg-amber-50 px-4 py-2 text-xs font-black text-amber-900 transition-colors hover:bg-amber-100"
+                  >
+                    <FiArrowLeft size={12} /> Back to Principal
+                  </button>
+                )}
+
                 <div className="hidden lg:block mb-2">
                   <span className="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase">
                     {getLeaderTitle(currentLeader)}
@@ -535,10 +544,10 @@ const ModernStaffLeadership = () => {
           </div>
         </div>
 
-        {/* Back to Principal button (mobile) */}
-        {isMobile && !isSameStaff(selectedLeader, principal) && (
+        {/* Back to Principal button */}
+        {!isCurrentPrincipal && (
           <div className="mt-6 flex justify-center">
-            <button onClick={() => handleLeaderClick(principal)} className="flex items-center gap-2 px-5 py-2.5 bg-amber-50 border border-amber-900 text-amber-900 font-black text-xs rounded-xl">
+            <button onClick={() => handleLeaderClick(principal)} className="flex items-center gap-2 px-5 py-2.5 bg-amber-50 border border-amber-900 text-amber-900 font-black text-xs rounded-xl hover:bg-amber-100 transition-colors">
               <FiArrowLeft size={12} /> Back to Principal
             </button>
           </div>
