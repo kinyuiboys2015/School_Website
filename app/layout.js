@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import ClientLayoutWrapper from "./-app";
 import { SessionProvider } from "./session/sessiowrapper";
+import { publicSitePages } from "./seoConfig";
 
 /* -------------------------------------------------------------------------- */
 /* FONTS                                    */
@@ -238,7 +239,7 @@ export const metadata = {
 /* -------------------------------------------------------------------------- */
 export default function RootLayout({ children }) {
   // Structured Data (JSON-LD) for Local Business/School SEO
-  const jsonLd = {
+  const schoolJsonLd = {
     "@context": "https://schema.org",
     "@type": "School",
     "name": "S.A. Kinyui Boys Senior School",
@@ -288,6 +289,36 @@ export default function RootLayout({ children }) {
       ]
     }
   };
+
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "S.A. Kinyui Boys Senior School",
+    "alternateName": "Kinyui Boys Senior School",
+    "url": SITE_URL,
+    "description": metadata.description,
+    "publisher": {
+      "@type": "School",
+      "name": "S.A. Kinyui Boys Senior School",
+      "url": SITE_URL,
+      "logo": SEO_LOGO_PNG
+    }
+  };
+
+  const navigationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Kinyui Boys Senior School official website navigation",
+    "itemListElement": publicSitePages.map((page, index) => ({
+      "@type": "SiteNavigationElement",
+      "position": index + 1,
+      "name": page.title,
+      "description": page.description,
+      "url": `${SITE_URL}${page.path}`
+    }))
+  };
+
+  const jsonLd = [schoolJsonLd, websiteJsonLd, navigationJsonLd];
 
   return (
     <html lang="en">
