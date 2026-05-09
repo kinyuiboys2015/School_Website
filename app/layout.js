@@ -45,7 +45,7 @@ export const metadata = {
   },
 
   description:
-    "Official website of S.A. Kinyui Boys Senior School in Matungulu, Machakos County. Explore admissions, CBC pathways, academics, achievements, staff, gallery, fees, news, events, guidance, policies, resources, and the student portal.",
+    "Official website of S.A. Kinyui Boys",
   
 "keywords": [
     // Core Names & Official Identity
@@ -164,39 +164,37 @@ export const metadata = {
     canonical: "/",
   },
 
-  /* Open Graph (Social Media Sharing) */
-  openGraph: {
-    title: "S.A. Kinyui Boys Senior School | Admissions, CBC Pathways, Academics & School Life",
-    description:
-      "Discover admissions, CBC pathways, academics, achievements, staff, gallery, fees, news, events, guidance, policies, resources, and student portal services from S.A. Kinyui Boys Senior School.",
-    url: "https://kinyuiboyssenior.school",
-    siteName: "Kinyui Boys Senior School",
-    locale: "en_KE",
-    type: "website",
-    images: [
-      {
-        url: SEO_LOGO_JPEG,
-        width: 1200,
-        height: 630,
-        alt: "S.A. Kinyui Boys Senior School logo",
-      },
-      {
-        url: SEO_LOGO_PNG,
-        width: 1200,
-        height: 1200,
-        alt: "Kinyui Boys Senior School official logo",
-      },
-    ],
-  },
+/* Open Graph (Social Media Sharing) */
+openGraph: {
+  title: "S.A. Kinyui Boys Senior School",
+  description: "Official school website of S.A. Kinyui Boys Senior School.",
+  url: "https://kinyuiboyssenior.school",
+  siteName: "Kinyui Boys Senior School",
+  locale: "en_KE",
+  type: "website",
+  images: [
+    {
+      url: "/seo/kinyui.jpeg",
+      width: 1200,
+      height: 630,
+      alt: "S.A. Kinyui Boys Senior School logo",
+    },
+    {
+      url: "/seo/kinyui.png",
+      width: 1200,
+      height: 1200,
+      alt: "Kinyui Boys Senior School official logo",
+    },
+  ],
+},
 
-  /* Twitter Card */
-  twitter: {
-    card: "summary_large_image",
-    title: "S.A. Kinyui Boys Senior School | Admissions, CBC Pathways & Academics",
-    description: "Official admissions, CBC pathways, academics, achievements, gallery, fees, news, events, guidance, and resources for Kinyui Boys Senior School.",
-    images: [SEO_LOGO_JPEG],
-  },
-
+/* Twitter Card */
+twitter: {
+  card: "summary_large_image",
+  title: "S.A. Kinyui Boys Senior School",
+  description: "Official school website of S.A. Kinyui Boys Senior School.",
+  images: ["/seo/kinyui.jpeg"],
+},
   /* Search Engine Bot Instructions */
   robots: {
     index: true,
