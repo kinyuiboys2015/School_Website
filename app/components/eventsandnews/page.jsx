@@ -47,6 +47,22 @@ import {
 // Material UI (Consolidated)
 import { Modal, Box, CircularProgress } from '@mui/material';
 
+const NEWS_EVENTS_CATEGORIES = {
+  news: [
+    { value: 'achievement', label: 'Achievements', color: 'emerald' },
+    { value: 'sports', label: 'Sports', color: 'blue' },
+    { value: 'academic', label: 'Academic', color: 'purple' },
+    { value: 'infrastructure', label: 'Infrastructure', color: 'orange' },
+    { value: 'community', label: 'Community', color: 'rose' }
+  ],
+  events: [
+    { value: 'academic', label: 'Academic', color: 'purple' },
+    { value: 'sports', label: 'Sports', color: 'blue' },
+    { value: 'cultural', label: 'Cultural', color: 'emerald' },
+    { value: 'social', label: 'Social', color: 'orange' }
+  ]
+};
+
 // Modern Loading Spinner Component
 const Spinner = ({ size = 40, color = 'inherit', thickness = 3.6, variant = 'indeterminate', value = 0 }) => {
   return (
@@ -988,7 +1004,7 @@ function ModernItemModal({ onClose, onSave, item, type, existingItems = [], load
                       disabled={saving}
                       className="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 font-bold text-slate-800 focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 outline-none"
                     >
-                      {categories[type].map(cat => <option key={cat.value} value={cat.value}>{cat.label}</option>)}
+                      {NEWS_EVENTS_CATEGORIES[type].map(cat => <option key={cat.value} value={cat.value}>{cat.label}</option>)}
                     </select>
                   </div>
 
@@ -1113,21 +1129,7 @@ export default function NewsEventsManager() {
     message: ''
   });
 
-  const categories = {
-    news: [
-      { value: 'achievement', label: 'Achievements', color: 'emerald' },
-      { value: 'sports', label: 'Sports', color: 'blue' },
-      { value: 'academic', label: 'Academic', color: 'purple' },
-      { value: 'infrastructure', label: 'Infrastructure', color: 'orange' },
-      { value: 'community', label: 'Community', color: 'rose' }
-    ],
-    events: [
-      { value: 'academic', label: 'Academic', color: 'purple' },
-      { value: 'sports', label: 'Sports', color: 'blue' },
-      { value: 'cultural', label: 'Cultural', color: 'emerald' },
-      { value: 'social', label: 'Social', color: 'orange' }
-    ]
-  };
+  const categories = NEWS_EVENTS_CATEGORIES;
 
   // Notification handler
   const showNotification = (type, title, message) => {
