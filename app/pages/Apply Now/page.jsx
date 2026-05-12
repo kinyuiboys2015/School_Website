@@ -7,7 +7,7 @@ import {
   FiCheckCircle, FiUpload, FiArrowRight, FiSearch,
   FiChevronDown, FiChevronUp, FiDownload, FiPrinter,
   FiShare2, FiCopy, FiExternalLink, FiEye, FiX,
-  FiChevronRight, FiShield , FiClock 
+  FiChevronRight, FiShield , FiClock, FiBookOpen 
 } from 'react-icons/fi';
 import { toast, Toaster } from 'react-hot-toast';
 import Header from "../../components/apply/page.jsx";
