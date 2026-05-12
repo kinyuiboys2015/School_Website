@@ -177,14 +177,6 @@ export default function ModernNavbar() {
   // Resources dropdown items - WITH DESCRIPTIONS ADDED
   const resourcesDropdownItems = [
     {
-      name: 'Admin Login',
-      href: '/pages/Sign In',
-      icon: FiLock,
-      description: 'Secure portal for authorized staff',
-      isHighlighted: true,
-      rel: 'nofollow'
-    },
-    {
       name: 'Careers',
       href: '/pages/careers',
       icon: FiBriefcase,
@@ -198,6 +190,13 @@ export default function ModernNavbar() {
     }
   
   ];
+
+  const adminNavigationItem = {
+    name: 'Sign In',
+    href: '/pages/Sign In',
+    icon: FiLock,
+    rel: 'nofollow'
+  };
 
   // Function to check if a link is active
   const isActiveLink = (href, exact = false) => {
@@ -221,6 +220,8 @@ export default function ModernNavbar() {
       window.location.href = '/';
     }
   };
+
+  const isAdminActive = isActiveLink(adminNavigationItem.href);
 
   return (
     <>
@@ -417,8 +418,7 @@ export default function ModernNavbar() {
                     className={`group flex items-center gap-1.5 font-bold transition-all text-[0.84rem] tracking-wide whitespace-nowrap px-3 py-2 rounded-full relative ${
                       isResourcesDropdownOpen ||
                       isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/staff') ||
-                      isActiveLink('/pages/Sign In')
+                      isActiveLink('/pages/staff')
                         ? 'text-slate-950 bg-amber-300'
                         : 'text-white/80 hover:text-white hover:bg-white/10'
                     }`}
@@ -433,8 +433,7 @@ export default function ModernNavbar() {
 
                     {(isResourcesDropdownOpen || 
                       isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/staff') ||
-                      isActiveLink('/pages/Sign In')
+                      isActiveLink('/pages/staff')
 
             ) && (
                       <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-amber-400 rounded-full"></span>
@@ -521,6 +520,23 @@ export default function ModernNavbar() {
                     </div>
                   )}
                 </div>
+
+                <a
+                  href={adminNavigationItem.href}
+                  rel={adminNavigationItem.rel}
+                  className={`group flex items-center gap-1.5 font-bold transition-all text-[0.84rem] tracking-wide whitespace-nowrap px-3 py-2 rounded-full relative ${
+                    isAdminActive
+                      ? 'text-slate-950 bg-amber-300'
+                      : 'text-white/80 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  <adminNavigationItem.icon className="text-xs flex-shrink-0" />
+                  <span className="truncate">{adminNavigationItem.name}</span>
+                  {isAdminActive && (
+                    <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-5 h-0.5 bg-amber-400 rounded-full"></span>
+                  )}
+                  <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-amber-400/50 rounded-full group-hover:w-5 transition-all duration-300"></span>
+                </a>
               </div>
             </div>
 
@@ -645,8 +661,7 @@ export default function ModernNavbar() {
                     className={`w-full flex items-center justify-between p-3 xs:p-4 rounded-lg xs:rounded-xl text-left ${
                       isMobileResourcesDropdownOpen ||
                       isActiveLink('/pages/staff') ||
-                      isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/Sign In')
+                      isActiveLink('/pages/careers')
                         ? 'bg-white/10 text-amber-200'
                         : 'text-white/90 hover:bg-white/5'
                     }`}
@@ -698,6 +713,20 @@ export default function ModernNavbar() {
                     </div>
                   )}
                 </div>
+
+                <a
+                  href={adminNavigationItem.href}
+                  rel={adminNavigationItem.rel}
+                  className={`flex items-center gap-2 xs:gap-3 p-3 xs:p-4 rounded-lg xs:rounded-xl ${
+                    isAdminActive
+                      ? 'bg-white/10 text-amber-200'
+                      : 'text-white/90 hover:bg-white/5'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <adminNavigationItem.icon className="text-lg xs:text-xl" />
+                  <span className="font-bold text-base xs:text-lg tracking-wide">{adminNavigationItem.name}</span>
+                </a>
               </div>
 
               {/* Mobile Footer - CAPITALIZED "The" */}
