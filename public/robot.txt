@@ -5,7 +5,6 @@ Allow: /
 Disallow: /api/
 Disallow: /MainDashboard
 Disallow: /MainDashboard/
-Disallow: /pages/Sign%20In
 Disallow: /pages/Sign-In
 Disallow: /pages/forgotpassword
 Disallow: /pages/resetpassword

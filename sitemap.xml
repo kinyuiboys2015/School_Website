@@ -166,4 +166,15 @@
       <image:title>Kinyui Boys Senior School contact, location and map</image:title>
     </image:image>
   </url>
+
+  <url>
+    <loc>https://kinyuiboyssenior.school/pages/Sign%20In</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://kinyuiboyssenior.school/seo/SchoolLogo.png</image:loc>
+      <image:title>Kinyui Boys Senior School admin sign in</image:title>
+    </image:image>
+  </url>
 </urlset>
