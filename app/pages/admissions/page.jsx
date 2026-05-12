@@ -2355,7 +2355,7 @@ return (
       {/* Action Button - Only strategic Apply Now */}
       <button
         disabled={!isOpen}
-        onClick={() => router.push('/pages//Apply Now')}
+        onClick={() => router.push('/pages/Apply%20Now')}
         className={`w-auto px-7 py-3 rounded-xl font-bold text-sm shadow-sm transition-all active:scale-95 ${
           isOpen 
             ? 'bg-stone-900 text-white hover:bg-stone-800' 
@@ -2459,7 +2459,7 @@ return (
           key={path.title}
           path={path}
           index={index}
-          onApply={() => router.push('/pages//Apply Now')}
+          onApply={() => router.push('/pages/Apply%20Now')}
         />
       ))}
     </div>

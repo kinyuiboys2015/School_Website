@@ -5,10 +5,9 @@ const publicPages = [
   '/pages/AboutUs',
   '/pages/Achievements',
   '/pages/Apply%20Now',
-  '/pages/Guidance-and-Councelling',
+  '/pages/Guidance-and-Counselling',
   '/pages/Magazine',
   '/pages/OurSchoolPolicies',
-  '/pages/School%20Achievements',
   '/pages/StudentPortal',
   '/pages/admissions',
   '/pages/careers',
@@ -22,10 +21,10 @@ const publicPages = [
 const publicAssets = [
   '/seo/',
   '/seo/SchoolLogo.png',
-  '/seo/SchoolLogo.png',
   '/hero/',
   '/images/',
   '/_next/static/',
+  '/_next/image',
   '/sitemap.xml',
   '/robots.txt',
   '/*.jpg$',
@@ -40,9 +39,11 @@ const privateRoutes = [
   '/MainDashboard',
   '/MainDashboard/',
   '/pages/Sign%20In',
+  '/pages/Sign-In',
   '/pages/forgotpassword',
   '/pages/resetpassword',
   '/pages/staff/*/*',
+  '/pages/adminLogin',
   '/admin',
   '/admin/',
   '/components/',
@@ -50,6 +51,8 @@ const privateRoutes = [
   '/private/',
   '/server/',
   '/dashboard/',
+  '/temp/',
+  '/preview/',
 ]
 
 export default function robots() {
@@ -98,6 +101,5 @@ export default function robots() {
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
   }
 }

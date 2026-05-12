@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { 
+import {
   FiMenu, 
   FiX, 
   FiHome, 
@@ -17,7 +17,6 @@ import {
   FiBriefcase,
   FiChevronRight,
   FiHeart,
-  FiLock,
   FiDollarSign,
   FiGrid,
   FiBookOpen,
@@ -101,7 +100,7 @@ export default function ModernNavbar() {
     },
     { 
       name: 'Academics', 
-      href: '/pages/academics',
+      href: '#academics',
       icon: FiBook,
       hasDropdown: true
     },
@@ -137,7 +136,7 @@ export default function ModernNavbar() {
     },
     {
       name: 'Guidance & Counselling',
-      href: '/pages/Guidance-and-Councelling',
+      href: '/pages/Guidance-and-Counselling',
       icon: FiUsers,
       description: 'Student support & wellness services'
     },
@@ -149,7 +148,7 @@ export default function ModernNavbar() {
     },
     {
       name: 'Apply Now',
-      href: '/pages/Apply Now',
+      href: '/pages/Apply%20Now',
       icon: FiUserPlus,
       description: 'Start your application process'
     },
@@ -176,15 +175,6 @@ export default function ModernNavbar() {
 
   // Resources dropdown items - WITH DESCRIPTIONS ADDED
   const resourcesDropdownItems = [
-
-      {
-      name: 'Admin Login',
-      href: '/pages/Sign In',
-      icon: FiLock,
-      description: 'Secure portal for administrators',
-      isHighlighted: true
-    },
-  
     {
       name: 'Careers',
       href: '/pages/careers',
@@ -418,7 +408,6 @@ export default function ModernNavbar() {
                     className={`group flex items-center gap-1.5 font-bold transition-all text-[0.84rem] tracking-wide whitespace-nowrap px-3 py-2 rounded-full relative ${
                       isResourcesDropdownOpen ||
                       isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/Sign In')||
                       isActiveLink('/pages/staff')
                         ? 'text-slate-950 bg-amber-300'
                         : 'text-white/80 hover:text-white hover:bg-white/10'
@@ -431,9 +420,8 @@ export default function ModernNavbar() {
                     <FiChevronDown className={`text-xs transition-transform duration-200 ${
                       isResourcesDropdownOpen ? 'rotate-180' : ''
                     }`} />
-                    
+
                     {(isResourcesDropdownOpen || 
-                       isActiveLink('/pages/Sign In')||
                       isActiveLink('/pages/careers') ||
                       isActiveLink('/pages/staff')  
 
@@ -645,8 +633,7 @@ export default function ModernNavbar() {
                     className={`w-full flex items-center justify-between p-3 xs:p-4 rounded-lg xs:rounded-xl text-left ${
                       isMobileResourcesDropdownOpen ||
                       isActiveLink('/pages/staff') ||
-                      isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/Sign In')
+                      isActiveLink('/pages/careers')
                         ? 'bg-white/10 text-amber-200'
                         : 'text-white/90 hover:bg-white/5'
                     }`}

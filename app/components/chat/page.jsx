@@ -100,7 +100,7 @@ Hours:
 Learn more by selecting other categories!`,
     links: [
       { label: 'About', path: '/pages/AboutUs', icon: 'info' },
-      { label: 'Overview', path: '/pages/overview', icon: 'grid' }
+      { label: 'Overview', path: '/pages/AboutUs', icon: 'grid' }
     ]
   },
   admissions: {
@@ -140,7 +140,7 @@ Steps:
 • Internet access for all students`,
     links: [
       { label: 'Admissions', path: '/pages/admissions', icon: 'file' },
-      { label: 'Apply Now', path: '/pages//Apply Now', icon: 'user' }
+      { label: 'Apply Now', path: '/pages/Apply%20Now', icon: 'user' }
     ]
   },
   fees: {
@@ -211,8 +211,8 @@ Steps:
 
 **Quality holistic education for all students!**`,
     links: [
-      { label: 'Academics', path: '/pages/academics', icon: 'book' },
-      { label: 'Guidance & Counselling', path: '/pages/Guidance-and-Councelling', icon: 'users' }
+      { label: 'Academic Resources', path: '/pages/StudentPortal', icon: 'book' },
+      { label: 'Guidance & Counselling', path: '/pages/Guidance-and-Counselling', icon: 'users' }
     ]
   },
   facilities: {
@@ -336,8 +336,7 @@ P.O. Box 363 – 90131 Tala, Kenya
     links: [
       { label: 'Contact', path: '/pages/contact', icon: 'phone' },
       { label: 'Staff Directory', path: '/pages/staff', icon: 'users' },
-      { label: 'Careers', path: '/pages/career', icon: 'briefcase' },
-      { label: 'Admin Login', path: '/pages/Sign In', icon: 'login' }
+      { label: 'Careers', path: '/pages/careers', icon: 'briefcase' }
     ]
   }
 };

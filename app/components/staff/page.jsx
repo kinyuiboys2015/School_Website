@@ -2550,7 +2550,7 @@ const confirmDelete = async () => {
         error.message.includes('Session expired')) {
       showNotification('error', 'Authentication Required', 'Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign%20In';
       }, 2000);
     } else {
       showNotification('error', 'Error', 'Error during deletion');
@@ -2622,7 +2622,7 @@ const handleSubmit = async (formData, id) => {
         error.message.includes('Session expired')) {
       showNotification('error', 'Authentication Required', 'Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/adminLogin';
+        window.location.href = '/pages/Sign%20In';
       }, 2000);
     } else {
       showNotification('error', 'Error', 'Error saving staff member');

@@ -8,7 +8,7 @@ export const metadata = {
     canonical: 'https://kinyuiboyssenior.school/pages/Achievements',
   },
   robots: {
-    index: true,
+    index: false,
     follow: true,
   },
 };

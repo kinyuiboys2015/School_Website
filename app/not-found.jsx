@@ -34,7 +34,7 @@ const KinyuiBoys404 = () => {
     },
     {
       name: "Academics",
-      href: "/pages/academics",
+      href: "/pages/StudentPortal",
       icon: FiBook,
       description: "Course directory",
       color: "from-blue-500 to-blue-700",
@@ -76,7 +76,7 @@ const KinyuiBoys404 = () => {
     },
     {
       name: "Guidance",
-      href: "/pages/Guidance-and-Councelling",
+      href: "/pages/Guidance-and-Counselling",
       icon: FiBriefcase,
       description: "Guidance sessions",
       color: "from-pink-500 to-pink-700",

@@ -654,7 +654,7 @@ const jsonLd = {
       console.log('Navigation blocked (cooling period)');
       return;
     }
-    router.push('/pages/academics');
+    router.push('/pages/StudentPortal');
   }, [router, navigationBlocked]);
 
   const handleWatchTour = useCallback(() => {

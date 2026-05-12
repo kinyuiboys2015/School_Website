@@ -2,6 +2,55 @@
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
+  async redirects() {
+    return [
+      {
+        source: '/pages/Guidance-and-Councelling',
+        destination: '/pages/Guidance-and-Counselling',
+        permanent: true,
+      },
+      {
+        source: '/pages/about',
+        destination: '/pages/AboutUs',
+        permanent: true,
+      },
+      {
+        source: '/pages/academics',
+        destination: '/pages/StudentPortal',
+        permanent: true,
+      },
+      {
+        source: '/pages/student-life',
+        destination: '/pages/eventsandnews',
+        permanent: true,
+      },
+      {
+        source: '/pages/career',
+        destination: '/pages/careers',
+        permanent: true,
+      },
+      {
+        source: '/pages/events',
+        destination: '/pages/eventsandnews',
+        permanent: true,
+      },
+      {
+        source: '/pages/achievements',
+        destination: '/pages/Achievements',
+        permanent: true,
+      },
+      {
+        source: '/pages/adminLogin',
+        destination: '/pages/Sign%20In',
+        permanent: false,
+      },
+      {
+        source: '/pages/Sign-In',
+        destination: '/pages/Sign%20In',
+        permanent: false,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

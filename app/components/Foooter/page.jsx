@@ -16,7 +16,6 @@ import {
   FiBookOpen,
   FiHelpCircle,
   FiGlobe,
-  FiLock,
   FiShield,
   FiGithub,
   FiTarget,
@@ -55,8 +54,8 @@ const MAIN_NAVIGATION = [
   { name: 'Home', href: '/', icon: FiHome, color: 'amber' },
   { name: 'About Us', href: '/pages/AboutUs', icon: FiUsers, color: 'blue' },
   { name: 'Admissions', href: '/pages/admissions', icon: FiUserCheck, color: 'purple' },
-  { name: 'Academics', href: '/pages/academics', icon: FiBook, color: 'amber' },
-  { name: 'Student Life', href: '/pages/student-life', icon: FiHeart, color: 'rose' },
+  { name: 'Academics', href: '/pages/StudentPortal', icon: FiBook, color: 'amber' },
+  { name: 'Student Life', href: '/pages/eventsandnews', icon: FiHeart, color: 'rose' },
   { name: 'News & Events', href: '/pages/eventsandnews', icon: FiCalendar, color: 'cyan' },
 ];
 
@@ -66,16 +65,15 @@ const QUICK_RESOURCES = [
   { name: 'Staff Directory', href: '/pages/staff', icon: FiUsers, badge: 'Contact' },
   { name: 'Fees Structure', href: '/pages/fees', icon: FiCompass, badge: '2025' },
   { name: 'School Calendar', href: '/pages/eventsandnews', icon: FiCalendar },
-  { name: 'Apply Now', href: '/pages//Apply Now', icon: FiUserPlus, badge: 'Open' },
+  { name: 'Apply Now', href: '/pages/Apply%20Now', icon: FiUserPlus, badge: 'Open' },
 ];
 
 // Support & Policies
 const SUPPORT_LINKS = [
-  { name: 'Guidance & Counselling', href: '/pages/Guidance-and-Councelling', icon: FiHelpCircle },
+  { name: 'Guidance & Counselling', href: '/pages/Guidance-and-Counselling', icon: FiHelpCircle },
   { name: 'School Policies', href: '/pages/OurSchoolPolicies', icon: FiShield },
   { name: 'Career Services', href: '/pages/careers', icon: FiBriefcase },
   { name: 'Gallery', href: '/pages/gallery', icon: FiImage },
-  { name: 'Admin Login', href: '/pages/Sign In', icon: FiLock },
   { name: 'Contact Us', href: '/pages/contact', icon: FiMail },
 ];
 

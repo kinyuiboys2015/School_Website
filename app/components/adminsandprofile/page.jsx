@@ -222,7 +222,7 @@ const handleViewAdmin = (admin) => {
               localStorage.removeItem('admin_user');
               setStatus('unauthenticated');
               toast.error('Session expired. Please login again.');
-              router.push('/pages/adminLogin');
+              router.push('/pages/Sign%20In');
               return;
             }
             
@@ -238,12 +238,12 @@ const handleViewAdmin = (admin) => {
           console.log('❌ No valid auth data found');
           setStatus('unauthenticated');
           toast.error('Please login to access this page');
-          router.push('/pages/adminLogin');
+          router.push('/pages/Sign%20In');
         }
       } catch (error) {
         console.error('❌ Auth check error:', error);
         setStatus('unauthenticated');
-        router.push('/pages/adminLogin');
+        router.push('/pages/Sign%20In');
       }
     };
 
@@ -407,7 +407,7 @@ const handleAuthError = (error, showNotification) => {
     localStorage.removeItem('login_count');
     
     setTimeout(() => {
-      window.location.href = '/pages/adminLogin';
+      window.location.href = '/pages/Sign%20In';
     }, 1500);
     
     return true;
@@ -954,7 +954,7 @@ const handleSaveAdmin = async (e) => {
         localStorage.removeItem('admin_token');
         localStorage.removeItem('admin_user');
         localStorage.removeItem('device_token');
-        router.push('/pages/adminLogin');
+        router.push('/pages/Sign%20In');
         return;
       }
       
@@ -1052,7 +1052,7 @@ const handleSaveAdmin = async (e) => {
       localStorage.removeItem('admin_token');
       localStorage.removeItem('admin_user');
       localStorage.removeItem('device_token');
-      router.push('/pages/adminLogin');
+      router.push('/pages/Sign%20In');
     } else {
       toast.error(error.message || 'An unexpected error occurred');
     }
@@ -1115,7 +1115,7 @@ const handleSaveAdmin = async (e) => {
     localStorage.removeItem('admin_user');
     console.log('👋 Logged out successfully');
     toast.info('Logged out successfully');
-    router.push('/pages/adminLogin');
+    router.push('/pages/Sign%20In');
   };
 
   // Show loading while checking authentication

@@ -118,7 +118,7 @@ export default function ContactPage() {
       icon: <User className="w-4 h-4" />,
       title: 'Apply for Admission',
       description: 'Start your application process',
-      link: '/pages//Apply Now',
+      link: '/pages/Apply%20Now',
       color: 'orange'
     },
     {

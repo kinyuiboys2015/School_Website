@@ -28,7 +28,7 @@ const heroSlides = [
     image: "/K2.JPG",
     tags: ["STEM", "Social Sciences", "Arts & Sports", "Mentorship"],
     cta: "Learn More",
-    link: "/pages/about",
+    link: "/pages/AboutUs",
     accent: "emerald",
   },
   {

@@ -34,12 +34,6 @@ export const publicSitePages = [
       "View academic, co-curricular, institutional, and student achievements from S.A. Kinyui Boys Senior School.",
   },
   {
-    path: "/pages/School%20Achievements",
-    title: "School Achievements",
-    description:
-      "Browse official school achievement records, milestones, awards, and progress updates from Kinyui Boys Senior School.",
-  },
-  {
     path: "/pages/eventsandnews",
     title: "Events and News",
     description:
@@ -64,7 +58,7 @@ export const publicSitePages = [
       "Access the Kinyui Boys Senior School student portal for assignments, resources, results, fee balances, guidance sessions, and student services.",
   },
   {
-    path: "/pages/Guidance-and-Councelling",
+    path: "/pages/Guidance-and-Counselling",
     title: "Guidance and Counselling",
     description:
       "Find guidance and counselling services, mentorship, student welfare support, sessions, and personal development resources.",

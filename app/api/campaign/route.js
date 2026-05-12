@@ -291,7 +291,7 @@ const emailTemplates = {
               
               <!-- CTA Button -->
               <div style="text-align: center; margin: 8% 0;">
-                <a href="https://kinyuiboyssenior.school/pages//Apply Now" 
+                <a href="https://kinyuiboyssenior.school/pages/Apply%20Now"
                    style="display: inline-block; 
                           width: 100%; 
                           max-width: 300px; 
@@ -525,7 +525,7 @@ const emailTemplates = {
               
               <!-- CTA Button -->
               <div style="text-align: center; margin: 8% 0;">
-                <a href="/pages/events" 
+                <a href="/pages/eventsandnews"
                    style="display: inline-block; 
                           width: 100%; 
                           max-width: 280px; 

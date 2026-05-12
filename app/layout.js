@@ -269,7 +269,7 @@ export default function RootLayout({ children }) {
     "department": [
       { "@type": "EducationalOrganization", "name": "Admissions Office", "url": "https://kinyuiboyssenior.school/pages/admissions" },
       { "@type": "EducationalOrganization", "name": "CBC Pathways", "url": "https://kinyuiboyssenior.school/pages/admissions" },
-      { "@type": "EducationalOrganization", "name": "Guidance and Counselling", "url": "https://kinyuiboyssenior.school/pages/Guidance-and-Councelling" },
+      { "@type": "EducationalOrganization", "name": "Guidance and Counselling", "url": "https://kinyuiboyssenior.school/pages/Guidance-and-Counselling" },
       { "@type": "EducationalOrganization", "name": "School Achievements", "url": "https://kinyuiboyssenior.school/pages/Achievements" },
       { "@type": "EducationalOrganization", "name": "Staff and Departments", "url": "https://kinyuiboyssenior.school/pages/staff" }
     ],
