@@ -20,7 +20,8 @@ export default function ClientLayoutWrapper({ children }) {
   const isStudentPortal = pathname === "/pages/StudentPortal";
   const isAdminLogin = ["/pages/Sign In", "/pages/Sign-In", "/pages/adminLogin"].includes(pathname);
   const isPasswordRecovery = ["/pages/forgotpassword", "/pages/resetpassword"].includes(pathname);
-  const hideSiteChrome = isMainDashboard || isStudentPortal || isAdminLogin || isPasswordRecovery;
+  const hideNavbar = isMainDashboard || isStudentPortal || isPasswordRecovery;
+  const hideFooter = isMainDashboard || isStudentPortal || isAdminLogin || isPasswordRecovery;
 
   // Add or remove zoom class based on route
   useEffect(() => {
@@ -34,11 +35,11 @@ export default function ClientLayoutWrapper({ children }) {
   return (
     <>
       {/* Hide public site chrome on protected/full-screen app routes */}
-      {!hideSiteChrome && <ModernNavbar />}
+      {!hideNavbar && <ModernNavbar />}
 
       <main className="min-h-screen">{children}</main>
 
-      {!hideSiteChrome && <Footer />}
+      {!hideFooter && <Footer />}
     </>
   );
 }

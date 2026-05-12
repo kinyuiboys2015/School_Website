@@ -17,6 +17,7 @@ import {
   FiBriefcase,
   FiChevronRight,
   FiHeart,
+  FiLock,
   FiDollarSign,
   FiGrid,
   FiBookOpen,
@@ -175,6 +176,14 @@ export default function ModernNavbar() {
 
   // Resources dropdown items - WITH DESCRIPTIONS ADDED
   const resourcesDropdownItems = [
+    {
+      name: 'Admin Login',
+      href: '/pages/Sign In',
+      icon: FiLock,
+      description: 'Secure portal for authorized staff',
+      isHighlighted: true,
+      rel: 'nofollow'
+    },
     {
       name: 'Careers',
       href: '/pages/careers',
@@ -408,7 +417,8 @@ export default function ModernNavbar() {
                     className={`group flex items-center gap-1.5 font-bold transition-all text-[0.84rem] tracking-wide whitespace-nowrap px-3 py-2 rounded-full relative ${
                       isResourcesDropdownOpen ||
                       isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/staff')
+                      isActiveLink('/pages/staff') ||
+                      isActiveLink('/pages/Sign In')
                         ? 'text-slate-950 bg-amber-300'
                         : 'text-white/80 hover:text-white hover:bg-white/10'
                     }`}
@@ -423,7 +433,8 @@ export default function ModernNavbar() {
 
                     {(isResourcesDropdownOpen || 
                       isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/staff')  
+                      isActiveLink('/pages/staff') ||
+                      isActiveLink('/pages/Sign In')
 
             ) && (
                       <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-amber-400 rounded-full"></span>
@@ -448,6 +459,7 @@ export default function ModernNavbar() {
                           <a
                             key={dropdownItem.name}
                             href={dropdownItem.href}
+                            rel={dropdownItem.rel}
                             className={`group flex items-start gap-3 px-3 py-3 rounded-xl transition-all duration-200 ${
                               isActiveLink(dropdownItem.href)
                                 ? dropdownItem.isHighlighted
@@ -633,7 +645,8 @@ export default function ModernNavbar() {
                     className={`w-full flex items-center justify-between p-3 xs:p-4 rounded-lg xs:rounded-xl text-left ${
                       isMobileResourcesDropdownOpen ||
                       isActiveLink('/pages/staff') ||
-                      isActiveLink('/pages/careers')
+                      isActiveLink('/pages/careers') ||
+                      isActiveLink('/pages/Sign In')
                         ? 'bg-white/10 text-amber-200'
                         : 'text-white/90 hover:bg-white/5'
                     }`}
@@ -654,6 +667,7 @@ export default function ModernNavbar() {
                         <a
                           key={dropdownItem.name}
                           href={dropdownItem.href}
+                          rel={dropdownItem.rel}
                           className={`flex items-center gap-2 xs:gap-3 p-2.5 xs:p-3 rounded-lg ${
                             isActiveLink(dropdownItem.href)
                               ? dropdownItem.isHighlighted
