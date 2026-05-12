@@ -1,25 +1,26 @@
 const SITE_URL = "https://kinyuiboyssenior.school";
 const SITE_NAME = "S.A. Kinyui Boys Senior School";
 const DEFAULT_IMAGE = `${SITE_URL}/seo/SchoolLogo.png`;
+const SITE_SEARCH_DESCRIPTION =
+  "Official website of S.A. Kinyui Boys Senior School, also known as Kinyui Boys High School and Kinyui Boys Secondary School, a public boys boarding school in Matungulu, Machakos County.";
 
 export const publicSitePages = [
   {
     path: "/",
     title: "S.A. Kinyui Boys Senior School",
-    description:
-      "Official website of S.A. Kinyui Boys Senior School in Matungulu, Machakos County, with admissions, academics, CBC pathways, news, achievements, fees, gallery, staff, and student services.",
+    description: SITE_SEARCH_DESCRIPTION,
   },
   {
     path: "/pages/AboutUs",
     title: "About Kinyui Boys Senior School",
     description:
-      "Learn about S.A. Kinyui Boys Senior School, its history, mission, vision, values, location, and commitment to academic excellence and character formation.",
+      "Learn about S.A. Kinyui Boys Senior School, historically searched as Kinyui Boys High School and Kinyui Boys Secondary School, in Matungulu, Machakos County.",
   },
   {
     path: "/pages/admissions",
     title: "Admissions and CBC Pathways",
     description:
-      "Explore admissions, CBC pathways, joining requirements, application guidance, documents, transfers, and academic routes at Kinyui Boys Senior School.",
+      "Explore admissions, CBC pathways, joining requirements, documents, transfers, and academic routes at Kinyui Boys Senior School, Kinyui Boys High School.",
   },
   {
     path: "/pages/Apply%20Now",
@@ -91,7 +92,7 @@ export const publicSitePages = [
     path: "/pages/contact",
     title: "Contact Kinyui Boys Senior School",
     description:
-      "Contact S.A. Kinyui Boys Senior School for admissions, fees, academic inquiries, location, directions, phone, email, and office hours.",
+      "Contact S.A. Kinyui Boys Senior School, also known as Kinyui Boys High School and Kinyui Boys Secondary School, for admissions, fees, directions, phone, and email.",
   },
 ];
 

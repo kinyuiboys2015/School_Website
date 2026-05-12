@@ -22,6 +22,15 @@ const geistMono = localFont({
 const SITE_URL = "https://kinyuiboyssenior.school";
 const SEO_LOGO_JPEG = `${SITE_URL}/seo/SchoolLogo.png`;
 const SEO_LOGO_PNG = `${SITE_URL}/seo/SchoolLogo.png`;
+const SCHOOL_DESCRIPTION =
+  "Official website of S.A. Kinyui Boys Senior School, also known as Kinyui Boys High School and Kinyui Boys Secondary School, a public boys boarding school in Matungulu, Machakos County, Kenya.";
+const SCHOOL_ALTERNATE_NAMES = [
+  "Kinyui Boys Senior School",
+  "Kinyui Boys High School",
+  "Kinyui Boys Secondary School",
+  "S.A. Kinyui Boys High School",
+  "S.A. Kinyui Boys Secondary School",
+];
 
 /* -------------------------------------------------------------------------- */
 /* VIEWPORT                                  */
@@ -40,120 +49,33 @@ export const metadata = {
   applicationName: "S.A. Kinyui Boys Senior School",
 
   title: {
-    default: "S.A. Kinyui Boys School",
+    default: "S.A. Kinyui Boys Senior School | High School & Secondary School",
     template: "%s | Kinyui Boys Senior School",
   },
 
-  description:
-    "Official website of S.A. Kinyui Boys",
+  description: SCHOOL_DESCRIPTION,
   
-"keywords": [
-    // Core Names & Official Identity
-    "SA kinyui boys sec School",
-    "SA  High School",
-    "SA Kinyui High School",
-    "kinyui boys High School",
-    "kinyui boys boarding School",
-    "SA kinyui boys High School",
-    "S.A kinyui boys High School",
-    "SA kinyui boys High School",
-    "SA kinyui boys High School",
-
-    "kinyui boys Senior High School",
-    "kinyui boys Secondary School",
-    "SA kinyui boys Secondary School",
-    "SA kinyui boys Senior High",
-    "SA Kinyui",
-    "SA kinyui boys",
-    "S.A kinyui boys",
-    "Kinyui High School",
-    "Kinyui Senior High School",
-    "kinyui boys School",
-    "kinyui boys Senior School",
-    "Kinyui School",
-    "Kinyui",
-    "Kinyui Boys Senior School official website",
-    "Kinyui Boys Senior School admissions",
-    "Kinyui Boys Senior School CBC pathways",
-    "Kinyui Boys Senior School STEM pathway",
-    "Kinyui Boys Senior School social sciences pathway",
-    "Kinyui Boys Senior School arts and sports pathway",
-    "Kinyui Boys Senior School academics",
-    "Kinyui Boys Senior School fee structure",
-    "Kinyui Boys Senior School student portal",
-    "Kinyui Boys Senior School gallery",
-    "Kinyui Boys Senior School news and events",
-    "Kinyui Boys Senior School achievements and awards",
-    "Kinyui Boys Senior School staff and departments",
-    "Kinyui Boys Senior School guidance and counselling",
-    "Kinyui Boys Senior School policies",
-    "Kinyui Boys Senior School magazine",
-    "Kinyui Boys Senior School careers",
-    "Kinyui Boys Senior School contact",
-
-    // Institutional Specifics (New & Essential)
-    "kinyui boys Boarding School",
-    "SA Sponsored Schools Machakos",
-    "kinyui boys County Secondary School",
-    "kinyui boys 6-stream enrollment school",
-    "God-fearing citizens kinyui boys", // From school mission
-    "Empowered students kinyui boys",
-
-    // Location-Specific & Regional
-    "kinyui boys Senior School Matungulu",
-    "Secondary schools in Matungulu East",
-    "High schools in Machakos County",
-    "Best secondary schools in Machakos",
-    "Public schools in Kenya",
-    "Schools near Matungulu",
-    "Best day schools in Matungulu",
-    "kinyui boys school location",
-    "kinyui boys school map",
-    "Kangundo sub-region schools",
-    "Tala-Matungulu area schools",
-
-    // Functional & API Specific (For your integration)
-    "kinyui boys high school results",
-    "kinyui boys high school admissions",
-    "kinyui boys high school events",
-    "kinyui boys high  school news",
-    "kinyui boys school contact",
-    "kinyui boys school history",
-    "kinyui boys school achievements",
-    "kinyui boys school curriculum",
-    "kinyui boys school fees",
-    "kinyui boys school uniform",
-    "kinyui boys school alumni",
-    "kinyui boys school principal",
-    "kinyui boys school staff",
-    "kinyui boys student portal",
-    "kinyui boys assignment uploads",
-    "kinyui boys exam schedule",
-    "kinyui boys video tour",
-    "kinyui boys resources and downloads",
-
-    // kinyui boys High School + Official Extensions
-    "kinyui boys High School KCSE Results",
-    "kinyui boys High School KNEC Code 12345507",
-    "kinyui boys High School County Boarding",
-    "kinyui boys High School Matungulu Sub-county",
-    "kinyui boys High School Machakos Area",
-    "kinyui boys High School Technology Literacy Center",
-    "kinyui boys High School God-fearing Citizens",
-    "kinyui boys High School Fully Empowered Learners",
-    "kinyui boys High School Since 1976",
-
-    // Technical & Partners (SEO & Verification)
-    "kinyui boys school computer lab",
-    "kinyui boys digital learning portal",
-
-    // SEO Misspellings & Slang
-    "kunyui sec school",
-    "kinui school",
-    "Kinyui senior school",
-    "kiyui high",
-    "kinyui boys sec",
-    "kinyui boys boys and girls"
+  keywords: [
+    "S.A. Kinyui Boys Senior School",
+    "Kinyui Boys Senior School",
+    "Kinyui Boys High School",
+    "Kinyui Boys Secondary School",
+    "S.A. Kinyui Boys High School",
+    "S.A. Kinyui Boys Secondary School",
+    "Kinyui Boys boarding school",
+    "Kinyui Boys public boys school",
+    "Kinyui Boys Matungulu",
+    "Kinyui Boys Machakos County",
+    "secondary schools in Matungulu",
+    "high schools in Machakos County",
+    "boys boarding secondary school Kenya",
+    "Kinyui Boys admissions",
+    "Kinyui Boys CBC pathways",
+    "Kinyui Boys fees",
+    "Kinyui Boys student portal",
+    "Kinyui Boys achievements",
+    "Kinyui Boys staff",
+    "Kinyui Boys contact"
   ],
 
   authors: [{ name: "S.A. Kinyui Boys Senior School" }],
@@ -166,8 +88,8 @@ export const metadata = {
 
 /* Open Graph (Social Media Sharing) */
 openGraph: {
-  title: "S.A. Kinyui Boys School",
-  description: "Official school website.",
+  title: "S.A. Kinyui Boys Senior School | High School & Secondary School",
+  description: SCHOOL_DESCRIPTION,
   url: "https://kinyuiboyssenior.school",
   siteName: "Kinyui Boys Senior School",
   locale: "en_KE",
@@ -191,8 +113,8 @@ openGraph: {
 /* Twitter Card */
 twitter: {
   card: "summary_large_image",
-  title: "S.A. Kinyui Boys Senior School",
-  description: "Official school website of S.A. Kinyui Boys Senior School.",
+  title: "S.A. Kinyui Boys Senior School | Kinyui Boys High School",
+  description: SCHOOL_DESCRIPTION,
   images: ["/seo/SchoolLogo.png"],
 },
   /* Search Engine Bot Instructions */
@@ -222,11 +144,13 @@ twitter: {
   },
 
   category: "Education",
-  classification: "Public boys senior school, secondary education, CBC pathways, admissions, academics, student services",
+  classification: "Public boys senior school, high school, secondary school, boarding school, CBC pathways, admissions, academics, student services",
 
   other: {
     "geo.region": "KE-22",
     "geo.placename": "Matungulu, Machakos County, Kenya",
+    "school:alternate_names": SCHOOL_ALTERNATE_NAMES.join(", "),
+    "school:type": "Public boys boarding senior high school and secondary school",
     "school:curriculum": "CBC, 8-4-4",
     "school:programs": "Admissions, CBC Pathways, STEM, Social Sciences, Arts and Sports, Guidance and Counselling, Student Portal, Fees, Gallery, Achievements",
   },
@@ -241,11 +165,11 @@ export default function RootLayout({ children }) {
     "@context": "https://schema.org",
     "@type": "School",
     "name": "S.A. Kinyui Boys Senior School",
-    "alternateName": "Kinyui Boys Senior School",
+    "alternateName": SCHOOL_ALTERNATE_NAMES,
     "url": SITE_URL,
     "logo": SEO_LOGO_PNG,
     "image": [SEO_LOGO_JPEG, SEO_LOGO_PNG],
-    "description": "A public boys senior school in Matungulu, Machakos County, Kenya offering admissions, CBC pathways, academics, guidance, co-curricular activities, achievements, school news, student resources, and community updates.",
+    "description": SCHOOL_DESCRIPTION,
     "slogan": "Soaring To Excellence",
     "address": {
       "@type": "PostalAddress",
@@ -263,6 +187,7 @@ export default function RootLayout({ children }) {
     "email": "kinyuiboys2015@gmail.com",
     "priceRange": "N/A",
     "areaServed": ["Matungulu", "Machakos County", "Kenya"],
+    "educationalLevel": ["Senior School", "High School", "Secondary School"],
     "sameAs": [
       "https://www.facebook.com/KinyuiBoysHighSchool/"
     ],
@@ -292,7 +217,7 @@ export default function RootLayout({ children }) {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "S.A. Kinyui Boys Senior School",
-    "alternateName": "Kinyui Boys Senior School",
+    "alternateName": SCHOOL_ALTERNATE_NAMES,
     "url": SITE_URL,
     "description": metadata.description,
     "publisher": {
