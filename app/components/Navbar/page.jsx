@@ -41,7 +41,7 @@ export default function ModernNavbar() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1024) {
+      if (window.innerWidth >= 1280) {
         setIsOpen(false);
         setIsMobileDropdownOpen(false);
         setIsMobileResourcesDropdownOpen(false);
@@ -187,16 +187,16 @@ export default function ModernNavbar() {
       href: '/pages/staff',
       icon: FiUsers,
       description: 'Find staff contacts & departments'
+    },
+    {
+      name: 'Sign In',
+      href: '/pages/Sign In',
+      icon: FiLock,
+      description: 'Secure access for school administrators',
+      rel: 'nofollow',
+      isHighlighted: true
     }
-  
   ];
-
-  const adminNavigationItem = {
-    name: 'Sign In',
-    href: '/pages/Sign In',
-    icon: FiLock,
-    rel: 'nofollow'
-  };
 
   // Function to check if a link is active
   const isActiveLink = (href, exact = false) => {
@@ -221,7 +221,7 @@ export default function ModernNavbar() {
     }
   };
 
-  const isAdminActive = isActiveLink(adminNavigationItem.href);
+  const isResourcesActive = resourcesDropdownItems.some((item) => isActiveLink(item.href));
 
   return (
     <>
@@ -273,8 +273,8 @@ export default function ModernNavbar() {
 </div>
 
             {/* Desktop Navigation - NO UPPERCASE */}
-            <div className="hidden lg:flex items-center justify-center flex-1 mx-6 min-w-0">
-              <div className="flex items-center justify-center w-full min-w-0 gap-1 px-1 py-2">
+            <div className="hidden xl:flex items-center justify-center flex-1 mx-3 2xl:mx-6 min-w-0">
+              <div className="flex items-center justify-end w-full min-w-0 gap-0.5 2xl:gap-1 px-1 py-2">
                 {mainNavigation.map((item) => {
                   const isActive = isActiveLink(item.href, item.exact);
                   
@@ -288,7 +288,7 @@ export default function ModernNavbar() {
                         onMouseLeave={() => setIsAcademicDropdownOpen(false)}
                       >
                         <button
-                          className={`group flex items-center gap-1.5 font-bold transition-all text-[0.84rem] tracking-wide whitespace-nowrap px-3 py-2 rounded-full relative ${
+                          className={`group flex items-center gap-1 2xl:gap-1.5 font-bold transition-all text-[0.74rem] 2xl:text-[0.84rem] tracking-normal whitespace-nowrap px-2 2xl:px-3 py-2 rounded-full relative ${
                             isActive || isAcademicDropdownOpen
                               ? 'text-slate-950 bg-amber-300'
                               : 'text-white/80 hover:text-white hover:bg-white/10'
@@ -389,7 +389,7 @@ export default function ModernNavbar() {
                     <a
                       key={item.name}
                       href={item.href}
-                      className={`group flex items-center gap-1.5 font-bold transition-all text-[0.84rem] tracking-wide whitespace-nowrap px-3 py-2 rounded-full relative ${
+                      className={`group flex items-center gap-1 2xl:gap-1.5 font-bold transition-all text-[0.74rem] 2xl:text-[0.84rem] tracking-normal whitespace-nowrap px-2 2xl:px-3 py-2 rounded-full relative ${
                         isActive
                           ? 'text-slate-950 bg-amber-300'
                           : 'text-white/80 hover:text-white hover:bg-white/10'
@@ -415,10 +415,9 @@ export default function ModernNavbar() {
                   onMouseLeave={() => setIsResourcesDropdownOpen(false)}
                 >
                   <button
-                    className={`group flex items-center gap-1.5 font-bold transition-all text-[0.84rem] tracking-wide whitespace-nowrap px-3 py-2 rounded-full relative ${
+                    className={`group flex items-center gap-1 2xl:gap-1.5 font-bold transition-all text-[0.74rem] 2xl:text-[0.84rem] tracking-normal whitespace-nowrap px-2 2xl:px-3 py-2 rounded-full relative ${
                       isResourcesDropdownOpen ||
-                      isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/staff')
+                      isResourcesActive
                         ? 'text-slate-950 bg-amber-300'
                         : 'text-white/80 hover:text-white hover:bg-white/10'
                     }`}
@@ -431,11 +430,7 @@ export default function ModernNavbar() {
                       isResourcesDropdownOpen ? 'rotate-180' : ''
                     }`} />
 
-                    {(isResourcesDropdownOpen || 
-                      isActiveLink('/pages/careers') ||
-                      isActiveLink('/pages/staff')
-
-            ) && (
+                    {(isResourcesDropdownOpen || isResourcesActive) && (
                       <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-amber-400 rounded-full"></span>
                     )}
                   </button>
@@ -521,30 +516,13 @@ export default function ModernNavbar() {
                   )}
                 </div>
 
-                <a
-                  href={adminNavigationItem.href}
-                  rel={adminNavigationItem.rel}
-                  className={`group flex items-center gap-1.5 font-bold transition-all text-[0.84rem] tracking-wide whitespace-nowrap px-3 py-2 rounded-full relative ${
-                    isAdminActive
-                      ? 'text-slate-950 bg-amber-300'
-                      : 'text-white/80 hover:text-white hover:bg-white/10'
-                  }`}
-                >
-                  <adminNavigationItem.icon className="text-xs flex-shrink-0" />
-                  <span className="truncate">{adminNavigationItem.name}</span>
-                  {isAdminActive && (
-                    <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-5 h-0.5 bg-amber-400 rounded-full"></span>
-                  )}
-                  <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-amber-400/50 rounded-full group-hover:w-5 transition-all duration-300"></span>
-                </a>
               </div>
             </div>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2.5 xs:p-3 rounded-lg xs:rounded-xl text-white 
-                bg-white/10 hover:bg-white/20 transition-all active:scale-95 ml-auto"
+              className="xl:hidden p-2.5 xs:p-3 rounded-lg xs:rounded-xl text-white bg-white/10 hover:bg-white/20 transition-all active:scale-95 ml-auto"
               aria-label={isOpen ? "Close menu" : "Open menu"}
               aria-expanded={isOpen}
             >
@@ -559,7 +537,7 @@ export default function ModernNavbar() {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="lg:hidden bg-[#3b1e0a] border-t border-white/10">
+          <div className="xl:hidden bg-[#3b1e0a] border-t border-white/10">
             <div className="px-3 xs:px-4 sm:px-6 py-6 xs:py-8 max-w-2xl mx-auto">
               <div className="space-y-1.5 xs:space-y-2 mb-6 xs:mb-8">
                 {mainNavigation.map((item) => {
@@ -579,7 +557,7 @@ export default function ModernNavbar() {
                         >
                           <div className="flex items-center gap-2 xs:gap-3">
                             <item.icon className="text-lg xs:text-xl" />
-                            <span className="font-bold text-base xs:text-lg tracking-wide">{item.name}</span>
+                            <span className="font-bold text-base xs:text-lg tracking-normal">{item.name}</span>
                           </div>
                           <FiChevronDown className={`text-lg xs:text-xl transition-transform duration-200 ${
                             isMobileDropdownOpen ? 'rotate-180' : ''
@@ -649,7 +627,7 @@ export default function ModernNavbar() {
                       onClick={() => setIsOpen(false)}
                     >
                       <item.icon className="text-lg xs:text-xl" />
-                      <span className="font-bold text-base xs:text-lg tracking-wide">{item.name}</span>
+                      <span className="font-bold text-base xs:text-lg tracking-normal">{item.name}</span>
                     </a>
                   );
                 })}
@@ -660,8 +638,7 @@ export default function ModernNavbar() {
                     onClick={() => setIsMobileResourcesDropdownOpen(!isMobileResourcesDropdownOpen)}
                     className={`w-full flex items-center justify-between p-3 xs:p-4 rounded-lg xs:rounded-xl text-left ${
                       isMobileResourcesDropdownOpen ||
-                      isActiveLink('/pages/staff') ||
-                      isActiveLink('/pages/careers')
+                      isResourcesActive
                         ? 'bg-white/10 text-amber-200'
                         : 'text-white/90 hover:bg-white/5'
                     }`}
@@ -669,7 +646,7 @@ export default function ModernNavbar() {
                   >
                     <div className="flex items-center gap-2 xs:gap-3">
                       <FiGrid className="text-lg xs:text-xl" />
-                      <span className="font-bold text-base xs:text-lg tracking-wide">Resources</span>
+                      <span className="font-bold text-base xs:text-lg tracking-normal">Resources</span>
                     </div>
                     <FiChevronDown className={`text-lg xs:text-xl transition-transform duration-200 ${
                       isMobileResourcesDropdownOpen ? 'rotate-180' : ''
@@ -713,20 +690,6 @@ export default function ModernNavbar() {
                     </div>
                   )}
                 </div>
-
-                <a
-                  href={adminNavigationItem.href}
-                  rel={adminNavigationItem.rel}
-                  className={`flex items-center gap-2 xs:gap-3 p-3 xs:p-4 rounded-lg xs:rounded-xl ${
-                    isAdminActive
-                      ? 'bg-white/10 text-amber-200'
-                      : 'text-white/90 hover:bg-white/5'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <adminNavigationItem.icon className="text-lg xs:text-xl" />
-                  <span className="font-bold text-base xs:text-lg tracking-wide">{adminNavigationItem.name}</span>
-                </a>
               </div>
 
               {/* Mobile Footer - CAPITALIZED "The" */}
