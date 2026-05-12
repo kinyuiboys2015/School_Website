@@ -160,21 +160,10 @@
     <loc>https://kinyuiboyssenior.school/pages/contact</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://kinyuiboyssenior.school/seo/SchoolLogo.png</image:loc>
-      <image:title>Kinyui Boys Senior School contact, location and map</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://kinyuiboyssenior.school/pages/Sign-In</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>yearly</changefreq>
     <priority>0.65</priority>
     <image:image>
       <image:loc>https://kinyuiboyssenior.school/seo/SchoolLogo.png</image:loc>
-      <image:title>Kinyui Boys Senior School School Admin</image:title>
+      <image:title>Kinyui Boys Senior School contact, location and map</image:title>
     </image:image>
   </url>
 </urlset>

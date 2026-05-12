@@ -5,12 +5,22 @@ import Footer from "./components/Foooter/page";
 import ModernNavbar from "./components/Navbar/page";
 import { useEffect } from "react";
 
-export default function ClientLayoutWrapper({ children }) {
-  const pathname = usePathname();
+const normalizePathname = (value = "/") => {
+  try {
+    return decodeURIComponent(value).replace(/\/+$/, "") || "/";
+  } catch {
+    return value.replace(/\/+$/, "") || "/";
+  }
+};
 
-  const isMainDashboard = pathname === "/MainDashboard";
+export default function ClientLayoutWrapper({ children }) {
+  const pathname = normalizePathname(usePathname() || "/");
+
+  const isMainDashboard = pathname === "/MainDashboard" || pathname.startsWith("/MainDashboard/");
   const isStudentPortal = pathname === "/pages/StudentPortal";
-  const isAdminLogin = pathname === "/pages/Sign In";
+  const isAdminLogin = ["/pages/Sign In", "/pages/Sign-In", "/pages/adminLogin"].includes(pathname);
+  const isPasswordRecovery = ["/pages/forgotpassword", "/pages/resetpassword"].includes(pathname);
+  const hideSiteChrome = isMainDashboard || isStudentPortal || isAdminLogin || isPasswordRecovery;
 
   // Add or remove zoom class based on route
   useEffect(() => {
@@ -23,13 +33,12 @@ export default function ClientLayoutWrapper({ children }) {
 
   return (
     <>
-      {/* Navbar is shown on all pages except MainDashboard or StudentPortal */}
-      {!isMainDashboard && !isStudentPortal && <ModernNavbar />}
+      {/* Hide public site chrome on protected/full-screen app routes */}
+      {!hideSiteChrome && <ModernNavbar />}
 
       <main className="min-h-screen">{children}</main>
 
-      {/* Footer is hidden only on MainDashboard, StudentPortal, and AdminLogin */}
-      {!isMainDashboard && !isStudentPortal && !isAdminLogin && <Footer />}
+      {!hideSiteChrome && <Footer />}
     </>
   );
 }
