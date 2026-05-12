@@ -41,7 +41,7 @@ export default function ModernNavbar() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1280) {
+      if (window.innerWidth >= 1024) {
         setIsOpen(false);
         setIsMobileDropdownOpen(false);
         setIsMobileResourcesDropdownOpen(false);
@@ -93,11 +93,6 @@ export default function ModernNavbar() {
       name: 'About School', 
       href: '/pages/AboutUs',
       icon: FiInfo
-    },
-        { 
-      name: 'Help Center', 
-      href: '/pages/contact', 
-      icon: FiMail 
     },
     { 
       name: 'Academics', 
@@ -198,6 +193,19 @@ export default function ModernNavbar() {
     }
   ];
 
+  const topUtilityLinks = [
+    {
+      name: 'Student Portal',
+      href: '/pages/StudentPortal',
+      icon: FiFileText
+    },
+    {
+      name: 'Help Center',
+      href: '/pages/contact',
+      icon: FiMail
+    }
+  ];
+
   // Function to check if a link is active
   const isActiveLink = (href, exact = false) => {
     if (!pathname) return false;
@@ -221,13 +229,16 @@ export default function ModernNavbar() {
     }
   };
 
+  const isAcademicActive = academicDropdownItems.some((item) => (
+    item.href.startsWith('/pages') && isActiveLink(item.href)
+  ));
   const isResourcesActive = resourcesDropdownItems.some((item) => isActiveLink(item.href));
 
   return (
     <>
       <nav className="fixed w-full z-50 bg-[#3b1e0a] shadow-xl">
         <div className="w-full px-3 xs:px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between min-h-[4.5rem] sm:min-h-[5.2rem]">
+          <div className="flex flex-wrap items-center justify-between gap-y-2 min-h-[4.5rem] sm:min-h-[5.2rem] lg:py-3">
             
 {/* Logo Section */}
 <div 
@@ -272,11 +283,32 @@ export default function ModernNavbar() {
   </div>
 </div>
 
-            {/* Desktop Navigation - NO UPPERCASE */}
-            <div className="hidden xl:flex items-center justify-center flex-1 mx-3 2xl:mx-6 min-w-0">
-              <div className="flex items-center justify-end w-full min-w-0 gap-0.5 2xl:gap-1 px-1 py-2">
+            <div className="hidden lg:flex items-center justify-end gap-2">
+              {topUtilityLinks.map((item) => {
+                const isActive = isActiveLink(item.href);
+
+                return (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className={`group inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-all ${
+                      isActive
+                        ? 'bg-amber-300 text-slate-950'
+                        : 'text-white/85 hover:bg-white/10 hover:text-white'
+                    }`}
+                  >
+                    <item.icon className="text-sm flex-shrink-0" />
+                    <span className="whitespace-nowrap">{item.name}</span>
+                  </a>
+                );
+              })}
+            </div>
+
+            {/* Desktop Navigation - second row */}
+            <div className="hidden lg:flex order-3 w-full flex-none items-center justify-center border-t border-white/10 pt-2 pb-1">
+              <div className="flex w-full min-w-0 flex-wrap items-center justify-center gap-1.5 px-1 py-1">
                 {mainNavigation.map((item) => {
-                  const isActive = isActiveLink(item.href, item.exact);
+                  const isActive = item.hasDropdown ? isAcademicActive : isActiveLink(item.href, item.exact);
                   
                   if (item.hasDropdown) {
                     return (
@@ -288,7 +320,7 @@ export default function ModernNavbar() {
                         onMouseLeave={() => setIsAcademicDropdownOpen(false)}
                       >
                         <button
-                          className={`group flex items-center gap-1 2xl:gap-1.5 font-bold transition-all text-[0.74rem] 2xl:text-[0.84rem] tracking-normal whitespace-nowrap px-2 2xl:px-3 py-2 rounded-full relative ${
+                          className={`group flex items-center gap-1.5 font-bold transition-all text-[0.8rem] xl:text-[0.84rem] tracking-normal whitespace-nowrap px-2.5 xl:px-3 py-2 rounded-full relative ${
                             isActive || isAcademicDropdownOpen
                               ? 'text-slate-950 bg-amber-300'
                               : 'text-white/80 hover:text-white hover:bg-white/10'
@@ -389,7 +421,7 @@ export default function ModernNavbar() {
                     <a
                       key={item.name}
                       href={item.href}
-                      className={`group flex items-center gap-1 2xl:gap-1.5 font-bold transition-all text-[0.74rem] 2xl:text-[0.84rem] tracking-normal whitespace-nowrap px-2 2xl:px-3 py-2 rounded-full relative ${
+                      className={`group flex items-center gap-1.5 font-bold transition-all text-[0.8rem] xl:text-[0.84rem] tracking-normal whitespace-nowrap px-2.5 xl:px-3 py-2 rounded-full relative ${
                         isActive
                           ? 'text-slate-950 bg-amber-300'
                           : 'text-white/80 hover:text-white hover:bg-white/10'
@@ -415,7 +447,7 @@ export default function ModernNavbar() {
                   onMouseLeave={() => setIsResourcesDropdownOpen(false)}
                 >
                   <button
-                    className={`group flex items-center gap-1 2xl:gap-1.5 font-bold transition-all text-[0.74rem] 2xl:text-[0.84rem] tracking-normal whitespace-nowrap px-2 2xl:px-3 py-2 rounded-full relative ${
+                    className={`group flex items-center gap-1.5 font-bold transition-all text-[0.8rem] xl:text-[0.84rem] tracking-normal whitespace-nowrap px-2.5 xl:px-3 py-2 rounded-full relative ${
                       isResourcesDropdownOpen ||
                       isResourcesActive
                         ? 'text-slate-950 bg-amber-300'
@@ -522,7 +554,7 @@ export default function ModernNavbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="xl:hidden p-2.5 xs:p-3 rounded-lg xs:rounded-xl text-white bg-white/10 hover:bg-white/20 transition-all active:scale-95 ml-auto"
+              className="lg:hidden p-2.5 xs:p-3 rounded-lg xs:rounded-xl text-white bg-white/10 hover:bg-white/20 transition-all active:scale-95 ml-auto"
               aria-label={isOpen ? "Close menu" : "Open menu"}
               aria-expanded={isOpen}
             >
@@ -537,11 +569,33 @@ export default function ModernNavbar() {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="xl:hidden bg-[#3b1e0a] border-t border-white/10">
+          <div className="lg:hidden bg-[#3b1e0a] border-t border-white/10">
             <div className="px-3 xs:px-4 sm:px-6 py-6 xs:py-8 max-w-2xl mx-auto">
               <div className="space-y-1.5 xs:space-y-2 mb-6 xs:mb-8">
+                {topUtilityLinks.map((item) => {
+                  const isActive = isActiveLink(item.href);
+
+                  return (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className={`flex items-center gap-2 xs:gap-3 p-3 xs:p-4 rounded-lg xs:rounded-xl ${
+                        isActive
+                          ? 'bg-white/10 text-amber-200'
+                          : 'text-white/90 hover:bg-white/5'
+                      }`}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <item.icon className="text-lg xs:text-xl" />
+                      <span className="font-bold text-base xs:text-lg tracking-normal">{item.name}</span>
+                    </a>
+                  );
+                })}
+
+                <div className="my-3 h-px bg-white/10"></div>
+
                 {mainNavigation.map((item) => {
-                  const isActive = isActiveLink(item.href, item.exact);
+                  const isActive = item.hasDropdown ? isAcademicActive : isActiveLink(item.href, item.exact);
                   
                   if (item.hasDropdown) {
                     return (
@@ -703,7 +757,7 @@ Blessed and Favoured
         )}
       </nav>
 
-      <div className="h-[4.5rem] xs:h-20 sm:h-22 lg:h-24 transition-all duration-300"></div>
+      <div className="h-[4.5rem] xs:h-20 sm:h-22 lg:h-32 transition-all duration-300"></div>
     </>
   );
 }
