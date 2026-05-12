@@ -274,7 +274,7 @@ export default function ModernNavbar() {
 
             {/* Desktop Navigation - NO UPPERCASE */}
             <div className="hidden lg:flex items-center justify-center flex-1 mx-6 min-w-0">
-              <div className="flex items-center justify-center w-full max-w-7xl gap-1 rounded-full border border-white/10 bg-white/[0.04] px-2 py-2 backdrop-blur">
+              <div className="flex items-center justify-center w-full min-w-0 gap-1 px-1 py-2">
                 {mainNavigation.map((item) => {
                   const isActive = isActiveLink(item.href, item.exact);
                   
