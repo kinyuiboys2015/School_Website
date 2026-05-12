@@ -1,7 +1,7 @@
 import StaffDirectoryClient from './StaffDirectoryClient';
 
-const logoImage = '/seo/kinyui.jpeg';
-const logoPng = '/seo/kinyui.png';
+const logoImage = '/seo/SchoolLogo.png';
+const logoPng = '/seo/SchoolLogo.png';
 
 export const metadata = {
   title: 'Staff Leadership & Departments',

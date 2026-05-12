@@ -347,9 +347,9 @@ function LandingPage({ onOpenLogin, router }) {
   ];
 
   const stats = [
-    { num: '1976', label: 'Established' },
-    { num: '6', label: 'Portal Modules' },
-    { num: '24/7', label: 'Access' },
+    { num: 'Secure', label: 'Password Access' },
+    { num: '6', label: 'Useful Modules' },
+    { num: '2h', label: 'Session Window' },
   ];
 
   return (
@@ -365,7 +365,7 @@ function LandingPage({ onOpenLogin, router }) {
           <div className="flex items-center gap-2.5">
             <div className="relative">
               <div className="absolute inset-0 bg-slate-400/20 rounded-lg blur-sm" />
-              <Image src="/kinyui.jpeg" alt="Kinyui Boys Logo" width={36} height={36}
+              <Image src="/SchoolLogo.png" alt="Kinyui Boys Logo" width={36} height={36}
                 className="relative rounded-lg w-8 h-8 sm:w-9 sm:h-9" priority />
             </div>
             <div>
@@ -396,7 +396,7 @@ function LandingPage({ onOpenLogin, router }) {
           <div className="anim-fade-up">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-[10px] sm:text-xs font-bold text-slate-700 uppercase tracking-wider mb-5">
               <HiSparkles className="w-3 h-3 text-slate-700" />
-              Excellence in Education Since 1976
+              Secure access for uploaded student records
             </div>
          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-[1.05]">
   Your Academic
@@ -405,7 +405,7 @@ function LandingPage({ onOpenLogin, router }) {
   </span>
 </h1>
             <p className="mt-4 sm:mt-5 text-base sm:text-lg text-gray-600 max-w-lg leading-relaxed">
-              The centralized digital platform for Kinyui Boys' students. Access resources, track performance, manage fees, and stay connected.
+              A focused portal for student records, fees, results, learning resources, and school support.
             </p>
             <div className="flex flex-wrap gap-3 mt-6 sm:mt-8">
               <button onClick={onOpenLogin}
@@ -465,7 +465,7 @@ function LandingPage({ onOpenLogin, router }) {
               Everything You Need
             </h2>
             <p className="mt-2 text-sm sm:text-base text-gray-500 max-w-xl mx-auto">
-              Six powerful modules designed to support your academic journey at Kinyui Boys Senior School'.
+              Useful student services in one secure place.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
@@ -527,6 +527,8 @@ export default function ModernStudentPortalPage() {
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState(null);
   const [requiresContact, setRequiresContact] = useState(false);
+  const [passwordSetupToken, setPasswordSetupToken] = useState(null);
+  const [passwordSetupStudent, setPasswordSetupStudent] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const [currentView, setCurrentView] = useState('home');
@@ -728,34 +730,58 @@ export default function ModernStudentPortalPage() {
     }
   };
 
-  const handleStudentLogin = async (fullName, admissionNumber) => {
+  const handleStudentLogin = async (payloadOrFullName, maybeAdmissionNumber) => {
     setLoginLoading(true);
     setLoginError(null);
     setRequiresContact(false);
 
     try {
+      const payload = typeof payloadOrFullName === 'object'
+        ? payloadOrFullName
+        : {
+            action: 'verify-first-access',
+            fullName: payloadOrFullName,
+            admissionNumber: maybeAdmissionNumber
+          };
+
       const response = await fetch('/api/studentlogin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fullName, admissionNumber })
+        body: JSON.stringify(payload)
       });
 
       const data = await response.json();
 
       if (data.success) {
+        if (data.requiresPasswordSetup) {
+          setPasswordSetupToken(data.setupToken);
+          setPasswordSetupStudent(data.student);
+          setShowLoginModal(true);
+          toast.success('Student verified', {
+            description: 'Create a strong password to finish portal setup.'
+          });
+          return;
+        }
+
         localStorage.setItem('student_token', data.token);
         setStudent(data.student);
         setToken(data.token);
         setShowLoginModal(false);
+        setPasswordSetupToken(null);
+        setPasswordSetupStudent(null);
 
         toast.success('Login Successful!', {
           description: `Welcome to Kinyui Boys' Portal, ${data.student.fullName}`
         });
-
-        fetchAllData();
       } else {
         setLoginError(data.error);
         setRequiresContact(data.requiresContact || false);
+
+        if (data.requiresPasswordSetup) {
+          toast.info('Password setup required', {
+            description: 'Use first-time access to verify your name and create a password.'
+          });
+        }
 
         if (data.requiresContact) {
           toast.error('Student Record Not Found', {
@@ -776,6 +802,52 @@ export default function ModernStudentPortalPage() {
     }
   };
 
+  const handlePasswordSetup = async ({ setupToken, username, password, confirmPassword }) => {
+    setLoginLoading(true);
+    setLoginError(null);
+    setRequiresContact(false);
+
+    try {
+      const response = await fetch('/api/studentlogin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'set-password',
+          setupToken,
+          username,
+          password,
+          confirmPassword
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.setItem('student_token', data.token);
+        setStudent(data.student);
+        setToken(data.token);
+        setShowLoginModal(false);
+        setPasswordSetupToken(null);
+        setPasswordSetupStudent(null);
+        toast.success('Password Created', {
+          description: 'Your secure student portal account is ready.'
+        });
+      } else {
+        setLoginError(data.error || 'Could not create password.');
+        setRequiresContact(data.requiresContact || false);
+        toast.error(data.error || 'Could not create password.');
+      }
+    } catch (error) {
+      console.error('Password setup error:', error);
+      setLoginError('Network error. Please check your connection and try again.');
+      toast.error('Connection Error', {
+        description: 'Unable to create your password right now.'
+      });
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await fetch('/api/studentlogin', { method: 'DELETE' });
@@ -786,6 +858,8 @@ export default function ModernStudentPortalPage() {
       setStudent(null);
       setToken(null);
       setShowLoginModal(true);
+      setPasswordSetupToken(null);
+      setPasswordSetupStudent(null);
       setAssignments([]);
       setResources([]);
       setStudentResults([]);
@@ -842,9 +916,12 @@ export default function ModernStudentPortalPage() {
           isOpen={showLoginModal}
           onClose={() => setShowLoginModal(false)}
           onLogin={handleStudentLogin}
+          onSetupPassword={handlePasswordSetup}
           isLoading={loginLoading}
           error={loginError}
           requiresContact={requiresContact}
+          passwordSetupToken={passwordSetupToken}
+          passwordSetupStudent={passwordSetupStudent}
         />
       </>
     );
@@ -859,9 +936,12 @@ export default function ModernStudentPortalPage() {
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
         onLogin={handleStudentLogin}
+        onSetupPassword={handlePasswordSetup}
         isLoading={loginLoading}
         error={loginError}
         requiresContact={requiresContact}
+        passwordSetupToken={passwordSetupToken}
+        passwordSetupStudent={passwordSetupStudent}
       />
 
       {isMenuOpen && (

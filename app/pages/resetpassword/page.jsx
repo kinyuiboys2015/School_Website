@@ -114,7 +114,7 @@ const ResetPasswordContent = () => {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
-          <img src="/seo/kinyui.jpeg" alt="" className="w-[500px] h-[500px] object-contain" />
+          <img src="/seo/SchoolLogo.png" alt="" className="w-[500px] h-[500px] object-contain" />
         </div>
         <div className="absolute top-0 right-0 w-72 h-72 bg-slate-100 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-slate-50 rounded-full blur-[120px] pointer-events-none" />
@@ -125,7 +125,7 @@ const ResetPasswordContent = () => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl rounded-full -mr-16 -mt-16" />
               <div className="relative z-10">
                 <div className="flex items-center justify-center gap-3 mb-5">
-                  <img src="/seo/kinyui.jpeg" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
+                  <img src="/seo/SchoolLogo.png" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
                   <div className="text-left">
                     <p className="text-white/90 text-xs sm:text-sm font-bold uppercase tracking-widest leading-tight">Kinyui Boys</p>
                     <p className="text-white/50 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium">Senior School</p>
@@ -168,7 +168,7 @@ const ResetPasswordContent = () => {
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
       {/* Watermark */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
-        <img src="/seo/kinyui.jpeg" alt="" className="w-[500px] h-[500px] object-contain" />
+        <img src="/seo/SchoolLogo.png" alt="" className="w-[500px] h-[500px] object-contain" />
       </div>
       <div className="absolute top-0 right-0 w-72 h-72 bg-slate-100 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-72 h-72 bg-slate-50 rounded-full blur-[120px] pointer-events-none" />
@@ -194,7 +194,7 @@ const ResetPasswordContent = () => {
 
             <div className="relative z-10">
               <div className="flex items-center justify-center gap-3 mb-5">
-                <img src="/seo/kinyui.jpeg" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
+                <img src="/seo/SchoolLogo.png" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
                 <div className="text-left">
                   <p className="text-white/90 text-xs sm:text-sm font-bold uppercase tracking-widest leading-tight">Kinyui Boys</p>
                   <p className="text-white/50 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium">Senior School</p>
@@ -367,14 +367,14 @@ const ResetPasswordPage = () => {
     <Suspense fallback={
       <div className="min-h-screen bg-white flex items-center justify-center p-4">
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
-          <img src="/seo/kinyui.jpeg" alt="" className="w-[500px] h-[500px] object-contain" />
+          <img src="/seo/SchoolLogo.png" alt="" className="w-[500px] h-[500px] object-contain" />
         </div>
         <div className="relative z-10 w-full max-w-md mx-auto">
           <div className="bg-white border border-slate-200 rounded-2xl sm:rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden">
             <div className="bg-[#1a1a2e] px-6 sm:px-8 py-8 sm:py-10 text-center relative overflow-hidden">
               <div className="relative z-10">
                 <div className="flex items-center justify-center gap-3 mb-5">
-                  <img src="/seo/kinyui.jpeg" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
+                  <img src="/seo/SchoolLogo.png" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
                   <div className="text-left">
                     <p className="text-white/90 text-xs sm:text-sm font-bold uppercase tracking-widest leading-tight">Kinyui Boys</p>
                     <p className="text-white/50 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium">Senior School</p>

@@ -1392,7 +1392,7 @@ export default function AdminLoginPage() {
                 <Link href="/" className="flex items-center gap-5 group transition-transform hover:translate-x-1">
                   <div className="relative p-1 bg-white/10 rounded-full backdrop-blur-xl border border-white/20 shadow-2xl">
                     <Image
-                      src="/kinyui.jpeg"
+                      src="/SchoolLogo.png"
                       alt="Kinyui Logo"
                       width={64}
                       height={64}
@@ -1454,7 +1454,7 @@ export default function AdminLoginPage() {
             <div className="w-full max-w-md ml-0 md:ml-[15%]">
               <div className="md:hidden text-center mb-8">
                 <Image
-                  src="/kinyui.jpeg"
+                  src="/SchoolLogo.png"
                   alt="Kinyui Logo"
                   width={60}
                   height={60}

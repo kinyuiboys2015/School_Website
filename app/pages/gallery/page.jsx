@@ -50,7 +50,7 @@ export const metadata = {
     siteName: 'SA kinyui boys Senior School',
     images: [
       {
-        url: '/seo/kinyui.jpeg',
+        url: '/seo/SchoolLogo.png',
         width: 1200,
         height: 630,
         alt: 'S.A kinyui boys Senior School Gallery',
@@ -64,7 +64,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'S.A kinyui boys Senior School Gallery',
     description: 'Browse through our collection of school photos, events, and memorable moments.',
-    images: ['/seo/kinyui.jpeg'],
+    images: ['/seo/SchoolLogo.png'],
   },
   
   alternates: {

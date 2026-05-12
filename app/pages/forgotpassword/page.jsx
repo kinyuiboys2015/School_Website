@@ -57,7 +57,7 @@ const ForgotPasswordPage = () => {
 
       {/* Watermark school logo */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
-        <img src="/seo/kinyui.jpeg" alt="" className="w-[500px] h-[500px] object-contain" />
+        <img src="/seo/SchoolLogo.png" alt="" className="w-[500px] h-[500px] object-contain" />
       </div>
 
       {/* Subtle background accents */}
@@ -86,7 +86,7 @@ const ForgotPasswordPage = () => {
             <div className="relative z-10">
               {/* School branding */}
               <div className="flex items-center justify-center gap-3 mb-5">
-                <img src="/seo/kinyui.jpeg" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
+                <img src="/seo/SchoolLogo.png" alt="Kinyui Boys Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white/10 p-1" />
                 <div className="text-left">
                   <p className="text-white/90 text-xs sm:text-sm font-bold uppercase tracking-widest leading-tight">Kinyui Boys</p>
                   <p className="text-white/50 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium">Senior School</p>

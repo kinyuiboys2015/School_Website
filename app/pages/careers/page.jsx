@@ -939,7 +939,7 @@ Loading for Opportunities at Kinyui Senior School
      <div
   className="fixed inset-0 pointer-events-none z-0 bg-no-repeat bg-center bg-contain opacity-[0.30] "
   style={{
-    backgroundImage: "url('/kinyui.jpeg')",
+    backgroundImage: "url('/SchoolLogo.png')",
     backgroundSize: 'min(80%, 600px)',
   }}
 />

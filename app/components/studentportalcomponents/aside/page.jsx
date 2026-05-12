@@ -52,7 +52,7 @@ export default function NavigationSidebar({
                 <div className="relative w-12 h-12 sm:w-14 sm:h-14 bg-gray-800 rounded-2xl flex items-center justify-center shadow-2xl">
                   <div className="w-full h-full rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center">
                     <img 
-                      src="/kinyui.jpeg" 
+                      src="/SchoolLogo.png" 
                       alt="Kinyui Boys School Logo" 
                       className="w-10 h-10 sm:w-11 sm:h-11 object-contain p-1.5"
                     />

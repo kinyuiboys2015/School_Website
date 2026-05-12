@@ -401,7 +401,7 @@ kjseaGrade: '',         // Changed from meanGrade
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
           style={{
-            backgroundImage: `url('/hero/kinyui.jpeg')`,
+            backgroundImage: `url('/hero/SchoolLogo.png')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',

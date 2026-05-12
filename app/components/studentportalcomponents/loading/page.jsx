@@ -108,7 +108,7 @@ const ModernLoadingScreen = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
               
               <img 
-                src="/kinyui.jpeg" 
+                src="/SchoolLogo.png" 
                 alt="Kinyui Boys Senior School Logo" 
                 className="w-20 h-20 md:w-28 md:h-28 object-contain p-2 relative z-10"
               />

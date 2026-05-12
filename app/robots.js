@@ -21,8 +21,8 @@ const publicPages = [
 
 const publicAssets = [
   '/seo/',
-  '/seo/kinyui.jpeg',
-  '/seo/kinyui.png',
+  '/seo/SchoolLogo.png',
+  '/seo/SchoolLogo.png',
   '/hero/',
   '/images/',
   '/_next/static/',

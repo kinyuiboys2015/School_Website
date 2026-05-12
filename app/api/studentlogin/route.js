@@ -1,411 +1,610 @@
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import { prisma } from '../../../libs/prisma';
 
-// Constants
 const JWT_SECRET = process.env.JWT_SECRET || 'kinyui boys-student-secret-key-2024';
-const STUDENT_TOKEN_EXPIRY = '2h'; // Changed from 15m to 2 hours
+const STUDENT_TOKEN_EXPIRY = '2h';
+const STUDENT_TOKEN_MAX_AGE = 2 * 60 * 60;
+const SETUP_TOKEN_EXPIRY = '15m';
+const MAX_FAILED_LOGINS = 5;
+const LOCK_MINUTES = 15;
 
-// Generate student JWT token
-const generateStudentToken = (student) => {
-  return jwt.sign(
-    {
-      studentId: student.id,
-      admissionNumber: student.admissionNumber,
-      name: `${student.firstName} ${student.lastName}`,
-      form: student.form,
-      stream: student.stream,
-      role: 'student',
-    },
-    JWT_SECRET,
-    { expiresIn: STUDENT_TOKEN_EXPIRY }
-  );
-};
+const normalizeAdmissionNumber = (value) => String(value || '').trim().toUpperCase();
+const normalizeUsername = (value) => String(value || '').trim().toLowerCase();
 
-// Clean and normalize name for comparison
-const normalizeName = (name) => {
-  return name
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, ' ') // Replace multiple spaces with single space
-    .replace(/[^a-z\s]/g, '') // Remove special characters and numbers
-    .split(' ')
-    .filter(word => word.length > 0) // Remove empty strings
-    .sort(); // Sort alphabetically for comparison
-};
+const normalizeName = (name) => String(name || '')
+  .toLowerCase()
+  .trim()
+  .replace(/\s+/g, ' ')
+  .replace(/[^a-z\s]/g, '')
+  .split(' ')
+  .filter(Boolean)
+  .sort();
 
-// Find student by admission number with flexible name matching
+const getFullName = (student) => [student.firstName, student.middleName, student.lastName]
+  .filter(Boolean)
+  .join(' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const toSafeStudent = (student, account = null) => ({
+  id: student.id,
+  admissionNumber: student.admissionNumber,
+  firstName: student.firstName,
+  lastName: student.lastName,
+  middleName: student.middleName,
+  name: getFullName(student),
+  fullName: getFullName(student),
+  form: student.form,
+  stream: student.stream,
+  email: student.email,
+  gender: student.gender,
+  dateOfBirth: student.dateOfBirth,
+  parentPhone: student.parentPhone,
+  address: student.address,
+  portalUsername: account?.username || student.admissionNumber,
+  hasPortalPassword: Boolean(account?.passwordHash)
+});
+
 const findStudentByName = (student, nameParts) => {
-  // Get all possible name combinations from database student
-  const dbNameVariations = [
+  const dbNameParts = [
     student.firstName?.toLowerCase() || '',
-    student.lastName?.toLowerCase() || '',
-    student.middleName?.toLowerCase() || ''
-  ].filter(name => name && name.length > 0);
+    student.middleName?.toLowerCase() || '',
+    student.lastName?.toLowerCase() || ''
+  ].filter(Boolean);
 
-  // Sort both arrays for comparison
-  const sortedNameParts = [...nameParts].sort();
-  const sortedDbNames = [...dbNameVariations].sort();
+  return nameParts.every(part => dbNameParts.some(dbName =>
+    dbName === part ||
+    dbName.startsWith(part) ||
+    part.startsWith(dbName) ||
+    (part.length === 1 && dbName[0] === part)
+  ));
+};
 
-  // Check if all entered name parts exist in database names
-  const allPartsMatch = sortedNameParts.every(part => {
-    return sortedDbNames.some(dbName => {
-      // Exact match or partial match (for abbreviations)
-      return dbName === part || 
-             dbName.startsWith(part) || 
-             part.startsWith(dbName) ||
-             (part.length === 1 && dbName[0] === part); // Handle initials
-    });
+const findActiveStudentByAdmission = async (admissionNumber) => {
+  const student = await prisma.databaseStudent.findUnique({
+    where: { admissionNumber }
   });
 
-  return allPartsMatch;
+  if (!student || student.status !== 'active') return null;
+  return student;
 };
 
-// Validate student credentials with flexible name matching
-const validateStudentCredentials = async (fullName, admissionNumber) => {
+const getOrCreatePortalAccount = async (admissionNumber) => prisma.studentPortalAccount.upsert({
+  where: { admissionNumber },
+  update: {
+    status: 'active',
+    updatedAt: new Date()
+  },
+  create: {
+    admissionNumber,
+    username: admissionNumber.toLowerCase(),
+    status: 'active'
+  }
+});
+
+const generateStudentToken = (student, account) => jwt.sign(
+  {
+    accountId: account.id,
+    studentId: student.id,
+    admissionNumber: account.admissionNumber,
+    name: getFullName(student),
+    form: student.form,
+    stream: student.stream,
+    role: 'student'
+  },
+  JWT_SECRET,
+  { expiresIn: STUDENT_TOKEN_EXPIRY }
+);
+
+const generateSetupToken = (student, account) => jwt.sign(
+  {
+    type: 'student_password_setup',
+    accountId: account.id,
+    admissionNumber: account.admissionNumber,
+    studentId: student.id,
+    role: 'student'
+  },
+  JWT_SECRET,
+  { expiresIn: SETUP_TOKEN_EXPIRY }
+);
+
+const createStudentSession = async (student, account, token, request) => {
   try {
-    // Clean inputs
-    const cleanAdmissionNumber = admissionNumber.trim().toUpperCase();
-    const cleanFullName = fullName.trim();
-
-    // Parse and normalize name parts
-    const nameParts = normalizeName(cleanFullName);
-    
-    if (nameParts.length < 1) {
-      return { 
-        success: false, 
-        error: 'Please enter your name',
-        requiresContact: false 
-      };
-    }
-
-    // Find student by admission number
-    const student = await prisma.databaseStudent.findUnique({
-      where: { 
-        admissionNumber: cleanAdmissionNumber
+    await prisma.studentSession.create({
+      data: {
+        studentId: student.id,
+        admissionNumber: account.admissionNumber,
+        name: getFullName(student),
+        token,
+        expiresAt: new Date(Date.now() + STUDENT_TOKEN_MAX_AGE * 1000),
+        ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
+        userAgent: request.headers.get('user-agent') || 'unknown'
       }
     });
-
-    if (!student) {
-      return { 
-        success: false, 
-        error: 'Student not found with this admission number. Please contact your class teacher or the school administrator/secretary to add or confirm your records.',
-        requiresContact: true 
-      };
-    }
-
-    // Check if student is active
-    if (student.status !== 'active') {
-      return { 
-        success: false, 
-        error: 'Student account is not active. Please contact your class teacher or the school administrator/secretary.',
-        requiresContact: true 
-      };
-    }
-
-    // Check name match with flexible matching
-    const isNameMatch = findStudentByName(student, nameParts);
-
-    if (!isNameMatch) {
-      return { 
-        success: false, 
-        error: 'Name does not match admission number. Please check and try again, or contact your class teacher or the school administrator/secretary to confirm your details.',
-        requiresContact: true 
-      };
-    }
-
-    return { 
-      success: true, 
-      student 
-    };
-
   } catch (error) {
-    console.error('Student validation error:', error);
-    return { 
-      success: false, 
-      error: 'Authentication failed. Please try again.',
-      requiresContact: false 
-    };
+    console.warn('Student session tracking failed:', error.message);
   }
 };
 
-// POST - Student Login
-export async function POST(request) {
-  try {
-    const { fullName, admissionNumber } = await request.json();
+const tokenCookie = (token, maxAge = STUDENT_TOKEN_MAX_AGE) =>
+  `student_token=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${maxAge}; Secure=${process.env.NODE_ENV === 'production'}`;
 
-    if (!fullName || !admissionNumber) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Full name and admission number are required' 
-        },
-        { status: 400 }
-      );
+const clearTokenCookie = () =>
+  `student_token=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure=${process.env.NODE_ENV === 'production'}`;
+
+const validateStrongPassword = (password) => {
+  const value = String(password || '');
+  const errors = [];
+
+  if (value.length < 8) errors.push('Use at least 8 characters.');
+  if (!/[a-z]/.test(value)) errors.push('Add a lowercase letter.');
+  if (!/[A-Z]/.test(value)) errors.push('Add an uppercase letter.');
+  if (!/\d/.test(value)) errors.push('Add a number.');
+
+  return {
+    valid: errors.length === 0,
+    message: errors.length ? `Password is not strong enough. ${errors.join(' ')}` : ''
+  };
+};
+
+const validateStudentByName = async (fullName, admissionNumber) => {
+  const cleanAdmissionNumber = normalizeAdmissionNumber(admissionNumber);
+  const cleanFullName = String(fullName || '').trim();
+  const nameParts = normalizeName(cleanFullName);
+
+  if (!cleanAdmissionNumber) {
+    return { success: false, error: 'Please enter your admission number.', status: 400 };
+  }
+
+  if (nameParts.length < 1) {
+    return { success: false, error: 'Please enter your registered name.', status: 400 };
+  }
+
+  const student = await prisma.databaseStudent.findUnique({
+    where: { admissionNumber: cleanAdmissionNumber }
+  });
+
+  if (!student) {
+    return {
+      success: false,
+      error: 'We could not find that admission number in the current student records. Please confirm it or contact the school office.',
+      requiresContact: true,
+      status: 404
+    };
+  }
+
+  if (student.status !== 'active') {
+    return {
+      success: false,
+      error: 'This student record is not active right now. Please contact the school office for help.',
+      requiresContact: true,
+      status: 403
+    };
+  }
+
+  if (!findStudentByName(student, nameParts)) {
+    return {
+      success: false,
+      error: 'The name does not match this admission number. Check the spelling or use the name in the school record.',
+      requiresContact: true,
+      status: 401
+    };
+  }
+
+  return { success: true, student };
+};
+
+const findPortalAccountByIdentifier = async (identifier) => {
+  const raw = String(identifier || '').trim();
+  if (!raw) return null;
+
+  return prisma.studentPortalAccount.findFirst({
+    where: {
+      OR: [
+        { admissionNumber: normalizeAdmissionNumber(raw) },
+        { username: normalizeUsername(raw) }
+      ]
     }
+  });
+};
 
-    // Validate student credentials with flexible name matching
-    const validation = await validateStudentCredentials(fullName, admissionNumber);
+const passwordLogin = async (body, request) => {
+  const identifier = body.identifier || body.username || body.admissionNumber;
+  const password = String(body.password || '');
 
-    if (!validation.success) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: validation.error,
-          requiresContact: validation.requiresContact || false
-        },
-        { status: validation.requiresContact ? 404 : 401 }
-      );
-    }
+  if (!identifier || !password) {
+    return NextResponse.json(
+      { success: false, error: 'Enter your admission number or username and password.' },
+      { status: 400 }
+    );
+  }
 
-    const student = validation.student;
-
-    // Generate JWT token with 2-hour expiry
-    const token = generateStudentToken(student);
-
-    // Create student session record with 2-hour expiry
-    try {
-      await prisma.studentSession.create({
-        data: {
-          studentId: student.id,
-          admissionNumber: student.admissionNumber,
-          name: `${student.firstName} ${student.lastName}`,
-          token,
-          expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours
-          ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
-          userAgent: request.headers.get('user-agent') || 'unknown'
-        }
-      });
-    } catch (sessionError) {
-      console.warn('Could not create student session (might not be in schema yet):', sessionError);
-      // Continue without session tracking for now
-    }
-
-    // Return success response
-    return NextResponse.json({
-      success: true,
-      message: 'Login successful',
-      student: {
-        id: student.id,
-        admissionNumber: student.admissionNumber,
-        firstName: student.firstName,
-        lastName: student.lastName,
-        middleName: student.middleName,
-        fullName: `${student.firstName} ${student.lastName}`,
-        form: student.form,
-        stream: student.stream,
-        email: student.email,
-        gender: student.gender,
-        dateOfBirth: student.dateOfBirth,
-        parentPhone: student.parentPhone,
-        address: student.address
+  const account = await findPortalAccountByIdentifier(identifier);
+  if (!account || account.status !== 'active') {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'No portal password has been created for those details. Use first-time access to verify your admission number.'
       },
-      token,
-      expiresIn: '2 hours',
-      permissions: {
-        canViewResources: true,
-        canViewAssignments: true,
-        canDownloadMaterials: true
-      }
-    }, {
-      status: 200,
-      headers: {
-        'Set-Cookie': `student_token=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=7200; Secure=${process.env.NODE_ENV === 'production'}`
-      }
+      { status: 404 }
+    );
+  }
+
+  if (!account.passwordHash) {
+    return NextResponse.json(
+      {
+        success: false,
+        requiresPasswordSetup: true,
+        error: 'This account is verified but does not have a password yet. Please use first-time access to create one.'
+      },
+      { status: 403 }
+    );
+  }
+
+  if (account.lockedUntil && account.lockedUntil > new Date()) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: `Too many wrong password attempts. Try again after ${account.lockedUntil.toLocaleTimeString()}.`
+      },
+      { status: 429 }
+    );
+  }
+
+  const passwordMatches = await bcrypt.compare(password, account.passwordHash);
+  if (!passwordMatches) {
+    const failedLoginCount = account.failedLoginCount + 1;
+    const lockedUntil = failedLoginCount >= MAX_FAILED_LOGINS
+      ? new Date(Date.now() + LOCK_MINUTES * 60 * 1000)
+      : null;
+
+    await prisma.studentPortalAccount.update({
+      where: { id: account.id },
+      data: { failedLoginCount, lockedUntil }
     });
 
+    return NextResponse.json(
+      {
+        success: false,
+        error: lockedUntil
+          ? `Password is incorrect. The account is locked for ${LOCK_MINUTES} minutes.`
+          : `Password is incorrect. ${MAX_FAILED_LOGINS - failedLoginCount} attempt(s) remaining before a temporary lock.`
+      },
+      { status: 401 }
+    );
+  }
+
+  const student = await findActiveStudentByAdmission(account.admissionNumber);
+  if (!student) {
+    return NextResponse.json(
+      {
+        success: false,
+        requiresContact: true,
+        error: 'Your portal password is saved, but your active student record is missing. Ask the school office to refresh your student record.'
+      },
+      { status: 404 }
+    );
+  }
+
+  const updatedAccount = await prisma.studentPortalAccount.update({
+    where: { id: account.id },
+    data: {
+      failedLoginCount: 0,
+      lockedUntil: null,
+      lastLoginAt: new Date()
+    }
+  });
+
+  const token = generateStudentToken(student, updatedAccount);
+  await createStudentSession(student, updatedAccount, token, request);
+
+  return NextResponse.json({
+    success: true,
+    message: 'Login successful.',
+    student: toSafeStudent(student, updatedAccount),
+    token,
+    expiresIn: '2 hours',
+    permissions: {
+      canViewResources: true,
+      canViewAssignments: true,
+      canDownloadMaterials: true
+    }
+  }, {
+    status: 200,
+    headers: { 'Set-Cookie': tokenCookie(token) }
+  });
+};
+
+const verifyFirstAccess = async (body) => {
+  const validation = await validateStudentByName(body.fullName, body.admissionNumber);
+  if (!validation.success) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: validation.error,
+        requiresContact: validation.requiresContact || false
+      },
+      { status: validation.status || 401 }
+    );
+  }
+
+  const student = validation.student;
+  const account = await getOrCreatePortalAccount(student.admissionNumber);
+
+  if (account.passwordHash) {
+    return NextResponse.json(
+      {
+        success: false,
+        requiresPassword: true,
+        error: 'A portal password already exists for this admission number. Please sign in with your password.'
+      },
+      { status: 409 }
+    );
+  }
+
+  return NextResponse.json({
+    success: true,
+    requiresPasswordSetup: true,
+    message: 'Student verified. Create a strong password to finish setting up your portal access.',
+    setupToken: generateSetupToken(student, account),
+    student: toSafeStudent(student, account)
+  });
+};
+
+const setupPassword = async (body, request) => {
+  const password = String(body.password || '');
+  const confirmPassword = String(body.confirmPassword || body.passwordConfirmation || '');
+
+  if (!body.setupToken) {
+    return NextResponse.json(
+      { success: false, error: 'Password setup session is missing. Please verify your admission number again.' },
+      { status: 400 }
+    );
+  }
+
+  if (password !== confirmPassword) {
+    return NextResponse.json(
+      { success: false, error: 'The two passwords do not match.' },
+      { status: 400 }
+    );
+  }
+
+  const strength = validateStrongPassword(password);
+  if (!strength.valid) {
+    return NextResponse.json(
+      { success: false, error: strength.message },
+      { status: 400 }
+    );
+  }
+
+  let decoded;
+  try {
+    decoded = jwt.verify(body.setupToken, JWT_SECRET);
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: 'Password setup expired. Please verify your details again.' },
+      { status: 401 }
+    );
+  }
+
+  if (decoded.type !== 'student_password_setup' || decoded.role !== 'student') {
+    return NextResponse.json(
+      { success: false, error: 'Invalid password setup session. Please start again.' },
+      { status: 401 }
+    );
+  }
+
+  const admissionNumber = normalizeAdmissionNumber(decoded.admissionNumber);
+  const student = await findActiveStudentByAdmission(admissionNumber);
+  if (!student) {
+    return NextResponse.json(
+      { success: false, requiresContact: true, error: 'Your student record is not active. Please contact the school office.' },
+      { status: 404 }
+    );
+  }
+
+  const username = body.username ? normalizeUsername(body.username) : admissionNumber.toLowerCase();
+  if (username && (username.length < 3 || username.length > 50)) {
+    return NextResponse.json(
+      { success: false, error: 'Username must be between 3 and 50 characters.' },
+      { status: 400 }
+    );
+  }
+
+  const passwordHash = await bcrypt.hash(password, 12);
+
+  let account;
+  try {
+    account = await prisma.studentPortalAccount.upsert({
+      where: { admissionNumber },
+      update: {
+        username,
+        passwordHash,
+        passwordCreatedAt: new Date(),
+        failedLoginCount: 0,
+        lockedUntil: null,
+        status: 'active'
+      },
+      create: {
+        admissionNumber,
+        username,
+        passwordHash,
+        passwordCreatedAt: new Date(),
+        status: 'active'
+      }
+    });
+  } catch (error) {
+    if (error.code === 'P2002') {
+      return NextResponse.json(
+        { success: false, error: 'That username is already in use. Please choose another one.' },
+        { status: 409 }
+      );
+    }
+    throw error;
+  }
+
+  const token = generateStudentToken(student, account);
+  await createStudentSession(student, account, token, request);
+
+  return NextResponse.json({
+    success: true,
+    message: 'Password created successfully. You are now signed in.',
+    student: toSafeStudent(student, account),
+    token,
+    expiresIn: '2 hours'
+  }, {
+    status: 200,
+    headers: { 'Set-Cookie': tokenCookie(token) }
+  });
+};
+
+export async function POST(request) {
+  try {
+    const body = await request.json();
+    const action = body.action ||
+      (body.setupToken ? 'set-password' : body.password ? 'login' : 'verify-first-access');
+
+    if (action === 'login') {
+      return await passwordLogin(body, request);
+    }
+
+    if (action === 'set-password') {
+      return await setupPassword(body, request);
+    }
+
+    return await verifyFirstAccess(body);
   } catch (error) {
     console.error('Student login error:', error);
     return NextResponse.json(
-      { 
-        success: false, 
-        error: 'Internal server error. Please try again.' 
+      {
+        success: false,
+        error: 'We could not complete that request. Please try again in a moment.'
       },
       { status: 500 }
     );
   }
 }
 
-// GET - Verify student token
+const getTokenFromRequest = (request) => {
+  const cookieHeader = request.headers.get('cookie');
+  if (cookieHeader) {
+    const cookies = cookieHeader.split(';').reduce((acc, cookie) => {
+      const [key, value] = cookie.trim().split('=');
+      acc[key] = value;
+      return acc;
+    }, {});
+    if (cookies.student_token) return cookies.student_token;
+  }
+
+  return request.headers.get('authorization')?.replace('Bearer ', '') || null;
+};
+
 export async function GET(request) {
   try {
-    // Try to get token from cookie first
-    const cookieHeader = request.headers.get('cookie');
-    let token = null;
-    
-    if (cookieHeader) {
-      const cookies = cookieHeader.split(';').reduce((acc, cookie) => {
-        const [key, value] = cookie.trim().split('=');
-        acc[key] = value;
-        return acc;
-      }, {});
-      token = cookies.student_token;
-    }
-    
-    // Fallback to Authorization header
-    if (!token) {
-      token = request.headers.get('authorization')?.replace('Bearer ', '');
-    }
-
+    const token = getTokenFromRequest(request);
     if (!token) {
       return NextResponse.json(
-        { 
-          success: false, 
-          authenticated: false,
-          error: 'No token provided' 
-        },
+        { success: false, authenticated: false, error: 'Please sign in to access the student portal.' },
         { status: 401 }
       );
     }
 
-    // Verify token
     const decoded = jwt.verify(token, JWT_SECRET);
-
-    // Check if token is for student
     if (decoded.role !== 'student') {
       return NextResponse.json(
-        { 
-          success: false, 
-          authenticated: false,
-          error: 'Invalid token type' 
-        },
+        { success: false, authenticated: false, error: 'This session is not a student portal session.' },
         { status: 401 }
       );
     }
 
-    // FIXED: Use findUnique with only unique field (id), then check status separately
-    const student = await prisma.databaseStudent.findUnique({
-      where: { 
-        id: decoded.studentId  // Only unique field here
-      }
-    });
+    const account = decoded.accountId
+      ? await prisma.studentPortalAccount.findUnique({ where: { id: decoded.accountId } })
+      : await prisma.studentPortalAccount.findUnique({ where: { admissionNumber: normalizeAdmissionNumber(decoded.admissionNumber) } });
 
-    // Check if student exists AND is active
-    if (!student || student.status !== 'active') {
+    if (!account || account.status !== 'active') {
       return NextResponse.json(
-        { 
-          success: false, 
-          authenticated: false,
-          error: 'Student not found or inactive' 
-        },
+        { success: false, authenticated: false, error: 'Portal account not found. Please verify your admission number again.' },
         { status: 401 }
       );
     }
 
-    // Try to check session if available
+    const student = await findActiveStudentByAdmission(account.admissionNumber);
+    if (!student) {
+      return NextResponse.json(
+        {
+          success: false,
+          authenticated: false,
+          requiresContact: true,
+          error: 'Your portal account is saved, but your current student record is missing. Please contact the school office.'
+        },
+        { status: 404 }
+      );
+    }
+
     try {
-      const session = await prisma.studentSession?.findFirst?.({
+      const session = await prisma.studentSession.findFirst({
         where: {
-          token: token,
-          expiresAt: {
-            gt: new Date()
-          }
+          token,
+          expiresAt: { gt: new Date() }
         }
       });
 
       if (!session) {
-        // If session table doesn't exist or session expired, just warn but don't block
-        console.warn('Session not found or expired, but continuing with token validation');
+        console.warn('Student session row not found; JWT is still valid.');
       }
     } catch (sessionError) {
-      console.warn('Session check failed, continuing with token validation:', sessionError);
+      console.warn('Student session check failed:', sessionError.message);
     }
 
     return NextResponse.json({
       success: true,
       authenticated: true,
-      student: {
-        id: student.id,
-        admissionNumber: student.admissionNumber,
-        firstName: student.firstName,
-        lastName: student.lastName,
-        middleName: student.middleName,
-        name: `${student.firstName} ${student.lastName}`,
-        fullName: `${student.firstName} ${student.lastName}`,
-        form: student.form,
-        stream: student.stream,
-        email: student.email,
-        gender: student.gender,
-        dateOfBirth: student.dateOfBirth,
-        parentPhone: student.parentPhone,
-        address: student.address
-      },
+      student: toSafeStudent(student, account),
       expiresAt: decoded.exp ? new Date(decoded.exp * 1000).toISOString() : null
     });
-
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
       return NextResponse.json(
-        { 
-          success: false, 
+        {
+          success: false,
           authenticated: false,
-          error: 'Session expired. Please log in again.',
-          requiresReauth: true 
+          error: 'Your session has expired. Please sign in again.',
+          requiresReauth: true
         },
         { status: 401 }
       );
     }
 
-    console.error('Token verification error:', error);
+    console.error('Student token verification error:', error);
     return NextResponse.json(
-      { 
-        success: false, 
-        authenticated: false,
-        error: 'Invalid token' 
-      },
+      { success: false, authenticated: false, error: 'Your session could not be verified. Please sign in again.' },
       { status: 401 }
     );
   }
 }
 
-// DELETE - Student Logout
 export async function DELETE(request) {
   try {
-    // Get token from cookie or Authorization header
-    const cookieHeader = request.headers.get('cookie');
-    let token = null;
-    
-    if (cookieHeader) {
-      const cookies = cookieHeader.split(';').reduce((acc, cookie) => {
-        const [key, value] = cookie.trim().split('=');
-        acc[key] = value;
-        return acc;
-      }, {});
-      token = cookies.student_token;
-    }
-    
-    if (!token) {
-      token = request.headers.get('authorization')?.replace('Bearer ', '');
-    }
+    const token = getTokenFromRequest(request);
 
-    // If we have a token and studentSession exists, try to delete the session
-    if (token && prisma.studentSession) {
+    if (token) {
       try {
-        await prisma.studentSession.deleteMany({
-          where: {
-            token: token
-          }
-        });
+        await prisma.studentSession.deleteMany({ where: { token } });
       } catch (error) {
-        console.warn('Error deleting session (might not exist in schema):', error);
+        console.warn('Error deleting student session:', error.message);
       }
     }
 
     return NextResponse.json(
-      {
-        success: true,
-        message: 'Logged out successfully'
-      },
-      {
-        headers: {
-          'Set-Cookie': `student_token=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure=${process.env.NODE_ENV === 'production'}`
-        }
-      }
+      { success: true, message: 'Logged out successfully.' },
+      { headers: { 'Set-Cookie': clearTokenCookie() } }
     );
   } catch (error) {
-    console.error('Logout error:', error);
+    console.error('Student logout error:', error);
     return NextResponse.json(
-      { success: false, error: 'Logout failed' },
+      { success: false, error: 'Logout failed. Please try again.' },
       { status: 500 }
     );
   }

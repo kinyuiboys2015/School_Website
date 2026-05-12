@@ -1,6 +1,6 @@
 const SITE_URL = "https://kinyuiboyssenior.school";
 const SITE_NAME = "S.A. Kinyui Boys Senior School";
-const DEFAULT_IMAGE = `${SITE_URL}/seo/kinyui.jpeg`;
+const DEFAULT_IMAGE = `${SITE_URL}/seo/SchoolLogo.png`;
 
 export const publicSitePages = [
   {

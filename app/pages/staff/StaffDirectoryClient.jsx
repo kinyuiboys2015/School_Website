@@ -35,7 +35,7 @@ const LEADERSHIP_ORDER = {
   AHOD: 5,
 };
 
-const BRAND_LOGO = '/seo/kinyui.png';
+const BRAND_LOGO = '/seo/SchoolLogo.png';
 
 const getLeadershipRank = (staff) => {
   const role = (staff?.role || '').toLowerCase();

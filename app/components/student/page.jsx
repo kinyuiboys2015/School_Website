@@ -325,6 +325,7 @@ function ModernDeleteModal({
 // File Upload Component
 function ModernFileUpload({ onFileSelect, file, onRemove, dragActive, onDrag }) {
   const fileInputRef = useRef(null);
+  const maxFileSize = 15 * 1024 * 1024;
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -332,13 +333,20 @@ function ModernFileUpload({ onFileSelect, file, onRemove, dragActive, onDrag }) 
     
     if (selectedFile) {
       const ext = selectedFile.name.toLowerCase();
-      if (validExtensions.some(valid => ext.endsWith(valid))) {
-        onFileSelect(selectedFile);
-        sooner.success('File selected successfully');
-      } else {
+      if (!validExtensions.some(valid => ext.endsWith(valid))) {
         sooner.error('Please upload a CSV or Excel file');
         if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
       }
+
+      if (selectedFile.size > maxFileSize) {
+        sooner.error('File is too large. Keep student uploads below 15 MB or split by form.');
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
+      }
+
+      onFileSelect(selectedFile);
+      sooner.success('File ready for validation');
     }
   };
 
@@ -355,10 +363,12 @@ function ModernFileUpload({ onFileSelect, file, onRemove, dragActive, onDrag }) 
 
   return (
     <div
-      className={`border-3 border-dashed rounded-2xl p-10 text-center transition-all duration-300 cursor-pointer ${
+      className={`relative border-2 border-dashed rounded-3xl p-6 sm:p-10 text-center transition-all duration-300 cursor-pointer overflow-hidden ${
         dragActive 
-          ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100 ring-4 ring-blue-100' 
-          : 'border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100'
+          ? 'border-emerald-500 bg-gradient-to-br from-emerald-50 to-blue-50 ring-4 ring-emerald-100'
+          : file
+            ? 'border-emerald-300 bg-gradient-to-br from-emerald-50 to-white'
+            : 'border-slate-300 bg-gradient-to-br from-slate-50 to-white hover:border-blue-400'
       }`}
       onDragEnter={handleDragEvent}
       onDragLeave={handleDragEvent}
@@ -374,15 +384,32 @@ function ModernFileUpload({ onFileSelect, file, onRemove, dragActive, onDrag }) 
       }}
       onClick={() => fileInputRef.current?.click()}
     >
-      <FiUpload className={`mx-auto text-3xl mb-4 ${
-        dragActive ? 'text-blue-600' : 'text-gray-400'
-      }`} />
-      <p className="text-gray-800 mb-2 font-bold text-lg">
-        {dragActive ? '📁 Drop file here!' : file ? 'Click to replace file' : 'Drag & drop or click to upload'}
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-600 via-emerald-500 to-slate-900" />
+      <div className={`mx-auto w-16 h-16 rounded-2xl flex items-center justify-center mb-4 ${
+        dragActive || file ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'
+      }`}>
+        <FiUpload className="text-3xl" />
+      </div>
+      <p className="text-slate-900 mb-2 font-black text-lg sm:text-xl">
+        {dragActive ? 'Drop the student file here' : file ? 'File selected. Click to replace it.' : 'Drag and drop the student file'}
       </p>
-      <p className="text-sm text-gray-600">
-        CSV, Excel (.xlsx, .xls) • Max 10MB
+      <p className="text-sm text-slate-600 max-w-lg mx-auto">
+        CSV or Excel files are supported. Required columns are admission number, first name, last name, and form. Maximum file size is 15 MB.
       </p>
+      {file && (
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onRemove?.();
+            if (fileInputRef.current) fileInputRef.current.value = '';
+          }}
+          className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-bold hover:bg-slate-50"
+        >
+          <FiX className="text-sm" />
+          Remove file
+        </button>
+      )}
       <input 
         ref={fileInputRef}
         type="file" 
@@ -390,6 +417,111 @@ function ModernFileUpload({ onFileSelect, file, onRemove, dragActive, onDrag }) 
         onChange={handleFileChange}
         className="hidden" 
       />
+    </div>
+  );
+}
+
+function UploadFeedbackPanel({ uploading, validationLoading, result, uploadStrategy, file }) {
+  const processingStats = result?.processingStats || {};
+  const hasWarnings = Array.isArray(result?.errors) && result.errors.length > 0;
+
+  if (!uploading && !validationLoading && !result && !file && !uploadStrategy) return null;
+
+  const statusItems = [
+    {
+      label: 'Strategy',
+      value: uploadStrategy
+        ? uploadStrategy.uploadType === 'new'
+          ? `New upload: ${uploadStrategy.selectedForms.join(', ')}`
+          : `Update: ${uploadStrategy.targetForm}`
+        : 'Choose strategy',
+      icon: FiLayers,
+      ready: Boolean(uploadStrategy)
+    },
+    {
+      label: 'File',
+      value: file ? file.name : 'No file selected',
+      icon: FiFile,
+      ready: Boolean(file)
+    },
+    {
+      label: 'Validation',
+      value: validationLoading ? 'Checking duplicates' : result ? 'Completed' : 'Waiting',
+      icon: FiShield,
+      ready: Boolean(result) || !validationLoading
+    }
+  ];
+
+  return (
+    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="p-5 sm:p-6 border-b border-slate-100 bg-gradient-to-r from-slate-900 to-slate-800 text-white">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 className="text-lg sm:text-xl font-black">Upload Progress</h3>
+            <p className="text-sm text-slate-200 mt-1">
+              {uploading
+                ? 'Processing records in stable batches. Please keep this page open.'
+                : validationLoading
+                  ? 'Checking the file before saving any records.'
+                  : result?.success
+                    ? result.message
+                    : 'Prepare, validate, then upload student records.'}
+            </p>
+          </div>
+          {(uploading || validationLoading) && (
+            <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/10 border border-white/10">
+              <CircularProgress size={18} sx={{ color: 'white' }} />
+              <span className="text-sm font-bold">{uploading ? 'Uploading' : 'Checking'}</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 sm:p-5">
+        {statusItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div key={item.label} className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.ready ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-500'}`}>
+                  <Icon />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[10px] uppercase tracking-widest font-black text-slate-500">{item.label}</p>
+                  <p className="text-sm font-bold text-slate-900 truncate">{item.value}</p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {result?.success && (
+        <div className="px-5 pb-5 grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {[
+            ['Rows read', processingStats.totalRows || 0],
+            ['Saved', processingStats.validRows || 0],
+            ['Skipped', processingStats.skippedRows || 0],
+            ['Errors', processingStats.errorRows || 0]
+          ].map(([label, value]) => (
+            <div key={label} className="rounded-2xl bg-white border border-slate-200 p-4">
+              <p className="text-2xl font-black text-slate-900">{value}</p>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">{label}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {hasWarnings && (
+        <div className="mx-5 mb-5 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+          <p className="font-black text-amber-900 mb-2">Rows needing attention</p>
+          <ul className="space-y-1 text-sm text-amber-800">
+            {result.errors.slice(0, 5).map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
@@ -1738,7 +1870,7 @@ function UploadStrategyModal({ open, onClose, onConfirm, loading }) {
 }
 
 // Duplicate Validation Modal
-function DuplicateValidationModal({ open, onClose, duplicates, onProceed, loading, uploadType, targetForm }) {
+function DuplicateValidationModal({ open, onClose, duplicates, onProceed, loading, uploadType, targetForm, totalRows = 0, newRows = 0 }) {
   const [action, setAction] = useState('skip');
 
   if (!open) return null;
@@ -1914,7 +2046,7 @@ function DuplicateValidationModal({ open, onClose, duplicates, onProceed, loadin
                   <>
                     <li className="flex items-center gap-1.5 sm:gap-2">
                       <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full"></div>
-                      <span>Total students in file: {duplicates.length + (duplicates.length * 2)}</span>
+                      <span>Total students in file: {totalRows || duplicates.length}</span>
                     </li>
                     <li className="flex items-center gap-1.5 sm:gap-2">
                       <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-500 rounded-full"></div>
@@ -1922,7 +2054,7 @@ function DuplicateValidationModal({ open, onClose, duplicates, onProceed, loadin
                     </li>
                     <li className="flex items-center gap-1.5 sm:gap-2">
                       <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full"></div>
-                      <span>New students to add: {duplicates.length}</span>
+                      <span>New students to add: {newRows}</span>
                     </li>
                   </>
                 ) : (
@@ -2005,6 +2137,7 @@ export default function ModernStudentBulkUpload() {
   const [showValidationModal, setShowValidationModal] = useState(false);
   const [uploadStrategy, setUploadStrategy] = useState(null);
   const [duplicates, setDuplicates] = useState([]);
+  const [duplicateSummary, setDuplicateSummary] = useState({ totalRows: 0, newRows: 0 });
   const [validationLoading, setValidationLoading] = useState(false);
     const [editingStudent, setEditingStudent] = useState(null); // <-- ADD THIS
 
@@ -2462,6 +2595,10 @@ const checkDuplicates = async () => {
     const data = await response.json();
     
     if (data.success) {
+      setDuplicateSummary({
+        totalRows: data.totalRows || 0,
+        newRows: data.newRows ?? Math.max((data.totalRows || 0) - (data.duplicates?.length || 0), 0)
+      });
       if (data.duplicates && data.duplicates.length > 0) {
         setDuplicates(data.duplicates);
         setShowValidationModal(true);
@@ -2528,7 +2665,7 @@ const proceedWithUpload = async (duplicateAction = 'skip') => {
     const data = await response.json();
     
     if (!response.ok) {
-      throw new Error(data.message || 'Upload failed');
+      throw new Error(data.error || data.message || 'Upload failed');
     }
     
     setResult(data);
@@ -2824,21 +2961,21 @@ const downloadExcelTemplate = () => {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-h-screen bg-slate-50 p-3 sm:p-6 space-y-6">
       <CustomToaster />
 
       {/* Welcome Section */}
-      <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 rounded-2xl p-8 text-white overflow-hidden">
+      <div className="relative bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 rounded-3xl p-5 sm:p-8 text-white overflow-hidden border border-slate-800 shadow-xl">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-emerald-400 to-amber-400" />
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-3">
             <div className="p-2 bg-white/20 rounded-2xl">
               <IoSparkles className="text-2xl text-yellow-300" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold">Student Bulk Upload & Analytics</h1>
-              <p className="text-blue-100 text-lg mt-2 max-w-2xl">
-                Comprehensive student management with structured upload strategy, 
-                duplicate prevention, and real-time analytics.
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight">Student Upload Center</h1>
+              <p className="text-slate-200 text-sm sm:text-base mt-2 max-w-2xl">
+                Upload, validate, update, and review student records with clear duplicate feedback and stable portal access.
               </p>
             </div>
           </div>
@@ -2879,7 +3016,7 @@ const downloadExcelTemplate = () => {
             onClick={() => setView('upload')}
             className={`px-6 py-3 rounded-xl font-bold flex items-center gap-3 text-base transition-all duration-300 ${
               view === 'upload'
-                ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-xl'
+                ? 'bg-gradient-to-r from-slate-900 to-blue-900 text-white shadow-xl'
                 : 'text-gray-700 hover:text-blue-600'
             }`}
           >
@@ -2893,7 +3030,7 @@ const downloadExcelTemplate = () => {
             }}
             className={`px-6 py-3 rounded-xl font-bold flex items-center gap-3 text-base transition-all duration-300 ${
               view === 'students'
-                ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-xl'
+                ? 'bg-gradient-to-r from-slate-900 to-blue-900 text-white shadow-xl'
                 : 'text-gray-700 hover:text-blue-600'
             }`}
           >
@@ -2907,7 +3044,7 @@ const downloadExcelTemplate = () => {
             }}
             className={`px-6 py-3 rounded-xl font-bold flex items-center gap-3 text-base transition-all duration-300 ${
               view === 'demographics'
-                ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-xl'
+                ? 'bg-gradient-to-r from-slate-900 to-blue-900 text-white shadow-xl'
                 : 'text-gray-700 hover:text-blue-600'
             }`}
           >
@@ -2921,7 +3058,7 @@ const downloadExcelTemplate = () => {
             }}
             className={`px-6 py-3 rounded-xl font-bold flex items-center gap-3 text-base transition-all duration-300 ${
               view === 'history'
-                ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-xl'
+                ? 'bg-gradient-to-r from-slate-900 to-blue-900 text-white shadow-xl'
                 : 'text-gray-700 hover:text-blue-600'
             }`}
           >
@@ -2958,12 +3095,11 @@ const downloadExcelTemplate = () => {
                 trend={12.3}
               />
               <StudentStatisticsCard
-                title="Male/Female Ratio"
-                value={demographics.gender?.length > 0 ? 
-                  `${((demographics.gender.find(g => g.name === 'Male')?.value || 0) / stats.totalStudents * 100).toFixed(1)}%` : '0%'}
-                icon={FiPercent}
+                title="Recent Upload Batches"
+                value={uploadHistory.length || 0}
+                icon={FiArchive}
                 color="from-indigo-500 to-indigo-700"
-                trend={2.1}
+                trend={0}
               />
             </div>
 
@@ -3102,6 +3238,14 @@ const downloadExcelTemplate = () => {
                   onRemove={() => setFile(null)}
                   dragActive={dragActive}
                   onDrag={handleDrag}
+                />
+
+                <UploadFeedbackPanel
+                  uploading={uploading}
+                  validationLoading={validationLoading}
+                  result={result}
+                  uploadStrategy={uploadStrategy}
+                  file={file}
                 />
 
                 {file && (
@@ -4082,6 +4226,8 @@ const downloadExcelTemplate = () => {
         loading={uploading}
         uploadType={uploadStrategy?.uploadType}
         targetForm={uploadStrategy?.targetForm}
+        totalRows={duplicateSummary.totalRows}
+        newRows={duplicateSummary.newRows}
       />
     </div>
   );

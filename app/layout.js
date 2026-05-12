@@ -20,8 +20,8 @@ const geistMono = localFont({
 });
 
 const SITE_URL = "https://kinyuiboyssenior.school";
-const SEO_LOGO_JPEG = `${SITE_URL}/seo/kinyui.jpeg`;
-const SEO_LOGO_PNG = `${SITE_URL}/seo/kinyui.png`;
+const SEO_LOGO_JPEG = `${SITE_URL}/seo/SchoolLogo.png`;
+const SEO_LOGO_PNG = `${SITE_URL}/seo/SchoolLogo.png`;
 
 /* -------------------------------------------------------------------------- */
 /* VIEWPORT                                  */
@@ -40,7 +40,7 @@ export const metadata = {
   applicationName: "S.A. Kinyui Boys Senior School",
 
   title: {
-    default: "S.A. Kinyui Boys Senior School | Admissions, CBC Pathways, Academics & School Life",
+    default: "S.A. Kinyui Boys School",
     template: "%s | Kinyui Boys Senior School",
   },
 
@@ -174,13 +174,13 @@ openGraph: {
   type: "website",
   images: [
     {
-      url: "/seo/kinyui.jpeg",
+      url: "/seo/SchoolLogo.png",
       width: 1200,
       height: 630,
       alt: "S.A. Kinyui Boys Senior School logo",
     },
     {
-      url: "/seo/kinyui.png",
+      url: "/seo/SchoolLogo.png",
       width: 1200,
       height: 1200,
       alt: "Kinyui Boys Senior School official logo",
@@ -193,7 +193,7 @@ twitter: {
   card: "summary_large_image",
   title: "S.A. Kinyui Boys Senior School",
   description: "Official school website of S.A. Kinyui Boys Senior School.",
-  images: ["/seo/kinyui.jpeg"],
+  images: ["/seo/SchoolLogo.png"],
 },
   /* Search Engine Bot Instructions */
   robots: {
@@ -209,11 +209,11 @@ twitter: {
 
   icons: {
     icon: [
-      { url: "/seo/kinyui.jpeg", type: "image/jpeg" },
-      { url: "/seo/kinyui.png", type: "image/png" },
+      { url: "/seo/SchoolLogo.png", type: "image/jpeg" },
+      { url: "/seo/SchoolLogo.png", type: "image/png" },
     ],
-    apple: "/seo/kinyui.png",
-    shortcut: "/seo/kinyui.png",
+    apple: "/seo/SchoolLogo.png",
+    shortcut: "/seo/SchoolLogo.png",
   },
 
   verification: {

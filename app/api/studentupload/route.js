@@ -3,6 +3,13 @@ import { parse } from 'papaparse';
 import * as XLSX from 'xlsx';
 import { prisma } from '../../../libs/prisma';
 
+export const dynamic = 'force-dynamic';
+export const maxDuration = 120;
+
+const MAX_UPLOAD_SIZE = 15 * 1024 * 1024;
+const CREATE_CHUNK_SIZE = 250;
+const UPDATE_CHUNK_SIZE = 25;
+
 // ==================== AUTHENTICATION UTILITIES ====================
 
 // Device Token Manager
@@ -234,6 +241,149 @@ const parseDate = (dateStr) => {
   return null;
 };
 
+const chunkArray = (items, size) => {
+  const chunks = [];
+  for (let i = 0; i < items.length; i += size) {
+    chunks.push(items.slice(i, i + size));
+  }
+  return chunks;
+};
+
+const normalizeAdmissionNumber = (value) => String(value || '')
+  .trim()
+  .toUpperCase()
+  .replace(/\s+/g, '');
+
+const normalizeForm = (value) => {
+  const formValue = String(value || '').trim().toLowerCase();
+  const formMap = {
+    form1: 'Form 1',
+    'form 1': 'Form 1',
+    one: 'Form 1',
+    'grade 9': 'Form 1',
+    'class 9': 'Form 1',
+    '1': 'Form 1',
+    form2: 'Form 2',
+    'form 2': 'Form 2',
+    two: 'Form 2',
+    'grade 10': 'Form 2',
+    'class 10': 'Form 2',
+    '2': 'Form 2',
+    form3: 'Form 3',
+    'form 3': 'Form 3',
+    three: 'Form 3',
+    'grade 11': 'Form 3',
+    'class 11': 'Form 3',
+    '3': 'Form 3',
+    form4: 'Form 4',
+    'form 4': 'Form 4',
+    four: 'Form 4',
+    'grade 12': 'Form 4',
+    'class 12': 'Form 4',
+    '4': 'Form 4'
+  };
+
+  return formMap[formValue] || String(value || '').trim();
+};
+
+const normalizeGender = (value) => {
+  const gender = String(value || '').trim().toLowerCase();
+  if (!gender) return null;
+  if (['m', 'male', 'boy'].includes(gender)) return 'Male';
+  if (['f', 'female', 'girl'].includes(gender)) return 'Female';
+  return String(value).trim();
+};
+
+const normalizeColumnHeader = (header) => {
+  const key = String(header || '')
+    .replace(/^\uFEFF/, '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '');
+
+  if (['admissionnumber', 'admissionno', 'admno', 'admnumber', 'adm', 'studentnumber', 'studentid'].includes(key)) return 'admissionNumber';
+  if (['firstname', 'first', 'fname', 'givenname'].includes(key)) return 'firstName';
+  if (['middlename', 'middle', 'mname', 'othernames', 'secondname'].includes(key)) return 'middleName';
+  if (['lastname', 'last', 'surname', 'familyname'].includes(key)) return 'lastName';
+  if (['form', 'class', 'grade', 'level'].includes(key)) return 'form';
+  if (['stream', 'classstream'].includes(key)) return 'stream';
+  if (['dateofbirth', 'dob', 'birthdate', 'birthdateyear'].includes(key)) return 'dateOfBirth';
+  if (['gender', 'sex'].includes(key)) return 'gender';
+  if (['parentphone', 'guardianphone', 'phone', 'phonenumber', 'parenttel', 'telephone'].includes(key)) return 'parentPhone';
+  if (['email', 'emailaddress', 'parentemail', 'guardianemail'].includes(key)) return 'email';
+  if (['address', 'homeaddress', 'residence', 'location'].includes(key)) return 'address';
+  if (['status', 'studentstatus'].includes(key)) return 'status';
+
+  return key;
+};
+
+const normalizeRowKeys = (row) => Object.entries(row || {}).reduce((acc, [key, value]) => {
+  const normalizedKey = normalizeColumnHeader(key);
+  if (normalizedKey && (acc[normalizedKey] === undefined || acc[normalizedKey] === '')) {
+    acc[normalizedKey] = value;
+  }
+  return acc;
+}, {});
+
+const isEmptyRow = (row) => Object.values(row || {}).every(value => String(value ?? '').trim() === '');
+
+const parseStudentRow = (row, index) => {
+  const normalized = normalizeRowKeys(row);
+  if (isEmptyRow(normalized)) return null;
+
+  const rawDateOfBirth = normalized.dateOfBirth;
+  const hasDateValue = String(rawDateOfBirth ?? '').trim() !== '';
+  const parsedDate = hasDateValue ? parseDate(rawDateOfBirth) : null;
+
+  return {
+    rowNumber: index + 2,
+    admissionNumber: normalizeAdmissionNumber(normalized.admissionNumber),
+    firstName: String(normalized.firstName || '').trim(),
+    middleName: String(normalized.middleName || '').trim() || null,
+    lastName: String(normalized.lastName || '').trim(),
+    form: normalizeForm(normalized.form),
+    stream: String(normalized.stream || '').trim() || null,
+    dateOfBirth: parsedDate,
+    dateOfBirthRaw: hasDateValue ? String(rawDateOfBirth).trim() : null,
+    dateOfBirthInvalid: hasDateValue && !parsedDate,
+    gender: normalizeGender(normalized.gender),
+    parentPhone: String(normalized.parentPhone || '').trim() || null,
+    email: String(normalized.email || '').trim().toLowerCase() || null,
+    address: String(normalized.address || '').trim() || null,
+    status: String(normalized.status || 'active').trim().toLowerCase()
+  };
+};
+
+const toStudentCreateData = (student, uploadBatchId, formOverride = null) => ({
+  admissionNumber: student.admissionNumber,
+  firstName: student.firstName,
+  middleName: student.middleName || null,
+  lastName: student.lastName,
+  form: formOverride || student.form,
+  stream: student.stream || null,
+  dateOfBirth: student.dateOfBirth ? new Date(student.dateOfBirth) : null,
+  gender: student.gender || null,
+  parentPhone: student.parentPhone || null,
+  email: student.email || null,
+  address: student.address || null,
+  uploadBatchId,
+  status: 'active'
+});
+
+const friendlyUploadError = (error) => {
+  const message = error?.message || '';
+  if (message.includes('P2002') || error?.code === 'P2002') {
+    return 'One or more admission numbers already exist. Check duplicate feedback and choose skip or replace.';
+  }
+  if (message.toLowerCase().includes('timeout')) {
+    return 'The upload took too long to finish. Try again with the same file; the server will skip duplicates safely.';
+  }
+  if (message.toLowerCase().includes('max_allowed_packet')) {
+    return 'The upload is too large for the database request. Split the file by form and try again.';
+  }
+  return message || 'Upload failed. Please check the file and try again.';
+};
+
 // Build WHERE clause from query parameters
 const buildWhereClause = (params) => {
   const { form, stream, gender, status, search } = params;
@@ -333,6 +483,12 @@ const updateCachedStats = async (stats) => {
   }
 };
 
+const refreshGlobalStudentStats = async () => {
+  const statsResult = await calculateStatistics({ status: 'active' });
+  await updateCachedStats(statsResult.stats);
+  return statsResult;
+};
+
 // ========== UPLOAD STRATEGY FUNCTIONS ==========
 
 // Validate and normalize form selection
@@ -345,23 +501,7 @@ const validateFormSelection = (forms) => {
   const normalizedForms = [];
   
   forms.forEach(form => {
-    const trimmed = form.trim();
-    const formMap = {
-      'form1': 'Form 1',
-      'form 1': 'Form 1',
-      '1': 'Form 1',
-      'form2': 'Form 2',
-      'form 2': 'Form 2',
-      '2': 'Form 2',
-      'form3': 'Form 3',
-      'form 3': 'Form 3',
-      '3': 'Form 3',
-      'form4': 'Form 4',
-      'form 4': 'Form 4',
-      '4': 'Form 4'
-    };
-    
-    const normalized = formMap[trimmed.toLowerCase()] || trimmed;
+    const normalized = normalizeForm(form);
     if (validForms.includes(normalized)) {
       normalizedForms.push(normalized);
     }
@@ -423,140 +563,95 @@ const processNewUpload = async (students, uploadBatchId, selectedForms, duplicat
     validRows: 0,
     skippedRows: 0,
     errorRows: 0,
+    createdRows: 0,
+    updatedRows: 0,
     errors: [],
     createdStudents: []
   };
-  
-  // Filter students to only include selected forms
-  const filteredStudents = students.filter(student => 
-    selectedForms.includes(student.form)
-  );
-  
+
+  const filteredStudents = students.filter(student => selectedForms.includes(student.form));
   if (filteredStudents.length === 0) {
-    throw new Error(`No students found for selected forms: ${selectedForms.join(', ')}`);
+    throw new Error(`No students in the file match the selected forms: ${selectedForms.join(', ')}.`);
   }
-  
-  // Get existing admission numbers across all forms
-  const existingAdmissionNumbers = new Set();
-  const existingStudents = await prisma.databaseStudent.findMany({
-    where: {
-      admissionNumber: { 
-        in: filteredStudents.map(s => s.admissionNumber) 
-      }
-    },
-    select: {
-      admissionNumber: true,
-      form: true
-    }
-  });
-  
-  existingStudents.forEach(s => existingAdmissionNumbers.add(s.admissionNumber));
-  
-  const studentsToCreate = [];
+
   const seenAdmissionNumbers = new Set();
-  
+  const validStudents = [];
+  const admissionNumbersPresentInFile = new Set(
+    filteredStudents
+      .map(student => student.admissionNumber)
+      .filter(Boolean)
+  );
+
   for (const [index, student] of filteredStudents.entries()) {
     const validation = validateStudent(student, index);
-    
     if (!validation.isValid) {
       stats.errorRows++;
       stats.errors.push(...validation.errors);
       continue;
     }
-    
-    const admissionNumber = student.admissionNumber;
-    
-    // Check duplicates within the file
-    if (seenAdmissionNumbers.has(admissionNumber)) {
+
+    if (seenAdmissionNumbers.has(student.admissionNumber)) {
       stats.skippedRows++;
-      stats.errors.push(`Row ${index + 2}: Duplicate admission number in file: ${admissionNumber}`);
+      stats.errors.push(`Row ${student.rowNumber || index + 2}: Duplicate admission number in this file: ${student.admissionNumber}.`);
       continue;
     }
-    seenAdmissionNumbers.add(admissionNumber);
-    
-    // Check if admission number already exists in database
-    if (existingAdmissionNumbers.has(admissionNumber)) {
-      if (duplicateAction === 'skip') {
+
+    seenAdmissionNumbers.add(student.admissionNumber);
+    validStudents.push(student);
+  }
+
+  if (validStudents.length === 0) return stats;
+
+  const existingStudents = await prisma.databaseStudent.findMany({
+    where: { admissionNumber: { in: validStudents.map(s => s.admissionNumber) } },
+    select: { id: true, admissionNumber: true, form: true }
+  });
+  const existingMap = new Map(existingStudents.map(student => [student.admissionNumber, student]));
+
+  const studentsToCreate = [];
+  const studentsToUpdate = [];
+
+  for (const student of validStudents) {
+    const existing = existingMap.get(student.admissionNumber);
+
+    if (existing) {
+      if (duplicateAction === 'replace' && existing.form === student.form) {
+        studentsToUpdate.push({ id: existing.id, student });
+      } else {
         stats.skippedRows++;
-        stats.errors.push(`Row ${index + 2}: Skipped - admission number already exists: ${admissionNumber}`);
-        continue;
-      } else if (duplicateAction === 'replace') {
-        // For replace action, we need to update existing student
-        try {
-          const updatedStudent = await prisma.databaseStudent.updateMany({
-            where: {
-              admissionNumber: admissionNumber,
-              form: student.form
-            },
-            data: {
-              firstName: student.firstName,
-              middleName: student.middleName || null,
-              lastName: student.lastName,
-              stream: student.stream || null,
-              dateOfBirth: student.dateOfBirth ? new Date(student.dateOfBirth) : null,
-              gender: student.gender || null,
-              parentPhone: student.parentPhone || null,
-              email: student.email || null,
-              address: student.address || null,
-              uploadBatchId: uploadBatchId,
-              status: 'active',
-              updatedAt: new Date()
-            }
-          });
-          
-          if (updatedStudent.count === 0) {
-            // Student exists but in different form - skip
-            stats.skippedRows++;
-            stats.errors.push(`Row ${index + 2}: Cannot replace - student exists in different form. Use Update Upload for specific forms.`);
-            continue;
-          }
-          
-          stats.validRows++;
-          continue;
-        } catch (error) {
-          stats.skippedRows++;
-          stats.errors.push(`Row ${index + 2}: Failed to replace student ${admissionNumber}: ${error.message}`);
-          continue;
-        }
+        stats.errors.push(
+          existing.form === student.form
+            ? `Row ${student.rowNumber}: Admission number ${student.admissionNumber} already exists and was skipped.`
+            : `Row ${student.rowNumber}: Admission number ${student.admissionNumber} already exists in ${existing.form}. It was not moved automatically.`
+        );
       }
+      continue;
     }
-    
-    // Add to create list
-    studentsToCreate.push({
-      admissionNumber,
-      firstName: student.firstName,
-      middleName: student.middleName || null,
-      lastName: student.lastName,
-      form: student.form,
-      stream: student.stream || null,
-      dateOfBirth: student.dateOfBirth ? new Date(student.dateOfBirth) : null,
-      gender: student.gender || null,
-      parentPhone: student.parentPhone || null,
-      email: student.email || null,
-      address: student.address || null,
-      uploadBatchId,
-      status: 'active'
+
+    studentsToCreate.push(toStudentCreateData(student, uploadBatchId));
+  }
+
+  for (const chunk of chunkArray(studentsToCreate, CREATE_CHUNK_SIZE)) {
+    await prisma.databaseStudent.createMany({
+      data: chunk,
+      skipDuplicates: true
     });
-    
-    stats.validRows++;
+    stats.createdRows += chunk.length;
   }
-  
-  // Insert students
-  if (studentsToCreate.length > 0) {
-    try {
-      await prisma.databaseStudent.createMany({
-        data: studentsToCreate,
-        skipDuplicates: false // We handle duplicates manually
-      });
-      
-      stats.createdStudents = studentsToCreate;
-    } catch (error) {
-      console.error('Error creating students:', error);
-      stats.errorRows += studentsToCreate.length;
-      stats.errors.push(`Failed to create ${studentsToCreate.length} students: ${error.message}`);
-    }
+
+  for (const chunk of chunkArray(studentsToUpdate, UPDATE_CHUNK_SIZE)) {
+    await Promise.all(chunk.map(({ id, student }) => prisma.databaseStudent.update({
+      where: { id },
+      data: {
+        ...toStudentCreateData(student, uploadBatchId),
+        updatedAt: new Date()
+      }
+    })));
+    stats.updatedRows += chunk.length;
   }
-  
+
+  stats.validRows = stats.createdRows + stats.updatedRows;
+  stats.createdStudents = studentsToCreate;
   return stats;
 };
 
@@ -568,424 +663,204 @@ const processUpdateUpload = async (students, uploadBatchId, targetForm) => {
     updatedRows: 0,
     createdRows: 0,
     deactivatedRows: 0,
+    skippedRows: 0,
     errorRows: 0,
     errors: [],
     updatedStudents: [],
     createdStudents: []
   };
-  
-  // Filter students to only include the target form
-  const filteredStudents = students.filter(student => 
-    student.form === targetForm
-  );
-  
+
+  const filteredStudents = students.filter(student => student.form === targetForm);
   if (filteredStudents.length === 0) {
-    throw new Error(`No students found for form ${targetForm}. Make sure the form column matches the selected form.`);
+    throw new Error(`No rows in the file are marked as ${targetForm}. Check the form column or choose the correct target form.`);
   }
-  
-  // Get existing students in this form
-  const existingStudents = await prisma.databaseStudent.findMany({
-    where: {
-      form: targetForm,
-      status: 'active'
-    },
-    select: {
-      id: true,
-      admissionNumber: true,
-      uploadBatchId: true
-    }
-  });
-  
-  const existingAdmissionMap = new Map(
-    existingStudents.map(s => [s.admissionNumber, { 
-      id: s.id, 
-      uploadBatchId: s.uploadBatchId 
-    }])
-  );
-  
+
   const seenAdmissionNumbers = new Set();
-  const admissionNumbersInNewUpload = new Set();
-  
-  // Process each student in the upload
+  const validStudents = [];
+
   for (const [index, student] of filteredStudents.entries()) {
     const validation = validateStudent(student, index);
-    
     if (!validation.isValid) {
       stats.errorRows++;
       stats.errors.push(...validation.errors);
       continue;
     }
-    
-    const admissionNumber = student.admissionNumber;
-    
-    // Check duplicates within the file
-    if (seenAdmissionNumbers.has(admissionNumber)) {
+
+    if (seenAdmissionNumbers.has(student.admissionNumber)) {
       stats.errorRows++;
-      stats.errors.push(`Row ${index + 2}: Duplicate admission number in file: ${admissionNumber}`);
+      stats.errors.push(`Row ${student.rowNumber || index + 2}: Duplicate admission number in this file: ${student.admissionNumber}.`);
       continue;
     }
-    seenAdmissionNumbers.add(admissionNumber);
-    admissionNumbersInNewUpload.add(admissionNumber);
-    
-    // Check if student exists in this form
-    const existingStudent = existingAdmissionMap.get(admissionNumber);
-    
-    if (existingStudent) {
-      // Update existing student
-      try {
-        const updatedStudent = await prisma.databaseStudent.update({
-          where: { id: existingStudent.id },
-          data: {
-            firstName: student.firstName,
-            middleName: student.middleName || null,
-            lastName: student.lastName,
-            stream: student.stream || null,
-            dateOfBirth: student.dateOfBirth ? new Date(student.dateOfBirth) : null,
-            gender: student.gender || null,
-            parentPhone: student.parentPhone || null,
-            email: student.email || null,
-            address: student.address || null,
-            uploadBatchId: uploadBatchId,
-            status: 'active',
-            updatedAt: new Date()
-          }
-        });
-        
-        stats.updatedRows++;
-        stats.updatedStudents.push(updatedStudent);
-      } catch (error) {
-        stats.errorRows++;
-        stats.errors.push(`Row ${index + 2}: Failed to update student ${admissionNumber}: ${error.message}`);
-        continue;
-      }
-    } else {
-      // Create new student
-      try {
-        const newStudent = await prisma.databaseStudent.create({
-          data: {
-            admissionNumber,
-            firstName: student.firstName,
-            middleName: student.middleName || null,
-            lastName: student.lastName,
-            form: targetForm,
-            stream: student.stream || null,
-            dateOfBirth: student.dateOfBirth ? new Date(student.dateOfBirth) : null,
-            gender: student.gender || null,
-            parentPhone: student.parentPhone || null,
-            email: student.email || null,
-            address: student.address || null,
-            uploadBatchId,
-            status: 'active'
-          }
-        });
-        
-        stats.createdRows++;
-        stats.createdStudents.push(newStudent);
-      } catch (error) {
-        stats.errorRows++;
-        stats.errors.push(`Row ${index + 2}: Failed to create student ${admissionNumber}: ${error.message}`);
-        continue;
-      }
-    }
-    
-    stats.validRows++;
+
+    seenAdmissionNumbers.add(student.admissionNumber);
+    validStudents.push(student);
   }
-  
-  // Deactivate students in this form that are not in the new upload
-  const studentsToDeactivate = existingStudents.filter(s => 
-    !admissionNumbersInNewUpload.has(s.admissionNumber)
-  );
-  
-  if (studentsToDeactivate.length > 0) {
-    await prisma.databaseStudent.updateMany({
-      where: {
-        id: { in: studentsToDeactivate.map(s => s.id) }
-      },
+
+  if (validStudents.length === 0) return stats;
+
+  const admissionNumbers = validStudents.map(student => student.admissionNumber);
+  const [existingInTargetForm, existingAcrossForms] = await Promise.all([
+    prisma.databaseStudent.findMany({
+      where: { form: targetForm, status: 'active' },
+      select: { id: true, admissionNumber: true }
+    }),
+    prisma.databaseStudent.findMany({
+      where: { admissionNumber: { in: admissionNumbers } },
+      select: { id: true, admissionNumber: true, form: true }
+    })
+  ]);
+
+  const targetMap = new Map(existingInTargetForm.map(student => [student.admissionNumber, student]));
+  const anyFormMap = new Map(existingAcrossForms.map(student => [student.admissionNumber, student]));
+  const studentsToCreate = [];
+  const studentsToUpdate = [];
+
+  for (const student of validStudents) {
+    const existingTargetStudent = targetMap.get(student.admissionNumber);
+
+    if (existingTargetStudent) {
+      studentsToUpdate.push({ id: existingTargetStudent.id, student });
+      continue;
+    }
+
+    const existingOtherForm = anyFormMap.get(student.admissionNumber);
+    if (existingOtherForm && existingOtherForm.form !== targetForm) {
+      stats.skippedRows++;
+      stats.errors.push(`Row ${student.rowNumber}: Admission number ${student.admissionNumber} already belongs to ${existingOtherForm.form}, so it was not added to ${targetForm}.`);
+      continue;
+    }
+
+    studentsToCreate.push(toStudentCreateData(student, uploadBatchId, targetForm));
+  }
+
+  for (const chunk of chunkArray(studentsToUpdate, UPDATE_CHUNK_SIZE)) {
+    await Promise.all(chunk.map(({ id, student }) => prisma.databaseStudent.update({
+      where: { id },
+      data: {
+        firstName: student.firstName,
+        middleName: student.middleName || null,
+        lastName: student.lastName,
+        stream: student.stream || null,
+        dateOfBirth: student.dateOfBirth ? new Date(student.dateOfBirth) : null,
+        gender: student.gender || null,
+        parentPhone: student.parentPhone || null,
+        email: student.email || null,
+        address: student.address || null,
+        uploadBatchId,
+        status: 'active',
+        updatedAt: new Date()
+      }
+    })));
+    stats.updatedRows += chunk.length;
+  }
+
+  for (const chunk of chunkArray(studentsToCreate, CREATE_CHUNK_SIZE)) {
+    await prisma.databaseStudent.createMany({
+      data: chunk,
+      skipDuplicates: true
+    });
+    stats.createdRows += chunk.length;
+  }
+
+  const studentsToDeactivate = existingInTargetForm.filter(student => !admissionNumbersPresentInFile.has(student.admissionNumber));
+  for (const chunk of chunkArray(studentsToDeactivate, CREATE_CHUNK_SIZE)) {
+    const result = await prisma.databaseStudent.updateMany({
+      where: { id: { in: chunk.map(student => student.id) } },
       data: {
         status: 'inactive',
         updatedAt: new Date()
       }
     });
-    
-    stats.deactivatedRows = studentsToDeactivate.length;
+    stats.deactivatedRows += result.count;
   }
-  
+
+  stats.validRows = stats.updatedRows + stats.createdRows;
+  stats.createdStudents = studentsToCreate;
   return stats;
 };
 
 // ========== CSV PARSING ==========
 const parseCSV = async (file) => {
-  try {
-    const text = await file.text();
-    console.log('CSV content preview:', text.substring(0, 500));
-    
-    const delimiters = ['\t', ',', ';'];
-    
-    for (const delimiter of delimiters) {
-      try {
-        return await new Promise((resolve, reject) => {
-          parse(text, {
-            header: true,
-            skipEmptyLines: true,
-            delimiter,
-            transformHeader: (header) => {
-              // Clean and normalize the header
-              const normalized = header.trim().toLowerCase().replace(/[_\s]+/g, '');
-              
-              // Map to expected column names
-              if (normalized.includes('admission') || normalized.includes('admno')) {
-                return 'admissionNumber';
-              }
-              if (normalized.includes('firstname') || normalized.includes('first')) {
-                return 'firstName';
-              }
-              if (normalized.includes('middlename') || normalized.includes('middle')) {
-                return 'middleName';
-              }
-              if (normalized.includes('lastname') || normalized.includes('last') || normalized.includes('surname')) {
-                return 'lastName';
-              }
-              if (normalized.includes('form') || normalized.includes('class') || normalized.includes('grade')) {
-                return 'form';
-              }
-              if (normalized.includes('stream')) {
-                return 'stream';
-              }
-              if (normalized.includes('dateofbirth') || normalized === 'dob') {
-                return 'dateOfBirth';
-              }
-              if (normalized.includes('gender') || normalized === 'sex') {
-                return 'gender';
-              }
-              if (normalized.includes('parentphone') || normalized.includes('phone')) {
-                return 'parentPhone';
-              }
-              if (normalized.includes('email')) {
-                return 'email';
-              }
-              if (normalized.includes('address')) {
-                return 'address';
-              }
-              
-              return normalized;
-            },
-            complete: (results) => {
-              const headers = results.meta.fields || [];
-              console.log('CSV headers:', headers);
-              
-              if (headers.length === 0) {
-                reject(new Error('No headers found in CSV file'));
-                return;
-              }
-              
-              // Check for required columns
-              const requiredColumns = ['admissionNumber', 'firstName', 'lastName', 'form'];
-              const missingColumns = requiredColumns.filter(col => !headers.includes(col));
-              
-              if (missingColumns.length > 0) {
-                reject(new Error(`Missing required columns: ${missingColumns.join(', ')}. Found headers: ${headers.join(', ')}`));
-                return;
-              }
-              
-              const data = results.data
-                .map((row, index) => {
-                  try {
-                    // Get values from row
-                    const admissionNumber = String(row.admissionNumber || '').trim();
-                    const firstName = String(row.firstName || '').trim();
-                    const lastName = String(row.lastName || '').trim();
-                    const form = String(row.form || '').trim();
-                    
-                    // Get optional values
-                    const middleName = row.middleName ? String(row.middleName).trim() : null;
-                    const stream = row.stream ? String(row.stream).trim() : null;
-                    const dateOfBirth = parseDate(row.dateOfBirth || row.dob || '');
-                    const gender = row.gender ? String(row.gender).trim() : null;
-                    const parentPhone = row.parentPhone ? String(row.parentPhone).trim() : null;
-                    const email = row.email ? String(row.email).trim() : null;
-                    const address = row.address ? String(row.address).trim() : null;
-                    
-                    // Check if we have the minimum required data
-                    if (admissionNumber && firstName && lastName && form) {
-                      // Normalize form
-                      const formValue = form.toLowerCase().trim();
-                      const formMap = {
-                        'form1': 'Form 1',
-                        'form 1': 'Form 1',
-                        '1': 'Form 1',
-                        'form2': 'Form 2',
-                        'form 2': 'Form 2',
-                        '2': 'Form 2',
-                        'form3': 'Form 3',
-                        'form 3': 'Form 3',
-                        '3': 'Form 3',
-                        'form4': 'Form 4',
-                        'form 4': 'Form 4',
-                        '4': 'Form 4'
-                      };
-                      
-                      const normalizedForm = formMap[formValue] || form;
-                      
-                      return {
-                        admissionNumber,
-                        firstName,
-                        middleName,
-                        lastName,
-                        form: normalizedForm,
-                        stream,
-                        dateOfBirth,
-                        gender,
-                        parentPhone,
-                        email,
-                        address
-                      };
-                    }
-                    
-                    return null;
-                  } catch (error) {
-                    console.error(`Error parsing CSV row ${index + 2}:`, error);
-                    return null;
-                  }
-                })
-                .filter(item => item !== null);
-              
-              console.log(`CSV parsing completed: ${data.length} valid rows out of ${results.data.length}`);
-              
-              if (data.length === 0) {
-                reject(new Error('No valid student data found in CSV file. Please check your file format.'));
-                return;
-              }
-              
-              resolve(data);
-            },
-            error: reject
-          });
-        });
-      } catch (delimiterError) {
-        console.log(`Delimiter "${delimiter}" failed:`, delimiterError.message);
-        continue;
-      }
-    }
-    
-    throw new Error('Could not parse CSV. Please check that your file contains required columns: admissionNumber, firstName, lastName, form');
-    
-  } catch (error) {
-    console.error('CSV parsing error:', error);
-    throw new Error(`CSV parsing failed: ${error.message}`);
+  const text = await file.text();
+  if (!text.trim()) {
+    throw new Error('The CSV file is empty. Please upload a file with student rows.');
   }
+
+  return new Promise((resolve, reject) => {
+    parse(text, {
+      header: true,
+      skipEmptyLines: 'greedy',
+      transformHeader: normalizeColumnHeader,
+      delimitersToGuess: [',', '\t', ';', '|'],
+      complete: (results) => {
+        const headers = results.meta.fields || [];
+        const requiredColumns = ['admissionNumber', 'firstName', 'lastName', 'form'];
+        const missingColumns = requiredColumns.filter(col => !headers.includes(col));
+
+        if (missingColumns.length > 0) {
+          reject(new Error(`Missing required column(s): ${missingColumns.join(', ')}. Use columns like admissionNumber, firstName, lastName, and form.`));
+          return;
+        }
+
+        const data = results.data
+          .map((row, index) => parseStudentRow(row, index))
+          .filter(Boolean);
+
+        if (data.length === 0) {
+          reject(new Error('No student rows were found in the CSV file. Check that the data starts directly under the header row.'));
+          return;
+        }
+
+        if (results.errors?.length) {
+          console.warn('CSV parser warnings:', results.errors.slice(0, 5));
+        }
+
+        resolve(data);
+      },
+      error: (error) => reject(new Error(`CSV parsing failed: ${error.message}`))
+    });
+  });
 };
 
-// ========== EXCEL PARSING - SIMPLIFIED VERSION ==========
+// ========== EXCEL PARSING ==========
 const parseExcel = async (file) => {
   try {
     const buffer = await file.arrayBuffer();
     const workbook = XLSX.read(buffer, { type: 'buffer', cellDates: true });
-    const sheetName = workbook.SheetNames[0];
+
+    const sheetName = workbook.SheetNames.find(name => workbook.Sheets[name]?.['!ref']);
+    if (!sheetName) {
+      throw new Error('The Excel workbook does not contain a readable sheet.');
+    }
+
     const worksheet = workbook.Sheets[sheetName];
-    
-    // Convert to JSON - this should preserve your exact headers
     const jsonData = XLSX.utils.sheet_to_json(worksheet, {
       defval: '',
       raw: false,
       dateNF: 'yyyy-mm-dd'
     });
-    
-    console.log(`Excel raw data: ${jsonData.length} rows`);
-    
+
     if (jsonData.length === 0) {
-      throw new Error('Excel file appears to be empty');
+      throw new Error('The Excel sheet is empty. Please add student rows below the header row.');
     }
-    
-    // Log the exact structure
-    console.log('First Excel row:', jsonData[0]);
-    console.log('All headers:', Object.keys(jsonData[0]));
-    
+
+    const normalizedHeaders = Object.keys(jsonData[0] || {}).map(normalizeColumnHeader);
+    const requiredColumns = ['admissionNumber', 'firstName', 'lastName', 'form'];
+    const missingColumns = requiredColumns.filter(col => !normalizedHeaders.includes(col));
+
+    if (missingColumns.length > 0) {
+      throw new Error(`Missing required column(s): ${missingColumns.join(', ')}. Use columns like admissionNumber, firstName, lastName, and form.`);
+    }
+
     const data = jsonData
-      .map((row, index) => {
-        try {
-          // Direct mapping - use the exact headers from your error message
-          const admissionNumber = String(row.admissionNumber || row.AdmissionNumber || '').trim();
-          const firstName = String(row.firstName || row.FirstName || '').trim();
-          const middleName = String(row.middleName || row.MiddleName || '').trim() || null;
-          const lastName = String(row.lastName || row.LastName || '').trim();
-          const form = String(row.form || row.Form || '').trim();
-          const stream = String(row.stream || row.Stream || '').trim() || null;
-          const dateOfBirthRaw = row.dateOfBirth || row.DateOfBirth || row.dob || row.DOB || '';
-          const dateOfBirth = dateOfBirthRaw ? parseDate(dateOfBirthRaw) : null;
-          const gender = String(row.gender || row.Gender || '').trim() || null;
-          const parentPhone = String(row.parentPhone || row.ParentPhone || '').trim() || null;
-          const email = String(row.email || row.Email || '').trim() || null;
-          const address = String(row.address || row.Address || '').trim() || null;
-          const status = String(row.status || row.Status || 'active').trim();
-          
-          // Normalize form value
-          const normalizedForm = (() => {
-            const formValue = form.toLowerCase().trim();
-            const formMap = {
-              'form1': 'Form 1',
-              'form 1': 'Form 1',
-              '1': 'Form 1',
-              'form2': 'Form 2',
-              'form 2': 'Form 2',
-              '2': 'Form 2',
-              'form3': 'Form 3',
-              'form 3': 'Form 3',
-              '3': 'Form 3',
-              'form4': 'Form 4',
-              'form 4': 'Form 4',
-              '4': 'Form 4'
-            };
-            
-            return formMap[formValue] || form;
-          })();
-          
-          // Check if we have the minimum required data
-          if (admissionNumber && firstName && lastName && normalizedForm) {
-            const student = {
-              admissionNumber,
-              firstName,
-              middleName,
-              lastName,
-              form: normalizedForm,
-              stream,
-              dateOfBirth,
-              gender,
-              parentPhone,
-              email,
-              address,
-              status
-            };
-            
-            if (index < 3) {
-              console.log(`Parsed student ${index + 1}:`, student);
-            }
-            
-            return student;
-          } else {
-            console.log(`Row ${index + 2} skipped - missing required fields:`, {
-              admissionNumber: !!admissionNumber,
-              firstName: !!firstName,
-              lastName: !!lastName,
-              form: !!form,
-              normalizedForm
-            });
-            return null;
-          }
-        } catch (error) {
-          console.error(`Error parsing Excel row ${index + 2}:`, error);
-          return null;
-        }
-      })
-      .filter(item => item !== null);
-    
-    console.log(`Excel parsing completed: ${data.length} valid rows out of ${jsonData.length}`);
-    
+      .map((row, index) => parseStudentRow(row, index))
+      .filter(Boolean);
+
     if (data.length === 0) {
-      throw new Error('No valid student data found in Excel file. Required columns: admissionNumber, firstName, lastName, form. Make sure your Excel has these exact column names in the first row.');
+      throw new Error('No student rows were found in the Excel file. Check that the first sheet has student data.');
     }
-    
+
     return data;
-    
   } catch (error) {
     console.error('Excel parsing error:', error);
     throw new Error(`Excel parsing failed: ${error.message}`);
@@ -995,99 +870,104 @@ const parseExcel = async (file) => {
 // ========== VALIDATION ==========
 const validateStudent = (student, index) => {
   const errors = [];
+  const row = student.rowNumber || index + 2;
   
   // Admission number
   if (!student.admissionNumber) {
-    errors.push(`Row ${index + 2}: Admission number is required`);
-  } else if (!/^\d{4,10}$/.test(student.admissionNumber)) {
-    errors.push(`Row ${index + 2}: Admission number must be 4-10 digits (got: ${student.admissionNumber})`);
+    errors.push(`Row ${row}: Admission number is required.`);
+  } else if (!/^[A-Z0-9/-]{2,20}$/.test(student.admissionNumber)) {
+    errors.push(`Row ${row}: Admission number should be 2-20 letters or numbers. Found "${student.admissionNumber}".`);
   }
   
   // Names
   if (!student.firstName) {
-    errors.push(`Row ${index + 2}: First name is required`);
+    errors.push(`Row ${row}: First name is required.`);
   } else if (student.firstName.length > 100) {
-    errors.push(`Row ${index + 2}: First name too long (max 100 chars)`);
+    errors.push(`Row ${row}: First name is too long. Use 100 characters or fewer.`);
   }
   
   if (!student.lastName) {
-    errors.push(`Row ${index + 2}: Last name is required`);
+    errors.push(`Row ${row}: Last name is required.`);
   } else if (student.lastName.length > 100) {
-    errors.push(`Row ${index + 2}: Last name too long (max 100 chars)`);
+    errors.push(`Row ${row}: Last name is too long. Use 100 characters or fewer.`);
   }
   
   // Form validation
-  const formValue = student.form.trim();
+  const formValue = String(student.form || '').trim();
   const validForms = ['Form 1', 'Form 2', 'Form 3', 'Form 4'];
   
   if (!validForms.includes(formValue)) {
-    errors.push(`Row ${index + 2}: Form must be one of: ${validForms.join(', ')} (got: ${formValue})`);
+    errors.push(`Row ${row}: Form must be one of ${validForms.join(', ')}. Found "${formValue || 'blank'}".`);
   }
   
   // Update student with normalized form
   student.form = formValue;
   
   // Date of birth
+  if (student.dateOfBirthInvalid) {
+    errors.push(`Row ${row}: Date of birth "${student.dateOfBirthRaw}" is not a valid date. Use YYYY-MM-DD or DD/MM/YYYY.`);
+  }
+
   if (student.dateOfBirth) {
     const dob = new Date(student.dateOfBirth);
     if (isNaN(dob.getTime())) {
-      errors.push(`Row ${index + 2}: Invalid date of birth format`);
+      errors.push(`Row ${row}: Invalid date of birth format.`);
     } else {
       const year = dob.getFullYear();
       const currentYear = new Date().getFullYear();
       
       if (dob > new Date()) {
-        errors.push(`Row ${index + 2}: Date of birth cannot be in the future`);
+        errors.push(`Row ${row}: Date of birth cannot be in the future.`);
       }
       
       if (year < 1900) {
-        errors.push(`Row ${index + 2}: Date of birth year must be after 1900`);
+        errors.push(`Row ${row}: Date of birth year must be after 1900.`);
       }
       
       const age = currentYear - year;
       if (age < 4) {
-        errors.push(`Row ${index + 2}: Student appears to be too young (${age} years old)`);
+        errors.push(`Row ${row}: Student appears to be too young (${age} years old).`);
       }
       
       if (age > 30) {
-        errors.push(`Row ${index + 2}: Student appears to be too old (${age} years old)`);
+        errors.push(`Row ${row}: Student appears to be too old (${age} years old).`);
       }
     }
   }
   
   // Optional fields
   if (student.middleName && student.middleName.length > 100) {
-    errors.push(`Row ${index + 2}: Middle name too long (max 100 chars)`);
+    errors.push(`Row ${row}: Middle name is too long. Use 100 characters or fewer.`);
   }
   
   if (student.stream && student.stream.length > 50) {
-    errors.push(`Row ${index + 2}: Stream too long (max 50 chars)`);
+    errors.push(`Row ${row}: Stream is too long. Use 50 characters or fewer.`);
   }
   
   if (student.gender && student.gender.length > 20) {
-    errors.push(`Row ${index + 2}: Gender too long (max 20 chars)`);
+    errors.push(`Row ${row}: Gender is too long. Use 20 characters or fewer.`);
   }
   
   if (student.parentPhone) {
     const phoneRegex = /^[+]?[0-9\s\-()]{10,20}$/;
     if (!phoneRegex.test(student.parentPhone)) {
-      errors.push(`Row ${index + 2}: Parent phone number is invalid`);
+      errors.push(`Row ${row}: Parent phone number is invalid.`);
     } else if (student.parentPhone.length > 20) {
-      errors.push(`Row ${index + 2}: Parent phone too long (max 20 chars)`);
+      errors.push(`Row ${row}: Parent phone is too long. Use 20 characters or fewer.`);
     }
   }
   
   if (student.email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(student.email)) {
-      errors.push(`Row ${index + 2}: Email is invalid`);
+      errors.push(`Row ${row}: Email address is invalid.`);
     } else if (student.email.length > 100) {
-      errors.push(`Row ${index + 2}: Email too long (max 100 chars)`);
+      errors.push(`Row ${row}: Email is too long. Use 100 characters or fewer.`);
     }
   }
   
   if (student.address && student.address.length > 255) {
-    errors.push(`Row ${index + 2}: Address too long (max 255 chars)`);
+    errors.push(`Row ${row}: Address is too long. Use 255 characters or fewer.`);
   }
   
   return { isValid: errors.length === 0, errors };
@@ -1250,56 +1130,56 @@ if (action === 'uploads') {
 
 // POST - Bulk upload with new strategy (with authentication)
 export async function POST(request) {
+  let batchId = null;
   try {
-    // Step 1: Authenticate the POST request
     const auth = authenticateRequest(request);
     if (!auth.authenticated) {
       return auth.response;
     }
 
-    // Log authentication info
     console.log(`📝 Student bulk upload request from: ${auth.user.name} (${auth.user.role})`);
 
     const formData = await request.formData();
     const file = formData.get('file');
-    const uploadType = formData.get('uploadType'); // 'new' or 'update'
-    const formsInput = formData.get('forms'); // JSON string for forms
-    const targetForm = formData.get('targetForm'); // Single form for updates
+    const uploadType = formData.get('uploadType');
+    const formsInput = formData.get('forms');
+    const targetForm = formData.get('targetForm');
     const checkDuplicates = formData.get('checkDuplicates') === 'true';
-    const duplicateAction = formData.get('duplicateAction') || 'skip'; // 'skip' or 'replace'
-    
-    if (!file) {
+    const duplicateAction = formData.get('duplicateAction') || 'skip';
+
+    if (!file || typeof file === 'string') {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'No file provided',
-          authenticated: true 
-        },
+        { success: false, error: 'Please choose a CSV or Excel file before uploading.', authenticated: true },
         { status: 400 }
       );
     }
-    
+
+    if (file.size === 0) {
+      return NextResponse.json(
+        { success: false, error: 'The selected file is empty. Please upload a file with student records.', authenticated: true },
+        { status: 400 }
+      );
+    }
+
+    if (file.size > MAX_UPLOAD_SIZE) {
+      return NextResponse.json(
+        { success: false, error: 'The file is too large. Please keep student uploads below 15 MB or split the file by form.', authenticated: true },
+        { status: 413 }
+      );
+    }
+
     if (!uploadType) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Upload type is required (new or update)',
-          authenticated: true 
-        },
+        { success: false, error: 'Choose whether this is a new upload or a form update.', authenticated: true },
         { status: 400 }
       );
     }
-    
-    // Validate form selection based on upload type
+
     let selectedForms = [];
     if (uploadType === 'new') {
       if (!formsInput) {
         return NextResponse.json(
-          { 
-            success: false, 
-            error: 'Please select at least one form for new upload',
-            authenticated: true 
-          },
+          { success: false, error: 'Select at least one form for a new upload.', authenticated: true },
           { status: 400 }
         );
       }
@@ -1308,251 +1188,137 @@ export async function POST(request) {
         selectedForms = validateFormSelection(forms);
       } catch (error) {
         return NextResponse.json(
-          { 
-            success: false, 
-            error: 'Invalid form selection',
-            authenticated: true 
-          },
+          { success: false, error: error.message || 'Invalid form selection.', authenticated: true },
           { status: 400 }
         );
       }
     } else if (uploadType === 'update') {
       if (!targetForm) {
         return NextResponse.json(
-          { 
-            success: false, 
-            error: 'Target form is required for update upload',
-            authenticated: true 
-          },
+          { success: false, error: 'Choose the form you want to update.', authenticated: true },
           { status: 400 }
         );
       }
       selectedForms = validateFormSelection([targetForm]);
     } else {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Invalid upload type. Must be "new" or "update"',
-          authenticated: true 
-        },
+        { success: false, error: 'Invalid upload type. Choose either new upload or update upload.', authenticated: true },
         { status: 400 }
       );
     }
-    
+
     const fileName = file.name.toLowerCase();
     const fileExtension = fileName.split('.').pop();
-    
-    const validExtensions = ['csv', 'xlsx', 'xls'];
+
+    const validExtensions = ['csv', 'xlsx', 'xls', 'xlsm'];
     if (!validExtensions.includes(fileExtension)) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Invalid file type. Please upload CSV or Excel (xlsx/xls) files.',
-          authenticated: true 
-        },
+        { success: false, error: 'Invalid file type. Upload a CSV or Excel file (.csv, .xlsx, .xls, .xlsm).', authenticated: true },
         { status: 400 }
       );
     }
-    
-    // Create batch record with uploader info from authentication
-    const batchId = `BATCH_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    const uploadBatch = await prisma.studentBulkUpload.create({
-      data: {
-        id: batchId,
-        fileName: file.name,
-        fileType: fileExtension,
-        uploadedBy: auth.user.name, // Use authenticated user's name
-        status: 'processing',
-        metadata: {
-          uploadType,
-          selectedForms,
-          targetForm: uploadType === 'update' ? targetForm : null,
-          uploadedBy: auth.user.name,
-          userRole: auth.user.role,
-          timestamp: new Date()
-        }
-      }
-    });
-    
+
+    let rawData = [];
     try {
-      // Parse file
-      let rawData = [];
-      
       if (fileExtension === 'csv') {
         rawData = await parseCSV(file);
       } else {
         rawData = await parseExcel(file);
       }
-      
-      if (rawData.length === 0) {
-        throw new Error(`No valid student data found.`);
-      }
-      
-      // If just checking for duplicates
-      if (checkDuplicates) {
-        let duplicates = [];
-        
-        if (uploadType === 'new') {
-          // Check for duplicates across all forms
-          duplicates = await checkDuplicateAdmissionNumbers(rawData);
-        } else if (uploadType === 'update') {
-          // Check for duplicates in the target form
-          duplicates = await checkDuplicateAdmissionNumbers(rawData, targetForm);
-        }
-        
-        return NextResponse.json({
-          success: true,
-          hasDuplicates: duplicates.length > 0,
-          duplicates: duplicates,
-          totalRows: rawData.length,
+    } catch (error) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: friendlyUploadError(error),
           authenticated: true,
-          uploadedBy: auth.user.name,
-          message: duplicates.length > 0 
-            ? `Found ${duplicates.length} duplicate admission numbers` 
-            : 'No duplicates found'
-        });
-      }
-      
-      let processingStats;
-      
-// Use transaction for consistency with increased timeout
-await prisma.$transaction(async (tx) => {
-  if (uploadType === 'new') {
-    // Process new upload
-    processingStats = await processNewUpload(rawData, batchId, selectedForms, duplicateAction);
-    
-    // Update batch with new upload stats
-    await tx.studentBulkUpload.update({
-      where: { id: batchId },
-      data: {
-        status: 'completed',
-        processedDate: new Date(),
-        totalRows: processingStats.totalRows,
-        validRows: processingStats.validRows,
-        skippedRows: processingStats.skippedRows,
-        errorRows: processingStats.errorRows,
-        errorLog: processingStats.errors.length > 0 ? processingStats.errors.slice(0, 50) : undefined
-      }
-    });
-    
-    // Update statistics - OPTIMIZED VERSION
-    if (processingStats.createdStudents.length > 0) {
-      const formCounts = {};
-      processingStats.createdStudents.forEach(student => {
-        formCounts[student.form] = (formCounts[student.form] || 0) + 1;
-      });
-      
-      // Update stats in bulk without recalculating everything
-      await tx.studentStats.upsert({
-        where: { id: 'global_stats' },
-        update: {
-          totalStudents: { increment: processingStats.createdStudents.length },
-          ...(formCounts['Form 1'] && { form1: { increment: formCounts['Form 1'] } }),
-          ...(formCounts['Form 2'] && { form2: { increment: formCounts['Form 2'] } }),
-          ...(formCounts['Form 3'] && { form3: { increment: formCounts['Form 3'] } }),
-          ...(formCounts['Form 4'] && { form4: { increment: formCounts['Form 4'] } }),
-          updatedAt: new Date()
+          suggestion: 'Use the student template and make sure the first row contains admissionNumber, firstName, lastName, and form.'
         },
-        create: {
-          id: 'global_stats',
-          totalStudents: processingStats.createdStudents.length,
-          form1: formCounts['Form 1'] || 0,
-          form2: formCounts['Form 2'] || 0,
-          form3: formCounts['Form 3'] || 0,
-          form4: formCounts['Form 4'] || 0
-        }
-      });
+        { status: 400 }
+      );
     }
-    
-  } else if (uploadType === 'update') {
-    // Process update upload
-    processingStats = await processUpdateUpload(rawData, batchId, targetForm);
-    
-    // Update batch with update stats
-    await tx.studentBulkUpload.update({
-      where: { id: batchId },
-      data: {
-        status: 'completed',
-        processedDate: new Date(),
-        totalRows: processingStats.totalRows,
-        validRows: processingStats.validRows,
-        skippedRows: processingStats.errorRows,
-        errorRows: processingStats.errorRows,
-        errorLog: processingStats.errors.length > 0 ? processingStats.errors.slice(0, 50) : undefined,
-        metadata: {
-          ...uploadBatch.metadata,
-          updatedRows: processingStats.updatedRows,
-          createdRows: processingStats.createdRows,
-          deactivatedRows: processingStats.deactivatedRows
-        }
-      }
-    });
-    
-    // OPTIMIZED: Only recalculate statistics if needed
-    // Skip full recalculation if no deactivations
-    if (processingStats.deactivatedRows > 0) {
-      const formStats = await tx.databaseStudent.groupBy({
-        by: ['form'],
-        where: { status: 'active' },
-        _count: { id: true }
-      });
-      
-      const formStatsObj = {};
-      formStats.forEach(stat => {
-        formStatsObj[stat.form] = stat._count.id;
-      });
-      
-      await tx.studentStats.upsert({
-        where: { id: 'global_stats' },
-        update: {
-          totalStudents: formStats.reduce((sum, stat) => sum + stat._count.id, 0),
-          form1: formStatsObj['Form 1'] || 0,
-          form2: formStatsObj['Form 2'] || 0,
-          form3: formStatsObj['Form 3'] || 0,
-          form4: formStatsObj['Form 4'] || 0,
-          updatedAt: new Date()
-        },
-        create: {
-          id: 'global_stats',
-          totalStudents: formStats.reduce((sum, stat) => sum + stat._count.id, 0),
-          form1: formStatsObj['Form 1'] || 0,
-          form2: formStatsObj['Form 2'] || 0,
-          form3: formStatsObj['Form 3'] || 0,
-          form4: formStatsObj['Form 4'] || 0
-        }
-      });
-    } else {
-      // Simple increment/decrement for update operations
-      const netChange = processingStats.createdRows - processingStats.updatedRows;
-      await tx.studentStats.update({
-        where: { id: 'global_stats' },
-        data: {
-          totalStudents: { increment: netChange },
-          ...(targetForm === 'Form 1' && { form1: { increment: netChange } }),
-          ...(targetForm === 'Form 2' && { form2: { increment: netChange } }),
-          ...(targetForm === 'Form 3' && { form3: { increment: netChange } }),
-          ...(targetForm === 'Form 4' && { form4: { increment: netChange } }),
-          updatedAt: new Date()
-        }
-      });
+
+    if (rawData.length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'No student records were found in the file.', authenticated: true },
+        { status: 400 }
+      );
     }
-  }
-}, {
-  maxWait: 15000,    // Increased from default
-  timeout: 30000     // 30 seconds timeout
-});
-      
-      // Recalculate to ensure consistency
-      const finalStats = await calculateStatistics({});
-      
-      console.log(`✅ Student upload completed by ${auth.user.name}: ${processingStats.validRows} students processed`);
-      
+
+    if (checkDuplicates) {
+      const duplicates = uploadType === 'update'
+        ? await checkDuplicateAdmissionNumbers(rawData, selectedForms[0])
+        : await checkDuplicateAdmissionNumbers(rawData);
+
       return NextResponse.json({
         success: true,
-        message: uploadType === 'new' 
-          ? `Successfully processed ${processingStats.validRows} new students` 
-          : `Successfully updated form ${targetForm}: ${processingStats.updatedRows} updated, ${processingStats.createdRows} created, ${processingStats.deactivatedRows} deactivated`,
+        hasDuplicates: duplicates.length > 0,
+        duplicates,
+        totalRows: rawData.length,
+        newRows: Math.max(rawData.length - duplicates.length, 0),
+        authenticated: true,
+        uploadedBy: auth.user.name,
+        message: duplicates.length > 0
+          ? `Found ${duplicates.length} existing admission number(s).`
+          : 'No duplicate admission numbers were found.'
+      });
+    }
+
+    batchId = `BATCH_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
+    const uploadBatch = await prisma.studentBulkUpload.create({
+      data: {
+        id: batchId,
+        fileName: file.name,
+        fileType: fileExtension,
+        uploadedBy: auth.user.name,
+        status: 'processing',
+        totalRows: rawData.length,
+        metadata: {
+          uploadType,
+          selectedForms,
+          targetForm: uploadType === 'update' ? selectedForms[0] : null,
+          duplicateAction,
+          uploadedBy: auth.user.name,
+          userRole: auth.user.role,
+          startedAt: new Date().toISOString()
+        }
+      }
+    });
+
+    let processingStats;
+    try {
+      processingStats = uploadType === 'new'
+        ? await processNewUpload(rawData, batchId, selectedForms, duplicateAction)
+        : await processUpdateUpload(rawData, batchId, selectedForms[0]);
+
+      await prisma.studentBulkUpload.update({
+        where: { id: batchId },
+        data: {
+          status: 'completed',
+          processedDate: new Date(),
+          totalRows: processingStats.totalRows,
+          validRows: processingStats.validRows,
+          skippedRows: processingStats.skippedRows || 0,
+          errorRows: processingStats.errorRows,
+          errorLog: processingStats.errors.length > 0 ? processingStats.errors.slice(0, 100) : undefined,
+          metadata: {
+            ...uploadBatch.metadata,
+            updatedRows: processingStats.updatedRows || 0,
+            createdRows: processingStats.createdRows || 0,
+            deactivatedRows: processingStats.deactivatedRows || 0,
+            completedAt: new Date().toISOString()
+          }
+        }
+      });
+
+      const finalStats = await refreshGlobalStudentStats();
+
+      console.log(`✅ Student upload completed by ${auth.user.name}: ${processingStats.validRows} students processed`);
+
+      return NextResponse.json({
+        success: true,
+        message: uploadType === 'new'
+          ? `Upload complete. ${processingStats.createdRows || 0} student(s) added and ${processingStats.updatedRows || 0} updated.`
+          : `Update complete for ${selectedForms[0]}. ${processingStats.updatedRows || 0} updated, ${processingStats.createdRows || 0} added, ${processingStats.deactivatedRows || 0} marked inactive.`,
         batch: {
           id: batchId,
           fileName: uploadBatch.fileName,
@@ -1562,38 +1328,40 @@ await prisma.$transaction(async (tx) => {
         },
         stats: finalStats.stats,
         validation: finalStats.validation,
-        processingStats: processingStats,
+        processingStats,
         authenticated: true,
-        uploadedBy: auth.user.name, 
-        errors: processingStats.errors.slice(0, 20),
+        uploadedBy: auth.user.name,
+        errors: processingStats.errors.slice(0, 25),
         timestamp: new Date().toISOString()
       });
-      
     } catch (error) {
       console.error('Processing error:', error);
-      
-      // Update batch as failed
-      await prisma.studentBulkUpload.update({
-        where: { id: batchId },
-        data: {
-          status: 'failed',
-          processedDate: new Date(),
-          errorRows: 1,
-          errorLog: [error.message]
-        }
-      });
-      
+
+      if (batchId) {
+        await prisma.studentBulkUpload.update({
+          where: { id: batchId },
+          data: {
+            status: 'failed',
+            processedDate: new Date(),
+            errorRows: 1,
+            errorLog: [friendlyUploadError(error)]
+          }
+        }).catch(updateError => {
+          console.error('Failed to mark upload batch as failed:', updateError);
+        });
+      }
+
       throw error;
     }
-    
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json(
       { 
         success: false, 
-        error: error.message || 'Upload failed',
+        error: friendlyUploadError(error),
         authenticated: true,
-        suggestion: 'Check that your file has the required columns: admissionNumber, firstName, lastName, form'
+        batchId,
+        suggestion: 'Check that your file has the required columns: admissionNumber, firstName, lastName, form. If the file is very large, split it by form and try again.'
       },
       { status: 500 }
     );
@@ -1763,7 +1531,7 @@ export async function DELETE(request) {
 
         const batchStudents = await tx.databaseStudent.findMany({
           where: { uploadBatchId: batchId },
-          select: { form: true, status: true }
+          select: { form: true, status: true, admissionNumber: true }
         });
 
         const formCounts = batchStudents.reduce((acc, student) => {
@@ -1777,6 +1545,12 @@ export async function DELETE(request) {
           // Hard delete students
           await tx.databaseStudent.deleteMany({
             where: { uploadBatchId: batchId }
+          });
+
+          await tx.studentPortalAccount.deleteMany({
+            where: {
+              admissionNumber: { in: batchStudents.map(student => student.admissionNumber) }
+            }
           });
         } else {
           // Soft delete students (mark as inactive)
@@ -1846,6 +1620,10 @@ export async function DELETE(request) {
           // Hard delete student
           await tx.databaseStudent.delete({
             where: { id: studentId }
+          });
+
+          await tx.studentPortalAccount.deleteMany({
+            where: { admissionNumber: student.admissionNumber }
           });
 
           // Update stats
