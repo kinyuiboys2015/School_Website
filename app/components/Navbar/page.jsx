@@ -203,6 +203,13 @@ export default function ModernNavbar() {
       name: 'Help Center',
       href: '/pages/contact',
       icon: FiMail
+    },
+    {
+      name: 'Admin Login',
+      href: '/pages/Sign In',
+      icon: FiLock,
+      rel: 'nofollow',
+      isHighlighted: true
     }
   ];
 
@@ -236,7 +243,7 @@ export default function ModernNavbar() {
 
   return (
     <>
-      <nav className="fixed w-full z-50 bg-[#3b1e0a] shadow-xl">
+      <nav className="fixed w-full z-50 bg-white shadow-xl">
         <div className="w-full px-3 xs:px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-y-2 min-h-[4.5rem] sm:min-h-[5.2rem] lg:py-3">
             
@@ -269,14 +276,14 @@ export default function ModernNavbar() {
   {/* Text Content */}
   <div className="flex flex-col justify-center min-w-0">
     <div className="overflow-hidden">
-      <h1 className="text-lg xs:text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tighter text-white leading-none truncate">
-        KINYUI <span className="text-amber-500">BOYS</span>
+      <h1 className="text-lg xs:text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tighter text-slate-950 leading-none truncate">
+        KINYUI <span className="text-amber-600">BOYS</span>
       </h1>
     </div>
     
     <div className="flex items-center gap-2 mt-1 min-w-0">
-      <span className="h-[1px] w-4 bg-amber-500/50"></span>
-      <p className="text-[9px] xs:text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.2em] font-semibold text-slate-300 italic truncate">
+      <span className="h-[1px] w-4 bg-amber-500/70"></span>
+      <p className="text-[9px] xs:text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.2em] font-semibold text-slate-600 italic truncate">
         Blessed and Favoured
       </p>
     </div>
@@ -291,10 +298,13 @@ export default function ModernNavbar() {
                   <a
                     key={item.name}
                     href={item.href}
+                    rel={item.rel}
                     className={`group inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-all ${
                       isActive
-                        ? 'bg-amber-300 text-slate-950'
-                        : 'text-white/85 hover:bg-white/10 hover:text-white'
+                        ? 'bg-amber-500 text-white shadow-sm'
+                        : item.isHighlighted
+                          ? 'bg-[#3b1e0a] text-white shadow-sm hover:bg-[#4b270e]'
+                          : 'text-slate-700 hover:bg-amber-50 hover:text-[#3b1e0a]'
                     }`}
                   >
                     <item.icon className="text-sm flex-shrink-0" />
@@ -305,7 +315,7 @@ export default function ModernNavbar() {
             </div>
 
             {/* Desktop Navigation - second row */}
-            <div className="hidden lg:flex order-3 w-full flex-none items-center justify-center border-t border-white/10 pt-2 pb-1">
+            <div className="hidden lg:flex order-3 w-full flex-none items-center justify-center border-t border-white/10 bg-[#3b1e0a] -mx-3 xs:-mx-4 sm:-mx-6 lg:-mx-8 px-3 xs:px-4 sm:px-6 lg:px-8 pt-2 pb-2">
               <div className="flex w-full min-w-0 flex-wrap items-center justify-center gap-1.5 px-1 py-1">
                 {mainNavigation.map((item) => {
                   const isActive = item.hasDropdown ? isAcademicActive : isActiveLink(item.href, item.exact);
@@ -554,7 +564,7 @@ export default function ModernNavbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2.5 xs:p-3 rounded-lg xs:rounded-xl text-white bg-white/10 hover:bg-white/20 transition-all active:scale-95 ml-auto"
+              className="lg:hidden p-2.5 xs:p-3 rounded-lg xs:rounded-xl text-white bg-[#3b1e0a] hover:bg-[#4b270e] transition-all active:scale-95 ml-auto"
               aria-label={isOpen ? "Close menu" : "Open menu"}
               aria-expanded={isOpen}
             >
@@ -579,10 +589,13 @@ export default function ModernNavbar() {
                     <a
                       key={item.name}
                       href={item.href}
+                      rel={item.rel}
                       className={`flex items-center gap-2 xs:gap-3 p-3 xs:p-4 rounded-lg xs:rounded-xl ${
                         isActive
                           ? 'bg-white/10 text-amber-200'
-                          : 'text-white/90 hover:bg-white/5'
+                          : item.isHighlighted
+                            ? 'bg-amber-400 text-slate-950'
+                            : 'text-white/90 hover:bg-white/5'
                       }`}
                       onClick={() => setIsOpen(false)}
                     >
