@@ -88,7 +88,7 @@ export const metadata = {
 
 /* Open Graph (Social Media Sharing) */
 openGraph: {
-  title: "S.A. Kinyui Boys Senior School | High School & Secondary School",
+  title: "S.A. Kinyui Boys Senior School",
   description: SCHOOL_DESCRIPTION,
   url: "https://kinyuiboyssenior.school",
   siteName: "Kinyui Boys Senior School",
