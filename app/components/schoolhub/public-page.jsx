@@ -689,6 +689,73 @@ const HubCarousel = ({ items, onView }) => {
   );
 };
 
+const HubList = ({ items, onView }) => {
+  if (!items?.length) return null;
+
+  return (
+    <div className="w-full divide-y divide-slate-100 border-y border-slate-200 bg-white">
+      {items.map((item) => {
+        const images = normalizeSchoolImages(item);
+        const image = images[0]?.url;
+        const Icon = ICONS[item.type] || FiLayers;
+        const theme = TYPE_THEMES[item.type] || TYPE_THEMES.DEPARTMENT;
+        const detailCount = Array.isArray(item.details) ? item.details.length : 0;
+
+        return (
+          <button
+            key={`${item.type}-${item.id}`}
+            onClick={() => onView(item)}
+            className="group flex w-full flex-col gap-4 py-5 text-left transition hover:bg-slate-50 sm:flex-row sm:items-center"
+          >
+            <div className="h-20 w-full shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:w-28">
+              {image ? (
+                <img src={image} alt={item.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+              ) : (
+                <div className={`flex h-full w-full items-center justify-center ${theme.bg}`}>
+                  <Icon className={`text-3xl ${theme.text}`} />
+                </div>
+              )}
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-wider ${theme.bg} ${theme.text}`}>
+                <Icon className="text-xs" /> {getTypeLabel(item.type)}
+              </span>
+              <h3 className="mt-2 text-xl font-black text-slate-950">{item.title}</h3>
+              {(item.shortDescription || item.description) && (
+                <p className="mt-2 max-w-5xl text-sm leading-6 text-slate-600">
+                  {item.shortDescription || item.description}
+                </p>
+              )}
+              <div className="mt-3 flex flex-wrap gap-2">
+                {detailCount > 0 && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
+                    <FiLayers className="text-xs" /> {detailCount} details
+                  </span>
+                )}
+                {item.contactName && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700">
+                    <FiUserCheck className="text-xs" /> {item.contactName}
+                  </span>
+                )}
+                {images.length > 0 && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
+                    <FiImage className="text-xs" /> {images.length} photo{images.length === 1 ? '' : 's'}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${theme.iconBg} text-white transition group-hover:translate-x-0.5`}>
+              <FiChevronRight className="text-sm" />
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
 // Main Component
 export default function PublicSchoolHubPage({
   title = "School Hub",
@@ -966,7 +1033,11 @@ export default function PublicSchoolHubPage({
                 </div>
               </div>
 
-              <HubCarousel items={section.items} onView={setActive} />
+              {departments ? (
+                <HubList items={section.items} onView={setActive} />
+              ) : (
+                <HubCarousel items={section.items} onView={setActive} />
+              )}
             </section>
           );
         })}

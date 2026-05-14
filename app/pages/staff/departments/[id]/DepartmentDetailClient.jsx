@@ -39,17 +39,17 @@ const normalizeList = (value) => {
 function TeacherCard({ teacher }) {
   const image = teacher?.image || (teacher?.gender === "female" ? "/female.png" : "/male.png");
   return (
-    <article className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
-      <div className="h-56 bg-slate-100">
+    <article className="flex w-full flex-col gap-4 py-5 sm:flex-row sm:items-center">
+      <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-slate-100">
         <img src={image} alt={teacher.name} className="h-full w-full object-cover object-top" />
       </div>
-      <div className="p-5">
+      <div className="min-w-0 flex-1">
         <div className="mb-3 inline-flex rounded-full bg-amber-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-amber-700">
           {teacher.subjectOffered || "Teacher"}
         </div>
-        <h3 className="text-lg font-black text-slate-900">{teacher.name}</h3>
+        <h3 className="text-lg font-black text-slate-900 sm:text-xl">{teacher.name}</h3>
         <p className="mt-1 text-sm font-bold text-slate-500">{teacher.position || teacher.role}</p>
-        <p className="mt-4 line-clamp-4 text-sm leading-relaxed text-slate-600">
+        <p className="mt-3 max-w-4xl text-sm leading-6 text-slate-600">
           {teacher.bio || `${teacher.name} supports learning and mentorship in this department.`}
         </p>
       </div>
@@ -225,7 +225,7 @@ export default function DepartmentDetailClient({ id }) {
           </div>
 
           {teachers.length > 0 ? (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="w-full divide-y divide-slate-100 border-y border-slate-200 bg-white">
               {teachers.map((teacher) => (
                 <TeacherCard key={teacher.id} teacher={teacher} />
               ))}

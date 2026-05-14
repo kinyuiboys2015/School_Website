@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
   FiArchive,
   FiAward,
-  FiChevronLeft,
   FiBookOpen,
   FiChevronRight,
   FiFilter,
@@ -290,17 +289,20 @@ function TeacherMiniCard({ teacher }) {
   const image = teacher?.image || (teacher?.gender === 'female' ? '/female.png' : '/male.png');
 
   return (
-    <article className="w-[260px] shrink-0 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm sm:w-[300px]">
-      <div className="relative h-48 bg-slate-100">
+    <article className="flex w-full flex-col gap-4 py-4 sm:flex-row sm:items-center">
+      <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-slate-100">
         <img src={image} alt={teacher.name} className="h-full w-full object-cover object-top" />
-        <div className="absolute left-3 top-3 rounded-full bg-slate-950/80 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <div className="mb-2 inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-amber-700">
           Teacher
         </div>
-      </div>
-      <div className="p-5">
-        <h3 className="text-lg font-black text-slate-900">{teacher.name}</h3>
-        <p className="mt-1 text-sm font-bold text-amber-700">{teacher.subjectOffered || teacher.position || 'Subject teacher'}</p>
-        <p className="mt-3 line-clamp-3 min-h-[4.5rem] text-sm leading-relaxed text-slate-600">
+        <h3 className="text-lg font-black text-slate-900 sm:text-xl">{teacher.name}</h3>
+        <p className="mt-1 text-sm font-bold text-amber-700">
+          {teacher.subjectOffered || teacher.position || 'Subject teacher'}
+        </p>
+        <p className="mt-2 max-w-4xl text-sm leading-6 text-slate-600">
           {teacher.bio || `${teacher.name} serves in the ${teacher.department || 'selected'} department at Kinyui Boys Senior School.`}
         </p>
       </div>
@@ -309,19 +311,12 @@ function TeacherMiniCard({ teacher }) {
 }
 
 function DepartmentTeacherCarousel({ department }) {
-  const scrollRef = useRef(null);
   const teachers = Array.isArray(department?.teachers) ? department.teachers : [];
 
   if (!department) return null;
 
-  const scroll = (direction) => {
-    const node = scrollRef.current;
-    if (!node) return;
-    node.scrollBy({ left: direction * Math.min(node.clientWidth, 680), behavior: 'smooth' });
-  };
-
   return (
-    <section className="mb-8 overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white p-4 shadow-sm sm:p-5">
+    <section className="mb-8 w-full">
       <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Selected Department</p>
@@ -331,25 +326,9 @@ function DepartmentTeacherCarousel({ department }) {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => scroll(-1)}
-            className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700"
-            aria-label="Previous teachers"
-          >
-            <FiChevronLeft />
-          </button>
-          <button
-            type="button"
-            onClick={() => scroll(1)}
-            className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700"
-            aria-label="Next teachers"
-          >
-            <FiChevronRight />
-          </button>
           <Link
             href={`/pages/staff/departments/${department.id}`}
-            className="hidden rounded-xl bg-slate-900 px-4 py-3 text-xs font-black uppercase tracking-widest text-white sm:inline-flex"
+            className="rounded-xl bg-slate-900 px-4 py-3 text-xs font-black uppercase tracking-widest text-white"
           >
             Full Page
           </Link>
@@ -357,10 +336,7 @@ function DepartmentTeacherCarousel({ department }) {
       </div>
 
       {teachers.length > 0 ? (
-        <div
-          ref={scrollRef}
-          className="flex gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        >
+        <div className="w-full divide-y divide-slate-100 border-y border-slate-200 bg-white">
           {teachers.map((teacher) => (
             <TeacherMiniCard key={teacher.id} teacher={teacher} />
           ))}
