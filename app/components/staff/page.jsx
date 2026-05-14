@@ -2699,6 +2699,18 @@ const getAuthHeaders = () => {
   };
 };
 
+const readJsonResponse = async (response, label) => {
+  const text = await response.text();
+  if (!text) return {};
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    const preview = text.replace(/\s+/g, ' ').slice(0, 180);
+    throw new Error(`${label} returned an invalid response (${response.status}). ${preview}`);
+  }
+};
+
 const fetchStaff = async (isRefresh = false) => {
   try {
     if (isRefresh) {
@@ -2711,21 +2723,27 @@ const fetchStaff = async (isRefresh = false) => {
       headers: getAuthHeaders()
     });
     
-    const data = await response.json();
+    const data = await readJsonResponse(response, 'Staff API');
     
-    if (data.success) {
-      const sortedStaff = getStaffHierarchy(data.staff || []);
+    const staffList = Array.isArray(data.staff)
+      ? data.staff
+      : Array.isArray(data.data?.staff)
+        ? data.data.staff
+        : null;
+
+    if (response.ok && data.success && staffList) {
+      const sortedStaff = getStaffHierarchy(staffList);
       setStaff(sortedStaff);
       setFilteredStaff(sortedStaff);
     } else {
-      console.error('Failed to fetch staff:', data.error);
+      console.error('Failed to fetch staff:', data.error || data.message || data);
       setStaff([]);
       setFilteredStaff([]);
-      showNotification('error', 'Fetch Failed', 'Failed to fetch staff data');
+      showNotification('error', 'Fetch Failed', data.error || data.message || 'Failed to fetch staff data');
     }
   } catch (error) {
     console.error('Error fetching staff:', error);
-    showNotification('error', 'Error', 'Error fetching staff data');
+    showNotification('error', 'Error', error.message || 'Error fetching staff data');
     setStaff([]);
     setFilteredStaff([]);
   } finally {

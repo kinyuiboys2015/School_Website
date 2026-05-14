@@ -94,6 +94,18 @@ const normalizeList = (value) => {
   return [];
 };
 
+const readJsonResponse = async (response, label) => {
+  const text = await response.text();
+  if (!text) return {};
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    const preview = text.replace(/\s+/g, ' ').slice(0, 180);
+    throw new Error(`${label} returned an invalid response (${response.status}). ${preview}`);
+  }
+};
+
 function LeadershipCard({ staff }) {
   const href = `/pages/staff/${staff.id}/${generateSlug(staff.name, staff.id)}`;
 
@@ -386,18 +398,21 @@ export default function StaffDirectory() {
       ]);
 
       const [staffData, departmentData] = await Promise.all([
-        staffResponse.json(),
-        departmentResponse.json(),
+        readJsonResponse(staffResponse, 'Staff API'),
+        readJsonResponse(departmentResponse, 'Staff departments API'),
       ]);
 
       if (!staffResponse.ok || !staffData.success) {
-        throw new Error(staffData.error || 'Failed to load leadership profiles');
+        throw new Error(staffData.error || staffData.message || 'Failed to load leadership profiles');
       }
       if (!departmentResponse.ok || !departmentData.success) {
-        throw new Error(departmentData.error || 'Failed to load departments');
+        throw new Error(departmentData.error || departmentData.message || 'Failed to load departments');
       }
 
-      const visibleLeadership = (staffData.staff || [])
+      const staffList = Array.isArray(staffData.staff) ? staffData.staff : [];
+      const departmentList = Array.isArray(departmentData.departments) ? departmentData.departments : [];
+
+      const visibleLeadership = staffList
         .filter(isLeadershipProfile)
         .sort((a, b) => {
           const roleA = getLeadershipRank(a);
@@ -407,7 +422,7 @@ export default function StaffDirectory() {
         });
 
       setLeadership(visibleLeadership);
-      setDepartments(departmentData.departments || []);
+      setDepartments(departmentList);
     } catch (err) {
       console.error('Staff page load error:', err);
       setError(err.message || 'Unable to load staff information');

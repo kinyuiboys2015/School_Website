@@ -112,7 +112,6 @@ const BrandSection = () => (
   <div className="space-y-6">
     <div className="flex flex-col items-start gap-4">
       <div className="relative group">
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-amber-500 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
         <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-amber-600 to-rose-700 p-0.5">
           <div className="w-full h-full rounded-2xl overflow-hidden bg-gray-900 flex items-center justify-center">
             <img
@@ -554,12 +553,6 @@ export default function ModernFooter() {
   return (
     <>
       <footer className="relative bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 -left-4 w-72 h-72 bg-amber-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 -right-4 w-72 h-72 bg-rose-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000" />
-        </div>
-        
         <div className="relative z-10">
           <div className="w-full px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
             <div className="max-w-7xl mx-auto">

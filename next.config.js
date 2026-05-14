@@ -41,11 +41,6 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/pages/achievements',
-        destination: '/pages/Achievements',
-        permanent: true,
-      },
-      {
         source: '/pages/School%20Achievements',
         destination: '/pages/Achievements',
         permanent: true,
