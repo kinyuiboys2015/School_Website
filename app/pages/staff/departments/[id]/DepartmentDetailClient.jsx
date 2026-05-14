@@ -9,6 +9,7 @@ import {
   FiChevronRight,
   FiImage,
   FiMapPin,
+  FiGrid, 
   FiRefreshCw,
   FiShield,
   FiUsers,
