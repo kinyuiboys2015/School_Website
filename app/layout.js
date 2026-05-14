@@ -164,7 +164,7 @@ twitter: {
   },
 
   verification: {
-    google: "google16e979b115c09244",
+    google: "googlecb1be919748a8612",
     
   },
 
