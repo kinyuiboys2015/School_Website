@@ -83,6 +83,24 @@ export const metadata = {
     "Kinyui Boys student portal",
     "Kinyui Boys achievements",
     "Kinyui Boys staff",
+    "kinyui boys gallery",
+    "Kinyui Boys events",
+    "Kinyui Boys news",
+    "Kinyui Boys alumni",
+    "Kinyui Boys sports",
+    "Kinyui Boys clubs",
+    "Kinyui Boys calendar",
+    "kinyui boys academics",
+    "kINYUI Boys",
+    "Kinyui Boys official website",
+"kinyui boys contact",
+"kinyui boys admissions",
+"kinyui",
+"kinyui boys senior school",
+"kinyui senior",
+"kinyuo",
+"kinyui",
+
     "Kinyui Boys contact"
   ],
 
@@ -121,7 +139,7 @@ openGraph: {
 /* Twitter Card */
 twitter: {
   card: "summary_large_image",
-  title: "S.A. Kinyui Boys Senior School | Kinyui Boys High School",
+  title: "S.A. Kinyui Boys Senior School",
   description: SCHOOL_DESCRIPTION,
   images: [SEO_LOGO_PATH],
 },
