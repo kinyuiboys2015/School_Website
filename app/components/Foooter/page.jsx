@@ -34,6 +34,7 @@ import {
   FiCompass,
   FiAward,
   FiExternalLink,
+  FiGrid,
 } from 'react-icons/fi';
 import {
   SiFacebook,

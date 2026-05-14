@@ -285,7 +285,7 @@ export default function ModernNavbar() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(245,158,11,0.18),transparent)]"></div>
       
       <Image
-        src="/seo/SchoolLogo.png"
+        src="/seo/kinyui.png"
         alt="Kinyui Boys Senior School Logo"
         width={64}
         height={64}

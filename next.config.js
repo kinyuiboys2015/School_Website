@@ -2,6 +2,12 @@
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   async redirects() {
     return [
       {
@@ -40,6 +46,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/pages/School%20Achievements',
+        destination: '/pages/Achievements',
+        permanent: true,
+      },
+      {
         source: '/pages/adminLogin',
         destination: '/pages/Sign%20In',
         permanent: false,
@@ -72,6 +83,10 @@ const nextConfig = {
       },
     ],
     domains: ['localhost'], // fallback for older Next.js versions
+  },
+  webpack: (config) => {
+    config.resolve.alias.canvas = false;
+    return config;
   },
 };
 

@@ -35,7 +35,7 @@ export async function generateMetadata({ params }) {
         description: "Leadership profiles from S.A. Kinyui Boys Senior School.",
         images: [
           {
-            url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyuiboyssenior.school'}/seo/SchoolLogo.png`,
+            url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyuiboyssenior.school'}/seo/kinyui.png`,
             width: 1200,
             height: 630,
             alt: 'kinyui boys Senior School Staff'
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }) {
       : staff.image.startsWith('/')
         ? `${baseUrl}${staff.image}`
         : `${baseUrl}/images/staff/${staff.image}`
-    : `${baseUrl}/seo/SchoolLogo.png`;
+    : `${baseUrl}/seo/kinyui.png`;
 
   return {
     title,

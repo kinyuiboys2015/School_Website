@@ -411,7 +411,7 @@ export default function MagazineArchive() {
             <div className="inline-flex max-w-full items-center gap-3 rounded-full bg-slate-50 px-4 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-slate-600">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
                 <Image
-                  src="/seo/SchoolLogo.png"
+                  src="/seo/kinyui.png"
                   alt="Kinyui Boys Senior School logo"
                   width={40}
                   height={40}

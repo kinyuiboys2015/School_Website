@@ -30,7 +30,7 @@ const publicPages = [
 
 const publicAssets = [
   '/seo/',
-  '/seo/SchoolLogo.png',
+  '/seo/kinyui.png',
   '/hero/',
   '/images/',
   '/_next/static/',

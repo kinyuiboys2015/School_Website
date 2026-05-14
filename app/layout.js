@@ -20,8 +20,16 @@ const geistMono = localFont({
 });
 
 const SITE_URL = "https://kinyuiboyssenior.school";
-const SEO_LOGO_JPEG = `${SITE_URL}/seo/SchoolLogo.png`;
-const SEO_LOGO_PNG = `${SITE_URL}/seo/SchoolLogo.png`;
+const SEO_LOGO_PATH = "/seo/kinyui.png";
+const SEO_LOGO_URL = `${SITE_URL}${SEO_LOGO_PATH}`;
+const SEO_LOGO_IMAGE = {
+  "@type": "ImageObject",
+  url: SEO_LOGO_URL,
+  contentUrl: SEO_LOGO_URL,
+  width: 1024,
+  height: 1024,
+  caption: "S.A. Kinyui Boys Senior School official logo",
+};
 const SCHOOL_DESCRIPTION =
   "Official website of S.A. Kinyui Boys Senior School, also known as Kinyui Boys High School and Kinyui Boys Secondary School, a public boys boarding school in Matungulu, Machakos County, Kenya.";
 const SCHOOL_ALTERNATE_NAMES = [
@@ -96,15 +104,15 @@ openGraph: {
   type: "website",
   images: [
     {
-      url: "/seo/SchoolLogo.png",
-      width: 1200,
-      height: 630,
+      url: SEO_LOGO_PATH,
+      width: 1024,
+      height: 1024,
       alt: "S.A. Kinyui Boys Senior School logo",
     },
     {
-      url: "/seo/SchoolLogo.png",
-      width: 1200,
-      height: 1200,
+      url: SEO_LOGO_PATH,
+      width: 1024,
+      height: 1024,
       alt: "Kinyui Boys Senior School official logo",
     },
   ],
@@ -115,7 +123,7 @@ twitter: {
   card: "summary_large_image",
   title: "S.A. Kinyui Boys Senior School | Kinyui Boys High School",
   description: SCHOOL_DESCRIPTION,
-  images: ["/seo/SchoolLogo.png"],
+  images: [SEO_LOGO_PATH],
 },
   /* Search Engine Bot Instructions */
   robots: {
@@ -131,11 +139,10 @@ twitter: {
 
   icons: {
     icon: [
-      { url: "/seo/SchoolLogo.png", type: "image/jpeg" },
-      { url: "/seo/SchoolLogo.png", type: "image/png" },
+      { url: SEO_LOGO_PATH, type: "image/png", sizes: "1024x1024" },
     ],
-    apple: "/seo/SchoolLogo.png",
-    shortcut: "/seo/SchoolLogo.png",
+    apple: SEO_LOGO_PATH,
+    shortcut: SEO_LOGO_PATH,
   },
 
   verification: {
@@ -167,8 +174,8 @@ export default function RootLayout({ children }) {
     "name": "S.A. Kinyui Boys Senior School",
     "alternateName": SCHOOL_ALTERNATE_NAMES,
     "url": SITE_URL,
-    "logo": SEO_LOGO_PNG,
-    "image": [SEO_LOGO_JPEG, SEO_LOGO_PNG],
+    "logo": SEO_LOGO_IMAGE,
+    "image": SEO_LOGO_IMAGE,
     "description": SCHOOL_DESCRIPTION,
     "slogan": "Soaring To Excellence",
     "address": {
@@ -224,7 +231,7 @@ export default function RootLayout({ children }) {
       "@type": "School",
       "name": "S.A. Kinyui Boys Senior School",
       "url": SITE_URL,
-      "logo": SEO_LOGO_PNG
+      "logo": SEO_LOGO_IMAGE
     }
   };
 

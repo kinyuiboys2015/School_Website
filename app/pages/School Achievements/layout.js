@@ -4,10 +4,10 @@ export const metadata = {
     canonical: "/pages/Achievements",
   },
   robots: {
-    index: false,
+    index: true,
     follow: true,
     googleBot: {
-      index: false,
+      index: true,
       follow: true,
     },
   },

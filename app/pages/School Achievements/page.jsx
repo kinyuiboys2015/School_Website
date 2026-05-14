@@ -1,18 +1,5 @@
-import ClientAchievements from '../../components/ach/page';
+import { permanentRedirect } from 'next/navigation';
 
-export const metadata = {
-  title: 'S.A Kinyui Boys Senior School Achievements',
-  description:
-    'Explore the official achievements of Kinyui Boys Senior School in Matungulu, Machakos County — academics, sports, arts, leadership, and more.',
-  alternates: {
-    canonical: 'https://kinyuiboyssenior.school/pages/Achievements',
-  },
-  robots: {
-    index: false,
-    follow: true,
-  },
-};
-
-export default function SchoolAchievementsPage() {
-  return <ClientAchievements />;
+export default function SchoolAchievementsRedirect() {
+  permanentRedirect('/pages/Achievements');
 }

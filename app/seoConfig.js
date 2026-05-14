@@ -1,6 +1,6 @@
 const SITE_URL = "https://kinyuiboyssenior.school";
 const SITE_NAME = "S.A. Kinyui Boys Senior School";
-const DEFAULT_IMAGE = `${SITE_URL}/seo/SchoolLogo.png`;
+const DEFAULT_IMAGE = `${SITE_URL}/seo/kinyui.png`;
 const SITE_SEARCH_DESCRIPTION =
   "Official website of S.A. Kinyui Boys Senior School, also known as Kinyui Boys High School and Kinyui Boys Secondary School, a public boys boarding school in Matungulu, Machakos County.";
 
@@ -170,8 +170,8 @@ export function createPageMetadata(path) {
       images: [
         {
           url: DEFAULT_IMAGE,
-          width: 1200,
-          height: 630,
+          width: 1024,
+          height: 1024,
           alt: `${title} - Kinyui Boys Senior School`,
         },
       ],
@@ -181,6 +181,16 @@ export function createPageMetadata(path) {
       title: `${title} | Kinyui Boys Senior School`,
       description,
       images: [DEFAULT_IMAGE],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
   };
 }
