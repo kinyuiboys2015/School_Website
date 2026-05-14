@@ -43,6 +43,7 @@ const secondaryLinks = [
 
 const utilityLinks = [
   { name: 'Student Portal', href: '/pages/StudentPortal', icon: FiFileText },
+  { name: 'School Hub', href: '/pages/school-hub', icon: FiGrid },
   { name: 'Contact', href: '/pages/contact', icon: FiPhone },
   { name: 'Admin Login', href: '/pages/Sign%20In', icon: FiLock, secure: true, rel: 'nofollow' },
 ];
@@ -243,15 +244,32 @@ export default function ModernNavbar() {
           isScrolled ? 'shadow-xl shadow-slate-950/10' : 'shadow-lg shadow-slate-950/5'
         }`}
       >
-        <div className="hidden border-b border-white/10 bg-[#3b1e0a] text-white lg:block">
-          <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-6">
-            <div className="flex items-center gap-5 text-[11px] font-black uppercase tracking-[0.2em] text-amber-100/80">
-              <span>Kinyui Boys Senior School</span>
-              <span className="h-1 w-1 rounded-full bg-amber-300" />
-              <span>Blessed and Favoured</span>
-            </div>
+        <div className="hidden border-b border-white/10 bg-[#2d1608] text-white lg:block">
+          <div className="mx-auto flex min-h-[68px] max-w-7xl items-center justify-between gap-6 px-6">
+            <a href="/" onClick={closeAll} className="flex min-w-0 items-center gap-3">
+              <div className="h-12 w-12 shrink-0 rounded-2xl bg-white/10 p-1 shadow-lg ring-1 ring-white/15">
+                <div className="flex h-full w-full items-center justify-center rounded-xl bg-white">
+                  <Image
+                    src="/seo/kinyui.png"
+                    alt="Kinyui Boys Senior School Logo"
+                    width={36}
+                    height={36}
+                    className="rounded-lg object-contain"
+                    priority
+                  />
+                </div>
+              </div>
+              <div className="min-w-0">
+                <p className="truncate text-base font-black tracking-tight text-white">
+                  Kinyui Boys
+                </p>
+                <p className="truncate text-[10px] font-black uppercase tracking-[0.24em] text-amber-100/70">
+                  Senior School | Blessed and Favoured
+                </p>
+              </div>
+            </a>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 p-1.5 shadow-inner shadow-black/10">
               {utilityLinks.map((item) => (
                 <NavLink key={item.name} item={item} compact isActiveLink={isActiveLink} onClose={closeAll} />
               ))}
@@ -259,9 +277,9 @@ export default function ModernNavbar() {
           </div>
         </div>
 
-        <div className="border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
-          <div className="mx-auto flex min-h-[72px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-            <a href="/" onClick={closeAll} className="flex min-w-0 items-center gap-3">
+        <div className="border-b border-slate-200/80 bg-white/90 backdrop-blur-2xl">
+          <div className="mx-auto flex min-h-[72px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:min-h-[64px] lg:justify-center">
+            <a href="/" onClick={closeAll} className="flex min-w-0 items-center gap-3 lg:hidden">
               <div className="h-12 w-12 shrink-0 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-yellow-300 p-[1px] shadow-lg">
                 <div className="flex h-full w-full items-center justify-center rounded-2xl bg-white">
                   <Image
@@ -352,14 +370,6 @@ export default function ModernNavbar() {
               ))}
             </div>
 
-            <a
-              href="/pages/StudentPortal"
-              onClick={closeAll}
-              className="hidden rounded-2xl bg-slate-950 px-4 py-2.5 text-sm font-black text-white shadow-lg transition hover:bg-slate-800 xl:inline-flex"
-            >
-              Portal
-            </a>
-
             <button
               onClick={() => setIsOpen((value) => !value)}
               className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-950 shadow-sm lg:hidden"
@@ -397,7 +407,7 @@ export default function ModernNavbar() {
         )}
       </nav>
 
-      <div className="h-[72px] lg:h-[112px]" />
+      <div className="h-[72px] lg:h-[132px]" />
     </>
   );
 }
