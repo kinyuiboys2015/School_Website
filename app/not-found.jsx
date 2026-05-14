@@ -12,6 +12,7 @@ import {
   FiSearch,
   FiAlertCircle,
   FiMapPin,
+  FiGrid, 
   FiGlobe,
   FiChevronRight,
   FiStar,

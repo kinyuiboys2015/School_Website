@@ -1135,6 +1135,7 @@ const handleLogout = () => {
       case 'schooldocuments':
         return <SchoolDocs />;
       case 'schoolhub':
+      case 'school-hub':
         return <SchoolHubManager />;
       case 'guidance-counseling':
         return <GuidanceCounselingTab />;

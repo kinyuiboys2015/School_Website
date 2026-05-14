@@ -25,6 +25,7 @@ import {
 import { 
   IoNewspaper,
   IoPeopleCircle,
+  IoSchoolOutline,
 } from 'react-icons/io5';
 
 import { 
@@ -212,6 +213,12 @@ const handleLogout = () => {
     label: 'School Information', 
     icon: FiInfo,
     badge: 'info'
+  },
+  {
+    id: 'schoolhub',
+    label: 'School Hub',
+    icon: IoSchoolOutline,
+    badge: 'cyan'
   },
   // Shuffled operational tabs
   { 
