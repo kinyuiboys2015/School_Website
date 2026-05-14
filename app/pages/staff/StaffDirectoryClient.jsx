@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   FiArchive,
   FiAward,
@@ -11,7 +12,6 @@ import {
   FiGrid,
   FiImage,
   FiLayers,
-  FiRefreshCw,
   FiSearch,
   FiShield,
   FiUsers,
@@ -473,23 +473,30 @@ export default function StaffDirectory() {
               type="button"
               onClick={() => fetchData(true)}
               disabled={refreshing}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-xs font-black uppercase tracking-widest text-slate-950 disabled:opacity-60"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 text-sm font-bold text-white transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              <FiRefreshCw className={refreshing ? 'animate-spin' : ''} />
-              Refresh
+              {refreshing && <CircularProgress size={16} thickness={5} sx={{ color: 'currentColor' }} />}
+              {refreshing ? 'Refreshing' : 'Refresh'}
             </button>
           </div>
 
-          <div className="relative mt-10 grid gap-3 sm:grid-cols-3">
+          <div className="relative mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3">
             {[
               { icon: FiShield, value: leadership.length, label: 'Leadership Profiles' },
               { icon: FiArchive, value: departments.length, label: 'Departments' },
               { icon: FiUsers, value: totalGroupedStaff, label: 'Grouped Staff' },
-            ].map((stat) => (
-              <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                <stat.icon className="text-2xl text-blue-300" />
-                <p className="mt-3 text-3xl font-black">{stat.value}</p>
-                <p className="text-[10px] font-black uppercase tracking-widest text-white/40">{stat.label}</p>
+            ].map((stat, index) => (
+              <div
+                key={stat.label}
+                className={`min-h-[128px] rounded-2xl border border-white/10 bg-white/5 p-5 ${
+                  index === 0 ? 'col-span-2 sm:col-span-1' : ''
+                }`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <stat.icon className="text-2xl text-blue-300" />
+                  <p className="text-3xl font-black leading-none">{stat.value}</p>
+                </div>
+                <p className="mt-6 text-[10px] font-black uppercase tracking-widest text-white/45">{stat.label}</p>
               </div>
             ))}
           </div>

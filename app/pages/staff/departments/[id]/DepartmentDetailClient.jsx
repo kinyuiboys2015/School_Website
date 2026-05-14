@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import CircularProgress from "@mui/material/CircularProgress";
 import {
   FiArrowLeft,
   FiAward,
@@ -10,7 +11,6 @@ import {
   FiImage,
   FiMapPin,
   FiGrid, 
-  FiRefreshCw,
   FiShield,
   FiUsers,
 } from "react-icons/fi";
@@ -131,9 +131,10 @@ export default function DepartmentDetailClient({ id }) {
               type="button"
               onClick={() => loadDepartment(true)}
               disabled={refreshing}
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-xs font-black uppercase tracking-widest text-slate-950 disabled:opacity-60"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 text-xs font-black uppercase tracking-widest text-white transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              <FiRefreshCw className={refreshing ? "animate-spin" : ""} /> Refresh
+              {refreshing && <CircularProgress size={14} thickness={5} sx={{ color: "currentColor" }} />}
+              {refreshing ? "Refreshing" : "Refresh"}
             </button>
           </div>
 
