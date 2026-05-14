@@ -141,6 +141,27 @@ const formatDate = (dateString) => {
   });
 };
 
+const BOYS_SCHOOL_DATA_NOTE =
+  "Kinyui Boys is a boys' school. Gender distribution analytics are intentionally ignored here; any non-male values in imported demo data are treated as testing data only.";
+
+function BoysSchoolDataNotice() {
+  return (
+    <div className="rounded-2xl border-2 border-orange-200 bg-orange-50 p-5 shadow-sm">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-700">
+          <FiShield className="text-xl" />
+        </div>
+        <div>
+          <h3 className="text-base font-black text-orange-950">Boys School Data Context</h3>
+          <p className="mt-1 text-sm font-semibold leading-6 text-orange-900">
+            {BOYS_SCHOOL_DATA_NOTE}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Custom Toaster with increased size
 const CustomToaster = () => (
   <Toaster
@@ -1367,15 +1388,15 @@ function StatisticsSummaryCard({ stats, demographics, onRefresh }) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="text-center p-4 bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-xl hover:shadow-lg transition-all duration-300">
           <div className="text-2xl font-bold text-emerald-700">
-            {(demographics.gender?.find(g => g.name === 'Male')?.value || 0).toLocaleString()}
+            {totalStudents.toLocaleString()}
           </div>
-          <div className="text-sm font-semibold text-emerald-900">Male Students</div>
+          <div className="text-sm font-semibold text-emerald-900">Boys School Records</div>
         </div>
         <div className="text-center p-4 bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl hover:shadow-lg transition-all duration-300">
           <div className="text-2xl font-bold text-purple-700">
-            {(demographics.gender?.find(g => g.name === 'Female')?.value || 0).toLocaleString()}
+            Ignored
           </div>
-          <div className="text-sm font-semibold text-purple-900">Female Students</div>
+          <div className="text-sm font-semibold text-purple-900">Gender Analytics</div>
         </div>
         <div className="text-center p-4 bg-gradient-to-r from-amber-50 to-amber-100 rounded-xl hover:shadow-lg transition-all duration-300">
           <div className="text-2xl font-bold text-amber-700">
@@ -1540,20 +1561,11 @@ function EnhancedFilterPanel({
 
       {showAdvanced && (
         <div className="mt-8 pt-8 border-t border-gray-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div>
-            <label className="block text-sm font-bold text-gray-700 mb-2">
-              Gender
-            </label>
-            <select
-              value={localFilters.gender}
-              onChange={(e) => handleFilterChange('gender', e.target.value)}
-              className="w-full px-4 py-3.5 bg-white border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-base"
-            >
-              <option value="">All Genders</option>
-              {['Male', 'Female', 'Other'].map(gender => (
-                <option key={gender} value={gender}>{gender}</option>
-              ))}
-            </select>
+          <div className="rounded-xl border-2 border-orange-200 bg-orange-50 px-4 py-3">
+            <p className="text-sm font-black text-orange-950">Gender Filter Ignored</p>
+            <p className="mt-1 text-xs font-semibold leading-5 text-orange-800">
+              Kinyui Boys is a boys' school, so gender filtering is not used for upload analytics.
+            </p>
           </div>
 
           <div>
@@ -2258,15 +2270,11 @@ const getAuthHeaders = (isProtected = false) => {
           const totalStudents = apiStats.totalStudents || allStudents.length;
           
           const streamDistribution = {};
-          const genderDistribution = {};
           const statusDistribution = {};
           
           allStudents.forEach(student => {
             const stream = student.stream || 'Unassigned';
             streamDistribution[stream] = (streamDistribution[stream] || 0) + 1;
-            
-            const gender = student.gender || 'Not Specified';
-            genderDistribution[gender] = (genderDistribution[gender] || 0) + 1;
             
             const status = student.status || 'active';
             statusDistribution[status] = (statusDistribution[status] || 0) + 1;
@@ -2299,12 +2307,6 @@ const getAuthHeaders = (isProtected = false) => {
             'Form 3': apiStats.form3 || 0,
             'Form 4': apiStats.form4 || 0
           };
-          
-          const genderChartData = Object.entries(genderDistribution).map(([name, value]) => ({
-            name,
-            value,
-            color: name === 'Male' ? '#3B82F6' : name === 'Female' ? '#EC4899' : '#8B5CF6'
-          }));
           
           const formChartData = Object.entries(formDistribution).map(([name, value]) => ({
             name,
@@ -2349,7 +2351,7 @@ const getAuthHeaders = (isProtected = false) => {
             globalStats: apiStats,
             formStats: formDistribution,
             streamStats: streamDistribution,
-            genderStats: genderDistribution,
+            genderStats: {},
             statusStats: statusDistribution,
             ageStats: ageDistribution,
             validation: {
@@ -2358,7 +2360,7 @@ const getAuthHeaders = (isProtected = false) => {
           });
           
           setDemographics({
-            gender: genderChartData,
+            gender: [],
             formDistribution: formChartData,
             streamDistribution: streamChartData,
             ageGroups: ageChartData,
@@ -3102,6 +3104,8 @@ const downloadExcelTemplate = () => {
                 trend={0}
               />
             </div>
+
+            <BoysSchoolDataNotice />
 
             <div className="grid lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-8">
@@ -3906,6 +3910,8 @@ const downloadExcelTemplate = () => {
 
         {view === 'demographics' && (
           <div className="space-y-8">
+            <BoysSchoolDataNotice />
+
             {/* Statistics Cards Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <StudentStatisticsCard
@@ -3923,18 +3929,18 @@ const downloadExcelTemplate = () => {
                 trend={12.3}
               />
               <StudentStatisticsCard
-                title="Male Students"
-                value={demographics.gender?.find(g => g.name === 'Male')?.value || 0}
-                icon={FiUser}
+                title="Boys School Records"
+                value={stats.totalStudents}
+                icon={FiShield}
                 color="from-blue-500 to-blue-700"
                 trend={5.2}
               />
               <StudentStatisticsCard
-                title="Female Students"
-                value={demographics.gender?.find(g => g.name === 'Female')?.value || 0}
-                icon={FiUser}
-                color="from-pink-500 to-pink-700"
-                trend={7.8}
+                title="Gender Analytics"
+                value="Ignored"
+                icon={FiInfo}
+                color="from-orange-500 to-orange-700"
+                trend={0}
               />
             </div>
             
@@ -3955,10 +3961,10 @@ const downloadExcelTemplate = () => {
                 height={400}
               />
               <StudentsChart
-                data={demographics.gender}
+                data={demographics.statusDistribution}
                 type="bar"
-                title="Gender Distribution"
-                colors={['#3B82F6', '#EC4899', '#8B5CF6']}
+                title="Status Distribution"
+                colors={['#10B981', '#EF4444', '#8B5CF6', '#F59E0B']}
                 height={400}
               />
             </div>

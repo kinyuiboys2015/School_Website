@@ -53,6 +53,27 @@ const CustomToaster = () => (
   />
 );
 
+const BOYS_SCHOOL_FEES_NOTE =
+  "Kinyui Boys is a boys' school. Fees analytics intentionally ignore gender distribution; any gender values from linked student test data are not used in fee summaries.";
+
+function BoysSchoolFeesNotice() {
+  return (
+    <div className="rounded-2xl border-2 border-orange-200 bg-orange-50 p-5 shadow-sm">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-700">
+          <FiShield className="text-xl" />
+        </div>
+        <div>
+          <h3 className="text-base font-black text-orange-950">Boys School Fees Context</h3>
+          <p className="mt-1 text-sm font-semibold leading-6 text-orange-900">
+            {BOYS_SCHOOL_FEES_NOTE}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Loading Spinner
 function ModernLoadingSpinner({ message = "Loading fee data...", size = "medium" }) {
   const sizes = {
@@ -2888,8 +2909,8 @@ if (loading && view === 'fees' && schoolFees.length === 0) {
         {/* Dashboard View */}
   {view === 'dashboard' && (
   <div className="space-y-8">
-    {/* Statistics Cards */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+	    {/* Statistics Cards */}
+	    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <StatisticsCard 
         title="Total Fees Amount" 
         value={stats.totalAmount} 
@@ -2924,11 +2945,13 @@ if (loading && view === 'fees' && schoolFees.length === 0) {
         color="from-purple-500 to-purple-700" 
         trend={stats.trends?.totalRecords || 0} 
         description="Number of fee records"
-      />
-    </div>
+	      />
+	    </div>
 
-    {/* Additional Stats Row */}
-    {stats.activeRecords !== undefined && (
+	    <BoysSchoolFeesNotice />
+	
+	    {/* Additional Stats Row */}
+	    {stats.activeRecords !== undefined && (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatisticsCard 
           title="Active Records" 
@@ -3082,14 +3105,16 @@ if (loading && view === 'fees' && schoolFees.length === 0) {
         {view === 'upload' && (
           <div className="space-y-8">
             {/* Statistics Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <StatisticsCard title="Total Fees" value={stats.totalRecords} icon={IoCash} color="from-purple-500 to-purple-700" trend={8.5} />
-              <StatisticsCard title="Form 1 Fees" value={chartData.formDistribution.find(f => f.name === 'Form 1')?.value || 0} icon={IoSchool} color="from-blue-500 to-blue-700" trend={5.2} />
-              <StatisticsCard title="Paid Fees" value={chartData.statusDistribution.find(s => s.name === 'paid')?.value || 0} icon={FiCheckCircle} color="from-emerald-500 to-emerald-700" trend={12.3} />
-              <StatisticsCard title="Pending Fees" value={chartData.statusDistribution.find(s => s.name === 'pending')?.value || 0} icon={FiAlertCircle} color="from-red-500 to-red-700" trend={-2.1} />
-            </div>
+	            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+	              <StatisticsCard title="Total Fees" value={stats.totalRecords} icon={IoCash} color="from-purple-500 to-purple-700" trend={8.5} />
+	              <StatisticsCard title="Form 1 Fees" value={chartData.formDistribution.find(f => f.name === 'Form 1')?.value || 0} icon={IoSchool} color="from-blue-500 to-blue-700" trend={5.2} />
+	              <StatisticsCard title="Paid Fees" value={chartData.statusDistribution.find(s => s.name === 'paid')?.value || 0} icon={FiCheckCircle} color="from-emerald-500 to-emerald-700" trend={12.3} />
+	              <StatisticsCard title="Pending Fees" value={chartData.statusDistribution.find(s => s.name === 'pending')?.value || 0} icon={FiAlertCircle} color="from-red-500 to-red-700" trend={-2.1} />
+	            </div>
 
-            <div className="grid lg:grid-cols-3 gap-8">
+	            <BoysSchoolFeesNotice />
+	
+	            <div className="grid lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-8">
                 {/* Upload Strategy Info */}
                 <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl p-6 border-2 border-blue-300">
