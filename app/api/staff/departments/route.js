@@ -164,12 +164,42 @@ const authenticateWriteRequest = (req) => {
 
 const VALID_CATEGORIES = new Set(["CBC", "EIGHT_FOUR_FOUR", "TEACHING", "SUPPORT"]);
 
+const teacherSelect = {
+  id: true,
+  name: true,
+  role: true,
+  position: true,
+  department: true,
+  departmentId: true,
+  staffType: true,
+  subjectOffered: true,
+  bio: true,
+  gender: true,
+  status: true,
+  image: true,
+  joinDate: true,
+  createdAt: true,
+  updatedAt: true,
+};
+
+const cleanDepartmentResponse = (department) => {
+  if (!department) return department;
+  const teachers = Array.isArray(department.teachers) ? department.teachers : undefined;
+  return {
+    ...department,
+    staffCount: teachers ? teachers.length : department.staffCount,
+    teacherCount: teachers ? teachers.length : department.staffCount,
+    teachers,
+  };
+};
+
 export async function GET(req) {
   try {
     const url = new URL(req.url);
     const category = url.searchParams.get("category");
     const grouped = url.searchParams.get("grouped") === "1";
     const includeInactive = url.searchParams.get("includeInactive") === "1";
+    const includeTeachers = url.searchParams.get("includeTeachers") === "1";
 
     // Only admins can include inactive records
     let adminOk = false;
@@ -213,21 +243,35 @@ export async function GET(req) {
       orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
       include: {
         images: { orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }] },
+        ...(includeTeachers
+          ? {
+              teachers: {
+                where: includeInactive ? undefined : { status: "active" },
+                select: teacherSelect,
+                orderBy: [
+                  { subjectOffered: "asc" },
+                  { name: "asc" },
+                ],
+              },
+            }
+          : {}),
       },
     });
 
+    const cleanedDepartments = departments.map(cleanDepartmentResponse);
+
     if (!grouped) {
-      return NextResponse.json({ success: true, departments });
+      return NextResponse.json({ success: true, departments: cleanedDepartments });
     }
 
-    const departmentsByCategory = departments.reduce((acc, dept) => {
+    const departmentsByCategory = cleanedDepartments.reduce((acc, dept) => {
       const key = dept.category;
       if (!acc[key]) acc[key] = [];
       acc[key].push(dept);
       return acc;
     }, {});
 
-    return NextResponse.json({ success: true, departmentsByCategory, departments });
+    return NextResponse.json({ success: true, departmentsByCategory, departments: cleanedDepartments });
   } catch (error) {
     console.error("❌ GET Departments Error:", error);
     return NextResponse.json(

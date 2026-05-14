@@ -61,6 +61,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaFacebookF, FaTwitter, FaWhatsapp, FaTelegram, FaEnvelope } from 'react-icons/fa';
 import Head from 'next/head';
+import {
+  DEFAULT_ACHIEVEMENT_TITLE_ORDER,
+  getDefaultAchievements,
+} from '../../data/defaultAchievements';
 
 // ==================== MODERN MODAL (Glass Morphism) ====================
 const ModernModal = ({ children, open, onClose, maxWidth = '800px', blur = true }) => {
@@ -751,11 +755,32 @@ export default function KinyuiAchievements() {
     { icon: FiCalendar, number: new Date().getFullYear().toString(), label: 'Latest', sublabel: 'This year', gradient: 'from-emerald-500 to-green-500' }
   ]);
 
+  const createEmptyAchievementGroups = () => ({
+    Academic: [],
+    Sports: [],
+    Arts: [],
+    Leadership: [],
+    Cultural: [],
+    Debate: [],
+    Other: []
+  });
+
+  const categorizeAchievements = (items = []) => {
+    const categorized = createEmptyAchievementGroups();
+
+    items.forEach((achievement) => {
+      const category = categorized[achievement.category] ? achievement.category : 'Other';
+      categorized[category].push(achievement);
+    });
+
+    return categorized;
+  };
+
   const loadData = async () => {
     try {
       const achRes = await fetch('/api/achievements');
       const achData = await achRes.json();
-      let categorized = { Academic: [], Sports: [], Arts: [], Leadership: [], Cultural: [], Debate: [], Other: [] };
+      let categorized = createEmptyAchievementGroups();
       if (achData.success && achData.achievements) {
         Object.entries(achData.achievements).forEach(([cat, items]) => {
           if (categorized.hasOwnProperty(cat)) {
@@ -763,6 +788,11 @@ export default function KinyuiAchievements() {
           }
         });
       }
+
+      if (Object.values(categorized).flat().length === 0) {
+        categorized = categorizeAchievements(getDefaultAchievements());
+      }
+
       setAchievementsByCategory(categorized);
 
       const allAchievements = Object.values(categorized).flat();
@@ -783,7 +813,19 @@ export default function KinyuiAchievements() {
       }
     } catch (error) {
       console.error('Error loading data:', error);
-      toast.error('Failed to load achievements');
+      const fallback = categorizeAchievements(getDefaultAchievements());
+      setAchievementsByCategory(fallback);
+      const fallbackAchievements = Object.values(fallback).flat();
+      const fallbackCategories = Object.keys(fallback).filter(cat => fallback[cat].length > 0);
+      const fallbackFeatured = fallbackAchievements.filter(a => a.featured).length;
+
+      setStats([
+        { icon: IoMedalOutline, number: fallbackAchievements.length.toString(), label: 'Total Awards', sublabel: 'Default Achievements', gradient: 'from-blue-500 to-cyan-500' },
+        { icon: IoTrophyOutline, number: fallbackFeatured.toString(), label: 'Featured', sublabel: 'Kinyui Milestones', gradient: 'from-amber-500 to-orange-500' },
+        { icon: FiUsers, number: fallbackCategories.length.toString(), label: 'Categories', sublabel: 'Achievement Types', gradient: 'from-purple-500 to-pink-500' },
+        { icon: FiCalendar, number: new Date().getFullYear().toString(), label: 'Latest', sublabel: 'This year', gradient: 'from-emerald-500 to-green-500' }
+      ]);
+      toast.error('Using default Kinyui achievements');
     } finally {
       setLoading(false);
     }
@@ -831,6 +873,13 @@ export default function KinyuiAchievements() {
       return matchesCat && matchesYear && matchesSearch;
     });
     filtered.sort((a, b) => {
+      const priorityDiff =
+        (DEFAULT_ACHIEVEMENT_TITLE_ORDER[a.title] || 999) -
+        (DEFAULT_ACHIEVEMENT_TITLE_ORDER[b.title] || 999);
+      if (priorityDiff !== 0) return priorityDiff;
+      if ((a.displayOrder ?? 999) !== (b.displayOrder ?? 999)) {
+        return (a.displayOrder ?? 999) - (b.displayOrder ?? 999);
+      }
       if (a.featured && !b.featured) return -1;
       if (!a.featured && b.featured) return 1;
       return new Date(b.date) - new Date(a.date);

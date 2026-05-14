@@ -54,6 +54,7 @@ const MAIN_NAVIGATION = [
   { name: 'Home', href: '/', icon: FiHome, color: 'amber' },
   { name: 'About Us', href: '/pages/AboutUs', icon: FiUsers, color: 'blue' },
   { name: 'Admissions', href: '/pages/admissions', icon: FiUserCheck, color: 'purple' },
+  { name: 'School Hub', href: '/pages/school-hub', icon: FiGrid, color: 'cyan' },
   { name: 'Academics', href: '/pages/StudentPortal', icon: FiBook, color: 'amber' },
   { name: 'Student Life', href: '/pages/eventsandnews', icon: FiHeart, color: 'rose' },
   { name: 'News & Events', href: '/pages/eventsandnews', icon: FiCalendar, color: 'cyan' },
@@ -62,6 +63,7 @@ const MAIN_NAVIGATION = [
 // Quick Resources
 const QUICK_RESOURCES = [
   { name: 'Student Portal', href: '/pages/StudentPortal', icon: FiBookOpen, badge: 'Login' },
+  { name: 'School Hub', href: '/pages/school-hub', icon: FiGrid, badge: 'Life' },
   { name: 'Staff Directory', href: '/pages/staff', icon: FiUsers, badge: 'Contact' },
   { name: 'Fees Structure', href: '/pages/fees', icon: FiCompass, badge: '2025' },
   { name: 'School Calendar', href: '/pages/eventsandnews', icon: FiCalendar },
@@ -73,6 +75,8 @@ const SUPPORT_LINKS = [
   { name: 'Guidance & Counselling', href: '/pages/Guidance-and-Counselling', icon: FiHelpCircle },
   { name: 'School Policies', href: '/pages/OurSchoolPolicies', icon: FiShield },
   { name: 'Career Services', href: '/pages/careers', icon: FiBriefcase },
+  { name: 'Clubs & Societies', href: '/pages/school-hub/clubs', icon: FiUsers },
+  { name: 'Departments Hub', href: '/pages/school-hub/departments', icon: FiBookOpen },
   { name: 'Gallery', href: '/pages/gallery', icon: FiImage },
   { name: 'Contact Us', href: '/pages/contact', icon: FiMail },
 ];
@@ -302,7 +306,7 @@ const SocialLinksGroup = () => (
   </div>
 );
 
-// NEWSLETTER SECTION - REPLACED WITH MATUNGULU GIRLS STYLE
+// NEWSLETTER SECTION
 const NewsletterSection = ({ email, setEmail, isSubmitting, showSuccess, errorMsg, handleSubscribe }) => (
   <div className="bg-gradient-to-r from-amber-900/50 to-rose-900/50 rounded-2xl shadow-xl p-6 md:p-8 border border-amber-500/20">
     <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-12">
@@ -595,7 +599,7 @@ export default function ModernFooter() {
                 </div>
               </div>
               
-              {/* Newsletter Bar - REPLACED WITH MATUNGULU GIRLS STYLE */}
+              {/* Newsletter Bar */}
               <div className="mt-10">
                 <NewsletterSection 
                   email={email}

@@ -55,6 +55,7 @@ import Fees from "../components/fees/page";
 import SchoolDocs from "../components/schooldocuments/page";
 import SMSManager from "../components/sms/page";
 import AchievementsManager from "../components/Achievements/page";
+import SchoolHubManager from "../components/schoolhub/page";
 
 
 export default function AdminDashboard() {
@@ -776,6 +777,9 @@ const ModernLoadingScreen = () => {
       const activeAssignments = assignments.assignments?.filter(a => a.status === 'assigned').length || 0;
       const admissionsData = admissions.applications || [];
       const pendingApps = admissionsData.filter(app => app.status === 'PENDING').length || 0;
+      const achievementsCount = Array.isArray(achievements.allAchievements)
+        ? achievements.allAchievements.length
+        : Object.values(achievements.achievements || {}).flat().length;
 
       setRealStats({
         totalStaff: staff.staff?.length || 0,
@@ -793,7 +797,7 @@ const ModernLoadingScreen = () => {
         totalStudent: student.students?.length || 0,
         totalFees: fees.feebalances?.length || 0,
         schooldocuments: schoolDocs.documents?.length || 0,
-        achievements: achievements.achievements?.length || 0
+        achievements: achievementsCount
       });
 
     } catch (error) {
@@ -1130,6 +1134,8 @@ const handleLogout = () => {
         return <SchoolInfoTab />;
       case 'schooldocuments':
         return <SchoolDocs />;
+      case 'schoolhub':
+        return <SchoolHubManager />;
       case 'guidance-counseling':
         return <GuidanceCounselingTab />;
       case 'staff':
@@ -1192,6 +1198,12 @@ const handleLogout = () => {
       label: 'School Documents',
       icon: FiArchive, 
       badge: 'indigo'
+    },
+    {
+      id: 'schoolhub',
+      label: 'School Hub',
+      icon: IoSchoolOutline,
+      badge: 'cyan'
     },
     { 
       id: 'staff', 

@@ -163,22 +163,68 @@ const authenticateWriteRequest = (req) => {
 
 const VALID_CATEGORIES = new Set(["CBC", "EIGHT_FOUR_FOUR", "TEACHING", "SUPPORT"]);
 
-export async function GET(_req, { params }) {
+const teacherSelect = {
+  id: true,
+  name: true,
+  role: true,
+  position: true,
+  department: true,
+  departmentId: true,
+  staffType: true,
+  subjectOffered: true,
+  bio: true,
+  gender: true,
+  status: true,
+  image: true,
+  joinDate: true,
+  createdAt: true,
+  updatedAt: true,
+};
+
+const cleanDepartmentResponse = (department) => {
+  if (!department) return department;
+  const teachers = Array.isArray(department.teachers) ? department.teachers : undefined;
+  return {
+    ...department,
+    staffCount: teachers ? teachers.length : department.staffCount,
+    teacherCount: teachers ? teachers.length : department.staffCount,
+    teachers,
+  };
+};
+
+export async function GET(req, { params }) {
   try {
     const id = Number(params.id);
     if (!Number.isFinite(id)) {
       return NextResponse.json({ success: false, error: "Invalid id" }, { status: 400 });
     }
+    const url = new URL(req.url);
+    const includeTeachers = url.searchParams.get("includeTeachers") === "1";
+    const includeInactive = url.searchParams.get("includeInactive") === "1";
 
     const department = await prisma.staffDepartment.findUnique({
       where: { id },
-      include: { images: { orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }] } },
+      include: {
+        images: { orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }] },
+        ...(includeTeachers
+          ? {
+              teachers: {
+                where: includeInactive ? undefined : { status: "active" },
+                select: teacherSelect,
+                orderBy: [
+                  { subjectOffered: "asc" },
+                  { name: "asc" },
+                ],
+              },
+            }
+          : {}),
+      },
     });
     if (!department) {
       return NextResponse.json({ success: false, error: "Department not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, department });
+    return NextResponse.json({ success: true, department: cleanDepartmentResponse(department) });
   } catch (error) {
     console.error("❌ GET Department Error:", error);
     return NextResponse.json(

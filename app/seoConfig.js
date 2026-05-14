@@ -53,6 +53,60 @@ export const publicSitePages = [
       "Meet the teaching staff, departments, administration, and support teams serving students at S.A. Kinyui Boys Senior School.",
   },
   {
+    path: "/pages/school-hub",
+    title: "School Hub",
+    description:
+      "Explore Kinyui Boys Senior School clubs, societies, student council, boarding life, ICT, farm, security, and departments.",
+  },
+  {
+    path: "/pages/school-hub/clubs",
+    title: "Clubs",
+    description:
+      "Explore student clubs and co-curricular groups at Kinyui Boys Senior School.",
+  },
+  {
+    path: "/pages/school-hub/societies",
+    title: "Societies",
+    description:
+      "Explore academic societies and student groups at Kinyui Boys Senior School.",
+  },
+  {
+    path: "/pages/school-hub/student-council",
+    title: "Student Council",
+    description:
+      "Explore student leadership, governance, and learner voice at Kinyui Boys Senior School.",
+  },
+  {
+    path: "/pages/school-hub/computer-lab",
+    title: "Computer Lab",
+    description:
+      "Explore ICT and computer lab facilities at Kinyui Boys Senior School.",
+  },
+  {
+    path: "/pages/school-hub/farm",
+    title: "School Farm",
+    description:
+      "Explore agriculture, conservation, and practical farm learning at Kinyui Boys Senior School.",
+  },
+  {
+    path: "/pages/school-hub/boarding",
+    title: "Boarding",
+    description:
+      "Explore boarding life, student welfare, and residential support at Kinyui Boys Senior School.",
+  },
+  {
+    path: "/pages/school-hub/security",
+    title: "Security",
+    description:
+      "Explore campus safety and security services at Kinyui Boys Senior School.",
+  },
+  {
+    path: "/pages/school-hub/departments",
+    title: "Departments Hub",
+    description:
+      "Explore academic and support departments at Kinyui Boys Senior School.",
+  },
+  {
     path: "/pages/StudentPortal",
     title: "Student Portal",
     description:

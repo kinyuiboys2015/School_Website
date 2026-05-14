@@ -42,6 +42,10 @@ import {
   IoAtomOutline,
 } from "react-icons/io5";
 import { HiOutlineSparkles, HiArrowSmallRight } from "react-icons/hi2";
+import {
+  DEFAULT_ACHIEVEMENT_TITLE_ORDER,
+  getDefaultAchievements,
+} from "../../data/defaultAchievements";
 
 const DEFAULT_SUBJECTS = [
   "Mathematics",
@@ -268,96 +272,32 @@ const ModernSchoolLayout = () => {
     fetchAchievementsAndStats();
   }, []);
 
-  // Helper function to get achievements (API data or fallback)
-  const achievements = [
-    {
-      year: "2026",
-      title: "National Recognition",
-      shortDescription:
-        "Recognized for excellence in learning outcomes and student support.",
-      description: `In April 2026, ${schoolName} was recognized for sustained improvement across academics, co-curricular performance, and student support systems. The recognition followed a comprehensive review of learning outcomes, infrastructure, and leadership structures—marking a new chapter in our journey toward excellence.`,
-      impact: "Higher standards, stronger partnerships, broader opportunities",
-      stats: "Recognition | April 2026",
-      icon: <FiAward className="w-5 h-5" />,
-      image: "/hero/env.jpeg",
-      highlights: [
-        "Comprehensive review of outcomes and systems",
-        "Improved learning resources and support programs",
-        "Stronger partnerships and community engagement",
-        "A new chapter focused on excellence and impact",
-      ],
-    },
-    {
-      year: "2025",
-      title: "Record Academic Performance",
-      shortDescription:
-        "Strong results and improved university and career readiness outcomes.",
-      description: `The 2025 results reflected steady growth in performance, consistency, and learner confidence. Through structured revision, mentoring, and targeted support, ${schoolName} strengthened outcomes across the grade distribution and improved transitions to the next level.`,
-      impact: "Improved results, stronger consistency, better transitions",
-      stats: "Academic Milestone | 2025",
-      icon: <FiTrendingUp className="w-5 h-5" />,
-      image: "/academics.jpg",
-      highlights: [
-        "Structured revision and mentorship programs",
-        "Improved performance consistency across subjects",
-        "Stronger learner confidence and exam readiness",
-        "Better transitions to the next level",
-      ],
-    },
-    {
-      year: "2025",
-      title: "Top County Ranking",
-      shortDescription:
-        "Recognized among the top-performing public schools in the county.",
-      description: `Beyond individual performance, ${schoolName} was recognized among leading public schools based on learning outcomes, consistency, retention, and co-curricular achievement. The recognition affirmed our commitment to high standards and continuous improvement.`,
-      impact: "Higher visibility, stronger confidence, community trust",
-      stats: "County Ranking | 2025",
-      icon: <FiStar className="w-5 h-5" />,
-      image: "/view.jpg",
-      highlights: [
-        "Recognition for consistent learning outcomes",
-        "Strong student retention and wellbeing support",
-        "Balanced performance in academics and activities",
-        "Increased community trust and applications",
-      ],
-    },
-    {
-      year: "2024",
-      title: "Most Improved School",
-      shortDescription:
-        "Recognized for measurable improvement in outcomes and systems.",
-      description:
-        "A sustained improvement journey led to recognition for measurable gains in learning outcomes, student support systems, and school‑wide culture. Strategic interventions and strong home–school collaboration helped accelerate progress.",
-      impact: "Demonstrated growth, stronger systems, higher confidence",
-      stats: "Improvement Award | 2024",
-      icon: <FiTrendingUp className="w-5 h-5" />,
-      image: "/cumpus.jpg",
-      highlights: [
-        "Measurable gains over multiple years",
-        "Stronger support programs and learning routines",
-        "Improved infrastructure and learning resources",
-        "Enhanced community engagement",
-      ],
-    },
-    {
-      year: "2024",
-      title: "National Science Fair",
-      shortDescription: "Awarded for innovation and problem-solving in STEM.",
-      description:
-        "Students delivered an award-winning innovation project that showcased practical problem-solving and teamwork. The experience strengthened research skills, presentation confidence, and real-world application of STEM learning.",
-      impact: "Innovation culture, stronger STEM visibility, mentorship wins",
-      stats: "STEM Innovation | 2024",
-      icon: <FiAward className="w-5 h-5" />,
-      image: "/hero/env.jpeg",
-      highlights: [
-        "Award-winning innovation project",
-        "Strong mentorship and teamwork",
-        "Improved research and presentation skills",
-        "Real-world application of STEM learning",
-      ],
-    },
-  ];
+  const getCategoryIcon = (category) => {
+    const icons = {
+      Academic: <FiAward className="w-5 h-5" />,
+      Sports: <FiAward className="w-5 h-5" />,
+      Arts: <FiAward className="w-5 h-5" />,
+      Leadership: <FiStar className="w-5 h-5" />,
+      Other: <FiAward className="w-5 h-5" />,
+    };
+    return icons[category] || <FiAward className="w-5 h-5" />;
+  };
 
+  const defaultMilestones = getDefaultAchievements().map((achievement) => ({
+    ...achievement,
+    year: achievement.year?.toString() || "",
+    shortDescription: achievement.description || "",
+    impact: achievement.awardingBody || "Achievement",
+    stats: `${achievement.category} | ${achievement.year}`,
+    icon: getCategoryIcon(achievement.category),
+    image: achievement.images?.[0]?.url || "/hero/env.jpeg",
+    highlights: achievement.recipients || [],
+  }));
+
+  const getAchievementPriority = (achievement) =>
+    DEFAULT_ACHIEVEMENT_TITLE_ORDER[achievement.title] || 999;
+
+  // Helper function to get achievements (API data or fallback)
   const getAchievements = () => {
     if (achievementsData?.achievements) {
       const allAchievements = [];
@@ -368,17 +308,22 @@ const ModernSchoolLayout = () => {
           totalCount += grouped[category].length;
         }
       });
-      if (totalCount < 1) return achievements;
+      if (totalCount < 1) return defaultMilestones;
 
       Object.keys(grouped).forEach((category) => {
         if (Array.isArray(grouped[category])) {
           grouped[category].forEach((achievement) => {
+            const fallback = defaultMilestones.find(
+              (item) => item.title === achievement.title
+            );
             allAchievements.push({
               ...achievement,
               year: achievement.year?.toString() || "",
               title: achievement.title || "",
               shortDescription:
-                achievement.description?.substring(0, 100) + "..." || "",
+                achievement.description
+                  ? `${achievement.description.substring(0, 120)}...`
+                  : "",
               description: achievement.description || "",
               impact: achievement.awardingBody || "Achievement",
               stats: `${achievement.category} | ${achievement.year}`,
@@ -386,29 +331,27 @@ const ModernSchoolLayout = () => {
               image:
                 achievement.images && achievement.images.length > 0
                   ? achievement.images[0].url
-                  : "/hero/env.jpeg",
+                  : fallback?.image || "/hero/env.jpeg",
               highlights: achievement.recipients || [],
             });
           });
         }
       });
       const sorted = allAchievements
-        .sort((a, b) => (b.year || 0) - (a.year || 0))
+        .sort((a, b) => {
+          const priorityDiff = getAchievementPriority(a) - getAchievementPriority(b);
+          if (priorityDiff !== 0) return priorityDiff;
+          if ((a.displayOrder ?? 999) !== (b.displayOrder ?? 999)) {
+            return (a.displayOrder ?? 999) - (b.displayOrder ?? 999);
+          }
+          if (a.featured && !b.featured) return -1;
+          if (!a.featured && b.featured) return 1;
+          return (parseInt(b.year, 10) || 0) - (parseInt(a.year, 10) || 0);
+        })
         .slice(0, 4);
-      return sorted.length > 0 ? sorted : achievements;
+      return sorted.length > 0 ? sorted : defaultMilestones;
     }
-    return achievements.slice(0, 4);
-  };
-
-  const getCategoryIcon = (category) => {
-    const icons = {
-      Academic: <FiAward className="w-5 h-5" />,
-      Sports: <FiAward className="w-5 h-5" />,
-      Arts: <FiAward className="w-5 h-5" />,
-      Leadership: <FiStar className="w-5 h-5" />,
-      Other: <FiAward className="w-5 h-5" />,
-    };
-    return icons[category] || <FiAward className="w-5 h-5" />;
+    return defaultMilestones.slice(0, 4);
   };
 
   const getSchoolStats = () => {
@@ -1687,7 +1630,7 @@ const ModernSchoolLayout = () => {
           Recent wins, visible progress, and moments worth remembering.
         </h2>
         <p className="mt-4 text-sm sm:text-base font-medium leading-relaxed text-white/60">
-          A cleaner record of academic, co-curricular, and institutional achievements from the live achievements API, with defaults when records are still being published.
+          Four official Kinyui milestones from music, science, national sport, and conservation clubs, synced from the live achievements API.
         </p>
       </div>
 
@@ -1705,7 +1648,7 @@ const ModernSchoolLayout = () => {
       </div>
     ) : (
       (() => {
-        const milestoneItems = getAchievements().slice(0, 5);
+        const milestoneItems = getAchievements().slice(0, 4);
         const [featuredItem, ...supportItems] = milestoneItems;
 
         if (!featuredItem) return null;

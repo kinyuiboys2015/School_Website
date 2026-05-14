@@ -261,6 +261,60 @@ const sanitizePublicStaff = (staff) => {
   return publicStaff;
 };
 
+const isTeacherStaff = (role = "", staffType = "") => {
+  const normalizedRole = role?.toString().trim().toLowerCase();
+  const normalizedType = staffType?.toString().trim().toLowerCase();
+  return normalizedRole === "teacher" || normalizedType === "teacher";
+};
+
+const resolveDepartmentMapping = async (departmentId, departmentName = "") => {
+  const numericDepartmentId =
+    departmentId !== null && departmentId !== undefined && departmentId !== ""
+      ? Number(departmentId)
+      : null;
+
+  if (numericDepartmentId !== null) {
+    if (!Number.isFinite(numericDepartmentId)) {
+      throw new Error("Invalid department selected.");
+    }
+
+    const department = await prisma.staffDepartment.findFirst({
+      where: { id: Math.floor(numericDepartmentId), isActive: true },
+      select: { id: true, name: true },
+    });
+
+    if (!department) {
+      throw new Error("Selected department was not found or is inactive.");
+    }
+
+    return department;
+  }
+
+  const cleanDepartmentName = departmentName?.toString().trim();
+  if (!cleanDepartmentName) return null;
+
+  const department = await prisma.staffDepartment.findFirst({
+    where: { name: cleanDepartmentName, isActive: true },
+    select: { id: true, name: true },
+  });
+
+  return department || { id: null, name: cleanDepartmentName };
+};
+
+const syncDepartmentStaffCount = async (departmentId) => {
+  if (!departmentId) return;
+  const staffCount = await prisma.staff.count({
+    where: {
+      departmentId,
+      role: "Teacher",
+    },
+  });
+  await prisma.staffDepartment.update({
+    where: { id: departmentId },
+    data: { staffCount },
+  });
+};
+
 // 🔹 Check principal/deputy principal limits
 async function checkRoleLimits(role, staffId = null, position = null) {
   if (role === "Principal") {
@@ -341,6 +395,11 @@ export async function GET(req, { params }) {
 
     const staff = await prisma.staff.findUnique({
       where: { id: Number(params.id) },
+      include: {
+        departmentGroup: {
+          select: { id: true, name: true, category: true },
+        },
+      },
     });
 
     if (!staff) {
@@ -401,11 +460,17 @@ export async function PUT(req, { params }) {
     // Check if role or position is being changed
     const newRole = formData.get("role");
     const newPosition = formData.get("position");
+    const newStaffType = formData.get("staffType");
+    const newDepartmentId = formData.get("departmentId");
+    const newDepartment = formData.get("department");
+    const newSubjectOffered = formData.get("subjectOffered");
+    const effectiveStaffType = newStaffType || existingStaff.staffType;
+    const isTeacher = isTeacherStaff(newRole || existingStaff.role, effectiveStaffType);
 
     // 🔹 Restrict updates to leadership profiles only
     const effectiveRole = newRole || existingStaff.role;
     const effectivePosition = newPosition || existingStaff.position;
-    if ((newRole || newPosition) && !isAllowedLeadershipRole(effectiveRole, effectivePosition)) {
+    if ((newRole || newPosition || newStaffType) && !isTeacher && !isAllowedLeadershipRole(effectiveRole, effectivePosition)) {
       return NextResponse.json(
         {
           success: false,
@@ -415,9 +480,56 @@ export async function PUT(req, { params }) {
         { status: 400 }
       );
     }
+
+    let mappedDepartment = null;
+    if (
+      formData.has("departmentId") ||
+      formData.has("department") ||
+      isTeacher ||
+      existingStaff.departmentId
+    ) {
+      try {
+        mappedDepartment = await resolveDepartmentMapping(
+          formData.has("departmentId") ? newDepartmentId : existingStaff.departmentId,
+          formData.has("department") ? newDepartment : existingStaff.department
+        );
+      } catch (error) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: error.message,
+            authenticated: true,
+          },
+          { status: 400 }
+        );
+      }
+    }
+
+    if (isTeacher && !mappedDepartment?.id) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Teacher records must be linked to an existing active department.",
+          authenticated: true,
+        },
+        { status: 400 }
+      );
+    }
+
+    const effectiveSubject = newSubjectOffered ?? existingStaff.subjectOffered;
+    if (isTeacher && !effectiveSubject?.toString().trim()) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Subject offered is required for teacher records.",
+          authenticated: true,
+        },
+        { status: 400 }
+      );
+    }
     
     // Validate Deputy Principal has position when role is Deputy Principal
-    if (newRole === "Deputy Principal" && !newPosition) {
+    if (!isTeacher && newRole === "Deputy Principal" && !newPosition) {
       return NextResponse.json(
         { 
           success: false, 
@@ -429,7 +541,7 @@ export async function PUT(req, { params }) {
     }
 
     // Enforce Deputy Principal type (Academics/Admin)
-    if (newRole === "Deputy Principal" && newPosition && !DEPUTY_POSITIONS.has(newPosition)) {
+    if (!isTeacher && newRole === "Deputy Principal" && newPosition && !DEPUTY_POSITIONS.has(newPosition)) {
       return NextResponse.json(
         {
           success: false,
@@ -442,7 +554,7 @@ export async function PUT(req, { params }) {
     }
 
     // If role isn't provided but we're updating a Deputy Principal, still validate the position
-    if (!newRole && existingStaff.role === "Deputy Principal" && newPosition && !DEPUTY_POSITIONS.has(newPosition)) {
+    if (!isTeacher && !newRole && existingStaff.role === "Deputy Principal" && newPosition && !DEPUTY_POSITIONS.has(newPosition)) {
       return NextResponse.json(
         {
           success: false,
@@ -455,7 +567,7 @@ export async function PUT(req, { params }) {
     }
 
     // Check role limits if role is being changed OR if position is being updated for Deputy Principal
-    if (newRole && newRole !== existingStaff.role) {
+    if (!isTeacher && newRole && newRole !== existingStaff.role) {
       try {
         await checkRoleLimits(newRole, id, newPosition);
       } catch (error) {
@@ -470,7 +582,7 @@ export async function PUT(req, { params }) {
       }
     } 
     // Special case: Updating Deputy Principal position (e.g., from Academics to Administration)
-    else if (existingStaff.role === "Deputy Principal" && 
+    else if (!isTeacher && existingStaff.role === "Deputy Principal" && 
              newPosition && 
              newPosition !== existingStaff.position) {
       
@@ -512,6 +624,14 @@ export async function PUT(req, { params }) {
     if (formData.get("role")) data.role = formData.get("role");
     if (formData.get("position")) data.position = formData.get("position");
     if (formData.get("department")) data.department = formData.get("department");
+    if (formData.has("staffType")) data.staffType = isTeacher ? "Teacher" : (newStaffType || "Leadership");
+    if (formData.has("subjectOffered")) data.subjectOffered = isTeacher ? newSubjectOffered?.toString().trim() || null : null;
+    if (mappedDepartment) {
+      data.departmentId = mappedDepartment.id || null;
+      data.department = mappedDepartment.name || data.department || null;
+    } else if (!isTeacher && formData.has("departmentId") && !newDepartmentId) {
+      data.departmentId = null;
+    }
     if (formData.get("email")) data.email = formData.get("email");
     if (formData.get("phone")) data.phone = formData.get("phone");
     if (formData.get("bio")) data.bio = formData.get("bio");
@@ -607,6 +727,13 @@ export async function PUT(req, { params }) {
       data,
     });
 
+    const departmentsToSync = new Set(
+      [existingStaff.departmentId, updatedStaff.departmentId].filter(Boolean)
+    );
+    for (const departmentId of departmentsToSync) {
+      await syncDepartmentStaffCount(departmentId);
+    }
+
     console.log(`✅ Staff member updated by ${auth.user.name}: ${updatedStaff.name} (${updatedStaff.role}${updatedStaff.position ? ' - ' + updatedStaff.position : ''})`);
 
     return NextResponse.json({ 
@@ -691,6 +818,10 @@ export async function DELETE(req, { params }) {
     await prisma.staff.delete({
       where: { id },
     });
+
+    if (staff.departmentId) {
+      await syncDepartmentStaffCount(staff.departmentId);
+    }
 
     console.log(`✅ Staff member deleted by ${auth.user.name}: ${staff.name}`);
 

@@ -205,6 +205,9 @@ model Staff {
   role             String
   position         String?
   department       String?
+  departmentId     Int?
+  staffType        String?  @default("Leadership") @db.VarChar(50)
+  subjectOffered   String?  @db.VarChar(255)
   education        String?  @db.Text
   experience       String?  @db.Text
   email            String?
@@ -220,6 +223,11 @@ model Staff {
   image            String?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  departmentGroup  StaffDepartment? @relation("DepartmentTeachers", fields: [departmentId], references: [id], onDelete: SetNull)
+
+  @@index([departmentId])
+  @@index([role])
+  @@index([status])
 }
 
 model StaffDepartment {
@@ -235,6 +243,7 @@ model StaffDepartment {
   displayOrder      Int                    @default(0)
   isActive          Boolean                @default(true)
   images            StaffDepartmentImage[]
+  teachers          Staff[]                @relation("DepartmentTeachers")
   createdAt         DateTime               @default(now())
   updatedAt         DateTime               @updatedAt
 
@@ -259,6 +268,50 @@ model StaffDepartmentImage {
   @@index([staffDepartmentId])
   @@index([displayOrder])
   @@map("staff_department_images")
+}
+
+model SchoolHubItem {
+  id               Int              @id @default(autoincrement())
+  type             String           @db.VarChar(50)
+  title            String           @db.VarChar(255)
+  shortDescription String?          @db.Text
+  description      String?          @db.Text
+  contactName      String?          @db.VarChar(255)
+  contactPhone     String?          @db.VarChar(80)
+  contactEmail     String?          @db.VarChar(255)
+  displayOrder     Int              @default(0)
+  isActive         Boolean          @default(true)
+  image            String?          @db.Text
+  details          Json             @default("[]")
+  location         String?          @db.VarChar(255)
+  established      String?          @db.VarChar(100)
+  website          String?          @db.VarChar(255)
+  socialMedia      Json             @default("{}")
+  images           SchoolHubImage[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@index([type])
+  @@index([isActive])
+  @@index([displayOrder])
+  @@map("school_hub_items")
+}
+
+model SchoolHubImage {
+  id              Int           @id @default(autoincrement())
+  schoolHubItemId Int
+  url             String        @db.Text
+  publicId        String?       @db.VarChar(255)
+  altText         String?       @db.VarChar(255)
+  caption         String?       @db.Text
+  displayOrder    Int           @default(0)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  item            SchoolHubItem @relation(fields: [schoolHubItemId], references: [id], onDelete: Cascade)
+
+  @@index([schoolHubItemId])
+  @@index([displayOrder])
+  @@map("school_hub_images")
 }
 
 model EmailCampaign {

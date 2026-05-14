@@ -94,6 +94,11 @@ export default function ModernNavbar() {
       href: '/pages/AboutUs',
       icon: FiInfo
     },
+    {
+      name: 'School Hub',
+      href: '/pages/school-hub',
+      icon: FiGrid
+    },
     { 
       name: 'Academics', 
       href: '#academics',
@@ -160,11 +165,17 @@ export default function ModernNavbar() {
       icon: FiAward,
       description: 'Celebrating our students\' successes & milestones'
     },
+    {
+      name: 'Clubs & Societies',
+      href: '/pages/school-hub/clubs',
+      icon: FiGrid,
+      description: 'Explore student clubs, societies & leadership'
+    },
       {
       name: 'Our Alumni page',
       href: 'https://www.facebook.com/KinyuiBoysHighSchool/',
       icon: FiHeart,
-      description: 'Connect with fellow alumnae'
+      description: 'Connect with fellow alumni'
     }
 
   ];
@@ -184,6 +195,12 @@ export default function ModernNavbar() {
       description: 'Find staff contacts & departments'
     },
     {
+      name: 'School Hub',
+      href: '/pages/school-hub',
+      icon: FiGrid,
+      description: 'Clubs, boarding, ICT, farm, security & departments'
+    },
+    {
       name: 'Sign In',
       href: '/pages/Sign In',
       icon: FiLock,
@@ -198,6 +215,11 @@ export default function ModernNavbar() {
       name: 'Student Portal',
       href: '/pages/StudentPortal',
       icon: FiFileText
+    },
+    {
+      name: 'School Hub',
+      href: '/pages/school-hub',
+      icon: FiGrid
     },
     {
       name: 'Help Center',

@@ -762,12 +762,9 @@ function ModernSchoolModal({ onClose, onSave, school, loading: parentLoading }) 
     description: school?.description || '',
     motto: school?.motto || '',
     vision: school?.vision || '',
-
-   magazineTitle: school?.Magazine?.title || '',
-  magazineYear: school?.Magazine?.year?.toString() || '',
-  magazineDescription: school?.Magazine?.description || '',
-  // ...existing
-
+    magazineTitle: school?.magazine?.title || school?.Magazine?.title || '',
+    magazineYear: (school?.magazine?.year || school?.Magazine?.year)?.toString() || '',
+    magazineDescription: school?.magazine?.description || school?.Magazine?.description || '',
     mission: school?.mission || '',
     studentCount: school?.studentCount?.toString() || '',
     staffCount: school?.staffCount?.toString() || '',
@@ -797,17 +794,17 @@ function ModernSchoolModal({ onClose, onSave, school, loading: parentLoading }) 
   const [videoFile, setVideoFile] = useState(null);
   const [videoThumbnail, setVideoThumbnail] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
-
   const [magazineFile, setMagazineFile] = useState(null);
-const [magazineThumbnailFile, setMagazineThumbnailFile] = useState(null);
-const [magazinePreview, setMagazinePreview] = useState(null);
+  const [magazineThumbnailFile, setMagazineThumbnailFile] = useState(null);
+  const [magazinePreview, setMagazinePreview] = useState(null);
+  const [removeMagazine, setRemoveMagazine] = useState(false);
+  const existingMagazine = school?.magazine || school?.Magazine || null;
 
   const steps = [
     { id: 'basic', label: 'Basic Info', icon: FaBuilding },
     { id: 'academic', label: 'Academic', icon: FaGraduationCap },
     { id: 'admission', label: 'Admission', icon: FaUserCheck },
-      { id: 'magazine', label: 'Magazine', icon: FaBook }  // Add this
-
+    { id: 'magazine', label: 'Magazine', icon: FaBook }
   ];
 
 
@@ -864,7 +861,7 @@ try {
 } catch (error) {
   // Handle missing tokens
   toast.error(error.message);
-  window.location.href = '/pages/Sign In';
+  window.location.href = '/pages/adminLogin';
 }
 
 
@@ -913,13 +910,16 @@ const handleFormSubmit = async (e) => {
       throw new Error('Authentication required. Please login again.');
     }
 
-        // Magazine fields
-    if (magazineFile) formDataObj.append('magazinePdf', magazineFile);
-    if (magazineThumbnailFile) formDataObj.append('magazineThumbnail', magazineThumbnailFile);
-    formDataObj.append('magazineTitle', formData.magazineTitle || '');
-    formDataObj.append('magazineYear', formData.magazineYear || '');
-    formDataObj.append('magazineDescription', formData.magazineDescription || '');
-        
+    if (removeMagazine) {
+      formDataObj.append('removeMagazine', 'true');
+    } else {
+      if (magazineFile) formDataObj.append('magazinePdf', magazineFile);
+      if (magazineThumbnailFile) formDataObj.append('magazineThumbnail', magazineThumbnailFile);
+      formDataObj.append('magazineTitle', formData.magazineTitle || '');
+      formDataObj.append('magazineYear', formData.magazineYear || '');
+      formDataObj.append('magazineDescription', formData.magazineDescription || '');
+    }
+
     // ✅ DYNAMIC METHOD SELECTION: POST for CREATE, PUT for UPDATE
     const method = isUpdateMode ? 'PUT' : 'POST';
     const endpoint = '/api/school';
@@ -973,7 +973,7 @@ const handleFormSubmit = async (e) => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/Sign In';
+        window.location.href = '/pages/adminLogin';
       }, 1000);
       
     } else {
@@ -1427,118 +1427,140 @@ const handleFormSubmit = async (e) => {
               </div>
             )}
 
-
             {currentStep === 3 && (
-  <div className="space-y-6">
-    <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-200">
-      <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-        <FaBook className="text-amber-900" />
-        School Magazine
-      </h3>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-2">Magazine Title</label>
-          <input
-            type="text"
-            value={formData.magazineTitle || ''}
-            onChange={(e) => handleChange('magazineTitle', e.target.value)}
-            placeholder="e.g., The Pride 2024"
-            className="w-full px-4 py-3 border-2 font-bold text-slate-900 border-gray-200 rounded-xl focus:ring-amber-500 focus:border-amber-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-2">Year</label>
-          <input
-            type="number"
-            value={formData.magazineYear || ''}
-            onChange={(e) => handleChange('magazineYear', e.target.value)}
-            placeholder="2024"
-            className="w-full px-4 py-3 border-2 font-bold text-slate-900 border-gray-200 rounded-xl focus:ring-amber-500 focus:border-amber-500"
-          />
-        </div>
-      </div>
-      
-      <div className="mt-4">
-        <label className="block text-sm font-bold text-gray-700 mb-2">Description</label>
-        <textarea
-          rows="3"
-          value={formData.magazineDescription || ''}
-          onChange={(e) => handleChange('magazineDescription', e.target.value)}
-          placeholder="Brief description of the magazine content..."
-          className="w-full px-4 py-3 border-2 border-gray-100 font-bold text-slate-900 rounded-xl focus:ring-amber-500 focus:border-amber-500"
-        />
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-2">
-            Magazine PDF (max 4.2MB)
-          </label>
-          <input
-            type="file"
-            accept="application/pdf"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                if (file.size > 4.2 * 1024 * 1024) {
-                  toast.error('PDF size exceeds 4.2MB');
-                  return;
-                }
-                setMagazineFile(file);
-              }
-            }}
-            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100"
-          />
-          {school?.magazine?.pdfUrl && !magazineFile && (
-            <div className="mt-2 text-sm">
-              <a href={school.magazine.pdfUrl} target="_blank" rel="noopener noreferrer" className="text-amber-600 underline">Current PDF</a>
-              <button
-                type="button"
-                onClick={() => setMagazineFile(null)}
-                className="ml-3 text-red-900 text-sm"
-              >Remove</button>
-            </div>
-          )}
-        </div>
-        
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-2">
-            Thumbnail (PNG/JPEG/JPG, max 2MB)
-          </label>
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/jpg"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                if (file.size > 2 * 1024 * 1024) {
-                  toast.error('Thumbnail size ≤ 2MB');
-                  return;
-                }
-                setMagazineThumbnailFile(file);
-                setMagazinePreview(URL.createObjectURL(file));
-              }
-            }}
-            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100"
-          />
-          {(magazinePreview || school?.magazine?.thumbnail) && (
-            <div className="mt-2">
-              <img src={magazinePreview || school.magazine.thumbnail} alt="Magazine thumbnail" className="h-24 w-auto rounded border" />
-              {!magazinePreview && (
-                <button
-                  type="button"
-                  onClick={() => setMagazineThumbnailFile(null)}
-                  className="mt-1 text-red-900 text-sm"
-                >Remove thumbnail</button>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+              <div className="space-y-6">
+                <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50 p-6">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <h3 className="flex items-center gap-2 text-xl font-bold text-gray-900">
+                        <FaBook className="text-amber-900" />
+                        School Magazine
+                      </h3>
+                      <p className="mt-2 text-sm font-semibold text-slate-600">
+                        Update the public magazine title, description, PDF, and thumbnail.
+                      </p>
+                    </div>
+
+                    {isUpdateMode && existingMagazine && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setRemoveMagazine((current) => !current);
+                          setMagazineFile(null);
+                          setMagazineThumbnailFile(null);
+                          setMagazinePreview(null);
+                        }}
+                        className={`rounded-xl px-4 py-3 text-sm font-black transition ${
+                          removeMagazine
+                            ? 'bg-red-700 text-white hover:bg-red-800'
+                            : 'bg-white text-red-700 ring-1 ring-red-200 hover:bg-red-50'
+                        }`}
+                      >
+                        {removeMagazine ? 'Undo Remove' : 'Remove Magazine'}
+                      </button>
+                    )}
+                  </div>
+
+                  {removeMagazine ? (
+                    <div className="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-bold leading-6 text-red-800">
+                      This magazine will be removed when you save. The public Magazine page will no longer show it.
+                    </div>
+                  ) : (
+                    <>
+                      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div>
+                          <label className="mb-2 block text-sm font-bold text-gray-700">Magazine Title</label>
+                          <input
+                            type="text"
+                            value={formData.magazineTitle || ''}
+                            onChange={(e) => handleChange('magazineTitle', e.target.value)}
+                            placeholder="e.g., The Pride 2026"
+                            className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 font-bold text-slate-900 focus:border-amber-500 focus:ring-amber-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-sm font-bold text-gray-700">Year</label>
+                          <input
+                            type="number"
+                            value={formData.magazineYear || ''}
+                            onChange={(e) => handleChange('magazineYear', e.target.value)}
+                            placeholder="2026"
+                            className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 font-bold text-slate-900 focus:border-amber-500 focus:ring-amber-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-4">
+                        <label className="mb-2 block text-sm font-bold text-gray-700">Description</label>
+                        <textarea
+                          rows="3"
+                          value={formData.magazineDescription || ''}
+                          onChange={(e) => handleChange('magazineDescription', e.target.value)}
+                          placeholder="Brief description of the magazine content..."
+                          className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 font-bold text-slate-900 focus:border-amber-500 focus:ring-amber-500"
+                        />
+                      </div>
+
+                      <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div>
+                          <label className="mb-2 block text-sm font-bold text-gray-700">
+                            Magazine PDF (max 4.2MB)
+                          </label>
+                          <input
+                            type="file"
+                            accept="application/pdf"
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (file) {
+                                if (file.size > 4.2 * 1024 * 1024) {
+                                  toast.error('PDF size exceeds 4.2MB');
+                                  return;
+                                }
+                                setMagazineFile(file);
+                              }
+                            }}
+                            className="w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-amber-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-amber-700 hover:file:bg-amber-100"
+                          />
+                          {existingMagazine?.pdfUrl && !magazineFile && (
+                            <a href={existingMagazine.pdfUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-sm font-bold text-amber-700 underline">
+                              Current PDF
+                            </a>
+                          )}
+                          {magazineFile && <p className="mt-2 text-sm font-bold text-emerald-700">{magazineFile.name}</p>}
+                        </div>
+
+                        <div>
+                          <label className="mb-2 block text-sm font-bold text-gray-700">
+                            Thumbnail (PNG/JPEG/JPG, max 2MB)
+                          </label>
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/jpg"
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (file) {
+                                if (file.size > 2 * 1024 * 1024) {
+                                  toast.error('Thumbnail size must be 2MB or below');
+                                  return;
+                                }
+                                setMagazineThumbnailFile(file);
+                                setMagazinePreview(URL.createObjectURL(file));
+                              }
+                            }}
+                            className="w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-amber-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-amber-700 hover:file:bg-amber-100"
+                          />
+                          {(magazinePreview || existingMagazine?.thumbnail) && (
+                            <div className="mt-3 overflow-hidden rounded-xl bg-white p-2">
+                              <img src={magazinePreview || existingMagazine.thumbnail} alt="Magazine thumbnail" className="h-28 w-auto rounded-lg object-cover" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
 
             <div className="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-gray-200 gap-3">
               <div className="flex items-center gap-2 text-sm text-gray-600 font-bold">
@@ -1782,7 +1804,7 @@ const handleDeleteSchool = async () => {
       
       toast.error('Please login to continue');
       setTimeout(() => {
-        window.location.href = '/pages/Sign In';
+        window.location.href = '/pages/adminLogin';
       }, 1000);
       
     } else {
@@ -1893,13 +1915,13 @@ const handleDeleteSchool = async () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 p-4 md:p-6">
       <Toaster position="top-right" richColors />
-{/* Modern School Information Header */}
-<div className="group relative bg-gradient-to-br from-[#1e40af] via-[#7c3aed] to-[#2563eb] rounded-[2.5rem] shadow-[0_20px_50px_rgba(31,38,135,0.37)] p-6 md:p-10 mb-10 border border-white/20 overflow-hidden">
+{/* Modern School Information Header - Updated with Emerald/Teal/Dark Green */}
+<div className="group relative bg-gradient-to-br from-[#064e3b] via-[#0f5b4c] to-[#115e59] rounded-[2.5rem] shadow-[0_20px_50px_rgba(6,78,59,0.37)] p-6 md:p-10 mb-10 border border-white/20 overflow-hidden">
   
-  {/* Animated Gradient Orbs */}
+  {/* Animated Gradient Orbs - Updated to emerald/teal */}
   <div className="absolute top-[-10%] left-[-5%] w-64 h-64 bg-white/15 rounded-full blur-3xl animate-pulse" />
-  <div className="absolute bottom-[-20%] right-[-5%] w-80 h-80 bg-blue-400/20 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-1000" />
-  <div className="absolute top-[40%] left-[20%] w-40 h-40 bg-purple-400/20 rounded-full blur-3xl animate-ping opacity-20" />
+  <div className="absolute bottom-[-20%] right-[-5%] w-80 h-80 bg-emerald-400/20 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-1000" />
+  <div className="absolute top-[40%] left-[20%] w-40 h-40 bg-teal-400/20 rounded-full blur-3xl animate-ping opacity-20" />
   
   {/* Floating Particles */}
   <div className="absolute inset-0 opacity-10">
@@ -1967,7 +1989,7 @@ const handleDeleteSchool = async () => {
           
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tighter drop-shadow-sm leading-tight">
             School{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-emerald-200">
               Information
             </span>
           </h1>
@@ -1977,7 +1999,7 @@ const handleDeleteSchool = async () => {
       {/* Description with Icon */}
       <div className="flex items-start gap-2 max-w-2xl">
         <FiInfo className="w-4 h-4 text-white/50 mt-0.5 flex-shrink-0" />
-        <p className="text-blue-50/80 text-sm md:text-base font-medium leading-relaxed">
+        <p className="text-emerald-50/80 text-sm md:text-base font-medium leading-relaxed">
           {hasSchoolInfo 
             ? 'Manage your school profile, contact details, and institutional information'
             : 'Set up your school information to get started with the management system'}
@@ -1988,11 +2010,11 @@ const handleDeleteSchool = async () => {
       {hasSchoolInfo && (
         <div className="flex flex-wrap items-center gap-3 mt-4">
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 backdrop-blur-sm rounded-full border border-white/10">
-            <FiMapPin className="w-3 h-3 text-blue-300" />
+            <FiMapPin className="w-3 h-3 text-emerald-300" />
             <span className="text-[10px] font-bold text-white/80">Location Configured</span>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 backdrop-blur-sm rounded-full border border-white/10">
-            <FiUsers className="w-3 h-3 text-purple-300" />
+            <FiUsers className="w-3 h-3 text-teal-300" />
             <span className="text-[10px] font-bold text-white/80">Contact Info Set</span>
           </div>
         </div>
@@ -2040,10 +2062,10 @@ const handleDeleteSchool = async () => {
       {/* Dynamic Primary Button - Add/Edit */}
       <button 
         onClick={() => setShowModal(true)} 
-        className="group/btn relative overflow-hidden flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-white text-blue-600 px-8 py-3 rounded-xl hover:bg-white/90 transition-all duration-200 font-bold text-sm shadow-lg active:scale-[0.98] min-w-[160px]"
+        className="group/btn relative overflow-hidden flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-white text-emerald-700 px-8 py-3 rounded-xl hover:bg-white/90 transition-all duration-200 font-bold text-sm shadow-lg active:scale-[0.98] min-w-[160px]"
       >
         {/* Button Shine Effect */}
-        <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-blue-100 to-transparent" />
+        <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-emerald-100 to-transparent" />
         
         {hasSchoolInfo ? (
           <>
@@ -2057,8 +2079,8 @@ const handleDeleteSchool = async () => {
             
             {/* Pulse Indicator for Add Button */}
             <span className="relative flex h-2 w-2 ml-1">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-600 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-600 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
             </span>
           </>
         )}
@@ -2070,32 +2092,32 @@ const handleDeleteSchool = async () => {
   <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/50 to-transparent" />
 </div>
 
-      {!hasSchoolInfo ? (
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 md:p-14 text-center my-8 transition-all duration-300">
-          <div className="w-20 h-20 md:w-28 md:h-28 bg-gradient-to-br from-blue-50 to-purple-50 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-white shadow-lg shadow-blue-200/50">
-            <FaSchool className="w-10 h-10 md:w-14 md:h-14 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600" />
-          </div>
+    {!hasSchoolInfo ? (
+  <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 md:p-14 text-center my-8 transition-all duration-300">
+    <div className="w-20 h-20 md:w-28 md:h-28 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-white shadow-lg shadow-emerald-200/50">
+      <FaSchool className="w-10 h-10 md:w-14 md:h-14 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600" />
+    </div>
 
-          <h3 className="text-xl md:text-3xl font-black text-gray-900 mb-3 tracking-tight">
-            No School Information Yet
-          </h3>
-          
-          <p className="text-gray-500 text-sm md:text-lg mb-8 max-w-[280px] md:max-w-lg mx-auto font-medium leading-relaxed">
-            Start by adding your school details to showcase your institution to students and staff.
-          </p>
+    <h3 className="text-xl md:text-3xl font-black text-gray-900 mb-3 tracking-tight">
+      No School Information Yet
+    </h3>
+    
+    <p className="text-gray-500 text-sm md:text-lg mb-8 max-w-[280px] md:max-w-lg mx-auto font-medium leading-relaxed">
+      Start by adding your school details to showcase your institution to students and staff.
+    </p>
 
-          <button 
-            onClick={() => setShowModal(true)} 
-            className="w-full sm:w-auto bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 
-                     text-white px-10 py-4 rounded-2xl font-bold shadow-xl shadow-blue-200/50
-                     hover:shadow-indigo-300/50 hover:scale-[1.03] active:scale-95 
-                     transition-all duration-300 flex items-center justify-center gap-3 mx-auto text-base"
-          >
-            <FaPlus className="text-xl" /> 
-            <span>Create School Information</span>
-          </button>
-        </div>
-      ) : (
+    <button 
+      onClick={() => setShowModal(true)} 
+      className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 
+               text-white px-10 py-4 rounded-2xl font-bold shadow-xl shadow-emerald-200/50
+               hover:shadow-teal-300/50 hover:scale-[1.03] active:scale-95 
+               transition-all duration-300 flex items-center justify-center gap-3 mx-auto text-base"
+    >
+      <FaPlus className="text-xl" /> 
+      <span>Create School Information</span>
+    </button>
+  </div>
+) : (
         <div className="space-y-6">
           {/* QUICK STATS */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -2539,55 +2561,6 @@ const handleDeleteSchool = async () => {
             </div>
           </div>
 
-
-          {/* Add this section in your school info display area */}
-{schoolInfo.magazine && (
-  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-    <div className="group relative bg-white rounded-[2rem] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-lg font-black text-slate-800 tracking-tight">School Magazine</h3>
-          <p className="text-xs text-slate-400 font-medium">Latest publication</p>
-        </div>
-        <div className="p-3 rounded-2xl bg-amber-50 border border-amber-100 text-amber-600">
-          <FaBook className="text-xl" />
-        </div>
-      </div>
-      
-      <div className="space-y-4">
-        {schoolInfo.magazine.thumbnail && (
-          <div className="rounded-xl overflow-hidden">
-            <img 
-              src={schoolInfo.magazine.thumbnail} 
-              alt={schoolInfo.magazine.title}
-              className="w-full h-48 object-cover"
-            />
-          </div>
-        )}
-        
-        <div>
-          <h4 className="text-xl font-bold text-slate-800">{schoolInfo.magazine.title}</h4>
-          <p className="text-sm text-slate-500">Year: {schoolInfo.magazine.year}</p>
-          {schoolInfo.magazine.description && (
-            <p className="text-slate-600 mt-2">{schoolInfo.magazine.description}</p>
-          )}
-        </div>
-        
-        {schoolInfo.magazine.pdfUrl && (
-          <a 
-            href={schoolInfo.magazine.pdfUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-xl hover:bg-amber-700 transition"
-          >
-            <FaFileAlt className="text-sm" />
-            Read Magazine
-          </a>
-        )}
-      </div>
-    </div>
-  </div>
-)}
         </div>
       )}
 

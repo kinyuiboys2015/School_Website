@@ -262,6 +262,60 @@ const sanitizePublicStaff = (staff) => {
   return publicStaff;
 };
 
+const isTeacherStaff = (role = "", staffType = "") => {
+  const normalizedRole = role?.toString().trim().toLowerCase();
+  const normalizedType = staffType?.toString().trim().toLowerCase();
+  return normalizedRole === "teacher" || normalizedType === "teacher";
+};
+
+const resolveDepartmentMapping = async (departmentId, departmentName = "") => {
+  const numericDepartmentId =
+    departmentId !== null && departmentId !== undefined && departmentId !== ""
+      ? Number(departmentId)
+      : null;
+
+  if (numericDepartmentId !== null) {
+    if (!Number.isFinite(numericDepartmentId)) {
+      throw new Error("Invalid department selected.");
+    }
+
+    const department = await prisma.staffDepartment.findFirst({
+      where: { id: Math.floor(numericDepartmentId), isActive: true },
+      select: { id: true, name: true },
+    });
+
+    if (!department) {
+      throw new Error("Selected department was not found or is inactive.");
+    }
+
+    return department;
+  }
+
+  const cleanDepartmentName = departmentName?.toString().trim();
+  if (!cleanDepartmentName) return null;
+
+  const department = await prisma.staffDepartment.findFirst({
+    where: { name: cleanDepartmentName, isActive: true },
+    select: { id: true, name: true },
+  });
+
+  return department || { id: null, name: cleanDepartmentName };
+};
+
+const syncDepartmentStaffCount = async (departmentId) => {
+  if (!departmentId) return;
+  const staffCount = await prisma.staff.count({
+    where: {
+      departmentId,
+      role: "Teacher",
+    },
+  });
+  await prisma.staffDepartment.update({
+    where: { id: departmentId },
+    data: { staffCount },
+  });
+};
+
 // 🔹 Check principal/deputy principal limits
 // 🔹 Enhanced role limits with position-based validation for Deputy Principals
 async function checkRoleLimits(role, staffId = null, position = null) {
@@ -343,6 +397,11 @@ export async function GET(req) {
 
     const staff = await prisma.staff.findMany({
       orderBy: { createdAt: "desc" },
+      include: {
+        departmentGroup: {
+          select: { id: true, name: true, category: true },
+        },
+      },
     });
 
     const visibleStaff = isAdmin
@@ -376,6 +435,9 @@ export async function POST(req) {
     const role = formData.get("role");
     const position = formData.get("position");
     const department = formData.get("department");
+    const departmentId = formData.get("departmentId");
+    const staffType = formData.get("staffType") || (role === "Teacher" ? "Teacher" : "Leadership");
+    const subjectOffered = formData.get("subjectOffered") || "";
     const email = formData.get("email");
     const phone = formData.get("phone");
     const bio = formData.get("bio");
@@ -398,8 +460,11 @@ export async function POST(req) {
       );
     }
 
-    // 🔹 Restrict uploads to leadership profiles only
-    if (!isAllowedLeadershipRole(role, position)) {
+    const isTeacher = isTeacherStaff(role, staffType);
+
+    // 🔹 Restrict public individual profiles to leadership, while allowing
+    // department-mapped teachers for the department pages/carousel.
+    if (!isTeacher && !isAllowedLeadershipRole(role, position)) {
       return NextResponse.json(
         {
           success: false,
@@ -410,8 +475,44 @@ export async function POST(req) {
       );
     }
 
+    let mappedDepartment = null;
+    try {
+      mappedDepartment = await resolveDepartmentMapping(departmentId, department);
+    } catch (error) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: error.message,
+          authenticated: true,
+        },
+        { status: 400 }
+      );
+    }
+
+    if (isTeacher && !mappedDepartment?.id) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Teacher records must be linked to an existing active department.",
+          authenticated: true,
+        },
+        { status: 400 }
+      );
+    }
+
+    if (isTeacher && !subjectOffered.toString().trim()) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Subject offered is required for teacher records.",
+          authenticated: true,
+        },
+        { status: 400 }
+      );
+    }
+
     // 🔹 Validate Deputy Principal has position specified
-    if (role === "Deputy Principal" && !position) {
+    if (!isTeacher && role === "Deputy Principal" && !position) {
       return NextResponse.json(
         { 
           success: false, 
@@ -423,7 +524,7 @@ export async function POST(req) {
     }
 
     // 🔹 Enforce Deputy Principal type (Academics/Admin) for privacy + grouping
-    if (role === "Deputy Principal" && position && !DEPUTY_POSITIONS.has(position)) {
+    if (!isTeacher && role === "Deputy Principal" && position && !DEPUTY_POSITIONS.has(position)) {
       return NextResponse.json(
         {
           success: false,
@@ -437,7 +538,9 @@ export async function POST(req) {
 
     // 🔹 Validate Principal/Deputy Principal limits
     try {
-      await checkRoleLimits(role, null, position);
+      if (!isTeacher) {
+        await checkRoleLimits(role, null, position);
+      }
     } catch (error) {
       return NextResponse.json(
         { 
@@ -559,8 +662,11 @@ export async function POST(req) {
       data: {
         name,
         role,
-        position: position || null,
-        department: department || null,
+        position: position || (isTeacher ? "Teacher" : null),
+        department: mappedDepartment?.name || department || null,
+        departmentId: mappedDepartment?.id || null,
+        staffType: isTeacher ? "Teacher" : (staffType || "Leadership"),
+        subjectOffered: isTeacher ? subjectOffered.toString().trim() : null,
         email: email || null,
         phone: phone || null,
         bio: bio || null,
@@ -576,6 +682,10 @@ export async function POST(req) {
         achievements,
       },
     });
+
+    if (newStaff.departmentId) {
+      await syncDepartmentStaffCount(newStaff.departmentId);
+    }
 
     console.log(`✅ Staff member created by ${auth.user.name}: ${newStaff.name} (${newStaff.role}${newStaff.position ? ' - ' + newStaff.position : ''})`);
 

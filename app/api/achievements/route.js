@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../libs/prisma";
 import cloudinary from "../../../libs/cloudinary";
+import {
+  ACHIEVEMENT_CATEGORIES,
+  getDefaultAchievements,
+} from "../../data/defaultAchievements";
 
 // ==================== AUTHENTICATION UTILITIES ====================
 
@@ -296,6 +300,91 @@ const cleanAchievementResponse = (achievement) => {
   }
 };
 
+const getGroupedAchievements = (achievements) => {
+  const groupedAchievements = ACHIEVEMENT_CATEGORIES.reduce((groups, category) => {
+    groups[category] = [];
+    return groups;
+  }, {});
+
+  achievements.forEach((achievement) => {
+    const cleaned = cleanAchievementResponse(achievement);
+    const category = groupedAchievements[cleaned.category] ? cleaned.category : "Other";
+    groupedAchievements[category].push(cleaned);
+  });
+
+  return groupedAchievements;
+};
+
+const sortAchievements = (achievements) =>
+  [...achievements].sort((a, b) => {
+    if ((a.displayOrder ?? 0) !== (b.displayOrder ?? 0)) {
+      return (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
+    }
+    if ((b.year ?? 0) !== (a.year ?? 0)) return (b.year ?? 0) - (a.year ?? 0);
+    return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+  });
+
+const filterAchievementList = (achievements, { category, year, featured, activeOnly }) => {
+  const filtered = achievements.filter((achievement) => {
+    if (category && achievement.category !== category) return false;
+    if (year && achievement.year !== parseInt(year)) return false;
+    if (featured === "true" && achievement.featured !== true) return false;
+    if (activeOnly && achievement.isActive === false) return false;
+    return true;
+  });
+
+  return sortAchievements(filtered);
+};
+
+const toPrismaAchievementData = (achievement) => ({
+  title: achievement.title,
+  description: achievement.description,
+  category: achievement.category,
+  year: achievement.year,
+  images: achievement.images,
+  featured: achievement.featured,
+  displayOrder: achievement.displayOrder,
+  isActive: achievement.isActive,
+  awardingBody: achievement.awardingBody,
+  recipients: achievement.recipients,
+  achievedDate: achievement.achievedDate ? new Date(achievement.achievedDate) : null,
+});
+
+const ensureKinyuiDefaultAchievements = async () => {
+  const defaults = getDefaultAchievements();
+
+  for (const achievement of defaults) {
+    const existing = await prisma.achievement.findFirst({
+      where: { title: achievement.title },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      await prisma.achievement.create({
+        data: toPrismaAchievementData(achievement),
+      });
+    }
+  }
+};
+
+const getFallbackAchievementsPayload = ({ category, year, featured, activeOnly }) => {
+  const fallbackAchievements = filterAchievementList(getDefaultAchievements(), {
+    category,
+    year,
+    featured,
+    activeOnly,
+  });
+
+  return {
+    success: true,
+    message: "Default Kinyui achievements retrieved successfully",
+    achievements: getGroupedAchievements(fallbackAchievements),
+    allAchievements: fallbackAchievements.map((achievement) => cleanAchievementResponse(achievement)),
+    total: fallbackAchievements.length,
+    source: "defaults",
+  };
+};
+
 // ============ API ROUTES ============
 
 // 🟡 GET all achievements (PUBLIC - no authentication required)
@@ -312,8 +401,28 @@ export async function GET(req) {
     
     // If ID is provided, return single achievement
     if (id) {
+      const parsedId = parseInt(id, 10);
+      const fallbackAchievement = getDefaultAchievements().find(
+        (achievement) => achievement.id === parsedId
+      );
+
+      if (fallbackAchievement) {
+        return NextResponse.json({
+          success: true,
+          achievement: cleanAchievementResponse(fallbackAchievement),
+          source: "defaults",
+        });
+      }
+
+      if (Number.isNaN(parsedId)) {
+        return NextResponse.json(
+          { success: false, error: "Invalid achievement ID" },
+          { status: 400 }
+        );
+      }
+
       const achievement = await prisma.achievement.findUnique({
-        where: { id: parseInt(id) }
+        where: { id: parsedId }
       });
       
       if (!achievement) {
@@ -335,6 +444,8 @@ export async function GET(req) {
     if (year) whereClause.year = parseInt(year);
     if (featured === 'true') whereClause.featured = true;
     if (activeOnly) whereClause.isActive = true;
+
+    await ensureKinyuiDefaultAchievements();
     
     const achievements = await prisma.achievement.findMany({
       where: whereClause,
@@ -346,42 +457,42 @@ export async function GET(req) {
     });
     
     console.log(`✅ Found ${achievements.length} achievements`);
-    
-    // Group achievements by category
-    const groupedAchievements = {
-      Academic: [],
-      Sports: [],
-      Arts: [],
-      Leadership: [],
-      Other: []
-    };
-    
-    achievements.forEach(achievement => {
-      const cleaned = cleanAchievementResponse(achievement);
-      if (groupedAchievements[achievement.category]) {
-        groupedAchievements[achievement.category].push(cleaned);
-      } else {
-        groupedAchievements.Other.push(cleaned);
-      }
-    });
+    const cleanedAchievements = achievements.map(a => cleanAchievementResponse(a));
     
     return NextResponse.json({ 
       success: true, 
       message: "Achievements retrieved successfully",
-      achievements: groupedAchievements,
-      allAchievements: achievements.map(a => cleanAchievementResponse(a)),
+      achievements: getGroupedAchievements(cleanedAchievements),
+      allAchievements: cleanedAchievements,
       total: achievements.length
     });
 
   } catch (error) {
     console.error("❌ GET Error:", error);
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (id) {
+      const fallbackAchievement = getDefaultAchievements().find(
+        (achievement) => achievement.id === parseInt(id)
+      );
+
+      if (fallbackAchievement) {
+        return NextResponse.json({
+          success: true,
+          achievement: cleanAchievementResponse(fallbackAchievement),
+          source: "defaults",
+        });
+      }
+    }
+
     return NextResponse.json(
-      { 
-        success: false, 
-        error: error.message || "Internal server error",
-        message: "Failed to fetch achievements"
-      }, 
-      { status: 500 }
+      getFallbackAchievementsPayload({
+        category: searchParams.get("category"),
+        year: searchParams.get("year"),
+        featured: searchParams.get("featured"),
+        activeOnly: searchParams.get("activeOnly") !== "false",
+      })
     );
   }
 }

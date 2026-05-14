@@ -11,6 +11,7 @@ import {
 import { FiAward, FiTrendingUp, FiTarget } from 'react-icons/fi';
 import { FiUpload, FiX, FiCheck } from 'react-icons/fi';
 import { CircularProgress, Modal, Box, TextareaAutosize } from '@mui/material';
+import { getDefaultAchievements } from '../../data/defaultAchievements';
 
 // ==================== LOADING SPINNER ====================
 function ModernLoadingSpinner({ message = "Loading achievements...", size = "medium" }) {
@@ -236,7 +237,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
     year: achievement?.year?.toString() || new Date().getFullYear().toString(),
     awardingBody: achievement?.awardingBody || '',
     recipients: achievement?.recipients || [],
-    featuteal: achievement?.featuteal || false,
+    featured: achievement?.featured || false,
     isActive: achievement?.isActive !== false,
     displayOrder: achievement?.displayOrder?.toString() || '0',
     achievedDate: achievement?.achievedDate ? new Date(achievement.achievedDate).toISOString().split('T')[0] : ''
@@ -291,7 +292,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
       formDataObj.append('year', formData.year);
       formDataObj.append('awardingBody', formData.awardingBody);
       formDataObj.append('recipients', JSON.stringify(formData.recipients));
-      formDataObj.append('featuteal', formData.featuteal);
+      formDataObj.append('featured', formData.featured);
       formDataObj.append('isActive', formData.isActive);
       formDataObj.append('displayOrder', formData.displayOrder);
       formDataObj.append('achievedDate', formData.achievedDate);
@@ -374,7 +375,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
                   type="text"
                   value={formData.title}
                   onChange={(e) => handleChange('title', e.target.value)}
-                  placeholder="e.g., National Science Fair Winner"
+                  placeholder="e.g., Kenya Science Fair"
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   requiteal
                 />
@@ -474,13 +475,13 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
                 
                 <div className="flex items-center gap-4 pt-8">
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={formData.featuteal}
-                      onChange={(e) => handleChange('featuteal', e.target.checked)}
-                      className="w-4 h-4 text-green-600 rounded"
-                    />
-                    <span className="text-sm font-bold text-gray-700">Featuteal</span>
+	                    <input
+	                      type="checkbox"
+	                      checked={formData.featured}
+	                      onChange={(e) => handleChange('featured', e.target.checked)}
+	                      className="w-4 h-4 text-green-600 rounded"
+	                    />
+	                    <span className="text-sm font-bold text-gray-700">Featured</span>
                   </label>
                   
                   <label className="flex items-center gap-2 cursor-pointer">
@@ -789,7 +790,7 @@ function DeleteConfirmationModal({ onClose, onConfirm, title, loading }) {
 // ==================== MAIN COMPONENT ====================
 export default function AchievementsPage() {
   const [achievements, setAchievements] = useState({
-    Academic: [], Sports: [], Arts: [], Leadership: [], Other: []
+    Academic: [], Sports: [], Arts: [], Leadership: [], Cultural: [], Debate: [], Other: []
   });
   const [schoolStats, setSchoolStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -800,7 +801,7 @@ export default function AchievementsPage() {
   const [deleteId, setDeleteId] = useState(null);
   const [deleteTitle, setDeleteTitle] = useState('');
   const [expandedCategories, setExpandedCategories] = useState({
-    Academic: true, Sports: true, Arts: true, Leadership: true, Other: true
+    Academic: true, Sports: true, Arts: true, Leadership: true, Cultural: true, Debate: true, Other: true
   });
   const [refreshing, setRefreshing] = useState(false);
 
@@ -809,15 +810,40 @@ export default function AchievementsPage() {
     Sports: FaFutbol,
     Arts: FaPalette,
     Leadership: FaUsersCog,
+    Cultural: FaPalette,
+    Debate: FaUsersCog,
     Other: FaMedal
   };
 
   const categoryColors = {
     Academic: 'from-blue-600 to-cyan-600',
-    Sports: 'from-green-600 to-emerald-600',
-    Arts: 'from-purple-600 to-pink-600',
-    Leadership: 'from-green-600 to-teal-600',
-    Other: 'from-gray-600 to-slate-600'
+    Sports: 'from-red-700 to-orange-600',
+    Arts: 'from-purple-700 to-pink-600',
+    Leadership: 'from-orange-800 to-amber-600',
+    Cultural: 'from-amber-700 to-emerald-600',
+    Debate: 'from-cyan-700 to-blue-600',
+    Other: 'from-gray-700 to-slate-700'
+  };
+
+  const createEmptyAchievementGroups = () => ({
+    Academic: [],
+    Sports: [],
+    Arts: [],
+    Leadership: [],
+    Cultural: [],
+    Debate: [],
+    Other: []
+  });
+
+  const categorizeAchievements = (items = []) => {
+    const grouped = createEmptyAchievementGroups();
+
+    items.forEach((achievement) => {
+      const category = grouped[achievement.category] ? achievement.category : 'Other';
+      grouped[category].push(achievement);
+    });
+
+    return grouped;
   };
 
   useEffect(() => {
@@ -833,7 +859,18 @@ export default function AchievementsPage() {
       const achievementsData = await achievementsRes.json();
       
       if (achievementsData.success) {
-        setAchievements(achievementsData.achievements);
+        const grouped = {
+          ...createEmptyAchievementGroups(),
+          ...(achievementsData.achievements || {})
+        };
+
+        if (Object.values(grouped).flat().length > 0) {
+          setAchievements(grouped);
+        } else {
+          setAchievements(categorizeAchievements(getDefaultAchievements()));
+        }
+      } else {
+        setAchievements(categorizeAchievements(getDefaultAchievements()));
       }
       
       // Load school stats
@@ -846,7 +883,8 @@ export default function AchievementsPage() {
       
     } catch (error) {
       console.error('Error loading data:', error);
-      toast.error('Failed to load data');
+      setAchievements(categorizeAchievements(getDefaultAchievements()));
+      toast.error('Using default Kinyui achievements');
     } finally {
       setLoading(false);
     }
@@ -1162,8 +1200,8 @@ export default function AchievementsPage() {
                           </div>
                           
                           <div className="flex shrink-0 gap-1">
-                            {achievement.featuteal && (
-                              <FaStar className="text-yellow-500" title="Featuteal" />
+                            {achievement.featured && (
+                              <FaStar className="text-yellow-500" title="Featured" />
                             )}
                             {!achievement.isActive && (
                               <FaEyeSlash className="text-gray-400" title="Inactive" />

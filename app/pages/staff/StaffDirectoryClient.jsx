@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import {
   FiArchive,
   FiAward,
+  FiChevronLeft,
   FiBookOpen,
   FiChevronRight,
   FiFilter,
@@ -125,14 +126,19 @@ function LeadershipCard({ staff }) {
   );
 }
 
-function DepartmentCard({ department, onView }) {
+function DepartmentCard({ department, onSelect, selected }) {
   const meta = CATEGORY_META[department.category] || CATEGORY_META.TEACHING;
   const Icon = meta.icon;
   const images = getDepartmentImages(department);
   const extra = typeof department.extra === 'object' && department.extra ? department.extra : {};
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+    <article
+      className={`overflow-hidden rounded-2xl border bg-white shadow-sm transition ${
+        selected ? 'border-amber-300 ring-4 ring-amber-100' : 'border-slate-100 hover:border-slate-200'
+      }`}
+      onClick={() => onSelect(department)}
+    >
       <div className="grid h-56 grid-cols-3 gap-1 bg-slate-100">
         <img src={images[0]} alt={department.name} className="col-span-2 h-full w-full object-cover" />
         <div className="grid gap-1">
@@ -178,13 +184,13 @@ function DepartmentCard({ department, onView }) {
           </div>
         )}
 
-        <button
-          type="button"
-          onClick={() => onView(department)}
+        <Link
+          href={`/pages/staff/departments/${department.id}`}
+          onClick={(event) => event.stopPropagation()}
           className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-xs font-black uppercase tracking-widest text-white"
         >
-          Department Details <FiChevronRight />
-        </button>
+          View Department <FiChevronRight />
+        </Link>
       </div>
     </article>
   );
@@ -268,6 +274,96 @@ function DepartmentModal({ department, onClose }) {
   );
 }
 
+function TeacherMiniCard({ teacher }) {
+  const image = teacher?.image || (teacher?.gender === 'female' ? '/female.png' : '/male.png');
+
+  return (
+    <article className="w-[260px] shrink-0 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm sm:w-[300px]">
+      <div className="relative h-48 bg-slate-100">
+        <img src={image} alt={teacher.name} className="h-full w-full object-cover object-top" />
+        <div className="absolute left-3 top-3 rounded-full bg-slate-950/80 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">
+          Teacher
+        </div>
+      </div>
+      <div className="p-5">
+        <h3 className="text-lg font-black text-slate-900">{teacher.name}</h3>
+        <p className="mt-1 text-sm font-bold text-amber-700">{teacher.subjectOffered || teacher.position || 'Subject teacher'}</p>
+        <p className="mt-3 line-clamp-3 min-h-[4.5rem] text-sm leading-relaxed text-slate-600">
+          {teacher.bio || `${teacher.name} serves in the ${teacher.department || 'selected'} department at Kinyui Boys Senior School.`}
+        </p>
+      </div>
+    </article>
+  );
+}
+
+function DepartmentTeacherCarousel({ department }) {
+  const scrollRef = useRef(null);
+  const teachers = Array.isArray(department?.teachers) ? department.teachers : [];
+
+  if (!department) return null;
+
+  const scroll = (direction) => {
+    const node = scrollRef.current;
+    if (!node) return;
+    node.scrollBy({ left: direction * Math.min(node.clientWidth, 680), behavior: 'smooth' });
+  };
+
+  return (
+    <section className="mb-8 overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white p-4 shadow-sm sm:p-5">
+      <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Selected Department</p>
+          <h3 className="mt-1 text-2xl font-black text-slate-900">{department.name}</h3>
+          <p className="mt-1 text-sm font-medium text-slate-500">
+            {teachers.length ? `${teachers.length} teacher${teachers.length === 1 ? '' : 's'} mapped to this department` : 'Teacher mapping will appear here once records are added.'}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => scroll(-1)}
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700"
+            aria-label="Previous teachers"
+          >
+            <FiChevronLeft />
+          </button>
+          <button
+            type="button"
+            onClick={() => scroll(1)}
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700"
+            aria-label="Next teachers"
+          >
+            <FiChevronRight />
+          </button>
+          <Link
+            href={`/pages/staff/departments/${department.id}`}
+            className="hidden rounded-xl bg-slate-900 px-4 py-3 text-xs font-black uppercase tracking-widest text-white sm:inline-flex"
+          >
+            Full Page
+          </Link>
+        </div>
+      </div>
+
+      {teachers.length > 0 ? (
+        <div
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {teachers.map((teacher) => (
+            <TeacherMiniCard key={teacher.id} teacher={teacher} />
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center">
+          <FiUsers className="mx-auto text-4xl text-slate-300" />
+          <h4 className="mt-3 text-lg font-black text-slate-900">No teachers mapped yet</h4>
+          <p className="mt-2 text-sm text-slate-500">Add teacher records in the dashboard and link them to this department.</p>
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default function StaffDirectory() {
   const [leadership, setLeadership] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -286,7 +382,7 @@ export default function StaffDirectory() {
 
       const [staffResponse, departmentResponse] = await Promise.all([
         fetch('/api/staff'),
-        fetch('/api/staff/departments'),
+        fetch('/api/staff/departments?includeTeachers=1'),
       ]);
 
       const [staffData, departmentData] = await Promise.all([
@@ -350,6 +446,16 @@ export default function StaffDirectory() {
       }))
       .filter((group) => group.departments.length > 0);
   }, [filteredDepartments]);
+
+  useEffect(() => {
+    if (loading || filteredDepartments.length === 0) return;
+    const selectedStillVisible = selectedDepartment
+      ? filteredDepartments.some((department) => department.id === selectedDepartment.id)
+      : false;
+    if (!selectedStillVisible) {
+      setSelectedDepartment(filteredDepartments[0]);
+    }
+  }, [filteredDepartments, loading, selectedDepartment]);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -477,6 +583,7 @@ export default function StaffDirectory() {
             </div>
           ) : groupedDepartments.length > 0 ? (
             <div className="space-y-8">
+              <DepartmentTeacherCarousel department={selectedDepartment} />
               {groupedDepartments.map(({ key, meta, departments: groupDepartments }) => {
                 const Icon = meta.icon;
                 return (
@@ -499,7 +606,12 @@ export default function StaffDirectory() {
                     </div>
                     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                       {groupDepartments.map((department) => (
-                        <DepartmentCard key={department.id} department={department} onView={setSelectedDepartment} />
+                        <DepartmentCard
+                          key={department.id}
+                          department={department}
+                          onSelect={setSelectedDepartment}
+                          selected={selectedDepartment?.id === department.id}
+                        />
                       ))}
                     </div>
                   </div>
@@ -516,9 +628,6 @@ export default function StaffDirectory() {
         </section>
       </main>
 
-      {selectedDepartment && (
-        <DepartmentModal department={selectedDepartment} onClose={() => setSelectedDepartment(null)} />
-      )}
     </div>
   );
 }

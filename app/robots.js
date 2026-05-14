@@ -17,6 +17,15 @@ const publicPages = [
   '/pages/fees',
   '/pages/gallery',
   '/pages/staff',
+  '/pages/school-hub',
+  '/pages/school-hub/clubs',
+  '/pages/school-hub/societies',
+  '/pages/school-hub/student-council',
+  '/pages/school-hub/computer-lab',
+  '/pages/school-hub/farm',
+  '/pages/school-hub/boarding',
+  '/pages/school-hub/security',
+  '/pages/school-hub/departments',
 ]
 
 const publicAssets = [

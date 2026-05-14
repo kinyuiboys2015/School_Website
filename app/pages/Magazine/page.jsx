@@ -1,75 +1,133 @@
 "use client";
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import dynamic from "next/dynamic";
-import {
-  BookOpen, Search, Calendar, FileText, Trophy, Users, Sparkles,
-  Clock, Filter, Grid3x3, List, TrendingUp, Award, Star,
-  ChevronDown, ChevronUp, Eye, Heart, Share2, Download,
-  Bookmark, BookmarkCheck, AlertCircle, X, Loader2
-} from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import { IoSparkles } from 'react-icons/io5';
-import { CircularProgress, Box, Stack } from '@mui/material';
 
-// Dynamic import for BookReader
+import React, { useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ArrowRight,
+  BookOpen,
+  Bookmark,
+  BookmarkCheck,
+  Calendar,
+  ChevronDown,
+  ChevronUp,
+  Clock3,
+  Download,
+  Eye,
+  FileText,
+  Filter,
+  Grid3x3,
+  Loader2,
+  Search,
+  Share2,
+  Sparkles,
+  Star,
+  Trophy,
+  Users,
+  List,
+} from "lucide-react";
+
 const BookReader = dynamic(() => import("../../components/book/BookReader"), {
+  ssr: false,
   loading: () => (
-    <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50">
-      <Loader2 className="w-12 h-12 text-amber-500 animate-spin" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#081712]/85 backdrop-blur-xl">
+      <div className="rounded-[2rem] border border-white/10 bg-white/5 px-8 py-7 text-center text-white shadow-2xl">
+        <Loader2 className="mx-auto mb-3 h-8 w-8 animate-spin text-[#d8b15a]" />
+        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white/80">
+          Opening Reader
+        </p>
+      </div>
     </div>
   ),
-  ssr: false
 });
 
-// Scroll to Top Component
 const ScrollToTop = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      setIsVisible(window.pageYOffset > 300);
-    };
-    window.addEventListener("scroll", toggleVisibility);
-    return () => window.removeEventListener("scroll", toggleVisibility);
+    const onScroll = () => setVisible(window.scrollY > 320);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {visible && (
         <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-40 p-3 bg-gradient-to-r from-amber-800 to-amber-800 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 12 }}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-5 right-5 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-[#10392f] text-white shadow-[0_16px_40px_rgba(16,57,47,0.35)] transition-transform duration-300 hover:-translate-y-1"
         >
-          <ChevronUp size={20} />
+          <ChevronUp className="h-5 w-5" />
         </motion.button>
       )}
     </AnimatePresence>
   );
 };
 
-// Enhanced Magazine Card Component
-const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
+const defaultMagazineDescription =
+  "A polished yearly showcase of school life, student voice, leadership milestones, school memories, and growth stories across Kinyui Boys Senior School.";
+
+const getTruncatedText = (text, limit = 170) => {
+  const clean = String(text || "").replace(/\s+/g, " ").trim();
+  if (clean.length <= limit) return { text: clean, truncated: false };
+  const slice = clean.slice(0, limit);
+  const safeEnd = slice.lastIndexOf(" ") > 80 ? slice.lastIndexOf(" ") : limit;
+  return { text: `${slice.slice(0, safeEnd).trim()}...`, truncated: true };
+};
+
+const ExpandableDescription = ({ text, limit = 170, className = "" }) => {
+  const [expanded, setExpanded] = useState(false);
+  const source = text || defaultMagazineDescription;
+  const truncated = getTruncatedText(source, limit);
+  const shouldToggle = truncated.truncated;
+
+  return (
+    <div className={className}>
+      <p>{expanded || !shouldToggle ? source : truncated.text}</p>
+      {shouldToggle && (
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            setExpanded((value) => !value);
+          }}
+          className="mt-2 text-xs font-black uppercase tracking-[0.18em] text-[#c89b3c] transition hover:text-[#10392f]"
+        >
+          {expanded ? "Show Less" : "Read More"}
+        </button>
+      )}
+    </div>
+  );
+};
+
+const MagazineCard = ({ issue, onOpen, viewMode = "gallery" }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
+
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("bookmarked_magazines") || "[]");
+    setIsBookmarked(saved.includes(issue.id));
+  }, [issue.id]);
 
   const handleBookmark = (e) => {
     e.stopPropagation();
-    setIsBookmarked(!isBookmarked);
-    const saved = JSON.parse(localStorage.getItem('bookmarked_magazines') || '[]');
-    if (!isBookmarked) {
+    const next = !isBookmarked;
+    setIsBookmarked(next);
+    const saved = JSON.parse(localStorage.getItem("bookmarked_magazines") || "[]");
+
+    if (next && !saved.includes(issue.id)) {
       saved.push(issue.id);
-    } else {
-      const index = saved.indexOf(issue.id);
-      if (index > -1) saved.splice(index, 1);
     }
-    localStorage.setItem('bookmarked_magazines', JSON.stringify(saved));
+
+    if (!next) {
+      const idx = saved.indexOf(issue.id);
+      if (idx > -1) saved.splice(idx, 1);
+    }
+
+    localStorage.setItem("bookmarked_magazines", JSON.stringify(saved));
   };
 
   const handleShare = async (e) => {
@@ -78,161 +136,149 @@ const MagazineCard = ({ issue, onOpen, viewMode = "grid" }) => {
       try {
         await navigator.share({
           title: issue.title,
-          text: `Check out ${issue.title} magazine from Kinyui Boys!`,
-          url: window.location.href
+          text: `Explore ${issue.title} from Kinyui Boys Senior School.`,
+          url: window.location.href,
         });
-      } catch (err) {
-        console.log('Share cancelled');
+      } catch (error) {
+        console.log("Share cancelled");
       }
     } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      await navigator.clipboard.writeText(window.location.href);
+      alert("Link copied to clipboard!");
     }
   };
 
-  if (viewMode === "list") {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        onClick={() => onOpen(issue)}
-        className="bg-white rounded-xl shadow-md cursor-pointer overflow-hidden border border-slate-200"
-      >
-        <div className="flex flex-col sm:flex-row">
-          <div className="relative w-full sm:w-48 h-48 sm:h-auto bg-slate-100 flex items-center justify-center">
-            {issue.thumbnail ? (
-              <Image
-                src={issue.thumbnail}
-                alt={issue.title}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <BookOpen className="w-12 h-12 text-slate-500" />
-            )}
-          </div>
-
-          <div className="flex-1 p-5">
-            <div className="flex items-start justify-between">
-              <div>
-                {/* BLACK TEXT TITLE */}
-                <h3 className="text-xl font-black text-slate-950 mb-1">{issue.title}</h3>
-                <div className="flex items-center gap-3 text-sm text-slate-700 mb-3 font-bold">
-                  <span className="flex items-center gap-1">
-                    <Calendar size={14} />
-                    {issue.year}
-                  </span>
-                  {/* Removed pages count */}
-                </div>
-              </div>
-
-              <div className="flex items-center gap-1">
-                <button onClick={handleBookmark} className={`p-1.5 ${isBookmarked ? 'text-amber-800' : 'text-slate-900'}`}>
-                  {isBookmarked ? <BookmarkCheck size={18} /> : <Bookmark size={18} />}
-                </button>
-                <button onClick={handleShare} className="p-1.5 text-slate-900">
-                  <Share2 size={18} />
-                </button>
-              </div>
-            </div>
-
-            {/* BLACK TEXT DESCRIPTION */}
-            <p className="text-slate-900 text-sm font-bold line-clamp-2 mb-3">
-              {issue.description}
-            </p>
-
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-black text-slate-950 uppercase tracking-wider">
-                Read Now →
-              </span>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    );
-  }
+  const isList = viewMode === "list";
+  const descriptionLimit = isList ? 245 : 165;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
+    <motion.article
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -4 }}
       onClick={() => onOpen(issue)}
-      className="bg-white rounded-2xl shadow-lg cursor-pointer overflow-hidden border border-slate-200"
+      className={`group w-full cursor-pointer overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg ${
+        isList ? "grid lg:grid-cols-[minmax(300px,0.85fr)_minmax(0,1.25fr)]" : "flex h-full flex-col"
+      }`}
     >
-      <div className="relative h-64 bg-slate-100 flex items-center justify-center">
+      <div className={`relative w-full bg-slate-100 ${isList ? "min-h-[260px] sm:min-h-[320px] lg:min-h-[300px]" : "h-64 sm:h-72"}`}>
         {issue.thumbnail ? (
-          <Image src={issue.thumbnail} alt={issue.title} fill className="object-cover" />
+          <Image
+            src={issue.thumbnail}
+            alt={issue.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
         ) : (
-          <BookOpen className="w-16 h-16 text-slate-500" />
+          <div className="flex h-full w-full items-center justify-center bg-slate-100">
+            <BookOpen className="h-16 w-16 text-slate-400" />
+          </div>
         )}
-        <div className="absolute top-3 left-3 bg-slate-950 rounded-lg px-2 py-1">
-          <span className="text-white text-xs font-black">{issue.year}</span>
+        <div className="absolute left-3 top-3">
+          <span className="inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-slate-700 shadow-sm">
+            <BookOpen className="h-3 w-3" />
+            {issue.year || "Archive"}
+          </span>
+        </div>
+        <div className="absolute right-3 top-3 flex gap-2">
+          <button
+            type="button"
+            onClick={handleBookmark}
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/95 text-slate-700 shadow-sm transition hover:bg-slate-100"
+            aria-label={isBookmarked ? "Remove bookmark" : "Bookmark magazine"}
+          >
+            {isBookmarked ? <BookmarkCheck className="h-4 w-4 text-emerald-700" /> : <Bookmark className="h-4 w-4" />}
+          </button>
+          <button
+            type="button"
+            onClick={handleShare}
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/95 text-slate-700 shadow-sm transition hover:bg-slate-100"
+            aria-label="Share magazine"
+          >
+            <Share2 className="h-4 w-4" />
+          </button>
         </div>
       </div>
 
-      <div className="p-5">
-        {/* BLACK TEXT TITLE */}
-        <h3 className="font-black text-slate-950 text-lg mb-2 line-clamp-1">
+      <div className="flex min-h-[300px] flex-1 flex-col p-5 sm:p-6">
+        <div className="flex flex-wrap gap-2">
+          <span className="flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
+            <FileText className="h-3 w-3" />
+            {issue.pages || 80} pages
+          </span>
+          <span className="flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
+            <Eye className="h-3 w-3" />
+            {issue.views || "New"} views
+          </span>
+          <span className="flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
+            <Download className="h-3 w-3" />
+            {issue.downloads || "Ready"}
+          </span>
+        </div>
+
+        <h3 className="mt-5 text-2xl font-black leading-tight text-slate-950">
           {issue.title}
         </h3>
-        
-        {/* BLACK TEXT DESCRIPTION */}
-        <p className="text-slate-900 text-sm font-bold line-clamp-2 mb-4">
-          {issue.description || "Annual magazine showcasing school achievements, events, and student stories."}
-        </p>
-        
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3 text-xs text-slate-950 font-black">
-         <span className="text-xs font-black text-slate-950 uppercase hover:underline tracking-wider">
-                Read Now →
-              </span>            {/* Removed pages count */}
-          </div>
-          <div className="flex gap-2">
-            <button onClick={handleBookmark} className={isBookmarked ? 'text-amber-800' : 'text-slate-950'}>
-               {isBookmarked ? <BookmarkCheck size={18} /> : <Bookmark size={18} />}
-            </button>
-            <button onClick={handleShare} className="text-slate-950">
-               <Share2 size={18} />
-            </button>
+
+        <ExpandableDescription
+          text={issue.description || defaultMagazineDescription}
+          limit={descriptionLimit}
+          className="mt-3 text-sm font-medium leading-7 text-slate-600"
+        />
+
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
+          <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-400">
+            Open Reader
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </span>
+          <div className="flex items-center gap-2">
+            {issue.pdfUrl && (
+              <a
+                href={issue.pdfUrl}
+                download
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition hover:bg-slate-200"
+                aria-label="Download magazine PDF"
+              >
+                <Download className="h-4 w-4" />
+              </a>
+            )}
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white transition group-hover:translate-x-0.5">
+              <ArrowRight className="h-4 w-4" />
+            </span>
           </div>
         </div>
-        
-        {issue.pdfUrl && (
-          <a
-            href={issue.pdfUrl}
-            download
-            onClick={e => e.stopPropagation()}
-            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-950 text-white rounded-xl font-black text-xs hover:bg-black transition-colors"
-          >
-            <Download size={16} /> DOWNLOAD PDF
-          </a>
-        )}
       </div>
-    </motion.div>
+    </motion.article>
   );
 };
-// Feature Card Component
-const FeatureCard = ({ icon: Icon, title, description, color }) => (
-  <motion.div
-    whileHover={{ y: -5 }}
-    className="bg-white rounded-2xl p-6 text-center shadow-md hover:shadow-xl transition-all"
-  >
-    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center mx-auto mb-4`}>
-      <Icon className="text-white" size={24} />
-    </div>
-    <h3 className="font-black text-slate-900 mb-2">{title}</h3>
-    <p className="text-slate-600 text-sm">{description}</p>
-  </motion.div>
-);
 
-// Main Component
+const InfoTile = ({ icon: Icon, eyebrow, title, text, tone = "emerald" }) => {
+  const toneMap = {
+    emerald: "bg-white text-slate-900 border-slate-200",
+    ivory: "bg-white text-slate-900 border-slate-200",
+    rose: "bg-white text-slate-900 border-slate-200",
+  };
+
+  return (
+    <div className={`rounded-2xl border p-6 shadow-sm ${toneMap[tone]}`}>
+      <div className="mb-6 inline-flex rounded-2xl bg-slate-900 p-3 text-white">
+        <Icon className="h-6 w-6" />
+      </div>
+      <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-slate-500">{eyebrow}</p>
+      <h3 className="mt-3 text-2xl font-black text-slate-950">{title}</h3>
+      <p className="mt-3 text-sm font-medium leading-7 text-slate-600">{text}</p>
+    </div>
+  );
+};
+
 export default function MagazineArchive() {
   const [magazines, setMagazines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedYear, setSelectedYear] = useState("all");
-  const [viewMode, setViewMode] = useState("grid");
+  const [viewMode, setViewMode] = useState("list");
   const [sortBy, setSortBy] = useState("year");
   const [sortOrder, setSortOrder] = useState("desc");
   const [showFilters, setShowFilters] = useState(false);
@@ -240,90 +286,68 @@ export default function MagazineArchive() {
     totalIssues: 0,
     totalPages: 0,
     earliestYear: null,
-    latestYear: null
+    latestYear: null,
   });
 
   useEffect(() => {
     const fetchMagazines = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/school');
+        const response = await fetch("/api/school");
         const data = await response.json();
-        
-        console.log("Fetched school data:", data); // Debug log
-        
+
         let magazinesArray = [];
-        
-        // Extract magazine from the school response
+
         if (data.success && data.school) {
-          // Check if magazine exists in the school object
-          if (data.school.magazine) {
-            // Single magazine object
-            magazinesArray = [data.school.magazine];
-          } else if (data.school.Magazine) {
-            // Capital M Magazine (from Prisma include)
-            magazinesArray = [data.school.Magazine];
-          }
+          if (data.school.magazine) magazinesArray = [data.school.magazine];
+          else if (data.school.Magazine) magazinesArray = [data.school.Magazine];
         }
-        
-        // Handle array of magazines if school has multiple (future proofing)
+
         if (data.magazines && Array.isArray(data.magazines)) {
           magazinesArray = data.magazines;
         }
-        
-        console.log("Processed magazines:", magazinesArray); // Debug log
-        
+
         setMagazines(magazinesArray);
 
-        // Calculate stats
         if (magazinesArray.length > 0) {
-          const years = magazinesArray.map(m => m.year).filter(y => y);
+          const years = magazinesArray.map((m) => m.year).filter(Boolean);
           const totalPages = magazinesArray.reduce((sum, m) => sum + (m.pages || 80), 0);
           setStats({
             totalIssues: magazinesArray.length,
-            totalPages: totalPages,
+            totalPages,
             earliestYear: years.length ? Math.min(...years) : null,
-            latestYear: years.length ? Math.max(...years) : null
-          });
-        } else {
-          setStats({
-            totalIssues: 0,
-            totalPages: 0,
-            earliestYear: null,
-            latestYear: null
+            latestYear: years.length ? Math.max(...years) : null,
           });
         }
       } catch (error) {
-        console.error('Error fetching school/magazines:', error);
+        console.error("Error fetching school/magazines:", error);
       } finally {
         setLoading(false);
       }
     };
+
     fetchMagazines();
   }, []);
 
-  // Filter and sort magazines
   const filteredAndSortedMagazines = useMemo(() => {
-    let filtered = [...magazines];
-
-    if (searchQuery) {
-      filtered = filtered.filter(m =>
-        m.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        m.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        m.year?.toString().includes(searchQuery)
-      );
-    }
-
-    if (selectedYear !== "all") {
-      filtered = filtered.filter(m => m.year === parseInt(selectedYear));
-    }
+    const filtered = [...magazines]
+      .filter((magazine) => {
+        if (!searchQuery) return true;
+        return (
+          magazine.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          magazine.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          magazine.year?.toString().includes(searchQuery)
+        );
+      })
+      .filter((magazine) => {
+        if (selectedYear === "all") return true;
+        return magazine.year === parseInt(selectedYear, 10);
+      });
 
     filtered.sort((a, b) => {
       let comparison = 0;
+
       switch (sortBy) {
-        case "year":
-          comparison = (a.year || 0) - (b.year || 0);
-          break;
         case "title":
           comparison = (a.title || "").localeCompare(b.title || "");
           break;
@@ -333,9 +357,12 @@ export default function MagazineArchive() {
         case "downloads":
           comparison = (a.downloads || 0) - (b.downloads || 0);
           break;
+        case "year":
         default:
           comparison = (a.year || 0) - (b.year || 0);
+          break;
       }
+
       return sortOrder === "asc" ? comparison : -comparison;
     });
 
@@ -343,340 +370,319 @@ export default function MagazineArchive() {
   }, [magazines, searchQuery, selectedYear, sortBy, sortOrder]);
 
   const years = useMemo(() => {
-    const uniqueYears = [...new Set(magazines.map(m => m.year).filter(y => y))];
+    const uniqueYears = [...new Set(magazines.map((m) => m.year).filter(Boolean))];
     return uniqueYears.sort((a, b) => b - a);
   }, [magazines]);
 
+  const leadIssue = filteredAndSortedMagazines[0];
+  const timelineLabel = stats.earliestYear
+    ? `${stats.earliestYear}${stats.latestYear && stats.latestYear !== stats.earliestYear ? ` to ${stats.latestYear}` : ""}`
+    : "--";
+  const heroStats = [
+    { label: "Published Editions", value: stats.totalIssues, icon: BookOpen },
+    { label: "Archive Pages", value: stats.totalPages || 0, icon: FileText },
+    { label: "Timeline", value: timelineLabel, icon: Calendar },
+  ];
+
   if (loading) {
     return (
-      <Box className="min-h-[70vh] flex items-center justify-center p-4 bg-slate-900">
-        <Stack spacing={2} alignItems="center" className="w-full transition-all duration-500">
-          <Box className="relative flex items-center justify-center scale-90 sm:scale-110">
-            <CircularProgress
-              variant="determinate"
-              value={100}
-              size={48}
-              thickness={4.5}
-              sx={{ color: '#334155' }}
-            />
-            <CircularProgress
-              variant="indeterminate"
-              disableShrink
-              size={48}
-              thickness={4.5}
-              sx={{
-                color: '#f59e0b',
-                animationDuration: '1000ms',
-                position: 'absolute',
-                '& .MuiCircularProgress-circle': {
-                  strokeLinecap: 'round',
-                },
-              }}
-            />
-            <Box className="absolute">
-              <IoSparkles className="text-blue-500 text-sm animate-pulse" />
-            </Box>
-          </Box>
-          <div className="text-center px-4">
-            <p className="text-slate-300 font-medium text-sm sm:text-base tracking-tight">
-              Loading School Magazines
-            </p>
-            <p className="text-slate-500 text-[10px] sm:text-xs uppercase tracking-widest mt-1 font-bold">
-              Kinyui Boys Senior School
-            </p>
+      <div className="flex min-h-[75vh] items-center justify-center bg-white px-4">
+        <div className="w-full max-w-md rounded-2xl bg-white p-10 text-center shadow-sm">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-900 text-white">
+            <Loader2 className="h-7 w-7 animate-spin" />
           </div>
-        </Stack>
-      </Box>
+          <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">
+            Preparing Archive
+          </p>
+          <h2 className="mt-3 text-3xl font-black text-slate-950">School Magazine Library</h2>
+          <p className="mt-3 text-sm font-medium leading-7 text-slate-600">
+            Bringing the Kinyui Boys editorial collection into view.
+          </p>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative bg-slate-800 text-white overflow-hidden">
-        <div className="absolute inset-0">
-          <img 
-            src="/hero/kin.jpeg" 
-            alt="Kinyui Hero" 
-            className="w-full h-full object-cover opacity-20" 
-          />
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-          <img 
-            src="/hero/kin.jpeg" 
-            alt="Kinyui Logo" 
-            className="w-1/2 max-w-xs opacity-5" 
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-32">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center"
-          >
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 mb-6">
-              <Sparkles className="w-4 h-4 text-amber-300" />
-              <span className="text-sm font-bold tracking-wide">Digital Archive</span>
-            </div>
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-black mb-6 tracking-tight text-slate-100">
-              School Magazine
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">
-                Archive
+    <div className="min-h-screen bg-white text-slate-950">
+      <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <section className="overflow-hidden rounded-2xl bg-white text-slate-950 shadow-sm">
+          <div className="flex flex-col items-center justify-center px-5 py-10 text-center sm:px-8 sm:py-12 lg:px-12">
+            <div className="inline-flex max-w-full items-center gap-3 rounded-full bg-slate-50 px-4 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-slate-600">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
+                <Image
+                  src="/seo/SchoolLogo.png"
+                  alt="Kinyui Boys Senior School logo"
+                  width={40}
+                  height={40}
+                  className="h-full w-full object-cover"
+                />
               </span>
-            </h1>
-            <p className="text-lg sm:text-xl text-slate-200 max-w-2xl mx-auto leading-relaxed">
-              Discover the rich history and achievements of Kinyui Boys through our digital magazine collection.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mt-16 flex flex-wrap justify-center gap-12"
-          >
-            <div className="text-center group">
-              <div className="text-4xl font-black text-white group-hover:text-amber-400 transition-colors">
-                {stats.totalIssues}
-              </div>
-              <div className="text-slate-200/60 text-xs uppercase tracking-widest font-bold mt-1">Issues</div>
+              Kinyui Boys Senior School
             </div>
-            <div className="text-center group">
-              <div className="text-4xl font-black text-white group-hover:text-amber-400 transition-colors">
-                {stats.totalPages}+
-              </div>
-              <div className="text-slate-200/60 text-xs uppercase tracking-widest font-bold mt-1">Pages</div>
+
+            <div className="mt-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-sm">
+              <BookOpen className="h-8 w-8" />
             </div>
-            <div className="text-center group">
-              <div className="text-4xl font-black text-white group-hover:text-amber-400 transition-colors">
-                {stats.earliestYear || "-"} {stats.latestYear && stats.earliestYear !== stats.latestYear ? `- ${stats.latestYear}` : ""}
-              </div>
-              <div className="text-slate-200/60 text-xs uppercase tracking-widest font-bold mt-1">Timeline</div>
+
+            <div className="mx-auto mt-8 max-w-4xl">
+              <h1 className="text-3xl font-black leading-tight tracking-tight sm:text-5xl">
+                School Magazine
+                <span className="block text-slate-700">Editorial Archive</span>
+              </h1>
+
+              <p className="mx-auto mt-5 max-w-2xl text-sm font-medium leading-7 text-slate-600 sm:text-base">
+                Explore school editions, student stories, achievements, activities, and memories in the same clean public-page experience used across the School Hub.
+              </p>
             </div>
-          </motion.div>
-        </div>
-      </section>
-{/* Search & Filter Section */}
-<section className="sticky top-0 z-30 bg-white shadow-md py-4 px-2 sm:px-6">
-  <div className="max-w-7xl mx-auto">
-    <div className="flex flex-col sm:flex-row gap-4 w-full">
-      
-      {/* Search Input */}
-      <div className="relative flex-1 min-w-[200px]">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-black" size={18} />
-        <input
-          type="text"
-          placeholder="Search by title, year, or description..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 text-black font-semibold rounded-xl text-sm focus:outline-none focus:border-black focus:ring-2 focus:ring-black/20 transition-all"
-        />
-      </div>
 
-      {/* Buttons */}
-      <div className="flex gap-2 flex-wrap">
-        
-        {/* Filter Toggle */}
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className="px-4 py-2.5 bg-white border border-gray-300 text-black font-semibold rounded-xl text-sm flex items-center gap-2 hover:bg-gray-100 transition-all"
-        >
-          <Filter size={16} className="text-black" />
-          Filters
-          {showFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-        </button>
+            <div className="mt-8 grid w-full max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3">
+              {heroStats.map(({ label, value, icon: StatIcon }) => (
+                <div key={label} className="rounded-2xl bg-slate-50 px-5 py-4 text-center">
+                  <StatIcon className="mx-auto mb-3 h-5 w-5 text-slate-500" />
+                  <p className="text-2xl font-black text-slate-950">{value}</p>
+                  <p className="mt-2 text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">
+                    {label}
+                  </p>
+                </div>
+              ))}
+            </div>
 
-        {/* View Mode */}
-        <div className="flex bg-gray-100 rounded-xl p-1 border border-gray-300">
-          <button
-            onClick={() => setViewMode("grid")}
-            className={`p-2 rounded-lg transition-all ${
-              viewMode === "grid"
-                ? "bg-black text-white font-bold shadow-sm"
-                : "text-black"
-            }`}
-          >
-            <Grid3x3 size={18} />
-          </button>
+            {leadIssue && (
+              <div className="mt-8 w-full max-w-3xl rounded-2xl bg-white p-5 text-slate-900 shadow-sm">
+                <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">
+                  Featured Edition
+                </p>
+                <h2 className="mt-2 text-2xl font-black text-slate-900">{leadIssue.title}</h2>
+                <ExpandableDescription
+                  text={leadIssue.description || defaultMagazineDescription}
+                  limit={190}
+                  className="mx-auto mt-3 max-w-2xl text-sm font-medium leading-7 text-slate-600"
+                />
+                <button
+                  type="button"
+                  onClick={() => setSelectedIssue(leadIssue)}
+                  className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800"
+                >
+                  Read Issue
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
 
-          <button
-            onClick={() => setViewMode("list")}
-            className={`p-2 rounded-lg transition-all ${
-              viewMode === "list"
-                ? "bg-black text-white font-bold shadow-sm"
-                : "text-black"
-            }`}
-          >
-            <List size={18} />
-          </button>
-        </div>
-      </div>
-    </div>
+        <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="text-center lg:text-left">
+              <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">
+                Browse Magazines
+              </p>
+              <h2 className="mt-1 text-xl font-black text-slate-950">
+                Find the right edition faster
+              </h2>
+            </div>
 
-    {/* Filters */}
-    <AnimatePresence>
-      {showFilters && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          className="mt-4 pt-4 border-t border-gray-300"
-        >
-          <div className="flex flex-wrap gap-4">
-            
-            {/* Year */}
-            <div className="flex-1 min-w-[150px]">
-              <label className="block text-xs font-semibold text-black mb-1">
-                Year
-              </label>
+            <div className="grid w-full gap-3 lg:max-w-4xl lg:grid-cols-[minmax(0,1fr)_150px_170px_170px]">
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search editions, stories, or years"
+                  className="h-12 w-full rounded-xl bg-slate-50 py-3 pl-11 pr-4 text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-slate-500/10"
+                />
+              </div>
+
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-gray-300 text-black font-semibold rounded-lg text-sm focus:outline-none focus:border-black"
+                className="h-12 rounded-xl bg-slate-50 px-4 text-sm font-bold text-slate-800 outline-none transition focus:bg-white focus:ring-4 focus:ring-slate-500/10"
               >
                 <option value="all">All Years</option>
                 {years.map((year) => (
-                  <option key={year} value={year}>{year}</option>
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
                 ))}
               </select>
-            </div>
 
-            {/* Sort */}
-            <div className="flex-1 min-w-[150px]">
-              <label className="block text-xs font-semibold text-black mb-1">
-                Sort By
-              </label>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-gray-300 text-black font-semibold rounded-lg text-sm focus:outline-none focus:border-black"
+                className="h-12 rounded-xl bg-slate-50 px-4 text-sm font-bold text-slate-800 outline-none transition focus:bg-white focus:ring-4 focus:ring-slate-500/10"
               >
-                <option value="year">Year</option>
-                <option value="title">Title</option>
-                <option value="views">Most Viewed</option>
-                <option value="downloads">Most Downloaded</option>
+                <option value="year">Sort by Year</option>
+                <option value="title">Sort by Title</option>
+                <option value="views">Sort by Views</option>
+                <option value="downloads">Sort by Downloads</option>
               </select>
-            </div>
 
-            {/* Order */}
-            <div className="flex-1 min-w-[150px]">
-              <label className="block text-xs font-semibold text-black mb-1">
-                Order
-              </label>
-              <select
-                value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-gray-300 text-black font-semibold rounded-lg text-sm focus:outline-none focus:border-black"
+              <button
+                type="button"
+                onClick={() => setSortOrder((current) => (current === "desc" ? "asc" : "desc"))}
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-slate-50 px-4 text-sm font-bold text-slate-800 transition hover:bg-slate-100"
               >
-                <option value="desc">Newest First</option>
-                <option value="asc">Oldest First</option>
-              </select>
+                <Filter className="h-4 w-4 text-slate-500" />
+                {sortOrder === "desc" ? "Newest First" : "Oldest First"}
+              </button>
             </div>
-
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  </div>
-</section>
 
-      {/* Magazine Grid/List */}
-      <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto bg-white rounded-2xl">
-        {filteredAndSortedMagazines.length === 0 ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-20"
-          >
-            <BookOpen className="mx-auto text-slate-500 mb-4" size={64} />
-            <h3 className="text-xl font-bold text-slate-900 mb-2">No magazines found</h3>
-            <p className="text-slate-900">Try adjusting your search or filter criteria</p>
+          <div className="mt-4 flex flex-wrap justify-center gap-3 lg:justify-end">
             <button
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedYear("all");
-              }}
-              className="mt-4 px-4 py-2 bg-amber-800 text-white rounded-lg text-sm font-bold hover:bg-amber-700 transition-all"
+              type="button"
+              onClick={() => setViewMode("list")}
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
+                viewMode === "list" ? "bg-slate-900 text-white" : "bg-slate-50 text-slate-700 hover:bg-slate-100"
+              }`}
             >
-              Clear Filters
+              <List className="h-4 w-4" />
+              List
             </button>
-          </motion.div>
-        ) : (
-          <div className={viewMode === "grid" 
-            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" 
-            : "space-y-4"
-          }>
-            {filteredAndSortedMagazines.map((issue, index) => (
-              <MagazineCard
-                key={issue.id || index}
-                issue={issue}
-                onOpen={setSelectedIssue}
-                viewMode={viewMode}
-              />
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 px-4 sm:px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Why Read Our Magazine?</h2>
-            <p className="text-slate-900 mt-2">Every edition captures the essence of Kinyui Boys</p>
+            <button
+              type="button"
+              onClick={() => setViewMode("gallery")}
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
+                viewMode === "gallery" ? "bg-slate-900 text-white" : "bg-slate-50 text-slate-700 hover:bg-slate-100"
+              }`}
+            >
+              <Grid3x3 className="h-4 w-4" />
+              Grid
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowFilters((current) => !current)}
+              className="inline-flex items-center gap-2 rounded-xl bg-slate-50 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-100"
+            >
+              <Sparkles className="h-4 w-4" />
+              Notes
+              {showFilters ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            </button>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <FeatureCard
-              icon={Trophy}
-              title="Achievements"
-              description="Academic and sports excellence recognized and celebrated"
-              color="from-amber-800 to-amber-800"
-            />
-            <FeatureCard
-              icon={Users}
-              title="Student Stories"
-              description="Inspiring journeys and success stories of our young men"
-              color="from-amber-800 to-red-600"
-            />
-            <FeatureCard
-              icon={Calendar}
-              title="Events Coverage"
-              description="Memorable moments from school events and activities"
-              color="from-amber-700 to-amber-800"
-            />
-          </div>
-        </div>
-      </section>
+          <AnimatePresence>
+            {showFilters && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="mt-5 grid gap-3 border-t border-slate-100 pt-5 md:grid-cols-3">
+                  {[
+                    {
+                      icon: Star,
+                      title: "What you will find",
+                      text: "Annual highlights, prize-giving moments, academics, trips, student writing, leadership, and school activities.",
+                    },
+                    {
+                      icon: Clock3,
+                      title: "Reader tip",
+                      text: "Open any edition in the document reader, scroll naturally from top to bottom, and download the PDF when available.",
+                    },
+                    {
+                      icon: Trophy,
+                      title: "Why it matters",
+                      text: "The archive preserves school identity while helping families understand student life, achievement, and culture.",
+                    },
+                  ].map(({ icon: NoteIcon, title, text }) => (
+                    <div key={title} className="rounded-2xl bg-slate-50 p-4">
+                      <NoteIcon className="h-5 w-5 text-slate-500" />
+                      <p className="mt-4 text-sm font-black text-slate-950">{title}</p>
+                      <p className="mt-2 text-sm font-medium leading-7 text-slate-600">{text}</p>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 sm:px-6 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="bg-gradient-to-br from-amber-800 to-amber-800 rounded-3xl p-10 shadow-2xl"
-          >
-            <Sparkles className="text-white mx-auto mb-4" size={32} />
-            <h2 className="text-2xl sm:text-3xl font-black text-white mb-3">
-              Missing an Edition?
-            </h2>
-            <p className="text-amber-100 mb-6">
-              Past magazines are being digitized. Check back soon for more issues!
-            </p>
-            <div className="inline-flex items-center gap-2 text-white/80 text-sm">
-              <Clock size={14} />
-              <span>New issues added annually after publication</span>
+        <section className="mt-8">
+          {filteredAndSortedMagazines.length === 0 ? (
+            <div className="rounded-2xl bg-white p-12 text-center shadow-sm">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100">
+                <BookOpen className="h-10 w-10 text-slate-400" />
+              </div>
+              <h2 className="text-xl font-black text-slate-800">No editions match this search</h2>
+              <p className="mt-2 text-sm font-medium text-slate-500">
+                Try another year, title, or keyword to reopen the archive.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedYear("all");
+                }}
+                className="mt-6 inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800"
+              >
+                Reset Archive
+                <ArrowRight className="h-4 w-4" />
+              </button>
             </div>
-          </motion.div>
-        </div>
-      </section>
+          ) : (
+            <div className="space-y-10">
+              <section>
+                <div className="mb-5 flex flex-col items-center justify-between gap-3 pb-4 text-center sm:flex-row sm:text-left">
+                  <div className="flex flex-col items-center gap-3 sm:flex-row">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-md">
+                      <BookOpen className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-black text-slate-950">Magazine Editions</h2>
+                      <p className="text-xs font-bold uppercase text-slate-500">
+                        {filteredAndSortedMagazines.length}{" "}
+                        {filteredAndSortedMagazines.length === 1 ? "edition" : "editions"} available
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
-      {/* Modals */}
-      {selectedIssue && (
-        <BookReader issue={selectedIssue} onClose={() => setSelectedIssue(null)} />
-      )}
+                <div className={viewMode === "gallery" ? "grid gap-5 md:grid-cols-2 xl:grid-cols-3" : "grid gap-5 rounded-2xl bg-slate-50 p-3 sm:p-4"}>
+                  {filteredAndSortedMagazines.map((issue, index) => (
+                    <MagazineCard
+                      key={issue.id || `${issue.title}-${index}`}
+                      issue={issue}
+                      onOpen={setSelectedIssue}
+                      viewMode={viewMode}
+                      index={index}
+                    />
+                  ))}
+                </div>
+              </section>
+            </div>
+          )}
+        </section>
+
+        <section className="mt-10 grid gap-5 pb-14 md:grid-cols-3">
+          <InfoTile
+            icon={Eye}
+            eyebrow="For Parents"
+            title="See the school culture"
+            text="The archive helps families understand the rhythm of school life, student leadership, academic focus, and the confidence-building atmosphere of the school."
+            tone="ivory"
+          />
+          <InfoTile
+            icon={Users}
+            eyebrow="For Students"
+            title="Follow student voice"
+            text="Stories, photography, reports, and highlights make the editions feel personal while still documenting excellence and growth."
+            tone="emerald"
+          />
+          <InfoTile
+            icon={Sparkles}
+            eyebrow="For The Community"
+            title="Keep the school story alive"
+            text="Each edition becomes a living archive of memory, identity, and achievement, preserving the evolving story of Kinyui Boys Senior School."
+            tone="rose"
+          />
+        </section>
+      </main>
+
+      {selectedIssue && <BookReader issue={selectedIssue} onClose={() => setSelectedIssue(null)} />}
+      <ScrollToTop />
     </div>
   );
 }
