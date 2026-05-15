@@ -57,7 +57,7 @@ export const metadata = {
   applicationName: "S.A. Kinyui Boys Senior School",
 
   title: {
-    default: "S.A. Kinyui Boys Senior School | High School & Secondary School",
+    default: "Kinyui Boys Senior School",
     template: "%s | Kinyui Boys Senior School",
   },
 
