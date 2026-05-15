@@ -996,7 +996,7 @@ export async function GET(request) {
     const where = buildWhereClause(filters);
 
 if (action === 'uploads') {
-  const uploads = await prisma.studentBulkUpload.findMany({
+  const rawUploads = await prisma.studentBulkUpload.findMany({
     orderBy: { uploadDate: 'desc' },
     skip: (page - 1) * limit,
     take: limit,
@@ -1017,6 +1017,12 @@ if (action === 'uploads') {
   });
 
   const total = await prisma.studentBulkUpload.count();
+  const uploads = rawUploads.map((upload) => ({
+    ...upload,
+    status: ['completed', 'success', 'successful'].includes(String(upload.status || '').toLowerCase())
+      ? 'completed'
+      : 'failed'
+  }));
   
   return NextResponse.json({
     success: true,

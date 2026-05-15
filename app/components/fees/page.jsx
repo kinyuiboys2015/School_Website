@@ -3912,7 +3912,10 @@ if (loading && view === 'fees' && schoolFees.length === 0) {
                       </tr>
                     </thead>
                     <tbody className="divide-y-2 divide-gray-200">
-                      {uploadHistory.map(upload => (
+                      {uploadHistory.map(upload => {
+                        const isSuccessfulUpload = ['completed', 'success', 'successful'].includes(String(upload.status || '').toLowerCase());
+
+                        return (
                         <tr key={upload.id}>
                           <td className="px-8 py-6">
                             <div className="flex items-center gap-4">
@@ -3943,13 +3946,11 @@ if (loading && view === 'fees' && schoolFees.length === 0) {
                           </td>
                           <td className="px-8 py-6">
                             <span className={`px-5 py-2.5 rounded-xl text-sm font-bold ${
-                              upload.status === 'completed'
+                              isSuccessfulUpload
                                 ? 'bg-green-100 text-green-800'
-                                : upload.status === 'processing'
-                                ? 'bg-yellow-100 text-yellow-800'
                                 : 'bg-red-100 text-red-800'
                             }`}>
-                              {upload.status.toUpperCase()}
+                              {isSuccessfulUpload ? 'SUCCESSFUL' : 'FAILED'}
                             </span>
                           </td>
                           <td className="px-8 py-6">
@@ -3979,7 +3980,8 @@ if (loading && view === 'fees' && schoolFees.length === 0) {
                             </button>
                           </td>
                         </tr>
-                      ))}
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>

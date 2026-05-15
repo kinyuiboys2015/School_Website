@@ -1246,6 +1246,8 @@ const processNewFeeUpload = async (fees, uploadBatchId, uploadStrategy) => {
 
 // POST - Bulk upload (PROTECTED - authentication required)
 export async function POST(request) {
+  let batchId = null;
+
   try {
     // Step 1: Authenticate the POST request
     const auth = authenticateRequest(request);
@@ -1383,7 +1385,7 @@ export async function POST(request) {
     }
     
     // Create batch record with uploader info
-    const batchId = `FEE_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    batchId = `FEE_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     await prisma.feeBalanceUpload.create({
       data: {
@@ -1478,6 +1480,20 @@ export async function POST(request) {
     
   } catch (error) {
     console.error('❌ Upload error:', error);
+    if (batchId) {
+      await prisma.feeBalanceUpload.update({
+        where: { id: batchId },
+        data: {
+          status: 'failed',
+          processedDate: new Date(),
+          errorRows: 1,
+          errorLog: error.message || 'Upload failed'
+        }
+      }).catch(updateError => {
+        console.error('Failed to mark fee upload batch as failed:', updateError);
+      });
+    }
+
     return NextResponse.json(
       { 
         success: false, 
@@ -1576,7 +1592,7 @@ if (action === 'uploads') {
   if (form) uploadWhere.targetForm = form;
   if (uploadType) uploadWhere.uploadType = uploadType;
   
-  const [uploads, total] = await Promise.all([
+  const [rawUploads, total] = await Promise.all([
     prisma.feeBalanceUpload.findMany({
       where: uploadWhere,
       orderBy: { uploadDate: 'desc' },
@@ -1604,6 +1620,12 @@ if (action === 'uploads') {
     }),
     prisma.feeBalanceUpload.count({ where: uploadWhere })
   ]);
+  const uploads = rawUploads.map((upload) => ({
+    ...upload,
+    status: ['completed', 'success', 'successful'].includes(String(upload.status || '').toLowerCase())
+      ? 'completed'
+      : 'failed'
+  }));
   
   return NextResponse.json({
     success: true,
