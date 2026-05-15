@@ -377,7 +377,7 @@ const jsonLd = {
   name: 'kinyui boys Senior School',
   image: 'https://kinyuiboyssenior.school/seo/kinyui.png',
   logo: 'https://kinyuiboyssenior.school/seo/kinyui.png',
-  description: 'A secondary school committed to academic excellence, integrity, and holistic student development.',
+  description: 'A senior school committed to academic excellence, integrity, and holistic student development.',
   address: {
     '@type': 'PostalAddress',
     'streetAddress': 'kinyui boys',

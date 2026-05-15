@@ -44,6 +44,7 @@ import {
   IoRibbonOutline,
   IoPeopleCircle,
   IoStatsChart,
+  IoShareOutline, 
   IoShareSocialOutline,
   IoClose,
   IoLocationOutline,
