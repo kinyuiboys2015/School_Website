@@ -890,18 +890,18 @@ export default function PublicSchoolHubPage({
         {heroStats.map(({ label, value, icon: StatIcon }, index) => (
           <div
             key={label}
-            className={`min-h-[128px] rounded-2xl border border-slate-200 bg-white p-5 shadow-sm ${
+            className={`min-h-[128px] rounded-2xl border border-white/10 bg-slate-950 p-5 text-white ${
               index === 0 ? 'col-span-2 sm:col-span-1' : ''
             }`}
           >
             <div className="flex items-start justify-between gap-3">
-              <StatIcon className="text-2xl text-amber-700" />
-              <p className="text-3xl font-black leading-none text-slate-950">
+              <StatIcon className="text-2xl text-blue-300" />
+              <p className="text-3xl font-black leading-none">
                 {value}
               </p>
             </div>
 
-            <p className="mt-6 text-[10px] font-black uppercase tracking-widest text-slate-500">
+            <p className="mt-6 text-[10px] font-black uppercase tracking-widest text-white/45">
               {label}
             </p>
           </div>
