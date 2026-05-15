@@ -43,7 +43,6 @@ const secondaryLinks = [
 
 const utilityLinks = [
   { name: 'Student Portal', href: '/pages/StudentPortal', icon: FiFileText },
-  { name: 'School Hub', href: '/pages/school-hub', icon: FiGrid },
   { name: 'Contact', href: '/pages/contact', icon: FiPhone },
   { name: 'Admin Login', href: '/pages/Sign%20In', icon: FiLock, secure: true, rel: 'nofollow' },
 ];
@@ -95,12 +94,6 @@ const academicLinks = [
 ];
 
 const schoolHubLinks = [
-  {
-    name: 'Hub Overview',
-    href: '/pages/school-hub',
-    icon: FiGrid,
-    description: 'Student life, facilities and school programs',
-  },
   {
     name: 'School Security',
     href: '/pages/school-hub/security',
@@ -164,9 +157,23 @@ const schoolHubLinks = [
   },
 ];
 
+const schoolHubGroup = {
+  id: 'schoolHub',
+  label: 'School Hub',
+  icon: FiGrid,
+  links: schoolHubLinks,
+  activePrefix: '/pages/school-hub',
+  description: 'Student life, facilities, leadership and activities',
+};
+
 const navGroups = [
-  { id: 'schoolHub', label: 'School Hub', icon: FiGrid, links: schoolHubLinks },
-  { id: 'academics', label: 'Academics', icon: FiBook, links: academicLinks },
+  {
+    id: 'academics',
+    label: 'Academics',
+    icon: FiBook,
+    links: academicLinks,
+    description: 'Staff, departments, policies and academic life',
+  },
 ];
 
 const mainLinks = [...primaryLinks, ...secondaryLinks];
@@ -229,7 +236,10 @@ export default function ModernNavbar() {
     return exact ? pathname === normalizedHref : pathname.startsWith(normalizedHref);
   };
 
-  const isGroupActive = (links) => links.some((link) => isActiveLink(link.href, link.href === '/pages/school-hub'));
+  const isGroupActive = (group) => {
+    if (group.activePrefix && pathname?.startsWith(group.activePrefix)) return true;
+    return group.links.some((link) => isActiveLink(link.href, link.href === group.activePrefix));
+  };
 
   const closeAll = () => {
     setIsOpen(false);
@@ -244,24 +254,24 @@ export default function ModernNavbar() {
           isScrolled ? 'shadow-xl shadow-slate-950/10' : 'shadow-lg shadow-slate-950/5'
         }`}
       >
-        <div className="hidden border-b border-white/10 bg-[#2d1608] text-white lg:block">
-          <div className="mx-auto flex min-h-[68px] max-w-7xl items-center justify-between gap-6 px-6">
+        <div className="hidden border-b border-white/10 bg-[#23070d] text-white lg:block">
+          <div className="mx-auto flex min-h-[72px] max-w-7xl items-center justify-between gap-6 px-6">
             <a href="/" onClick={closeAll} className="flex min-w-0 items-center gap-3">
-              <div className="h-12 w-12 shrink-0 rounded-2xl bg-white/10 p-1 shadow-lg ring-1 ring-white/15">
+              <div className="h-14 w-14 shrink-0 rounded-2xl bg-white/10 p-1 shadow-lg shadow-black/20 ring-1 ring-white/15">
                 <div className="flex h-full w-full items-center justify-center rounded-xl bg-white">
                   <Image
                     src="/seo/kinyui.png"
                     alt="Kinyui Boys Senior School Logo"
-                    width={36}
-                    height={36}
+                    width={42}
+                    height={42}
                     className="rounded-lg object-contain"
                     priority
                   />
                 </div>
               </div>
               <div className="min-w-0">
-                <p className="truncate text-base font-black tracking-tight text-white">
-                  Kinyui Boys
+                <p className="truncate text-lg font-black tracking-tight text-white">
+                  S.A. Kinyui Boys
                 </p>
                 <p className="truncate text-[10px] font-black uppercase tracking-[0.24em] text-amber-100/70">
                   Senior School | Blessed and Favoured
@@ -269,7 +279,19 @@ export default function ModernNavbar() {
               </div>
             </a>
 
-            <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 p-1.5 shadow-inner shadow-black/10">
+            <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.07] p-1.5 shadow-inner shadow-black/10">
+              <DesktopDropdown
+                group={schoolHubGroup}
+                open={activeDropdown === schoolHubGroup.id}
+                active={isGroupActive(schoolHubGroup)}
+                onOpen={() => setActiveDropdown(schoolHubGroup.id)}
+                onToggle={() => setActiveDropdown(activeDropdown === schoolHubGroup.id ? null : schoolHubGroup.id)}
+                onClose={() => setActiveDropdown(null)}
+                isActiveLink={isActiveLink}
+                closeAll={closeAll}
+                variant="top"
+              />
+
               {utilityLinks.map((item) => (
                 <NavLink key={item.name} item={item} compact isActiveLink={isActiveLink} onClose={closeAll} />
               ))}
@@ -308,60 +330,22 @@ export default function ModernNavbar() {
               ))}
 
               {navGroups.map((group) => {
-                const Icon = group.icon;
                 const open = activeDropdown === group.id;
-                const active = isGroupActive(group.links);
+                const active = isGroupActive(group);
 
                 return (
-                  <div
+                  <DesktopDropdown
                     key={group.id}
-                    className="relative"
-                    onMouseEnter={() => setActiveDropdown(group.id)}
-                  >
-                    <button
-                      onClick={() => setActiveDropdown(open ? null : group.id)}
-                      className={`inline-flex items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-extrabold transition-all ${
-                        open || active
-                          ? 'border-amber-200 bg-amber-50 text-amber-900'
-                          : 'border-transparent text-slate-700 hover:border-slate-200 hover:bg-slate-50'
-                      }`}
-                      aria-expanded={open}
-                      aria-haspopup="true"
-                    >
-                      <Icon className="text-sm" />
-                      <span>{group.label}</span>
-                      <FiChevronDown className={`text-xs transition-transform ${open ? 'rotate-180' : ''}`} />
-                    </button>
-
-                    {open && (
-                      <div
-                        className="absolute left-1/2 top-full z-50 mt-3 w-[540px] -translate-x-1/2 overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-2xl shadow-slate-950/15"
-                        onMouseLeave={() => setActiveDropdown(null)}
-                      >
-                        <div className="bg-gradient-to-br from-[#3b1e0a] to-[#7c3f12] px-5 py-4 text-white">
-                          <div className="flex items-center gap-3">
-                            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/15 bg-white/10">
-                              <Icon />
-                            </div>
-                            <div>
-                              <h3 className="text-sm font-black uppercase tracking-[0.18em]">
-                                {group.label}
-                              </h3>
-                              <p className="mt-1 text-xs font-semibold text-white/65">
-                                Organized links for quick navigation
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-2 p-3">
-                          {group.links.map((item) => (
-                            <DropdownLink key={item.name} item={item} isActiveLink={isActiveLink} onClose={closeAll} />
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                    group={group}
+                    open={open}
+                    active={active}
+                    onOpen={() => setActiveDropdown(group.id)}
+                    onToggle={() => setActiveDropdown(open ? null : group.id)}
+                    onClose={() => setActiveDropdown(null)}
+                    isActiveLink={isActiveLink}
+                    closeAll={closeAll}
+                    variant="main"
+                  />
                 );
               })}
 
@@ -384,7 +368,7 @@ export default function ModernNavbar() {
         {isOpen && (
           <div className="max-h-[calc(100vh-72px)] overflow-y-auto border-b border-slate-200 bg-white shadow-2xl lg:hidden">
             <div className="space-y-5 px-4 py-5 sm:px-6">
-              <div className="grid grid-cols-1 gap-2 xs:grid-cols-2">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {utilityLinks.map((item) => (
                   <NavLink key={item.name} item={item} isActiveLink={isActiveLink} onClose={closeAll} />
                 ))}
@@ -407,7 +391,7 @@ export default function ModernNavbar() {
         )}
       </nav>
 
-      <div className="h-[72px] lg:h-[132px]" />
+      <div className="h-[72px] lg:h-[136px]" />
     </>
   );
 }
@@ -439,6 +423,75 @@ function NavLink({ item, compact = false, isActiveLink, onClose }) {
       <span className="whitespace-nowrap">{item.name}</span>
       {item.external && <FiExternalLink className="text-[11px] opacity-60" />}
     </a>
+  );
+}
+
+function DesktopDropdown({
+  group,
+  open,
+  active,
+  onOpen,
+  onToggle,
+  onClose,
+  isActiveLink,
+  closeAll,
+  variant = 'main',
+}) {
+  const Icon = group.icon;
+  const isTop = variant === 'top';
+
+  return (
+    <div className="relative" onMouseEnter={onOpen}>
+      <button
+        onClick={onToggle}
+        className={`inline-flex items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-extrabold transition-all ${
+          isTop
+            ? open || active
+              ? 'border-amber-200 bg-white text-[#3a0b14] shadow-lg shadow-black/10'
+              : 'border-white/10 bg-white/10 text-white hover:bg-white hover:text-[#3a0b14]'
+            : open || active
+              ? 'border-amber-200 bg-amber-50 text-amber-900'
+              : 'border-transparent text-slate-700 hover:border-slate-200 hover:bg-slate-50'
+        }`}
+        aria-expanded={open}
+        aria-haspopup="true"
+      >
+        <Icon className="shrink-0 text-sm" />
+        <span className="whitespace-nowrap">{group.label}</span>
+        <FiChevronDown className={`text-xs transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+        <div
+          className={`absolute top-full z-50 mt-3 overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-2xl shadow-slate-950/15 ${
+            isTop ? 'right-0 w-[600px]' : 'left-1/2 w-[540px] -translate-x-1/2'
+          }`}
+          onMouseLeave={onClose}
+        >
+          <div className="bg-gradient-to-br from-[#25070d] via-[#5b1020] to-[#a87925] px-5 py-4 text-white">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/15 bg-white/10">
+                <Icon />
+              </div>
+              <div>
+                <h3 className="text-sm font-black uppercase tracking-[0.18em]">
+                  {group.label}
+                </h3>
+                <p className="mt-1 text-xs font-semibold text-white/70">
+                  {group.description || 'Organized links for quick navigation'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2 p-3">
+            {group.links.map((item) => (
+              <DropdownLink key={item.name} item={item} isActiveLink={isActiveLink} onClose={closeAll} />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
