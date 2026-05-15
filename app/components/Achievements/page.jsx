@@ -11,7 +11,10 @@ import {
 import { FiAward, FiTrendingUp, FiTarget } from 'react-icons/fi';
 import { FiUpload, FiX, FiCheck } from 'react-icons/fi';
 import { CircularProgress, Modal, Box, TextareaAutosize } from '@mui/material';
-import { getDefaultAchievements } from '../../data/defaultAchievements';
+import {
+  ACHIEVEMENT_CATEGORIES,
+  getDefaultAchievements,
+} from '../../data/defaultAchievements';
 
 // ==================== LOADING SPINNER ====================
 function ModernLoadingSpinner({ message = "Loading achievements...", size = "medium" }) {
@@ -110,7 +113,7 @@ function TagInput({ label, tags, onTagsChange, placeholder = "Type and press Ent
 }
 
 // ==================== IMAGE UPLOAD COMPONENT ====================
-function ImageUpload({ images, onImagesChange, maxImages = 5 }) {
+function ImageUpload({ images, onImagesChange, onImageRemove, maxImages = 5 }) {
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -147,9 +150,15 @@ function ImageUpload({ images, onImagesChange, maxImages = 5 }) {
 
   const handleRemoveImage = (index) => {
     const newImages = [...images];
-    if (newImages[index].preview) {
-      URL.revokeObjectURL(newImages[index].preview);
+    const removedImage = newImages[index];
+
+    if (removedImage?.file && removedImage.preview) {
+      URL.revokeObjectURL(removedImage.preview);
     }
+    if (!removedImage?.file && removedImage?.url) {
+      onImageRemove?.(removedImage);
+    }
+
     newImages.splice(index, 1);
     onImagesChange(newImages);
   };
@@ -256,7 +265,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
   const [imagesToDelete, setImagesToDelete] = useState([]);
   const [actionLoading, setActionLoading] = useState(false);
 
-  const categories = ['Academic', 'Sports', 'Arts', 'Leadership', 'Other'];
+  const categories = ACHIEVEMENT_CATEGORIES;
 
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -265,8 +274,20 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.category || !formData.year) {
-      toast.error('Please fill in all requiteal fields');
+    const missingFields = [
+      !formData.title.trim() && 'Achievement name',
+      !formData.category && 'Category',
+      !formData.year && 'Year',
+    ].filter(Boolean);
+
+    if (missingFields.length > 0) {
+      toast.error(`Please enter: ${missingFields.join(', ')}`);
+      return;
+    }
+
+    const parsedYear = Number.parseInt(formData.year, 10);
+    if (Number.isNaN(parsedYear) || parsedYear < 1900 || parsedYear > new Date().getFullYear() + 1) {
+      toast.error(`Year must be between 1900 and ${new Date().getFullYear() + 1}`);
       return;
     }
     
@@ -277,7 +298,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
       const deviceToken = localStorage.getItem('device_token');
       
       if (!adminToken || !deviceToken) {
-        throw new Error('Authentication requiteal. Please login again.');
+        throw new Error('Authentication required. Please login again.');
       }
       
       const formDataObj = new FormData();
@@ -286,16 +307,21 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
         formDataObj.append('id', achievement.id);
       }
       
-      formDataObj.append('title', formData.title);
-      formDataObj.append('description', formData.description);
+      formDataObj.append('name', formData.title.trim());
+      formDataObj.append('title', formData.title.trim());
+      formDataObj.append('description', formData.description.trim());
       formDataObj.append('category', formData.category);
       formDataObj.append('year', formData.year);
-      formDataObj.append('awardingBody', formData.awardingBody);
+      formDataObj.append('awardingBody', formData.awardingBody.trim());
       formDataObj.append('recipients', JSON.stringify(formData.recipients));
-      formDataObj.append('featured', formData.featured);
-      formDataObj.append('isActive', formData.isActive);
+      formDataObj.append('featured', String(formData.featured));
+      formDataObj.append('isActive', String(formData.isActive));
       formDataObj.append('displayOrder', formData.displayOrder);
       formDataObj.append('achievedDate', formData.achievedDate);
+      formDataObj.append(
+        'imageCaptions',
+        JSON.stringify(images.filter((img) => img.file).map((img) => img.caption || ''))
+      );
       
       // Add new images
       images.forEach(img => {
@@ -327,9 +353,10 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
       
       if (!response.ok) {
         if (response.status === 401) {
-          throw new Error('Session expiteal. Please login again.');
+          throw new Error('Session expired. Please login again.');
         }
-        throw new Error(data.error || 'Failed to save achievement');
+        const fieldErrors = data.fieldErrors ? Object.values(data.fieldErrors).join(', ') : '';
+        throw new Error(fieldErrors || data.error || 'Failed to save achievement');
       }
       
       toast.success(data.message);
@@ -366,10 +393,17 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
         
         <div className="max-h-[calc(90vh-80px)] overflow-y-auto p-6">
           <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+              <p className="text-xs font-black uppercase tracking-[0.16em] text-amber-700">Required details</p>
+              <p className="mt-1 text-sm font-semibold leading-6 text-amber-900">
+                Enter the achievement name, category, and year before saving. Add the award body, date, recipients, and photos when available.
+              </p>
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
                 <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Title <span className="text-teal-500">*</span>
+                  Achievement Name <span className="text-teal-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -377,7 +411,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
                   onChange={(e) => handleChange('title', e.target.value)}
                   placeholder="e.g., Kenya Science Fair"
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  requiteal
+                  required
                 />
               </div>
               
@@ -389,7 +423,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
                   value={formData.category}
                   onChange={(e) => handleChange('category', e.target.value)}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  requiteal
+                  required
                 >
                   {categories.map(cat => (
                     <option key={cat} value={cat}>{cat}</option>
@@ -405,10 +439,10 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
                   type="number"
                   value={formData.year}
                   onChange={(e) => handleChange('year', e.target.value)}
-                  min="2000"
+                  min="1900"
                   max={new Date().getFullYear() + 1}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  requiteal
+                  required
                 />
               </div>
               
@@ -457,6 +491,11 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
                 <ImageUpload
                   images={images}
                   onImagesChange={setImages}
+                  onImageRemove={(image) => {
+                    if (image?.url) {
+                      setImagesToDelete((prev) => [...new Set([...prev, image.url])]);
+                    }
+                  }}
                   maxImages={5}
                 />
               </div>
@@ -557,7 +596,7 @@ function SchoolStatsModal({ onClose, onSave, stats, loading }) {
       const deviceToken = localStorage.getItem('device_token');
       
       if (!adminToken || !deviceToken) {
-        throw new Error('Authentication requiteal. Please login again.');
+        throw new Error('Authentication required. Please login again.');
       }
       
       const method = isEditMode ? 'PUT' : 'POST';
@@ -583,7 +622,7 @@ function SchoolStatsModal({ onClose, onSave, stats, loading }) {
       
       if (!response.ok) {
         if (response.status === 401) {
-          throw new Error('Session expiteal. Please login again.');
+          throw new Error('Session expired. Please login again.');
         }
         throw new Error(data.error || 'Failed to save school stats');
       }
@@ -916,7 +955,7 @@ export default function AchievementsPage() {
       const deviceToken = localStorage.getItem('device_token');
       
       if (!adminToken || !deviceToken) {
-        throw new Error('Authentication requiteal. Please login again.');
+        throw new Error('Authentication required. Please login again.');
       }
       
       const response = await fetch(`/api/achievements?id=${deleteId}`, {

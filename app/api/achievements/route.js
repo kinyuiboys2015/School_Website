@@ -46,7 +46,7 @@ class DeviceTokenManager {
         }
         
         const userRole = adminPayload.role || adminPayload.userRole;
-        const validRoles = ['ADMIN', 'SUPER_ADMIN', 'administrator', 'PRINCIPAL'];
+        const validRoles = ['ADMIN', 'SUPER_ADMIN', 'ADMINISTRATOR', 'PRINCIPAL'];
         
         if (!userRole || !validRoles.includes(userRole.toUpperCase())) {
           return { 
@@ -135,17 +135,34 @@ const authenticateRequest = (req) => {
 
 // ============ HELPER FUNCTIONS ============
 
+const normalizeJsonArray = (value) => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (!trimmed) return [];
+    try {
+      const parsed = JSON.parse(trimmed);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      console.warn("Failed to parse JSON array:", error);
+      return [];
+    }
+  }
+  return [];
+};
+
 const parseJsonField = (value, fieldName) => {
-  if (!value || value.trim() === '') {
+  if (Array.isArray(value)) return value;
+  const raw = value === undefined || value === null ? "" : String(value);
+
+  if (raw.trim() === '') {
     return fieldName === 'images' || fieldName === 'recipients' ? [] : null;
   }
-  
-  if (Array.isArray(value)) {
-    return value;
-  }
-  
+
   try {
-    return JSON.parse(value);
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
   } catch (parseError) {
     console.warn(`Failed to parse ${fieldName}, using empty array:`, parseError);
     return [];
@@ -153,26 +170,58 @@ const parseJsonField = (value, fieldName) => {
 };
 
 const parseNumber = (value) => {
-  if (!value || value.trim() === '') return null;
+  if (value === undefined || value === null || String(value).trim() === '') return null;
   const num = parseFloat(value);
   return isNaN(num) ? null : num;
 };
 
 const parseIntField = (value) => {
-  if (!value || value.trim() === '') return null;
+  if (value === undefined || value === null || String(value).trim() === '') return null;
   const num = parseInt(value);
   return isNaN(num) ? null : num;
 };
 
 const parseDate = (dateString) => {
-  if (!dateString || dateString.trim() === '') return null;
+  if (!dateString || String(dateString).trim() === '') return null;
   const date = new Date(dateString);
   return isNaN(date.getTime()) ? null : date;
 };
 
-const parseBoolean = (value) => {
-  if (value === undefined || value === null) return false;
-  return value === 'true' || value === true;
+const parseBoolean = (value, defaultValue = false) => {
+  if (value === undefined || value === null || value === '') return defaultValue;
+  if (typeof value === 'boolean') return value;
+  return ['true', '1', 'yes', 'on'].includes(String(value).toLowerCase());
+};
+
+const getFormString = (formData, keys, fallback = "") => {
+  const keyList = Array.isArray(keys) ? keys : [keys];
+  for (const key of keyList) {
+    const value = formData.get(key);
+    if (value !== null && value !== undefined) {
+      const normalized = String(value).trim();
+      if (normalized) return normalized;
+    }
+  }
+  return fallback;
+};
+
+const validateAchievementDetails = ({ title, category, year }) => {
+  const fieldErrors = {};
+
+  if (!title) fieldErrors.name = "Achievement name is required";
+  if (!category) fieldErrors.category = "Category is required";
+  if (!year) fieldErrors.year = "Year is required";
+  if (year && (year < 1900 || year > new Date().getFullYear() + 1)) {
+    fieldErrors.year = `Year must be between 1900 and ${new Date().getFullYear() + 1}`;
+  }
+  if (category && !ACHIEVEMENT_CATEGORIES.includes(category)) {
+    fieldErrors.category = `Category must be one of: ${ACHIEVEMENT_CATEGORIES.join(", ")}`;
+  }
+
+  return {
+    valid: Object.keys(fieldErrors).length === 0,
+    fieldErrors,
+  };
 };
 
 // ============ CLOUDINARY FUNCTIONS ============
@@ -227,14 +276,14 @@ const deleteFromCloudinary = async (url) => {
   }
 };
 
-const handleImagesUpload = async (imageFiles, existingImages = []) => {
+const handleImagesUpload = async (imageFiles, existingImages = [], captions = []) => {
   const images = [...existingImages];
   
   if (!imageFiles || imageFiles.length === 0) {
     return images;
   }
 
-  for (const file of imageFiles) {
+  for (const [index, file] of imageFiles.entries()) {
     if (file && file.size > 0) {
       if (!file.type.startsWith('image/')) {
         throw new Error('Only image files are allowed');
@@ -248,7 +297,7 @@ const handleImagesUpload = async (imageFiles, existingImages = []) => {
       images.push({
         url: result.url,
         public_id: result.public_id,
-        caption: ''
+        caption: captions[index] || ''
       });
     }
   }
@@ -263,17 +312,13 @@ const cleanAchievementResponse = (achievement) => {
     let recipients = [];
     
     try {
-      images = typeof achievement.images === 'string' 
-        ? JSON.parse(achievement.images || '[]') 
-        : (achievement.images || []);
+      images = normalizeJsonArray(achievement.images);
     } catch (e) {
       console.warn("Error parsing images:", e);
     }
     
     try {
-      recipients = typeof achievement.recipients === 'string' 
-        ? JSON.parse(achievement.recipients || '[]') 
-        : (achievement.recipients || []);
+      recipients = normalizeJsonArray(achievement.recipients);
     } catch (e) {
       console.warn("Error parsing recipients:", e);
     }
@@ -290,6 +335,10 @@ const cleanAchievementResponse = (achievement) => {
       isActive: achievement.isActive,
       awardingBody: achievement.awardingBody,
       recipients,
+      createdBy: achievement.createdBy,
+      createdByName: achievement.createdByName,
+      updatedBy: achievement.updatedBy,
+      updatedByName: achievement.updatedByName,
       achievedDate: achievement.achievedDate,
       createdAt: achievement.createdAt,
       updatedAt: achievement.updatedAt
@@ -510,16 +559,21 @@ export async function POST(req) {
     
     const formData = await req.formData();
     
-    // Validate required fields
-    const title = formData.get("title");
-    const category = formData.get("category");
-    const year = formData.get("year");
-    
-    if (!title || !category || !year) {
+    // Validate required fields. The admin UI calls this "Achievement Name";
+    // the API accepts both name and title for backwards compatibility.
+    const title = getFormString(formData, ["name", "title"]);
+    const category = getFormString(formData, "category");
+    const year = parseIntField(formData.get("year"));
+    const validation = validateAchievementDetails({ title, category, year });
+
+    if (!validation.valid) {
       return NextResponse.json(
         { 
           success: false, 
-          error: "Missing required fields: title, category, year",
+          error: "Please enter the required achievement details.",
+          requiredFields: ["name", "category", "year"],
+          fieldErrors: validation.fieldErrors,
+          allowedCategories: ACHIEVEMENT_CATEGORIES,
           authenticated: true
         },
         { status: 400 }
@@ -528,10 +582,11 @@ export async function POST(req) {
 
     // Handle images upload
     const imageFiles = formData.getAll("images");
+    const imageCaptions = parseJsonField(formData.get("imageCaptions") || "[]", "imageCaptions") || [];
     let images = [];
     
     try {
-      images = await handleImagesUpload(imageFiles.filter(f => f && f.size > 0), []);
+      images = await handleImagesUpload(imageFiles.filter(f => f && f.size > 0), [], imageCaptions);
     } catch (imageError) {
       return NextResponse.json(
         { 
@@ -554,15 +609,19 @@ export async function POST(req) {
     // Create achievement
     const achievementData = {
       title,
-      description: formData.get("description") || null,
+      description: getFormString(formData, "description") || null,
       category,
-      year: parseIntField(year),
+      year,
       images,
       featured: parseBoolean(formData.get("featured")),
       displayOrder: parseIntField(formData.get("displayOrder")) || 0,
-      isActive: parseBoolean(formData.get("isActive")),
-      awardingBody: formData.get("awardingBody") || null,
+      isActive: parseBoolean(formData.get("isActive"), true),
+      awardingBody: getFormString(formData, "awardingBody") || null,
       recipients,
+      createdBy: auth.user.id || null,
+      createdByName: auth.user.name || auth.user.email || null,
+      updatedBy: auth.user.id || null,
+      updatedByName: auth.user.name || auth.user.email || null,
       achievedDate: parseDate(formData.get("achievedDate"))
     };
 
@@ -637,12 +696,12 @@ export async function PUT(req) {
     const keepExistingImages = formData.get("keepExistingImages") === 'true';
     const imagesToDelete = formData.get("imagesToDelete");
     
-    let images = keepExistingImages ? (existing.images || []) : [];
+    let images = keepExistingImages ? normalizeJsonArray(existing.images) : [];
     
     // Delete images marked for removal
     if (imagesToDelete) {
       try {
-        const deleteUrls = JSON.parse(imagesToDelete);
+        const deleteUrls = normalizeJsonArray(imagesToDelete);
         for (const url of deleteUrls) {
           await deleteFromCloudinary(url);
         }
@@ -653,8 +712,9 @@ export async function PUT(req) {
     }
     
     // Upload new images
+    const imageCaptions = parseJsonField(formData.get("imageCaptions") || "[]", "imageCaptions") || [];
     try {
-      const newImages = await handleImagesUpload(imageFiles.filter(f => f && f.size > 0), []);
+      const newImages = await handleImagesUpload(imageFiles.filter(f => f && f.size > 0), [], imageCaptions);
       images = [...images, ...newImages];
     } catch (imageError) {
       return NextResponse.json(
@@ -668,9 +728,9 @@ export async function PUT(req) {
     }
 
     // Parse recipients
-    let recipients = existing.recipients;
+    let recipients = normalizeJsonArray(existing.recipients);
     const recipientsField = formData.get("recipients");
-    if (recipientsField) {
+    if (recipientsField !== null) {
       try {
         recipients = parseJsonField(recipientsField, "recipients");
       } catch (parseError) {
@@ -678,19 +738,44 @@ export async function PUT(req) {
       }
     }
 
+    const nextTitle = getFormString(formData, ["name", "title"], existing.title);
+    const nextCategory = getFormString(formData, "category", existing.category);
+    const nextYear = formData.has("year") ? parseIntField(formData.get("year")) : existing.year;
+    const validation = validateAchievementDetails({
+      title: nextTitle,
+      category: nextCategory,
+      year: nextYear,
+    });
+
+    if (!validation.valid) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Please enter the required achievement details.",
+          requiredFields: ["name", "category", "year"],
+          fieldErrors: validation.fieldErrors,
+          allowedCategories: ACHIEVEMENT_CATEGORIES,
+          authenticated: true,
+        },
+        { status: 400 }
+      );
+    }
+
     // Prepare update data
     const updateData = {
-      title: formData.get("title") || existing.title,
-      description: formData.get("description") !== null ? formData.get("description") : existing.description,
-      category: formData.get("category") || existing.category,
-      year: formData.get("year") ? parseIntField(formData.get("year")) : existing.year,
+      title: nextTitle,
+      description: formData.has("description") ? getFormString(formData, "description") || null : existing.description,
+      category: nextCategory,
+      year: nextYear,
       images,
-      featured: formData.get("featured") !== null ? parseBoolean(formData.get("featured")) : existing.featured,
-      displayOrder: formData.get("displayOrder") ? parseIntField(formData.get("displayOrder")) : existing.displayOrder,
-      isActive: formData.get("isActive") !== null ? parseBoolean(formData.get("isActive")) : existing.isActive,
-      awardingBody: formData.get("awardingBody") !== null ? formData.get("awardingBody") : existing.awardingBody,
+      featured: formData.has("featured") ? parseBoolean(formData.get("featured")) : existing.featured,
+      displayOrder: formData.has("displayOrder") ? parseIntField(formData.get("displayOrder")) || 0 : existing.displayOrder,
+      isActive: formData.has("isActive") ? parseBoolean(formData.get("isActive"), true) : existing.isActive,
+      awardingBody: formData.has("awardingBody") ? getFormString(formData, "awardingBody") || null : existing.awardingBody,
       recipients,
-      achievedDate: formData.get("achievedDate") ? parseDate(formData.get("achievedDate")) : existing.achievedDate,
+      achievedDate: formData.has("achievedDate") ? parseDate(formData.get("achievedDate")) : existing.achievedDate,
+      updatedBy: auth.user.id || null,
+      updatedByName: auth.user.name || auth.user.email || null,
       updatedAt: new Date()
     };
 
@@ -763,8 +848,9 @@ export async function DELETE(req) {
     }
 
     // Delete images from Cloudinary
-    if (existing.images && existing.images.length > 0) {
-      for (const image of existing.images) {
+    const existingImages = normalizeJsonArray(existing.images);
+    if (existingImages.length > 0) {
+      for (const image of existingImages) {
         if (image.url) {
           await deleteFromCloudinary(image.url);
         }

@@ -41,7 +41,7 @@ class DeviceTokenManager {
         }
         
         const userRole = adminPayload.role || adminPayload.userRole;
-        const validRoles = ['ADMIN', 'SUPER_ADMIN', 'administrator', 'PRINCIPAL'];
+        const validRoles = ['ADMIN', 'SUPER_ADMIN', 'ADMINISTRATOR', 'PRINCIPAL'];
         
         if (!userRole || !validRoles.includes(userRole.toUpperCase())) {
           return { 

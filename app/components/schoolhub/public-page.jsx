@@ -852,7 +852,7 @@ export default function PublicSchoolHubPage({
     <div className="min-h-screen bg-[#f8fafc] text-gray-900">
       <GalleryModal item={active} onClose={() => setActive(null)} />
 <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-  <section className="overflow-hidden rounded-2xl bg-white text-slate-950 shadow-sm ring-1 ring-slate-200">
+  <section className="overflow-hidden rounded-2xl bg-transparent text-slate-950">
     <div className="grid gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch lg:px-10 lg:py-10">
       <div className="flex flex-col justify-center">
       <div className="inline-flex max-w-full items-center gap-3 rounded-full bg-amber-50 px-4 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-amber-900">
@@ -918,27 +918,6 @@ export default function PublicSchoolHubPage({
         <h2 className="mt-2 text-2xl font-black text-white">
           {SCHOOL_INFO.motto}
         </h2>
-
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          {[
-            { icon: FiMapPin, label: SCHOOL_INFO.location },
-            { icon: FiPhone, label: SCHOOL_INFO.phone },
-            { icon: FiMail, label: SCHOOL_INFO.email },
-          ].map(({ icon: InfoIcon, label }) => (
-            <div
-              key={label}
-              className="rounded-xl bg-white/10 p-4"
-            >
-              <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-slate-950">
-                <InfoIcon />
-              </span>
-
-              <span className="text-sm font-bold leading-6 text-white/80">
-                {label}
-              </span>
-            </div>
-          ))}
-        </div>
         </div>
       </div>
     </div>
@@ -948,11 +927,11 @@ export default function PublicSchoolHubPage({
     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
       <div className="text-center lg:text-left">
         <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">
-          Browse School Life
+          Explore School Life
         </p>
 
         <h2 className="mt-1 text-xl font-black text-slate-950">
-          Find the right information faster
+          Search clubs, departments, leadership, boarding, and campus services
         </h2>
       </div>
 

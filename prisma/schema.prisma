@@ -462,6 +462,10 @@ model Achievement {
   // Additional metadata
   awardingBody String? @db.VarChar(255)
   recipients   Json    @default("[]") // Array of recipient names
+  createdBy     String? @db.VarChar(191)
+  createdByName String? @db.VarChar(255)
+  updatedBy     String? @db.VarChar(191)
+  updatedByName String? @db.VarChar(255)
 
   // Timestamps
   achievedDate DateTime?
@@ -472,6 +476,8 @@ model Achievement {
   @@index([year])
   @@index([featured])
   @@index([isActive])
+  @@index([achievedDate])
+  @@index([createdBy])
   @@map("Achievement")
 }
 
