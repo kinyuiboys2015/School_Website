@@ -2,14 +2,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { Toaster, toast } from 'sonner';
 import { 
-  FaTrophy, FaEdit, FaTrash, FaPlus, FaTimes, FaSave,
-  FaImage, FaCalendar, FaUsers, FaStar, FaMedal,
+  FaTrophy, FaTrash, FaPlus, FaTimes, FaSave,
+  FaImage, FaStar, FaMedal,
   FaGraduationCap, FaFutbol, FaPalette, FaUsersCog,
   FaChartLine, FaBullseye, FaQuoteRight, FaSync,
-  FaChevronDown, FaChevronUp, FaEye, FaEyeSlash
+  FaChevronDown, FaChevronUp, FaEyeSlash
 } from 'react-icons/fa';
-import { FiAward, FiTrendingUp, FiTarget } from 'react-icons/fi';
-import { FiUpload, FiX, FiCheck } from 'react-icons/fi';
 import { CircularProgress, Modal, Box, TextareaAutosize } from '@mui/material';
 import {
   ACHIEVEMENT_CATEGORIES,
@@ -233,6 +231,189 @@ function ImageUpload({ images, onImagesChange, onImageRemove, maxImages = 5 }) {
         </div>
       )}
     </div>
+  );
+}
+
+const ACHIEVEMENT_CARD_STYLES = {
+  Academic: {
+    badge: 'bg-blue-50 text-blue-700 border-blue-100',
+    icon: 'bg-blue-100 text-blue-700',
+    dot: 'bg-blue-500',
+    panel: 'bg-blue-50 border-blue-100 text-blue-800',
+  },
+  Sports: {
+    badge: 'bg-red-50 text-red-700 border-red-100',
+    icon: 'bg-red-100 text-red-700',
+    dot: 'bg-red-500',
+    panel: 'bg-red-50 border-red-100 text-red-800',
+  },
+  Arts: {
+    badge: 'bg-purple-50 text-purple-700 border-purple-100',
+    icon: 'bg-purple-100 text-purple-700',
+    dot: 'bg-purple-500',
+    panel: 'bg-purple-50 border-purple-100 text-purple-800',
+  },
+  Leadership: {
+    badge: 'bg-orange-50 text-orange-700 border-orange-100',
+    icon: 'bg-orange-100 text-orange-700',
+    dot: 'bg-orange-500',
+    panel: 'bg-orange-50 border-orange-100 text-orange-800',
+  },
+  Cultural: {
+    badge: 'bg-amber-50 text-amber-700 border-amber-100',
+    icon: 'bg-amber-100 text-amber-700',
+    dot: 'bg-amber-500',
+    panel: 'bg-amber-50 border-amber-100 text-amber-800',
+  },
+  Debate: {
+    badge: 'bg-cyan-50 text-cyan-700 border-cyan-100',
+    icon: 'bg-cyan-100 text-cyan-700',
+    dot: 'bg-cyan-500',
+    panel: 'bg-cyan-50 border-cyan-100 text-cyan-800',
+  },
+  Other: {
+    badge: 'bg-slate-50 text-slate-700 border-slate-100',
+    icon: 'bg-slate-100 text-slate-700',
+    dot: 'bg-slate-500',
+    panel: 'bg-slate-50 border-slate-100 text-slate-800',
+  },
+};
+
+function AchievementItemCard({ achievement, category, icon: Icon, onEdit, onDelete }) {
+  const styles = ACHIEVEMENT_CARD_STYLES[category] || ACHIEVEMENT_CARD_STYLES.Other;
+  const image = achievement?.images?.[0]?.url;
+  const photoCount = Array.isArray(achievement?.images) ? achievement.images.length : 0;
+  const recipients = Array.isArray(achievement?.recipients) ? achievement.recipients : [];
+  const achievedDate = achievement?.achievedDate
+    ? new Date(achievement.achievedDate).toLocaleDateString()
+    : null;
+
+  return (
+    <article className="flex h-full flex-col overflow-hidden rounded-[2rem] border border-gray-100 bg-white shadow-xl">
+      <div className="relative h-56 w-full overflow-hidden bg-gray-50">
+        {image ? (
+          <img
+            src={image}
+            alt={achievement.title}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 text-gray-400">
+            <FaTrophy className="mb-3 text-5xl" />
+            <span className="text-sm font-bold">No Image</span>
+          </div>
+        )}
+
+        <div className="absolute left-4 right-4 top-4 flex items-start justify-between gap-3">
+          <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-black uppercase tracking-wider shadow-sm backdrop-blur-md ${styles.badge}`}>
+            <Icon className="text-xs" /> {category}
+          </span>
+
+          <div className="flex flex-col items-end gap-2">
+            {achievement.featured && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow-sm">
+                <FaStar className="text-xs" /> Featured
+              </span>
+            )}
+            {!achievement.isActive && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-slate-900/80 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow-sm">
+                <FaEyeSlash className="text-xs" /> Hidden
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <div className="mb-5">
+          <h3 className="line-clamp-2 text-xl font-black leading-tight text-slate-900">
+            {achievement.title}
+          </h3>
+          <p className="mt-2 line-clamp-2 text-sm font-medium leading-6 text-slate-500">
+            {achievement.description || 'No description has been added yet.'}
+          </p>
+        </div>
+
+        <div className="mb-5 grid grid-cols-2 gap-3">
+          <div className="space-y-1 rounded-2xl bg-slate-50 p-3">
+            <span className="block text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">Year</span>
+            <div className="flex items-center gap-2">
+              <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${styles.dot}`} />
+              <span className="text-xs font-black text-slate-800">{achievement.year}</span>
+            </div>
+          </div>
+
+          <div className="space-y-1 rounded-2xl bg-slate-50 p-3">
+            <span className="block text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">Photos</span>
+            <div className="flex items-center gap-2">
+              <FaImage className="text-slate-400" />
+              <span className="text-xs font-black text-slate-800">{photoCount}</span>
+            </div>
+          </div>
+
+          <div className={`col-span-2 rounded-2xl border p-3 ${styles.panel}`}>
+            <span className="block text-[9px] font-black uppercase tracking-[0.12em] opacity-70">
+              Awarding Body
+            </span>
+            <span className="mt-1 block truncate text-xs font-black">
+              {achievement.awardingBody || 'School Award'}
+            </span>
+          </div>
+
+          {(achievedDate || recipients.length > 0) && (
+            <div className="col-span-2 grid grid-cols-2 gap-3">
+              {achievedDate && (
+                <div className="rounded-2xl bg-slate-50 p-3">
+                  <span className="block text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">Date</span>
+                  <span className="mt-1 block text-xs font-black text-slate-800">{achievedDate}</span>
+                </div>
+              )}
+
+              {recipients.length > 0 && (
+                <div className="rounded-2xl bg-slate-50 p-3">
+                  <span className="block text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">Recipients</span>
+                  <span className="mt-1 block text-xs font-black text-slate-800">{recipients.length}</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {recipients.length > 0 && (
+          <div className="mb-5 flex flex-wrap gap-2">
+            {recipients.slice(0, 3).map((recipient, index) => (
+              <span key={`${recipient}-${index}`} className="rounded-full bg-gray-100 px-3 py-1 text-[11px] font-bold text-gray-600">
+                {recipient}
+              </span>
+            ))}
+            {recipients.length > 3 && (
+              <span className="rounded-full bg-gray-100 px-3 py-1 text-[11px] font-bold text-gray-600">
+                +{recipients.length - 3} more
+              </span>
+            )}
+          </div>
+        )}
+
+        <div className="mt-auto flex items-center gap-3 border-t border-gray-100 pt-4">
+          <button
+            type="button"
+            onClick={() => onEdit(achievement)}
+            className="flex-1 rounded-2xl bg-slate-900 px-5 py-3 text-[11px] font-black uppercase tracking-widest text-white active:scale-[0.98]"
+          >
+            Edit
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onDelete(achievement.id, achievement.title)}
+            className="rounded-2xl border border-red-100 bg-red-50 p-3 text-red-500 active:bg-red-100"
+            aria-label={`Delete ${achievement.title}`}
+          >
+            <FaTrash className="text-base" />
+          </button>
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -1164,114 +1345,62 @@ export default function AchievementsPage() {
   </section>
 )}
       {/* Achievements by Category */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         {Object.entries(achievements).map(([category, items]) => {
           const Icon = categoryIcons[category];
           const gradientClass = categoryColors[category];
+          const sortedItems = [...items].sort((a, b) => {
+            if ((a.displayOrder ?? 0) !== (b.displayOrder ?? 0)) {
+              return (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
+            }
+            if ((b.year ?? 0) !== (a.year ?? 0)) return (b.year ?? 0) - (a.year ?? 0);
+            return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+          });
           
           if (items.length === 0) return null;
           
           return (
-            <div key={category} className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <section key={category} className="overflow-hidden rounded-[2rem] border border-gray-100 bg-white shadow-xl">
               <button
                 onClick={() => toggleCategory(category)}
-                className={`w-full bg-gradient-to-r ${gradientClass} p-4 flex items-center justify-between gap-3 text-white`}
+                className={`w-full bg-gradient-to-r ${gradientClass} p-5 sm:p-6 flex items-center justify-between gap-3 text-white`}
               >
                 <div className="min-w-0 flex items-center gap-3">
-                  <Icon className="text-xl shrink-0" />
-                  <h2 className="truncate text-base sm:text-lg font-bold">{category} Achievements</h2>
-                  <span className="shrink-0 bg-white/20 px-3 py-1 rounded-full text-sm">
-                    {items.length}
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/20">
+                    <Icon className="text-xl" />
                   </span>
+                  <div className="min-w-0 text-left">
+                    <h2 className="truncate text-lg font-black sm:text-xl">{category} Achievements</h2>
+                    <p className="mt-1 text-xs font-bold uppercase tracking-wider text-white/75">
+                      {items.length} {items.length === 1 ? 'record' : 'records'} organized by latest and display order
+                    </p>
+                  </div>
                 </div>
-                <span className="shrink-0">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white/20">
                   {expandedCategories[category] ? <FaChevronUp /> : <FaChevronDown />}
                 </span>
               </button>
               
               {expandedCategories[category] && (
-                <div className="p-4">
-                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                    {items.map((achievement, index) => {
-                      const isFeatured = index === 0;
-
-                      return (
-                      <div
+                <div className="bg-slate-50/70 p-4 sm:p-6">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                    {sortedItems.map((achievement) => (
+                      <AchievementItemCard
                         key={achievement.id}
-                        className={`${isFeatured ? 'col-span-2 lg:col-span-1' : ''} border border-gray-200 rounded-xl p-3 sm:p-4 bg-white`}
-                      >
-                        {achievement.images && achievement.images.length > 0 && (
-                          <div className={`${isFeatured ? 'h-44 sm:h-52 lg:h-40' : 'h-28 sm:h-40'} mb-3 overflow-hidden rounded-lg`}>
-                            <img
-                              src={achievement.images[0].url}
-                              alt={achievement.title}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        )}
-                        
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="min-w-0 flex-1">
-                            <h3 className={`${isFeatured ? 'text-base sm:text-lg' : 'text-sm sm:text-base'} font-bold text-gray-800 mb-1 line-clamp-2`}>
-                              {achievement.title}
-                            </h3>
-                            <p className="text-xs sm:text-sm text-gray-500 mb-2">
-                              {achievement.year}
-                              {achievement.awardingBody && ` • ${achievement.awardingBody}`}
-                            </p>
-                            {achievement.description && (
-                              <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">{achievement.description}</p>
-                            )}
-                            {achievement.recipients && achievement.recipients.length > 0 && (
-                              <div className="mt-2 flex flex-wrap gap-1">
-                                {achievement.recipients.slice(0, 3).map((recipient, i) => (
-                                  <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded">
-                                    {recipient}
-                                  </span>
-                                ))}
-                                {achievement.recipients.length > 3 && (
-                                  <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                                    +{achievement.recipients.length - 3} more
-                                  </span>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                          
-                          <div className="flex shrink-0 gap-1">
-                            {achievement.featured && (
-                              <FaStar className="text-yellow-500" title="Featured" />
-                            )}
-                            {!achievement.isActive && (
-                              <FaEyeSlash className="text-gray-400" title="Inactive" />
-                            )}
-                          </div>
-                        </div>
-                        
-                        <div className="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-gray-100">
-                          <button
-                            onClick={() => {
-                              setSelectedAchievement(achievement);
-                              setShowAchievementModal(true);
-                            }}
-                            className="flex items-center justify-center gap-1 px-2 sm:px-3 py-2 bg-green-50 text-green-700 rounded-lg text-xs sm:text-sm font-bold"
-                          >
-                            <FaEdit className="text-xs" /> Edit
-                          </button>
-                          <button
-                            onClick={() => handleDeleteClick(achievement.id, achievement.title)}
-                            className="flex items-center justify-center gap-1 px-2 sm:px-3 py-2 bg-teal-50 text-teal-700 rounded-lg text-xs sm:text-sm font-bold"
-                          >
-                            <FaTrash className="text-xs" /> Delete
-                          </button>
-                        </div>
-                      </div>
-                    );
-                    })}
+                        achievement={achievement}
+                        category={category}
+                        icon={Icon}
+                        onEdit={(item) => {
+                          setSelectedAchievement(item);
+                          setShowAchievementModal(true);
+                        }}
+                        onDelete={handleDeleteClick}
+                      />
+                    ))}
                   </div>
                 </div>
               )}
-            </div>
+            </section>
           );
         })}
       </div>
