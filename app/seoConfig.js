@@ -98,7 +98,7 @@ export const publicSitePages = [
     path: "/pages/school-hub/security",
     title: "Security",
     description:
-      "Explore campus safety and security services at Kinyui Boys Senior School.",
+      "Explore school safety and security services at Kinyui Boys Senior School.",
   },
   {
     path: "/pages/school-hub/departments",

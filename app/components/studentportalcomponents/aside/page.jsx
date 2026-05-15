@@ -30,6 +30,7 @@ export default function NavigationSidebar({
     { id: 'results', label: 'Academic Results', icon: <FiBarChart2 /> },
     { id: 'resources', label: 'Resources & Assignments', icon: <FiFolder /> },
     { id: 'guidance', label: 'Guidance & Events', icon: <FiMessageSquare /> },
+    { id: 'fees', label: 'Fee Balance', icon: <FiAward /> },
   ];
 
   const getInitials = (name) => {
@@ -39,18 +40,19 @@ export default function NavigationSidebar({
   const router = useRouter();
 
   return (
-    <aside className="fixed lg:relative inset-y-0 left-0 z-50 h-full bg-white border-r border-gray-200 w-full max-w-[300px] lg:max-w-[280px] xl:max-w-[300px] flex flex-col shadow-xl">
+    <aside className="fixed lg:relative inset-y-0 left-0 z-50 h-full w-full max-w-[300px] lg:max-w-[280px] xl:max-w-[300px] flex flex-col overflow-hidden border-r border-slate-200 bg-white shadow-2xl">
       <div className="flex flex-col h-full">
         
-        {/* Header with Kinyui Branding - Black & White */}
-        <div className="p-4 sm:p-5 lg:p-6 border-b border-gray-200 bg-gray-900">
+        {/* Header with Kinyui Branding */}
+        <div className="relative overflow-hidden border-b border-white/10 bg-slate-950 p-4 sm:p-5 lg:p-6">
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-amber-400 via-emerald-400 to-sky-400" />
+          <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-amber-400/10 blur-3xl" />
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              {/* School Logo with Glow Effect */}
               <div className="relative group">
-                <div className="absolute inset-0 bg-gray-500/30 rounded-2xl blur-md group-hover:blur-xl transition-all duration-300"></div>
-                <div className="relative w-12 h-12 sm:w-14 sm:h-14 bg-gray-800 rounded-2xl flex items-center justify-center shadow-2xl">
-                  <div className="w-full h-full rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <div className="absolute inset-0 bg-amber-300/20 rounded-2xl blur-md group-hover:blur-xl transition-all duration-300"></div>
+                <div className="relative w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-2xl flex items-center justify-center shadow-2xl ring-1 ring-white/20">
+                  <div className="w-full h-full rounded-2xl bg-white flex items-center justify-center">
                     <img 
                       src="/SchoolLogo.png" 
                       alt="Kinyui Boys School Logo" 
@@ -58,14 +60,14 @@ export default function NavigationSidebar({
                     />
                   </div>
                 </div>
-                <div className="absolute -top-1 -right-1 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-gray-400 rounded-full border-2 border-gray-900 shadow-lg animate-pulse"></div>
+                <div className="absolute -top-1 -right-1 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-emerald-400 rounded-full border-2 border-slate-950 shadow-lg animate-pulse"></div>
               </div>
               
               <div className="min-w-0">
                 <h2 className="font-black text-white text-base sm:text-lg lg:text-xl tracking-tight">
                   KINYUI BOYS'
                 </h2>
-                <p className="text-gray-400 text-[10px] sm:text-xs font-bold tracking-wider">
+                <p className="text-slate-300 text-[10px] sm:text-xs font-bold tracking-wider">
                   STUDENT PORTAL
                 </p>
               </div>
@@ -74,30 +76,28 @@ export default function NavigationSidebar({
             {/* Mobile Close Button */}
             <button
               onClick={onMenuClose}
-              className="lg:hidden p-2 hover:bg-white/10 rounded-xl transition-all duration-200 hover:scale-110"
+              className="lg:hidden p-2 hover:bg-white/10 rounded-xl transition-all duration-200"
               aria-label="Close sidebar"
             >
-              <FiX size={20} className="text-gray-400" />
+              <FiX size={20} className="text-slate-300" />
             </button>
           </div>
           
-          {/* School Motto */}
-          <div className="mt-3 text-center">
-            <p className="text-gray-400 text-[10px] font-bold italic flex items-center justify-center gap-1">
-              <FiAward className="text-gray-500 text-xs" />
-              "Soaring to Excellence"
-              <FiAward className="text-gray-500 text-xs" />
+          <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-center">
+            <p className="text-slate-300 text-[10px] font-bold italic flex items-center justify-center gap-1">
+              <FiAward className="text-amber-300 text-xs" />
+              "Blessed and Favoured"
+              <FiAward className="text-amber-300 text-xs" />
             </p>
           </div>
         </div>
 
-        {/* Student Profile - Black & White Theme */}
-        <div className="p-4 sm:p-5 lg:p-6 border-b border-gray-200 bg-gray-50">
+        {/* Student Profile */}
+        <div className="p-4 sm:p-5 lg:p-6 border-b border-slate-200 bg-slate-50">
           <div className="flex items-center gap-3 sm:gap-4">
-            {/* Profile Avatar - Gray Gradient (like login modal) */}
             <div className="relative group">
-              <div className="absolute inset-0 bg-gray-400/30 rounded-full blur-md group-hover:blur-lg transition-all duration-300"></div>
-              <div className="relative w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-700 to-gray-900 rounded-full flex items-center justify-center shadow-lg">
+              <div className="absolute inset-0 bg-slate-400/30 rounded-full blur-md group-hover:blur-lg transition-all duration-300"></div>
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-slate-700 to-slate-950 rounded-2xl flex items-center justify-center shadow-lg ring-4 ring-white">
                 <span className="text-white font-black text-lg sm:text-xl">
                   {getInitials(student?.fullName)}
                 </span>
@@ -105,75 +105,71 @@ export default function NavigationSidebar({
             </div>
             
             <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-gray-900 text-sm sm:text-base lg:text-lg truncate flex items-center gap-1">
-                <FiUser className="text-gray-600 text-xs" />
+              <h3 className="font-bold text-slate-950 text-sm sm:text-base lg:text-lg truncate flex items-center gap-1">
+                <FiUser className="text-slate-500 text-xs" />
                 {student?.fullName || 'Student Name'}
               </h3>
               <div className="flex items-center gap-1.5 sm:gap-2 mt-1.5">
-                <span className="px-2 sm:px-3 py-0.5 bg-gradient-to-r from-gray-700 to-gray-900 text-white text-[10px] sm:text-xs font-bold rounded-full">
+                <span className="px-2 sm:px-3 py-0.5 bg-slate-950 text-white text-[10px] sm:text-xs font-bold rounded-full">
                   {student?.form} {student?.stream}
                 </span>
               </div>
               <div className="flex items-center gap-1 mt-1.5">
-                <FiShield className="text-gray-600 text-[10px]" />
-                <p className="text-gray-600 text-[10px] sm:text-xs font-mono font-bold">
+                <FiShield className="text-slate-500 text-[10px]" />
+                <p className="text-slate-600 text-[10px] sm:text-xs font-mono font-bold">
                   ADM: {student?.admissionNumber || '****'}
                 </p>
               </div>
             </div>
           </div>
           
-          {/* Session Info */}
-          <div className="mt-3 pt-2 border-t border-gray-200">
+          <div className="mt-3 pt-3 border-t border-slate-200">
             <div className="flex items-center justify-between text-[10px]">
-              <span className="text-gray-600 font-semibold flex items-center gap-1">
-                <FiClock className="text-gray-600" />
+              <span className="text-slate-600 font-semibold flex items-center gap-1">
+                <FiClock className="text-slate-500" />
                 Active Session
               </span>
-              <span className="text-gray-800 font-bold">2 Hours</span>
+              <span className="text-slate-900 font-bold">2 Hours</span>
             </div>
           </div>
         </div>
 
-        {/* Navigation - Black & White Hover Effects */}
+        {/* Navigation */}
         <nav className="flex-1 p-4 sm:p-5 lg:p-6 overflow-y-auto">
-          <div className="space-y-2 sm:space-y-3">
+          <p className="mb-3 px-2 text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">Portal Menu</p>
+          <div className="space-y-2">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => setCurrentView(item.id)}
                 className={`w-full flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3 sm:py-3.5 rounded-xl transition-all duration-300 group relative overflow-hidden ${
                   currentView === item.id 
-                    ? 'bg-gray-900 text-white shadow-lg shadow-gray-900/30' 
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'bg-slate-950 text-white shadow-lg shadow-slate-900/20' 
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
                 }`}
               >
-                {/* Active Indicator */}
                 {currentView === item.id && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gray-500 rounded-r-full shadow-lg shadow-gray-500/50"></div>
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-amber-300 rounded-r-full shadow-lg shadow-amber-300/40"></div>
                 )}
                 
-                {/* Icon */}
                 <span className={`text-lg sm:text-xl transition-all duration-200 ${
                   currentView === item.id 
                     ? 'text-white' 
-                    : 'text-gray-500 group-hover:text-gray-700'
+                    : 'text-slate-400 group-hover:text-slate-700'
                 }`}>
                   {item.icon}
                 </span>
                 
-                {/* Label */}
                 <span className={`font-bold text-left text-sm sm:text-base transition-all duration-200 ${
                   currentView === item.id 
                     ? 'text-white' 
-                    : 'text-gray-700 group-hover:text-gray-900'
+                    : 'text-slate-700 group-hover:text-slate-950'
                 }`}>
                   {item.label}
                 </span>
                 
-                {/* Active Chevron */}
                 {currentView === item.id && (
-                  <div className="ml-auto text-gray-400">
+                  <div className="ml-auto text-white/50">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
@@ -187,10 +183,10 @@ export default function NavigationSidebar({
               href="https://analytics.zeraki.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3 sm:py-3.5 rounded-xl transition-all duration-300 text-gray-700 hover:bg-gray-100 group"
+              className="w-full flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3 sm:py-3.5 rounded-xl transition-all duration-300 text-slate-600 hover:bg-slate-100 hover:text-slate-950 group"
             >
               <div className="relative">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg overflow-hidden border-2 border-gray-300 group-hover:border-gray-500 transition-all duration-200">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg overflow-hidden border-2 border-slate-200 group-hover:border-slate-400 transition-all duration-200">
                   <img 
                     src="/zeraki.jpg" 
                     alt="Zeraki Analytics" 
@@ -201,26 +197,30 @@ export default function NavigationSidebar({
               <span className="font-bold text-left text-sm sm:text-base flex-1">
                 Zeraki Analytics
               </span>
-              <FiExternalLink className="text-gray-500 text-sm sm:text-base group-hover:text-gray-700 transition-all duration-200" />
+              <FiExternalLink className="text-slate-400 text-sm sm:text-base group-hover:text-slate-700 transition-all duration-200" />
             </a>
           </div>
         </nav>
 
-        {/* Footer Buttons - Black & White Theme */}
-        <div className="p-3 sm:p-4 lg:p-6 bg-gray-50 border-t border-gray-200">
+        {/* Footer Buttons */}
+        <div className="p-3 sm:p-4 lg:p-6 bg-slate-50 border-t border-slate-200">
           <div className="flex flex-row items-center gap-2 sm:gap-3 w-full">
             {/* Refresh Button */}
             <button
               onClick={() => {
-                router.refresh();
+                if (onRefresh) {
+                  onRefresh();
+                } else {
+                  router.refresh();
+                }
               }}
               className="group flex-1 flex items-center justify-center gap-1.5 sm:gap-2.5 px-3 sm:px-4 py-2.5 sm:py-3 
-              bg-white border-2 border-gray-300 text-gray-700 rounded-xl sm:rounded-2xl 
+              bg-white border border-slate-200 text-slate-700 rounded-xl sm:rounded-2xl 
               text-xs sm:text-sm font-black tracking-tight shadow-md 
-              hover:bg-gray-50 hover:border-gray-400
+              hover:bg-slate-100 hover:border-slate-300
               active:scale-95 transition-all duration-200 min-w-0"
             >
-              <FiRefreshCw className="text-sm sm:text-lg group-active:animate-spin text-gray-700" />
+              <FiRefreshCw className="text-sm sm:text-lg group-active:animate-spin text-slate-700" />
               <span className="truncate">Refresh</span>
             </button>
 
@@ -228,19 +228,19 @@ export default function NavigationSidebar({
             <button
               onClick={onLogout}
               className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2.5 px-3 sm:px-4 py-2.5 sm:py-3 
-              bg-gray-900 hover:bg-black border-2 border-gray-800 text-white rounded-xl sm:rounded-2xl 
+              bg-slate-950 hover:bg-black border border-slate-900 text-white rounded-xl sm:rounded-2xl 
               text-xs sm:text-sm font-black tracking-tight shadow-lg 
               active:scale-95 transition-all duration-200 min-w-0"
             >
-              <FiLogOut className="text-sm sm:text-lg text-gray-400" />
+              <FiLogOut className="text-sm sm:text-lg text-slate-300" />
               <span className="truncate">Logout</span>
             </button>
           </div>
           
           {/* Footer Text */}
           <div className="mt-3 text-center">
-            <p className="text-[8px] text-gray-500 font-bold tracking-wider">
-              © {new Date().getFullYear()} KINYUI BOYS' • EST. 1976
+            <p className="text-[8px] text-slate-500 font-bold tracking-wider">
+              © {new Date().getFullYear()} KINYUI BOYS' • STUDENT SERVICES
             </p>
           </div>
         </div>

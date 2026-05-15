@@ -30,7 +30,7 @@ const KinyuiBoys404 = () => {
       name: "Home Base",
       href: "/",
       icon: FiHome,
-      description: "Back to main campus",
+      description: "Back to main school",
       color: "from-rose-500 to-rose-700",
     },
     {

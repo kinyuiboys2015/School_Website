@@ -422,7 +422,7 @@ const ModernSchoolLayout = () => {
         "Practical spaces for science, tech, arts, and independent study. Facilities are designed to support hands-on learning, research, and collaboration.",
       metrics: "Learning Spaces",
       icon: <FiGlobe size={20} />,
-      image: "/cumpus.jpg",
+      image: "/school.jpg",
     },
   ];
 

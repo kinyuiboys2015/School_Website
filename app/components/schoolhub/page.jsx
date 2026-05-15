@@ -139,7 +139,7 @@ const TYPE_OPTIONS = [
   { value: 'COMPUTER_LAB', label: 'Computer Lab', icon: FiMonitor, description: 'ICT labs and digital learning spaces', color: 'sky', gradient: 'from-sky-600 to-cyan-600' },
   { value: 'FARM', label: 'Farm', icon: FaLeaf, description: 'Agricultural and farming activities', color: 'emerald', gradient: 'from-emerald-600 to-teal-600' },
   { value: 'BOARDING', label: 'Boarding', icon: FaHome, description: 'Boarding facilities and life', color: 'amber', gradient: 'from-amber-600 to-orange-600' },
-  { value: 'SECURITY', label: 'Security', icon: FaShieldAlt, description: 'Campus security and safety', color: 'rose', gradient: 'from-rose-600 to-red-600' },
+  { value: 'SECURITY', label: 'Security', icon: FaShieldAlt, description: 'School security and safety', color: 'rose', gradient: 'from-rose-600 to-red-600' },
   { value: 'DEPARTMENT', label: 'Departments', icon: FiLayers, description: 'School departments and offices', color: 'cyan', gradient: 'from-cyan-600 to-blue-600' },
 ];
 
@@ -765,7 +765,7 @@ const HubItemModal = ({ open, onClose, onSave, initial, defaultType }) => {
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">Location</label>
-                    <input value={form.location} onChange={(e) => setForm(p => ({ ...p, location: e.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-900 outline-none focus:border-indigo-300 focus:bg-white focus:ring-4 focus:ring-indigo-500/10" placeholder="e.g. Main Campus, Room 203" />
+                    <input value={form.location} onChange={(e) => setForm(p => ({ ...p, location: e.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-900 outline-none focus:border-indigo-300 focus:bg-white focus:ring-4 focus:ring-indigo-500/10" placeholder="e.g. Main School Block, Room 203" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">Established</label>

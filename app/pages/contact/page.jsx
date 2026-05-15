@@ -138,7 +138,7 @@ export default function ContactPage() {
     {
       icon: <Video className="w-4 h-4" />,
       title: 'Virtual Tour home page',
-      description: 'Take a campus tour online',
+      description: 'Take a school tour online',
       link: '/',
       color: 'orange'
     }

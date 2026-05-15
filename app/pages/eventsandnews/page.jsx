@@ -172,7 +172,7 @@ const ModernEventCard = ({ event, onView, onShare, onCalendar, onBookmark, viewM
             </div>
             <div className="flex items-center gap-1.5 text-slate-500">
               <FiMapPin className="text-rose-500" />
-              <span className="text-xs font-bold truncate max-w-[120px]">{event.location || 'Campus'}</span>
+              <span className="text-xs font-bold truncate max-w-[120px]">{event.location || 'School'}</span>
             </div>
           </div>
 

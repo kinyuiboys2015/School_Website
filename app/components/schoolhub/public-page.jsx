@@ -886,7 +886,7 @@ export default function PublicSchoolHubPage({
         </p>
       </div>
 
-      <div className="relative mt-10 grid w-full max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="relative mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3">
         {heroStats.map(({ label, value, icon: StatIcon }, index) => (
           <div
             key={label}
@@ -911,7 +911,7 @@ export default function PublicSchoolHubPage({
 
       <div className="flex flex-col justify-between rounded-2xl bg-slate-950 p-5 text-white">
         <div className="aspect-[4/3] overflow-hidden rounded-xl bg-slate-800">
-          <img src="/hero/kinyui.jpeg" alt="Kinyui Boys Senior School students and campus life" className="h-full w-full object-cover" />
+          <img src="/hero/kinyui.jpeg" alt="Kinyui Boys Senior School students and school life" className="h-full w-full object-cover" />
         </div>
         <div className="mt-5 rounded-xl bg-white/5 p-5">
         <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">
@@ -934,7 +934,7 @@ export default function PublicSchoolHubPage({
         </p>
 
         <h2 className="mt-1 text-xl font-black text-slate-950">
-          Search clubs, departments, leadership, boarding, and campus services
+          Search clubs, departments, leadership, boarding, and school services
         </h2>
       </div>
 

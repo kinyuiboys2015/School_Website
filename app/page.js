@@ -744,7 +744,7 @@ const jsonLd = {
                   <FiPlay className="text-white" />
                 </div>
                 <div>
-                  <h4 className="text-white font-bold">Virtual Campus Tour</h4>
+                  <h4 className="text-white font-bold">Virtual School Tour</h4>
                   <p className="text-white/60 text-sm">
                     {schoolData?.name || 'Loading...'}
                   </p>
@@ -824,7 +824,7 @@ const jsonLd = {
             <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-r from-transparent to-black/80 p-4">
               <div className="flex items-center justify-between">
                 <div className="text-white/80 text-sm">
-                  {schoolData?.description?.substring(0, 80) + '...' || 'Experience our campus from anywhere'}
+                  {schoolData?.description?.substring(0, 80) + '...' || 'Experience our school from anywhere'}
                 </div>
                 <button
                   onClick={handleContactClick}

@@ -98,7 +98,7 @@ const schoolHubLinks = [
     name: 'School Security',
     href: '/pages/school-hub/security',
     icon: FiShield,
-    description: 'Safety measures and campus protection',
+    description: 'Safety measures and school protection',
   },
   {
     name: 'Clubs',
