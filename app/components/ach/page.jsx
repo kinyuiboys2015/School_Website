@@ -911,11 +911,11 @@ export default function KinyuiAchievements() {
     "name": "Kinyui Boys Senior School Achievements",
     "description": "Official achievements and awards of Kinyui Boys Senior School in Matungulu, Machakos County, Kenya",
     "url": "https://kinyuiboyssenior.school/pages/Achievements",
-    "image": "https://kinyuiboyssenior.school/seo/kinyui.png",
+    "image": "https://kinyuiboyssenior.school/seo/SchoolLogo.png",
     "primaryImageOfPage": {
       "@type": "ImageObject",
-      "url": "https://kinyuiboyssenior.school/seo/kinyui.png",
-      "contentUrl": "https://kinyuiboyssenior.school/seo/kinyui.png",
+      "url": "https://kinyuiboyssenior.school/seo/SchoolLogo.png",
+      "contentUrl": "https://kinyuiboyssenior.school/seo/SchoolLogo.png",
       "width": 1024,
       "height": 1024
     },
@@ -924,7 +924,7 @@ export default function KinyuiAchievements() {
       "@type": "School",
       "name": "Kinyui Boys Senior School",
       "url": "https://kinyuiboyssenior.school",
-      "logo": "https://kinyuiboyssenior.school/seo/kinyui.png",
+      "logo": "https://kinyuiboyssenior.school/seo/SchoolLogo.png",
       "address": { "@type": "PostalAddress", "addressLocality": "Matungulu", "addressRegion": "Machakos County", "addressCountry": "KE" }
     }
   };

@@ -260,7 +260,7 @@ export default function ModernNavbar() {
               <div className="h-14 w-14 shrink-0 rounded-2xl bg-white/10 p-1 shadow-lg shadow-black/20 ring-1 ring-white/15">
                 <div className="flex h-full w-full items-center justify-center rounded-xl bg-white">
                   <Image
-                    src="/seo/kinyui.png"
+                    src="/seo/SchoolLogo.png"
                     alt="Kinyui Boys Senior School Logo"
                     width={42}
                     height={42}
@@ -305,7 +305,7 @@ export default function ModernNavbar() {
               <div className="h-12 w-12 shrink-0 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-yellow-300 p-[1px] shadow-lg">
                 <div className="flex h-full w-full items-center justify-center rounded-2xl bg-white">
                   <Image
-                    src="/seo/kinyui.png"
+                    src="/seo/SchoolLogo.png"
                     alt="Kinyui Boys Senior School Logo"
                     width={38}
                     height={38}

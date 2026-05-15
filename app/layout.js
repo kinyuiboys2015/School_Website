@@ -20,7 +20,7 @@ const geistMono = localFont({
 });
 
 const SITE_URL = "https://kinyuiboyssenior.school";
-const SEO_LOGO_PATH = "/seo/kinyui.png";
+const SEO_LOGO_PATH = "/seo/SchoolLogo.png";
 const SEO_LOGO_URL = `${SITE_URL}${SEO_LOGO_PATH}`;
 const SEO_LOGO_IMAGE = {
   "@type": "ImageObject",

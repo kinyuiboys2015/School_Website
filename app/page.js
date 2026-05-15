@@ -158,7 +158,7 @@ const ModernLoadingScreen = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
               
               <img 
-                src="/seo/kinyui.png" 
+                src="/seo/SchoolLogo.png" 
                 alt="Kinyui Boys Senior School Logo" 
                 className="w-16 h-16 md:w-24 md:h-24 object-contain p-2 relative z-10"
               />
@@ -375,8 +375,8 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'School',
   name: 'kinyui boys Senior School',
-  image: 'https://kinyuiboyssenior.school/seo/kinyui.png',
-  logo: 'https://kinyuiboyssenior.school/seo/kinyui.png',
+  image: 'https://kinyuiboyssenior.school/seo/SchoolLogo.png',
+  logo: 'https://kinyuiboyssenior.school/seo/SchoolLogo.png',
   description: 'A senior school committed to academic excellence, integrity, and holistic student development.',
   address: {
     '@type': 'PostalAddress',

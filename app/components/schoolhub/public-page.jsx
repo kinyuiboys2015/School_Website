@@ -858,7 +858,7 @@ export default function PublicSchoolHubPage({
       <div className="inline-flex max-w-full items-center gap-3 rounded-full bg-amber-50 px-4 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-amber-900">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-1 ring-amber-100">
           <Image
-            src="/seo/kinyui.png"
+            src="/seo/SchoolLogo.png"
             alt="Kinyui Boys Senior School logo"
             width={40}
             height={40}
@@ -886,19 +886,22 @@ export default function PublicSchoolHubPage({
         </p>
       </div>
 
-      <div className="mt-8 grid w-full max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3">
-        {heroStats.map(({ label, value, icon: StatIcon }) => (
+      <div className="relative mt-10 grid w-full max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3">
+        {heroStats.map(({ label, value, icon: StatIcon }, index) => (
           <div
             key={label}
-            className="rounded-2xl bg-slate-50 px-5 py-4"
+            className={`min-h-[128px] rounded-2xl border border-slate-200 bg-white p-5 shadow-sm ${
+              index === 0 ? 'col-span-2 sm:col-span-1' : ''
+            }`}
           >
-            <StatIcon className="mb-3 text-xl text-amber-700" />
+            <div className="flex items-start justify-between gap-3">
+              <StatIcon className="text-2xl text-amber-700" />
+              <p className="text-3xl font-black leading-none text-slate-950">
+                {value}
+              </p>
+            </div>
 
-            <p className="text-2xl font-black text-slate-950">
-              {value}
-            </p>
-
-            <p className="mt-2 text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">
+            <p className="mt-6 text-[10px] font-black uppercase tracking-widest text-slate-500">
               {label}
             </p>
           </div>

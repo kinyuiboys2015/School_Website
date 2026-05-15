@@ -453,7 +453,7 @@ export default function StaffProfilePage() {
         <div className="relative mb-10">
           <div className="w-16 h-16 border-[3px] border-slate-200 border-t-[#1a1a2e] rounded-full animate-spin" />
           <div className="absolute inset-0 flex items-center justify-center">
-            <Image src="/seo/kinyui.png" alt="Logo" width={28} height={28} className="opacity-60" />
+            <Image src="/seo/SchoolLogo.png" alt="Logo" width={28} height={28} className="opacity-60" />
           </div>
         </div>
         <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em]">Loading Profile</p>
@@ -500,7 +500,7 @@ export default function StaffProfilePage() {
             </button>
 
             <div className="flex items-center gap-2">
-              <Image src="/seo/kinyui.png" alt="Logo" width={24} height={24} />
+              <Image src="/seo/SchoolLogo.png" alt="Logo" width={24} height={24} />
               <span className="text-sm font-black text-[#1a1a2e] hidden sm:inline">Kinyui Boys Senior School</span>
             </div>
 
@@ -775,7 +775,7 @@ export default function StaffProfilePage() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
             <div className="flex flex-col items-center gap-4">
               <div className="flex items-center gap-3">
-                <Image src="/seo/kinyui.png" alt="Logo" width={28} height={28} className="opacity-50" />
+                <Image src="/seo/SchoolLogo.png" alt="Logo" width={28} height={28} className="opacity-50" />
                 <span className="text-xs font-black text-slate-300 uppercase tracking-[0.2em]">
                   Kinyui Boys Senior School
                 </span>
