@@ -99,6 +99,8 @@ export const metadata = {
 "kinyui",
 "kinyui boys senior school",
 "kinyui senior",
+"kinyui boys",
+"kinyui high school",
 
 "kinyuo",
 "kinyui",
