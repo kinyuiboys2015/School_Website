@@ -64,6 +64,7 @@ export const metadata = {
   description: SCHOOL_DESCRIPTION,
   
   keywords: [
+    "kinyui boys school",
     "S.A. Kinyui Boys Senior School",
     "Kinyui Boys Senior School",
     "Kinyui Boys High School",
