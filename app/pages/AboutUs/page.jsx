@@ -392,7 +392,7 @@ export default function AboutPage() {
 
               <div className="mt-12 flex items-center gap-6">
                 <div className="h-[1px] flex-1 bg-slate-200" />
-                <span className="text-[10px] font-black uppercase text-slate-500 tracking-[0.4em]">Soaring for Excellence</span>
+                <span className="text-[10px] font-black uppercase text-slate-500 tracking-[0.4em]">Soaring To Excellence</span>
               </div>
             </div>
 

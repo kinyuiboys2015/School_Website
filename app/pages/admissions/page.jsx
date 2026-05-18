@@ -1449,7 +1449,7 @@ const VisionMissionSection = ({ vision, mission, motto, videoTour, videoType, vi
 
           <div className="md:text-right">
             <p className="text-xl md:text-2xl lg:text-3xl font-black italic text-emerald-700 tracking-tight">
-              "{motto || "Strive for Excellence"}"
+              "{motto || "Strive To Excellence"}"
             </p>
             <div className="flex items-center justify-end gap-2 mt-2">
               <div className="w-2 h-2 rounded-full bg-emerald-600" />
