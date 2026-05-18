@@ -64,48 +64,77 @@ export const metadata = {
   description: SCHOOL_DESCRIPTION,
   
   keywords: [
-    "kinyui boys school",
-    "S.A. Kinyui Boys Senior School",
+    /* Primary Keywords */
     "Kinyui Boys Senior School",
-    "Kinyui Boys High School",
     "Kinyui Boys Secondary School",
-    "S.A. Kinyui Boys High School",
-    "S.A. Kinyui Boys Secondary School",
-    "Kinyui Boys boarding school",
-    "Kinyui Boys public boys school",
-    "Kinyui Boys Matungulu",
-    "Kinyui Boys Machakos County",
-    "secondary schools in Matungulu",
-    "high schools in Machakos County",
-    "boys boarding secondary school Kenya",
-    "Kinyui Boys admissions",
-    "Kinyui Boys CBC pathways",
-    "Kinyui Boys fees",
-    "Kinyui Boys student portal",
-    "Kinyui Boys achievements",
-    "Kinyui Boys staff",
-    "kinyui boys gallery",
-    "Kinyui Boys events",
-    "Kinyui Boys news",
-    "Kinyui Boys alumni",
-    "Kinyui Boys sports",
-    "Kinyui Boys clubs",
-    "Kinyui Boys calendar",
-    "kinyui boys academics",
-    "kINYUI Boys",
+    "Kinyui Boys High School",
+    "S.A. Kinyui Boys Senior School",
+    "Kinyui Boys School",
+    "Kinyui Boys",
+    
+    /* Search Engine Names & Variants */
+    "Kinyui Boys Official Website",
+    "Kinyui Boys School Kenya",
+    "Kinyui Boys School Machakos",
+    "Kinyui Boys School Machakos County",
+    "Kinyui Boys Extra County School",
+    
+    /* Academic Performance */
+    "Kinyui Boys KCSE Results",
+    "Kinyui Boys KCSE Performance",
+    "Kinyui Boys Mean Score",
+    "Kinyui Boys University Placement",
+    "Kinyui Boys Rankings",
+    "Top Boys Schools Machakos",
+    "Best Secondary Schools Machakos County",
+    
+    /* Admissions & Information */
+    "Kinyui Boys Admission",
+    "Kinyui Boys Admissions Letter",
+    "Kinyui Boys Joining Instructions",
+    "Kinyui Boys Form One Selection",
+    "Kinyui Boys Fees Structure",
+    "Kinyui Boys School Fees",
+    "Kinyui Boys Uniform",
+    
+    /* Contact & Location */
+    "Kinyui Boys Phone Number",
+    "Kinyui Boys Email Address",
+    "Kinyui Boys Direction",
+    "Kinyui Boys Location",
+    "Kinyui Boys Map",
+    "Matungulu Town Machakos",
+    
+    /* School Information */
+    "Kinyui Boys Principal",
+    "Kinyui Boys History",
+    "Kinyui Boys Achievements",
+    "Kinyui Boys Curriculum",
+    "Kinyui Boys Events",
+    "Kinyui Boys News",
+    "Kinyui Boys Alumni",
+    "Kinyui Boys Old Boys Association",
+    
+    /* Related Keywords */
+    "Boys Boarding Schools Machakos",
+    "Public Schools Kenya",
+    "KUCCPS Kinyui Boys",
+    "Machakos County Schools",
+    "Secondary School Portal Kenya",
+    "KCSE Results Kenya",
+    
+    /* Brand Variations */
+    "Kinyui Boys Senior",
+    "Kinyui High School",
     "Kinyui Boys official website",
-"kinyui boys contact",
-"kinyui boys admissions",
-"kinyui",
-"kinyui boys senior school",
-"kinyui senior",
-"kinyui boys",
-"kinyui high school",
-
-"kinyuo",
-"kinyui",
-
-    "Kinyui Boys contact"
+    "S.A. Kinyui Boys official website",
+    "Kinyui Boys Senior High School",
+    
+    /* Additional from existing */
+    "kinyui boys contact",
+    "kinyui",
+    "kinyui senior",
+    "kinyuo",
   ],
 
   authors: [{ name: "S.A. Kinyui Boys Senior School" }],
@@ -116,37 +145,47 @@ export const metadata = {
     canonical: "/",
   },
 
-/* Open Graph (Social Media Sharing) */
-openGraph: {
-  title: "S.A. Kinyui Boys Senior School",
-  description: SCHOOL_DESCRIPTION,
-  url: "https://kinyuiboyssenior.school",
-  siteName: "Kinyui Boys Senior School",
-  locale: "en_KE",
-  type: "website",
-  images: [
-    {
-      url: SEO_LOGO_PATH,
-      width: 1024,
-      height: 1024,
-      alt: "S.A. Kinyui Boys Senior School logo",
-    },
-    {
-      url: SEO_LOGO_PATH,
-      width: 1024,
-      height: 1024,
-      alt: "Kinyui Boys Senior School official logo",
-    },
-  ],
-},
+  /* Open Graph (Social Media Sharing - WhatsApp, Facebook, etc.) */
+  openGraph: {
+    title: "Kinyui Boys School - Official Website",
+    description: "Official Kinyui Boys Website - Premier Public Boys Secondary School in Machakos County, Kenya. Excellence in academics, sports, and character development.",
+    url: "https://kinyuiboyssenior.school",
+    siteName: "Kinyui Boys Senior School",
+    locale: "en_KE",
+    type: "website",
+    images: [
+      {
+        url: "/seo/SchoolLogo.png",
+        width: 1200,
+        height: 630,
+        alt: "Kinyui Boys School - Official Website",
+        type: "image/png",
+      },
+      {
+        url: "https://kinyuiboyssenior.school/seo/SchoolLogo.png",
+        width: 1200,
+        height: 630,
+        alt: "Kinyui Boys School",
+        type: "image/png",
+      },
+    ],
+  },
 
-/* Twitter Card */
-twitter: {
-  card: "summary_large_image",
-  title: "S.A. Kinyui Boys Senior School",
-  description: SCHOOL_DESCRIPTION,
-  images: [SEO_LOGO_PATH],
-},
+  /* Twitter Card */
+  twitter: {
+    card: "summary_large_image",
+    site: "@KinyuiBoys",
+    title: "Kinyui Boys Senior School - Official Website",
+    description: "Official Kinyui Boys Website - Premier Public Boys Secondary School in Machakos County, Kenya.",
+    images: [
+      {
+        url: "https://kinyuiboyssenior.school/seo/SchoolLogo.png",
+        alt: "Kinyui Boys School",
+      },
+    ],
+    creator: "@KinyuiBoys",
+  },
+
   /* Search Engine Bot Instructions */
   robots: {
     index: true,
@@ -169,7 +208,6 @@ twitter: {
 
   verification: {
     google: "googlecb1be919748a8612",
-    
   },
 
   category: "Education",
@@ -208,11 +246,11 @@ export default function RootLayout({ children }) {
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": "-1.20826", // Optional: replace with your actual GPS coordinates
+      "latitude": "-1.20826",
       "longitude": "37.32415"
     },
     "hasMap": "https://maps.app.goo.gl/TEkuDUZZnXfaE1YC8", 
-    "telephone": "+254 733 587223", // Update with official school phone
+    "telephone": "+254 733 587223",
     "email": "kinyuiboys2015@gmail.com",
     "priceRange": "N/A",
     "areaServed": ["Matungulu", "Machakos County", "Kenya"],
