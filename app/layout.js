@@ -148,7 +148,7 @@ export const metadata = {
   /* Open Graph (Social Media Sharing - WhatsApp, Facebook, etc.) */
   openGraph: {
     title: "Kinyui Boys School - Official Website",
-    description: "Official Kinyui Boys Website - Premier Public Boys Secondary School in Machakos County, Kenya. Excellence in academics, sports, and character development.",
+    description: "Official Kinyui Boys Website.",
     url: "https://kinyuiboyssenior.school",
     siteName: "Kinyui Boys Senior School",
     locale: "en_KE",
