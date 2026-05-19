@@ -340,6 +340,8 @@ export default function ModernStaffLeadership() {
   const roleTitle = getLeaderTitle(selected);
   const leaderScope = getLeaderScope(selected);
   const leaderDepartment = selected.department || selected.departmentGroup?.name || selected.subjectOffered || "School Leadership";
+  const experienceSummary = expertise[0] || selected.qualification || leaderScope;
+  const achievementSummary = achievements[0] || "Leadership, mentorship, and school improvement.";
   const quickFacts = [
     { label: "Role", value: roleTitle, icon: FiBriefcase },
     { label: "Office", value: leaderScope, icon: FiTarget },
@@ -419,6 +421,16 @@ export default function ModernStaffLeadership() {
                     <div className="rounded-xl border border-white/10 bg-white/10 p-3">
                       <p className="text-[9px] font-black uppercase tracking-widest text-amber-200">Joined</p>
                       <p className="mt-1 text-xs font-bold text-white">{joinedYear || "On record"}</p>
+                    </div>
+                  </div>
+                  <div className="mt-2 grid gap-2">
+                    <div className="rounded-xl border border-white/10 bg-white/10 p-3">
+                      <p className="text-[9px] font-black uppercase tracking-widest text-amber-200">Experience</p>
+                      <p className="mt-1 text-xs font-bold leading-5 text-white">{experienceSummary}</p>
+                    </div>
+                    <div className="rounded-xl border border-white/10 bg-white/10 p-3">
+                      <p className="text-[9px] font-black uppercase tracking-widest text-amber-200">Achievement</p>
+                      <p className="mt-1 text-xs font-bold leading-5 text-white">{achievementSummary}</p>
                     </div>
                   </div>
                 </div>
