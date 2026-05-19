@@ -409,21 +409,21 @@ export default function ModernStaffLeadership() {
                   />
                 </div>
 
-                <div className="rounded-[1.35rem] border border-white/15 bg-white/10 p-4 backdrop-blur">
+                <div className="rounded-[1.35rem] border border-white/15 bg-white/10 p-3 backdrop-blur sm:p-4">
                   <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-200">Featured Leader</p>
-                  <h3 className="mt-2 text-2xl font-black leading-tight sm:text-3xl">{selected.name}</h3>
-                  <p className="mt-2 text-sm font-semibold text-orange-100/80">{leaderScope}</p>
+                  <h3 className="mt-2 text-xl font-black leading-tight sm:text-2xl md:text-3xl">{selected.name}</h3>
+                  <p className="mt-1 text-xs font-semibold text-orange-100/80 sm:mt-2 sm:text-sm">{leaderScope}</p>
                   <div className="mt-4 grid grid-cols-2 gap-2">
-                    <div className="rounded-xl border border-white/10 bg-white/10 p-3">
+                    <div className="rounded-xl border border-white/10 bg-white/10 p-2.5 sm:p-3">
                       <p className="text-[9px] font-black uppercase tracking-widest text-amber-200">Department</p>
                       <p className="mt-1 truncate text-xs font-bold text-white">{leaderDepartment}</p>
                     </div>
-                    <div className="rounded-xl border border-white/10 bg-white/10 p-3">
+                    <div className="rounded-xl border border-white/10 bg-white/10 p-2.5 sm:p-3">
                       <p className="text-[9px] font-black uppercase tracking-widest text-amber-200">Joined</p>
                       <p className="mt-1 text-xs font-bold text-white">{joinedYear || "On record"}</p>
                     </div>
                   </div>
-                  <div className="mt-2 grid gap-2">
+                  <div className="mt-2 hidden gap-2 md:grid">
                     <div className="rounded-xl border border-white/10 bg-white/10 p-3">
                       <p className="text-[9px] font-black uppercase tracking-widest text-amber-200">Experience</p>
                       <p className="mt-1 text-xs font-bold leading-5 text-white">{experienceSummary}</p>
