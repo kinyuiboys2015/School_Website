@@ -1,135 +1,270 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from "react";
 import {
-  FiMail, FiAward, FiUser, FiCheck, FiArrowLeft,
-  FiMessageSquare, FiLoader, FiEye, FiChevronRight,
-  FiUsers, FiBriefcase, FiCalendar, FiMapPin
-} from 'react-icons/fi';
-import { IoPeopleOutline, IoSparkles } from 'react-icons/io5';
-import { GiGraduateCap, GiMedal, GiCrown } from 'react-icons/gi';
-import { MdOutlineDashboard } from 'react-icons/md';
+  FiAward,
+  FiBriefcase,
+  FiCalendar,
+  FiCheck,
+  FiChevronRight,
+  FiLoader,
+  FiMail,
+  FiMapPin,
+  FiMessageSquare,
+  FiPhone,
+  FiRefreshCw,
+  FiShield,
+  FiStar,
+  FiTarget,
+  FiUser,
+  FiUsers
+} from "react-icons/fi";
+import {
+  BookOpen,
+  Building2,
+  Crown,
+  GraduationCap,
+  Medal,
+  Sparkles,
+  Trophy,
+  UserRoundCheck
+} from "lucide-react";
 
 const getImageUrl = (imagePath) => {
-  if (!imagePath || typeof imagePath !== 'string') return null;
+  if (!imagePath || typeof imagePath !== "string") return null;
   const trimmedPath = imagePath.trim();
   if (!trimmedPath) return null;
-  if (trimmedPath.includes('cloudinary.com')) return trimmedPath;
-  if (trimmedPath.startsWith('/') || trimmedPath.startsWith('http')) return trimmedPath;
-  return null;
+  if (trimmedPath.includes("cloudinary.com")) return trimmedPath;
+  if (trimmedPath.startsWith("http://") || trimmedPath.startsWith("https://")) return trimmedPath;
+  if (trimmedPath.startsWith("/") || trimmedPath.startsWith("data:image")) return trimmedPath;
+  return `/${trimmedPath}`;
 };
 
-const normalizeText = (value) => (value || '').toString().trim().toLowerCase();
+const normalizeText = (value) => (value || "").toString().trim().toLowerCase();
 
-const isSameStaff = (a, b) => {
-  if (!a || !b) return false;
-  return a.id === b.id;
+const toArray = (value) => {
+  if (Array.isArray(value)) return value.filter(Boolean);
+  if (!value) return [];
+
+  if (typeof value === "string") {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) return parsed.filter(Boolean);
+    } catch {
+      return value
+        .split(/[,\n]/)
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+  }
+
+  return [];
 };
+
+const getInitials = (name = "Staff") =>
+  name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
 const isPrincipalStaff = (staff) => {
   const role = normalizeText(staff?.role);
   const position = normalizeText(staff?.position);
 
   return (
-    role === 'principal' ||
-    role === 'chief principal' ||
-    (role.includes('principal') && !role.includes('deputy')) ||
-    position === 'principal' ||
-    position === 'chief principal' ||
-    (position.includes('principal') && !position.includes('deputy'))
+    role === "principal" ||
+    role === "chief principal" ||
+    (role.includes("principal") && !role.includes("deputy")) ||
+    position === "principal" ||
+    position === "chief principal" ||
+    (position.includes("principal") && !position.includes("deputy"))
   );
 };
 
 const isDeputyStaff = (staff) => {
   if (isPrincipalStaff(staff)) return false;
-
   const role = normalizeText(staff?.role);
   const position = normalizeText(staff?.position);
+  return role.includes("deputy") || position.includes("deputy");
+};
 
-  return role.includes('deputy') || position.includes('deputy');
+const isSeniorTeacher = (staff) => {
+  const combined = `${normalizeText(staff?.role)} ${normalizeText(staff?.position)}`;
+  return combined.includes("senior teacher");
+};
+
+const isHodStaff = (staff) => {
+  const combined = `${normalizeText(staff?.role)} ${normalizeText(staff?.position)}`;
+  return combined.includes("head of department") || combined.includes("hod");
 };
 
 const getDeputyType = (staff) => {
   const combined = `${normalizeText(staff?.role)} ${normalizeText(staff?.position)}`;
-
-  if (combined.includes('academic') || combined.includes('academics')) return 'academics';
-  if (combined.includes('admin') || combined.includes('administration')) return 'administration';
-  return 'general';
+  if (combined.includes("academic") || combined.includes("academics")) return "academics";
+  if (combined.includes("admin") || combined.includes("administration")) return "administration";
+  return "general";
 };
 
-const uniqueByStaffId = (items) => {
-  const seen = new Set();
-  return items.filter((item) => {
-    const id = item?.staff?.id;
-    if (!id || seen.has(id)) return false;
-    seen.add(id);
-    return true;
-  });
+const getLeaderRank = (staff) => {
+  if (isPrincipalStaff(staff)) return 0;
+  if (isDeputyStaff(staff)) {
+    const type = getDeputyType(staff);
+    if (type === "academics") return 1;
+    if (type === "administration") return 2;
+    return 3;
+  }
+  if (isSeniorTeacher(staff)) return 4;
+  if (isHodStaff(staff)) return 5;
+  return 6;
 };
 
-const ModernStaffLeadership = () => {
-  const router = useRouter();
-  const [principal, setPrincipal] = useState(null);
-  const [deputies, setDeputies] = useState([]);
-  const [teachers, setTeachers] = useState([]);
-  const [supportStaff, setSupportStaff] = useState([]);
+const getLeaderTitle = (staff) => {
+  if (!staff) return "Leadership Profile";
+  if (isPrincipalStaff(staff)) return "Chief Principal";
+  if (isDeputyStaff(staff)) {
+    const type = getDeputyType(staff);
+    if (type === "academics") return "Deputy Principal - Academics";
+    if (type === "administration") return "Deputy Principal - Administration";
+    return staff.position || "Deputy Principal";
+  }
+  if (isSeniorTeacher(staff)) return staff.position || "Senior Teacher";
+  if (isHodStaff(staff)) return staff.position || staff.role || "Head of Department";
+  return staff.position || staff.role || "Leadership Team";
+};
+
+const getLeaderScope = (staff) => {
+  if (!staff) return "School Leadership";
+  if (isPrincipalStaff(staff)) return "Strategic Direction";
+  if (isDeputyStaff(staff)) {
+    const type = getDeputyType(staff);
+    if (type === "academics") return "Curriculum, Academics and Assessment";
+    if (type === "administration") return "Administration, Welfare and Discipline";
+    return "Deputy Leadership";
+  }
+  if (isSeniorTeacher(staff)) return "Teaching Coordination";
+  if (isHodStaff(staff)) return staff.department || staff.subjectOffered || "Department Leadership";
+  return staff.department || staff.subjectOffered || "School Leadership";
+};
+
+const getRolePalette = (staff) => {
+  if (isPrincipalStaff(staff)) {
+    return {
+      gradient: "from-orange-950 via-amber-900 to-orange-700",
+      badge: "bg-amber-300 text-orange-950",
+      soft: "bg-orange-50 text-orange-900 border-orange-200",
+      icon: Crown
+    };
+  }
+
+  if (isDeputyStaff(staff)) {
+    return {
+      gradient: "from-orange-900 via-orange-800 to-amber-700",
+      badge: "bg-white/15 text-white",
+      soft: "bg-amber-50 text-amber-900 border-amber-200",
+      icon: Medal
+    };
+  }
+
+  if (isSeniorTeacher(staff)) {
+    return {
+      gradient: "from-amber-900 via-orange-800 to-yellow-700",
+      badge: "bg-white/15 text-white",
+      soft: "bg-yellow-50 text-yellow-900 border-yellow-200",
+      icon: UserRoundCheck
+    };
+  }
+
+  return {
+    gradient: "from-slate-950 via-orange-950 to-amber-800",
+    badge: "bg-white/15 text-white",
+    soft: "bg-slate-50 text-slate-800 border-slate-200",
+    icon: Building2
+  };
+};
+
+function StaffPortrait({ staff, className = "", priority = false }) {
+  const [hasError, setHasError] = useState(false);
+  const imageUrl = getImageUrl(staff?.image);
+
+  if (!imageUrl || hasError) {
+    return (
+      <div className={`${className} flex items-center justify-center bg-gradient-to-br from-orange-950 via-amber-900 to-orange-700`}>
+        <span className="text-3xl font-black text-white">{getInitials(staff?.name)}</span>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={imageUrl}
+      alt={staff?.name || "Leadership profile"}
+      className={`${className} object-cover object-top`}
+      loading={priority ? "eager" : "lazy"}
+      onError={() => setHasError(true)}
+    />
+  );
+}
+
+function DetailList({ icon: Icon, title, items, emptyText }) {
+  return (
+    <div className="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
+      <div className="mb-4 flex items-center gap-2">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-50 text-orange-800">
+          <Icon size={16} />
+        </div>
+        <h4 className="text-xs font-black uppercase tracking-[0.18em] text-orange-900">{title}</h4>
+      </div>
+
+      {items.length > 0 ? (
+        <div className="space-y-2">
+          {items.map((item, index) => (
+            <div key={`${title}-${index}`} className="flex items-start gap-2 text-sm leading-6 text-slate-700">
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-700" />
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-sm leading-6 text-slate-500">{emptyText}</p>
+      )}
+    </div>
+  );
+}
+
+export default function ModernStaffLeadership() {
+  const [leaders, setLeaders] = useState([]);
+  const [selectedLeader, setSelectedLeader] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedLeader, setSelectedLeader] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [layoutMode, setLayoutMode] = useState('featured'); // 'featured' or 'grid'
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   useEffect(() => {
     const fetchStaff = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/staff');
+        setError(null);
+
+        const response = await fetch("/api/staff");
         const data = await response.json();
 
-        if (data.success && Array.isArray(data.staff)) {
-          const allStaff = data.staff.filter(Boolean);
-
-          // ----- PRINCIPAL DETECTION -----
-          const foundPrincipal = allStaff.find(isPrincipalStaff) || null;
-          setPrincipal(foundPrincipal);
-          setSelectedLeader(foundPrincipal);
-
-          // ----- DEPUTY DETECTION -----
-          const allDeputies = allStaff.filter(
-            (member) =>
-              member.id !== foundPrincipal?.id && isDeputyStaff(member)
-          );
-          setDeputies(allDeputies);
-
-          // ----- TEACHERS & SUPPORT STAFF (for stats) -----
-          const allTeachers = allStaff.filter(s =>
-            (s.role?.toLowerCase().includes('teacher') ||
-             s.position?.toLowerCase().includes('teacher')) &&
-            s.id !== foundPrincipal?.id &&
-            !allDeputies.some((deputy) => deputy.id === s.id)
-          );
-          setTeachers(allTeachers);
-
-          const allSupport = allStaff.filter(s =>
-            s.id !== foundPrincipal?.id &&
-            !allDeputies.some((deputy) => deputy.id === s.id) &&
-            !allTeachers.includes(s)
-          );
-          setSupportStaff(allSupport);
-        } else {
-          throw new Error('Invalid API response');
+        if (!data.success || !Array.isArray(data.staff)) {
+          throw new Error(data.error || "Leadership data could not be loaded.");
         }
+
+        const sortedLeaders = data.staff
+          .filter(Boolean)
+          .sort((a, b) => {
+            const rankDiff = getLeaderRank(a) - getLeaderRank(b);
+            if (rankDiff !== 0) return rankDiff;
+            return (a.name || "").localeCompare(b.name || "");
+          });
+
+        setLeaders(sortedLeaders);
+        setSelectedLeader(sortedLeaders.find(isPrincipalStaff) || sortedLeaders[0] || null);
       } catch (err) {
-        console.error('Fetch Error:', err);
-        setError(err.message);
+        console.error("Leadership fetch error:", err);
+        setError(err.message || "Unable to load leadership data.");
       } finally {
         setLoading(false);
       }
@@ -138,433 +273,307 @@ const ModernStaffLeadership = () => {
     fetchStaff();
   }, []);
 
-  const handleLeaderClick = (leader) => {
-    setSelectedLeader(leader);
-    if (isMobile) {
-      setTimeout(() => {
-        const card = document.getElementById('featured-leader-card');
-        if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
-    }
-  };
+  const selected = selectedLeader || leaders[0] || null;
+  const selectedPalette = getRolePalette(selected);
+  const SelectedIcon = selectedPalette.icon;
 
-  const getLeaderTitle = (leader) => {
-    if (!leader) return 'Staff Member';
-    if (isSameStaff(leader, principal)) return 'Chief Principal';
-    if (isDeputyStaff(leader)) {
-      const deputyType = getDeputyType(leader);
-      if (deputyType === 'academics') return 'Deputy Principal - Academics';
-      if (deputyType === 'administration') return 'Deputy Principal - Administration';
-      return leader.position || 'Deputy Principal';
-    }
-    return leader.position || leader.role || 'Staff Member';
-  };
+  const featuredStats = useMemo(() => {
+    const principalCount = leaders.filter(isPrincipalStaff).length;
+    const deputyCount = leaders.filter(isDeputyStaff).length;
+    const departmentCount = new Set(leaders.map((leader) => leader.department).filter(Boolean)).size;
 
-  const getLeaderSubtitle = (leader) => {
-    if (!leader) return '';
-    if (isSameStaff(leader, principal)) return 'Executive Leadership';
-    if (isDeputyStaff(leader)) {
-      const deputyType = getDeputyType(leader);
-      if (deputyType === 'academics') return 'Academics & Curriculum';
-      if (deputyType === 'administration') return 'Administration & Student Affairs';
-      return 'Deputy Leadership';
-    }
-    return leader.department || 'School Administration';
-  };
+    return [
+      { label: "Leadership Profiles", value: leaders.length || 0, icon: FiUsers },
+      { label: "Principal Office", value: principalCount || 1, icon: Crown },
+      { label: "Deputy Offices", value: deputyCount, icon: Medal },
+      { label: "Departments", value: departmentCount, icon: Building2 }
+    ];
+  }, [leaders]);
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-white">
-        <FiLoader className="w-10 h-10 text-amber-900 animate-spin" />
-        <p className="mt-4 text-slate-500 font-medium">Loading leadership data...</p>
-      </div>
+      <section className="flex min-h-[70vh] items-center justify-center bg-gradient-to-br from-orange-950 via-amber-950 to-slate-950 px-4 text-white">
+        <div className="text-center">
+          <FiLoader className="mx-auto h-10 w-10 animate-spin text-amber-300" />
+          <h3 className="mt-5 text-xl font-black">Loading Leadership</h3>
+          <p className="mt-2 text-sm font-medium text-orange-100/75">Preparing the school leadership profiles...</p>
+        </div>
+      </section>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-center p-8 bg-slate-50 rounded-3xl">
-          <FiAward className="text-red-500 text-3xl mx-auto mb-4" />
-          <h3 className="text-xl font-black">Error</h3>
-          <p className="text-slate-600 mt-2">{error}</p>
-          <button onClick={() => window.location.reload()} className="mt-4 px-6 py-2 bg-amber-600 text-white rounded-xl">
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!principal) {
-    return (
-      <div className="text-center py-20">
-        No principal profile is configured in the staff API.
-      </div>
-    );
-  }
-
-  const leadershipTeam = uniqueByStaffId([
-    { staff: principal, label: 'Chief Principal', color: 'from-amber-700 to-orange-700', subtitle: 'Executive Leadership' },
-    ...deputies.map((deputy) => ({
-      staff: deputy,
-      label: getLeaderTitle(deputy),
-      color: 'from-amber-600 to-orange-600',
-      subtitle: getLeaderSubtitle(deputy),
-    })),
-  ].filter(item => item.staff !== null));
-
-  const currentLeader = selectedLeader || principal;
-  const isCurrentPrincipal = isSameStaff(currentLeader, principal);
-
-  // ==================== GRID LAYOUT ====================
-  if (layoutMode === 'grid') {
-    return (
-      <div className="min-h-screen bg-white">
-        {/* Layout Toggle */}
-        <div className="max-w-7xl mx-auto px-4 pt-8 flex justify-end">
+      <section className="flex min-h-[70vh] items-center justify-center bg-gradient-to-br from-orange-950 via-amber-950 to-slate-950 px-4">
+        <div className="max-w-md rounded-3xl border border-red-200 bg-white p-8 text-center shadow-2xl">
+          <FiShield className="mx-auto text-4xl text-red-500" />
+          <h3 className="mt-4 text-xl font-black text-slate-950">Unable To Load Leadership</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">{error}</p>
           <button
-            onClick={() => setLayoutMode('featured')}
-            className="flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-900 rounded-xl text-sm font-bold"
+            type="button"
+            onClick={() => window.location.reload()}
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-orange-900 px-5 py-3 text-xs font-black uppercase tracking-widest text-white transition hover:bg-orange-800"
           >
-            <MdOutlineDashboard /> Switch to Featured Layout
+            <FiRefreshCw /> Try Again
           </button>
         </div>
+      </section>
+    );
+  }
 
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-black text-slate-900">Executive Leadership</h1>
-            <p className="text-slate-600 mt-2">Meet our dedicated school leaders</p>
-            <div className="w-24 h-1 bg-amber-500 mx-auto mt-4 rounded-full" />
+  if (!selected) {
+    return (
+      <section className="flex min-h-[70vh] items-center justify-center bg-gradient-to-br from-orange-950 via-amber-950 to-slate-950 px-4">
+        <div className="max-w-md rounded-3xl bg-white p-8 text-center shadow-2xl">
+          <FiUsers className="mx-auto text-4xl text-orange-800" />
+          <h3 className="mt-4 text-xl font-black text-slate-950">No Leadership Profiles Yet</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">Add leadership profiles from the staff module to publish them here.</p>
+        </div>
+      </section>
+    );
+  }
+
+  const expertise = toArray(selected.expertise);
+  const responsibilities = toArray(selected.responsibilities);
+  const achievements = toArray(selected.achievements);
+  const joinedYear = selected.joinDate ? new Date(selected.joinDate).getFullYear() : null;
+  const roleTitle = getLeaderTitle(selected);
+  const leaderScope = getLeaderScope(selected);
+  const leaderDepartment = selected.department || selected.departmentGroup?.name || selected.subjectOffered || "School Leadership";
+  const quickFacts = [
+    { label: "Role", value: roleTitle, icon: FiBriefcase },
+    { label: "Office", value: leaderScope, icon: FiTarget },
+    { label: "Department", value: leaderDepartment, icon: Building2 },
+    { label: "Qualification", value: selected.qualification || "Professional educator", icon: GraduationCap },
+    { label: "Joined", value: joinedYear || "On record", icon: FiCalendar },
+    { label: "Profile Type", value: selected.staffType || selected.role || "Leadership", icon: FiUser }
+  ];
+
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-br from-orange-950 via-amber-950 to-slate-950 py-16 text-slate-950 sm:py-20">
+      <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: "linear-gradient(90deg, rgba(255,255,255,.18) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.18) 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
+      <div className="absolute -right-20 top-10 h-72 w-72 rounded-full bg-amber-500/20 blur-3xl" />
+      <div className="absolute -bottom-28 left-0 h-80 w-80 rounded-full bg-orange-600/20 blur-3xl" />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-amber-200 backdrop-blur">
+              <Sparkles size={14} />
+              School Leadership
+            </div>
+            <h2 className="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+              The team guiding Kinyui Boys forward.
+            </h2>
+            <p className="mt-5 max-w-2xl text-sm font-medium leading-7 text-orange-100/80 sm:text-base">
+              Explore the principal, deputies, senior teachers, and department leaders through one focused leadership view with the full profile details available from the staff records.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {leadershipTeam.map((leader, idx) => (
-              <div
-                key={leader.staff.id}
-                className={`group bg-white rounded-2xl overflow-hidden shadow-lg transition-all hover:shadow-xl hover:-translate-y-1 ${
-                  isSameStaff(leader.staff, principal) ? 'ring-2 ring-amber-900' : 'border border-slate-200'
-                }`}
-              >
-                <div className={`h-2 bg-gradient-to-r ${leader.color}`} />
-                <div className="relative h-56 bg-slate-100">
-                  {getImageUrl(leader.staff.image) ? (
-                    <img
-                      src={getImageUrl(leader.staff.image)}
-                      alt={leader.staff.name}
-                      className="w-full h-full object-cover object-top"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(leader.staff.name)}&background=d97706&color=fff&bold=true&size=200`;
-                      }}
-                    />
-                  ) : (
-                    <div className={`w-full h-full bg-gradient-to-br ${leader.color} flex items-center justify-center`}>
-                      <GiGraduateCap className="text-white text-6xl opacity-70" />
-                    </div>
-                  )}
-                  {isSameStaff(leader.staff, principal) && (
-                    <div className="absolute top-3 right-3 bg-amber-500 text-white text-[10px] font-black px-2 py-1 rounded-full shadow-lg">
-                      Principal
-                    </div>
-                  )}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:w-[34rem]">
+            {featuredStats.map((stat) => {
+              const Icon = stat.icon;
+              return (
+                <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white backdrop-blur">
+                  <Icon className="mb-3 text-amber-300" size={20} />
+                  <p className="text-2xl font-black">{stat.value}</p>
+                  <p className="mt-1 text-[9px] font-black uppercase tracking-widest text-orange-100/65">{stat.label}</p>
                 </div>
-                <div className="p-5">
-                  <h3 className="text-xl font-black text-slate-900">{leader.staff.name}</h3>
-                  <p className="text-amber-900 font-bold text-sm mt-1">{leader.label}</p>
-                  <p className="text-slate-500 text-xs">{leader.subtitle}</p>
+              );
+            })}
+          </div>
+        </div>
 
-                  {leader.staff.quote && (
-                    <div className="mt-3 text-sm italic text-slate-600 border-l-3 border-amber-900 pl-3">
-                      "{leader.staff.quote.substring(0, 80)}"
-                    </div>
-                  )}
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_24rem]">
+          <article id="featured-leader-card" className="overflow-hidden rounded-[2rem] border border-white/10 bg-white shadow-2xl shadow-black/30">
+            <div className="grid min-h-[620px] lg:grid-cols-[minmax(320px,420px)_minmax(0,1fr)]">
+              <div className={`relative flex flex-col justify-between bg-gradient-to-br ${selectedPalette.gradient} p-5 text-white sm:p-7`}>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] ${selectedPalette.badge}`}>
+                    <SelectedIcon size={14} />
+                    {roleTitle}
+                  </span>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-white">
+                    <FiCheck />
+                    Active Profile
+                  </span>
+                </div>
 
-                  <div className="mt-4 pt-3 border-t border-slate-100 space-y-1">
-                    {leader.staff.department && (
-                      <div className="flex items-center gap-2 text-xs text-slate-600">
-                        <FiMapPin className="text-amber-900" size={12} />
-                        <span>{leader.staff.department}</span>
-                      </div>
+                <div className="my-7">
+                  <StaffPortrait
+                    staff={selected}
+                    priority
+                    className="mx-auto aspect-[4/5] w-full max-w-[24rem] rounded-[1.6rem] border border-white/15 bg-white/10 shadow-2xl"
+                  />
+                </div>
+
+                <div className="rounded-[1.6rem] border border-white/15 bg-white/10 p-5 backdrop-blur">
+                  <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-200">Featured Leader</p>
+                  <h3 className="mt-2 text-2xl font-black leading-tight sm:text-3xl">{selected.name}</h3>
+                  <p className="mt-2 text-sm font-semibold text-orange-100/80">{leaderScope}</p>
+                </div>
+              </div>
+
+              <div className="p-5 sm:p-7 lg:p-8">
+                <div className="flex flex-col gap-5 border-b border-orange-100 pb-6 lg:flex-row lg:items-start lg:justify-between">
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-[0.24em] text-orange-800">Leadership Profile</p>
+                    <h3 className="mt-2 text-3xl font-black tracking-tight text-slate-950">{selected.name}</h3>
+                    <p className="mt-1 text-sm font-bold text-orange-900">{roleTitle}</p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {selected.email && (
+                      <a href={`mailto:${selected.email}`} className="inline-flex items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-3 py-2 text-xs font-bold text-orange-900">
+                        <FiMail /> Email
+                      </a>
                     )}
-                    {leader.staff.joinDate && (
-                      <div className="flex items-center gap-2 text-xs text-slate-600">
-                        <FiCalendar className="text-amber-900" size={12} />
-                        <span>Joined: {new Date(leader.staff.joinDate).getFullYear()}</span>
-                      </div>
-                    )}
-                    {leader.staff.email && (
-                      <a href={`mailto:${leader.staff.email}`} className="flex items-center gap-2 text-xs text-amber-900 mt-2">
-                        <FiMail size={12} /> {leader.staff.email}
+                    {selected.phone && (
+                      <a href={`tel:${selected.phone}`} className="inline-flex items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-3 py-2 text-xs font-bold text-orange-900">
+                        <FiPhone /> Call
                       </a>
                     )}
                   </div>
                 </div>
-                <div className="px-5 pb-5">
-                  <button
-                    onClick={() => {
-                      setSelectedLeader(leader.staff);
-                      setLayoutMode('featured');
-                    }}
-                    className="w-full py-2 text-xs font-bold rounded-lg bg-slate-100 text-slate-700 hover:bg-amber-100 transition-colors"
-                  >
-                    View Full Profile →
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
 
-        </div>
-      </div>
-    );
-  }
-
-  // ==================== FEATURED LAYOUT (ORIGINAL) ====================
-  return (
-    <div className="min-h-screen bg-white text-slate-900">
-      {/* Layout Toggle */}
-      <div className="max-w-7xl mx-auto px-4 pt-6 flex justify-end">
-        <button
-          onClick={() => setLayoutMode('grid')}
-          className="flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-900 rounded-xl text-sm font-bold"
-        >
-          <GiCrown /> Switch to Grid Layout
-        </button>
-      </div>
-
-      {/* Hero Section */}
-      <section className="relative py-16 md:py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-orange-50" />
-        <div className="max-w-7xl mx-auto px-4 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase mb-5">
-            <IoPeopleOutline className="text-amber-900" />
-            Executive Leadership
-          </div>
-          <h1 className="text-3xl md:text-5xl font-black text-slate-900">
-            Meet Our{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-900 to-orange-900">
-              Executive Leadership
-            </span>
-          </h1>
-          <p className="text-slate-600 max-w-2xl mx-auto mt-4">
-            Visionary leaders dedicated to academic excellence, student development, and institutional transformation.
-          </p>
-        </div>
-      </section>
-
-      <div className="max-w-7xl mx-auto px-4 pb-20">
-        {/* Mobile Deputy Selector */}
-        {isMobile && leadershipTeam.length > 1 && (
-          <div className="md:hidden mb-6 space-y-3">
-            {leadershipTeam.slice(1).map(({ staff, label, color, subtitle }) => (
-              <button
-                key={staff.id}
-                onClick={() => handleLeaderClick(staff)}
-                className={`flex items-center gap-4 p-4 rounded-2xl border transition-all w-full text-left ${
-                  selectedLeader?.id === staff.id
-                    ? 'border-amber-900 bg-amber-50 ring-2 ring-amber-900'
-                    : 'border-slate-200 bg-white'
-                }`}
-              >
-                <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0">
-                  {getImageUrl(staff.image) ? (
-                    <img src={getImageUrl(staff.image)} alt={staff.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className={`w-full h-full bg-gradient-to-br ${color} flex items-center justify-center`}>
-                      <GiGraduateCap className="text-white text-2xl" />
-                    </div>
-                  )}
-                </div>
-                <div className="flex-1">
-                  <p className="text-[10px] font-black text-amber-900 uppercase">{label}</p>
-                  <h3 className="font-black text-slate-900 text-sm">{staff.name}</h3>
-                  <p className="text-slate-500 text-xs">{subtitle}</p>
-                </div>
-                {selectedLeader?.id === staff.id && <FiCheck className="text-amber-900" />}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Desktop Deputy Cards */}
-        {!isMobile && leadershipTeam.length > 1 && (
-          <div className="hidden md:grid grid-cols-2 gap-6 mb-12">
-            {leadershipTeam.slice(1).map(({ staff, label, color, subtitle }) => (
-              <button
-                key={staff.id}
-                onClick={() => handleLeaderClick(staff)}
-                className={`bg-white rounded-2xl border p-5 flex items-center gap-4 transition-all ${
-                  selectedLeader?.id === staff.id
-                    ? 'border-amber-900 ring-2 ring-amber-900'
-                    : 'border-slate-200 hover:border-amber-900'
-                }`}
-              >
-                <div className="relative w-16 h-16 rounded-xl overflow-hidden">
-                  {getImageUrl(staff.image) ? (
-                    <img src={getImageUrl(staff.image)} alt={staff.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className={`w-full h-full bg-gradient-to-br ${color} flex items-center justify-center`}>
-                      <GiGraduateCap className="text-white text-2xl" />
-                    </div>
-                  )}
-                </div>
-                <div className="flex-1 text-left">
-                  <p className="text-[10px] font-black text-amber-900 uppercase">{label}</p>
-                  <h3 className="font-black text-slate-900">{staff.name}</h3>
-                  <p className="text-slate-500 text-xs">{subtitle}</p>
-                </div>
-                {selectedLeader?.id === staff.id && <FiCheck className="text-amber-900" />}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Main Featured Card */}
-        <div id="featured-leader-card" className="bg-white rounded-3xl border-2 border-amber-900 shadow-xl overflow-hidden">
-          <div className="h-1.5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500" />
-          <div className="grid lg:grid-cols-2">
-            {/* Image */}
-            <div className="relative h-80 lg:h-auto min-h-[400px]">
-              {getImageUrl(currentLeader.image) ? (
-                <img
-                  src={getImageUrl(currentLeader.image)}
-                  alt={currentLeader.name}
-                  className="w-full h-full object-cover object-top"
-                />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-br from-amber-700 to-orange-700 flex items-center justify-center">
-                  <GiGraduateCap className="text-8xl text-white/40" />
-                </div>
-              )}
-              {isCurrentPrincipal && (
-                <div className="absolute top-4 left-4 bg-amber-500 text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
-                  <IoSparkles size={12} /> Chief Principal
-                </div>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              <div className="absolute bottom-0 p-6 lg:hidden">
-                <h2 className="text-white text-2xl font-black">{currentLeader.name}</h2>
-                <p className="text-amber-900 text-sm">{getLeaderSubtitle(currentLeader)}</p>
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="p-6 lg:p-10 flex flex-col justify-between">
-              <div>
-                {!isCurrentPrincipal && (
-                  <button
-                    onClick={() => handleLeaderClick(principal)}
-                    className="mb-5 inline-flex items-center gap-2 rounded-xl border border-amber-900 bg-amber-50 px-4 py-2 text-xs font-black text-amber-900 transition-colors hover:bg-amber-100"
-                  >
-                    <FiArrowLeft size={12} /> Back to Principal
-                  </button>
-                )}
-
-                <div className="hidden lg:block mb-2">
-                  <span className="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase">
-                    {getLeaderTitle(currentLeader)}
-                  </span>
-                </div>
-                <h2 className="hidden lg:block text-3xl font-black text-slate-900">{currentLeader.name}</h2>
-                <p className="hidden lg:block text-amber-900 font-bold mt-1 mb-6">{getLeaderSubtitle(currentLeader)}</p>
-
-                {currentLeader.quote && (
-                  <div className="rounded-xl border-l-4 border-amber-900 bg-amber-50/50 p-4 mb-6">
-                    <div className="flex gap-2">
-                      <FiMessageSquare className="text-amber-900 mt-0.5" />
-                      <div>
-                        <p className="text-[10px] font-black text-amber-900 uppercase">Leadership Philosophy</p>
-                        <p className="text-slate-700 text-sm italic">"{currentLeader.quote}"</p>
+                <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                  {quickFacts.map((fact) => {
+                    const Icon = fact.icon;
+                    return (
+                      <div key={fact.label} className="rounded-2xl border border-orange-100 bg-orange-50/50 p-4">
+                        <Icon className="mb-3 text-orange-800" size={18} />
+                        <p className="text-[9px] font-black uppercase tracking-[0.18em] text-slate-500">{fact.label}</p>
+                        <p className="mt-1 text-sm font-black leading-5 text-slate-950">{fact.value}</p>
                       </div>
-                    </div>
-                  </div>
-                )}
+                    );
+                  })}
+                </div>
 
-                <div className="mb-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center">
-                      <FiUser className="text-white text-xs" />
+                <div className="mt-6 grid gap-4 lg:grid-cols-[1.1fr_.9fr]">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                    <div className="mb-3 flex items-center gap-2">
+                      <FiUser className="text-orange-800" />
+                      <h4 className="text-xs font-black uppercase tracking-[0.18em] text-slate-700">Professional Bio</h4>
                     </div>
-                    <h3 className="text-[10px] font-black text-slate-700 uppercase">Professional Profile</h3>
+                    <p className="text-sm leading-7 text-slate-700">
+                      {selected.bio ||
+                        `${selected.name} serves in the ${roleTitle.toLowerCase()} office, supporting discipline, academic excellence, mentorship, and the growth of every Kinyui boy.`}
+                    </p>
                   </div>
-                  <div className="bg-slate-50 rounded-xl p-4">
-                    <p className="text-slate-700 text-sm leading-relaxed">
-                      {currentLeader.bio ||
-                        (isCurrentPrincipal
-                          ? `${currentLeader.name} serves as the Chief Principal, bringing visionary leadership and commitment to excellence.`
-                          : `${currentLeader.name} is a dedicated member of our executive leadership team.`)}
+
+                  <div className="rounded-2xl border border-orange-200 bg-gradient-to-br from-orange-50 to-amber-50 p-5">
+                    <div className="mb-3 flex items-center gap-2">
+                      <FiMessageSquare className="text-orange-800" />
+                      <h4 className="text-xs font-black uppercase tracking-[0.18em] text-orange-900">Leadership Note</h4>
+                    </div>
+                    <p className="text-sm font-semibold italic leading-7 text-slate-700">
+                      {selected.quote || "Leadership at Kinyui Boys is anchored in discipline, service, accountability, and academic purpose."}
                     </p>
                   </div>
                 </div>
 
-                {/* Dynamic Stats (from real data) */}
-                {isCurrentPrincipal && (
-                  <div className="grid grid-cols-3 gap-3 mt-2">
-                    <div className="text-center p-3 bg-amber-50 rounded-xl">
-                      <p className="text-lg font-black text-amber-900">{teachers.length + supportStaff.length}</p>
-                      <p className="text-[9px] font-bold text-slate-600">Total Staff</p>
-                    </div>
-                    <div className="text-center p-3 bg-amber-50 rounded-xl">
-                      <p className="text-lg font-black text-amber-900">{teachers.length}</p>
-                      <p className="text-[9px] font-bold text-slate-600">Teachers</p>
-                    </div>
-                    <div className="text-center p-3 bg-amber-50 rounded-xl">
-                      <p className="text-lg font-black text-amber-900">{supportStaff.length}</p>
-                      <p className="text-[9px] font-bold text-slate-600">Support Staff</p>
-                    </div>
-                  </div>
-                )}
+                <div className="mt-4 grid gap-4 lg:grid-cols-3">
+                  <DetailList
+                    icon={FiBriefcase}
+                    title="Responsibilities"
+                    items={responsibilities.slice(0, 6)}
+                    emptyText="School leadership, learner mentorship, discipline, and institutional improvement."
+                  />
+                  <DetailList
+                    icon={BookOpen}
+                    title="Expertise"
+                    items={expertise.slice(0, 6)}
+                    emptyText="Education leadership, teaching, student support, and school operations."
+                  />
+                  <DetailList
+                    icon={Trophy}
+                    title="Achievements"
+                    items={achievements.slice(0, 5)}
+                    emptyText="Contributing to the growth and excellence of Kinyui Boys Senior School."
+                  />
+                </div>
+              </div>
+            </div>
+          </article>
 
-                {!isCurrentPrincipal && currentLeader.responsibilities?.length > 0 && (
-                  <div className="mt-4">
-                    <h3 className="text-[10px] font-black text-slate-700 uppercase mb-2">Key Responsibilities</h3>
-                    <div className="flex flex-wrap gap-1.5">
-                      {currentLeader.responsibilities.slice(0, 3).map((resp, i) => (
-                        <span key={i} className="px-2 py-1 bg-slate-100 text-slate-700 text-[10px] font-bold rounded-lg">
-                          {resp}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
+          <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start">
+            <div className="rounded-[2rem] border border-white/10 bg-white/10 p-5 text-white backdrop-blur">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.24em] text-amber-200">Leadership Map</p>
+                  <h3 className="mt-1 text-xl font-black">Select a profile</h3>
+                </div>
+                <FiUsers className="text-amber-300" size={24} />
               </div>
 
-              {currentLeader.email && (
-                <div className="mt-6 pt-4 border-t border-slate-200">
-                  <a href={`mailto:${currentLeader.email}`} className="inline-flex items-center gap-2 text-amber-900 font-bold text-sm">
-                    <div className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center">
-                      <FiMail size={14} />
-                    </div>
-                    {currentLeader.email}
-                  </a>
-                </div>
-              )}
+              <div className="space-y-3">
+                {leaders.map((leader) => {
+                  const palette = getRolePalette(leader);
+                  const Icon = palette.icon;
+                  const isActive = selected.id === leader.id;
+
+                  return (
+                    <button
+                      type="button"
+                      key={leader.id}
+                      onClick={() => {
+                        setSelectedLeader(leader);
+                        setTimeout(() => {
+                          document.getElementById("featured-leader-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }, 50);
+                      }}
+                      className={`w-full rounded-2xl border p-3 text-left transition ${
+                        isActive
+                          ? "border-amber-300 bg-white text-slate-950 shadow-xl"
+                          : "border-white/10 bg-white/5 text-white hover:border-amber-300/60 hover:bg-white/10"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <StaffPortrait staff={leader} className="h-14 w-14 shrink-0 rounded-xl" />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <Icon className={isActive ? "text-orange-800" : "text-amber-300"} size={14} />
+                            <p className={`truncate text-[10px] font-black uppercase tracking-[0.16em] ${isActive ? "text-orange-900" : "text-orange-100/75"}`}>
+                              {getLeaderTitle(leader)}
+                            </p>
+                          </div>
+                          <h4 className="mt-1 truncate text-sm font-black">{leader.name}</h4>
+                          <p className={`mt-0.5 truncate text-xs ${isActive ? "text-slate-500" : "text-white/55"}`}>
+                            {getLeaderScope(leader)}
+                          </p>
+                        </div>
+                        <FiChevronRight className={isActive ? "text-orange-800" : "text-white/40"} />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        </div>
 
-        {/* Back to Principal button */}
-        {!isCurrentPrincipal && (
-          <div className="mt-6 flex justify-center">
-            <button onClick={() => handleLeaderClick(principal)} className="flex items-center gap-2 px-5 py-2.5 bg-amber-50 border border-amber-900 text-amber-900 font-black text-xs rounded-xl hover:bg-amber-100 transition-colors">
-              <FiArrowLeft size={12} /> Back to Principal
-            </button>
-          </div>
-        )}
-
-        {/* Footer button */}
-        <div className="text-center mt-16 pt-8 border-t border-slate-200">
-          <button
-            onClick={() => router.push('/pages/staff')}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-amber-900 text-amber-900 font-black rounded-xl hover:bg-gradient-to-r hover:from-amber-600 hover:to-orange-600 hover:text-white transition-all"
-          >
-            <FiEye /> View Staff Directory <FiChevronRight />
-          </button>
+            <div className="rounded-[2rem] border border-white/10 bg-white p-5 shadow-2xl shadow-black/20">
+              <p className="text-[10px] font-black uppercase tracking-[0.24em] text-orange-800">Profile Coverage</p>
+              <h3 className="mt-2 text-xl font-black text-slate-950">What this section displays</h3>
+              <div className="mt-4 space-y-3">
+                {[
+                  { icon: FiUser, text: "Name, role, office, department, and qualification" },
+                  { icon: FiMessageSquare, text: "Bio and leadership quote where available" },
+                  { icon: FiTarget, text: "Responsibilities and leadership scope" },
+                  { icon: FiStar, text: "Expertise and achievements from staff records" },
+                  { icon: FiMapPin, text: "Joined year and public contact fields when published" }
+                ].map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={item.text} className="flex items-start gap-3 rounded-xl bg-orange-50 p-3 text-sm leading-5 text-slate-700">
+                      <Icon className="mt-0.5 shrink-0 text-orange-800" />
+                      <span>{item.text}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
-    </div>
+    </section>
   );
-};
-
-export default ModernStaffLeadership;
+}
