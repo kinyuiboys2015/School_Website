@@ -950,7 +950,7 @@ const ModernSchoolLayout = () => {
           <div className="absolute top-24 right-10 h-[20rem] w-[20rem] rounded-full sm:bg-gradient-to-br sm:from-sky-200/35 sm:to-indigo-200/20 bg-gradient-to-br from-amber-100/35 to-amber-50/15 blur-3xl" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="w-full md:w-[85%] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
             {/* Left Card */}
             <div className="order-2 lg:order-1 lg:col-span-5">
