@@ -140,7 +140,7 @@ const BrandSection = () => (
     
     <p className="text-white/60 text-sm leading-relaxed border-l-2 border-amber-500 pl-4 italic">
       "An Extra County learning institution dedicated to academic excellence, 
-      holistic development, and nurturing future leaders since 1976."
+      holistic development, and nurturing future leaders since 1965."
     </p>
   </div>
 );

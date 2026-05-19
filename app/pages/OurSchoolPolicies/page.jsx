@@ -14,10 +14,10 @@ const allTerms = [
     title: "Registration & Admission",
     icon: FiBookOpen,
     color: "from-blue-600 to-blue-800",
-    intro: "Kinyui Boys High School maintains high admission standards to ensure quality education and student success.",
+    intro: "Kinyui Boys Senior School maintains high admission standards for boys who are ready for disciplined boarding life and serious learning.",
     subSections: [
       { subTitle: "Entry Requirements", content: "Admission to Form 1 requires a minimum KCPE score of 250 marks. Transfer students must present original leaving certificate and report from previous school." },
-      { subTitle: "Registration Documents", content: "Original birth certificate, KCPE result slip, transfer letter, baptism card (optional), and 4 passport photos must be submitted on reporting day." },
+      { subTitle: "Registration Documents", content: "Original birth certificate, KCPE result slip, transfer letter where applicable, medical information, and 4 passport photos must be submitted on reporting day." },
       { subTitle: "Reporting Day", content: "Form 1 students report on the date specified in admission letter. Reporting time: 8:00 AM - 12:00 PM. Late reporting requires prior approval." }
     ]
   },
@@ -26,7 +26,7 @@ const allTerms = [
     title: "Academics & Attendance",
     icon: FiBook,
     color: "from-emerald-600 to-emerald-800",
-    intro: "Academic excellence is the core mandate of Kinyui Boys High School, and students must demonstrate commitment to their studies.",
+    intro: "Academic excellence is the core mandate of Kinyui Boys Senior School, and every boy must demonstrate commitment to his studies.",
     subSections: [
       { subTitle: "Attendance", content: "Minimum class attendance: 90%. Any absence requires a written explanation from parent/guardian. Absence exceeding 3 days needs a doctor's note." },
       { subTitle: "Academic Performance", content: "Students must maintain a mean grade of C plain and above. Those scoring below D+ in two subjects attend mandatory holiday tuition." },
@@ -40,7 +40,7 @@ const allTerms = [
     color: "from-amber-600 to-amber-800",
     intro: `School fees must be paid promptly to facilitate smooth school operations and resource availability. Below is the official fee structure for ${new Date().getFullYear()}.`,
     subSections: [
-      { subTitle: "Payment Methods", content: "Bank payments to SA Kinyui Boys HIGH SCHOOL, Cooperative Bank, Account No: 0112876543210. MPESA Paybill: 894145 (Account: Student Name + Admission No). Crossed bankers cheque payable to Kinyui Boys SECONDARY SCHOOL or Postal money order payable to Kinyui Boys SECONDARY SCHOOL." },
+      { subTitle: "Payment Methods", content: "Bank payments to S.A Kinyui Boys Senior School, Cooperative Bank, Account No: 0112876543210. MPESA Paybill: 894145 (Account: Student Name + Admission No). Crossed bankers cheque payable to Kinyui Boys Senior School or Postal money order payable to Kinyui Boys Senior School." },
       { subTitle: "Payment Deadlines", content: "Fees payable in full by the second week of each term. Term 1: By 31st January, Term 2: By 30th April, Term 3: By 31st August." },
       { subTitle: "Penalties", content: "Late payment attracts a penalty of KES 500 per week. Students with fee balances will not receive end-term reports or be allowed to sit for exams." },
       { subTitle: "Official Contact", content: "For fee queries, contact Accounts Clerk at P.O.BOX 142-90131, TALA or call 0733 587223. Email: kinyuiboysschool@yahoo.com" }
@@ -51,11 +51,11 @@ const allTerms = [
     title: "Discipline & Conduct",
     icon: FiShield,
     color: "from-red-600 to-red-800",
-    intro: "Kinyui Boys High School upholds strict discipline to create a conducive learning environment.",
+    intro: "Kinyui Boys Senior School upholds firm discipline so boys can learn safely, respect authority, and grow into responsible young men.",
     subSections: [
-      { subTitle: "School Uniform", content: "Full school uniform must be worn at all times: blue checked shirt, navy blue sweater, grey shorts/trousers, white socks, and black shoes. School tie and badge compulsory." },
-      { subTitle: "Prohibited Items", content: "STRICTLY PROHIBITED: Mobile phones, smartphones, smartwatches, alcohol, cigarettes, bhang, weapons, playing cards, and inappropriate magazines." },
-      { subTitle: "Discipline Structure", content: "Minor offenses: Manual work/counseling. Serious offenses: Suspension. Gross offenses: Expulsion (drugs, fighting, theft, vandalism)." }
+      { subTitle: "School Uniform", content: "Full school uniform must be worn neatly at all times: blue checked shirt, navy blue sweater, grey trousers, white socks, black shoes, school tie, and badge." },
+      { subTitle: "Prohibited Items", content: "STRICTLY PROHIBITED: Mobile phones, smartphones, smartwatches, alcohol, cigarettes, bhang, weapons, playing cards, gambling items, unauthorized civilian clothing, and inappropriate magazines." },
+      { subTitle: "Discipline Structure", content: "Minor offenses receive guidance, counselling, or approved manual work. Serious offenses may lead to suspension. Gross misconduct such as drugs, fighting, theft, or vandalism may lead to expulsion according to school policy." }
     ]
   },
   {
@@ -63,10 +63,10 @@ const allTerms = [
     title: "Boarding & Accommodation",
     icon: FiHome,
     color: "from-indigo-600 to-indigo-800",
-    intro: "As a fully boarding school, Kinyui Boys provides structured residential facilities with clear guidelines.",
+    intro: "As a boys boarding school, Kinyui Boys provides structured residential routines that build discipline, order, and brotherhood.",
     subSections: [
       { subTitle: "Daily Routine", content: "Wake up: 5:00 AM. Breakfast: 6:30 AM. Lunch: 1:00 PM. Supper: 6:30 PM. Lights out: 10:00 PM (Form 3-4), 9:30 PM (Form 1-2)." },
-      { subTitle: "Dormitory Rules", content: "Beds made by 6:00 AM. Personal belongings locked in boxes. No food in dormitories. Cleaning roster strictly followed." },
+      { subTitle: "Dormitory Rules", content: "Beds made by 6:00 AM. Personal belongings locked in boxes. No food in dormitories. Dorm captains and housemasters must be respected. Cleaning roster strictly followed." },
       { subTitle: "Visiting Days", content: "Last Sunday of each term, 10:00 AM - 4:00 PM. Parents must sign visitor's book. No visiting on examination days." }
     ]
   },
@@ -77,7 +77,7 @@ const allTerms = [
     color: "from-violet-600 to-violet-800",
     intro: "Student movement within and outside school is controlled for safety and accountability.",
     subSections: [
-      { subTitle: "School Compound", content: "Students must remain within school bounds at all times. Leaving school requires written parental permission approved by Principal." },
+      { subTitle: "School Compound", content: "Every boy must remain within school bounds at all times. Leaving school requires written parental permission approved by the Principal." },
       { subTitle: "Half-Term Breaks", content: "Half-term break: Thursday to Sunday. Students must sign out and indicate destination. Return by Sunday 5:00 PM." }
     ]
   },
@@ -86,7 +86,7 @@ const allTerms = [
     title: "Health & Medical Care",
     icon: FiHeart,
     color: "from-rose-600 to-rose-800",
-    intro: "Student health and wellness are prioritized with comprehensive medical support systems.",
+    intro: "The health, hygiene, and wellness of every boy are prioritized through medical support and clear reporting procedures.",
     subSections: [
       { subTitle: "School Dispensary", content: "School nurse on duty 24/7. Minor ailments treated at school dispensary. Serious cases referred to Kinyui Health Centre." },
       { subTitle: "Medical Checkups", content: "Routine medical checkups conducted every term. Parents must provide updated medical history and allergy information." },
@@ -123,11 +123,11 @@ const allTerms = [
     title: "Dress Code & Grooming",
     icon: FiUsers,
     color: "from-sky-600 to-sky-800",
-    intro: "Proper grooming reflects the discipline and identity of Kinyui Boys High School.",
+    intro: "Proper grooming reflects the discipline and identity of Kinyui Boys Senior School.",
     subSections: [
       { subTitle: "Hair Rules", content: "Short, neat, above collar, no shaved lines. Dreadlocks not allowed. No coloring or styling." },
-      { subTitle: "Personal Effects", content: "NO jewelry except simple watches. No makeup, nail polish, or cosmetics. No visible tattoos or piercings." },
-      { subTitle: "General Grooming", content: "Nails short and clean. Uniforms clean and ironed. Shirts tucked in. Shoes polished daily." }
+      { subTitle: "Personal Effects", content: "NO jewelry except simple watches. Earrings, chains, bracelets, visible tattoos, piercings, cosmetics, and unauthorized fashion items are not allowed." },
+      { subTitle: "General Grooming", content: "Nails must be short and clean. Uniforms must be clean and ironed. Shirts remain tucked in. Shoes must be polished daily." }
     ]
   },
   {
@@ -308,7 +308,7 @@ export default function SchoolPolicies() {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 md:pt-20 pb-10 sm:pb-14 md:pb-16 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 border border-white/20 rounded-full backdrop-blur-sm mb-5 sm:mb-6">
             <FiShield className="text-blue-400" size={14} />
-            <span className="text-[11px] sm:text-xs font-semibold text-blue-300 uppercase tracking-widest">SA Kinyui Boys Senior School — Est. 1976</span>
+            <span className="text-[11px] sm:text-xs font-semibold text-blue-300 uppercase tracking-widest">SA Kinyui Boys Senior School - Est. 1965</span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-4 sm:mb-5">
             School Rules &<br className="hidden sm:block" /> Policies {year}

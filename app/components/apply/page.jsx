@@ -49,7 +49,7 @@ const PortalHeader = ({
 
               <p className="mt-2.5 sm:mt-3 text-sm sm:text-base text-gray-500 max-w-md leading-relaxed">
                 Secure digital gateway for student applications &amp; admission coordination.
-                Shaping leaders since 1976.
+                Shaping leaders since 1965.
               </p>
 
               {/* Motto + social proof — horizontal strip */}

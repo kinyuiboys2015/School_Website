@@ -479,7 +479,7 @@ const ModernLoadingScreen = () => {
           </div>
           
           <p className="text-gray-600 text-xs md:text-sm mt-3 tracking-wider font-semibold">
-            EST. 1976 | CENTRE OF EXCELLENCE
+            EST. 1965 | CENTRE OF EXCELLENCE
           </p>
         </div>
 

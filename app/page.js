@@ -176,7 +176,7 @@ const ModernLoadingScreen = () => {
           <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-600 to-transparent animate-underline"></div>
           
           <p className="text-gray-900 text-[10px] md:text-base mt-3 tracking-wider">
-            EST. 1976 | CENTRE OF EXCELLENCE
+            EST. 1965 | CENTRE OF EXCELLENCE
           </p>
         </div>
 
@@ -392,7 +392,7 @@ const jsonLd = {
     'https://twitter.com/kinyui boyshigh',
     'https://instagram.com/kinyui boyshigh'
   ],
-  foundingDate: '1976',
+  foundingDate: '1965',
   numberOfStudents: '800',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',

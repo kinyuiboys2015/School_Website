@@ -78,7 +78,7 @@ const staticCategories = {
 **A Public  Extra County School in Machakos**
 
 Quick Facts:
-• Established: 1976
+• Established: 1965
 • Location: Kambusu, Matungulu, Machakos County
 • Students: 1000+
 • Staff: 50+
@@ -765,7 +765,7 @@ Hello! I'm Katwa, your assistant.
 
 About Our School:
 • Public Extra County School (Boarding)
-• Established: 1976
+• Established: 1965
 • Location: Kambusu, Matungulu, Machakos County
 • Students: ${studentCount} | Teachers: ${staffCount}
 • Competency-Based Curriculum (CBE)
