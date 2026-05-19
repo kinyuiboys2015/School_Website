@@ -2,6 +2,68 @@ import { NextResponse } from "next/server";
 import { prisma } from "../../../libs/prisma";
 import cloudinary from "../../../libs/cloudinary";
 
+const KINYUI_DEFAULT_SCHOOL = {
+  id: null,
+  name: "S.A. Kinyui Boys Senior School",
+  description: "A C3 public boys boarding senior school in Matungulu, Machakos County, serving learners through academic discipline, character formation, mentorship, and strong values.",
+  motto: "Soaring To Excellence",
+  vision: "To be a leading centre of excellence in academic performance and holistic development of the boy child.",
+  mission: "To provide a conducive environment for quality teaching and learning through teamwork, discipline, mentorship, and effective use of resources.",
+  videoTour: "https://www.youtube.com/watch?v=88g4r7sZjpQ&list=RD88g4r7sZjpQ&start_radio=1",
+  videoType: "youtube",
+  videoThumbnail: null,
+  studentCount: 400,
+  staffCount: 20,
+  feesDay: null,
+  feesBoarding: null,
+  admissionFee: null,
+  magazine: null,
+  openDate: new Date("2026-01-06T00:00:00.000Z"),
+  closeDate: new Date("2026-11-20T00:00:00.000Z"),
+  subjects: [
+    "English",
+    "Kiswahili",
+    "Mathematics",
+    "Biology",
+    "Chemistry",
+    "Physics",
+    "Business Studies",
+    "Geography",
+    "History and Government",
+    "Christian Religious Education",
+    "Agriculture",
+    "Computer Studies"
+  ],
+  departments: [
+    "Languages",
+    "Mathematics",
+    "Sciences",
+    "Humanities",
+    "Technical and Applied",
+    "Guidance and Counselling",
+    "Boarding and Student Welfare"
+  ],
+  admissionOpenDate: new Date("2026-01-06T00:00:00.000Z"),
+  admissionCloseDate: new Date("2026-03-31T00:00:00.000Z"),
+  admissionRequirements: "Admission is open to qualified boys joining senior school. Required documents include assessment results or transfer documents, birth certificate, parent/guardian ID details, medical information, passport photos, and previous school report where applicable.",
+  admissionCapacity: 120,
+  admissionContactEmail: "kinyuiboys2015@gmail.com",
+  admissionContactPhone: "0790789847",
+  admissionWebsite: null,
+  admissionLocation: "Matungulu Sub-County, Machakos County",
+  admissionOfficeHours: "Monday - Friday: 8:00 AM - 5:00 PM",
+  admissionDocumentsRequired: [
+    "Birth certificate copy",
+    "Assessment results or previous school report",
+    "Transfer letter where applicable",
+    "Parent or guardian ID copy",
+    "Medical information",
+    "Passport photos"
+  ],
+  createdAt: null,
+  updatedAt: null
+};
+
 // ==================== AUTHENTICATION UTILITIES ====================
 
 // Device Token Manager
@@ -533,8 +595,9 @@ export async function GET() {
       return NextResponse.json(
         { 
           success: true, 
-          message: "No school information found",
-          school: null 
+          message: "No school information found. Returning Kinyui Boys defaults.",
+          school: KINYUI_DEFAULT_SCHOOL,
+          source: "default"
         }, 
         { status: 200 }
       );
@@ -551,14 +614,13 @@ export async function GET() {
 
   } catch (error) {
     console.error("❌ GET Error:", error);
-    return NextResponse.json(
-      { 
-        success: false, 
-        error: error.message || "Internal server error",
-        message: "Failed to fetch school information"
-      }, 
-      { status: 500 }
-    );
+    return NextResponse.json({
+      success: true,
+      message: "Database school information unavailable. Returning Kinyui Boys defaults.",
+      warning: error.message || "Failed to fetch school information",
+      school: KINYUI_DEFAULT_SCHOOL,
+      source: "default"
+    });
   }
 }
 

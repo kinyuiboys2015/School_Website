@@ -23,13 +23,24 @@ import Link from "next/link";
 
 const FOUNDING_YEAR = 1965;
 const LEGACY_YEARS = new Date().getFullYear() - FOUNDING_YEAR;
+const DEFAULT_SLOGAN = "Compose Yourself To Be Great";
+const DEFAULT_VIDEO_TOUR = "https://www.youtube.com/watch?v=88g4r7sZjpQ&list=RD88g4r7sZjpQ&start_radio=1";
 
-const stats = [
-  { value: "400+", label: "Students", icon: Users },
-  { value: `${LEGACY_YEARS}+`, label: "Years of Service", icon: Clock },
-  { value: "45+", label: "Awards Won", icon: Award },
-  { value: "7", label: "Core Values", icon: ShieldCheck }
-];
+const DEFAULT_SCHOOL = {
+  name: "Kinyui Boys Senior School",
+  description:
+    "A public boys boarding school in Matungulu, Machakos County, shaping disciplined, God fearing, and academically focused young men through strong values, mentorship, and service.",
+  motto: "Soaring To Excellence",
+  vision: "To be a leading center of excellence in academic performance and holistic development of the boy child.",
+  mission: "To provide a conducive environment for quality teaching and learning through teamwork and effective use of resources.",
+  studentCount: 400,
+  staffCount: 20,
+  videoTour: DEFAULT_VIDEO_TOUR,
+  videoType: "youtube",
+  admissionContactEmail: "kinyuiboys2015@gmail.com",
+  admissionContactPhone: "0790789847",
+  admissionLocation: "Matungulu, Machakos County"
+};
 
 const coreValues = [
   {
@@ -94,6 +105,11 @@ const schoolInfo = [
   { icon: ShieldCheck, label: "Founded", value: FOUNDING_YEAR }
 ];
 
+const getYouTubeId = (url = "") => {
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([^&\n?#]+)/);
+  return match?.[1] || null;
+};
+
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -119,6 +135,52 @@ const ScrollToTop = () => {
 
 export default function AboutPage() {
   const topRef = useRef(null);
+  const [schoolData, setSchoolData] = useState(null);
+  const [schoolStats, setSchoolStats] = useState(null);
+
+  useEffect(() => {
+    const fetchSchoolProfile = async () => {
+      try {
+        const [schoolResponse, statsResponse] = await Promise.all([
+          fetch("/api/school"),
+          fetch("/api/school-stats")
+        ]);
+
+        if (schoolResponse.ok) {
+          const data = await schoolResponse.json();
+          if (data.success && data.school) setSchoolData(data.school);
+        }
+
+        if (statsResponse.ok) {
+          const data = await statsResponse.json();
+          if (data.success && data.stats) setSchoolStats(data.stats);
+        }
+      } catch (error) {
+        console.error("About page school profile load failed:", error);
+      }
+    };
+
+    fetchSchoolProfile();
+  }, []);
+
+  const school = { ...DEFAULT_SCHOOL, ...(schoolData || {}) };
+  const slogan = schoolStats?.slogan || DEFAULT_SLOGAN;
+  const sloganDescription =
+    schoolStats?.sloganDescription ||
+    "A daily reminder for every Kinyui boy to carry discipline, self-control, and ambition into every class, dormitory, field, and responsibility.";
+  const videoTour = school.videoTour || DEFAULT_VIDEO_TOUR;
+  const videoId = school.videoType === "youtube" ? getYouTubeId(videoTour) : null;
+  const dynamicStats = [
+    { value: `${school.studentCount || 400}+`, label: "Students", icon: Users },
+    { value: `${school.staffCount || 20}+`, label: "Teachers & Staff", icon: Users },
+    { value: `${LEGACY_YEARS}+`, label: "Years of Service", icon: Clock },
+    { value: "7", label: "Core Values", icon: ShieldCheck }
+  ];
+  const dynamicSchoolInfo = [
+    ...schoolInfo,
+    { icon: Users, label: "Student Population", value: school.studentCount || 400 },
+    { icon: Users, label: "Teachers", value: school.staffCount || 20 }
+  ];
 
   return (
     <main ref={topRef} className="min-h-screen bg-slate-50 text-slate-900">
@@ -142,15 +204,15 @@ export default function AboutPage() {
             </div>
 
             <h1 className="max-w-3xl text-4xl font-black leading-[0.98] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
-              Kinyui Boys Senior School
+              {school.name}
             </h1>
 
             <p className="mt-6 max-w-2xl text-sm font-semibold leading-7 text-orange-50/90 sm:text-base md:text-lg">
-              A public boys boarding school shaping disciplined, God fearing, and academically focused young men through strong values, mentorship, and service.
+              {school.description}
             </p>
 
             <div className="mt-5 inline-flex w-fit items-center gap-2 border-l-4 border-amber-400 bg-white/10 px-4 py-3 text-sm font-black uppercase tracking-[0.18em] text-white backdrop-blur">
-              Soaring To Excellence
+              {school.motto}
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -168,7 +230,7 @@ export default function AboutPage() {
           </div>
 
           <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
-            {stats.map((item) => {
+            {dynamicStats.map((item) => {
               const Icon = item.icon;
               return (
                 <div key={item.label} className="rounded-2xl border border-white/15 bg-slate-950/35 p-4 text-white shadow-xl shadow-slate-950/10 backdrop-blur-md">
@@ -193,7 +255,7 @@ export default function AboutPage() {
 
           <div className="lg:col-span-7">
             <p className="text-sm font-medium leading-7 text-slate-700 sm:text-base">
-              Kinyui Boys Senior School has served families in Machakos County for more than {LEGACY_YEARS} years. The school combines academic discipline, boarding structure, spiritual grounding, and practical mentorship so every learner can grow in confidence, responsibility, and service.
+              {school.name} has served families in Machakos County for more than {LEGACY_YEARS} years. The school combines academic discipline, boarding structure, spiritual grounding, and practical mentorship so every learner can grow in confidence, responsibility, and service.
             </p>
 
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -224,12 +286,12 @@ export default function AboutPage() {
               </h2>
             </div>
 
-            <div className="grid gap-4 lg:col-span-8 md:grid-cols-3">
+            <div className="grid gap-4 lg:col-span-8 md:grid-cols-2 xl:grid-cols-4">
               <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
                 <Eye className="mb-5 text-amber-600" size={26} />
                 <p className="text-xs font-black uppercase tracking-widest text-slate-500">Vision</p>
                 <p className="mt-3 text-sm font-semibold leading-7 text-slate-800">
-                  To be a leading center of excellence in academic performance and holistic development of the boy child.
+                  {school.vision}
                 </p>
               </div>
 
@@ -237,7 +299,7 @@ export default function AboutPage() {
                 <Target className="mb-5 text-amber-600" size={26} />
                 <p className="text-xs font-black uppercase tracking-widest text-slate-500">Mission</p>
                 <p className="mt-3 text-sm font-semibold leading-7 text-slate-800">
-                  To provide a conducive environment for quality teaching and learning through teamwork and effective use of resources.
+                  {school.mission}
                 </p>
               </div>
 
@@ -245,10 +307,21 @@ export default function AboutPage() {
                 <Award className="mb-5 text-amber-400" size={26} />
                 <p className="text-xs font-black uppercase tracking-widest text-amber-300">Motto</p>
                 <p className="mt-3 text-2xl font-black leading-tight text-white">
-                  Soaring To Excellence
+                  {school.motto}
                 </p>
                 <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-slate-400">
                   Reaching greater heights together
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-orange-200 bg-orange-50 p-6 shadow-sm">
+                <CheckCircle className="mb-5 text-orange-700" size={26} />
+                <p className="text-xs font-black uppercase tracking-widest text-orange-700">Our Slogan</p>
+                <p className="mt-3 text-2xl font-black leading-tight text-slate-950">
+                  {slogan}
+                </p>
+                <p className="mt-4 text-xs font-semibold leading-6 text-slate-600">
+                  {sloganDescription}
                 </p>
               </div>
             </div>
@@ -317,11 +390,11 @@ export default function AboutPage() {
               </div>
 
               <p className="max-w-3xl text-sm font-medium leading-7 text-slate-700 sm:text-base">
-                Kinyui Boys Senior School is a boys boarding institution in Matungulu, Machakos County. Our environment is built for academic seriousness, self-control, brotherhood, and responsible citizenship.
+                {school.name} is a boys boarding institution in {school.admissionLocation || "Matungulu, Machakos County"}. Our environment is built for academic seriousness, self-control, brotherhood, and responsible citizenship.
               </p>
 
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                {schoolInfo.map((item) => {
+                {dynamicSchoolInfo.map((item) => {
                   const Icon = item.icon;
                   return (
                     <div key={item.label} className="flex items-center gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
@@ -339,22 +412,49 @@ export default function AboutPage() {
             </div>
 
             <div className="mt-4 grid gap-4 md:grid-cols-3">
-              <a href="tel:0733587223" className="rounded-lg border border-slate-200 bg-white p-5 transition hover:border-amber-300">
+              <a href={`tel:${school.admissionContactPhone || "0790789847"}`} className="rounded-lg border border-slate-200 bg-white p-5 transition hover:border-amber-300">
                 <Phone className="mb-3 text-amber-600" size={20} />
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Call Us</p>
-                <p className="mt-1 text-sm font-bold text-slate-950">0733 587223</p>
+                <p className="mt-1 text-sm font-bold text-slate-950">{school.admissionContactPhone || "0790789847"}</p>
               </a>
-              <a href="mailto:kinyuiboys2015@gmail.com" className="rounded-lg border border-slate-200 bg-white p-5 transition hover:border-amber-300">
+              <a href={`mailto:${school.admissionContactEmail || "kinyuiboys2015@gmail.com"}`} className="rounded-lg border border-slate-200 bg-white p-5 transition hover:border-amber-300">
                 <Mail className="mb-3 text-amber-600" size={20} />
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Email</p>
-                <p className="mt-1 truncate text-sm font-bold text-slate-950">kinyuiboys2015@gmail.com</p>
+                <p className="mt-1 truncate text-sm font-bold text-slate-950">{school.admissionContactEmail || "kinyuiboys2015@gmail.com"}</p>
               </a>
               <div className="rounded-lg border border-slate-200 bg-white p-5">
                 <MapPin className="mb-3 text-amber-600" size={20} />
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Location</p>
-                <p className="mt-1 text-sm font-bold text-slate-950">Matungulu, Machakos</p>
+                <p className="mt-1 text-sm font-bold text-slate-950">{school.admissionLocation || "Matungulu, Machakos"}</p>
               </div>
             </div>
+
+            {videoTour && (
+              <div className="mt-4 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                <div className="border-b border-slate-100 p-5">
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-700">Video Tour</p>
+                  <h3 className="mt-2 text-xl font-black text-slate-950">Take a quick look at the school.</h3>
+                </div>
+                <div className="relative aspect-video bg-slate-950">
+                  {videoId ? (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+                      title={`${school.name} video tour`}
+                      className="absolute inset-0 h-full w-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <video
+                      src={videoTour}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      controls
+                      poster={school.videoThumbnail || ""}
+                    />
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="lg:col-span-5">

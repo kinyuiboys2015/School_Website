@@ -445,12 +445,20 @@ export default function ModernFeesPage() {
     ];
 
     items.forEach(item => {
-      const perTermAmount = Math.round(item.amount / 3);
+      const termAmounts = [
+        Number(item.term1 ?? item.firstTerm ?? 0),
+        Number(item.term2 ?? item.secondTerm ?? 0),
+        Number(item.term3 ?? item.thirdTerm ?? 0)
+      ];
+      const hasTermBreakdown = termAmounts.some((amount) => amount > 0);
+      const fallbackAmount = Math.round((item.amount || 0) / 3);
+
       terms.forEach((term, idx) => {
-        term.amount += perTermAmount;
+        const termAmount = hasTermBreakdown ? termAmounts[idx] : fallbackAmount;
+        term.amount += termAmount;
         term.breakdown.push({
           voteHead: item.name,
-          amount: perTermAmount
+          amount: termAmount
         });
       });
     });
@@ -458,7 +466,10 @@ export default function ModernFeesPage() {
     terms.forEach(term => {
       term.breakdown = term.breakdown.map((item) => ({
         ...item,
-        total: item.amount * 3
+        total: terms.reduce((sum, currentTerm) => {
+          const row = currentTerm.breakdown.find((entry) => entry.voteHead === item.voteHead);
+          return sum + (row?.amount || 0);
+        }, 0)
       }));
     });
 
@@ -892,23 +903,26 @@ export default function ModernFeesPage() {
                 <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-slate-50 rounded-lg sm:rounded-xl">
                   <IoCardOutline className="text-blue-600 flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" />
                   <div className="min-w-0">
-                    <p className="text-[8px] sm:text-xs font-bold text-slate-400">Bank Transfer</p>
-                    <p className="text-[10px] sm:text-xs md:text-sm font-bold text-slate-900 truncate">Account: 1234567890</p>
+                    <p className="text-[8px] sm:text-xs font-bold text-slate-400">KCB Bank</p>
+                    <p className="text-[10px] sm:text-xs md:text-sm font-bold text-slate-900 truncate">A/C: 1107262690 - Tala Branch</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-slate-50 rounded-lg sm:rounded-xl">
                   <IoCashOutline className="text-emerald-600 flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" />
                   <div className="min-w-0">
                     <p className="text-[8px] sm:text-xs font-bold text-slate-400">MPesa Paybill</p>
-                    <p className="text-[10px] sm:text-xs md:text-sm font-bold text-slate-900 truncate">Business No: 522522</p>
+                    <p className="text-[10px] sm:text-xs md:text-sm font-bold text-slate-900 truncate">Business No: 522123</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-slate-50 rounded-lg sm:rounded-xl">
                   <IoReceiptOutline className="text-purple-600 flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" />
                   <div className="min-w-0">
-                    <p className="text-[8px] sm:text-xs font-bold text-slate-400">Account Name</p>
-                    <p className="text-[10px] sm:text-xs md:text-sm font-bold text-slate-900 truncate">Kinyui Boys Senior School</p>
+                    <p className="text-[8px] sm:text-xs font-bold text-slate-400">M-Pesa Account</p>
+                    <p className="text-[10px] sm:text-xs md:text-sm font-bold text-slate-900 truncate">30433KStudentNameAdmNo</p>
                   </div>
+                </div>
+                <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-[10px] font-semibold leading-5 text-amber-900 sm:text-xs">
+                  Fees must be paid on or before reporting day. Personal cheques are not accepted; use bankers cheque. Fees once paid are not refundable.
                 </div>
               </div>
             </div>
