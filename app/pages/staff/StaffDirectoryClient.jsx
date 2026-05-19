@@ -141,7 +141,6 @@ function DepartmentCard({ department }) {
   const Icon = meta.icon;
   const images = getDepartmentImages(department);
   const extra = typeof department.extra === 'object' && department.extra ? department.extra : {};
-  const teachers = Array.isArray(department.teachers) ? department.teachers : [];
 
   return (
     <article
@@ -192,32 +191,6 @@ function DepartmentCard({ department }) {
           </div>
         )}
 
-        <div className="mt-5 rounded-2xl border border-slate-100 bg-slate-50/70 p-3">
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-amber-700">Mapped Teachers</p>
-              <p className="mt-0.5 text-xs font-semibold text-slate-500">
-                {teachers.length ? `${teachers.length} teacher${teachers.length === 1 ? '' : 's'} in this department` : 'No teachers mapped yet'}
-              </p>
-            </div>
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-amber-700 shadow-sm">
-              <FiUsers />
-            </div>
-          </div>
-
-          {teachers.length > 0 ? (
-            <div className="max-h-80 space-y-2 overflow-y-auto pr-1">
-              {teachers.map((teacher) => (
-                <TeacherMiniCard key={teacher.id} teacher={teacher} />
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-xl border border-dashed border-slate-200 bg-white p-4 text-center">
-              <p className="text-xs font-bold text-slate-500">Teacher records will appear here after mapping.</p>
-            </div>
-          )}
-        </div>
-
         <Link
           href={`/pages/staff/departments/${department.id}`}
           className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-xs font-black uppercase tracking-widest text-white"
@@ -233,17 +206,52 @@ function TeacherMiniCard({ teacher }) {
   const image = teacher?.image || (teacher?.gender === 'female' ? '/female.png' : '/male.png');
 
   return (
-    <article className="flex items-center gap-3 rounded-xl bg-white p-2.5">
-      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+    <article className="w-[220px] shrink-0 rounded-2xl border border-slate-100 bg-white p-3 shadow-sm">
+      <div className="h-24 w-full overflow-hidden rounded-xl bg-slate-100">
         <img src={image} alt={teacher.name} className="h-full w-full object-cover object-top" />
       </div>
-      <div className="min-w-0 flex-1">
+      <div className="mt-3 min-w-0">
         <h4 className="truncate text-sm font-black text-slate-900">{teacher.name}</h4>
-        <p className="mt-0.5 truncate text-xs font-bold text-amber-700">
+        <p className="mt-1 truncate text-xs font-bold text-amber-700">
           {teacher.subjectOffered || teacher.position || 'Subject teacher'}
         </p>
+        {teacher.bio && (
+          <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">{teacher.bio}</p>
+        )}
       </div>
     </article>
+  );
+}
+
+function DepartmentTeacherCarousel({ department }) {
+  const teachers = Array.isArray(department.teachers) ? department.teachers : [];
+
+  return (
+    <section className="mt-4 rounded-2xl border border-amber-100 bg-amber-50/50 p-4">
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-widest text-amber-700">Teachers Of Department</p>
+          <p className="mt-1 text-xs font-semibold text-slate-500">
+            {teachers.length ? `${teachers.length} teacher${teachers.length === 1 ? '' : 's'} mapped under ${department.name}` : 'No teachers mapped yet'}
+          </p>
+        </div>
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-amber-700 shadow-sm">
+          <FiUsers />
+        </div>
+      </div>
+
+      {teachers.length > 0 ? (
+        <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-2">
+          {teachers.map((teacher) => (
+            <TeacherMiniCard key={teacher.id} teacher={teacher} />
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-xl border border-dashed border-amber-200 bg-white/70 p-4 text-center">
+          <p className="text-xs font-bold text-slate-500">Mapped teacher records will appear in this carousel.</p>
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -490,10 +498,10 @@ export default function StaffDirectory() {
                     </div>
                     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                       {groupDepartments.map((department) => (
-                        <DepartmentCard
-                          key={department.id}
-                          department={department}
-                        />
+                        <div key={department.id} className="min-w-0">
+                          <DepartmentCard department={department} />
+                          <DepartmentTeacherCarousel department={department} />
+                        </div>
                       ))}
                     </div>
                   </div>
