@@ -4,13 +4,13 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import Head from 'next/head'; // IMPORTANT: Add this import
-import { 
-  FiMail, 
-  FiPhone, 
-  FiMapPin, 
-  FiStar, 
-  FiBook, 
-  FiTarget, 
+import {
+  FiMail,
+  FiPhone,
+  FiMapPin,
+  FiStar,
+  FiBook,
+  FiTarget,
   FiUsers,
   FiCalendar,
   FiArrowLeft,
@@ -32,7 +32,7 @@ export default function StaffProfilePage() {
   const params = useParams();
   const router = useRouter();
   const { id } = params;
-  
+
   const [staff, setStaff] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -44,12 +44,12 @@ export default function StaffProfilePage() {
   // In the transformStaffData function, update the image handling:
   const transformStaffData = (apiData) => {
     if (!apiData) return null;
-    
+
     // Ensure arrays exist
     const expertise = Array.isArray(apiData.expertise) ? apiData.expertise : [];
     const responsibilities = Array.isArray(apiData.responsibilities) ? apiData.responsibilities : [];
     const achievements = Array.isArray(apiData.achievements) ? apiData.achievements : [];
-    
+
     // Generate skills safely
     const skills = expertise.slice(0, 4).map((skill, index) => ({
       name: skill || `Skill ${index + 1}`,
@@ -61,27 +61,27 @@ export default function StaffProfilePage() {
       if (!imagePath || typeof imagePath !== 'string') {
         return '/male.png'; // Default fallback
       }
-      
+
       // Handle Cloudinary URLs
       if (imagePath.includes('cloudinary.com')) {
         return imagePath;
       }
-      
+
       // Handle local paths that already start with /
       if (imagePath.startsWith('/')) {
         return imagePath;
       }
-      
+
       // Handle external URLs
       if (imagePath.startsWith('http')) {
         return imagePath;
       }
-      
+
       // Handle base64 images
       if (imagePath.startsWith('data:image')) {
         return imagePath;
       }
-      
+
       // If it's just a filename, return as is (Next.js will handle it from public folder)
       return imagePath;
     };
@@ -100,7 +100,7 @@ export default function StaffProfilePage() {
       achievements: achievements,
       quote: apiData.quote || 'Education is the most powerful weapon which you can use to change the world.',
       joinDate: apiData.joinDate
-        ? new Date(apiData.joinDate).getFullYear().toString() 
+        ? new Date(apiData.joinDate).getFullYear().toString()
         : '2020',
       officeHours: 'Monday - Friday: 8:00 AM - 4:00 PM',
       location: apiData.department ? `${apiData.department} Department` : 'Main Academic Building',
@@ -118,15 +118,15 @@ export default function StaffProfilePage() {
       try {
         setLoading(true);
         setError(null);
-        
+
         const response = await fetch(`/api/staff/${id}`);
-        
+
         if (!response.ok) {
           throw new Error(`Staff member not available (${response.status})`);
         }
-        
+
         const data = await response.json();
-        
+
         if (data.success && data.staff) {
           const transformedData = transformStaffData(data.staff);
           setStaff(transformedData);
@@ -148,16 +148,16 @@ export default function StaffProfilePage() {
   // This now properly uses Next.js Head component for all metadata
   const SeoHead = () => {
     if (!staff) return null;
-    
+
     const fullName = staff.name;
     const position = staff.position;
     const department = staff.department;
     const schoolName = "kinyui boys Senior School";
-    
+
     // Create multiple name variations for better searchability
     const firstName = fullName.split(' ')[0];
     const lastName = fullName.split(' ').slice(1).join(' ');
-    
+
     // Keywords for better SEO - including variations of the teacher's name and school
     const keywords = [
       fullName,
@@ -178,16 +178,16 @@ export default function StaffProfilePage() {
       `Katz school teachers`,
       ...staff.expertise || []
     ].filter(Boolean).join(', ');
-    
+
     // Create a rich description
-    const description = staff.bio || 
+    const description = staff.bio ||
       `Meet ${fullName}, ${position} in the ${department} at ${schoolName}. ` +
       `Experienced educator specializing in ${staff.expertise?.slice(0, 3).join(', ') || 'education'}. ` +
       `View full profile, qualifications, and contact information.`;
-    
+
     const profileUrl = `https://kinyuiboyssenior.school/pages/staff/${id}`;
     const imageUrl = staff.image?.startsWith('http') ? staff.image : `https://kinyuiboyssenior.school${staff.image}`;
-    
+
     return (
       <Head>
         {/* Basic Meta Tags */}
@@ -196,10 +196,10 @@ export default function StaffProfilePage() {
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
         <meta name="author" content={schoolName} />
-        
+
         {/* Canonical URL */}
         <link rel="canonical" href={profileUrl} />
-        
+
         {/* Open Graph / Facebook / WhatsApp */}
         <meta property="og:type" content="profile" />
         <meta property="og:url" content={profileUrl} />
@@ -210,12 +210,12 @@ export default function StaffProfilePage() {
         <meta property="og:image:height" content="630" />
         <meta property="og:site_name" content={schoolName} />
         <meta property="og:locale" content="en_KE" />
-        
+
         {/* Profile-specific Open Graph tags */}
         <meta property="profile:first_name" content={firstName} />
         <meta property="profile:last_name" content={lastName} />
         <meta property="profile:username" content={id} />
-        
+
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${fullName} - ${position} at ${schoolName}`} />
@@ -223,10 +223,10 @@ export default function StaffProfilePage() {
         <meta name="twitter:image" content={imageUrl} />
         <meta name="twitter:site" content="@kinyui boysHS" />
         <meta name="twitter:creator" content={schoolName} />
-        
+
         {/* Robots - Allow indexing */}
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
-        
+
         {/* JSON-LD Structured Data for Google Rich Results */}
         <script
           type="application/ld+json"
@@ -279,7 +279,7 @@ export default function StaffProfilePage() {
             })
           }}
         />
-        
+
         {/* Additional Schema for Breadcrumbs */}
         <script
           type="application/ld+json"
@@ -317,51 +317,51 @@ export default function StaffProfilePage() {
   const ShareModal = () => {
     const [copied, setCopied] = useState(false);
     if (!showShareModal || !staff) return null;
-  
+
     const profileUrl = typeof window !== 'undefined' ? window.location.href : '';
     const shareText = `Check out ${staff.name}'s profile - ${staff.position} at kinyui boys Senior School `;
-    
+
     const handleCopy = async () => {
       await navigator.clipboard.writeText(profileUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     };
-  
+
     const channels = [
-      { 
-        name: 'WhatsApp', 
-        icon: <FaWhatsapp size={20} />, 
+      {
+        name: 'WhatsApp',
+        icon: <FaWhatsapp size={20} />,
         color: '#25D366',
-        link: `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + profileUrl)}` 
+        link: `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + profileUrl)}`
       },
-      { 
-        name: 'Facebook', 
-        icon: <FaFacebook size={20} />, 
+      {
+        name: 'Facebook',
+        icon: <FaFacebook size={20} />,
         color: '#1877F2',
-        link: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}` 
+        link: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}`
       },
-      { 
-        name: 'Instagram', 
-        icon: <FaInstagram size={20} />, 
+      {
+        name: 'Instagram',
+        icon: <FaInstagram size={20} />,
         color: '#E4405F',
-        action: handleCopy 
+        action: handleCopy
       },
     ];
-  
+
     return (
       <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center">
         {/* Backdrop */}
         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowShareModal(false)} />
-        
+
         {/* Modal — slides up on mobile, centered on desktop */}
         <div className="relative bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl overflow-hidden shadow-2xl">
-          
+
           {/* Profile preview strip */}
           <div className="bg-[#1a1a2e] px-6 pt-6 pb-5">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[9px] font-semibold text-white/30 uppercase tracking-[0.2em]">Share Profile</span>
-              <button 
-                onClick={() => setShowShareModal(false)} 
+              <button
+                onClick={() => setShowShareModal(false)}
                 className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all"
               >
                 <FiX size={14} />
@@ -397,7 +397,7 @@ export default function StaffProfilePage() {
                   onClick={ch.action}
                   className="group flex-1 flex flex-col items-center gap-2 py-3 rounded-xl border border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all cursor-pointer"
                 >
-                  <div 
+                  <div
                     className="w-11 h-11 rounded-full flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform"
                     style={{ backgroundColor: ch.color }}
                   >
@@ -406,7 +406,7 @@ export default function StaffProfilePage() {
                   <span className="text-[10px] font-semibold text-slate-500 group-hover:text-slate-700 transition-colors">{ch.name}</span>
                 </a>
               ))}
-              
+
               {/* Copy link as a channel */}
               <button
                 onClick={handleCopy}
@@ -433,8 +433,8 @@ export default function StaffProfilePage() {
               <button
                 onClick={handleCopy}
                 className={`shrink-0 px-4 py-2 rounded-lg text-[10px] font-semibold uppercase tracking-wider transition-all ${
-                  copied 
-                    ? 'bg-emerald-500 text-white' 
+                  copied
+                    ? 'bg-emerald-500 text-white'
                     : 'bg-[#1a1a2e] text-white hover:bg-[#2d2d44]'
                 }`}
               >
@@ -446,7 +446,7 @@ export default function StaffProfilePage() {
       </div>
     );
   };
-  
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6">
@@ -460,7 +460,7 @@ export default function StaffProfilePage() {
       </div>
     );
   }
-  
+
   if (error || !staff) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center p-4">
@@ -472,7 +472,7 @@ export default function StaffProfilePage() {
           <p className="text-sm text-slate-500 mb-6">
             We couldn&apos;t load this staff member&apos;s profile.
           </p>
-          <button 
+          <button
             onClick={() => router.push('/pages/staff')}
             className="bg-[#1a1a2e] text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:bg-[#2d2d44] transition-colors w-full"
           >
@@ -489,11 +489,11 @@ export default function StaffProfilePage() {
       <div className="min-h-screen bg-white font-sans">
 
         {/* ── Sticky Top Bar ── */}
-        <div className="bg-white border-b border-slate-100 sticky top-0 z-40">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+        <div className="bg-white/95 border-b border-orange-100 sticky top-0 z-40 backdrop-blur">
+          <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:w-[85%] lg:px-0">
             <button
               onClick={() => router.push('/pages/staff')}
-              className="flex items-center gap-2 text-slate-600 hover:text-[#1a1a2e] transition-colors"
+              className="flex items-center gap-2 text-slate-600 hover:text-orange-800 transition-colors"
             >
               <FiArrowLeft size={18} />
               <span className="text-sm font-bold hidden sm:inline">Staff Directory</span>
@@ -501,114 +501,113 @@ export default function StaffProfilePage() {
 
             <div className="flex items-center gap-2">
               <Image src="/seo/SchoolLogo.png" alt="Logo" width={24} height={24} />
-              <span className="text-sm font-black text-[#1a1a2e] hidden sm:inline">Kinyui Boys Senior School</span>
+              <span className="hidden text-sm font-black text-slate-900 sm:inline">Kinyui Boys Senior School</span>
             </div>
 
             <div className="flex gap-1.5">
-              <button 
+              <button
                 onClick={() => setShowShareModal(true)}
-                className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#1a1a2e] hover:border-slate-300 transition-all"
+                className="w-9 h-9 rounded-lg border border-orange-100 flex items-center justify-center text-slate-500 hover:text-orange-800 hover:border-orange-200 transition-all"
               >
                 <FiShare2 size={15} />
               </button>
-              <button 
+              <button
                 onClick={() => window.print()}
-                className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#1a1a2e] hover:border-slate-300 transition-all"
+                className="w-9 h-9 rounded-lg border border-orange-100 flex items-center justify-center text-slate-500 hover:text-orange-800 hover:border-orange-200 transition-all"
               >
                 <FiPrinter size={15} />
               </button>
             </div>
           </div>
         </div>
-        
+
         {/* ── Hero Section: Full-width dark banner ── */}
-        <div className="relative bg-[#1a1a2e] overflow-hidden">
-          {/* Subtle grid pattern */}
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
-          
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16 relative z-10">
-            <div className="flex flex-col sm:flex-row items-center sm:items-end gap-5 sm:gap-8">
-              {/* Profile Image */}
-              <div className="relative shrink-0">
-                <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-36 lg:h-36 rounded-2xl border-[3px] border-white/20 overflow-hidden bg-white/10 shadow-2xl">
+        <div className="relative overflow-hidden bg-[#8a2f08]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_10%,rgba(251,191,36,0.22),transparent_34%),radial-gradient(circle_at_86%_18%,rgba(15,23,42,0.34),transparent_32%)]" />
+          <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+
+          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:w-[85%] lg:px-0 lg:py-14">
+            <div className="grid items-end gap-7 lg:grid-cols-[minmax(18rem,25rem)_minmax(0,1fr)] xl:grid-cols-[minmax(20rem,28rem)_minmax(0,1fr)]">
+              <div className="relative mx-auto w-full max-w-[21rem] sm:max-w-[23rem] lg:max-w-none">
+                <div className="aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-white/20 bg-white/10 shadow-2xl">
                   <Image
                     src={staff.image || '/male.png'}
                     alt={staff.name}
-                    width={144}
-                    height={144}
-                    className="w-full h-full object-cover"
+                    width={560}
+                    height={700}
+                    className="h-full w-full object-cover object-top"
                     priority
                   />
                 </div>
-                <div className="absolute -bottom-1 -right-1">
-                  <span className="relative flex h-4 w-4">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-[#1a1a2e]"></span>
-                  </span>
+                <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/15 bg-slate-950/45 p-4 text-white backdrop-blur-md">
+                  <p className="text-[10px] font-black uppercase tracking-[0.24em] text-amber-200">Leadership Profile</p>
+                  <p className="mt-2 truncate text-sm font-bold">{staff.position}</p>
                 </div>
               </div>
 
-              {/* Name & Meta */}
-              <div className="text-center sm:text-left flex-1 min-w-0">
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-2">
-                  <span className="px-2.5 py-0.5 bg-white/10 border border-white/10 rounded text-[10px] font-black text-white/70 uppercase tracking-widest">
+              <div className="min-w-0 text-center text-white lg:text-left">
+                <div className="mb-4 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+                  <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-amber-100">
                     {staff.department}
                   </span>
-                  <span className="px-2.5 py-0.5 bg-emerald-500/20 border border-emerald-400/20 rounded text-[10px] font-black text-emerald-300 uppercase tracking-widest">
+                  <span className="rounded-full border border-amber-200/25 bg-amber-300/15 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-amber-100">
                     Since {staff.joinDate}
                   </span>
                 </div>
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
+
+                <h1 className="text-3xl font-black leading-tight tracking-tight sm:text-5xl lg:text-6xl">
                   {staff.name}
                 </h1>
-                <p className="text-sm sm:text-base text-blue-300/80 font-semibold mt-1">{staff.position}</p>
-                
-                {/* Quick contact row */}
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-4">
+                <p className="mt-3 text-base font-semibold text-amber-100/90 sm:text-lg">{staff.position}</p>
+                <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-white/75 sm:text-base lg:mx-0">
+                  {staff.bio}
+                </p>
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
+                    <FiMapPin className="mx-auto text-amber-200 lg:mx-0" />
+                    <p className="mt-3 text-[10px] font-black uppercase tracking-widest text-white/45">Office</p>
+                    <p className="mt-1 truncate text-xs font-bold text-white/90">{staff.location}</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
+                    <FiStar className="mx-auto text-amber-200 lg:mx-0" />
+                    <p className="mt-3 text-[10px] font-black uppercase tracking-widest text-white/45">Expertise</p>
+                    <p className="mt-1 text-xs font-bold text-white/90">{staff.expertise?.length || 0} Areas</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
+                    <FiAward className="mx-auto text-amber-200 lg:mx-0" />
+                    <p className="mt-3 text-[10px] font-black uppercase tracking-widest text-white/45">Achievements</p>
+                    <p className="mt-1 text-xs font-bold text-white/90">{staff.achievements?.length || 0} Listed</p>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
                   {staff.email && (
-                    <a href={`mailto:${staff.email}`} className="flex items-center gap-1.5 text-white/50 hover:text-white text-xs transition-colors">
-                      <FiMail size={13} />
-                      <span className="hidden md:inline">{staff.email}</span>
-                      <span className="md:hidden">Email</span>
+                    <a href={`mailto:${staff.email}`} className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-xs font-black uppercase tracking-widest text-orange-900 transition hover:bg-amber-50">
+                      <FiMail size={14} /> Contact
                     </a>
                   )}
                   {staff.phone && (
-                    <a href={`tel:${staff.phone}`} className="flex items-center gap-1.5 text-white/50 hover:text-white text-xs transition-colors">
-                      <FiPhone size={13} />
-                      <span className="hidden md:inline">{staff.phone}</span>
-                      <span className="md:hidden">Call</span>
+                    <a href={`tel:${staff.phone}`} className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-xs font-black uppercase tracking-widest text-white transition hover:bg-white/20">
+                      <FiPhone size={14} /> Call
                     </a>
                   )}
-                  <span className="flex items-center gap-1.5 text-white/40 text-xs">
-                    <FiMapPin size={13} />
-                    <span className="hidden md:inline">{staff.location}</span>
-                    <span className="md:hidden">{staff.department}</span>
-                  </span>
+                  <button onClick={() => setShowShareModal(true)} className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-xs font-black uppercase tracking-widest text-white transition hover:bg-white/20">
+                    <FiShare2 size={14} /> Share
+                  </button>
                 </div>
-              </div>
-
-              {/* Action buttons - desktop */}
-              <div className="hidden lg:flex gap-2 shrink-0">
-                {staff.email && (
-                  <a href={`mailto:${staff.email}`} className="px-4 py-2.5 bg-white text-[#1a1a2e] rounded-lg text-xs font-black uppercase tracking-wider hover:bg-blue-50 transition-colors flex items-center gap-2">
-                    <FiMail size={14} /> Contact
-                  </a>
-                )}
-                <button onClick={() => setShowShareModal(true)} className="px-4 py-2.5 bg-white/10 text-white border border-white/10 rounded-lg text-xs font-black uppercase tracking-wider hover:bg-white/20 transition-colors flex items-center gap-2">
-                  <FiShare2 size={14} /> Share
-                </button>
               </div>
             </div>
           </div>
         </div>
 
         {/* ── Stats Strip ── */}
-        <div className="border-b border-slate-100 bg-slate-50/50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="border-b border-orange-100 bg-orange-50/45">
+          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:w-[85%] lg:px-0">
             <div className="grid grid-cols-4 divide-x divide-slate-200">
               {[
-                { icon: FiCalendar, label: 'Joined', value: staff.joinDate, color: 'text-blue-600' },
-                { icon: FiStar, label: 'Expertise', value: staff.expertise?.length || 0, color: 'text-purple-600' },
+                { icon: FiCalendar, label: 'Joined', value: staff.joinDate, color: 'text-orange-700' },
+                { icon: FiStar, label: 'Expertise', value: staff.expertise?.length || 0, color: 'text-amber-700' },
                 { icon: FiBriefcase, label: 'Roles', value: staff.responsibilities?.length || 0, color: 'text-emerald-600' },
                 { icon: FiAward, label: 'Awards', value: staff.achievements?.length || 0, color: 'text-amber-600' },
               ].map((stat, i) => (
@@ -623,7 +622,7 @@ export default function StaffProfilePage() {
         </div>
 
         {/* ── Main Content ── */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:w-[85%] lg:px-0">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
 
             {/* ── Left Sidebar (1 col) ── */}
@@ -648,7 +647,7 @@ export default function StaffProfilePage() {
                   </h3>
                   <div className="flex flex-wrap gap-1.5">
                     {staff.expertise.map((item, i) => (
-                      <span 
+                      <span
                         key={i}
                         className="px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-semibold rounded-lg border border-blue-100 hover:bg-blue-100 transition-colors"
                       >
@@ -671,7 +670,7 @@ export default function StaffProfilePage() {
                       <div key={i} className="flex items-center gap-3">
                         <span className="text-xs font-bold text-slate-700 flex-1">{skill.name}</span>
                         <div className="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                          <div 
+                          <div
                             className="h-full bg-purple-500 rounded-full transition-all duration-700"
                             style={{ width: `${skill.level}%` }}
                           />
@@ -781,13 +780,13 @@ export default function StaffProfilePage() {
                 </span>
               </div>
               <div className="flex items-center gap-3 text-[10px] text-slate-300">
-                <span>Soaring to Excellence</span>
+                <span>Soaring To Excellence</span>
                 <span className="w-1 h-1 rounded-full bg-slate-200" />
                 <span>Staff Directory</span>
                 <span className="w-1 h-1 rounded-full bg-slate-200" />
                 <span>&copy; {new Date().getFullYear()}</span>
               </div>
-              <button 
+              <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="mt-2 px-5 py-1.5 rounded-full border border-slate-200 text-slate-400 text-[10px] font-bold uppercase tracking-widest hover:bg-[#1a1a2e] hover:text-white hover:border-[#1a1a2e] transition-all"
               >
@@ -797,7 +796,7 @@ export default function StaffProfilePage() {
           </div>
         </footer>
       </div>
-  
+
       {/* Share Modal */}
       <ShareModal />
     </>

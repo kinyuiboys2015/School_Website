@@ -122,20 +122,22 @@ export default function AboutPage() {
 
   return (
     <main ref={topRef} className="min-h-screen bg-slate-50 text-slate-900">
-      <section className="relative min-h-[88vh] overflow-hidden">
+      <section className="relative min-h-[90vh] overflow-hidden bg-[#8a2f08]">
         <Image
           src="/hero/kin.jpeg"
           alt="Kinyui Boys Senior School compound"
           fill
-          className="object-cover"
+          className="object-cover object-center"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-950/95 via-slate-950/70 to-amber-950/40" />
+        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(15,23,42,0.96)_0%,rgba(124,45,18,0.88)_48%,rgba(15,23,42,0.34)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(251,191,36,0.24),transparent_31%),radial-gradient(circle_at_85%_24%,rgba(255,255,255,0.10),transparent_24%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-slate-50 via-slate-50/75 to-transparent" />
 
-        <div className="relative z-10 mx-auto flex min-h-[88vh] w-full max-w-7xl flex-col justify-end px-4 pb-8 pt-28 sm:px-6 lg:px-8 lg:pb-12">
+        <div className="relative z-10 mx-auto flex min-h-[90vh] w-full max-w-7xl flex-col justify-end px-4 pb-8 pt-28 sm:px-6 lg:w-[85%] lg:px-0 lg:pb-12">
           <div className="max-w-4xl">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-amber-100 backdrop-blur">
-              <span className="h-2 w-2 rounded-full bg-amber-400" />
+            <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/10 px-3 py-2 pr-4 text-[10px] font-black uppercase tracking-[0.22em] text-amber-100 backdrop-blur">
+              <Image src="/seo/SchoolLogo.png" alt="" width={32} height={32} className="rounded-full bg-white/15 p-1" />
               Founded in {FOUNDING_YEAR} - Matungulu, Machakos County
             </div>
 
@@ -143,13 +145,17 @@ export default function AboutPage() {
               Kinyui Boys Senior School
             </h1>
 
-            <p className="mt-6 max-w-2xl text-sm font-medium leading-7 text-slate-200 sm:text-base md:text-lg">
+            <p className="mt-6 max-w-2xl text-sm font-semibold leading-7 text-orange-50/90 sm:text-base md:text-lg">
               A public boys boarding school shaping disciplined, God fearing, and academically focused young men through strong values, mentorship, and service.
             </p>
 
+            <div className="mt-5 inline-flex w-fit items-center gap-2 border-l-4 border-amber-400 bg-white/10 px-4 py-3 text-sm font-black uppercase tracking-[0.18em] text-white backdrop-blur">
+              Soaring To Excellence
+            </div>
+
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/pages/Apply%20Now">
-                <button className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-6 py-3 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-amber-950/30 transition hover:bg-amber-600 active:scale-95 sm:px-7">
+                <button className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-xs font-black uppercase tracking-widest text-orange-900 shadow-lg shadow-slate-950/20 transition hover:bg-amber-50 active:scale-95 sm:px-7">
                   Apply Now <ArrowRight size={16} />
                 </button>
               </Link>
@@ -165,10 +171,10 @@ export default function AboutPage() {
             {stats.map((item) => {
               const Icon = item.icon;
               return (
-                <div key={item.label} className="rounded-lg border border-white/15 bg-white/95 p-4 shadow-xl shadow-slate-950/10">
-                  <Icon className="mb-4 text-amber-600" size={22} />
-                  <p className="text-2xl font-black text-slate-950 sm:text-3xl">{item.value}</p>
-                  <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-500">{item.label}</p>
+                <div key={item.label} className="rounded-2xl border border-white/15 bg-slate-950/35 p-4 text-white shadow-xl shadow-slate-950/10 backdrop-blur-md">
+                  <Icon className="mb-4 text-amber-300" size={22} />
+                  <p className="text-2xl font-black sm:text-3xl">{item.value}</p>
+                  <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-white/50">{item.label}</p>
                 </div>
               );
             })}
@@ -239,7 +245,7 @@ export default function AboutPage() {
                 <Award className="mb-5 text-amber-400" size={26} />
                 <p className="text-xs font-black uppercase tracking-widest text-amber-300">Motto</p>
                 <p className="mt-3 text-2xl font-black leading-tight text-white">
-                  Soaring for Excellence
+                  Soaring To Excellence
                 </p>
                 <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-slate-400">
                   Reaching greater heights together

@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import CircularProgress from '@mui/material/CircularProgress';
 import {
   FiArchive,
   FiAward,
   FiBookOpen,
+  FiChevronLeft,
   FiChevronRight,
   FiFilter,
   FiGrid,
@@ -206,7 +207,7 @@ function TeacherMiniCard({ teacher }) {
   const image = teacher?.image || (teacher?.gender === 'female' ? '/female.png' : '/male.png');
 
   return (
-    <article className="w-[220px] shrink-0 rounded-2xl border border-slate-100 bg-white p-3 shadow-sm">
+    <article className="w-[min(13.75rem,74vw)] shrink-0 snap-start rounded-2xl border border-slate-100 bg-white p-3 shadow-sm sm:w-[13.75rem]">
       <div className="h-24 w-full overflow-hidden rounded-xl bg-slate-100">
         <img src={image} alt={teacher.name} className="h-full w-full object-cover object-top" />
       </div>
@@ -224,24 +225,55 @@ function TeacherMiniCard({ teacher }) {
 }
 
 function DepartmentTeacherCarousel({ department }) {
+  const carouselRef = useRef(null);
   const teachers = Array.isArray(department.teachers) ? department.teachers : [];
+  const scrollTeachers = (direction) => {
+    carouselRef.current?.scrollBy({
+      left: direction === 'next' ? 240 : -240,
+      behavior: 'smooth',
+    });
+  };
 
   return (
-    <section className="mt-4 rounded-2xl border border-amber-100 bg-amber-50/50 p-4">
-      <div className="mb-3 flex items-center justify-between gap-3">
-        <div>
+    <section className="rounded-2xl border border-amber-100 bg-amber-50/70 p-4 lg:h-full">
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <div className="min-w-0">
           <p className="text-[10px] font-black uppercase tracking-widest text-amber-700">Teachers Of Department</p>
-          <p className="mt-1 text-xs font-semibold text-slate-500">
+          <p className="mt-1 text-xs font-semibold leading-5 text-slate-500">
             {teachers.length ? `${teachers.length} teacher${teachers.length === 1 ? '' : 's'} mapped under ${department.name}` : 'No teachers mapped yet'}
           </p>
         </div>
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-amber-700 shadow-sm">
-          <FiUsers />
-        </div>
+        {teachers.length > 1 ? (
+          <div className="flex shrink-0 items-center gap-1">
+            <button
+              type="button"
+              onClick={() => scrollTeachers('previous')}
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-amber-800 shadow-sm transition hover:bg-amber-100"
+              aria-label={`Show previous ${department.name} teachers`}
+            >
+              <FiChevronLeft />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollTeachers('next')}
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-amber-800 shadow-sm transition hover:bg-amber-100"
+              aria-label={`Show next ${department.name} teachers`}
+            >
+              <FiChevronRight />
+            </button>
+          </div>
+        ) : (
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-amber-700 shadow-sm">
+            <FiUsers />
+          </div>
+        )}
       </div>
 
       {teachers.length > 0 ? (
-        <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-2">
+        <div
+          ref={carouselRef}
+          className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-2 [scrollbar-width:thin]"
+        >
           {teachers.map((teacher) => (
             <TeacherMiniCard key={teacher.id} teacher={teacher} />
           ))}
@@ -496,11 +528,18 @@ export default function StaffDirectory() {
                         Department Group
                       </span>
                     </div>
-                    <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                    <div className="space-y-5">
                       {groupDepartments.map((department) => (
-                        <div key={department.id} className="min-w-0">
-                          <DepartmentCard department={department} />
-                          <DepartmentTeacherCarousel department={department} />
+                        <div
+                          key={department.id}
+                          className="grid min-w-0 gap-4 lg:grid-cols-[minmax(16rem,0.78fr)_minmax(0,1.22fr)] lg:items-stretch"
+                        >
+                          <div className="order-2 min-w-0 lg:order-1">
+                            <DepartmentTeacherCarousel department={department} />
+                          </div>
+                          <div className="order-1 min-w-0 lg:order-2">
+                            <DepartmentCard department={department} />
+                          </div>
                         </div>
                       ))}
                     </div>
