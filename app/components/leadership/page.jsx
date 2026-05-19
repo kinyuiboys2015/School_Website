@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import {
-  FiAward,
   FiBriefcase,
   FiCalendar,
   FiCheck,
@@ -336,7 +335,8 @@ export default function ModernStaffLeadership() {
   const expertise = toArray(selected.expertise);
   const responsibilities = toArray(selected.responsibilities);
   const achievements = toArray(selected.achievements);
-  const joinedYear = selected.joinDate ? new Date(selected.joinDate).getFullYear() : null;
+  const parsedJoinYear = selected.joinDate ? new Date(selected.joinDate).getFullYear() : null;
+  const joinedYear = Number.isFinite(parsedJoinYear) ? parsedJoinYear : null;
   const roleTitle = getLeaderTitle(selected);
   const leaderScope = getLeaderScope(selected);
   const leaderDepartment = selected.department || selected.departmentGroup?.name || selected.subjectOffered || "School Leadership";
