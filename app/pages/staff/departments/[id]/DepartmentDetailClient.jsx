@@ -57,6 +57,24 @@ function TeacherCard({ teacher }) {
   );
 }
 
+function CompactTeacherCard({ teacher }) {
+  const image = teacher?.image || (teacher?.gender === "female" ? "/female.png" : "/male.png");
+
+  return (
+    <article className="flex items-center gap-3 rounded-xl bg-slate-50 p-2.5">
+      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+        <img src={image} alt={teacher.name} className="h-full w-full object-cover object-top" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <h4 className="truncate text-sm font-black text-slate-900">{teacher.name}</h4>
+        <p className="mt-0.5 truncate text-xs font-bold text-amber-700">
+          {teacher.subjectOffered || teacher.position || "Subject teacher"}
+        </p>
+      </div>
+    </article>
+  );
+}
+
 export default function DepartmentDetailClient({ id }) {
   const [department, setDepartment] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -213,6 +231,30 @@ export default function DepartmentDetailClient({ id }) {
                 )}
               </div>
             )}
+
+            <div className="mt-6 rounded-2xl border border-slate-100 bg-white p-4">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Mapped Teachers</p>
+                  <p className="mt-1 text-xs font-semibold text-slate-500">
+                    {teachers.length ? `${teachers.length} teacher${teachers.length === 1 ? "" : "s"} linked to ${department.name}` : "No teachers mapped yet"}
+                  </p>
+                </div>
+                <FiUsers className="text-xl text-amber-700" />
+              </div>
+
+              {teachers.length > 0 ? (
+                <div className="max-h-80 space-y-2 overflow-y-auto pr-1">
+                  {teachers.map((teacher) => (
+                    <CompactTeacherCard key={teacher.id} teacher={teacher} />
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-4 text-center">
+                  <p className="text-xs font-bold text-slate-500">Mapped teacher records will appear here.</p>
+                </div>
+              )}
+            </div>
           </div>
         </section>
 

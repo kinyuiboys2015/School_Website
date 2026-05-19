@@ -192,6 +192,47 @@ const cleanDepartmentResponse = (department) => {
   };
 };
 
+const normalizeDepartmentName = (value = "") =>
+  value.toString().trim().toLowerCase().replace(/\s+/g, " ");
+
+const isVisibleTeacher = (teacher, includeInactive = false) => {
+  if (includeInactive) return true;
+  return (teacher?.status || "active").toString().trim().toLowerCase() !== "inactive";
+};
+
+const isTeacherRecord = (teacher) => {
+  const role = (teacher?.role || "").toString().trim().toLowerCase();
+  const staffType = (teacher?.staffType || "").toString().trim().toLowerCase();
+  return role === "teacher" || staffType === "teacher";
+};
+
+const attachMappedTeachers = (department, allTeachers, includeInactive = false) => {
+  const departmentName = normalizeDepartmentName(department.name);
+  const relationTeachers = Array.isArray(department.teachers) ? department.teachers : [];
+  const merged = [...relationTeachers];
+  const seen = new Set(merged.map((teacher) => teacher.id));
+
+  allTeachers.forEach((teacher) => {
+    if (seen.has(teacher.id) || !isVisibleTeacher(teacher, includeInactive)) return;
+
+    const matchesId = teacher.departmentId && Number(teacher.departmentId) === Number(department.id);
+    const matchesName = normalizeDepartmentName(teacher.department) === departmentName;
+
+    if (matchesId || matchesName) {
+      merged.push(teacher);
+      seen.add(teacher.id);
+    }
+  });
+
+  merged.sort((a, b) => {
+    const subjectCompare = (a.subjectOffered || "").localeCompare(b.subjectOffered || "");
+    if (subjectCompare !== 0) return subjectCompare;
+    return (a.name || "").localeCompare(b.name || "");
+  });
+
+  return { ...department, teachers: merged };
+};
+
 export async function GET(req, { params }) {
   try {
     const id = Number(params.id);
@@ -224,7 +265,21 @@ export async function GET(req, { params }) {
       return NextResponse.json({ success: false, error: "Department not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, department: cleanDepartmentResponse(department) });
+    const allTeachers = includeTeachers
+      ? (await prisma.staff.findMany({
+          select: teacherSelect,
+          orderBy: [
+            { subjectOffered: "asc" },
+            { name: "asc" },
+          ],
+        })).filter((teacher) => isTeacherRecord(teacher) && isVisibleTeacher(teacher, includeInactive))
+      : [];
+
+    const departmentWithTeachers = includeTeachers
+      ? attachMappedTeachers(department, allTeachers, includeInactive)
+      : department;
+
+    return NextResponse.json({ success: true, department: cleanDepartmentResponse(departmentWithTeachers) });
   } catch (error) {
     console.error("❌ GET Department Error:", error);
     return NextResponse.json(

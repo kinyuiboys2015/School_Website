@@ -15,7 +15,6 @@ import {
   FiSearch,
   FiShield,
   FiUsers,
-  FiX,
 } from 'react-icons/fi';
 
 const CATEGORY_META = {
@@ -137,18 +136,16 @@ function LeadershipCard({ staff }) {
   );
 }
 
-function DepartmentCard({ department, onSelect, selected }) {
+function DepartmentCard({ department }) {
   const meta = CATEGORY_META[department.category] || CATEGORY_META.TEACHING;
   const Icon = meta.icon;
   const images = getDepartmentImages(department);
   const extra = typeof department.extra === 'object' && department.extra ? department.extra : {};
+  const teachers = Array.isArray(department.teachers) ? department.teachers : [];
 
   return (
     <article
-      className={`overflow-hidden rounded-2xl border bg-white shadow-sm transition ${
-        selected ? 'border-amber-300 ring-4 ring-amber-100' : 'border-slate-100 hover:border-slate-200'
-      }`}
-      onClick={() => onSelect(department)}
+      className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition hover:border-amber-200 hover:shadow-lg"
     >
       <div className="grid h-56 grid-cols-3 gap-1 bg-slate-100">
         <img src={images[0]} alt={department.name} className="col-span-2 h-full w-full object-cover" />
@@ -195,9 +192,34 @@ function DepartmentCard({ department, onSelect, selected }) {
           </div>
         )}
 
+        <div className="mt-5 rounded-2xl border border-slate-100 bg-slate-50/70 p-3">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-amber-700">Mapped Teachers</p>
+              <p className="mt-0.5 text-xs font-semibold text-slate-500">
+                {teachers.length ? `${teachers.length} teacher${teachers.length === 1 ? '' : 's'} in this department` : 'No teachers mapped yet'}
+              </p>
+            </div>
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-amber-700 shadow-sm">
+              <FiUsers />
+            </div>
+          </div>
+
+          {teachers.length > 0 ? (
+            <div className="max-h-80 space-y-2 overflow-y-auto pr-1">
+              {teachers.map((teacher) => (
+                <TeacherMiniCard key={teacher.id} teacher={teacher} />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-xl border border-dashed border-slate-200 bg-white p-4 text-center">
+              <p className="text-xs font-bold text-slate-500">Teacher records will appear here after mapping.</p>
+            </div>
+          )}
+        </div>
+
         <Link
           href={`/pages/staff/departments/${department.id}`}
-          onClick={(event) => event.stopPropagation()}
           className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-xs font-black uppercase tracking-widest text-white"
         >
           View Department <FiChevronRight />
@@ -207,148 +229,21 @@ function DepartmentCard({ department, onSelect, selected }) {
   );
 }
 
-function DepartmentModal({ department, onClose }) {
-  const images = getDepartmentImages(department);
-  const meta = CATEGORY_META[department.category] || CATEGORY_META.TEACHING;
-  const Icon = meta.icon;
-  const extra = typeof department.extra === 'object' && department.extra ? department.extra : {};
-  const subjects = normalizeList(extra.subjects);
-  const focusAreas = normalizeList(extra.focusAreas);
-
-  return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm" onClick={onClose}>
-      <div className="max-h-[92vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl" onClick={(event) => event.stopPropagation()}>
-        <div className="flex items-start justify-between bg-slate-900 p-5 text-white">
-          <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest">
-              <Icon size={12} />
-              {meta.label}
-            </div>
-            <h2 className="text-2xl font-black">{department.name}</h2>
-            <p className="mt-1 text-sm text-white/60">{department.description || 'Department overview'}</p>
-          </div>
-          <button type="button" onClick={onClose} className="rounded-xl bg-white/10 p-2">
-            <FiX />
-          </button>
-        </div>
-        <div className="max-h-[calc(92vh-150px)] overflow-y-auto p-5">
-          <div className="grid gap-3 sm:grid-cols-2">
-            {images.map((image, index) => (
-              <img key={`${image}-${index}`} src={image} alt={`${department.name} ${index + 1}`} className="h-56 w-full rounded-xl object-cover" />
-            ))}
-          </div>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            <div className="rounded-xl bg-slate-50 p-4">
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">HOD</p>
-              <p className="mt-1 font-bold text-slate-900">{department.headName || 'Available soon'}</p>
-            </div>
-            <div className="rounded-xl bg-slate-50 p-4">
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Assistant HOD</p>
-              <p className="mt-1 font-bold text-slate-900">{department.assistantHeadName || 'Available soon'}</p>
-            </div>
-            <div className="rounded-xl bg-slate-50 p-4">
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Staff Count</p>
-              <p className="mt-1 font-bold text-slate-900">{department.staffCount || 0}</p>
-            </div>
-          </div>
-
-          {(focusAreas.length > 0 || subjects.length > 0 || extra.location) && (
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              {focusAreas.length > 0 && (
-                <div className="rounded-xl border border-slate-100 p-4">
-                  <h3 className="text-sm font-black text-slate-900">Focus Areas</h3>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {focusAreas.map((area) => <span key={area} className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">{area}</span>)}
-                  </div>
-                </div>
-              )}
-              {subjects.length > 0 && (
-                <div className="rounded-xl border border-slate-100 p-4">
-                  <h3 className="text-sm font-black text-slate-900">Subjects / Services</h3>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {subjects.map((subject) => <span key={subject} className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">{subject}</span>)}
-                  </div>
-                </div>
-              )}
-              {extra.location && (
-                <div className="rounded-xl border border-slate-100 p-4 md:col-span-2">
-                  <h3 className="text-sm font-black text-slate-900">Department Location</h3>
-                  <p className="mt-2 text-sm font-semibold text-slate-600">{extra.location}</p>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function TeacherMiniCard({ teacher }) {
   const image = teacher?.image || (teacher?.gender === 'female' ? '/female.png' : '/male.png');
 
   return (
-    <article className="flex w-full flex-col gap-4 py-4 sm:flex-row sm:items-center">
-      <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-slate-100">
+    <article className="flex items-center gap-3 rounded-xl bg-white p-2.5">
+      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-slate-100">
         <img src={image} alt={teacher.name} className="h-full w-full object-cover object-top" />
       </div>
-
       <div className="min-w-0 flex-1">
-        <div className="mb-2 inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-amber-700">
-          Teacher
-        </div>
-        <h3 className="text-lg font-black text-slate-900 sm:text-xl">{teacher.name}</h3>
-        <p className="mt-1 text-sm font-bold text-amber-700">
+        <h4 className="truncate text-sm font-black text-slate-900">{teacher.name}</h4>
+        <p className="mt-0.5 truncate text-xs font-bold text-amber-700">
           {teacher.subjectOffered || teacher.position || 'Subject teacher'}
-        </p>
-        <p className="mt-2 max-w-4xl text-sm leading-6 text-slate-600">
-          {teacher.bio || `${teacher.name} serves in the ${teacher.department || 'selected'} department at Kinyui Boys Senior School.`}
         </p>
       </div>
     </article>
-  );
-}
-
-function DepartmentTeacherCarousel({ department }) {
-  const teachers = Array.isArray(department?.teachers) ? department.teachers : [];
-
-  if (!department) return null;
-
-  return (
-    <section className="mb-8 w-full">
-      <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Selected Department</p>
-          <h3 className="mt-1 text-2xl font-black text-slate-900">{department.name}</h3>
-          <p className="mt-1 text-sm font-medium text-slate-500">
-            {teachers.length ? `${teachers.length} teacher${teachers.length === 1 ? '' : 's'} mapped to this department` : 'Teacher mapping will appear here once records are added.'}
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link
-            href={`/pages/staff/departments/${department.id}`}
-            className="rounded-xl bg-slate-900 px-4 py-3 text-xs font-black uppercase tracking-widest text-white"
-          >
-            Full Page
-          </Link>
-        </div>
-      </div>
-
-      {teachers.length > 0 ? (
-        <div className="w-full divide-y divide-slate-100 border-y border-slate-200 bg-white">
-          {teachers.map((teacher) => (
-            <TeacherMiniCard key={teacher.id} teacher={teacher} />
-          ))}
-        </div>
-      ) : (
-        <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center">
-          <FiUsers className="mx-auto text-4xl text-slate-300" />
-          <h4 className="mt-3 text-lg font-black text-slate-900">No teachers mapped yet</h4>
-          <p className="mt-2 text-sm text-slate-500">Add teacher records in the dashboard and link them to this department.</p>
-        </div>
-      )}
-    </section>
   );
 }
 
@@ -360,7 +255,6 @@ export default function StaffDirectory() {
   const [error, setError] = useState('');
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('all');
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
 
   const fetchData = async (isRefresh = false) => {
     try {
@@ -422,6 +316,9 @@ export default function StaffDirectory() {
         department.description,
         department.headName,
         department.assistantHeadName,
+        ...(Array.isArray(department.teachers)
+          ? department.teachers.flatMap((teacher) => [teacher.name, teacher.subjectOffered, teacher.position])
+          : []),
       ].filter(Boolean).join(' ').toLowerCase();
       return matchesCategory && (!search || searchable.includes(search));
     });
@@ -437,16 +334,6 @@ export default function StaffDirectory() {
       }))
       .filter((group) => group.departments.length > 0);
   }, [filteredDepartments]);
-
-  useEffect(() => {
-    if (loading || filteredDepartments.length === 0) return;
-    const selectedStillVisible = selectedDepartment
-      ? filteredDepartments.some((department) => department.id === selectedDepartment.id)
-      : false;
-    if (!selectedStillVisible) {
-      setSelectedDepartment(filteredDepartments[0]);
-    }
-  }, [filteredDepartments, loading, selectedDepartment]);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -581,7 +468,6 @@ export default function StaffDirectory() {
             </div>
           ) : groupedDepartments.length > 0 ? (
             <div className="space-y-8">
-              <DepartmentTeacherCarousel department={selectedDepartment} />
               {groupedDepartments.map(({ key, meta, departments: groupDepartments }) => {
                 const Icon = meta.icon;
                 return (
@@ -607,8 +493,6 @@ export default function StaffDirectory() {
                         <DepartmentCard
                           key={department.id}
                           department={department}
-                          onSelect={setSelectedDepartment}
-                          selected={selectedDepartment?.id === department.id}
                         />
                       ))}
                     </div>

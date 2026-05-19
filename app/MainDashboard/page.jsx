@@ -394,21 +394,21 @@ const ModernLoadingScreen = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50 z-50 flex items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 bg-gradient-to-br from-orange-50 via-white to-amber-50 z-50 flex items-center justify-center overflow-hidden">
       
       {/* Dynamic Background Effect */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated Gradient Orbs - Kinyui Colors */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-600/10 to-cyan-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-indigo-600/10 to-purple-600/10 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-500/5 to-cyan-500/5 rounded-full blur-3xl animate-spin-slow"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-orange-700/10 to-amber-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-orange-900/10 to-rose-700/10 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-orange-600/5 to-amber-500/5 rounded-full blur-3xl animate-spin-slow"></div>
         
         {/* Moving Light Beams - Professional Style */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-600 to-transparent animate-beam"></div>
-          <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-600 to-transparent animate-beam animation-delay-500"></div>
-          <div className="absolute left-0 top-0 w-px h-full bg-gradient-to-b from-transparent via-indigo-600 to-transparent animate-beam-vertical"></div>
-          <div className="absolute right-0 top-0 w-px h-full bg-gradient-to-b from-transparent via-purple-600 to-transparent animate-beam-vertical animation-delay-300"></div>
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-orange-700 to-transparent animate-beam"></div>
+          <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-600 to-transparent animate-beam animation-delay-500"></div>
+          <div className="absolute left-0 top-0 w-px h-full bg-gradient-to-b from-transparent via-orange-800 to-transparent animate-beam-vertical"></div>
+          <div className="absolute right-0 top-0 w-px h-full bg-gradient-to-b from-transparent via-rose-800 to-transparent animate-beam-vertical animation-delay-300"></div>
         </div>
 
         {/* Subtle Grid Pattern */}
@@ -418,7 +418,7 @@ const ModernLoadingScreen = () => {
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-blue-500/30 rounded-full animate-float"
+            className="absolute w-1 h-1 bg-orange-700/30 rounded-full animate-float"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -436,7 +436,7 @@ const ModernLoadingScreen = () => {
         <div className="relative mb-8 md:mb-10">
           {/* Glowing Background - School Colors */}
           <div 
-            className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 rounded-full blur-2xl transition-all duration-300"
+            className="absolute inset-0 bg-gradient-to-r from-orange-800 via-amber-600 to-orange-900 rounded-full blur-2xl transition-all duration-300"
             style={{ 
               opacity: 0.2 + (glowIntensity / 100) * 0.3,
               transform: `scale(${1 + (glowIntensity / 100) * 0.1})`
@@ -444,11 +444,11 @@ const ModernLoadingScreen = () => {
           ></div>
           
           {/* Outer Ring Animation */}
-          <div className="absolute inset-0 rounded-full border-2 border-blue-500/30 animate-ping-slow"></div>
-          <div className="absolute inset-2 rounded-full border-2 border-cyan-500/20 animate-spin-slow"></div>
+          <div className="absolute inset-0 rounded-full border-2 border-orange-700/30 animate-ping-slow"></div>
+          <div className="absolute inset-2 rounded-full border-2 border-amber-600/20 animate-spin-slow"></div>
           
           {/* Logo Container */}
-          <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-br from-blue-700 to-indigo-700 p-1 shadow-2xl">
+          <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-br from-orange-900 to-amber-800 p-1 shadow-2xl">
             <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/10 pointer-events-none"></div>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
@@ -475,7 +475,7 @@ const ModernLoadingScreen = () => {
           
           {/* Animated Gradient Underline */}
           <div className="relative mt-2">
-            <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-600 to-transparent animate-underline"></div>
+            <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-orange-700 to-transparent animate-underline"></div>
           </div>
           
           <p className="text-gray-600 text-xs md:text-sm mt-3 tracking-wider font-semibold">
@@ -497,7 +497,7 @@ const ModernLoadingScreen = () => {
           <div className="w-full">
             <div className="relative h-1.5 bg-gray-200 rounded-full overflow-hidden">
               <div 
-                className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 rounded-full transition-all duration-300 ease-out"
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-800 via-amber-600 to-orange-900 rounded-full transition-all duration-300 ease-out"
                 style={{ width: `${progress}%` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
@@ -1296,11 +1296,11 @@ const handleLogout = () => {
     return (
       <div className="group cursor-default py-4">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-          <div className="h-10 w-1 bg-gradient-to-b from-blue-600 to-indigo-600 rounded-full shadow-sm " />
+          <div className="h-10 w-1 bg-gradient-to-b from-orange-900 to-amber-700 rounded-full shadow-sm " />
 
           <div className="flex flex-col">
             <h1 className="text-lg md:text-xl font-black text-gray-900 tracking-tight leading-none uppercase italic">
-              kinyui boys <span className="text-blue-600 group-hover:text-indigo-600 transition-colors">Senior</span>
+              kinyui boys <span className="text-orange-800 group-hover:text-amber-700 transition-colors">Senior</span>
             </h1>
             
             <div className="flex items-center gap-2 mt-1">
@@ -1342,7 +1342,7 @@ const handleLogout = () => {
         closeButton
       />
       
-    <div className="flex h-screen bg-gradient-to-br from-gray-50 to-blue-50/30 overflow-hidden">
+    <div className="flex h-screen bg-gradient-to-br from-gray-50 to-orange-50/30 overflow-hidden">
       {showMobileWarning && <MobileWarningModal />}
         
         {/* Sidebar */}

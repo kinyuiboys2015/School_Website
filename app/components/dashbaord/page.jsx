@@ -399,7 +399,7 @@ function ModernLoadingSpinner({ message = "Loading sessions from the database…
   const { outer, inner } = sizes[size] || sizes.medium;
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-gray-50 via-blue-50/30 to-emerald-50/20 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-gradient-to-br from-gray-50 via-orange-50/40 to-amber-50/30 flex items-center justify-center z-50">
       <div className="text-center">
         <div className="relative inline-block">
           {/* Main spinner */}
@@ -407,7 +407,7 @@ function ModernLoadingSpinner({ message = "Loading sessions from the database…
             <CircularProgress 
               size={outer} 
               thickness={5}
-              className="text-indigo-600"
+              className="text-orange-800"
             />
             {/* Pulsing inner circle */}
             <div className="absolute inset-0 flex items-center justify-center">
@@ -416,7 +416,7 @@ function ModernLoadingSpinner({ message = "Loading sessions from the database…
             </div>
           </div>
           {/* Outer glow effect */}
-          <div className="absolute -inset-6 bg-gradient-to-r from-indigo-100 to-violet-100 rounded-full blur-xl opacity-30 animate-pulse"></div>
+          <div className="absolute -inset-6 bg-gradient-to-r from-orange-100 to-amber-100 rounded-full blur-xl opacity-30 animate-pulse"></div>
         </div>
         
         {/* Text content */}
@@ -1225,9 +1225,9 @@ setGrowthMetrics({
           {/* Header Section */}
           <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-white/90 backdrop-blur-md sticky top-0 z-30">
             <div className="flex items-center gap-3 mb-4">
-              <div className="h-8 w-1 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,99,235,0.5)]" />
+              <div className="h-8 w-1 bg-orange-800 rounded-full shadow-[0_0_15px_rgba(154,52,18,0.45)]" />
               <div>
-                <h2 className="text-xs font-black uppercase tracking-[0.3em] text-blue-400">
+                <h2 className="text-xs font-black uppercase tracking-[0.3em] text-orange-800">
                   kinyui boys Senior School
                 </h2>
                 <p className="text-[10px] italic font-medium text-white/60 tracking-widest uppercase">
@@ -1712,17 +1712,17 @@ const StatCard = ({ icon: Icon, label, value, change, color, subtitle, trend }) 
         <div className="group relative bg-[#0F172A] rounded-xl md:rounded-[2rem] p-5 md:p-8 text-white overflow-hidden shadow-2xl border border-white/5 transition-all duration-500 ">
           
           {/* Abstract Mesh Gradient Background */}
-          <div className="absolute top-[-25%] right-[-10%] w-[250px] h-[250px] md:w-[420px] md:h-[420px] bg-blue-600/25 rounded-full blur-[100px] pointer-events-none  transition-transform duration-700" />
-          <div className="absolute bottom-[-25%] left-[-10%] w-[200px] h-[200px] md:w-[340px] md:h-[340px] bg-purple-600/15 rounded-full blur-[80px] pointer-events-none  transition-transform duration-700" />
+          <div className="absolute top-[-25%] right-[-10%] w-[250px] h-[250px] md:w-[420px] md:h-[420px] bg-orange-700/30 rounded-full blur-[100px] pointer-events-none  transition-transform duration-700" />
+          <div className="absolute bottom-[-25%] left-[-10%] w-[200px] h-[200px] md:w-[340px] md:h-[340px] bg-amber-600/20 rounded-full blur-[80px] pointer-events-none  transition-transform duration-700" />
           
           <div className="relative z-10">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 mb-6">
               <div>
                 {/* Institutional Branding - Compact Version */}
                 <div className="flex items-center gap-2.5 mb-3">
-                  <div className="h-6 w-1 bg-blue-500 rounded-full shadow-[0_0_12px_rgba(59,99,235,0.4)]" />
+                  <div className="h-6 w-1 bg-orange-500 rounded-full shadow-[0_0_12px_rgba(249,115,22,0.4)]" />
                   <div>
-                    <h2 className="text-[10px] font-black uppercase tracking-[0.25em] text-blue-400">
+                    <h2 className="text-[10px] font-black uppercase tracking-[0.25em] text-orange-300">
                       kinyui boys Senior School
                     </h2>
                     <p className="text-[9px] italic font-medium text-white/50 tracking-widest uppercase">
@@ -1737,7 +1737,7 @@ const StatCard = ({ icon: Icon, label, value, change, color, subtitle, trend }) 
                     <IoSparkles className="text-xl sm:text-2xl text-yellow-300 drop-shadow-[0_0_6px_rgba(253,224,71,0.5)]" />
                   </div>
                   <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black tracking-tight leading-tight">
-                    Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-100 via-white to-blue-200">{user?.name || 'Admin'}</span>!
+                    Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-100 via-white to-orange-200">{user?.name || 'Admin'}</span>!
                   </h1>
                 </div>
               </div>
@@ -1755,10 +1755,10 @@ const StatCard = ({ icon: Icon, label, value, change, color, subtitle, trend }) 
             
             {/* Summary Text */}
             <div className="mb-6">
-              <p className="text-blue-100/70 text-sm sm:text-[15px] font-medium leading-relaxed max-w-3xl">
-                Overseeing <span className="text-white font-bold underline decoration-blue-500/40 decoration-1 underline-offset-4">{stats.totalStudents} students</span> and <span className="text-white font-bold underline decoration-purple-500/40 decoration-1 underline-offset-4">{stats.totalStaff} staff</span>. 
+              <p className="text-orange-100/75 text-sm sm:text-[15px] font-medium leading-relaxed max-w-3xl">
+                Overseeing <span className="text-white font-bold underline decoration-orange-500/40 decoration-1 underline-offset-4">{stats.totalStudents} students</span> and <span className="text-white font-bold underline decoration-amber-500/40 decoration-1 underline-offset-4">{stats.totalStaff} staff</span>. 
                 You have <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-yellow-400/15 text-yellow-300 border border-yellow-400/10 mx-1 text-[11px]">{stats.activeAssignments} tasks</span> 
-                and <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-green-500/15 text-green-400 border border-green-500/10 mx-1 text-[11px]">{stats.totalCareers} careers</span> listed.
+                and <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-orange-400/15 text-orange-200 border border-orange-400/10 mx-1 text-[11px]">{stats.totalCareers} careers</span> listed.
               </p>
             </div>
             
@@ -1766,7 +1766,7 @@ const StatCard = ({ icon: Icon, label, value, change, color, subtitle, trend }) 
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <button
                 onClick={() => setShowQuickTour(true)}
-                className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg sm:rounded-xl font-bold text-[12px] uppercase tracking-wider shadow-lg transition-all active:scale-95 w-full sm:w-auto"
+                className="flex items-center justify-center gap-2 bg-orange-700 hover:bg-orange-800 text-white px-5 py-2.5 rounded-lg sm:rounded-xl font-bold text-[12px] uppercase tracking-wider shadow-lg transition-all active:scale-95 w-full sm:w-auto"
               >
                 <FiPlay className="text-xs" />
                 Video Tour
