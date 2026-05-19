@@ -40,10 +40,10 @@ const allTerms = [
     color: "from-amber-600 to-amber-800",
     intro: `School fees must be paid promptly to facilitate smooth school operations and resource availability. Below is the official fee structure for ${new Date().getFullYear()}.`,
     subSections: [
-      { subTitle: "Payment Methods", content: "Bank payments to S.A Kinyui Boys Senior School, Cooperative Bank, Account No: 0112876543210. MPESA Paybill: 894145 (Account: Student Name + Admission No). Crossed bankers cheque payable to Kinyui Boys Senior School or Postal money order payable to Kinyui Boys Senior School." },
-      { subTitle: "Payment Deadlines", content: "Fees payable in full by the second week of each term. Term 1: By 31st January, Term 2: By 30th April, Term 3: By 31st August." },
-      { subTitle: "Penalties", content: "Late payment attracts a penalty of KES 500 per week. Students with fee balances will not receive end-term reports or be allowed to sit for exams." },
-      { subTitle: "Official Contact", content: "For fee queries, contact Accounts Clerk at P.O.BOX 142-90131, TALA or call 0733 587223. Email: kinyuiboysschool@yahoo.com" }
+      { subTitle: "Payment Methods", content: "Fees may be paid through KCB Account No. 1107262690, Tala Branch, account name KINYUI BOYS SECONDARY SCHOOL. M-Pesa payments use PayBill Business No. 522123 with account format 30433KSTUDENTNAMEADMNO, with no spacing." },
+      { subTitle: "Payment Deadlines", content: "All fees must be paid on or before reporting day. Students should report with official payment confirmation." },
+      { subTitle: "Important Payment Notes", content: "Personal cheques are not accepted; use a bankers cheque where cheque payment is needed. Fees once paid are not refundable." },
+      { subTitle: "Official Contact", content: "For fee queries, contact the school through P.O.BOX 142-90131, TALA or the accounts office." }
     ]
   },
   {
@@ -193,18 +193,18 @@ const allTerms = [
 ];
 
 const BOARDING_FEES = {
-  term1: 22244,
-  term2: 20268,
-  term3: 12160,
+  term1: 17250,
+  term2: 16000,
+  term3: 7285,
   annual: 40535,
   breakdown: [
-    { voteHead: "TUITION", term1: 4144, term2: 7615, term3: 5077, total: 25385 },
-    { voteHead: "BOARDING", term1: 12693, term2: 7615, term3: 5077, total: 25385 },
-    { voteHead: "M&I", term1: 5000, term2: 1000, term3: 600, total: 2000 },
-    { voteHead: "LT&T, EWC, ADM, P,E", term1: 9400, term2: 6450, term3: 3870, total: 12900 },
-    { voteHead: "ACTIVITY", term1: 1500, term2: 125, term3: 75, total: 250 },
-    { voteHead: "MEDICAL & INSURANCE", term1: 2000, term2: 0, term3: 0, total: 2000 },
-    { voteHead: "SMASSE", term1: 200, term2: 0, term3: 0, total: 200 }
+    { voteHead: "BOARDING", term1: 10000, term2: 10000, term3: 5385, total: 25385 },
+    { voteHead: "M&I", term1: 1000, term2: 1000, term3: 0, total: 2000 },
+    { voteHead: "LT&T", term1: 1000, term2: 0, term3: 0, total: 1000 },
+    { voteHead: "ADM. COST", term1: 1000, term2: 1000, term3: 500, total: 2500 },
+    { voteHead: "EWC", term1: 2000, term2: 2000, term3: 900, total: 4900 },
+    { voteHead: "ACTIVITY", term1: 250, term2: 0, term3: 0, total: 250 },
+    { voteHead: "P. EMOL", term1: 2000, term2: 2000, term3: 500, total: 4500 }
   ]
 };
 
@@ -428,9 +428,9 @@ export default function SchoolPolicies() {
                       Bank Transfer
                     </h4>
                     <ul className="space-y-1 text-xs sm:text-sm text-slate-600">
-                      <li><span className="font-semibold text-slate-700">Account:</span> SA Kinyui Boys HIGH SCHOOL</li>
-                      <li><span className="font-semibold text-slate-700">Bank:</span> Cooperative Bank</li>
-                      <li><span className="font-semibold text-slate-700">Acc No:</span> 0112876543210</li>
+                      <li><span className="font-semibold text-slate-700">Account:</span> KINYUI BOYS SECONDARY SCHOOL</li>
+                      <li><span className="font-semibold text-slate-700">Bank:</span> KCB - Tala Branch</li>
+                      <li><span className="font-semibold text-slate-700">Acc No:</span> 1107262690</li>
                     </ul>
                   </div>
                   <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
@@ -439,8 +439,8 @@ export default function SchoolPolicies() {
                       MPESA Payment
                     </h4>
                     <ul className="space-y-1 text-xs sm:text-sm text-slate-600">
-                      <li><span className="font-semibold text-slate-700">Paybill:</span> <span className="text-blue-600 font-bold">894145</span></li>
-                      <li><span className="font-semibold text-slate-700">Account:</span> Student Name + Admission No</li>
+                      <li><span className="font-semibold text-slate-700">Paybill:</span> <span className="text-blue-600 font-bold">522123</span></li>
+                      <li><span className="font-semibold text-slate-700">Account:</span> 30433KStudentNameAdmNo</li>
                     </ul>
                   </div>
                 </div>
@@ -448,7 +448,7 @@ export default function SchoolPolicies() {
                 <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl">
                   <p className="text-amber-800 text-xs sm:text-sm flex items-start gap-2">
                     <FiAlertTriangle className="flex-shrink-0 mt-0.5" size={14} />
-                    <span><strong>Late payment penalty:</strong> KES 500 per week. Students with fee balances will not receive end-term reports or sit for exams.</span>
+                    <span><strong>Payment notice:</strong> All fees must be paid on or before reporting day. Personal cheques are not accepted, and fees once paid are not refundable.</span>
                   </p>
                 </div>
               </div>
@@ -530,7 +530,7 @@ export default function SchoolPolicies() {
         <div className="mt-10 sm:mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { icon: FiAlertTriangle, title: "Important Notice", text: "These rules are binding for all students. Parents/guardians must ensure students understand and comply.", bg: "bg-amber-50 border-amber-200", iconBg: "bg-amber-100 text-amber-700", titleColor: "text-amber-900" },
-            { icon: FiDollarSign, title: "Fee Payment", text: "Fees must be paid in full by the second week of each term. Late payment attracts KES 500/week penalty.", bg: "bg-emerald-50 border-emerald-200", iconBg: "bg-emerald-100 text-emerald-700", titleColor: "text-emerald-900" },
+            { icon: FiDollarSign, title: "Fee Payment", text: "Fees must be paid on or before reporting day through KCB A/C 1107262690 or M-Pesa PayBill 522123.", bg: "bg-emerald-50 border-emerald-200", iconBg: "bg-emerald-100 text-emerald-700", titleColor: "text-emerald-900" },
             { icon: FiShield, title: "Enforcement", text: "Rules enforced by school administration. Appeals to be made in writing to the Principal's office.", bg: "bg-blue-50 border-blue-200", iconBg: "bg-blue-100 text-blue-700", titleColor: "text-blue-900" },
           ].map((c, i) => {
             const I = c.icon;

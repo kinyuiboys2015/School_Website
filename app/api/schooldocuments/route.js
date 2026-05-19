@@ -2,168 +2,6 @@ import { NextResponse } from "next/server";
 import { prisma } from "../../../libs/prisma";
 import cloudinary from "../../../libs/cloudinary";
 
-const KINYUI_BOARDING_FEES_2026 = [
-  {
-    id: "boarding",
-    name: "Boarding",
-    description: "Boarding accommodation and meals for boarders.",
-    amount: 25385,
-    term1: 10000,
-    term2: 10000,
-    term3: 5385,
-    mandatory: true
-  },
-  {
-    id: "mi",
-    name: "M&I",
-    description: "Maintenance and improvement vote head.",
-    amount: 2000,
-    term1: 1000,
-    term2: 1000,
-    term3: 0,
-    mandatory: true
-  },
-  {
-    id: "lt-t",
-    name: "LT&T",
-    description: "Local travel and transport vote head.",
-    amount: 1000,
-    term1: 1000,
-    term2: 0,
-    term3: 0,
-    mandatory: true
-  },
-  {
-    id: "adm-cost",
-    name: "ADM. Cost",
-    description: "Administrative cost vote head.",
-    amount: 2500,
-    term1: 1000,
-    term2: 1000,
-    term3: 500,
-    mandatory: true
-  },
-  {
-    id: "ewc",
-    name: "EWC",
-    description: "Electricity, water and conservancy vote head.",
-    amount: 4900,
-    term1: 2000,
-    term2: 2000,
-    term3: 900,
-    mandatory: true
-  },
-  {
-    id: "activity",
-    name: "Activity",
-    description: "Student activity fee.",
-    amount: 250,
-    term1: 250,
-    term2: 0,
-    term3: 0,
-    mandatory: true
-  },
-  {
-    id: "p-emol",
-    name: "P. Emol",
-    description: "Personnel emoluments vote head.",
-    amount: 4500,
-    term1: 2000,
-    term2: 2000,
-    term3: 500,
-    mandatory: true
-  }
-];
-
-const KINYUI_PAYMENT_INSTRUCTIONS = [
-  "All fees must be paid on or before reporting day.",
-  "Personal cheques are not accepted; use a bankers cheque where cheque payment is needed.",
-  "Cheque account name: KINYUI BOYS SECONDARY SCHOOL.",
-  "KCB account number: 1107262690, Tala Branch.",
-  "M-Pesa PayBill business number: 522123.",
-  "M-Pesa account number format: 30433KSTUDENTNAMEADMNO with no spacing, for example 30433KPETER1127.",
-  "Fees once paid are not refundable."
-];
-
-const KINYUI_DEFAULT_DOCUMENT = {
-  id: null,
-  curriculumPDF: null,
-  curriculumPdfName: null,
-  curriculumPdfSize: null,
-  curriculumPdfUploadDate: null,
-  curriculumDescription: null,
-  curriculumYear: null,
-  curriculumTerm: null,
-  feesDayDistributionPdf: null,
-  feesDayPdfName: null,
-  feesDayPdfSize: null,
-  feesDayPdfUploadDate: null,
-  feesDayDescription: null,
-  feesDayYear: null,
-  feesDayTerm: null,
-  feesBoardingDistributionPdf: "/documents/kinyui-boys-fees-structure-2026.pdf",
-  feesBoardingPdfName: "Kinyui Boys Fees Structure 2026.pdf",
-  feesBoardingPdfSize: 224177,
-  feesBoardingPdfUploadDate: new Date("2026-01-01T00:00:00.000Z"),
-  feesBoardingDescription: `Kinyui Boys High School 2026 boarding fee structure. Total annual boarding fees: KSh 40,535. Payment notes: ${KINYUI_PAYMENT_INSTRUCTIONS.join(" ")}`,
-  feesBoardingYear: 2026,
-  feesBoardingTerm: "Annual",
-  admissionFeePdf: null,
-  admissionFeePdfName: null,
-  admissionFeePdfSize: null,
-  admissionFeePdfUploadDate: null,
-  admissionFeeDescription: null,
-  admissionFeeYear: null,
-  admissionFeeTerm: null,
-  feesDayDistributionJson: [],
-  feesBoardingDistributionJson: KINYUI_BOARDING_FEES_2026,
-  admissionFeeDistribution: [],
-  form1ResultsPdf: null,
-  form1ResultsPdfName: null,
-  form1ResultsPdfSize: null,
-  form1ResultsDescription: null,
-  form1ResultsYear: null,
-  form1ResultsTerm: null,
-  form1ResultsUploadDate: null,
-  form2ResultsPdf: null,
-  form2ResultsPdfName: null,
-  form2ResultsPdfSize: null,
-  form2ResultsDescription: null,
-  form2ResultsYear: null,
-  form2ResultsTerm: null,
-  form2ResultsUploadDate: null,
-  form3ResultsPdf: null,
-  form3ResultsPdfName: null,
-  form3ResultsPdfSize: null,
-  form3ResultsDescription: null,
-  form3ResultsYear: null,
-  form3ResultsTerm: null,
-  form3ResultsUploadDate: null,
-  form4ResultsPdf: null,
-  form4ResultsPdfName: null,
-  form4ResultsPdfSize: null,
-  form4ResultsDescription: null,
-  form4ResultsYear: null,
-  form4ResultsTerm: null,
-  form4ResultsUploadDate: null,
-  mockExamsResultsPdf: null,
-  mockExamsPdfName: null,
-  mockExamsPdfSize: null,
-  mockExamsDescription: null,
-  mockExamsYear: null,
-  mockExamsTerm: null,
-  mockExamsUploadDate: null,
-  kcseResultsPdf: null,
-  kcsePdfName: null,
-  kcsePdfSize: null,
-  kcseDescription: null,
-  kcseYear: null,
-  kcseTerm: null,
-  kcseUploadDate: null,
-  createdAt: null,
-  updatedAt: null
-};
-
 // ==================== AUTHENTICATION UTILITIES ====================
 
 // Device Token Manager
@@ -504,9 +342,8 @@ export async function GET() {
     if (!document) {
       return NextResponse.json({
         success: true,
-        message: "No documents found. Returning Kinyui Boys 2026 fee defaults.",
-        document: KINYUI_DEFAULT_DOCUMENT,
-        source: "default"
+        message: "No documents found",
+        document: null
       });
     }
     
@@ -517,13 +354,10 @@ export async function GET() {
 
   } catch (error) {
     console.error("❌ GET Error:", error);
-    return NextResponse.json({
-      success: true,
-      message: "Database school documents unavailable. Returning Kinyui Boys 2026 fee defaults.",
-      warning: error.message || "Internal server error",
-      document: KINYUI_DEFAULT_DOCUMENT,
-      source: "default"
-    });
+    return NextResponse.json(
+      { success: false, error: error.message || "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 

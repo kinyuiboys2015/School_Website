@@ -130,18 +130,6 @@ const authenticateRequest = (req) => {
 
 // ============ API ROUTES ============
 
-const KINYUI_DEFAULT_STATS = {
-  id: null,
-  meanScore: null,
-  lastYearMean: null,
-  targetMean: null,
-  slogan: "Compose Yourself To Be Great",
-  sloganDescription: "A Kinyui Boys reminder that greatness begins with self-discipline, personal responsibility, and daily effort.",
-  sloganAuthor: "Kinyui Boys Senior School",
-  createdAt: null,
-  updatedAt: null
-};
-
 // 🟡 GET school stats (PUBLIC - no authentication required)
 export async function GET() {
   try {
@@ -151,11 +139,10 @@ export async function GET() {
     
     // If no stats exist, return null (don't auto-create)
     if (!stats) {
-      return NextResponse.json({ 
-        success: true, 
-        message: "No school stats found. Returning Kinyui Boys defaults.",
-        stats: KINYUI_DEFAULT_STATS,
-        source: "default"
+      return NextResponse.json({
+        success: true,
+        message: "No school stats found",
+        stats: null
       });
     }
 
@@ -177,13 +164,13 @@ export async function GET() {
 
   } catch (error) {
     console.error("❌ GET Error:", error);
-    return NextResponse.json({
-      success: true,
-      message: "Database school stats unavailable. Returning Kinyui Boys defaults.",
-      warning: error.message || "Internal server error",
-      stats: KINYUI_DEFAULT_STATS,
-      source: "default"
-    });
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: error.message || "Internal server error"
+      }, 
+      { status: 500 }
+    );
   }
 }
 
