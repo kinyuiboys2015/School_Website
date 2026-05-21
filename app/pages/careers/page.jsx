@@ -652,8 +652,8 @@ const ModernJobDetailModal = ({ job, onClose, onApply }) => {
                 </div>
                 <div>
                   <p className="text-slate-600 mb-1">Or call for inquiries:</p>
-                  <a href={`tel:${job.contactPhone || '+254712345678'}`} className="text-green-600 font-medium">
-                    {job.contactPhone || '+254 712 345 678'}
+                  <a href={`tel:${job.contactPhone || '0790 789847'}`} className="text-green-600 font-medium">
+                    {job.contactPhone || '0790 789847'}
                   </a>
                 </div>
                 <p className="text-xs text-slate-500 mt-2">Please include your CV, certificates, and cover letter.</p>
@@ -1001,8 +1001,8 @@ Loading for Opportunities at Kinyui Senior School
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <FiPhone className="text-slate-400" />
-                  <a href="tel:+254710894145" className="text-green-600 hover:underline">
-                    0733 587223
+                  <a href="tel:0790 789847" className="text-green-600 hover:underline">
+                    0790 789847
                   </a>
                 </div>
               </div>

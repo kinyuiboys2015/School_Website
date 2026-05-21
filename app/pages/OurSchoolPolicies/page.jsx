@@ -90,7 +90,7 @@ const allTerms = [
     subSections: [
       { subTitle: "School Dispensary", content: "School nurse on duty 24/7. Minor ailments treated at school dispensary. Serious cases referred to Kinyui Health Centre." },
       { subTitle: "Medical Checkups", content: "Routine medical checkups conducted every term. Parents must provide updated medical history and allergy information." },
-      { subTitle: "Emergency Contacts", content: "Parents notified immediately of serious illness/accident. Emergency contacts must be kept updated: Principal: 0733 587223." }
+      { subTitle: "Emergency Contacts", content: "Parents notified immediately of serious illness/accident. Emergency contacts must be kept updated: Principal: 0790 789847." }
     ]
   },
   {
@@ -548,7 +548,7 @@ export default function SchoolPolicies() {
 
         <div className="mt-8 text-center">
           <p className="text-[11px] sm:text-xs text-slate-400">&copy; {year} SA Kinyui Boys Senior School &middot; Matungulu, Machakos County &middot; All rights reserved</p>
-          <p className="text-[10px] sm:text-[11px] text-slate-400 mt-1">Tel: 0733 587223 &middot; Email: kinyuiboysschool@yahoo.com &middot; P.O.BOX 142-90131, TALA</p>
+          <p className="text-[10px] sm:text-[11px] text-slate-400 mt-1">Tel: 0790 789847 &middot; Email: kinyuiboysschool@yahoo.com &middot; P.O.BOX 142-90131, TALA</p>
         </div>
       </div>
 

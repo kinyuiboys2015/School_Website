@@ -52,7 +52,7 @@ const schoolData = {
     "Admission is open to qualified boys joining senior school. Required documents include assessment results or transfer documents, birth certificate, parent/guardian ID details, medical information, passport photos, and previous school report where applicable.",
   admissionCapacity: 120,
   admissionContactEmail: "kinyuiboys2015@gmail.com",
-  admissionContactPhone: "0790789847",
+  admissionContactPhone: "0790 789847",
   admissionWebsite: null,
   admissionLocation: "Matungulu Sub-County, Machakos County",
   admissionOfficeHours: "Monday - Friday: 8:00 AM - 5:00 PM",

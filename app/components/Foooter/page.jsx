@@ -97,7 +97,7 @@ const CONTACT_INFO = {
     { icon: FiMapPin, text: 'Matungulu, Machakos County', detail: 'Along Tala Kangudo Kanzalu Road', href: 'https://maps.app.goo.gl/CvZsLB55zaNhwbeG8' }
   ],
   phone: [
-    { icon: FiPhone, text: '+254 733 587223', detail: 'Main Office', href: 'tel:0733587223' },
+    { icon: FiPhone, text: '0790 789847', detail: 'Main Office', href: 'tel:0790 789847' },
   ],
   email: [
     { icon: FiMail, text: 'kinyuiboys2015@gmail.com', detail: 'General Inquiries', href: 'mailto:kinyuiboys2015@gmail.com' },

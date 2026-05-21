@@ -46,7 +46,7 @@ async function checkAndCreateAdmin() {
           password: hashedPassword,
           role: 'ADMIN',
           status: 'active',
-          phone: '+254790789847',
+          phone: '0790 789847',
         },
       });
 

@@ -157,7 +157,7 @@ const SCHOOL_NAME = 'kinyui boys Senior School';
 const SCHOOL_LOCATION = 'Matungulu, Machakos County';
 const SCHOOL_MOTTO = 'Soaring to Excellence';
 const SCHOOL_EMAIL = 'kinyuiboys2015@gmail.com';
-const SCHOOL_PHONE = '+254720123456';
+const SCHOOL_PHONE = '0790 789847';
 
 // Format date function
 const formatDate = (dateString) => {

@@ -250,7 +250,7 @@ export default function RootLayout({ children }) {
       "longitude": "37.32415"
     },
     "hasMap": "https://maps.app.goo.gl/TEkuDUZZnXfaE1YC8", 
-    "telephone": "+254 733 587223",
+    "telephone": "0790 789847",
     "email": "kinyuiboys2015@gmail.com",
     "priceRange": "N/A",
     "areaServed": ["Matungulu", "Machakos County", "Kenya"],

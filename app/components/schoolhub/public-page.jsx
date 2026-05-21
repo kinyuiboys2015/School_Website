@@ -199,7 +199,7 @@ const SCHOOL_INFO = {
   mission: 'To provide quality boys boarding education through academics, mentorship, innovation, talent development, and responsible citizenship.',
   location: 'Matungulu, Machakos County, Kenya',
   email: 'kinyuiboys2015@gmail.com',
-  phone: '+254 733 587223',
+  phone: '0790 789847',
   website: 'kinyuiboyssenior.school',
   colors: ['Amber', 'Brown', 'White'],
   achievements: [

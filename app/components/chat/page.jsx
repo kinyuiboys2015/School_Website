@@ -89,7 +89,7 @@ School Type:
 • Competency-Based Curriculum (CBE)
 
 Contact:
-• Phone: +254 729 370 590
+• Phone: 0790 789847
 • Email: kinyui boysschool@yahoo.com
 • Address: P.O. Box 363 – 90131 Tala, Kenya
 
@@ -317,7 +317,7 @@ Steps:
 • Senior Teacher
 
 **Contact Information:**
-• Phone: +254 729 370 590
+• Phone: 0790 789847
 • Email: kinyui boysschool@yahoo.com
 • Admissions: kinyui boysschool@yahoo.com
 
@@ -419,7 +419,7 @@ ${schoolData.admissionDocumentsRequired && schoolData.admissionDocumentsRequired
 
 **Contact Admissions:**
 • Email: ${schoolData.admissionContactEmail || 'kinyui boysschool@yahoo.com'}
-• Phone: ${schoolData.admissionContactPhone || '+254 729 370 590'}
+• Phone: ${schoolData.admissionContactPhone || '0790 789847'}
 • Location: ${schoolData.admissionLocation || 'Kambusu, Matungulu, Machakos County'}
 • Office Hours: ${schoolData.admissionOfficeHours || 'Mon-Fri: 8:00 AM - 5:00 PM'}
 
@@ -563,7 +563,7 @@ ${documentData?.kcseResultsPdf ? `**KCSE Examination Results:**
       content: `📞 CONTACT INFORMATION
 
 **School Contacts:**
-• Phone: ${schoolData.admissionContactPhone || '+254 729 370 590'}
+• Phone: ${schoolData.admissionContactPhone || '0790 789847'}
 • Email: ${schoolData.admissionContactEmail || 'kinyui boysschool@yahoo.com'}
 • Location: ${schoolData.admissionLocation || 'Kambusu, Matungulu, Machakos County'}
 • Website: ${schoolData.admissionWebsite || 'Contact office for details'}

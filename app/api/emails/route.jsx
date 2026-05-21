@@ -155,7 +155,7 @@ const transporter = nodemailer.createTransport({
 const SCHOOL_NAME = process.env.SCHOOL_NAME || 'kinyui boys Senior School';
 const SCHOOL_LOCATION = process.env.SCHOOL_LOCATION || 'Matungulu, Machakos County';
 const SCHOOL_MOTTO = process.env.SCHOOL_MOTTO || 'Soaring to Excellence';
-const CONTACT_PHONE = process.env.CONTACT_PHONE || '+254720123456';
+const CONTACT_PHONE = process.env.CONTACT_PHONE || '0790 789847';
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL ||'kinyuiboys2015@gmail.com';
 const SCHOOL_WEBSITE = process.env.SCHOOL_WEBSITE || 'https://kinyuiboyssenior.school';
 

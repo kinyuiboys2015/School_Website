@@ -71,7 +71,7 @@ export default function ContactPage() {
       id: 'admissions',
       name: 'Admissions Office',
       email: 'kinyuiboys2015@gmail.com',
-      phone: '+254 720 123 456',
+      phone: '0790 789847',
       description: 'For enrollment, applications, and admission inquiries. We guide students through the admission process.',
       icon: <User className="w-4 h-4" />,
       head: 'Mrs ',
@@ -82,7 +82,7 @@ export default function ContactPage() {
       id: 'academics',
       name: 'Academic Office',
       email: 'kinyuiboys2015@gmail.com',
-      phone: '+254 720 123 457',
+      phone: '0790 789847',
       description: 'Curriculum, academic programs, examinations, and teacher coordination. Ensuring academic excellence.',
       icon: <Book className="w-4 h-4" />,
       head: 'Mr Kanzi',
@@ -93,7 +93,7 @@ export default function ContactPage() {
       id: 'student-affairs',
       name: 'Student Affairs',
       email: 'kinyuiboys2015@gmail.com',
-      phone: '+254 720 123 458',
+      phone: '0790 789847',
       description: 'Student welfare, discipline, counseling, and extracurricular activities. Building holistic students.',
       icon: <Users className="w-4 h-4" />,
       head: 'Madam Eunice',
@@ -104,7 +104,7 @@ export default function ContactPage() {
       id: 'sports',
       name: 'Sports Department',
       email: 'kinyuiboys2015@gmail.com',
-      phone: '+254 720 123 459',
+      phone: '0790 789847',
       description: 'Athletics, sports programs, competitions, and physical education. Developing champions.',
       icon: <Award className="w-4 h-4" />,
       head: 'Mr Kim',
@@ -306,7 +306,7 @@ export default function ContactPage() {
                   <Phone className="w-4 h-4 sm:w-5 sm:h-5 mt-0.5 text-amber-500 shrink-0" />
                   <div>
                     <h3 className="font-bold text-slate-900 text-sm sm:text-sm">Call Us</h3>
-                    <a href="tel:+254720123456" className="hover:text-amber-600 transition-colors">+254 720 123 456</a>
+                    <a href="tel:0790 789847" className="hover:text-amber-600 transition-colors">0790 789847</a>
                   </div>
                 </div>
                  <div className="flex items-start gap-3 sm:gap-4">

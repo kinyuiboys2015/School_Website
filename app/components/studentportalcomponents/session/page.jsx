@@ -1013,7 +1013,7 @@ function EmergencyModal({ student, onClose, onSubmit }) {
                 <div>
                   <p className="text-xs  text-gray-700">
                     <span className="font-bold">Important:</span> For immediate life-threatening emergencies, 
-                    please call Our Ofiice Direct 0789384922 or your local emergency number first. This form is for urgent school-related 
+                    please call our Office Direct 0790 789847 or your local emergency number first. This form is for urgent school-related 
                     matters that require immediate administrative attention.
                   </p>
                 </div>

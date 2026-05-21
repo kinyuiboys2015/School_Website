@@ -38,7 +38,7 @@ const DEFAULT_SCHOOL = {
   videoTour: DEFAULT_VIDEO_TOUR,
   videoType: "youtube",
   admissionContactEmail: "kinyuiboys2015@gmail.com",
-  admissionContactPhone: "0790789847",
+  admissionContactPhone: "0790 789847",
   admissionLocation: "Matungulu, Machakos County"
 };
 
@@ -412,10 +412,10 @@ export default function AboutPage() {
             </div>
 
             <div className="mt-4 grid gap-4 md:grid-cols-3">
-              <a href={`tel:${school.admissionContactPhone || "0790789847"}`} className="rounded-lg border border-slate-200 bg-white p-5 transition hover:border-amber-300">
+              <a href={`tel:${school.admissionContactPhone || "0790 789847"}`} className="rounded-lg border border-slate-200 bg-white p-5 transition hover:border-amber-300">
                 <Phone className="mb-3 text-amber-600" size={20} />
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Call Us</p>
-                <p className="mt-1 text-sm font-bold text-slate-950">{school.admissionContactPhone || "0790789847"}</p>
+                <p className="mt-1 text-sm font-bold text-slate-950">{school.admissionContactPhone || "0790 789847"}</p>
               </a>
               <a href={`mailto:${school.admissionContactEmail || "kinyuiboys2015@gmail.com"}`} className="rounded-lg border border-slate-200 bg-white p-5 transition hover:border-amber-300">
                 <Mail className="mb-3 text-amber-600" size={20} />

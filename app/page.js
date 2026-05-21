@@ -386,7 +386,7 @@ const jsonLd = {
     'addressCountry': 'KE'
   },
   url: 'https://kinyuiboyssenior.school',
-  telephone: '+254710894145',
+  telephone: '0790 789847',
   sameAs: [
     'https://facebook.com/kinyui boyshigh',
     'https://twitter.com/kinyui boyshigh',

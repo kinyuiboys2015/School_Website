@@ -644,7 +644,7 @@ kjseaGrade: '',         // Changed from meanGrade
             <div className="mt-6 pt-5 border-t border-gray-100">
               <h4 className="text-[10px] font-black text-gray-400 mb-3 uppercase tracking-widest">Need Help?</h4>
               <div className="text-[11px] sm:text-sm text-gray-600 space-y-1">
-                <p>Office: <span className="text-gray-900 font-bold">0712 345 678</span></p>
+                <p>Office: <span className="text-gray-900 font-bold">0790 789847</span></p>
                 <p className="truncate">Email: <span className="text-blue-600 font-bold">admissions@kinyui boyske</span></p>
               </div>
             </div>
@@ -1529,11 +1529,11 @@ kjseaGrade: '',         // Changed from meanGrade
       <div className="flex-[2] flex flex-row items-center justify-around md:justify-end gap-2 md:gap-12 px-4 md:px-10">
         
         {/* Phone Link */}
-        <a href="tel:0733 587223" className="group flex flex-col items-center md:items-start gap-1">
+        <a href="tel:0790 789847" className="group flex flex-col items-center md:items-start gap-1">
           <span className="text-[9px] font-black text-slate-800 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Call Us</span>
           <div className="flex items-center gap-2">
             <FiPhone size={14} className="text-slate-900 group-hover:scale-110 transition-transform" />
-            <span className="text-xs md:text-sm font-bold text-slate-900">0733 587223</span>
+            <span className="text-xs md:text-sm font-bold text-slate-900">0790 789847</span>
           </div>
         </a>
 

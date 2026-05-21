@@ -185,7 +185,7 @@ const BalanceChecker = ({ onBalanceCheck, initialBalance = null }) => {
                   You need at least 1 credit per SMS. Please top up to send campaigns.
                 </p>
                 <h4 className="text-sm text-gray-900 mb-4">
-                  Contact support at <a href="tel:+254700000000" className="text-amber-800 font-bold hover:text-amber-800">+254 700 000 000</a> or top up via the link below.
+                  Contact support at <a href="tel:0790 789847" className="text-amber-800 font-bold hover:text-amber-800">0790 789847</a> or top up via the link below.
                 </h4>
                 <div className="flex gap-2">
                   <a
@@ -262,7 +262,7 @@ const BalanceChecker = ({ onBalanceCheck, initialBalance = null }) => {
                 Required: 1 credit per SMS
               </p>
               <h4>
-                call them on <a href="tel:+254700000000" className="text-amber-600 font-bold hover:text-amber-800">+254 700 000 000</a> or top up via the link below.
+                call them on <a href="tel:0790 789847" className="text-amber-600 font-bold hover:text-amber-800">0790 789847</a> or top up via the link below.
               </h4>
               <a
                 href="https://celcomafrica.com/till-paybill-sms"
@@ -1123,7 +1123,7 @@ const openSendConfirmationModal = (campaign) => {
             You need at least 1 credit per SMS. This campaign has {campaign.recipients?.split(",").length || 0} recipients.
           </p>
           <p className="text-sm text-gray-900 mb-4">
-            Call <a href="tel:+254700000000" className="text-amber-600 font-bold">+254 700 000 000</a> or top up via the link below.
+            Call <a href="tel:0790 789847" className="text-amber-600 font-bold">0790 789847</a> or top up via the link below.
           </p>
           <div className="flex gap-2">
             <a
@@ -1330,7 +1330,7 @@ const handleSendCampaign = async () => {
               Required: {result.requiredCredit} credit per SMS
             </p>
             <p className="text-sm text-gray-900 mb-4">
-              Call <a href="tel:+254700000000" className="text-amber-600 font-bold">+254 700 000 000</a> or top up via the link below.
+              Call <a href="tel:0790 789847" className="text-amber-600 font-bold">0790 789847</a> or top up via the link below.
             </p>
             <div className="flex gap-2">
               <a
