@@ -203,8 +203,13 @@ async function storeVerificationCode(email, code, deviceHash) {
 
 async function sendVerificationEmail(user, verificationCode) {
   try {
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      console.warn('⚠️ Email credentials not configured, skipping email send');
+    if (!transporter) {
+      console.warn('⚠️ Email transporter not available, skipping email send');
+      return false;
+    }
+
+    if (!user?.email) {
+      console.error('❌ User email missing');
       return false;
     }
 
@@ -223,6 +228,7 @@ async function sendVerificationEmail(user, verificationCode) {
     return true;
   } catch (error) {
     console.error('❌ Error sending verification email:', error.message);
+    console.error('   Email service may be temporarily unavailable');
     // Don't throw - let verification work even if email fails
     return false;
   }
