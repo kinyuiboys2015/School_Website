@@ -392,7 +392,7 @@ Quick Facts:
 • Academic Term: ${schoolData.openDate ? new Date(schoolData.openDate).toLocaleDateString() : 'Jan'} - ${schoolData.closeDate ? new Date(schoolData.closeDate).toLocaleDateString() : 'Dec'}
 
 **School Philosophy:**
-We provide a supportive learning environment that promotes intellectual growth, moral values, and holistic development through qualified staff and modern facilities.`,
+We provide a supportive learning environment that promotes intellectual growth, moral values, and holistic development through qualified staff and learning facilities.`,
       links: staticCategories.general.links
     },
     admissions: {

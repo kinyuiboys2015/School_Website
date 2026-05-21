@@ -394,11 +394,11 @@ const ModernSchoolLayout = () => {
     {
       id: 4,
       color: "emerald",
-      title: "Modern Facilities",
+      title: "Learning Facilities",
       shortDescription:
         "Practical spaces for science, tech, arts, and independent study.",
       description:
-        "Practical spaces for science, tech, arts, and independent study. Facilities are designed to support hands-on learning, research, and collaboration.",
+        "Practical learning facilities for science, tech, arts, and independent study support hands-on learning, research, and collaboration.",
       metrics: "Learning Spaces",
       icon: <FiGlobe size={20} />,
       image: "/school.jpg",

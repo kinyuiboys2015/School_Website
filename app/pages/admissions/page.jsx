@@ -2535,7 +2535,7 @@ return (
           <div className="w-9 h-9 rounded-lg bg-indigo-100 border border-indigo-200 flex items-center justify-center shrink-0">
             <FiCpu className="text-indigo-600 text-sm" />
           </div>
-          <span className="text-[9px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded">Modern School Facilities</span>
+          <span className="text-[9px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded">Learning Facilities</span>
         </div>
         <h4 className="text-sm font-bold text-stone-900 mb-1.5">Future-Ready Learning Spaces</h4>
         <p className="text-stone-500 text-xs leading-relaxed">

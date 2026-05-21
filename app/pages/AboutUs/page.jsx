@@ -186,7 +186,7 @@ export default function AboutPage() {
     <main ref={topRef} className="min-h-screen bg-slate-50 text-slate-900">
       <section className="relative min-h-[90vh] overflow-hidden bg-[#8a2f08]">
         <Image
-          src="/hero/kin.jpeg"
+          src="/home/student-leaders-library.jpg"
           alt="Kinyui Boys Senior School compound"
           fill
           className="object-cover object-center"
@@ -335,7 +335,7 @@ export default function AboutPage() {
             <div className="relative overflow-hidden rounded-lg border border-slate-200 bg-slate-100 shadow-2xl shadow-slate-200">
               <div className="relative aspect-[4/5]">
                 <Image
-                  src="/hero/kin2.jpeg"
+                  src="/home/prefects-campus.jpg"
                   alt="Kinyui Boys Senior School students and compound"
                   fill
                   className="object-cover"

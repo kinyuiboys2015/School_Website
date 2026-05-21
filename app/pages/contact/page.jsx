@@ -249,7 +249,7 @@ export default function ContactPage() {
   {/* Background Image with Lowered Opacity */}
   <div 
     className="absolute inset-0 bg-cover bg-center opacity-40" // Lowered opacity to 40%
-    style={{ backgroundImage: "url('/hero/kin.jpeg')" }}
+    style={{ backgroundImage: "url('/home/teacher-student-community.jpg')" }}
   ></div>
   
   {/* Darkened Overlay - Increased darkness for better contrast */}

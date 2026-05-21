@@ -14,7 +14,7 @@ const heroSlides = [
     titleAccent: "Senior",
     subtitle: "Matungulu, Machakos County",
     description: "A Extra County Level public boys' boarding school in Matungulu sub-county. Established to serve the Eastern Region with excellence in STEM, Social Sciences, and Arts & Sports pathways under CBC curriculum.",
-    image: "/k1.JPG",
+    image: "/home/student-leaders-library.jpg",
     tags: ["Public School", "Boys' Boarding", "STEM", "Social Sciences"],
     cta: "Admissions",
     link: "/pages/admissions",
@@ -25,7 +25,7 @@ const heroSlides = [
     titleAccent: "Pathways",
     subtitle: "Curriculum & Programs",
     description: "Specialized pathways including Pure Sciences, Applied Sciences, Humanities & Business Studies, and Creative Arts. Career guidance and mentorship programs available.",
-    image: "/K2.JPG",
+    image: "/home/music-talent-canteen.jpg",
     tags: ["STEM", "Social Sciences", "Arts & Sports", "Mentorship"],
     cta: "Learn More",
     link: "/pages/AboutUs",
@@ -36,7 +36,7 @@ const heroSlides = [
     titleAccent: "Pride",
     subtitle: "Regional Excellence",
     description: "A C3 public senior school serving Matungulu, Machakos, and the greater Eastern Region. Boarding options with strong community ties and academic track record.",
-    image: "/K3.JPG",
+    image: "/home/campus-student-life.jpg",
     tags: ["Community", "Regional", "Boarding", "Excellence"],
     cta: "Contact Us",
     link: "/pages/contact",
@@ -190,7 +190,7 @@ const ModernHero = () => {
       ))}
       {/* Low-opacity hero background image */}
       <div className="absolute inset-0 pointer-events-none select-none">
-        <img src="/kin.jpeg" alt="Kinyui Hero" className="w-full h-full object-cover opacity-20" />
+        <img src="/home/students-campus-grounds.jpg" alt="Kinyui students on campus" className="w-full h-full object-cover opacity-20" />
       </div>
       {/* Logo watermark overlay */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">

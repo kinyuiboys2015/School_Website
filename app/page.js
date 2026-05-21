@@ -433,7 +433,7 @@ const jsonLd = {
       title: "Academic Excellence",
       subtitle: "Redefined Through Innovation",
       gradient: "from-blue-500 via-cyan-400 to-purple-600",
-      description: "At kinyui boys Senior School, we're pioneering a new era of education. With a 94% KCSE success rate and state-of-the-art STEM facilities, we're not just teaching—we're inspiring the next generation of leaders and innovators.",
+      description: "At kinyui boys Senior School, we're pioneering a new era of education. With a 94% KCSE success rate and practical STEM learning facilities, we're not just teaching—we're inspiring the next generation of leaders and innovators.",
       background: "bg-gradient-to-br from-blue-900/90 via-indigo-900/80 to-purple-900/70",
       image: "/student.jpg",
       stats: { 
@@ -441,7 +441,7 @@ const jsonLd = {
         excellence: "94% KCSE Success", 
         years: "10+ Years Excellence" 
       },
-      features: ["Modern STEM Labs", "Expert Faculty", "Research Programs"],
+      features: ["Learning STEM Labs", "Expert Faculty", "Research Programs"],
       cta: "Explore Our Programs",
       highlightColor: "blue",
       testimonial: "\"The academic rigor combined with innovative teaching transformed my child's approach to learning.\" - Parent of 2023 Graduate",
@@ -460,7 +460,7 @@ const jsonLd = {
         success: "National Awards" 
       },
       features: ["Sports Excellence", "Leadership Training", "Community Service"],
-      cta: "View Our Facilities",
+      cta: "Explore Learning Facilities",
       highlightColor: "green",
       testimonial: "\"The extracurricular programs helped my child discover their passion for drama and develop crucial leadership skills.\" - Current Parent",
       icon: GiTrophyCup
@@ -473,7 +473,7 @@ const jsonLd = {
       background: "bg-gradient-to-br from-cyan-900/90 via-blue-900/80 to-indigo-900/70",
       image: "/im2.jpeg",
       stats: { 
-        labs: "3 Modern Labs", 
+        labs: "3 Learning Labs", 
         tech: "Digital Classrooms", 
         innovation: "STEM Programs" 
       },
