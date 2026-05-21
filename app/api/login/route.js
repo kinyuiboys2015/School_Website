@@ -162,23 +162,33 @@ async function checkFailedAttempts(email) {
 }
 
 async function storeVerificationCode(email, code, deviceHash) {
-  const expires = new Date(Date.now() + VERIFICATION_CODE_EXPIRY_MINUTES * 60 * 1000);
-  
-  await prisma.verificationToken.deleteMany({
-    where: { identifier: email }
-  });
-  
-  return await prisma.verificationToken.create({
-    data: {
-      identifier: email,
-      token: code,
-      expires: expires
-    }
-  });
+  try {
+    const expires = new Date(Date.now() + VERIFICATION_CODE_EXPIRY_MINUTES * 60 * 1000);
+    
+    await prisma.verificationToken.deleteMany({
+      where: { identifier: email }
+    });
+    
+    return await prisma.verificationToken.create({
+      data: {
+        identifier: email,
+        token: code,
+        expires: expires
+      }
+    });
+  } catch (error) {
+    console.error('❌ Error storing verification code:', error.message);
+    throw error;
+  }
 }
 
 async function sendVerificationEmail(user, verificationCode) {
   try {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.warn('⚠️ Email credentials not configured, skipping email send');
+      return false;
+    }
+
     const mailOptions = {
       from: {
         name: 'kinyui boys Senior School Security',
@@ -193,8 +203,9 @@ async function sendVerificationEmail(user, verificationCode) {
     console.log('✅ Verification code sent to:', user.email);
     return true;
   } catch (error) {
-    console.error('❌ Error sending verification email:', error);
-    throw error;
+    console.error('❌ Error sending verification email:', error.message);
+    // Don't throw - let verification work even if email fails
+    return false;
   }
 }
 
@@ -813,11 +824,19 @@ export async function POST(request) {
     }, { status: 200 });
 
   } catch (error) {
-    console.error('❌ Error during login:', error);
+    console.error('❌ Error during login:', error.message || error);
+    console.error('Stack:', error.stack);
+    
+    // Return more specific error messages for debugging
+    const errorMessage = error.message || 'Internal server error';
+    const isDatabaseError = errorMessage.includes('database') || errorMessage.includes('prisma') || errorMessage.includes('connection');
+    const isEmailError = errorMessage.includes('email') || errorMessage.includes('mail');
+    
     return NextResponse.json(
       { 
         success: false, 
-        error: 'Internal server error'
+        error: 'An error occurred during login. Please try again.',
+        details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
       },
       { status: 500 }
     );
