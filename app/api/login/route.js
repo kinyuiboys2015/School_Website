@@ -12,14 +12,33 @@ const VERIFICATION_CODE_EXPIRY_MINUTES = 15;
 const VERIFICATION_CODE_LENGTH = 6;
 const DEVICE_TOKEN_EXPIRY_DAYS = 10;
 
-// Email Transporter
-const transporter = nodemailer.createTransport({
-  service: 'Gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+// Email Transporter - Initialize only if credentials exist
+let transporter = null;
+
+function initializeTransporter() {
+  try {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.warn('⚠️ Email credentials not configured - email features disabled');
+      return null;
+    }
+
+    const tp = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    console.log('✅ Email transporter initialized successfully');
+    return tp;
+  } catch (error) {
+    console.error('❌ Error initializing email transporter:', error.message);
+    return null;
+  }
+}
+
+transporter = initializeTransporter();
 
 // ====================
 // EMAIL TEMPLATE
