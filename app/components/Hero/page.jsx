@@ -25,7 +25,7 @@ const heroSlides = [
     titleAccent: "Pathways",
     subtitle: "Curriculum & Programs",
     description: "Specialized pathways including Pure Sciences, Applied Sciences, Humanities & Business Studies, and Creative Arts. Career guidance and mentorship programs available.",
-    image: "/home/prefects-cumpus.jpg",
+    image: "/home/prefects-campus.jpg",
     tags: ["STEM", "Social Sciences", "Arts & Sports", "Mentorship"],
     cta: "Learn More",
     link: "/pages/AboutUs",
