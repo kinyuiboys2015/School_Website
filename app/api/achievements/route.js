@@ -193,6 +193,21 @@ const parseBoolean = (value, defaultValue = false) => {
   return ['true', '1', 'yes', 'on'].includes(String(value).toLowerCase());
 };
 
+const normalizePresetImages = (value) =>
+  parseJsonField(value || "[]", "images")
+    .map((image, index) => {
+      const source = typeof image === "string" ? { url: image } : image || {};
+      const url = typeof source.url === "string" ? source.url.trim() : "";
+      if (!url || (!url.startsWith("/") && !url.startsWith("https://"))) return null;
+
+      return {
+        url,
+        public_id: source.public_id || `kinyui-home-achievement-${index + 1}`,
+        caption: source.caption || "",
+      };
+    })
+    .filter(Boolean);
+
 const getFormString = (formData, keys, fallback = "") => {
   const keyList = Array.isArray(keys) ? keys : [keys];
   for (const key of keyList) {
@@ -412,6 +427,16 @@ const ensureKinyuiDefaultAchievements = async () => {
       await prisma.achievement.create({
         data: toPrismaAchievementData(achievement),
       });
+    } else {
+      await prisma.achievement.update({
+        where: { id: existing.id },
+        data: {
+          images: achievement.images,
+          displayOrder: achievement.displayOrder,
+          featured: achievement.featured,
+          isActive: achievement.isActive,
+        },
+      });
     }
   }
 };
@@ -583,10 +608,12 @@ export async function POST(req) {
     // Handle images upload
     const imageFiles = formData.getAll("images");
     const imageCaptions = parseJsonField(formData.get("imageCaptions") || "[]", "imageCaptions") || [];
-    let images = [];
+    const presetImages = normalizePresetImages(formData.get("presetImages"));
+    let images = [...presetImages];
     
     try {
-      images = await handleImagesUpload(imageFiles.filter(f => f && f.size > 0), [], imageCaptions);
+      const uploadedImages = await handleImagesUpload(imageFiles.filter(f => f && f.size > 0), [], imageCaptions);
+      images = [...images, ...uploadedImages];
     } catch (imageError) {
       return NextResponse.json(
         { 
@@ -759,6 +786,15 @@ export async function PUT(req) {
         },
         { status: 400 }
       );
+    }
+
+    const presetImages = normalizePresetImages(formData.get("presetImages"));
+    if (presetImages.length > 0) {
+      const currentUrls = new Set(images.map((image) => image.url));
+      images = [
+        ...images,
+        ...presetImages.filter((image) => !currentUrls.has(image.url)),
+      ];
     }
 
     // Prepare update data

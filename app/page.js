@@ -473,7 +473,7 @@ const jsonLd = {
       background: "bg-gradient-to-br from-cyan-900/90 via-blue-900/80 to-indigo-900/70",
       image: "/im2.jpeg",
       stats: { 
-        labs: "3 Learning Labs", 
+        labs: "3 Learning Labs",
         tech: "Digital Classrooms", 
         innovation: "STEM Programs" 
       },

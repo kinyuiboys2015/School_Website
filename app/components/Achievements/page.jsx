@@ -11,8 +11,63 @@ import {
 import { CircularProgress, Modal, Box, TextareaAutosize } from '@mui/material';
 import {
   ACHIEVEMENT_CATEGORIES,
+  getAchievementImageForCategory,
   getDefaultAchievements,
 } from '../../data/defaultAchievements';
+
+const ACHIEVEMENT_PRESET_IMAGES = [
+  {
+    category: 'Academic',
+    label: 'Academic Excellence',
+    url: getAchievementImageForCategory('Academic'),
+    caption: 'Kinyui Boys academic excellence and learner leadership',
+  },
+  {
+    category: 'Arts',
+    label: 'Music & Talent',
+    url: getAchievementImageForCategory('Arts'),
+    caption: 'Kinyui Boys music and talent team',
+  },
+  {
+    category: 'Sports',
+    label: 'School Pride',
+    url: getAchievementImageForCategory('Sports'),
+    caption: 'Kinyui Boys student life and school pride',
+  },
+  {
+    category: 'Leadership',
+    label: 'Student Leaders',
+    url: getAchievementImageForCategory('Leadership'),
+    caption: 'Kinyui Boys prefects and student leadership',
+  },
+  {
+    category: 'Cultural',
+    label: 'Student Voice',
+    url: getAchievementImageForCategory('Cultural'),
+    caption: 'Kinyui Boys student voice and campus life',
+  },
+  {
+    category: 'Debate',
+    label: 'Public Speaking',
+    url: getAchievementImageForCategory('Debate'),
+    caption: 'Kinyui Boys student presenters and speakers',
+  },
+];
+
+const getStoredAdminAuth = () => {
+  if (typeof window === 'undefined') {
+    return { adminToken: null, deviceToken: null };
+  }
+
+  const adminToken = ['admin_token', 'token', 'auth_token', 'jwt_token', 'access_token']
+    .map((key) => localStorage.getItem(key))
+    .find(Boolean);
+  const deviceToken = ['device_token', 'deviceToken']
+    .map((key) => localStorage.getItem(key))
+    .find(Boolean);
+
+  return { adminToken, deviceToken };
+};
 
 // ==================== LOADING SPINNER ====================
 function ModernLoadingSpinner({ message = "Loading achievements...", size = "medium" }) {
@@ -167,6 +222,28 @@ function ImageUpload({ images, onImagesChange, onImageRemove, maxImages = 5 }) {
     onImagesChange(newImages);
   };
 
+  const handlePresetSelect = (preset) => {
+    if (images.length >= maxImages) {
+      toast.warning(`Maximum ${maxImages} images allowed`);
+      return;
+    }
+
+    if (images.some((image) => image.url === preset.url)) {
+      toast.info('That photo is already selected');
+      return;
+    }
+
+    onImagesChange([
+      ...images,
+      {
+        url: preset.url,
+        preview: preset.url,
+        public_id: `kinyui-home-${preset.category.toLowerCase()}`,
+        caption: preset.caption,
+      },
+    ]);
+  };
+
   return (
     <div className="space-y-4">
       <label className="block text-sm font-bold text-gray-700">Images ({images.length}/{maxImages})</label>
@@ -230,6 +307,47 @@ function ImageUpload({ images, onImagesChange, onImageRemove, maxImages = 5 }) {
           ))}
         </div>
       )}
+
+      <div className="rounded-2xl border border-slate-200 bg-white p-4">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">School photo presets</p>
+            <p className="mt-1 text-xs font-semibold text-slate-500">Use the new home photos without uploading again.</p>
+          </div>
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-black uppercase text-slate-500">
+            {ACHIEVEMENT_PRESET_IMAGES.length} ready
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {ACHIEVEMENT_PRESET_IMAGES.map((preset) => {
+            const selected = images.some((image) => image.url === preset.url);
+            return (
+              <button
+                type="button"
+                key={preset.url}
+                onClick={() => handlePresetSelect(preset)}
+                className={`group overflow-hidden rounded-xl border text-left transition active:scale-[0.98] ${
+                  selected ? 'border-emerald-400 bg-emerald-50' : 'border-slate-200 bg-slate-50 hover:border-slate-300'
+                }`}
+              >
+                <div className="relative h-20 overflow-hidden">
+                  <img src={preset.url} alt={preset.label} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                  {selected && (
+                    <span className="absolute right-2 top-2 rounded-full bg-emerald-600 px-2 py-1 text-[9px] font-black uppercase text-white">
+                      Added
+                    </span>
+                  )}
+                </div>
+                <div className="p-2">
+                  <p className="truncate text-[11px] font-black text-slate-800">{preset.label}</p>
+                  <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">{preset.category}</p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
@@ -281,7 +399,7 @@ const ACHIEVEMENT_CARD_STYLES = {
 
 function AchievementItemCard({ achievement, category, icon: Icon, onEdit, onDelete }) {
   const styles = ACHIEVEMENT_CARD_STYLES[category] || ACHIEVEMENT_CARD_STYLES.Other;
-  const image = achievement?.images?.[0]?.url;
+  const image = achievement?.images?.[0]?.url || getAchievementImageForCategory(category);
   const photoCount = Array.isArray(achievement?.images) ? achievement.images.length : 0;
   const recipients = Array.isArray(achievement?.recipients) ? achievement.recipients : [];
   const achievedDate = achievement?.achievedDate
@@ -289,20 +407,14 @@ function AchievementItemCard({ achievement, category, icon: Icon, onEdit, onDele
     : null;
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-[2rem] border border-gray-100 bg-white shadow-xl">
-      <div className="relative h-56 w-full overflow-hidden bg-gray-50">
-        {image ? (
-          <img
-            src={image}
-            alt={achievement.title}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 text-gray-400">
-            <FaTrophy className="mb-3 text-5xl" />
-            <span className="text-sm font-bold">No Image</span>
-          </div>
-        )}
+    <article className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-xl shadow-slate-200/60 transition duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-300/70">
+      <div className="relative h-60 w-full overflow-hidden bg-gray-50">
+        <img
+          src={image}
+          alt={achievement.title}
+          className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/10 to-transparent" />
 
         <div className="absolute left-4 right-4 top-4 flex items-start justify-between gap-3">
           <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-black uppercase tracking-wider shadow-sm backdrop-blur-md ${styles.badge}`}>
@@ -322,13 +434,19 @@ function AchievementItemCard({ achievement, category, icon: Icon, onEdit, onDele
             )}
           </div>
         </div>
+
+        <div className="absolute bottom-4 left-4 right-4">
+          <p className="text-[9px] font-black uppercase tracking-[0.18em] text-white/60">
+            {achievement.awardingBody || 'School Award'}
+          </p>
+          <h3 className="mt-1 line-clamp-2 text-xl font-black leading-tight text-white">
+            {achievement.title}
+          </h3>
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col p-5">
         <div className="mb-5">
-          <h3 className="line-clamp-2 text-xl font-black leading-tight text-slate-900">
-            {achievement.title}
-          </h3>
           <p className="mt-2 line-clamp-2 text-sm font-medium leading-6 text-slate-500">
             {achievement.description || 'No description has been added yet.'}
           </p>
@@ -347,7 +465,7 @@ function AchievementItemCard({ achievement, category, icon: Icon, onEdit, onDele
             <span className="block text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">Photos</span>
             <div className="flex items-center gap-2">
               <FaImage className="text-slate-400" />
-              <span className="text-xs font-black text-slate-800">{photoCount}</span>
+              <span className="text-xs font-black text-slate-800">{photoCount || 'Preset'}</span>
             </div>
           </div>
 
@@ -475,8 +593,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
     setActionLoading(true);
     
     try {
-      const adminToken = localStorage.getItem('admin_token');
-      const deviceToken = localStorage.getItem('device_token');
+      const { adminToken, deviceToken } = getStoredAdminAuth();
       
       if (!adminToken || !deviceToken) {
         throw new Error('Authentication required. Please login again.');
@@ -503,6 +620,15 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
         'imageCaptions',
         JSON.stringify(images.filter((img) => img.file).map((img) => img.caption || ''))
       );
+      const originalImageUrls = new Set((achievement?.images || []).map((img) => img.url));
+      const presetImages = images
+        .filter((img) => !img.file && img.url && (!isEditMode || !originalImageUrls.has(img.url)))
+        .map((img) => ({
+          url: img.url,
+          public_id: img.public_id || `kinyui-home-${img.url.split('/').pop()?.replace(/\.[^.]+$/, '') || 'achievement'}`,
+          caption: img.caption || '',
+        }));
+      formDataObj.append('presetImages', JSON.stringify(presetImages));
       
       // Add new images
       images.forEach(img => {
@@ -525,6 +651,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
         method,
         headers: {
           'Authorization': `Bearer ${adminToken}`,
+          'x-admin-token': adminToken,
           'x-device-token': deviceToken
         },
         body: formDataObj
@@ -773,8 +900,7 @@ function SchoolStatsModal({ onClose, onSave, stats, loading }) {
     setActionLoading(true);
     
     try {
-      const adminToken = localStorage.getItem('admin_token');
-      const deviceToken = localStorage.getItem('device_token');
+      const { adminToken, deviceToken } = getStoredAdminAuth();
       
       if (!adminToken || !deviceToken) {
         throw new Error('Authentication required. Please login again.');
@@ -787,6 +913,7 @@ function SchoolStatsModal({ onClose, onSave, stats, loading }) {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${adminToken}`,
+          'x-admin-token': adminToken,
           'x-device-token': deviceToken
         },
         body: JSON.stringify({

@@ -8,6 +8,19 @@ export const ACHIEVEMENT_CATEGORIES = [
   "Other",
 ];
 
+export const ACHIEVEMENT_HOME_IMAGES = {
+  Academic: "/home/student-leaders-library.jpg",
+  Sports: "/home/campus-student-life.jpg",
+  Arts: "/home/music-talent-canteen.jpg",
+  Leadership: "/home/prefects-campus.jpg",
+  Cultural: "/home/student-voice-campus.jpg",
+  Debate: "/home/student-leaders-portrait.jpg",
+  Other: "/home/students-campus-grounds.jpg",
+};
+
+export const getAchievementImageForCategory = (category = "Other") =>
+  ACHIEVEMENT_HOME_IMAGES[category] || ACHIEVEMENT_HOME_IMAGES.Other;
+
 export const KINYUI_DEFAULT_ACHIEVEMENTS = [
   {
     id: -101,
@@ -18,9 +31,9 @@ export const KINYUI_DEFAULT_ACHIEVEMENTS = [
     year: 2026,
     images: [
       {
-        url: "/worship.jpg",
+        url: ACHIEVEMENT_HOME_IMAGES.Arts,
         public_id: "kinyui-default-kenya-music-festivals",
-        caption: "Kinyui Boys performing arts and music festival participation",
+        caption: "Kinyui Boys music and talent team",
       },
     ],
     featured: true,
@@ -46,9 +59,9 @@ export const KINYUI_DEFAULT_ACHIEVEMENTS = [
     year: 2026,
     images: [
       {
-        url: "/academics.jpg",
+        url: ACHIEVEMENT_HOME_IMAGES.Academic,
         public_id: "kinyui-default-kenya-science-fair",
-        caption: "Kinyui Boys STEM learning and science fair innovation",
+        caption: "Kinyui Boys learners representing academic excellence",
       },
     ],
     featured: true,
@@ -74,9 +87,9 @@ export const KINYUI_DEFAULT_ACHIEVEMENTS = [
     year: 2026,
     images: [
       {
-        url: "/hero/sports.jpeg",
+        url: ACHIEVEMENT_HOME_IMAGES.Sports,
         public_id: "kinyui-default-national-sports-eagles",
-        caption: "The Eagles sports excellence at Kinyui Boys Senior School",
+        caption: "Kinyui Boys student life and school pride",
       },
     ],
     featured: true,
@@ -102,9 +115,9 @@ export const KINYUI_DEFAULT_ACHIEVEMENTS = [
     year: 2026,
     images: [
       {
-        url: "/hero/env.jpeg",
+        url: ACHIEVEMENT_HOME_IMAGES.Leadership,
         public_id: "kinyui-default-clubs-tree-planting",
-        caption: "Kinyui Boys clubs supporting conservation and tree planting",
+        caption: "Kinyui Boys prefects and student leadership",
       },
     ],
     featured: true,

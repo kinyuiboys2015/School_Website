@@ -64,6 +64,7 @@ import { FaFacebookF, FaTwitter, FaWhatsapp, FaTelegram, FaEnvelope } from 'reac
 import Head from 'next/head';
 import {
   DEFAULT_ACHIEVEMENT_TITLE_ORDER,
+  getAchievementImageForCategory,
   getDefaultAchievements,
 } from '../../data/defaultAchievements';
 
@@ -342,6 +343,9 @@ const ModernAchievementCard = ({ achievement, onView, onFavorite, viewMode = 'gr
 
   if (viewMode === 'grid') {
     const theme = getCategoryStyle(achievement.category);
+    const primaryImage = imageError
+      ? getAchievementImageForCategory(achievement.category)
+      : achievement.images?.[0]?.url || getAchievementImageForCategory(achievement.category);
     
     return (
       <div 
@@ -355,10 +359,10 @@ const ModernAchievementCard = ({ achievement, onView, onFavorite, viewMode = 'gr
         <div className="relative bg-white rounded-[32px] border border-slate-100 shadow-sm overflow-hidden">
           {/* Image Container */}
           <div className="relative h-52 w-full shrink-0 bg-gradient-to-br from-slate-100 to-slate-200">
-            {achievement.images?.[0]?.url ? (
+            {primaryImage ? (
               <>
                 <img
-                  src={achievement.images[0].url}
+                  src={primaryImage}
                   alt={getImageAltText(achievement, 0)}
                   title={getImageAltText(achievement, 0)}
                   loading="lazy"
@@ -489,6 +493,7 @@ const ModernAchievementCard = ({ achievement, onView, onFavorite, viewMode = 'gr
 
   // List View
   const theme = getCategoryStyle(achievement.category);
+  const primaryImage = achievement.images?.[0]?.url || getAchievementImageForCategory(achievement.category);
   return (
     <div 
       onClick={() => onView(achievement)}
@@ -498,8 +503,8 @@ const ModernAchievementCard = ({ achievement, onView, onFavorite, viewMode = 'gr
     >
       <div className="flex gap-3 sm:gap-5">
         <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl sm:rounded-2xl overflow-hidden shrink-0 shadow-sm">
-          {achievement.images?.[0]?.url ? (
-            <img src={achievement.images[0].url} alt={getImageAltText(achievement, 0)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          {primaryImage ? (
+            <img src={primaryImage} alt={getImageAltText(achievement, 0)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           ) : (
             <div className={`w-full h-full bg-gradient-to-br ${theme.gradient}`} />
           )}
@@ -575,6 +580,7 @@ const AchievementDetailModal = ({ achievement, onClose, onShare }) => {
 
   const categoryStyle = getCategoryStyle(achievement.category);
   const CategoryIcon = categoryStyle.icon;
+  const primaryImage = achievement.images?.[0]?.url || getAchievementImageForCategory(achievement.category);
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 bg-slate-900/90 backdrop-blur-sm">
@@ -590,9 +596,9 @@ const AchievementDetailModal = ({ achievement, onClose, onShare }) => {
 
         {/* Hero Image */}
         <div className="relative h-[30vh] sm:h-[350px] w-full shrink-0">
-          {achievement.images?.[0]?.url ? (
+          {primaryImage ? (
             <img
-              src={achievement.images[0].url}
+              src={primaryImage}
               alt={achievement.title}
               className="w-full h-full object-cover"
             />

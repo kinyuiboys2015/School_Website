@@ -44,6 +44,7 @@ import {
 import { HiOutlineSparkles, HiArrowSmallRight } from "react-icons/hi2";
 import {
   DEFAULT_ACHIEVEMENT_TITLE_ORDER,
+  getAchievementImageForCategory,
   getDefaultAchievements,
 } from "../../data/defaultAchievements";
 
@@ -290,7 +291,7 @@ const ModernSchoolLayout = () => {
     impact: achievement.awardingBody || "Achievement",
     stats: `${achievement.category} | ${achievement.year}`,
     icon: getCategoryIcon(achievement.category),
-    image: achievement.images?.[0]?.url || "/hero/env.jpeg",
+    image: achievement.images?.[0]?.url || getAchievementImageForCategory(achievement.category),
     highlights: achievement.recipients || [],
   }));
 
@@ -331,7 +332,7 @@ const ModernSchoolLayout = () => {
               image:
                 achievement.images && achievement.images.length > 0
                   ? achievement.images[0].url
-                  : fallback?.image || "/hero/env.jpeg",
+                  : fallback?.image || getAchievementImageForCategory("Leadership"),
               highlights: achievement.recipients || [],
             });
           });
@@ -365,7 +366,7 @@ const ModernSchoolLayout = () => {
         "A rigorous learning culture supported by mentorship, structured revision programs, and a focus on mastery. Learners are guided to set goals, track progress, and build strong academic habits.",
       metrics: "High Achievement",
       icon: <FiAward size={20} />,
-      image: "/academics.jpg",
+      image: getAchievementImageForCategory("Academic"),
     },
     {
       id: 2,
@@ -377,7 +378,7 @@ const ModernSchoolLayout = () => {
         "Clubs, sports, arts, and leadership programs complement classroom learning. Students grow confidence, teamwork, and communication through structured co-curricular experiences.",
       metrics: "Beyond Classroom",
       icon: <FiUsers size={20} />,
-      image: "/hero/sports.jpeg",
+      image: getAchievementImageForCategory("Sports"),
     },
     {
       id: 3,
