@@ -1024,7 +1024,6 @@ export default function PublicSchoolHubPage({
           );
         })}
       </div>
-      </div>
     )}
   </section>
 </main>
