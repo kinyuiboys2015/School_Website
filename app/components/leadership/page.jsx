@@ -412,7 +412,7 @@ export default function ModernStaffLeadership() {
                 <div className="rounded-lg sm:rounded-[1.35rem] border border-white/15 bg-white/10 p-2.5 backdrop-blur sm:p-4">
                   <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.20em] text-amber-200">Featured Leader</p>
                   <h3 className="mt-1.5 text-lg sm:text-xl font-black leading-tight md:text-2xl">{selected.name}</h3>
-                  <p className="mt-0.5 text-[11px] sm:text-xs font-semibold text-orange-100/80 sm:mt-1 sm:text-sm">{leaderScope}</p>
+                  <p className="mt-0.5 text-[11px] sm:text-sm font-semibold text-orange-100/80 sm:mt-1">{leaderScope}</p>
                   <div className="mt-2.5 sm:mt-4 grid grid-cols-2 gap-1.5 sm:gap-2">
                     <div className="rounded-lg sm:rounded-xl border border-white/10 bg-white/10 p-2 sm:p-3">
                       <p className="text-[8px] sm:text-[9px] font-black uppercase tracking-widest text-amber-200">Department</p>

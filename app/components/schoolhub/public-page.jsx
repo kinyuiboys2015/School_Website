@@ -383,7 +383,7 @@ const GalleryModal = ({ item, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/75 p-2 sm:p-4 backdrop-blur-sm" onClick={onClose}>
-      <div className="relative flex max-h-[96vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl sm:rounded-[22px] bg-white shadow-2xl sm:max-h-[92vh] sm:rounded-lg" onClick={(e) => e.stopPropagation()}>
+      <div className="relative flex max-h-[96vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl sm:rounded-2xl bg-white shadow-2xl sm:max-h-[92vh]" onClick={(e) => e.stopPropagation()}>
         <button onClick={onClose} className="absolute right-2 sm:right-4 top-2 sm:top-4 z-50 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-white/95 text-slate-700 shadow-lg transition hover:bg-slate-100">
           <FiX className="text-base sm:text-lg" />
         </button>
