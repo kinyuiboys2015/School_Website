@@ -188,10 +188,6 @@ const ModernHero = () => {
           />
         </div>
       ))}
-      {/* Low-opacity hero background image */}
-      <div className="absolute inset-0 pointer-events-none select-none">
-        <img src="/home/students-campus-grounds.jpg" alt="Kinyui students on campus" className="w-full h-full object-cover opacity-20" />
-      </div>
       {/* Logo watermark overlay */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
         <img src="/SchoolLogo.png" alt="Kinyui Logo" className="w-1/2 max-w-xs opacity-10" />
