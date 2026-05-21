@@ -192,8 +192,7 @@ export default function AboutPage() {
           className="object-cover object-center"
           priority
         />
-        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(15,23,42,0.96)_0%,rgba(124,45,18,0.88)_48%,rgba(15,23,42,0.34)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(251,191,36,0.24),transparent_31%),radial-gradient(circle_at_85%_24%,rgba(255,255,255,0.10),transparent_24%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(15,23,42,0.96)_0%,rgba(124,45,18,0.88)_48%,rgba(15,23,42,0.96)_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-slate-50 via-slate-50/75 to-transparent" />
 
         <div className="relative z-10 mx-auto flex min-h-[90vh] w-full max-w-7xl flex-col justify-end px-4 pb-8 pt-28 sm:px-6 lg:w-[85%] lg:px-0 lg:pb-12">
