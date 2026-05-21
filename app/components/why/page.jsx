@@ -354,27 +354,6 @@ const ModernSchoolLayout = () => {
     return defaultMilestones.slice(0, 4);
   };
 
-  const getSchoolStats = () => {
-    if (schoolStatsData) {
-      return {
-        meanScore: schoolStatsData.meanScore || 4.5,
-        lastYearMean: schoolStatsData.lastYearMean || 4.2,
-        targetMean: schoolStatsData.targetMean || 5.0,
-        slogan: schoolStatsData.slogan || motto,
-        sloganDescription: schoolStatsData.sloganDescription || "",
-        sloganAuthor: schoolStatsData.sloganAuthor || "",
-      };
-    }
-    return {
-      meanScore: 4.5,
-      lastYearMean: 7.85,
-      targetMean: 5.0,
-      slogan: motto,
-      sloganDescription: "",
-      sloganAuthor: "",
-    };
-  };
-
   const whyChooseUs = [
     {
       id: 1,
@@ -981,56 +960,21 @@ const ModernSchoolLayout = () => {
                   </p>
                 </div>
 
-<div className="mt-6 grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3">
-  {(() => {
-    const stats = getSchoolStats();
-    const items = [
-      {
-        label: "Students",
-        value: `${studentCount}+`,
-        icon: FiUsers,
-        tone: "sm:from-sky-500 sm:to-indigo-600 from-amber-800 to-amber-700",
-      },
-      {
-        label: "Mean Score",
-        value: stats.meanScore?.toFixed(2) || "—",
-        icon: FiTrendingUp,
-        tone: "sm:from-emerald-500 sm:to-teal-600 from-rose-800 to-rose-700",
-      },
-      {
-        label: "Target",
-        value: stats.targetMean?.toFixed(2) || "—",
-        icon: FiTarget,
-        tone: "from-amber-500 to-orange-600",
-      },
-    ];
-
-    return items.map((stat, idx) => {
-      const Icon = stat.icon;
-      return (
-        <div
-          key={idx}
-          className="rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm w-full"
-        >
-          <p className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-500 mb-3">
-            {stat.label}
-          </p>
-          <div className="flex items-center gap-3">
-            {/* shrink-0 ensures icon doesn't squeeze on narrow widths */}
-            <span
-              className={`shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${stat.tone} text-white shadow-md`}
-            >
-              <Icon className="w-5 h-5" />
-            </span>
-            <p className="text-xl font-black text-slate-900 tracking-tight truncate">
-              {stat.value}
-            </p>
-          </div>
-        </div>
-      );
-    });
-  })()}
-</div>
+                <div className="mt-6 max-w-xs">
+                  <div className="rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm w-full">
+                    <p className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-500 mb-3">
+                      Students
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <span className="shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br sm:from-sky-500 sm:to-indigo-600 from-amber-800 to-amber-700 text-white shadow-md">
+                        <FiUsers className="w-5 h-5" />
+                      </span>
+                      <p className="text-xl font-black text-slate-900 tracking-tight truncate">
+                        {studentCount}+
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
             {/* CTA Buttons - Flex No-Wrap & Solid Tones */}
 <div className="mt-5 sm:mt-7 flex flex-wrap items-center gap-2 sm:gap-3">
