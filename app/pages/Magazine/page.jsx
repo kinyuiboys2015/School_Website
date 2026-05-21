@@ -171,80 +171,80 @@ const MagazineCard = ({ issue, onOpen, viewMode = "gallery" }) => {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-slate-100">
-            <BookOpen className="h-16 w-16 text-slate-400" />
+            <BookOpen className="h-10 w-10 sm:h-16 sm:w-16 text-slate-400" />
           </div>
         )}
-        <div className="absolute left-3 top-3">
-          <span className="inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-slate-700 shadow-sm">
-            <BookOpen className="h-3 w-3" />
+        <div className="absolute left-2 sm:left-3 top-2 sm:top-3">
+          <span className="inline-flex items-center gap-1 rounded-full bg-white/95 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-slate-700 shadow-sm">
+            <BookOpen className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             {issue.year || "Archive"}
           </span>
         </div>
-        <div className="absolute right-3 top-3 flex gap-2">
+        <div className="absolute right-2 sm:right-3 top-2 sm:top-3 flex gap-1 sm:gap-2">
           <button
             type="button"
             onClick={handleBookmark}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/95 text-slate-700 shadow-sm transition hover:bg-slate-100"
+            className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl bg-white/95 text-slate-700 shadow-sm transition hover:bg-slate-100"
             aria-label={isBookmarked ? "Remove bookmark" : "Bookmark magazine"}
           >
-            {isBookmarked ? <BookmarkCheck className="h-4 w-4 text-emerald-700" /> : <Bookmark className="h-4 w-4" />}
+            {isBookmarked ? <BookmarkCheck className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-700" /> : <Bookmark className="h-3 w-3 sm:h-4 sm:w-4" />}
           </button>
           <button
             type="button"
             onClick={handleShare}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/95 text-slate-700 shadow-sm transition hover:bg-slate-100"
+            className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl bg-white/95 text-slate-700 shadow-sm transition hover:bg-slate-100"
             aria-label="Share magazine"
           >
-            <Share2 className="h-4 w-4" />
+            <Share2 className="h-3 w-3 sm:h-4 sm:w-4" />
           </button>
         </div>
       </div>
 
-      <div className="flex min-h-[300px] flex-1 flex-col p-5 sm:p-6">
-        <div className="flex flex-wrap gap-2">
-          <span className="flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
-            <FileText className="h-3 w-3" />
+      <div className="flex min-h-[300px] flex-1 flex-col p-3 sm:p-5 md:p-6">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2">
+          <span className="flex items-center gap-1 rounded-full bg-slate-100 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-xs font-bold text-slate-600">
+            <FileText className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             {issue.pages || 80} pages
           </span>
-          <span className="flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
-            <Eye className="h-3 w-3" />
+          <span className="flex items-center gap-1 rounded-full bg-slate-100 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-xs font-bold text-slate-600">
+            <Eye className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             {issue.views || "New"} views
           </span>
-          <span className="flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
-            <Download className="h-3 w-3" />
+          <span className="flex items-center gap-1 rounded-full bg-slate-100 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-xs font-bold text-slate-600">
+            <Download className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             {issue.downloads || "Ready"}
           </span>
         </div>
 
-        <h3 className="mt-5 text-2xl font-black leading-tight text-slate-950">
+        <h3 className="mt-3 sm:mt-5 text-lg sm:text-xl md:text-2xl font-black leading-tight text-slate-950">
           {issue.title}
         </h3>
 
         <ExpandableDescription
           text={issue.description || defaultMagazineDescription}
           limit={descriptionLimit}
-          className="mt-3 text-sm font-medium leading-7 text-slate-600"
+          className="mt-2 sm:mt-3 text-xs sm:text-sm font-medium leading-6 sm:leading-7 text-slate-600"
         />
 
-        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
-          <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-400">
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-2 sm:gap-3 pt-4 sm:pt-6">
+          <span className="inline-flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-xs font-black uppercase tracking-wider text-slate-400">
             Open Reader
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </span>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {issue.pdfUrl && (
               <a
                 href={issue.pdfUrl}
                 download
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition hover:bg-slate-200"
+                className="inline-flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl bg-slate-100 text-slate-700 transition hover:bg-slate-200"
                 aria-label="Download magazine PDF"
               >
-                <Download className="h-4 w-4" />
+                <Download className="h-3 w-3 sm:h-4 sm:w-4" />
               </a>
             )}
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white transition group-hover:translate-x-0.5">
-              <ArrowRight className="h-4 w-4" />
+            <span className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl bg-slate-900 text-white transition group-hover:translate-x-0.5">
+              <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
             </span>
           </div>
         </div>
@@ -261,13 +261,13 @@ const InfoTile = ({ icon: Icon, eyebrow, title, text, tone = "emerald" }) => {
   };
 
   return (
-    <div className={`rounded-2xl border p-6 shadow-sm ${toneMap[tone]}`}>
-      <div className="mb-6 inline-flex rounded-2xl bg-slate-900 p-3 text-white">
-        <Icon className="h-6 w-6" />
+    <div className={`rounded-lg sm:rounded-2xl border p-4 sm:p-6 shadow-sm ${toneMap[tone]}`}>
+      <div className="mb-4 sm:mb-6 inline-flex rounded-lg sm:rounded-2xl bg-slate-900 p-2 sm:p-3 text-white">
+        <Icon className="h-4 w-4 sm:h-6 sm:w-6" />
       </div>
-      <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-slate-500">{eyebrow}</p>
-      <h3 className="mt-3 text-2xl font-black text-slate-950">{title}</h3>
-      <p className="mt-3 text-sm font-medium leading-7 text-slate-600">{text}</p>
+      <p className="text-[9px] sm:text-[11px] font-extrabold uppercase tracking-[0.18em] text-slate-500">{eyebrow}</p>
+      <h3 className="mt-2 sm:mt-3 text-lg sm:text-2xl font-black text-slate-950">{title}</h3>
+      <p className="mt-2 sm:mt-3 text-xs sm:text-sm font-medium leading-6 sm:leading-7 text-slate-600">{text}</p>
     </div>
   );
 };
@@ -426,22 +426,22 @@ export default function MagazineArchive() {
             </div>
 
             <div className="mx-auto mt-8 max-w-4xl">
-              <h1 className="text-3xl font-black leading-tight tracking-tight sm:text-5xl">
+              <h1 className="text-2xl font-black leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">
                 School Magazine
                 <span className="block text-slate-700">Editorial Archive</span>
               </h1>
 
-              <p className="mx-auto mt-5 max-w-2xl text-sm font-medium leading-7 text-slate-600 sm:text-base">
+              <p className="mx-auto mt-5 max-w-2xl text-xs sm:text-sm md:text-base font-medium leading-7 text-slate-600">
                 Explore school editions, student stories, achievements, activities, and memories in the same clean public-page experience used across the School Hub.
               </p>
             </div>
 
-            <div className="mt-8 grid w-full max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="mt-8 grid w-full max-w-3xl grid-cols-1 gap-2 sm:gap-3 sm:grid-cols-3">
               {heroStats.map(({ label, value, icon: StatIcon }) => (
-                <div key={label} className="rounded-2xl bg-slate-50 px-5 py-4 text-center">
-                  <StatIcon className="mx-auto mb-3 h-5 w-5 text-slate-500" />
-                  <p className="text-2xl font-black text-slate-950">{value}</p>
-                  <p className="mt-2 text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">
+                <div key={label} className="rounded-xl sm:rounded-2xl bg-slate-50 px-3 sm:px-5 py-3 sm:py-4 text-center">
+                  <StatIcon className="mx-auto mb-2 sm:mb-3 h-4 w-4 sm:h-5 sm:w-5 text-slate-500" />
+                  <p className="text-xl sm:text-2xl font-black text-slate-950">{value}</p>
+                  <p className="mt-1 sm:mt-2 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">
                     {label}
                   </p>
                 </div>
@@ -453,7 +453,7 @@ export default function MagazineArchive() {
                 <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">
                   Featured Edition
                 </p>
-                <h2 className="mt-2 text-2xl font-black text-slate-900">{leadIssue.title}</h2>
+                <h2 className="mt-2 text-lg sm:text-2xl font-black text-slate-900">{leadIssue.title}</h2>
                 <ExpandableDescription
                   text={leadIssue.description || defaultMagazineDescription}
                   limit={190}
@@ -462,10 +462,10 @@ export default function MagazineArchive() {
                 <button
                   type="button"
                   onClick={() => setSelectedIssue(leadIssue)}
-                  className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800"
+                  className="mt-5 inline-flex items-center justify-center gap-2 rounded-lg sm:rounded-xl bg-slate-900 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-white transition hover:bg-slate-800"
                 >
                   Read Issue
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
                 </button>
               </div>
             )}
@@ -483,22 +483,22 @@ export default function MagazineArchive() {
               </h2>
             </div>
 
-            <div className="grid w-full gap-3 lg:max-w-4xl lg:grid-cols-[minmax(0,1fr)_150px_170px_170px]">
-              <div className="relative">
-                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <div className="grid w-full gap-2 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:max-w-4xl lg:grid-cols-[minmax(0,1fr)_auto_auto_auto]">
+              <div className="relative sm:col-span-2 lg:col-span-1">
+                <Search className="pointer-events-none absolute left-3 sm:left-4 top-1/2 h-3 w-3 sm:h-4 sm:w-4 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search editions, stories, or years"
-                  className="h-12 w-full rounded-xl bg-slate-50 py-3 pl-11 pr-4 text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-slate-500/10"
+                  placeholder="Search editions..."
+                  className="h-10 sm:h-12 w-full rounded-lg sm:rounded-xl bg-slate-50 py-2 sm:py-3 pl-9 sm:pl-11 pr-3 sm:pr-4 text-xs sm:text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-slate-500/10"
                 />
               </div>
 
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(e.target.value)}
-                className="h-12 rounded-xl bg-slate-50 px-4 text-sm font-bold text-slate-800 outline-none transition focus:bg-white focus:ring-4 focus:ring-slate-500/10"
+                className="h-10 sm:h-12 rounded-lg sm:rounded-xl bg-slate-50 px-2 sm:px-4 text-xs sm:text-sm font-bold text-slate-800 outline-none transition focus:bg-white focus:ring-4 focus:ring-slate-500/10"
               >
                 <option value="all">All Years</option>
                 {years.map((year) => (
@@ -511,54 +511,53 @@ export default function MagazineArchive() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="h-12 rounded-xl bg-slate-50 px-4 text-sm font-bold text-slate-800 outline-none transition focus:bg-white focus:ring-4 focus:ring-slate-500/10"
+                className="h-10 sm:h-12 rounded-lg sm:rounded-xl bg-slate-50 px-2 sm:px-4 text-xs sm:text-sm font-bold text-slate-800 outline-none transition focus:bg-white focus:ring-4 focus:ring-slate-500/10"
               >
-                <option value="year">Sort by Year</option>
-                <option value="title">Sort by Title</option>
-                <option value="views">Sort by Views</option>
-                <option value="downloads">Sort by Downloads</option>
+                <option value="year">By Year</option>
+                <option value="title">By Title</option>
+                <option value="views">By Views</option>
               </select>
 
               <button
                 type="button"
                 onClick={() => setSortOrder((current) => (current === "desc" ? "asc" : "desc"))}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-slate-50 px-4 text-sm font-bold text-slate-800 transition hover:bg-slate-100"
+                className="inline-flex h-10 sm:h-12 items-center justify-center gap-1 sm:gap-2 rounded-lg sm:rounded-xl bg-slate-50 px-2 sm:px-4 text-xs sm:text-sm font-bold text-slate-800 transition hover:bg-slate-100"
               >
-                <Filter className="h-4 w-4 text-slate-500" />
-                {sortOrder === "desc" ? "Newest First" : "Oldest First"}
+                <Filter className="h-3 w-3 sm:h-4 sm:w-4 text-slate-500" />
+                <span className="hidden sm:inline">{sortOrder === "desc" ? "Newest" : "Oldest"}</span>
               </button>
             </div>
           </div>
 
-          <div className="mt-4 flex flex-wrap justify-center gap-3 lg:justify-end">
+          <div className="mt-4 flex flex-wrap justify-center gap-2 sm:gap-3 lg:justify-end">
             <button
               type="button"
               onClick={() => setViewMode("list")}
-              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
+              className={`inline-flex items-center gap-1 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-bold transition ${
                 viewMode === "list" ? "bg-slate-900 text-white" : "bg-slate-50 text-slate-700 hover:bg-slate-100"
               }`}
             >
-              <List className="h-4 w-4" />
-              List
+              <List className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">List</span>
             </button>
             <button
               type="button"
               onClick={() => setViewMode("gallery")}
-              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
+              className={`inline-flex items-center gap-1 sm:gap-2 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-bold transition ${
                 viewMode === "gallery" ? "bg-slate-900 text-white" : "bg-slate-50 text-slate-700 hover:bg-slate-100"
               }`}
             >
-              <Grid3x3 className="h-4 w-4" />
-              Grid
+              <Grid3x3 className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Grid</span>
             </button>
             <button
               type="button"
               onClick={() => setShowFilters((current) => !current)}
-              className="inline-flex items-center gap-2 rounded-xl bg-slate-50 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-100"
+              className="inline-flex items-center gap-1 sm:gap-2 rounded-lg sm:rounded-xl bg-slate-50 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-slate-700 transition hover:bg-slate-100"
             >
-              <Sparkles className="h-4 w-4" />
-              Notes
-              {showFilters ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Notes</span>
+              {showFilters ? <ChevronUp className="h-3 w-3 sm:h-4 sm:w-4" /> : <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4" />}
             </button>
           </div>
 
@@ -570,7 +569,7 @@ export default function MagazineArchive() {
                 exit={{ opacity: 0, height: 0 }}
                 className="overflow-hidden"
               >
-                <div className="mt-5 grid gap-3 border-t border-slate-100 pt-5 md:grid-cols-3">
+                <div className="mt-5 grid gap-2 sm:gap-3 border-t border-slate-100 pt-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                   {[
                     {
                       icon: Star,
@@ -588,10 +587,10 @@ export default function MagazineArchive() {
                       text: "The archive preserves school identity while helping families understand student life, achievement, and culture.",
                     },
                   ].map(({ icon: NoteIcon, title, text }) => (
-                    <div key={title} className="rounded-2xl bg-slate-50 p-4">
-                      <NoteIcon className="h-5 w-5 text-slate-500" />
-                      <p className="mt-4 text-sm font-black text-slate-950">{title}</p>
-                      <p className="mt-2 text-sm font-medium leading-7 text-slate-600">{text}</p>
+                    <div key={title} className="rounded-lg sm:rounded-2xl bg-slate-50 p-3 sm:p-4">
+                      <NoteIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-500" />
+                      <p className="mt-3 sm:mt-4 text-xs sm:text-sm font-black text-slate-950">{title}</p>
+                      <p className="mt-1 sm:mt-2 text-xs sm:text-sm font-medium leading-6 sm:leading-7 text-slate-600">{text}</p>
                     </div>
                   ))}
                 </div>
@@ -602,13 +601,13 @@ export default function MagazineArchive() {
 
         <section className="mt-8">
           {filteredAndSortedMagazines.length === 0 ? (
-            <div className="rounded-2xl bg-white p-12 text-center shadow-sm">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100">
-                <BookOpen className="h-10 w-10 text-slate-400" />
+            <div className="rounded-lg sm:rounded-2xl bg-white p-8 sm:p-12 text-center shadow-sm">
+              <div className="mx-auto mb-3 sm:mb-4 flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-lg sm:rounded-2xl bg-slate-100">
+                <BookOpen className="h-8 sm:h-10 w-8 sm:w-10 text-slate-400" />
               </div>
-              <h2 className="text-xl font-black text-slate-800">No editions match this search</h2>
-              <p className="mt-2 text-sm font-medium text-slate-500">
-                Try another year, title, or keyword to reopen the archive.
+              <h2 className="text-lg sm:text-xl font-black text-slate-800">No editions match</h2>
+              <p className="mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                Try another year, title, or keyword.
               </p>
               <button
                 type="button"
@@ -616,31 +615,31 @@ export default function MagazineArchive() {
                   setSearchQuery("");
                   setSelectedYear("all");
                 }}
-                className="mt-6 inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800"
+                className="mt-6 inline-flex items-center gap-2 rounded-lg sm:rounded-xl bg-slate-900 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-white transition hover:bg-slate-800"
               >
-                Reset Archive
-                <ArrowRight className="h-4 w-4" />
+                Reset
+                <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
               </button>
             </div>
           ) : (
             <div className="space-y-10">
               <section>
-                <div className="mb-5 flex flex-col items-center justify-between gap-3 pb-4 text-center sm:flex-row sm:text-left">
-                  <div className="flex flex-col items-center gap-3 sm:flex-row">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-md">
-                      <BookOpen className="h-5 w-5" />
+                <div className="mb-4 sm:mb-5 flex flex-col items-center justify-between gap-2 sm:gap-3 pb-3 sm:pb-4 text-center sm:flex-row sm:text-left">
+                  <div className="flex flex-col items-center gap-2 sm:gap-3 sm:flex-row">
+                    <div className="flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-lg sm:rounded-2xl bg-slate-900 text-white shadow-md">
+                      <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
                     <div>
-                      <h2 className="text-xl font-black text-slate-950">Magazine Editions</h2>
+                      <h2 className="text-lg sm:text-xl font-black text-slate-950">Magazine Editions</h2>
                       <p className="text-xs font-bold uppercase text-slate-500">
                         {filteredAndSortedMagazines.length}{" "}
-                        {filteredAndSortedMagazines.length === 1 ? "edition" : "editions"} available
+                        {filteredAndSortedMagazines.length === 1 ? "edition" : "editions"}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className={viewMode === "gallery" ? "grid gap-5 md:grid-cols-2 xl:grid-cols-3" : "grid gap-5 rounded-2xl bg-slate-50 p-3 sm:p-4"}>
+                <div className={viewMode === "gallery" ? "grid gap-3 sm:gap-5 grid-cols-1 md:grid-cols-2 xl:grid-cols-3" : "grid gap-3 sm:gap-5 rounded-lg sm:rounded-2xl bg-slate-50 p-2 sm:p-3 md:p-4"}>
                   {filteredAndSortedMagazines.map((issue, index) => (
                     <MagazineCard
                       key={issue.id || `${issue.title}-${index}`}
@@ -656,7 +655,7 @@ export default function MagazineArchive() {
           )}
         </section>
 
-        <section className="mt-10 grid gap-5 pb-14 md:grid-cols-3">
+        <section className="mt-8 sm:mt-10 grid gap-3 sm:gap-5 pb-10 sm:pb-14 grid-cols-1 md:grid-cols-3">
           <InfoTile
             icon={Eye}
             eyebrow="For Parents"

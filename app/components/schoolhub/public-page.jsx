@@ -382,10 +382,10 @@ const GalleryModal = ({ item, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/75 p-2 backdrop-blur-sm sm:p-4" onClick={onClose}>
-      <div className="relative flex max-h-[96vh] w-full max-w-6xl flex-col overflow-hidden rounded-[22px] bg-white shadow-2xl sm:max-h-[92vh] sm:rounded-lg" onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute right-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-lg bg-white/95 text-slate-700 shadow-lg transition hover:bg-slate-100">
-          <FiX className="text-lg" />
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/75 p-2 sm:p-4 backdrop-blur-sm" onClick={onClose}>
+      <div className="relative flex max-h-[96vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl sm:rounded-[22px] bg-white shadow-2xl sm:max-h-[92vh] sm:rounded-lg" onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute right-2 sm:right-4 top-2 sm:top-4 z-50 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-white/95 text-slate-700 shadow-lg transition hover:bg-slate-100">
+          <FiX className="text-base sm:text-lg" />
         </button>
 
         <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[1.35fr_0.8fr]">
@@ -406,60 +406,60 @@ const GalleryModal = ({ item, onClose }) => {
             
             {images.length > 1 && (
               <>
-                <button onClick={handlePrev} className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg bg-white/95 text-slate-800 shadow-lg transition hover:bg-white">
-                  <FiChevronRight className="rotate-180 text-xl" />
+                <button onClick={handlePrev} className="absolute left-2 sm:left-4 top-1/2 flex h-8 w-8 sm:h-10 sm:w-10 -translate-y-1/2 items-center justify-center rounded-lg bg-white/95 text-slate-800 shadow-lg transition hover:bg-white">
+                  <FiChevronRight className="rotate-180 text-lg sm:text-xl" />
                 </button>
-                <button onClick={handleNext} className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg bg-white/95 text-slate-800 shadow-lg transition hover:bg-white">
-                  <FiChevronRight className="text-xl" />
+                <button onClick={handleNext} className="absolute right-2 sm:right-4 top-1/2 flex h-8 w-8 sm:h-10 sm:w-10 -translate-y-1/2 items-center justify-center rounded-lg bg-white/95 text-slate-800 shadow-lg transition hover:bg-white">
+                  <FiChevronRight className="text-lg sm:text-xl" />
                 </button>
               </>
             )}
             
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-slate-950/80 px-4 py-1.5 text-xs font-bold text-white">
+            <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-slate-950/80 px-2.5 sm:px-4 py-1 sm:py-1.5 text-[10px] sm:text-xs font-bold text-white">
               {selectedIndex + 1} / {images.length}
             </div>
           </div>
 
           <div className="flex min-h-0 flex-col bg-white">
-            <div className="border-b border-slate-100 p-4 sm:p-5">
-              <div className="mb-3 flex items-center justify-between">
-                <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-black uppercase tracking-wider ${theme.bg} ${theme.text}`}>
-                  <Icon className="text-xs" /> {getTypeLabel(item.type)}
+            <div className="border-b border-slate-100 p-3 sm:p-4 md:p-5">
+              <div className="mb-2 sm:mb-3 flex items-center justify-between gap-2">
+                <span className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-2 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-xs font-black uppercase tracking-wider ${theme.bg} ${theme.text}`}>
+                  <Icon className="text-[8px] sm:text-xs" /> {getTypeLabel(item.type)}
                 </span>
                 <button
                   type="button"
                   onClick={handleShare}
-                  className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+                  className="rounded-lg p-1.5 sm:p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
                   aria-label="Share item"
                 >
-                  <FiShare2 />
+                  <FiShare2 className="text-sm sm:text-base" />
                 </button>
               </div>
-              <h2 className="text-xl font-black tracking-tight text-slate-950 sm:text-2xl">{item.title}</h2>
+              <h2 className="text-lg sm:text-xl md:text-2xl font-black tracking-tight text-slate-950">{item.title}</h2>
               {item.description && (
-                <p className="mt-3 text-sm font-medium leading-6 text-slate-600">{item.description}</p>
+                <p className="mt-2 sm:mt-3 text-xs sm:text-sm font-medium leading-5 sm:leading-6 text-slate-600">{item.description}</p>
               )}
               {shareStatus && (
-                <p className="mt-3 text-xs font-black uppercase tracking-[0.14em] text-emerald-700">{shareStatus}</p>
+                <p className="mt-2 sm:mt-3 text-[9px] sm:text-xs font-black uppercase tracking-[0.14em] text-emerald-700">{shareStatus}</p>
               )}
             </div>
 
-            <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-4 sm:p-5">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-lg bg-slate-50 p-3 text-center">
-                  <p className="text-lg font-black text-slate-950">{images.length}</p>
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Photos</p>
+            <div className="min-h-0 flex-1 space-y-3 sm:space-y-4 overflow-y-auto p-3 sm:p-4 md:p-5">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="rounded-lg bg-slate-50 p-2 sm:p-3 text-center">
+                  <p className="text-lg sm:text-xl font-black text-slate-950">{images.length}</p>
+                  <p className="mt-0.5 sm:mt-1 text-[9px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">Photos</p>
                 </div>
-                <div className="rounded-lg bg-slate-50 p-3 text-center">
-                  <p className="text-lg font-black text-slate-950">{item.details?.length || 0}</p>
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Details</p>
+                <div className="rounded-lg bg-slate-50 p-2 sm:p-3 text-center">
+                  <p className="text-lg sm:text-xl font-black text-slate-950">{item.details?.length || 0}</p>
+                  <p className="mt-0.5 sm:mt-1 text-[9px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">Details</p>
                 </div>
               </div>
 
               {images.length > 1 && (
                 <div>
-                  <p className="mb-2 text-xs font-black uppercase tracking-wider text-slate-400">All Photos</p>
-                  <div className="grid grid-cols-4 gap-2">
+                  <p className="mb-2 text-[9px] sm:text-xs font-black uppercase tracking-wider text-slate-400">All Photos</p>
+                  <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
                     {images.slice(0, 8).map((image, index) => (
                       <button
                         key={image.url}
@@ -470,7 +470,7 @@ const GalleryModal = ({ item, onClose }) => {
                       >
                         <img src={image.url} alt={image.altText || `${item.title} ${index + 1}`} className="h-full w-full object-cover" />
                         {index === 7 && images.length > 8 && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-xs font-bold text-white">
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-[10px] sm:text-xs font-bold text-white">
                             +{images.length - 8}
                           </div>
                         )}
@@ -481,39 +481,39 @@ const GalleryModal = ({ item, onClose }) => {
               )}
 
               {(item.location || item.established || item.website) && (
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {item.location && <InfoPill icon={FiMapPin}>{item.location}</InfoPill>}
                   {item.established && <InfoPill icon={FiCalendar}>{item.established}</InfoPill>}
                   {item.website && (
-                    <a href={item.website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-200">
-                      <FiGlobe /> Website <FiExternalLink className="text-[10px]" />
+                    <a href={item.website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg bg-slate-100 px-2 sm:px-3 py-1.5 sm:py-2 text-[9px] sm:text-xs font-bold text-slate-700 transition hover:bg-slate-200">
+                      <FiGlobe className="text-xs" /> Website <FiExternalLink className="text-[9px] sm:text-[10px]" />
                     </a>
                   )}
                 </div>
               )}
 
               {item.contactName && (
-                <div className="rounded-lg bg-slate-50 p-4">
-                  <p className="mb-2 text-xs font-black uppercase tracking-wider text-slate-400">Contact Person</p>
-                  <div className="flex items-center gap-3">
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${theme.iconBg} text-white`}>
-                      <FiUserCheck />
+                <div className="rounded-lg bg-slate-50 p-3 sm:p-4">
+                  <p className="mb-2 text-[9px] sm:text-xs font-black uppercase tracking-wider text-slate-400">Contact Person</p>
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg ${theme.iconBg} text-white`}>
+                      <FiUserCheck className="text-sm sm:text-base" />
                     </div>
                     <div>
-                      <p className="font-bold text-slate-950">{item.contactName}</p>
-                      {item.contactEmail && <p className="text-xs text-slate-500">{item.contactEmail}</p>}
-                      {item.contactPhone && <p className="text-xs text-slate-500">{item.contactPhone}</p>}
+                      <p className="text-xs sm:text-sm font-bold text-slate-950">{item.contactName}</p>
+                      {item.contactEmail && <p className="text-[10px] sm:text-xs text-slate-500">{item.contactEmail}</p>}
+                      {item.contactPhone && <p className="text-[10px] sm:text-xs text-slate-500">{item.contactPhone}</p>}
                     </div>
                   </div>
                 </div>
               )}
 
               {socialLinks.length > 0 && (
-                <div className="rounded-lg border border-slate-100 bg-white p-4">
-                  <p className="mb-2 text-xs font-black uppercase tracking-wider text-slate-400">Connect With Us</p>
-                  <div className="flex flex-wrap gap-2">
+                <div className="rounded-lg border border-slate-100 bg-white p-3 sm:p-4">
+                  <p className="mb-2 text-[9px] sm:text-xs font-black uppercase tracking-wider text-slate-400">Connect With Us</p>
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {socialLinks.map((link) => (
-                      <a key={`${link.label}-${link.href}`} href={link.href} target="_blank" rel="noopener noreferrer" className={`rounded-full px-3 py-1.5 text-xs font-bold capitalize ${theme.bg} ${theme.text}`}>
+                      <a key={`${link.label}-${link.href}`} href={link.href} target="_blank" rel="noopener noreferrer" className={`rounded-full px-2 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-xs font-bold capitalize ${theme.bg} ${theme.text}`}>
                         {link.label}
                       </a>
                     ))}
@@ -522,28 +522,28 @@ const GalleryModal = ({ item, onClose }) => {
               )}
 
               {Array.isArray(item.details) && item.details.length > 0 && (
-                <div className="space-y-3">
-                  <p className="text-xs font-black uppercase tracking-wider text-slate-400">Additional Information</p>
+                <div className="space-y-2 sm:space-y-3">
+                  <p className="text-[9px] sm:text-xs font-black uppercase tracking-wider text-slate-400">Additional Information</p>
                   {item.details.map((detail, index) => (
-                    <div key={`${detail?.title || 'detail'}-${index}`} className="rounded-lg border border-slate-100 bg-white p-4">
-                      <p className="text-sm font-bold text-slate-950">{detail?.title || `Detail ${index + 1}`}</p>
-                      {detail?.content && <p className="mt-2 text-sm font-medium leading-6 text-slate-600">{detail.content}</p>}
+                    <div key={`${detail?.title || 'detail'}-${index}`} className="rounded-lg border border-slate-100 bg-white p-3 sm:p-4">
+                      <p className="text-xs sm:text-sm font-bold text-slate-950">{detail?.title || `Detail ${index + 1}`}</p>
+                      {detail?.content && <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-medium leading-5 sm:leading-6 text-slate-600">{detail.content}</p>}
                     </div>
                   ))}
                 </div>
               )}
             </div>
 
-            <div className="flex flex-col gap-2 border-t border-slate-100 bg-slate-50 p-4 sm:flex-row">
-              <button onClick={onClose} className="flex-1 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800">
+            <div className="flex flex-col gap-1.5 sm:gap-2 border-t border-slate-100 bg-slate-50 p-3 sm:p-4 md:flex-row">
+              <button onClick={onClose} className="flex-1 rounded-lg bg-slate-900 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-white transition hover:bg-slate-800">
                 Close
               </button>
               <button
                 type="button"
                 onClick={handleShare}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-100"
+                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-slate-700 transition hover:bg-slate-100"
               >
-                <FiExternalLink /> {shareStatus || 'Share'}
+                <FiExternalLink className="text-xs sm:text-sm" /> {shareStatus || 'Share'}
               </button>
             </div>
           </div>
@@ -573,29 +573,29 @@ const HubCard = ({ item, onView }) => {
   return (
     <button
       onClick={onView}
-      className="group grid w-full overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg lg:grid-cols-[minmax(320px,0.95fr)_minmax(0,1.25fr)]"
+      className="group grid w-full overflow-hidden rounded-xl sm:rounded-2xl border border-slate-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg lg:grid-cols-[minmax(320px,0.95fr)_minmax(0,1.25fr)]"
     >
-      <div className="relative min-h-[260px] w-full bg-slate-100 sm:min-h-[320px] lg:min-h-full">
+      <div className="relative min-h-[200px] w-full bg-slate-100 sm:min-h-[260px] md:min-h-[320px] lg:min-h-full">
         {image ? (
           <img src={image} alt={item.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
         ) : (
           <div className={`flex h-full w-full items-center justify-center ${theme.bg}`}>
-            <Icon className={`text-4xl ${theme.text}`} />
+            <Icon className={`text-3xl sm:text-4xl ${theme.text}`} />
           </div>
         )}
         
-        <div className="absolute left-3 top-3">
-          <span className={`inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider ${theme.text} shadow-sm`}>
-            <Icon className="text-xs" /> {getTypeLabel(item.type)}
+        <div className="absolute left-2 sm:left-3 top-2 sm:top-3">
+          <span className={`inline-flex items-center gap-1 rounded-full bg-white/95 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-black uppercase tracking-wider ${theme.text} shadow-sm`}>
+            <Icon className="text-[8px] sm:text-xs" /> {getTypeLabel(item.type)}
           </span>
         </div>
         
-        <div className="absolute right-3 top-14 inline-flex items-center gap-1 rounded-full bg-slate-950/80 px-2.5 py-1 text-xs font-bold text-white">
-          <FiImage className="text-[11px]" /> {images.length}
+        <div className="absolute right-2 sm:right-3 top-12 sm:top-14 inline-flex items-center gap-1 rounded-full bg-slate-950/80 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-xs font-bold text-white">
+          <FiImage className="text-[10px] sm:text-[11px]" /> {images.length}
         </div>
 
         {images.length > 1 && (
-          <div className="absolute inset-x-3 bottom-3 flex gap-2 overflow-x-auto rounded-xl bg-slate-950/65 p-2 backdrop-blur-md">
+          <div className="absolute inset-x-2 sm:inset-x-3 bottom-2 sm:bottom-3 flex gap-1 sm:gap-2 overflow-x-auto rounded-lg sm:rounded-xl bg-slate-950/65 p-1.5 sm:p-2 backdrop-blur-md">
             {images.slice(0, 6).map((thumb, index) => (
               <span
                 key={thumb.url}
@@ -855,48 +855,48 @@ export default function PublicSchoolHubPage({
   <section className="overflow-hidden rounded-2xl bg-transparent text-slate-950">
     <div className="grid gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch lg:px-10 lg:py-10">
       <div className="flex flex-col justify-center">
-      <div className="inline-flex max-w-full items-center gap-3 rounded-full bg-amber-50 px-4 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-amber-900">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-1 ring-amber-100">
+      <div className="inline-flex max-w-full items-center gap-2 sm:gap-3 rounded-full bg-amber-50 px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.14em] text-amber-900">
+        <span className="flex h-8 sm:h-10 w-8 sm:w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-1 ring-amber-100">
           <Image
             src="/seo/SchoolLogo.png"
             alt="Kinyui Boys Senior School logo"
             width={40}
             height={40}
-            className="h-full w-full object-contain p-1"
+            className="h-full w-full object-contain p-0.5 sm:p-1"
           />
         </span>
 
         {renderSchoolName(eyebrow)}
       </div>
 
-      <div className="mt-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#3b1e0a] text-white shadow-sm">
-        <HeroIcon className="text-3xl" />
+      <div className="mt-6 sm:mt-8 flex h-12 sm:h-16 w-12 sm:w-16 items-center justify-center rounded-lg sm:rounded-2xl bg-[#3b1e0a] text-white shadow-sm">
+        <HeroIcon className="text-2xl sm:text-3xl" />
       </div>
 
       <div className="mt-8 max-w-4xl">
-        <h1 className="text-3xl font-black leading-tight tracking-tight sm:text-5xl">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-tight">
           {title}
           <span className="block text-slate-700">
             {renderSchoolName(SCHOOL_INFO.name)}
           </span>
         </h1>
 
-        <p className="mt-5 max-w-2xl text-sm font-medium leading-7 text-slate-600 sm:text-base">
+        <p className="mt-4 sm:mt-5 max-w-2xl text-xs sm:text-sm md:text-base font-medium leading-6 sm:leading-7 text-slate-600">
           {description || SCHOOL_INFO.description}
         </p>
       </div>
 
-      <div className="relative mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="relative mt-8 sm:mt-10 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3">
         {heroStats.map(({ label, value, icon: StatIcon }, index) => (
           <div
             key={label}
-            className={`min-h-[128px] rounded-2xl border border-white/10 bg-slate-950 p-5 text-white ${
-              index === 0 ? 'col-span-2 sm:col-span-1' : ''
+            className={`min-h-[100px] sm:min-h-[128px] rounded-lg sm:rounded-2xl border border-white/10 bg-slate-950 p-3 sm:p-5 text-white ${
+              index === 0 ? 'col-span-2 md:col-span-1' : ''
             }`}
           >
-            <div className="flex items-start justify-between gap-3">
-              <StatIcon className="text-2xl text-blue-300" />
-              <p className="text-3xl font-black leading-none">
+            <div className="flex items-start justify-between gap-2 sm:gap-3">
+              <StatIcon className="text-xl sm:text-2xl text-blue-300" />
+              <p className="text-2xl sm:text-3xl font-black leading-none">
                 {value}
               </p>
             </div>
@@ -909,16 +909,16 @@ export default function PublicSchoolHubPage({
       </div>
       </div>
 
-      <div className="flex flex-col justify-between rounded-2xl bg-slate-950 p-5 text-white">
-        <div className="aspect-[4/3] overflow-hidden rounded-xl bg-slate-800">
+      <div className="flex flex-col justify-between rounded-lg sm:rounded-2xl bg-slate-950 p-3 sm:p-5 text-white">
+        <div className="aspect-[4/3] overflow-hidden rounded-lg sm:rounded-xl bg-slate-800">
           <img src="/hero/kinyui.jpeg" alt="Kinyui Boys Senior School students and school life" className="h-full w-full object-cover" />
         </div>
-        <div className="mt-5 rounded-xl bg-white/5 p-5">
-        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">
+        <div className="mt-3 sm:mt-5 rounded-lg sm:rounded-xl bg-white/5 p-3 sm:p-5">
+        <p className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">
           {renderSchoolName(SCHOOL_INFO.shortName)}
         </p>
 
-        <h2 className="mt-2 text-2xl font-black text-white">
+        <h2 className="mt-1.5 sm:mt-2 text-lg sm:text-2xl font-black text-white">
           {SCHOOL_INFO.motto}
         </h2>
         </div>
@@ -926,27 +926,27 @@ export default function PublicSchoolHubPage({
     </div>
   </section>
 
-  <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+  <section className="mt-4 sm:mt-6 rounded-lg sm:rounded-2xl bg-white p-3 sm:p-5 shadow-sm ring-1 ring-slate-200">
+    <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
       <div className="text-center lg:text-left">
-        <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">
+        <p className="text-[9px] sm:text-xs font-black uppercase tracking-[0.16em] text-slate-500">
           Explore School Life
         </p>
 
-        <h2 className="mt-1 text-xl font-black text-slate-950">
+        <h2 className="mt-1 sm:mt-2 text-lg sm:text-xl font-black text-slate-950">
           Search clubs, departments, leadership, boarding, and school services
         </h2>
       </div>
 
-      <div className="flex w-full flex-col gap-3 sm:flex-row lg:max-w-2xl">
+      <div className="flex w-full flex-col gap-2 sm:gap-3 sm:flex-row lg:max-w-2xl">
         <div className="relative flex-1">
-          <FiSearch className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+          <FiSearch className="pointer-events-none absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-400" />
 
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={`Search ${title.toLowerCase()}...`}
-            className="h-12 w-full rounded-xl bg-slate-50 py-3 pl-11 pr-4 text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-slate-500/10"
+            className="h-10 sm:h-12 w-full rounded-lg sm:rounded-xl bg-slate-50 py-2 sm:py-3 pl-9 sm:pl-11 pr-3 sm:pr-4 text-xs sm:text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-slate-500/10"
           />
         </div>
 
@@ -956,39 +956,39 @@ export default function PublicSchoolHubPage({
   </section>
 
   {error && (
-    <div className="mt-6 flex items-center justify-between rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-700">
-      <span className="flex items-center gap-2">
-        <FiAlertTriangle /> {error}
+    <div className="mt-4 sm:mt-6 flex items-center justify-between rounded-lg sm:rounded-2xl border border-red-200 bg-red-50 px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-bold text-red-700">
+      <span className="flex items-center gap-1.5 sm:gap-2">
+        <FiAlertTriangle className="text-sm sm:text-base" /> {error}
       </span>
 
       <button
         onClick={() => setError("")}
-        className="rounded-lg p-2 text-red-600 transition hover:bg-red-100 hover:text-red-800"
+        className="rounded-lg p-1 sm:p-2 text-red-600 transition hover:bg-red-100 hover:text-red-800"
       >
-        <FiX />
+        <FiX className="text-sm sm:text-base" />
       </button>
     </div>
   )}
 
-  <section className="mt-8">
+  <section className="mt-6 sm:mt-8">
     {loading ? (
       <ModernLoadingSpinner message={`Loading ${title.toLowerCase()} content...`} />
     ) : visibleItems.length === 0 ? (
-      <div className="rounded-2xl bg-white p-12 text-center shadow-sm">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100">
-          <FiLayers className="text-4xl text-slate-400" />
+      <div className="rounded-lg sm:rounded-2xl bg-white p-6 sm:p-12 text-center shadow-sm">
+        <div className="mx-auto mb-3 sm:mb-4 flex h-12 sm:h-16 w-12 sm:w-16 items-center justify-center rounded-lg sm:rounded-2xl bg-slate-100">
+          <FiLayers className="text-2xl sm:text-4xl text-slate-400" />
         </div>
 
-        <h2 className="text-xl font-black text-slate-800">
+        <h2 className="text-base sm:text-xl font-black text-slate-800">
           {emptyText}
         </h2>
 
-        <p className="mt-2 text-sm font-medium text-slate-500">
+        <p className="mt-2 text-xs sm:text-sm font-medium text-slate-500">
           Check back soon for updates.
         </p>
       </div>
     ) : (
-      <div className="space-y-10">
+      <div className="space-y-8 sm:space-y-10">
         {renderedSections.map((section) => {
           if (!section.items.length) return null;
 
@@ -996,18 +996,18 @@ export default function PublicSchoolHubPage({
 
           return (
             <section key={section.title}>
-              <div className="mb-5 flex flex-col items-center justify-between gap-3 pb-4 text-center sm:flex-row sm:text-left">
-                <div className="flex flex-col items-center gap-3 sm:flex-row">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-md">
-                    <SectionIcon className="text-base" />
+              <div className="mb-3 sm:mb-5 flex flex-col items-center justify-between gap-2 sm:gap-3 pb-3 sm:pb-4 text-center sm:flex-row sm:text-left">
+                <div className="flex flex-col items-center gap-2 sm:gap-3 sm:flex-row">
+                  <div className="flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-lg sm:rounded-2xl bg-slate-900 text-white shadow-md">
+                    <SectionIcon className="text-sm sm:text-base" />
                   </div>
 
                   <div>
-                    <h2 className="text-xl font-black text-slate-950">
+                    <h2 className="text-lg sm:text-xl font-black text-slate-950">
                       {section.title}
                     </h2>
 
-                    <p className="text-xs font-bold uppercase text-slate-500">
+                    <p className="text-[9px] sm:text-xs font-bold uppercase text-slate-500">
                       {section.items.length}{" "}
                       {section.items.length === 1 ? "item" : "items"} available
                     </p>
@@ -1023,6 +1023,7 @@ export default function PublicSchoolHubPage({
             </section>
           );
         })}
+      </div>
       </div>
     )}
   </section>

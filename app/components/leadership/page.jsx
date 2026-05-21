@@ -208,25 +208,25 @@ function StaffPortrait({ staff, className = "", priority = false }) {
 
 function DetailList({ icon: Icon, title, items, emptyText }) {
   return (
-    <div className="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
-      <div className="mb-4 flex items-center gap-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-50 text-orange-800">
-          <Icon size={16} />
+    <div className="rounded-lg sm:rounded-2xl border border-orange-100 bg-white p-3 sm:p-5 shadow-sm">
+      <div className="mb-2.5 sm:mb-4 flex items-center gap-2">
+        <div className="flex h-8 sm:h-9 w-8 sm:w-9 items-center justify-center rounded-lg sm:rounded-xl bg-orange-50 text-orange-800">
+          <Icon size={14} />
         </div>
-        <h4 className="text-xs font-black uppercase tracking-[0.18em] text-orange-900">{title}</h4>
+        <h4 className="text-[9px] sm:text-xs font-black uppercase tracking-[0.15em] text-orange-900">{title}</h4>
       </div>
 
       {items.length > 0 ? (
-        <div className="space-y-2">
+        <div className="space-y-1.5 sm:space-y-2">
           {items.map((item, index) => (
-            <div key={`${title}-${index}`} className="flex items-start gap-2 text-sm leading-6 text-slate-700">
-              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-700" />
+            <div key={`${title}-${index}`} className="flex items-start gap-1.5 sm:gap-2 text-xs sm:text-sm leading-5 sm:leading-6 text-slate-700">
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-700" />
               <span>{item}</span>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-sm leading-6 text-slate-500">{emptyText}</p>
+        <p className="text-xs sm:text-sm leading-5 sm:leading-6 text-slate-500">{emptyText}</p>
       )}
     </div>
   );
@@ -364,7 +364,7 @@ export default function ModernStaffLeadership() {
               <Sparkles size={14} />
               School Leadership
             </div>
-            <h2 className="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h2 className="mt-5 text-2xl font-black leading-tight tracking-tight text-white sm:text-3xl md:text-4xl lg:text-6xl">
               The team guiding Kinyui Boys forward.
             </h2>
             <p className="mt-5 max-w-2xl text-sm font-medium leading-7 text-orange-100/80 sm:text-base">
@@ -372,30 +372,30 @@ export default function ModernStaffLeadership() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:w-[34rem]">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 sm:grid-cols-4 lg:w-[34rem]">
             {featuredStats.map((stat) => {
               const Icon = stat.icon;
               return (
-                <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white backdrop-blur">
-                  <Icon className="mb-3 text-amber-300" size={20} />
-                  <p className="text-2xl font-black">{stat.value}</p>
-                  <p className="mt-1 text-[9px] font-black uppercase tracking-widest text-orange-100/65">{stat.label}</p>
+                <div key={stat.label} className="rounded-lg sm:rounded-2xl border border-white/10 bg-white/10 p-2.5 sm:p-4 text-white backdrop-blur">
+                  <Icon className="mb-2 sm:mb-3 text-amber-300" size={16} />
+                  <p className="text-lg sm:text-2xl font-black">{stat.value}</p>
+                  <p className="mt-0.5 sm:mt-1 text-[8px] sm:text-[9px] font-black uppercase tracking-widest text-orange-100/65">{stat.label}</p>
                 </div>
               );
             })}
           </div>
         </div>
 
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_24rem]">
-          <article id="featured-leader-card" className="overflow-hidden rounded-[2rem] border border-white/10 bg-white shadow-2xl shadow-black/30">
-            <div className="grid lg:grid-cols-[minmax(320px,410px)_minmax(0,1fr)]">
-              <div className={`relative flex flex-col gap-5 bg-gradient-to-br ${selectedPalette.gradient} p-5 text-white sm:p-6`}>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] ${selectedPalette.badge}`}>
-                    <SelectedIcon size={14} />
+        <div className="grid gap-4 sm:gap-6 xl:grid-cols-[minmax(0,1fr)_24rem]">
+          <article id="featured-leader-card" className="overflow-hidden rounded-xl sm:rounded-[2rem] border border-white/10 bg-white shadow-2xl shadow-black/30">
+            <div className="grid sm:grid-cols-1 lg:grid-cols-[minmax(280px,380px)_minmax(0,1fr)]">
+              <div className={`relative flex flex-col gap-3 sm:gap-5 bg-gradient-to-br ${selectedPalette.gradient} p-4 text-white sm:p-6`}>
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                  <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 sm:px-3 py-1 sm:py-1.5 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.15em] ${selectedPalette.badge}`}>
+                    <SelectedIcon size={12} />
                     {roleTitle}
                   </span>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-white">
+                  <span className="hidden sm:inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-white">
                     <FiCheck />
                     Active Profile
                   </span>
@@ -405,22 +405,22 @@ export default function ModernStaffLeadership() {
                   <StaffPortrait
                     staff={selected}
                     priority
-                    className="mx-auto aspect-[4/5] w-full max-w-[21rem] rounded-[1.35rem] border border-white/15 bg-white/10 shadow-2xl"
+                    className="mx-auto aspect-[3/4] sm:aspect-[4/5] w-full max-w-xs sm:max-w-[21rem] rounded-lg sm:rounded-[1.35rem] border border-white/15 bg-white/10 shadow-2xl"
                   />
                 </div>
 
-                <div className="rounded-[1.35rem] border border-white/15 bg-white/10 p-3 backdrop-blur sm:p-4">
-                  <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-200">Featured Leader</p>
-                  <h3 className="mt-2 text-xl font-black leading-tight sm:text-2xl md:text-3xl">{selected.name}</h3>
-                  <p className="mt-1 text-xs font-semibold text-orange-100/80 sm:mt-2 sm:text-sm">{leaderScope}</p>
-                  <div className="mt-4 grid grid-cols-2 gap-2">
-                    <div className="rounded-xl border border-white/10 bg-white/10 p-2.5 sm:p-3">
-                      <p className="text-[9px] font-black uppercase tracking-widest text-amber-200">Department</p>
-                      <p className="mt-1 truncate text-xs font-bold text-white">{leaderDepartment}</p>
+                <div className="rounded-lg sm:rounded-[1.35rem] border border-white/15 bg-white/10 p-2.5 backdrop-blur sm:p-4">
+                  <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.20em] text-amber-200">Featured Leader</p>
+                  <h3 className="mt-1.5 text-lg sm:text-xl font-black leading-tight md:text-2xl">{selected.name}</h3>
+                  <p className="mt-0.5 text-[11px] sm:text-xs font-semibold text-orange-100/80 sm:mt-1 sm:text-sm">{leaderScope}</p>
+                  <div className="mt-2.5 sm:mt-4 grid grid-cols-2 gap-1.5 sm:gap-2">
+                    <div className="rounded-lg sm:rounded-xl border border-white/10 bg-white/10 p-2 sm:p-3">
+                      <p className="text-[8px] sm:text-[9px] font-black uppercase tracking-widest text-amber-200">Department</p>
+                      <p className="mt-0.5 sm:mt-1 truncate text-[10px] sm:text-xs font-bold text-white">{leaderDepartment}</p>
                     </div>
-                    <div className="rounded-xl border border-white/10 bg-white/10 p-2.5 sm:p-3">
-                      <p className="text-[9px] font-black uppercase tracking-widest text-amber-200">Joined</p>
-                      <p className="mt-1 text-xs font-bold text-white">{joinedYear || "On record"}</p>
+                    <div className="rounded-lg sm:rounded-xl border border-white/10 bg-white/10 p-2 sm:p-3">
+                      <p className="text-[8px] sm:text-[9px] font-black uppercase tracking-widest text-amber-200">Joined</p>
+                      <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs font-bold text-white">{joinedYear || "On record"}</p>
                     </div>
                   </div>
                   <div className="mt-2 hidden gap-2 md:grid">
@@ -436,65 +436,65 @@ export default function ModernStaffLeadership() {
                 </div>
               </div>
 
-              <div className="p-5 sm:p-7 lg:p-8">
-                <div className="flex flex-col gap-5 border-b border-orange-100 pb-6 lg:flex-row lg:items-start lg:justify-between">
+              <div className="p-4 sm:p-6 lg:p-8">
+                <div className="flex flex-col gap-3 sm:gap-5 border-b border-orange-100 pb-4 sm:pb-6 lg:flex-row lg:items-start lg:justify-between">
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.24em] text-orange-800">Leadership Profile</p>
-                    <h3 className="mt-2 text-3xl font-black tracking-tight text-slate-950">{selected.name}</h3>
-                    <p className="mt-1 text-sm font-bold text-orange-900">{roleTitle}</p>
+                    <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.20em] text-orange-800">Leadership Profile</p>
+                    <h3 className="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-black tracking-tight text-slate-950">{selected.name}</h3>
+                    <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm font-bold text-orange-900">{roleTitle}</p>
                   </div>
 
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {selected.email && (
-                      <a href={`mailto:${selected.email}`} className="inline-flex items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-3 py-2 text-xs font-bold text-orange-900">
-                        <FiMail /> Email
+                      <a href={`mailto:${selected.email}`} className="inline-flex items-center gap-1.5 rounded-lg sm:rounded-xl border border-orange-200 bg-orange-50 px-2.5 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs font-bold text-orange-900">
+                        <FiMail size={14} /> <span className="hidden sm:inline">Email</span>
                       </a>
                     )}
                     {selected.phone && (
-                      <a href={`tel:${selected.phone}`} className="inline-flex items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-3 py-2 text-xs font-bold text-orange-900">
-                        <FiPhone /> Call
+                      <a href={`tel:${selected.phone}`} className="inline-flex items-center gap-1.5 rounded-lg sm:rounded-xl border border-orange-200 bg-orange-50 px-2.5 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs font-bold text-orange-900">
+                        <FiPhone size={14} /> <span className="hidden sm:inline">Call</span>
                       </a>
                     )}
                   </div>
                 </div>
 
-                <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="mt-4 sm:mt-6 grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-2 lg:grid-cols-3">
                   {quickFacts.map((fact) => {
                     const Icon = fact.icon;
                     return (
-                      <div key={fact.label} className="rounded-2xl border border-orange-100 bg-orange-50/50 p-4">
-                        <Icon className="mb-3 text-orange-800" size={18} />
-                        <p className="text-[9px] font-black uppercase tracking-[0.18em] text-slate-500">{fact.label}</p>
-                        <p className="mt-1 text-sm font-black leading-5 text-slate-950">{fact.value}</p>
+                      <div key={fact.label} className="rounded-lg sm:rounded-2xl border border-orange-100 bg-orange-50/50 p-2.5 sm:p-4">
+                        <Icon className="mb-1.5 sm:mb-3 text-orange-800" size={16} />
+                        <p className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.15em] text-slate-500">{fact.label}</p>
+                        <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm font-black leading-5 text-slate-950">{fact.value}</p>
                       </div>
                     );
                   })}
                 </div>
 
-                <div className="mt-6 grid gap-4 lg:grid-cols-[1.1fr_.9fr]">
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                    <div className="mb-3 flex items-center gap-2">
-                      <FiUser className="text-orange-800" />
-                      <h4 className="text-xs font-black uppercase tracking-[0.18em] text-slate-700">Professional Bio</h4>
+                <div className="mt-4 sm:mt-6 grid gap-3 sm:gap-4 lg:grid-cols-[1.1fr_.9fr]">
+                  <div className="rounded-lg sm:rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:p-5">
+                    <div className="mb-2 sm:mb-3 flex items-center gap-2">
+                      <FiUser className="text-orange-800" size={16} />
+                      <h4 className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-slate-700">Professional Bio</h4>
                     </div>
-                    <p className="text-sm leading-7 text-slate-700">
+                    <p className="text-xs sm:text-sm leading-6 sm:leading-7 text-slate-700">
                       {selected.bio ||
                         `${selected.name} serves in the ${roleTitle.toLowerCase()} office, supporting discipline, academic excellence, mentorship, and the growth of every Kinyui boy.`}
                     </p>
                   </div>
 
-                  <div className="rounded-2xl border border-orange-200 bg-gradient-to-br from-orange-50 to-amber-50 p-5">
-                    <div className="mb-3 flex items-center gap-2">
-                      <FiMessageSquare className="text-orange-800" />
-                      <h4 className="text-xs font-black uppercase tracking-[0.18em] text-orange-900">Leadership Note</h4>
+                  <div className="rounded-lg sm:rounded-2xl border border-orange-200 bg-gradient-to-br from-orange-50 to-amber-50 p-3 sm:p-5">
+                    <div className="mb-2 sm:mb-3 flex items-center gap-2">
+                      <FiMessageSquare className="text-orange-800" size={16} />
+                      <h4 className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-orange-900">Leadership Note</h4>
                     </div>
-                    <p className="text-sm font-semibold italic leading-7 text-slate-700">
+                    <p className="text-xs sm:text-sm font-semibold italic leading-6 sm:leading-7 text-slate-700">
                       {selected.quote || "Leadership at Kinyui Boys is anchored in discipline, service, accountability, and academic purpose."}
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-4 grid gap-4 lg:grid-cols-3">
+                <div className="mt-4 sm:mt-6 grid gap-3 sm:gap-4 lg:grid-cols-3">
                   <DetailList
                     icon={FiBriefcase}
                     title="Responsibilities"
@@ -518,17 +518,17 @@ export default function ModernStaffLeadership() {
             </div>
           </article>
 
-          <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start">
-            <div className="rounded-[2rem] border border-white/10 bg-white/10 p-5 text-white backdrop-blur">
-              <div className="mb-4 flex items-center justify-between gap-3">
+          <aside className="space-y-3 sm:space-y-4 xl:sticky xl:top-24 xl:self-start">
+            <div className="rounded-lg sm:rounded-[2rem] border border-white/10 bg-white/10 p-4 sm:p-5 text-white backdrop-blur">
+              <div className="mb-3 sm:mb-4 flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.24em] text-amber-200">Leadership Map</p>
-                  <h3 className="mt-1 text-xl font-black">Select a profile</h3>
+                  <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.20em] text-amber-200">Leadership Map</p>
+                  <h3 className="mt-0.5 sm:mt-1 text-lg sm:text-xl font-black">Select a profile</h3>
                 </div>
-                <FiUsers className="text-amber-300" size={24} />
+                <FiUsers className="text-amber-300" size={20} />
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3 max-h-96 sm:max-h-none overflow-y-auto sm:overflow-y-visible">
                 {leaders.map((leader) => {
                   const palette = getRolePalette(leader);
                   const Icon = palette.icon;
@@ -544,27 +544,27 @@ export default function ModernStaffLeadership() {
                           document.getElementById("featured-leader-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
                         }, 50);
                       }}
-                      className={`w-full rounded-2xl border p-3 text-left transition ${
+                      className={`w-full rounded-lg sm:rounded-2xl border p-2 sm:p-3 text-left transition ${
                         isActive
                           ? "border-amber-300 bg-white text-slate-950 shadow-xl"
                           : "border-white/10 bg-white/5 text-white hover:border-amber-300/60 hover:bg-white/10"
                       }`}
                     >
-                      <div className="flex items-center gap-3">
-                        <StaffPortrait staff={leader} className="h-14 w-14 shrink-0 rounded-xl" />
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <StaffPortrait staff={leader} className="h-10 sm:h-14 w-10 sm:w-14 shrink-0 rounded-lg sm:rounded-xl" />
                         <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2">
-                            <Icon className={isActive ? "text-orange-800" : "text-amber-300"} size={14} />
-                            <p className={`truncate text-[10px] font-black uppercase tracking-[0.16em] ${isActive ? "text-orange-900" : "text-orange-100/75"}`}>
+                          <div className="flex items-center gap-1.5 sm:gap-2">
+                            <Icon className={isActive ? "text-orange-800" : "text-amber-300"} size={12} />
+                            <p className={`truncate text-[8px] sm:text-[10px] font-black uppercase tracking-[0.12em] ${isActive ? "text-orange-900" : "text-orange-100/75"}`}>
                               {getLeaderTitle(leader)}
                             </p>
                           </div>
-                          <h4 className="mt-1 truncate text-sm font-black">{leader.name}</h4>
-                          <p className={`mt-0.5 truncate text-xs ${isActive ? "text-slate-500" : "text-white/55"}`}>
+                          <h4 className="mt-0.5 sm:mt-1 truncate text-xs sm:text-sm font-black">{leader.name}</h4>
+                          <p className={`mt-0.25 sm:mt-0.5 truncate text-[10px] sm:text-xs ${isActive ? "text-slate-500" : "text-white/55"}`}>
                             {getLeaderScope(leader)}
                           </p>
                         </div>
-                        <FiChevronRight className={isActive ? "text-orange-800" : "text-white/40"} />
+                        <FiChevronRight className={`${isActive ? "text-orange-800" : "text-white/40"} shrink-0`} size={16} />
                       </div>
                     </button>
                   );
@@ -572,10 +572,10 @@ export default function ModernStaffLeadership() {
               </div>
             </div>
 
-            <div className="rounded-[2rem] border border-white/10 bg-white p-5 shadow-2xl shadow-black/20">
-              <p className="text-[10px] font-black uppercase tracking-[0.24em] text-orange-800">Profile Coverage</p>
-              <h3 className="mt-2 text-xl font-black text-slate-950">What this section displays</h3>
-              <div className="mt-4 space-y-3">
+            <div className="rounded-lg sm:rounded-[2rem] border border-white/10 bg-white p-4 sm:p-5 shadow-2xl shadow-black/20">
+              <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.20em] text-orange-800">Profile Coverage</p>
+              <h3 className="mt-1.5 sm:mt-2 text-lg sm:text-xl font-black text-slate-950">What this section displays</h3>
+              <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
                 {[
                   { icon: FiUser, text: "Name, role, office, department, and qualification" },
                   { icon: FiMessageSquare, text: "Bio and leadership quote where available" },
@@ -585,8 +585,8 @@ export default function ModernStaffLeadership() {
                 ].map((item) => {
                   const Icon = item.icon;
                   return (
-                    <div key={item.text} className="flex items-start gap-3 rounded-xl bg-orange-50 p-3 text-sm leading-5 text-slate-700">
-                      <Icon className="mt-0.5 shrink-0 text-orange-800" />
+                    <div key={item.text} className="flex items-start gap-2 sm:gap-3 rounded-lg sm:rounded-xl bg-orange-50 p-2.5 sm:p-3 text-xs sm:text-sm leading-5 text-slate-700">
+                      <Icon className="mt-0.5 shrink-0 text-orange-800" size={16} />
                       <span>{item.text}</span>
                     </div>
                   );

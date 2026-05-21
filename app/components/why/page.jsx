@@ -963,7 +963,7 @@ const ModernSchoolLayout = () => {
 
                 {/* Heading */}
                 <div className="mt-5 space-y-4">
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-[1.05] tracking-tight">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 leading-[1.05] tracking-tight">
                     {loading ? (
                       <span className="inline-flex items-center gap-2">
                         <FiLoader className="w-6 h-6 animate-spin text-orange-800" />{" "}
@@ -975,7 +975,7 @@ const ModernSchoolLayout = () => {
                       </span>
                     )}
                   </h1>
-                  <p className="text-slate-600 text-base sm:text-lg leading-relaxed font-medium max-w-xl">
+                  <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed font-medium max-w-xl">
                     {description ||
                       "A future-ready learning community focused on academic growth, character, and real-world skills."}
                   </p>
@@ -1032,18 +1032,18 @@ const ModernSchoolLayout = () => {
   })()}
 </div>
 
-           {/* CTA Buttons - Flex No-Wrap & Solid Tones */}
-<div className="mt-7 flex flex-nowrap items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
+            {/* CTA Buttons - Flex No-Wrap & Solid Tones */}
+<div className="mt-5 sm:mt-7 flex flex-wrap items-center gap-2 sm:gap-3">
   <button
     onClick={handleExplorePathways}
-    className="shrink-0 flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-slate-900 text-white font-black text-sm tracking-tight shadow-xl shadow-slate-200 transition-transform active:scale-95"
+    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-2xl bg-slate-900 text-white font-black text-xs sm:text-sm tracking-tight shadow-xl shadow-slate-200 transition-transform active:scale-95"
   >
-    Admissions <FiArrowRight className="w-4 h-4 text-indigo-400" />
+    Admissions <FiArrowRight className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-indigo-400" />
   </button>
   
   <button
     onClick={() => router.push("/pages/AboutUs")}
-    className="shrink-0 flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white text-slate-900 font-black text-sm tracking-tight border border-slate-200 shadow-sm transition-transform active:scale-95"
+    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-2xl bg-white text-slate-900 font-black text-xs sm:text-sm tracking-tight border border-slate-200 shadow-sm transition-transform active:scale-95"
   >
     About Us
   </button>
@@ -1053,27 +1053,27 @@ const ModernSchoolLayout = () => {
 
             {/* Right Column - API-backed school information */}
             <div className="order-1 lg:order-2 lg:col-span-7">
-              <div className="h-full rounded-3xl border border-slate-200 bg-white/85 p-4 sm:p-5 shadow-[0_25px_70px_rgba(2,6,23,0.08)] backdrop-blur">
-                <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 h-full">
-                  <div className="xl:col-span-7 rounded-[1.35rem] bg-slate-950 p-5 sm:p-6 text-white overflow-hidden relative">
+              <div className="h-full rounded-2xl sm:rounded-3xl border border-slate-200 bg-white/85 p-3 sm:p-4 md:p-5 shadow-[0_25px_70px_rgba(2,6,23,0.08)] backdrop-blur">
+                <div className="grid grid-cols-1 xl:grid-cols-12 gap-3 sm:gap-4 h-full">
+                  <div className="xl:col-span-7 rounded-lg sm:rounded-[1.35rem] bg-slate-950 p-4 sm:p-5 md:p-6 text-white overflow-hidden relative">
                     <div className="absolute -top-24 -right-24 h-60 w-60 rounded-full bg-amber-500/20 blur-3xl" />
                     <div className="absolute -bottom-24 -left-16 h-56 w-56 rounded-full bg-sky-500/15 blur-3xl" />
 
                     <div className="relative">
-                      <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.22em] text-white/70">
-                        <FiLayers className="h-3.5 w-3.5 text-amber-300" />
+                      <div className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/10 bg-white/10 px-2.5 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.20em] text-white/70">
+                        <FiLayers className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-amber-300" />
                         School Info
                       </div>
 
-                      <h2 className="mt-5 text-2xl sm:text-3xl font-black leading-tight tracking-tight">
+                      <h2 className="mt-3 sm:mt-5 text-lg sm:text-2xl md:text-3xl font-black leading-tight tracking-tight">
                         Academics, admissions, and learner support in one place.
                       </h2>
 
-                      <p className="mt-3 text-sm font-medium leading-relaxed text-white/70">
+                      <p className="mt-2 sm:mt-3 text-xs sm:text-sm font-medium leading-relaxed text-white/70">
                         Live school information from the school profile API, with sensible defaults when records are still being updated.
                       </p>
 
-                      <div className="mt-6 grid grid-cols-2 gap-3">
+                      <div className="mt-4 sm:mt-6 grid grid-cols-2 gap-2 sm:gap-3">
                         {[
                           {
                             label: "Subjects",
@@ -1100,13 +1100,13 @@ const ModernSchoolLayout = () => {
                           return (
                             <div
                               key={item.label}
-                              className="rounded-2xl border border-white/10 bg-white/10 p-4"
+                              className="rounded-lg sm:rounded-2xl border border-white/10 bg-white/10 p-2.5 sm:p-4"
                             >
-                              <Icon className="h-4 w-4 text-amber-300" />
-                              <p className="mt-3 text-xl font-black text-white">
+                              <Icon className="h-3 sm:h-4 w-3 sm:w-4 text-amber-300" />
+                              <p className="mt-2 sm:mt-3 text-base sm:text-xl font-black text-white">
                                 {item.value}
                               </p>
-                              <p className="mt-1 text-[9px] font-black uppercase tracking-[0.18em] text-white/45">
+                              <p className="mt-0.5 sm:mt-1 text-[8px] sm:text-[9px] font-black uppercase tracking-[0.15em] text-white/45">
                                 {item.label}
                               </p>
                             </div>
@@ -1116,23 +1116,23 @@ const ModernSchoolLayout = () => {
                     </div>
                   </div>
 
-                  <div className="xl:col-span-5 grid grid-cols-1 gap-4">
-                    <div className="rounded-[1.35rem] border border-slate-200 bg-white p-5">
-                      <div className="flex items-center justify-between gap-3">
+                  <div className="xl:col-span-5 grid grid-cols-1 gap-3 sm:gap-4">
+                    <div className="rounded-lg sm:rounded-[1.35rem] border border-slate-200 bg-white p-3 sm:p-5">
+                      <div className="flex items-center justify-between gap-2 sm:gap-3">
                         <div>
-                          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                          <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">
                             Admission Window
                           </p>
-                          <h3 className="mt-1 text-lg font-black text-slate-900">
+                          <h3 className="mt-1 sm:mt-1.5 text-sm sm:text-lg font-black text-slate-900">
                             Requirements & dates
                           </h3>
                         </div>
-                        <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-900">
-                          <FiCheckCircle className="h-5 w-5" />
+                        <span className="inline-flex h-9 sm:h-11 w-9 sm:w-11 items-center justify-center rounded-lg sm:rounded-2xl bg-amber-50 text-amber-900 shrink-0">
+                          <FiCheckCircle className="h-4 sm:h-5 w-4 sm:w-5" />
                         </span>
                       </div>
 
-                      <div className="mt-5 grid grid-cols-2 gap-3">
+                      <div className="mt-3 sm:mt-5 grid grid-cols-2 gap-2 sm:gap-3">
                         {[
                           ["Opens", admissionMeta.opens],
                           ["Closes", admissionMeta.closes],
@@ -1141,12 +1141,12 @@ const ModernSchoolLayout = () => {
                         ].map(([label, value]) => (
                           <div
                             key={label}
-                            className="rounded-2xl border border-slate-100 bg-slate-50 p-3"
+                            className="rounded-lg sm:rounded-2xl border border-slate-100 bg-slate-50 p-2 sm:p-3"
                           >
-                            <p className="text-[9px] font-black uppercase tracking-[0.18em] text-slate-400">
+                            <p className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">
                               {label}
                             </p>
-                            <p className="mt-1 text-xs font-black leading-snug text-slate-800">
+                            <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs font-black leading-snug text-slate-800">
                               {value}
                             </p>
                           </div>
@@ -1154,15 +1154,15 @@ const ModernSchoolLayout = () => {
                       </div>
                     </div>
 
-                    <div className="rounded-[1.35rem] border border-slate-200 bg-white p-5">
-                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                    <div className="rounded-lg sm:rounded-[1.35rem] border border-slate-200 bg-white p-3 sm:p-5">
+                      <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">
                         Quick Admission Requirements
                       </p>
-                      <div className="mt-4 space-y-2.5">
+                      <div className="mt-2.5 sm:mt-4 space-y-1.5 sm:space-y-2.5">
                         {admissionRequirements.slice(0, 4).map((item) => (
-                          <div key={item} className="flex gap-2">
-                            <FiCheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                            <p className="text-xs font-semibold leading-relaxed text-slate-700">
+                          <div key={item} className="flex gap-1.5 sm:gap-2">
+                            <FiCheckCircle className="mt-0.5 h-3.5 sm:h-4 w-3.5 sm:w-4 shrink-0 text-emerald-600" />
+                            <p className="text-[10px] sm:text-xs font-semibold leading-relaxed text-slate-700">
                               {item}
                             </p>
                           </div>
@@ -1171,16 +1171,16 @@ const ModernSchoolLayout = () => {
                     </div>
                   </div>
 
-                  <div className="xl:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="rounded-[1.35rem] border border-slate-200 bg-white p-5 md:col-span-1">
-                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                  <div className="xl:col-span-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                    <div className="rounded-lg sm:rounded-[1.35rem] border border-slate-200 bg-white p-3 sm:p-5 md:col-span-1">
+                      <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">
                         Departments
                       </p>
-                      <div className="mt-4 flex flex-wrap gap-2">
+                      <div className="mt-3 sm:mt-4 flex flex-wrap gap-1.5 sm:gap-2">
                         {departments.slice(0, 8).map((department) => (
                           <span
                             key={department}
-                            className="rounded-full border border-amber-100 bg-amber-50 px-3 py-1.5 text-[11px] font-black text-amber-900"
+                            className="rounded-full border border-amber-100 bg-amber-50 px-2 sm:px-3 py-1 text-[9px] sm:text-[11px] font-black text-amber-900"
                           >
                             {department}
                           </span>
@@ -1188,15 +1188,15 @@ const ModernSchoolLayout = () => {
                       </div>
                     </div>
 
-                    <div className="rounded-[1.35rem] border border-slate-200 bg-white p-5 md:col-span-1">
-                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                    <div className="rounded-lg sm:rounded-[1.35rem] border border-slate-200 bg-white p-3 sm:p-5 md:col-span-1">
+                      <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">
                         Subjects
                       </p>
-                      <div className="mt-4 flex flex-wrap gap-2">
+                      <div className="mt-3 sm:mt-4 flex flex-wrap gap-1.5 sm:gap-2">
                         {subjects.slice(0, 10).map((subject) => (
                           <span
                             key={subject}
-                            className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[11px] font-black text-slate-800"
+                            className="rounded-full border border-slate-200 bg-slate-50 px-2 sm:px-3 py-1 text-[9px] sm:text-[11px] font-black text-slate-800"
                           >
                             {subject}
                           </span>
@@ -1204,18 +1204,18 @@ const ModernSchoolLayout = () => {
                       </div>
                     </div>
 
-                    <div className="rounded-[1.35rem] border border-slate-200 bg-white p-5 md:col-span-1">
-                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                    <div className="rounded-lg sm:rounded-[1.35rem] border border-slate-200 bg-white p-3 sm:p-5 md:col-span-1">
+                      <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">
                         Documents
                       </p>
-                      <div className="mt-4 space-y-2">
+                      <div className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
                         {admissionDocuments.slice(0, 4).map((document) => (
                           <div
                             key={document}
-                            className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2"
+                            className="flex items-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-slate-50 px-2 sm:px-3 py-1.5 sm:py-2"
                           >
-                            <FiShield className="h-4 w-4 text-slate-500" />
-                            <span className="text-xs font-bold text-slate-700">
+                            <FiShield className="h-3.5 sm:h-4 w-3.5 sm:w-4 text-slate-500 shrink-0" />
+                            <span className="text-[10px] sm:text-xs font-bold text-slate-700">
                               {document}
                             </span>
                           </div>
@@ -1246,39 +1246,39 @@ const ModernSchoolLayout = () => {
               <FiStar className="sm:text-orange-800 text-amber-800 w-4 h-4" />
               Why Choose Us
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-tight mb-4 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 leading-tight mb-3 sm:mb-4 tracking-tight">
               A bolder way to{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r  from-amber-900 via-orange-800 to-rose-900">
                 learn and grow
               </span>
             </h2>
-            <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-medium">
+            <p className="text-slate-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-medium">
               Distinctive advantages that shape learning, character, and future readiness.
             </p>
           </div>
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6 mb-8 sm:mb-10">
             {whyChooseUs.map((item) => (
               <div
                 key={item.id}
-                className="relative rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate- sm:from-slate-200 sm:via-white sm:to-slate-200 from-amber-200 via-white to-rose-200"
+                className="relative rounded-2xl sm:rounded-3xl p-[1px] bg-gradient-to-br from-slate-200 via-white to-slate- sm:from-slate-200 sm:via-white sm:to-slate-200 from-amber-200 via-white to-rose-200"
               >
-                <div className="relative h-full rounded-[calc(1.5rem-1px)] bg-white/80 backdrop-blur border border-white/60 p-6 shadow-sm">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="w-11 h-11 rounded-2xl bg-gradient-to-br sm:from-indigo-600 sm:to-sky-500 from-amber-700 to-amber-600 text-white flex items-center justify-center shadow-md">
-                      {item.icon}
+                <div className="relative h-full rounded-[calc(1.5rem-1px)] bg-white/80 backdrop-blur border border-white/60 p-4 sm:p-5 md:p-6 shadow-sm">
+                  <div className="flex items-start justify-between gap-2 sm:gap-3">
+                    <div className="w-10 sm:w-11 h-10 sm:h-11 rounded-lg sm:rounded-2xl bg-gradient-to-br sm:from-indigo-600 sm:to-sky-500 from-amber-700 to-amber-600 text-white flex items-center justify-center shadow-md shrink-0">
+                      <div className="text-sm sm:text-base">{item.icon}</div>
                     </div>
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black tracking-[0.2em] uppercase bg-slate-50 border border-slate-200 text-slate-600">
+                    <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black tracking-[0.2em] uppercase bg-slate-50 border border-slate-200 text-slate-600 shrink-0">
                       {item.metrics}
                     </span>
                   </div>
 
-                  <h3 className="mt-4 text-lg font-black text-slate-900 tracking-tight">
+                  <h3 className="mt-3 sm:mt-4 text-sm sm:text-lg font-black text-slate-900 tracking-tight">
                     {item.title}
                   </h3>
 
-                  <p className="mt-2 text-sm text-slate-600 font-medium leading-relaxed">
+                  <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
                     {expandedCards[item.id]
                       ? item.description
                       : item.shortDescription}
@@ -1286,11 +1286,11 @@ const ModernSchoolLayout = () => {
 
                   <button
                     onClick={() => toggleReadMore(item.id)}
-                    className="mt-4 inline-flex items-center gap-1 text-xs font-black tracking-widest uppercase text-orange-800"
+                    className="mt-2.5 sm:mt-4 inline-flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-xs font-black tracking-widest uppercase text-orange-800"
                   >
                     {expandedCards[item.id] ? "Show Less" : "Read More"}
                     <FiChevronDown
-                      className={`w-4 h-4  ${
+                      className={`w-3 sm:w-4 h-3 sm:h-4  ${
                         expandedCards[item.id] ? "rotate-180" : ""
                       }`}
                     />
@@ -1345,10 +1345,10 @@ const ModernSchoolLayout = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-4 space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200">
-                <IoSparkles className="sm:text-orange-800 text-amber-700 w-3.5 h-3.5" />
-                <span className="text-[10px] font-black uppercase tracking-[0.25em] sm:text-slate-700 text-amber-900">
+            <div className="lg:col-span-4 space-y-2 sm:space-y-3">
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-slate-200">
+                <IoSparkles className="sm:text-orange-800 text-amber-700 w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.20em] sm:text-slate-700 text-amber-900">
                   Core Foundations
                 </span>
               </div>
@@ -1358,7 +1358,7 @@ const ModernSchoolLayout = () => {
                   how we learn
                 </span>
               </h2>
-              <p className="text-slate-600 text-sm leading-relaxed max-w-sm font-medium">
+              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-sm font-medium">
                 Guiding principles for the {new Date().getFullYear()} academic year—what we believe, and how we build learners.
               </p>
             </div>
