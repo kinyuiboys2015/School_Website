@@ -978,6 +978,15 @@ const validateStudent = (student, index) => {
 // GET - Main endpoint with consistent statistics (PUBLIC - no authentication required)
 export async function GET(request) {
   try {
+    // ✅ AUTHENTICATION CHECK - Protect sensitive student data
+    const auth = authenticateRequest(request);
+    
+    if (!auth.authenticated) {
+      return auth.response;
+    }
+
+    console.log(`📖 Student data request from: ${auth.user.name} (${auth.user.role})`);
+
     const url = new URL(request.url);
     const action = url.searchParams.get('action');
     const form = url.searchParams.get('form') || '';
