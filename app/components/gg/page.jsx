@@ -28,13 +28,13 @@ const ModernModal = ({ children, open, onClose, maxWidth = '800px', blur = true 
   if (!open) return null;
 
   return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${blur ? 'backdrop-blur-md' : 'bg-black/50'}`}>
+    <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto ${blur ? 'backdrop-blur-md' : 'bg-black/50'}`}>
       <div 
-        className="relative bg-white/95 rounded-3xl shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden border border-white/40"
+        className="relative bg-white/95 rounded-3xl shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden border border-white/40 my-auto"
         style={{ 
-          width: '90%',
+          width: '100%',
           maxWidth: maxWidth,
-          maxHeight: '90vh',
+          maxHeight: window?.innerHeight ? Math.min(95, (90 * window.innerHeight) / window.innerHeight) + 'vh' : '95vh',
           background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%)'
         }}
       >
@@ -138,25 +138,25 @@ const ModernShareModal = ({ gallery, onClose }) => {
   return (
     <ModernModal open={true} onClose={onClose} maxWidth="480px">
       {/* Dark Header - Matches Events/News style */}
-      <div className="bg-[#2D1B14] p-6 sm:p-8 text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-amber-500/10 blur-3xl rounded-full -mr-16 -mt-16" />
-        <div className="absolute bottom-0 left-0 w-20 sm:w-24 h-20 sm:h-24 bg-rose-500/5 blur-2xl rounded-full -ml-12 -mb-12" />
+      <div className="bg-[#2D1B14] p-4 sm:p-6 md:p-8 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-20 sm:w-24 md:w-32 h-20 sm:h-24 md:h-32 bg-amber-500/10 blur-3xl rounded-full -mr-8 sm:-mr-12 md:-mr-16 -mt-8 sm:-mt-12 md:-mt-16" />
+        <div className="absolute bottom-0 left-0 w-16 sm:w-20 md:w-24 h-16 sm:h-20 md:h-24 bg-rose-500/5 blur-2xl rounded-full -ml-8 sm:-ml-10 md:-ml-12 -mb-8 sm:-mb-10 md:-mb-12" />
         
         <div className="relative z-10 flex flex-col items-center text-center">
-          <div className="w-10 h-10 sm:w-14 sm:h-14 bg-white/5 backdrop-blur-xl rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 border border-white/10 shadow-2xl">
-            <IoShareSocialOutline className="text-xl sm:text-2xl text-amber-200" />
+          <div className="w-10 h-10 sm:w-12 md:w-14 bg-white/5 backdrop-blur-xl rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center mb-2 sm:mb-3 md:mb-4 border border-white/10 shadow-2xl">
+            <IoShareSocialOutline className="text-lg sm:text-xl md:text-2xl text-amber-200" />
           </div>
-          <h2 className="text-xl sm:text-2xl font-black tracking-tight italic">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-black tracking-tight italic">
             Share Gallery
           </h2>
-          <p className="text-amber-100/50 text-[10px] sm:text-xs mt-1 uppercase tracking-[0.15em] sm:tracking-[0.2em] font-medium">
+          <p className="text-amber-100/50 text-[9px] sm:text-xs md:text-sm mt-1 uppercase tracking-[0.15em] sm:tracking-[0.2em] font-medium">
             Spread the word
           </p>
         </div>
       </div>
 
       {/* Content Area */}
-      <div className="p-4 sm:p-6 md:p-8 bg-white">
+      <div className="p-3 sm:p-4 md:p-8 bg-white max-h-[60vh] sm:max-h-none overflow-y-auto">
         {/* Gallery Preview */}
         <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-100 mb-6 sm:mb-8">
           <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl overflow-hidden bg-slate-200 shrink-0">
@@ -597,8 +597,8 @@ const ModernGalleryDetailModal = ({ gallery, onClose, onShare }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 bg-slate-900/90 backdrop-blur-sm">
-      <div className="relative w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-3xl bg-white sm:rounded-[40px] shadow-2xl overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 bg-slate-900/90 backdrop-blur-sm overflow-y-auto">
+      <div className="relative w-full h-full sm:h-auto sm:max-h-[95vh] sm:max-w-4xl bg-white sm:rounded-[40px] shadow-2xl overflow-hidden flex flex-col my-auto">
         
         {/* Close Button */}
         <button 
@@ -609,7 +609,7 @@ const ModernGalleryDetailModal = ({ gallery, onClose, onShare }) => {
         </button>
 
         {/* Hero Image */}
-        <div className="relative h-[30vh] sm:h-[350px] w-full shrink-0">
+        <div className="relative h-[45vh] sm:h-[400px] md:h-[450px] w-full shrink-0">
           {gallery.files && gallery.files[selectedIndex] ? (
             <img
               src={gallery.files[selectedIndex]}
@@ -633,8 +633,8 @@ const ModernGalleryDetailModal = ({ gallery, onClose, onShare }) => {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 bg-white">
-          <div className="max-w-2xl mx-auto space-y-5 sm:space-y-8">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 lg:p-10 bg-white">
+          <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6 md:space-y-8">
             
             {/* Title Section */}
             <section className="space-y-3 sm:space-y-4">
@@ -794,36 +794,36 @@ const ModernGalleryDetailModal = ({ gallery, onClose, onShare }) => {
         </div>
 
         {/* Action Footer */}
-        <div className="shrink-0 p-3 sm:p-4 md:p-6 bg-white/80 backdrop-blur-xl border-t border-slate-100/50">
-          <div className="max-w-2xl mx-auto flex items-center gap-3 sm:gap-4">
+        <div className="shrink-0 p-2 sm:p-3 md:p-4 lg:p-6 bg-white/80 backdrop-blur-xl border-t border-slate-100/50">
+          <div className="max-w-2xl mx-auto flex items-center gap-2 sm:gap-3 md:gap-4">
             <button
               onClick={downloadAllFiles}
               disabled={!gallery.files || gallery.files.length === 0 || downloading}
-              className={`flex-[2.5] relative group h-12 sm:h-16 bg-[#2D1B14] overflow-hidden rounded-2xl sm:rounded-[24px] shadow-lg shadow-stone-200 active:scale-[0.98] transition-all duration-300 ${(!gallery.files || gallery.files.length === 0 || downloading) ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`flex-[2.5] relative group h-10 sm:h-12 md:h-16 bg-[#2D1B14] overflow-hidden rounded-xl sm:rounded-2xl shadow-lg shadow-stone-200 active:scale-[0.98] transition-all duration-300 ${(!gallery.files || gallery.files.length === 0 || downloading) ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              <div className="relative flex items-center justify-center gap-2 sm:gap-3 px-4 text-white">
-                <div className="p-1.5 sm:p-2 bg-white/10 rounded-lg sm:rounded-xl">
-                  <FiDownload className="text-base sm:text-xl text-amber-300" />
+              <div className="relative flex items-center justify-center gap-1 sm:gap-2 md:gap-3 px-2 sm:px-3 md:px-4 text-white">
+                <div className="p-1 sm:p-1.5 md:p-2 bg-white/10 rounded-lg sm:rounded-lg md:rounded-xl">
+                  <FiDownload className="text-xs sm:text-base md:text-xl text-amber-300" />
                 </div>
-                <span className="text-[10px] sm:text-sm font-black uppercase tracking-[0.15em] truncate">
-                  {downloading ? 'Downloading...' : 'Download All'}
+                <span className="text-[9px] sm:text-xs md:text-sm font-black uppercase tracking-[0.1em] sm:tracking-[0.15em] truncate">
+                  {downloading ? 'Downloading...' : 'Download'}
                 </span>
               </div>
             </button>
 
             <button
               onClick={() => onShare(gallery)}
-              className="flex-1 h-12 sm:h-16 bg-amber-50 border-2 border-amber-100 text-[#2D1B14] rounded-2xl sm:rounded-[24px] font-black active:scale-95 transition-all duration-300 shadow-sm flex items-center justify-center gap-2 group hover:bg-amber-100"
+              className="flex-1 h-10 sm:h-12 md:h-16 bg-amber-50 border-2 border-amber-100 text-[#2D1B14] rounded-xl sm:rounded-2xl font-black active:scale-95 transition-all duration-300 shadow-sm flex items-center justify-center gap-1 sm:gap-2 group hover:bg-amber-100"
             >
-              <IoShareOutline className="text-lg sm:text-xl group-hover:rotate-12 transition-transform" />
-              <span className="hidden sm:inline text-xs uppercase tracking-widest font-black">Share</span>
+              <IoShareOutline className="text-sm sm:text-base md:text-xl group-hover:rotate-12 transition-transform" />
+              <span className="hidden sm:inline text-[9px] sm:text-xs md:text-sm uppercase tracking-widest font-black">Share</span>
             </button>
 
-            <button onClick={onClose} className="sm:hidden flex items-center justify-center w-12 h-12 bg-slate-100 rounded-2xl text-slate-500 active:bg-slate-200">
-              <IoClose size={22} />
+            <button onClick={onClose} className="sm:hidden flex items-center justify-center w-10 h-10 bg-slate-100 rounded-xl text-slate-500 active:bg-slate-200">
+              <IoClose size={18} />
             </button>
           </div>
-          <div className="w-10 h-1 bg-slate-200 rounded-full mx-auto mt-4 sm:hidden opacity-50" />
+          <div className="w-8 h-1 bg-slate-200 rounded-full mx-auto mt-3 sm:hidden opacity-50" />
         </div>
       </div>
     </div>
