@@ -410,7 +410,7 @@ export default function ModernFeesPage() {
         {/* Fee Structure Summary */}
         <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
           <h2 className="text-xl font-bold text-slate-900 mb-4">{new Date().getFullYear()} Fee Structure Summary</h2>
-          <p className="text-slate-600 mb-4">Total Annual Fees: <span className="font-black text-2xl text-slate-900">{documentData?.feesAnnualTotal?.toLocaleString() || 'N/A'}</span></p>
+          <p className="text-slate-600 mb-4">Total Annual Fees: <span className="font-black text-2xl text-slate-900">{documentData?.feesBoardingAnnualAmount?.toLocaleString() || 'N/A'}</span></p>
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
             <div className="bg-white rounded-lg p-4 border border-slate-200">
@@ -432,7 +432,7 @@ export default function ModernFeesPage() {
             <div className="flex flex-col sm:flex-row justify-between gap-2 mt-2">
               <span>Term 1: KSh 24,535/=</span>
               <span>Term 2: KSh 16,000/=</span>
-              <span className="font-bold">Total: KSh {documentData?.feesForm4Total?.toLocaleString() || 'N/A'}</span>
+              <span className="font-bold">Total: KSh {documentData?.feesBoardingAnnualAmount?.toLocaleString() || 'N/A'}</span>
             </div>
           </div>
         </div>
