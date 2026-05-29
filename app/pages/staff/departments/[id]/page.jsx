@@ -204,52 +204,37 @@ export default function StaffDepartmentDetailPage() {
           <FiArrowLeft size={14} /> Staff Directory
         </Link>
 
-        {/* BENTO-STYLE SIDE-BY-SIDE HERO LAYOUT */}
-        <article className="overflow-hidden rounded-[2rem] border border-slate-200 bg-[#071527] shadow-xl">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr]">
-            
-            {/* Left Content Area */}
-            <div className="relative z-10 flex flex-col justify-center p-6 text-white sm:p-10 lg:p-12">
-              <div className="absolute right-0 top-0 h-44 w-44 rounded-bl-full bg-[#38bdf8]/10 pointer-events-none" />
-              
-              <div>
-                <span
-                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[10px] font-black uppercase tracking-widest shadow-md ${meta.badge}`}
-                >
-                  <Icon size={14} /> {meta.label}
-                </span>
-                <h1 className="mt-6 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
-                  {department.name}
-                </h1>
-                <p className="mt-4 max-w-xl text-sm leading-7 text-white/70 sm:text-base">
-                  {department.description ||
-                    "Department-level staff information is shared here without exposing individual private teacher details."}
-                </p>
-              </div>
-            </div>
-
-            {/* Right Image Feature Area (Bento Glassmorphic Design) */}
-            <div className="relative h-64 w-full overflow-hidden bg-slate-950 sm:h-80 lg:h-full lg:min-h-[420px]">
-              {/* Blur Background Layer */}
+        <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
+          
+          {/* RESTORED TO ORIGINAL FULL-WIDTH HERO IMAGE LAYOUT */}
+          <div className="relative w-full">
+            <div className="relative h-[55vh] sm:h-[65vh] lg:h-[70vh] w-full bg-slate-900">
               <img
                 src={getDepartmentImage(department)}
-                alt=""
-                className="absolute inset-0 h-full w-full object-cover opacity-30 blur-xl scale-110"
+                alt={department.name}
+                className="absolute inset-0 h-full w-full object-contain bg-slate-800"
+                style={{ objectPosition: "center top" }}
               />
-              {/* Foreground Uncropped Protected Image Layer */}
-              <div className="absolute inset-4 flex items-center justify-center rounded-2xl bg-slate-900/40 border border-white/10 p-2 backdrop-blur-md">
-                <img
-                  src={getDepartmentImage(department)}
-                  alt={department.name}
-                  className="h-full w-full rounded-xl object-contain"
-                />
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
             </div>
-
+            
+            <div className="absolute bottom-0 left-0 right-0 p-6 text-white sm:p-10">
+              <span
+                className={`inline-flex w-fit items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-[10px] font-black uppercase tracking-widest shadow-md ${meta.badge}`}
+              >
+                <Icon size={14} /> {meta.label}
+              </span>
+              <h1 className="mt-4 max-w-3xl text-3xl font-black tracking-tight drop-shadow-lg sm:text-4xl lg:text-5xl">
+                {department.name}
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/90 drop-shadow-md sm:text-base">
+                {department.description ||
+                  "Department-level staff information is shared here without exposing individual private teacher details."}
+              </p>
+            </div>
           </div>
 
-          {/* Dynamic Data Content Area */}
-          <div className="bg-white p-5 sm:p-8">
+          <div className="p-5 sm:p-8">
             {/* Stats grid */}
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               <DetailStat icon={FiUsers} label="Teachers/Staff" value={`${department.staffCount || 0} members`} />
@@ -258,49 +243,57 @@ export default function StaffDepartmentDetailPage() {
               <DetailStat icon={Icon} label="Category" value={meta.label} />
             </div>
 
-            {/* Overview and Privacy Notice */}
-            <div className="mt-8 grid gap-6 lg:grid-cols-[1.4fr_0.8fr]">
-              <section className="rounded-2xl border border-slate-100 bg-slate-50 p-5 sm:p-6">
-                <h2 className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-slate-900">
-                  <FiBookOpen className="text-blue-600" /> Department Overview
-                </h2>
-                <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
-                  {department.description ||
-                    "This department is managed as a grouped staff area for privacy. Public details focus on the department structure, responsibilities, and school-level service."}
-                </p>
-              </section>
+            {/* ASYMMETRIC CONTENT & METADATA GRID (Changed layout to give left content 1.3fr dominance) */}
+            <div className="mt-8 grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
+              
+              {/* Main Metadata Display Items (Left Side) */}
+              <div className="space-y-6">
+                <section className="rounded-2xl border border-slate-100 bg-slate-50 p-5 sm:p-6">
+                  <h2 className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-slate-900">
+                    <FiBookOpen className="text-blue-600" /> Department Overview
+                  </h2>
+                  <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+                    {department.description ||
+                      "This department is managed as a grouped staff area for privacy. Public details focus on the department structure, responsibilities, and school-level service."}
+                  </p>
+                </section>
 
-              <section
-                className={`rounded-2xl bg-gradient-to-br ${meta.accent} p-5 text-white sm:p-6`}
-              >
-                <h2 className="text-sm font-black uppercase tracking-widest">Privacy Notice</h2>
-                <p className="mt-4 text-sm leading-7 text-white/85">
-                  Individual teacher and support staff contact details are not published. Department
-                  information is shared at group level.
-                </p>
-              </section>
-            </div>
-
-            {/* Extra details */}
-            {extraDetails.length > 0 && (
-              <section className="mt-8">
-                <h2 className="mb-4 flex items-center gap-2 text-sm font-black uppercase tracking-widest text-slate-900">
-                  <FiCheckCircle className="text-emerald-600" /> Additional Department Details
-                </h2>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {extraDetails.map(([key, value]) => (
-                    <div key={key} className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-                        {formatKey(key)}
-                      </p>
-                      <p className="mt-2 text-sm font-semibold leading-relaxed text-slate-700">
-                        {value}
-                      </p>
+                {/* Extra details dynamically loaded mapping block moved into the left layout block */}
+                {extraDetails.length > 0 && (
+                  <section>
+                    <h2 className="mb-4 flex items-center gap-2 text-sm font-black uppercase tracking-widest text-slate-900">
+                      <FiCheckCircle className="text-emerald-600" /> Additional Department Details
+                    </h2>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      {extraDetails.map(([key, value]) => (
+                        <div key={key} className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
+                          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                            {formatKey(key)}
+                          </p>
+                          <p className="mt-2 text-sm font-semibold leading-relaxed text-slate-700">
+                            {value}
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </section>
-            )}
+                  </section>
+                )}
+              </div>
+
+              {/* Collateral/Context Panels (Right Side) */}
+              <div>
+                <section
+                  className={`rounded-2xl bg-gradient-to-br ${meta.accent} p-5 text-white sm:p-6 sticky top-6`}
+                >
+                  <h2 className="text-sm font-black uppercase tracking-widest">Privacy Notice</h2>
+                  <p className="mt-4 text-sm leading-7 text-white/85">
+                    Individual teacher and support staff contact details are not published. Department
+                    information is shared at group level.
+                  </p>
+                </section>
+              </div>
+
+            </div>
 
             {/* Teachers grid */}
             <section className="mt-8">
