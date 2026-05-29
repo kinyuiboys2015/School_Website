@@ -380,104 +380,104 @@ export default function ModernFeesPage() {
     <div className="min-h-screen bg-white">
       <Toaster position="top-right" richColors />
 
-{/* Hero Section */}
-<div className="bg-gray-900 p-5 sm:p-8">
-  <div className="max-w-7xl mx-auto">
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-      <div>
-        <h1 className="text-2xl sm:text-4xl font-bold text-white">
-          School Fees
-        </h1>
-        <p className="text-gray-300 text-sm sm:text-base mt-1">
-          Katwanyaa Senior School  fee structure
-        </p>
+      {/* Hero Section */}
+      <div className="bg-gray-900 p-5 sm:p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h1 className="text-2xl sm:text-4xl font-bold text-white">
+                School Fees
+              </h1>
+              <p className="text-gray-300 text-sm sm:text-base mt-1">
+                Katwanyaa Senior School fee structure
+              </p>
+            </div>
+            
+            <button
+              onClick={refreshData}
+              disabled={refreshing}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-white text-gray-900 font-medium text-sm hover:bg-gray-100 transition-all disabled:opacity-50 w-fit"
+            >
+              {refreshing && <CircularProgress size={16} thickness={4} sx={{ color: '#111827' }} />}
+              <span>{refreshing ? 'Refreshing...' : 'Refresh'}</span>
+            </button>
+          </div>
+        </div>
       </div>
-      
-  <button
-  onClick={refreshData}
-  disabled={refreshing}
-  className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-white text-gray-900 font-medium text-sm hover:bg-gray-100 transition-all disabled:opacity-50 w-fit"
->
-  {refreshing && <CircularProgress size={16} thickness={4} sx={{ color: "#111827" }} />}
-  <span>{refreshing ? "Refreshing..." : "Refresh"}</span>
-</button>
-    </div>
-  </div>
-</div>
 
       <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-8">
         {/* Fee Cards - Day School & Boarding */}
-<div className="space-y-4">
-  {/* Day School Fees */}
-  <div className="bg-white rounded-xl border border-gray-200 p-5">
-    <div className="mb-3">
-      <h2 className="text-lg font-semibold text-gray-900">Day Scholars</h2>
-      <p className="text-xs text-gray-500">Annual fees</p>
-    </div>
+        <div className="space-y-4">
+          {/* Day School Fees */}
+          <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div className="mb-3">
+              <h2 className="text-lg font-semibold text-gray-900">Day Scholars</h2>
+              <p className="text-xs text-gray-500">Annual fees</p>
+            </div>
 
-    <div className="mb-4">
-      <p className="text-3xl font-bold text-gray-900">
-        KSh {(documentData?.feesDayAnnualAmount || 0).toLocaleString()}
-      </p>
-      <p className="text-xs text-gray-500 mt-1">
-        {documentData?.feesDayDescription || 'Total annual fees for day school'}
-      </p>
-    </div>
+            <div className="mb-4">
+              <p className="text-3xl font-bold text-gray-900">
+                KSh {(documentData?.feesDayAnnualAmount || 0).toLocaleString()}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                {documentData?.feesDayDescription || 'Total annual fees for day school'}
+              </p>
+            </div>
 
-    {documentData?.feesDayDistributionPdf && (
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={() => handleViewPDF(documentData.feesDayDistributionPdf)}
-          className="px-3 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors w-fit"
-        >
-          View PDF
-        </button>
-        <button
-          onClick={() => handleDownloadPDF(documentData.feesDayDistributionPdf, documentData.feesDayPdfName)}
-          className="px-3 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900 transition-colors flex items-center gap-1 w-fit"
-        >
-          <FiDownload size={14} />
-          Download
-        </button>
-      </div>
-    )}
-  </div>
+            {documentData?.feesDayDistributionPdf && (
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => handleViewPDF(documentData.feesDayDistributionPdf)}
+                  className="px-3 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors w-fit"
+                >
+                  View PDF
+                </button>
+                <button
+                  onClick={() => handleDownloadPDF(documentData.feesDayDistributionPdf, documentData.feesDayPdfName)}
+                  className="px-3 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900 transition-colors flex items-center gap-1 w-fit"
+                >
+                  <FiDownload size={14} />
+                  Download
+                </button>
+              </div>
+            )}
+          </div>
 
-  {/* Boarding Fees */}
-  <div className="bg-white rounded-xl border border-gray-200 p-5">
-    <div className="mb-3">
-      <h2 className="text-lg font-semibold text-gray-900">Boarders</h2>
-      <p className="text-xs text-gray-500">Annual fees</p>
-    </div>
+          {/* Boarding Fees */}
+          <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div className="mb-3">
+              <h2 className="text-lg font-semibold text-gray-900">Boarders</h2>
+              <p className="text-xs text-gray-500">Annual fees</p>
+            </div>
 
-    <div className="mb-4">
-      <p className="text-3xl font-bold text-gray-900">
-        KSh {(documentData?.feesBoardingAnnualAmount || 0).toLocaleString()}
-      </p>
-      <p className="text-xs text-gray-500 mt-1">
-        {documentData?.feesBoardingDescription || 'Total annual fees for boarding school'}
-      </p>
-    </div>
+            <div className="mb-4">
+              <p className="text-3xl font-bold text-gray-900">
+                KSh {(documentData?.feesBoardingAnnualAmount || 0).toLocaleString()}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                {documentData?.feesBoardingDescription || 'Total annual fees for boarding school'}
+              </p>
+            </div>
 
-    {documentData?.feesBoardingDistributionPdf && (
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={() => handleViewPDF(documentData.feesBoardingDistributionPdf)}
-          className="px-3 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors w-fit"
-        >
-          View PDF
-        </button>
-        <button
-          onClick={() => handleDownloadPDF(documentData.feesBoardingDistributionPdf, documentData.feesBoardingPdfName)}
-          className="px-3 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900 transition-colors flex items-center gap-1 w-fit"
-        >
-          <FiDownload size={14} />
-          Download
-        </button>
-      </div>
-    )}
-  </div>
-</div>
+            {documentData?.feesBoardingDistributionPdf && (
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => handleViewPDF(documentData.feesBoardingDistributionPdf)}
+                  className="px-3 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors w-fit"
+                >
+                  View PDF
+                </button>
+                <button
+                  onClick={() => handleDownloadPDF(documentData.feesBoardingDistributionPdf, documentData.feesBoardingPdfName)}
+                  className="px-3 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900 transition-colors flex items-center gap-1 w-fit"
+                >
+                  <FiDownload size={14} />
+                  Download
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Latest Admission Letter */}
         {documentData?.admissionFeePdf && (
@@ -511,55 +511,19 @@ export default function ModernFeesPage() {
           </div>
         )}
 
-        {/* Payment Info - Complete Payment Methods */}
+        {/* Payment Info - Updated for Kinyui Boys' High School */}
         <div className="space-y-4 sm:space-y-6">
           {/* Header */}
           <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-slate-700">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-1 sm:mb-2"> School Fees Payment Methods</h2>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-1 sm:mb-2">School Fees Payment Methods</h2>
             <p className="text-slate-300 text-xs sm:text-sm md:text-base">Multiple secure payment options available. Choose the method that works best for you.</p>
           </div>
 
           {/* DIRECT BANK PAYMENTS */}
           <div className="space-y-3 sm:space-y-4">
-            <h3 className="text-lg sm:text-2xl font-black text-slate-900">🏦 Direct Bank Transfers</h3>
+            <h3 className="text-lg sm:text-2xl font-black text-slate-900">Direct Bank Transfers</h3>
             
-            {/* Equity Bank */}
-            <div className="bg-white border-2 border-emerald-500 rounded-xl p-6 shadow-md">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-emerald-100 p-3 rounded-lg">
-                  <IoCardOutline className="text-emerald-700 text-2xl" />
-                </div>
-                <h4 className="text-xl font-black text-slate-900">Equity Bank</h4>
-              </div>
-              <div className="space-y-2 text-slate-700">
-                <div className="flex justify-between items-center py-2 border-b border-slate-200">
-                  <span className="font-bold">Account Name:</span>
-                  <span className="text-slate-900 font-semibold">KATWANYAA SECONDARY SCHOOL</span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-b border-slate-200">
-                  <span className="font-bold">Account Number:</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-slate-900 font-mono text-lg font-black">0900263541203</span>
-                    <button 
-                      onClick={() => {
-                        navigator.clipboard.writeText('0900263541203');
-                        toast.success('Account number copied!');
-                      }}
-                      className="p-1 hover:bg-emerald-50 rounded transition-colors"
-                      title="Copy account number"
-                    >
-                      <IoCopyOutline className="text-emerald-600" />
-                    </button>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-bold">Branch:</span>
-                  <span className="text-slate-900 font-semibold">TALA</span>
-                </div>
-              </div>
-            </div>
-
-            {/* KCB Bank */}
+            {/* KCB Bank - Updated for Kinyui Boys */}
             <div className="bg-white border-2 border-blue-500 rounded-xl p-6 shadow-md">
               <div className="flex items-center gap-3 mb-4">
                 <div className="bg-blue-100 p-3 rounded-lg">
@@ -570,15 +534,15 @@ export default function ModernFeesPage() {
               <div className="space-y-2 text-slate-700">
                 <div className="flex justify-between items-center py-2 border-b border-slate-200">
                   <span className="font-bold">Account Name:</span>
-                  <span className="text-slate-900 font-semibold">KATWANYAA SECONDARY SCHOOL</span>
+                  <span className="text-slate-900 font-semibold">KINYUI BOYS SECONDARY SCHOOL</span>
                 </div>
                 <div className="flex justify-between items-center py-2 border-b border-slate-200">
                   <span className="font-bold">Account Number:</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-slate-900 font-mono text-lg font-black">1107286352</span>
+                    <span className="text-slate-900 font-mono text-lg font-black">1107262690</span>
                     <button 
                       onClick={() => {
-                        navigator.clipboard.writeText('1107286352');
+                        navigator.clipboard.writeText('1107262690');
                         toast.success('Account number copied!');
                       }}
                       className="p-1 hover:bg-blue-50 rounded transition-colors"
@@ -590,20 +554,23 @@ export default function ModernFeesPage() {
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="font-bold">Branch:</span>
-                  <span className="text-slate-900 font-semibold">TALA</span>
+                  <span className="text-slate-900 font-semibold">Tala Branch</span>
+                </div>
+                <div className="mt-3 pt-2 text-sm text-red-600 bg-red-50 p-2 rounded-lg">
+                  <span className="font-bold">Important:</span> Personal cheques are strictly not accepted. Use Banker's Cheque only.
                 </div>
               </div>
             </div>
           </div>
 
-          {/* M-PESA PAYMENT - PRIMARY METHOD */}
+          {/* M-PESA PAYMENT - PRIMARY METHOD Updated for Kinyui Boys */}
           <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-500 rounded-xl p-8 shadow-lg">
             <div className="flex items-center gap-3 mb-6">
               <div className="bg-green-600 p-3 rounded-lg text-white">
                 <IoCashOutline className="text-2xl" />
               </div>
               <div>
-                <h3 className="text-2xl font-black text-slate-900">📱 M-PESA Payment (Primary Method)</h3>
+                <h3 className="text-2xl font-black text-slate-900">M-PESA Payment (Primary Method)</h3>
                 <p className="text-green-700 text-sm font-bold">Business Number: <span className="font-mono">522123</span> (KCB Pay Bill)</p>
               </div>
             </div>
@@ -612,42 +579,54 @@ export default function ModernFeesPage() {
               <h4 className="text-lg font-black text-slate-900 mb-4">Steps to Pay via M-PESA:</h4>
               
               <div className="space-y-3">
-                {[
-                  { step: 1, action: "Go to M-PESA menu", icon: "📱" },
-                  { step: 2, action: "Select **Pay Bill**", icon: "💳" },
-                  { step: 3, action: "Enter Business Number: **522123**", icon: "🏦" },
-                  { 
-                    step: 4, 
-                    action: "Enter Account/School Code in this format:\n**34997K[StudentName][AdmNo]**\n\nExample: 34997KMUTUA2",
-                    icon: "📝",
-                    highlight: true
-                  },
-                  { step: 5, action: "Enter payment amount", icon: "💰" },
-                  { step: 6, action: "Enter your M-PESA PIN to confirm", icon: "🔐" }
-                ].map((item) => (
-                  <div key={item.step} className={`flex gap-4 ${item.highlight ? 'bg-amber-50 p-4 rounded-lg border-2 border-amber-300' : ''}`}>
-                    <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold">
-                      {item.step}
-                    </div>
-                    <div className="flex-1 pt-1">
-                      <p className="text-slate-700 whitespace-pre-wrap">{item.action}</p>
-                    </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold">1</div>
+                  <div className="flex-1 pt-1"><p className="text-slate-700">Go to M-PESA menu</p></div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold">2</div>
+                  <div className="flex-1 pt-1"><p className="text-slate-700">Select <span className="font-bold">Pay Bill</span></p></div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold">3</div>
+                  <div className="flex-1 pt-1"><p className="text-slate-700">Enter Business Number: <span className="font-mono font-bold">522123</span></p></div>
+                </div>
+                <div className="flex gap-4 bg-amber-50 p-4 rounded-lg border-2 border-amber-300">
+                  <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold">4</div>
+                  <div className="flex-1 pt-1">
+                    <p className="text-slate-700 whitespace-pre-wrap">
+                      Enter Account/School Code in this format:
+                      <span className="font-mono font-bold block mt-1">30433K[StudentName][AdmNo]</span>
+                      <span className="text-sm block mt-1">Example: 30433KMUTUA2</span>
+                    </p>
                   </div>
-                ))}
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold">5</div>
+                  <div className="flex-1 pt-1"><p className="text-slate-700">Enter payment amount</p></div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold">6</div>
+                  <div className="flex-1 pt-1"><p className="text-slate-700">Enter your M-PESA PIN to confirm</p></div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold">7</div>
+                  <div className="flex-1 pt-1"><p className="text-slate-700">Confirm that the system text displays <span className="font-mono font-bold">"KINYUI BOYS KCB ACCOUNT"</span> before completing the transaction</p></div>
+                </div>
               </div>
 
               {/* School Code Format Box */}
               <div className="bg-amber-50 border-2 border-amber-400 rounded-lg p-4 mt-6">
-                <h5 className="font-black text-amber-900 mb-3">⚠️ CRITICAL: Account Code Format</h5>
+                <h5 className="font-black text-amber-900 mb-3">CRITICAL: Account Code Format</h5>
                 <div className="space-y-2 text-sm text-amber-900">
-                  <p><span className="font-bold">Format:</span> <span className="font-mono bg-white px-2 py-1 rounded">34997K[StudentName][AdmNo]</span></p>
-                  <p><span className="font-bold">✅ Correct:</span> <span className="font-mono bg-white px-2 py-1 rounded">34997KMUTUA2</span> (Single name + admission number)</p>
-                  <p><span className="font-bold">❌ Wrong:</span> <span className="font-mono bg-white px-2 py-1 rounded">34997KJohnMutua2</span> (Two names)</p>
-                  <p><span className="font-bold">❌ Wrong:</span> <span className="font-mono bg-white px-2 py-1 rounded">34997KJohn Form2</span> (Class name included)</p>
+                  <p><span className="font-bold">Format:</span> <span className="font-mono bg-white px-2 py-1 rounded">30433K[StudentName][AdmNo]</span></p>
+                  <p><span className="font-bold">Correct:</span> <span className="font-mono bg-white px-2 py-1 rounded">30433KMUTUA2</span> (Single name + admission number)</p>
+                  <p><span className="font-bold">Wrong:</span> <span className="font-mono bg-white px-2 py-1 rounded">30433KJohnMutua2</span> (Two names)</p>
+                  <p><span className="font-bold">Wrong:</span> <span className="font-mono bg-white px-2 py-1 rounded">30433KJohn Form2</span> (Class name included)</p>
                   <div className="mt-3 pt-3 border-t-2 border-amber-200">
-                    <p className="font-bold">⚡ Key Points:</p>
+                    <p className="font-bold">Key Points:</p>
                     <ul className="list-disc list-inside space-y-1 ml-2">
-                      <li>School Code: <span className="font-mono font-black">34997K</span> (always the same)</li>
+                      <li>School Code: <span className="font-mono font-black">30433K</span> (always the same)</li>
                       <li>Use <strong>only ONE name</strong> (e.g., "MUTUA" not "JOHN MUTUA")</li>
                       <li>Add admission number directly after name</li>
                       <li>Do NOT include class/form name</li>
@@ -658,51 +637,18 @@ export default function ModernFeesPage() {
             </div>
           </div>
 
-          {/* ALTERNATIVE PAYMENT METHODS */}
-          <div className="space-y-4">
-            <h3 className="text-2xl font-black text-slate-900">📜 Alternative Payment Methods</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-white border-2 border-purple-400 rounded-xl p-6 shadow-md">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-purple-100 p-3 rounded-lg">
-                    <IoDocumentTextOutline className="text-purple-700 text-2xl" />
-                  </div>
-                  <h4 className="text-lg font-black text-slate-900">Banker's Cheque</h4>
-                </div>
-                <p className="text-slate-700">
-                  <span className="font-bold">Payable to:</span><br/>
-                  <span className="text-slate-900 font-semibold">KATWANYAA SECONDARY SCHOOL</span>
-                </p>
-              </div>
-
-              <div className="bg-white border-2 border-indigo-400 rounded-xl p-6 shadow-md">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-indigo-100 p-3 rounded-lg">
-                    <IoReceiptOutline className="text-indigo-700 text-2xl" />
-                  </div>
-                  <h4 className="text-lg font-black text-slate-900">Postal Money Order</h4>
-                </div>
-                <p className="text-slate-700">
-                  <span className="font-bold">Payable to:</span><br/>
-                  <span className="text-slate-900 font-semibold">KATWANYAA SECONDARY SCHOOL</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* Important Notes */}
           <div className="bg-blue-50 border-2 border-blue-300 rounded-xl p-6">
             <div className="flex gap-3 items-start">
               <FiInfo className="text-blue-600 flex-shrink-0 mt-1" size={24} />
               <div className="space-y-2">
-                <h4 className="font-black text-blue-900 text-lg">📋 Important Notes</h4>
+                <h4 className="font-black text-blue-900 text-lg">Important Notes</h4>
                 <ul className="space-y-1 text-blue-900 text-sm">
-                  <li>✓ Fees must be paid through the listed channels only</li>
-                  <li>✓ M-PESA is the quickest and most convenient method</li>
-                  <li>✓ Always use the correct school code format for M-PESA payments</li>
-                  <li>✓ Keep payment receipts for your records</li>
-                  <li>✓ For payment plans or inquiries, contact our finance office</li>
+                  <li>Fees must be paid through the listed channels only</li>
+                  <li>M-PESA is the quickest and most convenient method</li>
+                  <li>Always use the correct school code format for M-PESA payments</li>
+                  <li>Keep payment receipts for your records</li>
+                  <li>For payment plans or inquiries, contact our finance office</li>
                 </ul>
               </div>
             </div>
