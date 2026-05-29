@@ -20,7 +20,7 @@ try {
 }
 
 export async function generateMetadata({ params }) {
-  const { id } = params;
+  const { id, slug } = params;
   
   // Find staff from local data - this works at build time
   const staff = STAFF_DATA.find(s => s.id === id);
@@ -28,40 +28,40 @@ export async function generateMetadata({ params }) {
   if (!staff) {
     // Return generic metadata that works for all staff pages
     return {
-      title: "Staff Profile | Kinyui Boys Senior School",
-      description: "Meet the leadership staff of S.A. Kinyui Boys Senior School in Matungulu, Machakos County.",
+      title: "Staff Profile | Katwanyaa Senior School",
+      description: "Meet our dedicated educators and staff members at Katwanyaa Senior School",
       openGraph: {
-        title: "Staff Profile | Kinyui Boys Senior School",
-        description: "Leadership profiles from S.A. Kinyui Boys Senior School.",
+        title: "Staff Profile | Katwanyaa Senior School",
+        description: "Professional educators dedicated to student success",
         images: [
           {
-            url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyuiboyssenior.school'}/seo/SchoolLogo.png`,
+            url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyuiboyssenior.school/'}/seo/kinyui.png`,
             width: 1200,
             height: 630,
-            alt: 'kinyui boys Senior School Staff'
+            alt: 'Katwanyaa Senior School Staff'
           }
         ],
       },
       twitter: {
         card: 'summary_large_image',
-        title: "Staff Profile | Kinyui Boys Senior School",
-        description: "Leadership profiles from S.A. Kinyui Boys Senior School.",
+        title: "Staff Profile | Katwanyaa Senior School",
+        description: "Professional educators dedicated to student success",
       }
     };
   }
 
-  const title = `${staff.name} | ${staff.position} | Kinyui Boys Senior School`;
-  const description = staff.bio || `Meet ${staff.name}, a dedicated ${staff.position} at S.A. Kinyui Boys Senior School specializing in ${staff.department}.`;
+  const title = `${staff.name} | ${staff.position} | Katwanyaa Senior School`;
+  const description = staff.bio || `Meet ${staff.name}, a dedicated ${staff.position} at Katwanyaa Senior School specializing in ${staff.department}.`;
   
   // Fix the image URL
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyuiboyssenior.school';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyuiboyssenior.school/';
   const imageUrl = staff.image 
     ? staff.image.startsWith('http') 
       ? staff.image 
       : staff.image.startsWith('/')
         ? `${baseUrl}${staff.image}`
         : `${baseUrl}/images/staff/${staff.image}`
-    : `${baseUrl}/seo/SchoolLogo.png`;
+    : `${baseUrl}/seo/kinyui.png`;
 
   return {
     title,
@@ -81,7 +81,6 @@ export async function generateMetadata({ params }) {
       profile: {
         firstName: staff.name.split(' ')[0],
         lastName: staff.name.split(' ').slice(1).join(' '),
-        username: staff.email || undefined,
       }
     },
     twitter: {
@@ -95,7 +94,7 @@ export async function generateMetadata({ params }) {
       follow: true,
     },
     alternates: {
-      canonical: `${baseUrl}/pages/staff/${id}/${params.slug}`,
+      canonical: `${baseUrl}/pages/staff/${id}${slug ? `/${slug}` : ''}`,
     }
   };
 }
@@ -115,7 +114,7 @@ export async function generateStaticParams() {
   
   // ALTERNATIVE: If you want to fetch from API but avoid build errors:
   // try {
-  //   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyuiboyssenior.school';
+  //   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kinyuiboyssenior.school/';
   //   const res = await fetch(`${baseUrl}/api/staff`, { next: { revalidate: 3600 } });
   //   
   //   if (res.ok) {
