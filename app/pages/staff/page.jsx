@@ -861,170 +861,173 @@ export default function StaffDirectory() {
       Object.values(filteredDepartmentsByCategory).some((d) => d.length > 0) ? (
       <div className="space-y-12">
         {/* LEADERSHIP SECTION */}
-        {(selectedHierarchy === 'all' || selectedHierarchy === 'leadership') && (
-          <section>
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#071527] shadow-md">
-                <FiCrown size={18} className="text-[#38bdf8]" />
+    {(selectedHierarchy === 'all' || selectedHierarchy === 'leadership') && (
+  <section>
+    <div className="mb-6 flex items-center gap-3">
+      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#071527] shadow-md">
+        <FiCrown size={18} className="text-[#38bdf8]" />
+      </div>
+
+      <div>
+        <h2 className="text-sm font-black uppercase tracking-[0.18em] text-[#071527]">
+          School Leadership
+        </h2>
+        <p className="text-xs font-semibold text-slate-400">
+          Principal and senior administration team
+        </p>
+      </div>
+
+      <span className="ml-auto rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-500">
+        {leadershipStaff.length}
+      </span>
+    </div>
+
+    {leadershipStaff.length === 0 ? (
+      <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center">
+        <p className="text-sm text-slate-400 italic">
+          No leadership profiles found.
+        </p>
+      </div>
+    ) : (
+      /* Adjusted the grid columns ratio to make the left panel explicitly dominant */
+      <div className="grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
+        
+        {/* Principal Feature Card (Left Side) */}
+        {principalStaff && (
+          <div className="relative overflow-hidden rounded-[2rem] bg-[#071527] p-6 text-white shadow-2xl">
+            <div className="absolute right-0 top-0 h-44 w-44 rounded-bl-full bg-[#38bdf8]/20" />
+            <div className="absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-white/10 blur-2xl" />
+
+            <div className="relative z-10">
+              <div className="mb-6 flex items-center justify-between gap-4">
+                <span className="inline-flex items-center gap-2 rounded-full bg-[#38bdf8] px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#071527]">
+                  <FiCrown size={12} />
+                  Principal
+                </span>
+
+                <FiShield className="text-white/25" size={36} />
               </div>
 
-              <div>
-                <h2 className="text-sm font-black uppercase tracking-[0.18em] text-[#071527]">
-                  School Leadership
-                </h2>
-                <p className="text-xs font-semibold text-slate-400">
-                  Principal and senior administration team
-                </p>
-              </div>
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
+                {/* Enlarged image container with updated spacing and ring widths */}
+                <div className="relative h-40 w-40 flex-shrink-0 overflow-hidden rounded-3xl ring-4 ring-[#38bdf8]/50 sm:h-52 sm:w-52">
+                  <Image
+                    src={getImageSrc(principalStaff)}
+                    alt={principalStaff.name}
+                    width={208}
+                    height={208}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
 
-              <span className="ml-auto rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-500">
-                {leadershipStaff.length}
-              </span>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-3xl font-black tracking-tight">
+                    {principalStaff.name}
+                  </h3>
+
+                  <p className="mt-2 text-sm font-black uppercase tracking-[0.18em] text-[#38bdf8]">
+                    {principalStaff.position || 'Principal'}
+                  </p>
+
+                  {principalStaff.bio && (
+                    <p className="mt-4 line-clamp-4 text-sm leading-7 text-white/70">
+                      {principalStaff.bio}
+                    </p>
+                  )}
+
+                  <div className="mt-5 flex flex-wrap gap-3">
+                    {principalStaff.email && (
+                      <a
+                        href={`mailto:${principalStaff.email}`}
+                        className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/15"
+                      >
+                        <FiMail size={13} />
+                        Email
+                      </a>
+                    )}
+
+                    {principalStaff.phone && (
+                      <a
+                        href={`tel:${principalStaff.phone}`}
+                        className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/15"
+                      >
+                        <FiPhone size={13} />
+                        Call
+                      </a>
+                    )}
+
+                    <Link
+                      href={`/pages/staff/${principalStaff.id}/${generateSlug(
+                        principalStaff.name,
+                        principalStaff.id
+                      )}`}
+                      className="inline-flex items-center gap-2 rounded-full bg-[#38bdf8] px-5 py-2 text-xs font-black text-[#071527] transition hover:scale-[1.02]"
+                    >
+                      View Profile <FiChevronRight size={13} />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Other Leadership Side Panel (Right Side) */}
+        {otherLeadershipStaff.length > 0 && (
+          <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="mb-4 flex items-center gap-2">
+              <FiTrendingUp size={16} className="text-[#071527]" />
+              <h4 className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">
+                Leadership Team
+              </h4>
             </div>
 
-            {leadershipStaff.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center">
-                <p className="text-sm text-slate-400 italic">
-                  No leadership profiles found.
-                </p>
-              </div>
-            ) : (
-              <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-                {/* Principal Feature Card */}
-                {principalStaff && (
-                  <div className="relative overflow-hidden rounded-[2rem] bg-[#071527] p-6 text-white shadow-2xl">
-                    <div className="absolute right-0 top-0 h-44 w-44 rounded-bl-full bg-[#38bdf8]/20" />
-                    <div className="absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-white/10 blur-2xl" />
+            <div className="space-y-3">
+              {otherLeadershipStaff.map((staff) => (
+                <div
+                  key={staff.id}
+                  className="group rounded-2xl border border-slate-100 bg-slate-50 p-3 transition-all hover:border-[#38bdf8]/60 hover:bg-white hover:shadow-md"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-2xl bg-slate-100 ring-1 ring-slate-200">
+                      <Image
+                        src={getImageSrc(staff)}
+                        alt={staff.name}
+                        width={64}
+                        height={64}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
 
-                    <div className="relative z-10">
-                      <div className="mb-6 flex items-center justify-between gap-4">
-                        <span className="inline-flex items-center gap-2 rounded-full bg-[#38bdf8] px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#071527]">
-                          <FiCrown size={12} />
-                          Principal
-                        </span>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="truncate text-sm font-black text-[#071527]">
+                        {staff.name}
+                      </h3>
 
-                        <FiShield className="text-white/25" size={36} />
-                      </div>
+                      <p className="mt-1 truncate text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">
+                        {staff.position}
+                      </p>
 
-                      <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
-                        <div className="relative h-36 w-36 flex-shrink-0 overflow-hidden rounded-3xl ring-4 ring-[#38bdf8]/50 sm:h-44 sm:w-44">
-                          <Image
-                            src={getImageSrc(principalStaff)}
-                            alt={principalStaff.name}
-                            width={176}
-                            height={176}
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-
-                        <div className="min-w-0 flex-1">
-                          <h3 className="text-3xl font-black tracking-tight">
-                            {principalStaff.name}
-                          </h3>
-
-                          <p className="mt-2 text-sm font-black uppercase tracking-[0.18em] text-[#38bdf8]">
-                            {principalStaff.position || 'Principal'}
-                          </p>
-
-                          {principalStaff.bio && (
-                            <p className="mt-4 line-clamp-4 text-sm leading-7 text-white/70">
-                              {principalStaff.bio}
-                            </p>
-                          )}
-
-                          <div className="mt-5 flex flex-wrap gap-3">
-                            {principalStaff.email && (
-                              <a
-                                href={`mailto:${principalStaff.email}`}
-                                className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/15"
-                              >
-                                <FiMail size={13} />
-                                Email
-                              </a>
-                            )}
-
-                            {principalStaff.phone && (
-                              <a
-                                href={`tel:${principalStaff.phone}`}
-                                className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/15"
-                              >
-                                <FiPhone size={13} />
-                                Call
-                              </a>
-                            )}
-
-                            <Link
-                              href={`/pages/staff/${principalStaff.id}/${generateSlug(
-                                principalStaff.name,
-                                principalStaff.id
-                              )}`}
-                              className="inline-flex items-center gap-2 rounded-full bg-[#38bdf8] px-5 py-2 text-xs font-black text-[#071527] transition hover:scale-[1.02]"
-                            >
-                              View Profile <FiChevronRight size={13} />
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
+                      <Link
+                        href={`/pages/staff/${staff.id}/${generateSlug(
+                          staff.name,
+                          staff.id
+                        )}`}
+                        className="mt-2 inline-flex items-center gap-1 text-xs font-black text-[#1d4ed8] transition-all group-hover:gap-2"
+                      >
+                        View profile <FiChevronRight size={12} />
+                      </Link>
                     </div>
                   </div>
-                )}
-
-                {/* Other Leadership Side Panel */}
-                {otherLeadershipStaff.length > 0 && (
-                  <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
-                    <div className="mb-4 flex items-center gap-2">
-                      <FiTrendingUp size={16} className="text-[#071527]" />
-                      <h4 className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">
-                        Leadership Team
-                      </h4>
-                    </div>
-
-                    <div className="space-y-3">
-                      {otherLeadershipStaff.map((staff) => (
-                        <div
-                          key={staff.id}
-                          className="group rounded-2xl border border-slate-100 bg-slate-50 p-3 transition-all hover:border-[#38bdf8]/60 hover:bg-white hover:shadow-md"
-                        >
-                          <div className="flex items-center gap-4">
-                            <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-2xl bg-slate-100 ring-1 ring-slate-200">
-                              <Image
-                                src={getImageSrc(staff)}
-                                alt={staff.name}
-                                width={64}
-                                height={64}
-                                className="h-full w-full object-cover"
-                              />
-                            </div>
-
-                            <div className="min-w-0 flex-1">
-                              <h3 className="truncate text-sm font-black text-[#071527]">
-                                {staff.name}
-                              </h3>
-
-                              <p className="mt-1 truncate text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">
-                                {staff.position}
-                              </p>
-
-                              <Link
-                                href={`/pages/staff/${staff.id}/${generateSlug(
-                                  staff.name,
-                                  staff.id
-                                )}`}
-                                className="mt-2 inline-flex items-center gap-1 text-xs font-black text-[#1d4ed8] transition-all group-hover:gap-2"
-                              >
-                                View profile <FiChevronRight size={12} />
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-          </section>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
+      </div>
+    )}
+  </section>
+)}
 
         {/* DEPARTMENTS SECTION */}
         {(selectedHierarchy === 'all' ||
