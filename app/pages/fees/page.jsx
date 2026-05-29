@@ -32,6 +32,7 @@ import {
   FiCoffee,
   FiAward
 } from 'react-icons/fi';
+import date from 'date-and-time';
 import { 
   IoNewspaperOutline,
   IoCalendarClearOutline,
@@ -443,6 +444,38 @@ export default function ModernFeesPage() {
             <div className="mb-3">
               <h2 className="text-lg font-semibold text-gray-900">Boarders</h2>
               <p className="text-xs text-gray-500">Annual fees</p>
+            </div>
+
+            <div className="mb-4">
+              <p className="text-3xl font-bold text-gray-900">
+                KSh {(documentData?.feesBoardingAnnualAmount || 40535).toLocaleString()}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                {documentData?.feesBoardingDescription || 'Total annual fees for boarding school'}
+              </p>
+            </div>
+
+            {documentData?.feesBoardingDistributionPdf && (
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => handleViewPDF(documentData.feesBoardingDistributionPdf)}
+                  className="px-3 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors w-fit"
+                >
+                  View PDF
+                </button>
+                <button
+                  onClick={() => handleDownloadPDF(documentData.feesBoardingDistributionPdf, documentData.feesBoardingPdfName)}
+                  className="px-3 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900 transition-colors flex items-center gap-1 w-fit"
+                >
+                  <FiDownload size={14} />
+                  Download
+                </button>
+              </div>
+            )}
+          </div>
+               <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div className="mb-3">
+              <h2 className="text-lg font-semibold text-gray-900">Admission Letter</h2>
             </div>
 
             <div className="mb-4">
