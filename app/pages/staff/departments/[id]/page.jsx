@@ -204,39 +204,53 @@ export default function StaffDepartmentDetailPage() {
           <FiArrowLeft size={14} /> Staff Directory
         </Link>
 
-        <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
-          {/* FULL IMAGE HERO SECTION - shows the entire image without cropping */}
-          <div className="relative w-full">
-            {/* Taller container on mobile, even taller on desktop to reveal full image */}
-            <div className="relative h-[55vh] sm:h-[65vh] lg:h-[70vh] w-full bg-slate-900">
+        {/* BENTO-STYLE SIDE-BY-SIDE HERO LAYOUT */}
+        <article className="overflow-hidden rounded-[2rem] border border-slate-200 bg-[#071527] shadow-xl">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr]">
+            
+            {/* Left Content Area */}
+            <div className="relative z-10 flex flex-col justify-center p-6 text-white sm:p-10 lg:p-12">
+              <div className="absolute right-0 top-0 h-44 w-44 rounded-bl-full bg-[#38bdf8]/10 pointer-events-none" />
+              
+              <div>
+                <span
+                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[10px] font-black uppercase tracking-widest shadow-md ${meta.badge}`}
+                >
+                  <Icon size={14} /> {meta.label}
+                </span>
+                <h1 className="mt-6 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
+                  {department.name}
+                </h1>
+                <p className="mt-4 max-w-xl text-sm leading-7 text-white/70 sm:text-base">
+                  {department.description ||
+                    "Department-level staff information is shared here without exposing individual private teacher details."}
+                </p>
+              </div>
+            </div>
+
+            {/* Right Image Feature Area (Bento Glassmorphic Design) */}
+            <div className="relative h-64 w-full overflow-hidden bg-slate-950 sm:h-80 lg:h-full lg:min-h-[420px]">
+              {/* Blur Background Layer */}
               <img
                 src={getDepartmentImage(department)}
-                alt={department.name}
-                className="absolute inset-0 h-full w-full object-contain bg-slate-800"
-                style={{ objectPosition: "center top" }}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover opacity-30 blur-xl scale-110"
               />
-              {/* Fallback gradient for readability if image is bright */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+              {/* Foreground Uncropped Protected Image Layer */}
+              <div className="absolute inset-4 flex items-center justify-center rounded-2xl bg-slate-900/40 border border-white/10 p-2 backdrop-blur-md">
+                <img
+                  src={getDepartmentImage(department)}
+                  alt={department.name}
+                  className="h-full w-full rounded-xl object-contain"
+                />
+              </div>
             </div>
-            {/* Text overlay positioned over the bottom part of the image */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 text-white sm:p-10">
-              <span
-                className={`inline-flex w-fit items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-[10px] font-black uppercase tracking-widest shadow-md ${meta.badge}`}
-              >
-                <Icon size={14} /> {meta.label}
-              </span>
-              <h1 className="mt-4 max-w-3xl text-3xl font-black tracking-tight drop-shadow-lg sm:text-4xl lg:text-5xl">
-                {department.name}
-              </h1>
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/90 drop-shadow-md sm:text-base">
-                {department.description ||
-                  "Department-level staff information is shared here without exposing individual private teacher details."}
-              </p>
-            </div>
+
           </div>
 
-          <div className="p-5 sm:p-8">
-            {/* Stats grid - responsive: 1 column mobile, 2 on sm, 4 on lg */}
+          {/* Dynamic Data Content Area */}
+          <div className="bg-white p-5 sm:p-8">
+            {/* Stats grid */}
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               <DetailStat icon={FiUsers} label="Teachers/Staff" value={`${department.staffCount || 0} members`} />
               <DetailStat icon={FiUser} label="Head of Department" value={department.headName} />
@@ -244,7 +258,7 @@ export default function StaffDepartmentDetailPage() {
               <DetailStat icon={Icon} label="Category" value={meta.label} />
             </div>
 
-            {/* Overview and Privacy Notice - stack on mobile, side by side on lg */}
+            {/* Overview and Privacy Notice */}
             <div className="mt-8 grid gap-6 lg:grid-cols-[1.4fr_0.8fr]">
               <section className="rounded-2xl border border-slate-100 bg-slate-50 p-5 sm:p-6">
                 <h2 className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-slate-900">
@@ -288,7 +302,7 @@ export default function StaffDepartmentDetailPage() {
               </section>
             )}
 
-            {/* Teachers grid - responsive: 1 col mobile, 2 on sm, 3 on lg */}
+            {/* Teachers grid */}
             <section className="mt-8">
               <h2 className="mb-4 flex items-center gap-2 text-sm font-black uppercase tracking-widest text-slate-900">
                 <FiUsers className="text-emerald-600" /> Department Teachers
