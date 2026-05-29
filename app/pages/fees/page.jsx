@@ -32,7 +32,6 @@ import {
   FiCoffee,
   FiAward
 } from 'react-icons/fi';
-import date from 'date-and-time';
 import { 
   IoNewspaperOutline,
   IoCalendarClearOutline,
