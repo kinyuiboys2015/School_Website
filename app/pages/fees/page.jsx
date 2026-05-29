@@ -429,7 +429,7 @@ export default function ModernFeesPage() {
           </div>
           
           <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
-            <p className="text-sm font-bold text-amber-800">Form 4 Fee Breakdown</p>
+            <p className="text-sm font-bold text-amber-800">Fee Breakdown</p>
             <div className="flex flex-col sm:flex-row justify-between gap-2 mt-2">
               <span>Term 1: KSh 24,535/=</span>
               <span>Term 2: KSh 16,000/=</span>
