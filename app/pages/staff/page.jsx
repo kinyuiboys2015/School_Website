@@ -589,7 +589,7 @@ export default function StaffDirectory() {
             </div>
             <div>
               <span className="text-sm font-black tracking-tight text-[#071527]">
-                Katwanyaa Senior School
+                Kinyui Boys
               </span>
               <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">Staff Directory</p>
             </div>
@@ -657,7 +657,7 @@ export default function StaffDirectory() {
         <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-white/10 px-4 py-2 shadow-sm backdrop-blur">
           <FiUsers className="h-4 w-4 text-sky-300" />
           <span className="text-[10px] font-black uppercase tracking-[0.22em] text-blue-100/80">
-            Katwanyaa School Staff
+            Kinyui Boys Staff
           </span>
         </div>
 
@@ -1154,10 +1154,10 @@ export default function StaffDirectory() {
           <div className="flex flex-col items-center gap-3">
             <div className="flex items-center gap-2">
               <Image src="/kinyui.png" alt="Logo" width={24} height={24} className="opacity-80" />
-              <span className="text-[10px] font-black text-blue-100/70 uppercase tracking-[0.2em]">Katwanyaa Senior School</span>
+              <span className="text-[10px] font-black text-blue-100/70 uppercase tracking-[0.2em]">Kinyui Boys</span>
             </div>
             <p className="text-[10px] text-blue-100/45">
-              Education is light &bull; Staff Directory &bull; &copy; {new Date().getFullYear()}
+              Kinyui Boys &bull; Staff Directory &bull; &copy; {new Date().getFullYear()}
             </p>
           </div>
         </div>
