@@ -429,15 +429,20 @@ export async function GET(request) {
     
     // Optional query parameters for filtering
     const { searchParams } = new URL(request.url);
-    const subject = searchParams.get('subject');
+    const search = searchParams.get('search');
     const className = searchParams.get('className');
-    const teacher = searchParams.get('teacher');
     const status = searchParams.get('status');
     
     const whereClause = {};
-    if (subject) whereClause.subject = { contains: subject, mode: 'insensitive' };
+    if (search) {
+      whereClause.OR = [
+        { title: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+        { subject: { contains: search, mode: 'insensitive' } },
+        { teacher: { contains: search, mode: 'insensitive' } }
+      ];
+    }
     if (className) whereClause.className = { contains: className, mode: 'insensitive' };
-    if (teacher) whereClause.teacher = { contains: teacher, mode: 'insensitive' };
     if (status) whereClause.status = status;
     
     const assignments = await prisma.assignment.findMany({

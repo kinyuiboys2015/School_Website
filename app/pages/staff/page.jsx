@@ -1110,22 +1110,46 @@ export default function StaffDirectory() {
                             </div>
 
                             {teachers.length > 0 && (
-                              <div className="mt-5 rounded-2xl border border-slate-100 bg-slate-50 p-3">
-                                <div className="flex items-center gap-2">
-                                  <div className="flex -space-x-2">
-                                    {teachers.slice(0, 4).map((teacher) => (
-                                      <img
+                              <div className="mt-5">
+                                <div className="mb-3 flex items-center justify-between gap-3">
+                                  <p className="text-xs font-black uppercase tracking-[0.22em] text-slate-500">
+                                    Teachers in this department
+                                  </p>
+                                  <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">
+                                    {teacherCount} {teacherCount === 1 ? 'teacher' : 'teachers'}
+                                  </span>
+                                </div>
+
+                                <div className="overflow-x-auto scroll-smooth rounded-3xl border border-slate-200 bg-slate-50/90 p-3 shadow-sm" style={{ WebkitOverflowScrolling: 'touch' }}>
+                                  <div className="flex snap-x snap-mandatory gap-3 min-w-[100%] sm:min-w-full">
+                                    {teachers.map((teacher) => (
+                                      <div
                                         key={teacher.id}
-                                        src={getTeacherImage(teacher)}
-                                        alt={teacher.name}
-                                        className="h-8 w-8 rounded-full border-2 border-white object-cover object-top"
-                                      />
+                                        className="snap-start min-w-[220px] flex-shrink-0 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                                      >
+                                        <div className="flex items-center gap-3">
+                                          <img
+                                            src={getTeacherImage(teacher)}
+                                            alt={teacher.name}
+                                            className="h-12 w-12 rounded-2xl border border-slate-200 object-cover"
+                                          />
+                                          <div className="min-w-0">
+                                            <p className="truncate text-sm font-black text-[#071527]">
+                                              {teacher.name}
+                                            </p>
+                                            <p className="mt-1 truncate text-[10px] uppercase tracking-[0.16em] text-slate-500">
+                                              {teacher.position || teacher.staffType || 'Teacher'}
+                                            </p>
+                                          </div>
+                                        </div>
+                                        {teacher.subjectOffered && (
+                                          <p className="mt-3 text-xs text-slate-500">
+                                            {teacher.subjectOffered}
+                                          </p>
+                                        )}
+                                      </div>
                                     ))}
                                   </div>
-                                  <p className="min-w-0 text-xs font-bold text-slate-600">
-                                    {teachers.slice(0, 2).map((teacher) => teacher.name).join(', ')}
-                                    {teachers.length > 2 ? ` +${teachers.length - 2} more` : ''}
-                                  </p>
                                 </div>
                               </div>
                             )}

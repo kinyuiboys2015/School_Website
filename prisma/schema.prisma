@@ -105,14 +105,14 @@ model Assignment {
   status             String
   description        String   @db.Text
   instructions       String?  @db.Text
-  assignmentFiles    Json
-  attachments        Json
-  priority           String
+  assignmentFiles    Json?
+  attachments        Json?
+  priority           String?
   estimatedTime      String?
   additionalWork     String?  @db.Text
   teacherRemarks     String?  @db.Text
   feedback           String?  @db.Text
-  learningObjectives Json
+  learningObjectives Json?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 }

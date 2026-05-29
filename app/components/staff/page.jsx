@@ -1985,15 +1985,23 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
     location: extra.location || '',
     notes: extra.notes || ''
   });
-  const [imageFiles, setImageFiles] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState(
-    existingDepartmentImageUrls
-  );
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [removedImageUrls, setRemovedImageUrls] = useState([]);
   const [imageError, setImageError] = useState('');
-  const hasDepartmentImage = imageFiles.length > 0 || imagePreviews.length > 0 || Boolean(getDepartmentImage(department));
+
+  const existingImageUrls = existingDepartmentImageUrls;
+  const remainingExistingImageUrls = existingImageUrls.filter(
+    (url) => !removedImageUrls.includes(url)
+  );
+  const hasDepartmentImage = selectedImages.length > 0 || remainingExistingImageUrls.length > 0;
+  const displayImagePreviews = [
+    ...remainingExistingImageUrls,
+    ...selectedImages.map((image) => image.previewUrl),
+  ];
 
   useEffect(() => {
-    setImagePreviews(existingDepartmentImageUrls);
+    setRemovedImageUrls([]);
+    setSelectedImages([]);
   }, [existingDepartmentImageUrls]);
 
   const updateField = (field, value) => {
@@ -2011,8 +2019,18 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
     }
 
     setImageError('');
-    setImageFiles(selectedFiles);
-    setImagePreviews(selectedFiles.map((file) => URL.createObjectURL(file)));
+    setSelectedImages((previous) => [
+      ...previous,
+      ...selectedFiles.map((file) => ({ file, previewUrl: URL.createObjectURL(file) })),
+    ]);
+  };
+
+  const handleRemoveImage = (previewUrl) => {
+    if (existingImageUrls.includes(previewUrl)) {
+      setRemovedImageUrls((previous) => [...previous, previewUrl]);
+      return;
+    }
+    setSelectedImages((previous) => previous.filter((item) => item.previewUrl !== previewUrl));
   };
 
   const toList = (value) => value
@@ -2043,12 +2061,18 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
       notes: formData.notes.trim()
     }));
 
-    if (imageFiles.length > 0) {
-      imageFiles.forEach((file) => payload.append('images', file));
-      existingDepartmentImageUrls.forEach((url) => payload.append('imagesToRemove', url));
-    } else if (department?.image) {
+    const remainingOriginalUrls = existingImageUrls.filter(
+      (url) => !removedImageUrls.includes(url)
+    );
+
+    if (selectedImages.length > 0) {
+      selectedImages.forEach(({ file }) => payload.append('images', file));
+      removedImageUrls.forEach((url) => payload.append('imagesToRemove', url));
+    } else if (removedImageUrls.length > 0) {
+      removedImageUrls.forEach((url) => payload.append('imagesToRemove', url));
+    } else if (department?.image && !removedImageUrls.includes(department.image)) {
       payload.append('image', department.image);
-    } else if (department?.images?.[0]?.url) {
+    } else if (department?.images?.[0]?.url && !removedImageUrls.includes(department.images[0].url)) {
       payload.append('image', department.images[0].url);
     }
 
@@ -2184,11 +2208,28 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
                   Department Image <span className="text-red-500">*</span>
                 </label>
                 <div className="rounded-2xl border-2 border-dashed border-slate-200 p-4">
-                  {imagePreviews.length > 0 && (
+                  {displayImagePreviews.length > 0 ? (
                     <div className="mb-3 grid grid-cols-2 gap-2">
-                      {imagePreviews.map((preview, index) => (
-                        <img key={`${preview}-${index}`} src={preview} alt="Department preview" className="h-28 w-full rounded-xl object-cover" />
+                      {displayImagePreviews.map((preview, index) => (
+                        <div key={`${preview}-${index}`} className="relative overflow-hidden rounded-xl">
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(preview)}
+                            className="absolute right-2 top-2 z-10 inline-flex h-8 w-8 items-center justify-center rounded-full bg-black/60 text-white transition hover:bg-black"
+                          >
+                            ×
+                          </button>
+                          <img
+                            src={preview}
+                            alt="Department preview"
+                            className="h-28 w-full rounded-xl object-cover"
+                          />
+                        </div>
                       ))}
+                    </div>
+                  ) : (
+                    <div className="mb-3 rounded-xl bg-slate-50 p-4 text-center text-sm font-semibold text-slate-500">
+                      No department image selected yet. Upload a department photo to continue.
                     </div>
                   )}
                   <input
@@ -2198,7 +2239,9 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
                     onChange={(event) => handleImageChange(event.target.files)}
                     className="w-full text-sm text-slate-500 file:mr-3 file:rounded-xl file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-bold file:text-blue-700"
                   />
-                  <p className="mt-2 text-xs font-semibold text-slate-500">Required. Upload real Kinyui Boys department images. Each image must be under 3 MB.</p>
+                  <p className="mt-2 text-xs font-semibold text-slate-500">
+                    Required. Upload real Kinyui Boys department images. Each image must be under 3 MB.
+                  </p>
                   {imageError && <p className="mt-2 text-xs font-bold text-red-600">{imageError}</p>}
                 </div>
               </div>
