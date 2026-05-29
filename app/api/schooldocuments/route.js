@@ -221,12 +221,56 @@ const parseStringField = (value) => {
   return value.trim();
 };
 
+const parseJsonField = (value) => {
+  if (!value) return null;
+  try {
+    const parsed = JSON.parse(value);
+    return parsed;
+  } catch (error) {
+    console.warn('Unable to parse JSON field:', error);
+    return null;
+  }
+};
+
+const normalizeFeeConfig = (config) => {
+  if (!config || typeof config !== 'object') return null;
+  const normalized = {
+    academicYear: parseStringField(config.academicYear || config.year || ''),
+    annualFee: config.annualFee != null ? Number(config.annualFee) : null,
+    description: parseStringField(config.description || ''),
+    published: config.published === false ? false : true,
+    archived: config.archived === true,
+    termBreakdowns: Array.isArray(config.termBreakdowns)
+      ? config.termBreakdowns.map((item) => ({
+          term: parseStringField(item.term || item.name || ''),
+          amount: item.amount != null ? Number(item.amount) : 0,
+          notes: parseStringField(item.notes || item.note || ''),
+          optional: item.optional === true
+        }))
+      : [],
+    additionalCharges: Array.isArray(config.additionalCharges)
+      ? config.additionalCharges.map((item) => ({
+          name: parseStringField(item.name || ''),
+          amount: item.amount != null ? Number(item.amount) : 0,
+          notes: parseStringField(item.notes || item.note || '')
+        }))
+      : []
+  };
+
+  return normalized;
+};
+
+const totalFeeAmount = (items) => {
+  if (!Array.isArray(items)) return 0;
+  return items.reduce((sum, item) => sum + (Number(item?.amount) || 0), 0);
+};
+
 const cleanDocumentResponse = (document) => {
   if (!document) return null;
   
   return {
     id: document.id,
-    
+
     // Curriculum PDF
     curriculumPDF: document.curriculumPDF,
     curriculumPdfName: document.curriculumPdfName,
@@ -235,16 +279,7 @@ const cleanDocumentResponse = (document) => {
     curriculumDescription: document.curriculumDescription,
     curriculumYear: document.curriculumYear,
     curriculumTerm: document.curriculumTerm,
-    
-    // Day School Fees PDF
-    feesDayDistributionPdf: document.feesDayDistributionPdf,
-    feesDayPdfName: document.feesDayPdfName,
-    feesDayPdfSize: document.feesDayPdfSize,
-    feesDayPdfUploadDate: document.feesDayPdfUploadDate,
-    feesDayDescription: document.feesDayDescription,
-    feesDayYear: document.feesDayYear,
-    feesDayTerm: document.feesDayTerm,
-    
+
     // Boarding School Fees PDF
     feesBoardingDistributionPdf: document.feesBoardingDistributionPdf,
     feesBoardingPdfName: document.feesBoardingPdfName,
@@ -253,8 +288,10 @@ const cleanDocumentResponse = (document) => {
     feesBoardingDescription: document.feesBoardingDescription,
     feesBoardingYear: document.feesBoardingYear,
     feesBoardingTerm: document.feesBoardingTerm,
-    
-    // Admission Fee PDF
+    feesBoardingDistributionJson: document.feesBoardingDistributionJson || [],
+    feesBoardingAnnualAmount: totalFeeAmount(document.feesBoardingDistributionJson),
+
+    // Admission Letter PDF
     admissionFeePdf: document.admissionFeePdf,
     admissionFeePdfName: document.admissionFeePdfName,
     admissionFeePdfSize: document.admissionFeePdfSize,
@@ -262,57 +299,8 @@ const cleanDocumentResponse = (document) => {
     admissionFeeDescription: document.admissionFeeDescription,
     admissionFeeYear: document.admissionFeeYear,
     admissionFeeTerm: document.admissionFeeTerm,
-    
-    // Fee breakdown JSON fields
-    feesDayDistributionJson: document.feesDayDistributionJson,
-    feesBoardingDistributionJson: document.feesBoardingDistributionJson,
-    admissionFeeDistribution: document.admissionFeeDistribution,
-    
-    // Form 1 Results PDF
-    form1ResultsPdf: document.form1ResultsPdf,
-    form1ResultsPdfName: document.form1ResultsPdfName,
-    form1ResultsPdfSize: document.form1ResultsPdfSize,
-    form1ResultsDescription: document.form1ResultsDescription,
-    form1ResultsYear: document.form1ResultsYear,
-    form1ResultsTerm: document.form1ResultsTerm,
-    form1ResultsUploadDate: document.form1ResultsUploadDate,
-    
-    // Form 2 Results PDF
-    form2ResultsPdf: document.form2ResultsPdf,
-    form2ResultsPdfName: document.form2ResultsPdfName,
-    form2ResultsPdfSize: document.form2ResultsPdfSize,
-    form2ResultsDescription: document.form2ResultsDescription,
-    form2ResultsYear: document.form2ResultsYear,
-    form2ResultsTerm: document.form2ResultsTerm,
-    form2ResultsUploadDate: document.form2ResultsUploadDate,
-    
-    // Form 3 Results PDF
-    form3ResultsPdf: document.form3ResultsPdf,
-    form3ResultsPdfName: document.form3ResultsPdfName,
-    form3ResultsPdfSize: document.form3ResultsPdfSize,
-    form3ResultsDescription: document.form3ResultsDescription,
-    form3ResultsYear: document.form3ResultsYear,
-    form3ResultsTerm: document.form3ResultsTerm,
-    form3ResultsUploadDate: document.form3ResultsUploadDate,
-    
-    // Form 4 Results PDF
-    form4ResultsPdf: document.form4ResultsPdf,
-    form4ResultsPdfName: document.form4ResultsPdfName,
-    form4ResultsPdfSize: document.form4ResultsPdfSize,
-    form4ResultsDescription: document.form4ResultsDescription,
-    form4ResultsYear: document.form4ResultsYear,
-    form4ResultsTerm: document.form4ResultsTerm,
-    form4ResultsUploadDate: document.form4ResultsUploadDate,
-    
-    // Mock Exams PDF
-    mockExamsResultsPdf: document.mockExamsResultsPdf,
-    mockExamsPdfName: document.mockExamsPdfName,
-    mockExamsPdfSize: document.mockExamsPdfSize,
-    mockExamsDescription: document.mockExamsDescription,
-    mockExamsYear: document.mockExamsYear,
-    mockExamsTerm: document.mockExamsTerm,
-    mockExamsUploadDate: document.mockExamsUploadDate,
-    
+    admissionFeeDistribution: document.admissionFeeDistribution || [],
+
     // KCSE Results PDF
     kcseResultsPdf: document.kcseResultsPdf,
     kcsePdfName: document.kcsePdfName,
@@ -321,10 +309,7 @@ const cleanDocumentResponse = (document) => {
     kcseYear: document.kcseYear,
     kcseTerm: document.kcseTerm,
     kcseUploadDate: document.kcseUploadDate,
-    
-    // REMOVED: additionalDocuments
-    // additionalDocuments: document.additionalDocuments || [],
-    
+
     createdAt: document.createdAt,
     updatedAt: document.updatedAt
   };
@@ -395,14 +380,6 @@ export async function POST(req) {
         folder: 'curriculum' 
       },
       { 
-        key: 'feesDay', 
-        name: 'feesDayDistributionPdf', 
-        year: 'feesDayYear',
-        term: 'feesDayTerm',
-        description: 'feesDayDescription',
-        folder: 'day-fees' 
-      },
-      { 
         key: 'feesBoarding', 
         name: 'feesBoardingDistributionPdf', 
         year: 'feesBoardingYear',
@@ -416,52 +393,12 @@ export async function POST(req) {
         year: 'admissionFeeYear',
         term: 'admissionFeeTerm',
         description: 'admissionFeeDescription',
-        folder: 'admission' 
-      },
+        folder: 'admission-letters' 
+      }
     ];
 
     // Exam fields
     const examFields = [
-      { 
-        key: 'form1Results', 
-        name: 'form1ResultsPdf', 
-        year: 'form1ResultsYear', 
-        term: 'form1ResultsTerm',
-        description: 'form1ResultsDescription', 
-        folder: 'exam-results' 
-      },
-      { 
-        key: 'form2Results', 
-        name: 'form2ResultsPdf', 
-        year: 'form2ResultsYear', 
-        term: 'form2ResultsTerm',
-        description: 'form2ResultsDescription', 
-        folder: 'exam-results' 
-      },
-      { 
-        key: 'form3Results', 
-        name: 'form3ResultsPdf', 
-        year: 'form3ResultsYear', 
-        term: 'form3ResultsTerm',
-        description: 'form3ResultsDescription', 
-        folder: 'exam-results' 
-      },
-      { 
-        key: 'form4Results', 
-        name: 'form4ResultsPdf', 
-        year: 'form4ResultsYear', 
-        term: 'form4ResultsTerm',
-        description: 'form4ResultsDescription', 
-        folder: 'exam-results' 
-      },
-      { 
-        key: 'mockExams', 
-        name: 'mockExamsResultsPdf', 
-        year: 'mockExamsYear', 
-        term: 'mockExamsTerm',
-        description: 'mockExamsDescription', 
-        folder: 'exam-results' 
-      },
       { 
         key: 'kcse', 
         name: 'kcseResultsPdf', 
@@ -523,42 +460,24 @@ export async function POST(req) {
       updatedAt: new Date()
     };
 
+    // The SchoolDocument schema stores fee totals inside distribution JSON.
+    const feesBoardingAnnualAmount = formData.get('feesBoardingAnnualAmount');
 
- // Parse JSON fields
-const feesDayDistributionJson = formData.get("feesDayDistributionJson");
-const feesBoardingDistributionJson = formData.get("feesBoardingDistributionJson");
-const admissionFeeDistribution = formData.get("admissionFeeDistribution");
-
-if (feesDayDistributionJson) {
-  try {
-    // Make sure to properly parse the JSON string
-    const parsed = JSON.parse(feesDayDistributionJson);
-    updateData.feesDayDistributionJson = parsed;
-    console.log('✅ Parsed feesDayDistributionJson:', parsed);
-  } catch (e) {
-    console.error("❌ Error parsing feesDayDistributionJson:", e);
-  }
-}
-
-if (feesBoardingDistributionJson) {
-  try {
-    const parsed = JSON.parse(feesBoardingDistributionJson);
-    updateData.feesBoardingDistributionJson = parsed;
-    console.log('✅ Parsed feesBoardingDistributionJson:', parsed);
-  } catch (e) {
-    console.error("❌ Error parsing feesBoardingDistributionJson:", e);
-  }
-}
-
-if (admissionFeeDistribution) {
-  try {
-    const parsed = JSON.parse(admissionFeeDistribution);
-    updateData.admissionFeeDistribution = parsed;
-    console.log('✅ Parsed admissionFeeDistribution:', parsed);
-  } catch (e) {
-    console.error("❌ Error parsing admissionFeeDistribution:", e);
-  }
-}
+    if (feesBoardingAnnualAmount) {
+      const amount = parseFloat(feesBoardingAnnualAmount);
+      if (Number.isFinite(amount) && amount > 0) {
+        updateData.feesBoardingDistributionJson = [
+          {
+            id: "boarding-total",
+            name: "Boarding annual fees",
+            description: "Total annual boarding fees",
+            amount,
+            mandatory: true,
+          },
+        ];
+        console.log('✅ Boarding annual amount stored in fee distribution JSON:', amount);
+      }
+    }
 
     // Process all fields (documents + exams)
     for (const field of allFields) {
@@ -571,12 +490,6 @@ if (admissionFeeDistribution) {
             name: 'curriculumPdfName',
             size: 'curriculumPdfSize',
             uploadDate: 'curriculumPdfUploadDate'
-          },
-          'feesDay': {
-            pdf: 'feesDayDistributionPdf',
-            name: 'feesDayPdfName',
-            size: 'feesDayPdfSize',
-            uploadDate: 'feesDayPdfUploadDate'
           },
           'feesBoarding': {
             pdf: 'feesBoardingDistributionPdf',
@@ -591,36 +504,6 @@ if (admissionFeeDistribution) {
             uploadDate: 'admissionFeePdfUploadDate'
           },
           // Exam fields
-          'form1Results': {
-            pdf: 'form1ResultsPdf',
-            name: 'form1ResultsPdfName',
-            size: 'form1ResultsPdfSize',
-            uploadDate: 'form1ResultsUploadDate'
-          },
-          'form2Results': {
-            pdf: 'form2ResultsPdf',
-            name: 'form2ResultsPdfName',
-            size: 'form2ResultsPdfSize',
-            uploadDate: 'form2ResultsUploadDate'
-          },
-          'form3Results': {
-            pdf: 'form3ResultsPdf',
-            name: 'form3ResultsPdfName',
-            size: 'form3ResultsPdfSize',
-            uploadDate: 'form3ResultsUploadDate'
-          },
-          'form4Results': {
-            pdf: 'form4ResultsPdf',
-            name: 'form4ResultsPdfName',
-            size: 'form4ResultsPdfSize',
-            uploadDate: 'form4ResultsUploadDate'
-          },
-          'mockExams': {
-            pdf: 'mockExamsResultsPdf',
-            name: 'mockExamsPdfName',
-            size: 'mockExamsPdfSize',
-            uploadDate: 'mockExamsUploadDate'
-          },
           'kcse': {
             pdf: 'kcseResultsPdf',
             name: 'kcsePdfName',
@@ -858,7 +741,6 @@ export async function PATCH(req) {
         
         // Get field mapping to clear related fields
         const fieldMappings = {
-          // Document fields
           'curriculumPDF': {
             name: 'curriculumPdfName',
             size: 'curriculumPdfSize',
@@ -866,14 +748,6 @@ export async function PATCH(req) {
             description: 'curriculumDescription',
             year: 'curriculumYear',
             term: 'curriculumTerm'
-          },
-          'feesDayDistributionPdf': {
-            name: 'feesDayPdfName',
-            size: 'feesDayPdfSize',
-            uploadDate: 'feesDayPdfUploadDate',
-            description: 'feesDayDescription',
-            year: 'feesDayYear',
-            term: 'feesDayTerm'
           },
           'feesBoardingDistributionPdf': {
             name: 'feesBoardingPdfName',
@@ -891,23 +765,19 @@ export async function PATCH(req) {
             year: 'admissionFeeYear',
             term: 'admissionFeeTerm'
           },
-          // Exam fields
-          'form1ResultsPdf': {
-            name: 'form1ResultsPdfName',
-            size: 'form1ResultsPdfSize',
-            uploadDate: 'form1ResultsUploadDate',
-            description: 'form1ResultsDescription',
-            year: 'form1ResultsYear',
-            term: 'form1ResultsTerm'
-          },
-          // ... add other exam fields similarly
+          'kcseResultsPdf': {
+            name: 'kcsePdfName',
+            size: 'kcsePdfSize',
+            uploadDate: 'kcseUploadDate',
+            description: 'kcseDescription',
+            year: 'kcseYear',
+            term: 'kcseTerm'
+          }
         };
 
         const clearData = {
           [field]: null,
           updatedAt: new Date(),
-          // Audit trail
- 
         };
 
         const mapping = fieldMappings[field];
@@ -1040,14 +910,8 @@ async function handleDeleteDocumentById(documentId, auth) {
 async function deleteDocumentAndFiles(document, auth) {
   const filesToDelete = [
     document.curriculumPDF,
-    document.feesDayDistributionPdf,
     document.feesBoardingDistributionPdf,
     document.admissionFeePdf,
-    document.form1ResultsPdf,
-    document.form2ResultsPdf,
-    document.form3ResultsPdf,
-    document.form4ResultsPdf,
-    document.mockExamsResultsPdf,
     document.kcseResultsPdf,
   ].filter(Boolean);
 

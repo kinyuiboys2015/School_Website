@@ -1957,6 +1957,10 @@ const MAX_DEPARTMENT_IMAGE_SIZE = 3 * 1024 * 1024;
 
 function DepartmentFormModal({ department, onClose, onSave, loading }) {
   const extra = parseDepartmentExtra(department?.extra);
+  const existingDepartmentImageUrls = Array.from(new Set([
+    department?.image,
+    ...(department?.images?.map((image) => image.url) || []),
+  ].filter(isAllowedDepartmentImage)));
   const [formData, setFormData] = useState({
     name: department?.name || '',
     category: department?.category || 'TEACHING',
@@ -1973,9 +1977,7 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
   });
   const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState(
-    department?.images?.length
-      ? department.images.map((image) => image.url).filter(isAllowedDepartmentImage)
-      : [department?.image].filter(isAllowedDepartmentImage)
+    existingDepartmentImageUrls
   );
   const [imageError, setImageError] = useState('');
   const hasDepartmentImage = imageFiles.length > 0 || imagePreviews.length > 0 || Boolean(getDepartmentImage(department));
@@ -1996,10 +1998,7 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
 
     setImageError('');
     setImageFiles(selectedFiles);
-    setImagePreviews([
-      ...(department?.images?.map((image) => image.url) || []),
-      ...selectedFiles.map((file) => URL.createObjectURL(file)),
-    ]);
+    setImagePreviews(selectedFiles.map((file) => URL.createObjectURL(file)));
   };
 
   const toList = (value) => value
@@ -2032,6 +2031,7 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
 
     if (imageFiles.length > 0) {
       imageFiles.forEach((file) => payload.append('images', file));
+      existingDepartmentImageUrls.forEach((url) => payload.append('imagesToRemove', url));
     } else if (department?.image) {
       payload.append('image', department.image);
     } else if (department?.images?.[0]?.url) {

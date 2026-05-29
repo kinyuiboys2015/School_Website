@@ -441,7 +441,7 @@ export async function PUT(req, { params }) {
           displayOrder: existing.images.length + index,
         })),
       });
-      data.image = data.image || uploadedImages[0].url;
+      data.image = uploadedImages[0].url;
     }
 
     const remainingImages = existing.images.filter(
