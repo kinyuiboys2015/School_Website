@@ -641,44 +641,42 @@ export default function StaffDirectory() {
         </div>
       </header>
 
-    {/* ── Hero Banner - Dark Bluish Katwanyaa Staff Theme ── */}
-<div className="relative overflow-hidden bg-[#071527]">
+{/* ── Hero Banner - Dark Brown Staff Theme ── */}
+<div className="relative overflow-hidden bg-[#1b0f08]">
   {/* Decorative background */}
-  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.22),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(10,22,40,0.12),_transparent_35%)]" />
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(120,72,35,0.35),_transparent_38%),radial-gradient(circle_at_bottom,_rgba(80,42,18,0.28),_transparent_40%)]" />
 
-  <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-[#38bdf8]/30 blur-3xl" />
-  <div className="absolute -left-20 bottom-0 h-72 w-72 rounded-full bg-[#071527]/10 blur-3xl" />
+  <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-[#8b5a2b]/30 blur-3xl" />
+  <div className="absolute -left-20 bottom-0 h-72 w-72 rounded-full bg-[#3b1f0f]/40 blur-3xl" />
 
   <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
-    <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+    <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
       
-      {/* Left content */}
-      <div>
-        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-white/10 px-4 py-2 shadow-sm backdrop-blur">
-          <FiUsers className="h-4 w-4 text-sky-300" />
-          <span className="text-[10px] font-black uppercase tracking-[0.22em] text-blue-100/80">
-            Kinyui Boys Staff
-          </span>
+      {/* Center content */}
+      <div className="mb-5 inline-flex items-center justify-center gap-2 rounded-full border border-amber-200/20 bg-white/10 px-4 py-2 shadow-sm backdrop-blur">
+        <FiUsers className="h-4 w-4 text-amber-300" />
+        <span className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-100/85">
+          Kinyui Boys Staff
+        </span>
+      </div>
+
+      <h1 className="max-w-4xl text-center text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+        Meet the dedicated team shaping our school community.
+      </h1>
+
+      <p className="mx-auto mt-5 max-w-2xl text-center text-sm leading-7 text-amber-100/80 sm:text-base">
+        Our staff members work together with commitment, care, and professionalism to support students, strengthen learning, and serve the school every day.
+      </p>
+
+      <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap">
+        <div className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#7c3f16] px-5 py-3 text-xs font-bold text-white shadow-lg shadow-black/30">
+          <FiShield className="h-4 w-4 text-amber-300" />
+          Leadership Team
         </div>
 
-        <h1 className="max-w-4xl text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-          The Educators behind our learning community.
-        </h1>
-
-        <p className="mt-5 max-w-2xl text-sm leading-7 text-blue-100/75 sm:text-base">
-          Meet the leadership, teachers, and support team working together to guide, support, and serve our students every day.
-        </p>
-
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <div className="inline-flex items-center gap-2 rounded-2xl bg-[#1d4ed8] px-5 py-3 text-xs font-bold text-white shadow-lg shadow-blue-950/30">
-            <FiShield className="h-4 w-4 text-[#38bdf8]" />
-            Leadership Team
-          </div>
-
-          <div className="inline-flex items-center gap-2 rounded-2xl border border-[#071527]/10 bg-white/10 px-5 py-3 text-xs font-bold text-blue-50 shadow-sm">
-            <FiStar className="h-4 w-4 text-[#38bdf8]" />
-            Dedicated Educators
-          </div>
+        <div className="inline-flex items-center justify-center gap-2 rounded-2xl border border-amber-100/15 bg-white/10 px-5 py-3 text-xs font-bold text-amber-50 shadow-sm backdrop-blur">
+          <FiStar className="h-4 w-4 text-amber-300" />
+          Dedicated Educators
         </div>
       </div>
 
