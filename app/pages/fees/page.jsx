@@ -366,7 +366,7 @@ export default function ModernFeesPage() {
                   Loading fee structure...
                 </p>
                 <p className="text-slate-400 text-[10px] sm:text-xs uppercase tracking-widest mt-1 font-bold">
-                  Katwanyaa Senior School
+                  Kinyui Boys' High School
                 </p>
               </div>
             </Stack>
@@ -389,7 +389,7 @@ export default function ModernFeesPage() {
                 School Fees
               </h1>
               <p className="text-gray-300 text-sm sm:text-base mt-1">
-                Katwanyaa Senior School fee structure
+                Kinyui Boys' High School Fee Structure 2026
               </p>
             </div>
             
@@ -406,44 +406,39 @@ export default function ModernFeesPage() {
       </div>
 
       <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-8">
-        {/* Fee Cards - Day School & Boarding */}
-        <div className="space-y-4">
-          {/* Day School Fees */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <div className="mb-3">
-              <h2 className="text-lg font-semibold text-gray-900">Day Scholars</h2>
-              <p className="text-xs text-gray-500">Annual fees</p>
+        
+        {/* {date.getFullYear()} Fee Structure Summary */}
+        <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
+          <h2 className="text-xl font-bold text-slate-900 mb-4">{date.getFullYear()} Fee Structure Summary</h2>
+          <p className="text-slate-600 mb-4">Total Annual Fees: <span className="font-black text-2xl text-slate-900">{documentData?.feesAnnualTotal?.toLocaleString() || 'N/A'}</span></p>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+            <div className="bg-white rounded-lg p-4 border border-slate-200">
+              <p className="text-sm text-slate-500">Term 1</p>
+              <p className="text-xl font-bold text-slate-900">KSh 17,250/=</p>
             </div>
-
-            <div className="mb-4">
-              <p className="text-3xl font-bold text-gray-900">
-                KSh {(documentData?.feesDayAnnualAmount || 0).toLocaleString()}
-              </p>
-              <p className="text-xs text-gray-500 mt-1">
-                {documentData?.feesDayDescription || 'Total annual fees for day school'}
-              </p>
+            <div className="bg-white rounded-lg p-4 border border-slate-200">
+              <p className="text-sm text-slate-500">Term 2</p>
+              <p className="text-xl font-bold text-slate-900">KSh 16,000/=</p>
             </div>
-
-            {documentData?.feesDayDistributionPdf && (
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => handleViewPDF(documentData.feesDayDistributionPdf)}
-                  className="px-3 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors w-fit"
-                >
-                  View PDF
-                </button>
-                <button
-                  onClick={() => handleDownloadPDF(documentData.feesDayDistributionPdf, documentData.feesDayPdfName)}
-                  className="px-3 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900 transition-colors flex items-center gap-1 w-fit"
-                >
-                  <FiDownload size={14} />
-                  Download
-                </button>
-              </div>
-            )}
+            <div className="bg-white rounded-lg p-4 border border-slate-200">
+              <p className="text-sm text-slate-500">Term 3</p>
+              <p className="text-xl font-bold text-slate-900">KSh 7,285/=</p>
+            </div>
           </div>
+          
+          <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+            <p className="text-sm font-bold text-amber-800">Form 4 Fee Breakdown</p>
+            <div className="flex flex-col sm:flex-row justify-between gap-2 mt-2">
+              <span>Term 1: KSh 24,535/=</span>
+              <span>Term 2: KSh 16,000/=</span>
+              <span className="font-bold">Total: KSh {documentData?.feesForm4Total?.toLocaleString() || 'N/A'}</span>
+            </div>
+          </div>
+        </div>
 
-          {/* Boarding Fees */}
+        {/* Boarding Fees Card - Day Scholars REMOVED */}
+        <div className="space-y-4">
           <div className="bg-white rounded-xl border border-gray-200 p-5">
             <div className="mb-3">
               <h2 className="text-lg font-semibold text-gray-900">Boarders</h2>
@@ -452,7 +447,7 @@ export default function ModernFeesPage() {
 
             <div className="mb-4">
               <p className="text-3xl font-bold text-gray-900">
-                KSh {(documentData?.feesBoardingAnnualAmount || 0).toLocaleString()}
+                KSh {(documentData?.feesBoardingAnnualAmount || 40535).toLocaleString()}
               </p>
               <p className="text-xs text-gray-500 mt-1">
                 {documentData?.feesBoardingDescription || 'Total annual fees for boarding school'}
