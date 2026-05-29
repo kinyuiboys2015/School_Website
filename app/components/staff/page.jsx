@@ -241,6 +241,8 @@ function DeleteConfirmationModal({
   onConfirm, 
   type = 'single',
   count = 1,
+  itemName = '',
+  itemLabel = 'Staff Member',
   staffName = '',
   loading = false 
 }) {
@@ -278,15 +280,15 @@ function DeleteConfirmationModal({
             </div>
             <div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">
-                {type === 'bulk' 
-                  ? `Delete ${count} staff ${count === 1 ? 'member' : 'members'}?`
-                  : `Delete "${staffName}"?`
+                {type === 'bulk'
+                  ? `Delete ${count} ${itemLabel.toLowerCase()}${count === 1 ? '' : 's'}?`
+                  : `Delete ${itemName || staffName ? `"${itemName || staffName}"` : itemLabel}?`
                 }
               </h3>
               <p className="text-gray-600">
                 {type === 'bulk'
-                  ? `You are about to delete ${count} staff ${count === 1 ? 'member' : 'members'}. All associated data will be permanently removed.`
-                  : 'This staff member will be permanently deleted. All associated data will be removed.'
+                  ? `You are about to delete ${count} ${itemLabel.toLowerCase()}${count === 1 ? '' : 's'}. All associated data will be permanently removed.`
+                  : `This ${itemLabel.toLowerCase()} will be permanently deleted. All associated data will be removed.`
                 }
               </p>
             </div>
@@ -325,7 +327,9 @@ function DeleteConfirmationModal({
               ) : (
                 <>
                   <FiTrash2 />
-                  {type === 'bulk' ? `Delete ${count} Staff` : 'Delete Staff Member'}
+                  {type === 'bulk'
+                    ? `Delete ${count} ${itemLabel.toLowerCase()}${count === 1 ? '' : 's'}`
+                    : `Delete ${itemLabel}`}
                 </>
               )}
             </button>
@@ -2569,7 +2573,7 @@ function StaffDepartmentManager({ showNotification }) {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(department)}
+                      onClick={() => handleDeleteDepartment(department)}
                       className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-50 text-red-600"
                     >
                       <FiTrash2 />
@@ -2635,6 +2639,9 @@ export default function StaffManager() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteType, setDeleteType] = useState('single');
   const [staffToDelete, setStaffToDelete] = useState(null);
+  const [showDepartmentDeleteModal, setShowDepartmentDeleteModal] = useState(false);
+  const [departmentToDelete, setDepartmentToDelete] = useState(null);
+  const [departmentDeleting, setDepartmentDeleting] = useState(false);
   const [notification, setNotification] = useState({
     open: false,
     type: 'success',
@@ -2904,6 +2911,11 @@ useEffect(() => {
     setShowDeleteModal(true);
   };
 
+  const handleDeleteDepartment = (department) => {
+    setDepartmentToDelete(department);
+    setShowDepartmentDeleteModal(true);
+  };
+
   const handleBulkDelete = () => {
     if (selectedPosts.size === 0) {
       showNotification('warning', 'No Selection', 'No staff members selected for deletion');
@@ -3001,6 +3013,40 @@ const confirmDelete = async () => {
     setBulkDeleting(false);
     setShowDeleteModal(false);
     setStaffToDelete(null);
+  }
+};
+
+const confirmDeleteDepartment = async () => {
+  if (!departmentToDelete) return;
+  setDepartmentDeleting(true);
+
+  try {
+    const response = await fetch(`/api/staff/departments/${departmentToDelete.id}`, {
+      method: 'DELETE',
+      headers: getDepartmentAuthHeaders(),
+    });
+
+    const data = await response.json();
+
+    if (response.status === 401) {
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_user');
+      throw new Error('Session expired. Please login again.');
+    }
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || 'Failed to delete department');
+    }
+
+    await fetchDepartments();
+    showNotification('success', 'Department Deleted', `${departmentToDelete.name} was removed successfully.`);
+  } catch (error) {
+    console.error('Error deleting department:', error);
+    showNotification('error', 'Delete Failed', error.message || 'Failed to delete department');
+  } finally {
+    setDepartmentDeleting(false);
+    setShowDepartmentDeleteModal(false);
+    setDepartmentToDelete(null);
   }
 };
 
@@ -3184,10 +3230,21 @@ const handleSubmit = async (formData, id) => {
         onConfirm={confirmDelete}
         type={deleteType}
         count={deleteType === 'bulk' ? selectedPosts.size : 1}
-        staffName={deleteType === 'single' ? staffToDelete?.name : ''}
+        itemName={deleteType === 'single' ? staffToDelete?.name : ''}
+        itemLabel="Staff Member"
         loading={bulkDeleting}
       />
 
+      <DeleteConfirmationModal
+        open={showDepartmentDeleteModal}
+        onClose={() => !departmentDeleting && setShowDepartmentDeleteModal(false)}
+        onConfirm={confirmDeleteDepartment}
+        type="single"
+        count={1}
+        itemName={departmentToDelete?.name}
+        itemLabel="Department"
+        loading={departmentDeleting}
+      />
 
 
       
