@@ -2735,23 +2735,23 @@ export default function AssignmentsManager() {
       )}
 
       {/* Filters Section */}
-      <div className="bg-white rounded-2xl p-4 lg:p-6 shadow-lg border border-gray-200">
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4">
-          <div className="lg:col-span-2 relative">
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+      <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-200 mb-6">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="relative flex-1">
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              placeholder="Search assignments by title, description, or subject..."
+              placeholder="Search assignments..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-gray-50"
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
             />
           </div>
 
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 cursor-pointer text-sm"
+            className="rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
           >
             <option value="all">All Status</option>
             {statusOptions.map(option => (
@@ -2762,36 +2762,9 @@ export default function AssignmentsManager() {
           </select>
 
           <select
-            value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
-            className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-gray-50 cursor-pointer text-sm"
-          >
-            <option value="all">All Subjects</option>
-            {subjectOptions.map(subject => (
-              <option key={subject} value={subject}>
-                {subject}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={selectedPriority}
-            onChange={(e) => setSelectedPriority(e.target.value)}
-            className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-gray-50 cursor-pointer text-sm"
-          >
-            <option value="all">All Priorities</option>
-            {priorityOptions.map(option => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-
-          {/* Class Filter */}
-          <select
             value={selectedClass}
             onChange={(e) => setSelectedClass(e.target.value)}
-            className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-gray-50 cursor-pointer text-sm"
+            className="rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
           >
             <option value="all">All Classes</option>
             {classOptions.map(className => (
@@ -2800,6 +2773,19 @@ export default function AssignmentsManager() {
               </option>
             ))}
           </select>
+
+          <button
+            onClick={() => {
+              setSearchTerm('');
+              setSelectedStatus('all');
+              setSelectedSubject('all');
+              setSelectedPriority('all');
+              setSelectedClass('all');
+            }}
+            className="rounded-2xl border border-gray-300 bg-gray-100 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-gray-200"
+          >
+            Clear Filters
+          </button>
         </div>
       </div>
 

@@ -40,7 +40,6 @@ import {
   FiTag,
   FiMail,
   FiUserCheck,
-  FiFilter,
   FiHardDrive,
   FiGlobe,
   FiShield,
