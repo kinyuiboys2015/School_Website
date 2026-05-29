@@ -917,10 +917,13 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
 
   useEffect(() => {
     if (staff?.image && typeof staff.image === 'string') {
-      const formattedImage = staff.image.startsWith('/') ? staff.image : `/${staff.image}`;
+      const isAbsoluteUrl = /^(?:https?:\/\/|\/\/)/i.test(staff.image);
+      const formattedImage = isAbsoluteUrl ? staff.image : staff.image.startsWith('/') ? staff.image : `/${staff.image}`;
       setImagePreview(formattedImage);
+    } else {
+      setImagePreview('');
     }
-  }, [staff]);
+  }, [staff?.image]);
 
   useEffect(() => {
     if (currentStep > steps.length - 1) {
@@ -1052,8 +1055,15 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
 
   const handleImageRemove = () => {
     setImageFile(null);
-    setImagePreview('');
     setImageError('');
+
+    if (staff?.image && typeof staff.image === 'string' && staff.image.trim()) {
+      const isAbsoluteUrl = /^(?:https?:\/\/|\/\/)/i.test(staff.image);
+      const formattedImage = isAbsoluteUrl ? staff.image : staff.image.startsWith('/') ? staff.image : `/${staff.image}`;
+      setImagePreview(formattedImage);
+    } else {
+      setImagePreview('');
+    }
   };
 
   const handleChange = (field, value) => {
@@ -1981,6 +1991,10 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
   );
   const [imageError, setImageError] = useState('');
   const hasDepartmentImage = imageFiles.length > 0 || imagePreviews.length > 0 || Boolean(getDepartmentImage(department));
+
+  useEffect(() => {
+    setImagePreviews(existingDepartmentImageUrls);
+  }, [existingDepartmentImageUrls]);
 
   const updateField = (field, value) => {
     setFormData((previous) => ({ ...previous, [field]: value }));
