@@ -272,6 +272,201 @@ const staffData = [
   }
 ];
 
+const guidanceTeamMembers = [
+  {
+    name: "Mr. Muller",
+    role: "teacher",
+    title: "Guidance Counselor",
+    phone: "0790 789847",
+    email: "kinyuiboys2015@gmail.com",
+    bio: "Senior guidance counselor dedicated to student wellbeing, mentorship, and career guidance.",
+    image: "/male.png"
+  },
+  {
+    name: "Mr. Kariuki",
+    role: "teacher",
+    title: "Guidance Teacher & Patron",
+    phone: "0790 789847",
+    email: "kinyuiboys2015@gmail.com",
+    bio: "Guidance teacher and patron supporting student welfare, boarding mentorship, and counselling services.",
+    image: "/male.png"
+  },
+  {
+    name: "Mr. Mutua",
+    role: "patron",
+    title: "Guidance Patron",
+    phone: "0790 789847",
+    email: "kinyuiboys2015@gmail.com",
+    bio: "School patron focused on pastoral care, leadership oversight, and guidance team support.",
+    image: "/male.png"
+  }
+];
+
+const schoolHubItems = [
+  {
+    type: "CLUB",
+    title: "Academic and Sports Club",
+    shortDescription: "A vibrant club that supports academics, fitness, teamwork, and competition for Kinyui Boys.",
+    description:
+      "The Academic and Sports Club brings together learners for debate, quizzes, athletics, and team-building activities that strengthen both mind and body.",
+    contactName: "Kinyui Boys School Office",
+    contactEmail: "kinyuiboys2015@gmail.com",
+    contactPhone: "0790 789847",
+    website: "https://kinyuiboyssenior.school/",
+    socialMedia: { facebook: "https://web.facebook.com/KinyuiBoysHighSchool/?_rdc=1&_rdr#" },
+    displayOrder: 1,
+    location: "Main Sports Grounds",
+    established: "2024",
+    details: [
+      { title: "Focus", content: "Debate, athletics, leadership, and academic clubs" },
+      { title: "Participation", content: "Open to all senior school students" }
+    ],
+    image: "/hero/1.avif",
+    images: [
+      { url: "/hero/1.avif", altText: "Students training on the school field", displayOrder: 0 },
+      { url: "/hero/2.avif", altText: "Kinyui Boys club activities", displayOrder: 1 }
+    ]
+  },
+  {
+    type: "SOCIETY",
+    title: "Debate and Culture Society",
+    shortDescription: "A student society focused on debating, public speaking and cultural exchange.",
+    description:
+      "The Debate and Culture Society builds confidence, critical thinking, and cultural appreciation through debates, drama, and student-led events.",
+    contactName: "Kinyui Boys School Office",
+    contactEmail: "kinyuiboys2015@gmail.com",
+    contactPhone: "0790 789847",
+    website: "https://kinyuiboyssenior.school/",
+    socialMedia: { facebook: "https://web.facebook.com/KinyuiBoysHighSchool/?_rdc=1&_rdr#" },
+    displayOrder: 2,
+    location: "Culture Hall",
+    established: "2023",
+    details: [
+      { title: "Activities", content: "Debates, public speaking, cultural shows" },
+      { title: "Membership", content: "Open to all learners" }
+    ],
+    image: "/hero/3.avif",
+    images: [
+      { url: "/hero/3.avif", altText: "Students presenting at debate", displayOrder: 0 }
+    ]
+  },
+  {
+    type: "STUDENT_COUNCIL",
+    title: "Student Council",
+    shortDescription: "Student leaders who represent the school community and support school governance.",
+    description:
+      "The Student Council champions student voice, organizes school-wide initiatives, and partners with staff to improve campus life.",
+    contactName: "Kinyui Boys School Office",
+    contactEmail: "kinyuiboys2015@gmail.com",
+    contactPhone: "0790 789847",
+    website: "https://kinyuiboyssenior.school/",
+    socialMedia: { facebook: "https://web.facebook.com/KinyuiBoysHighSchool/?_rdc=1&_rdr#" },
+    displayOrder: 3,
+    location: "School Administration Block",
+    established: "2022",
+    details: [
+      { title: "Role", content: "Leadership, representation, mentoring, and student welfare" },
+      { title: "Goals", content: "Strengthen student engagement and campus wellbeing" }
+    ],
+    image: "/hero/4.avif",
+    images: [
+      { url: "/hero/4.avif", altText: "Student council meeting", displayOrder: 0 }
+    ]
+  },
+  {
+    type: "COMPUTER_LAB",
+    title: "ICT and Computer Lab",
+    shortDescription: "A modern computer lab for ICT learning, digital skills and innovation at Kinyui Boys.",
+    description:
+      "The ICT and Computer Lab supports programming, multimedia, research, and digital literacy for senior school students.",
+    contactName: "Kinyui Boys School Office",
+    contactEmail: "kinyuiboys2015@gmail.com",
+    contactPhone: "0790 789847",
+    website: "https://kinyuiboyssenior.school/",
+    socialMedia: { facebook: "https://web.facebook.com/KinyuiBoysHighSchool/?_rdc=1&_rdr#" },
+    displayOrder: 4,
+    location: "ICT Centre",
+    established: "2024",
+    details: [
+      { title: "Resources", content: "Computers, projectors, Wi-Fi, and practical software labs" },
+      { title: "Courses", content: "Computer Studies, ICT, Coding and digital citizenship" }
+    ],
+    image: "/hero/5.avif",
+    images: [
+      { url: "/hero/5.avif", altText: "Students using computers in lab", displayOrder: 0 }
+    ]
+  },
+  {
+    type: "FARM",
+    title: "School Farm",
+    shortDescription: "A practical farming space where students learn agriculture, conservation and sustainability.",
+    description:
+      "The School Farm provides hands-on agricultural education and supports food production, conservation and environmental stewardship.",
+    contactName: "Kinyui Boys School Office",
+    contactEmail: "kinyuiboys2015@gmail.com",
+    contactPhone: "0790 789847",
+    website: "https://kinyuiboyssenior.school/",
+    socialMedia: { facebook: "https://web.facebook.com/KinyuiBoysHighSchool/?_rdc=1&_rdr#" },
+    displayOrder: 5,
+    location: "School Farm",
+    established: "2023",
+    details: [
+      { title: "Learning", content: "Agriculture, horticulture, and conservation projects" },
+      { title: "Impact", content: "Student-led farming and food security initiatives" }
+    ],
+    image: "/hero/6.avif",
+    images: [
+      { url: "/hero/6.avif", altText: "School farm crops and students", displayOrder: 0 }
+    ]
+  },
+  {
+    type: "BOARDING",
+    title: "Boarding Life",
+    shortDescription: "A structured boarding environment that supports study, discipline and character formation.",
+    description:
+      "Boarding Life offers safe accommodation, mentorship, extracurricular routines, and a supportive community for Kinyui boys.",
+    contactName: "Kinyui Boys School Office",
+    contactEmail: "kinyuiboys2015@gmail.com",
+    contactPhone: "0790 789847",
+    website: "https://kinyuiboyssenior.school/",
+    socialMedia: { facebook: "https://web.facebook.com/KinyuiBoysHighSchool/?_rdc=1&_rdr#" },
+    displayOrder: 6,
+    location: "Dormitories and Dining Hall",
+    established: "2015",
+    details: [
+      { title: "Facilities", content: "Dormitories, dining, study time and team mentorship" },
+      { title: "Wellbeing", content: "Pastoral care, health support and student welfare" }
+    ],
+    image: "/hero/7.avif",
+    images: [
+      { url: "/hero/7.avif", altText: "Boarding house at Kinyui Boys", displayOrder: 0 }
+    ]
+  },
+  {
+    type: "SECURITY",
+    title: "School Security",
+    shortDescription: "Campus security and safety systems that protect learners and school property.",
+    description:
+      "School Security maintains a safe, disciplined environment through patrols, controlled access and a strong student welfare partnership.",
+    contactName: "Kinyui Boys School Office",
+    contactEmail: "kinyuiboys2015@gmail.com",
+    contactPhone: "0790 789847",
+    website: "https://kinyuiboyssenior.school/",
+    socialMedia: { facebook: "https://web.facebook.com/KinyuiBoysHighSchool/?_rdc=1&_rdr#" },
+    displayOrder: 7,
+    location: "Campus Security Office",
+    established: "2025",
+    details: [
+      { title: "Coverage", content: "24/7 campus patrols, access control and emergency response" },
+      { title: "Commitment", content: "A secure learning environment for all school stakeholders" }
+    ],
+    image: "/hero/8.avif",
+    images: [
+      { url: "/hero/8.avif", altText: "School security and gates", displayOrder: 0 }
+    ]
+  }
+];
+
 const createOrUpdateDepartment = async (department) => {
   const existing = await prisma.staffDepartment.findFirst({
     where: { name: department.name }
@@ -311,6 +506,99 @@ const createOrUpdateDepartment = async (department) => {
                 displayOrder: 0,
               },
             ],
+          }
+        : undefined,
+    },
+    include: { images: true },
+  });
+};
+
+const createOrUpdateTeamMember = async (member) => {
+  const existing = await prisma.teamMember.findFirst({
+    where: { name: member.name, title: member.title },
+  });
+
+  const memberData = {
+    role: member.role,
+    title: member.title || null,
+    phone: member.phone || null,
+    email: member.email || null,
+    bio: member.bio || null,
+    image: member.image || null,
+  };
+
+  if (existing) {
+    return prisma.teamMember.update({
+      where: { id: existing.id },
+      data: memberData,
+    });
+  }
+
+  return prisma.teamMember.create({
+    data: {
+      name: member.name,
+      ...memberData,
+    },
+  });
+};
+
+const createOrUpdateSchoolHubItem = async (item) => {
+  const existing = await prisma.schoolHubItem.findFirst({
+    where: { type: item.type, title: item.title },
+    include: { images: true },
+  });
+
+  const itemData = {
+    type: item.type,
+    title: item.title,
+    shortDescription: item.shortDescription || null,
+    description: item.description || null,
+    contactName: item.contactName || null,
+    contactPhone: item.contactPhone || null,
+    contactEmail: item.contactEmail || null,
+    displayOrder: item.displayOrder || 0,
+    isActive: true,
+    image: item.image || null,
+    details: item.details || [],
+    location: item.location || null,
+    established: item.established || null,
+    website: item.website || null,
+    socialMedia: item.socialMedia || {},
+  };
+
+  if (existing) {
+    const updateData = { ...itemData };
+    if (item.images && existing.images.length === 0) {
+      updateData.images = {
+        create: item.images.map((image) => ({
+          url: image.url,
+          altText: image.altText || `${item.title} image`,
+          publicId: null,
+          caption: image.caption || null,
+          displayOrder: image.displayOrder || 0,
+        })),
+      };
+    }
+
+    return prisma.schoolHubItem.update({
+      where: { id: existing.id },
+      data: updateData,
+      include: { images: true },
+    });
+  }
+
+  return prisma.schoolHubItem.create({
+    data: {
+      ...itemData,
+      images: item.images
+        ? {
+            create: item.images.map((image) => ({
+              url: image.url,
+              altText: image.altText || `${item.title} image`,
+              publicId: null,
+              caption: image.caption || null,
+              displayOrder: image.displayOrder || 0,
+            })),
           }
         : undefined,
     },
@@ -359,6 +647,35 @@ const createOrUpdateStaff = async (staff, departmentIds) => {
   });
 };
 
+const createOrUpdateTeamMember = async (member) => {
+  const existing = await prisma.teamMember.findFirst({
+    where: { name: member.name, title: member.title },
+  });
+
+  const teamMemberData = {
+    role: member.role || 'teacher',
+    title: member.title || null,
+    phone: member.phone || null,
+    email: member.email || null,
+    bio: member.bio || null,
+    image: member.image || null,
+  };
+
+  if (existing) {
+    return prisma.teamMember.update({
+      where: { id: existing.id },
+      data: teamMemberData,
+    });
+  }
+
+  return prisma.teamMember.create({
+    data: {
+      name: member.name,
+      ...teamMemberData,
+    },
+  });
+};
+
 const withTimeout = (promise, ms) =>
   Promise.race([
     promise,
@@ -400,12 +717,21 @@ async function main() {
     await createOrUpdateStaff(staff, departmentIds);
   }
 
+  for (const member of guidanceTeamMembers) {
+    await createOrUpdateTeamMember(member);
+  }
+
+  for (const item of schoolHubItems) {
+    await createOrUpdateSchoolHubItem(item);
+  }
+
   console.log(`Seeded school info: ${school.name}`);
   console.log(`Seeded school slogan: ${stats.slogan}`);
-  console.log(`Seeded ${staffDepartments.length} staff departments and ${staffData.length} staff profiles.`);
+  console.log(`Seeded ${staffDepartments.length} staff departments, ${staffData.length} staff profiles, ${guidanceTeamMembers.length} guidance team members, and ${schoolHubItems.length} school hub items.`);
 }
 
-withTimeout(main(), 120000)
+console.log("Starting Kinyui school seed...");
+withTimeout(main(), 300000)
   .catch((error) => {
     console.error(error.message);
     process.exitCode = 1;
