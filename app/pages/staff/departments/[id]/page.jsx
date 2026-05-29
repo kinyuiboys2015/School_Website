@@ -168,7 +168,7 @@ export default function StaffDepartmentDetailPage() {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/staff/departments/${params.id}`, {
+      const response = await fetch(`/api/staff/departments/${params.id}?includeTeachers=1`, {
         cache: "no-store",
       });
       const data = await response.json();
@@ -231,7 +231,11 @@ export default function StaffDepartmentDetailPage() {
 
   const meta = getCategoryMeta(department.category);
   const Icon = meta.icon;
-  const teachers = Array.isArray(department.staff) ? department.staff : [];
+  const teachers = Array.isArray(department.teachers)
+    ? department.teachers
+    : Array.isArray(department.staff)
+    ? department.staff
+    : [];
 
   // Default Kinyui Boys Mathematics Department data
   const defaultOverview = "Coordinates Mathematics teaching, numeracy support, assessment preparation, and performance tracking across the school.";
