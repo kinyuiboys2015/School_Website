@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import path from "path";
 import { prisma } from "../../../../libs/prisma";
+import { resolveDeliveryRecipients } from "../../../../libs/delivery";
 import { normalizeEmailAddress, sendDeliveryEmail } from "../../../../libs/emailDelivery";
 
 export const dynamic = "force-dynamic";
@@ -8,11 +9,7 @@ export const dynamic = "force-dynamic";
 const decodeJwtPayload = (token) => {
   const payload = token.split('.')[1];
   const normalizedPayload = payload.replace(/-/g, '+').replace(/_/g, '/');
-  const paddedPayload = normalizedPayload.padEnd(
-    normalizedPayload.length + ((4 - normalizedPayload.length % 4) % 4),
-    '='
-  );
-
+  const paddedPayload = normalizedPayload.padEnd(normalizedPayload.length + ((4 - normalizedPayload.length % 4) % 4), '=');
   return JSON.parse(Buffer.from(paddedPayload, 'base64').toString('utf-8'));
 };
 
@@ -23,31 +20,22 @@ const authenticateDeliveryRequest = (req) => {
   if (!adminToken || !deviceToken) {
     return {
       authenticated: false,
-      response: NextResponse.json(
-        { success: false, error: 'Access Denied', message: 'Admin and device tokens are required' },
-        { status: 401 }
-      )
+      response: NextResponse.json({ success: false, error: 'Access Denied', message: 'Admin and device tokens are required' }, { status: 401 })
     };
   }
 
   try {
     if (adminToken.split('.').length !== 3) throw new Error('Invalid admin token format');
     JSON.parse(Buffer.from(deviceToken, 'base64').toString('utf-8'));
-
     const adminPayload = decodeJwtPayload(adminToken);
-    if (adminPayload.exp && adminPayload.exp < Date.now() / 1000) {
-      throw new Error('Admin token has expired');
-    }
+    if (adminPayload.exp && adminPayload.exp < Date.now() / 1000) throw new Error('Admin token has expired');
 
     const userRole = String(adminPayload.role || adminPayload.userRole || '').toUpperCase();
     const validRoles = ['ADMIN', 'SUPER_ADMIN', 'ADMINISTRATOR', 'PRINCIPAL', 'TEACHER', 'STAFF'];
     if (!validRoles.includes(userRole)) {
       return {
         authenticated: false,
-        response: NextResponse.json(
-          { success: false, error: 'Access Denied', message: 'You do not have permission to send resource delivery emails' },
-          { status: 403 }
-        )
+        response: NextResponse.json({ success: false, error: 'Access Denied', message: 'You do not have permission to send resource delivery emails' }, { status: 403 })
       };
     }
 
@@ -55,20 +43,10 @@ const authenticateDeliveryRequest = (req) => {
   } catch (error) {
     return {
       authenticated: false,
-      response: NextResponse.json(
-        { success: false, error: 'Access Denied', message: error.message || 'Invalid authentication headers' },
-        { status: 401 }
-      )
+      response: NextResponse.json({ success: false, error: 'Access Denied', message: error.message || 'Invalid authentication headers' }, { status: 401 })
     };
   }
 };
-
-const getStudentName = (recipient) =>
-  recipient.studentName ||
-  (recipient.student
-    ? `${recipient.student.firstName || ''} ${recipient.student.lastName || ''}`.trim()
-    : '') ||
-  'Student';
 
 const buildResourceEmail = (resource, studentName) => {
   const subject = `New learning resource: ${resource.title}`;
@@ -104,56 +82,53 @@ const attachmentFromResourceFile = (file, fallbackName = 'resource-file') => {
   if (!file) return null;
   const url = typeof file === 'string' ? file : file.url;
   if (!url || typeof url !== 'string') return null;
-
   const cleanUrl = url.split('?')[0];
   const filename = typeof file === 'object' && file.name
     ? file.name
     : decodeURIComponent(cleanUrl.split('/').pop() || fallbackName);
-
-  if (/^https?:\/\//i.test(url)) {
-    return { filename, path: url };
-  }
-
+  if (/^https?:\/\//i.test(url)) return { filename, path: url };
   const publicPath = cleanUrl.startsWith('/') ? cleanUrl.slice(1) : cleanUrl;
-  return {
-    filename,
-    path: path.join(process.cwd(), 'public', publicPath),
-  };
+  return { filename, path: path.join(process.cwd(), 'public', publicPath) };
 };
 
 const buildResourceAttachments = (resource) => (Array.isArray(resource.files) ? resource.files : [])
   .map((file, index) => attachmentFromResourceFile(file, `resource-file-${index + 1}`))
   .filter(Boolean);
 
+const getResourceRecipients = async (resource, admissionNumbers = []) => {
+  const resolved = await resolveDeliveryRecipients({
+    channel: 'email',
+    classes: [resource.className].filter(Boolean),
+    grades: [resource.className].filter(Boolean),
+    categories: [resource.category].filter(Boolean)
+  });
+  const filterSet = new Set((admissionNumbers || []).map(String).filter(Boolean));
+  const recipients = filterSet.size
+    ? resolved.recipients.filter(recipient => filterSet.has(String(recipient.admissionNumber)))
+    : resolved.recipients;
+  return { ...resolved, recipients };
+};
+
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
-    const resourceIdStr = searchParams.get("resourceId");
+    const resourceId = Number(searchParams.get("resourceId"));
+    if (!resourceId) return NextResponse.json({ success: false, error: "Resource ID is required" }, { status: 400 });
 
-    if (!resourceIdStr) {
-      return NextResponse.json(
-        { success: false, error: "Resource ID is required" },
-        { status: 400 }
-      );
-    }
+    const resource = await prisma.resource.findUnique({ where: { id: resourceId } });
+    if (!resource) return NextResponse.json({ success: false, error: "Resource not found" }, { status: 404 });
 
-    const resourceId = parseInt(resourceIdStr);
-    const deliveryRecipients = await prisma.resourceDeliveryRecipient.findMany({
-      where: { resourceId },
-      orderBy: [{ createdAt: "asc" }],
-    });
-
+    const resolved = await getResourceRecipients(resource);
     return NextResponse.json({
       success: true,
-      data: deliveryRecipients,
-      count: deliveryRecipients.length,
+      data: resolved.recipients,
+      count: resolved.recipients.length,
+      missingEmailCount: resolved.missingEmailCount,
+      totalMatchedStudents: resolved.totalMatched
     });
   } catch (error) {
-    console.error("Error fetching resource delivery recipients:", error);
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
+    console.error("Error resolving resource delivery recipients:", error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
 
@@ -163,236 +138,48 @@ export async function POST(req) {
     if (!auth.authenticated) return auth.response;
 
     const body = await req.json();
-    const { resourceId, recipientIds } = body;
+    const resourceId = Number(body.resourceId);
+    const recipientIds = Array.isArray(body.recipientIds) ? body.recipientIds : [];
+    if (!resourceId) return NextResponse.json({ success: false, error: "Resource ID is required" }, { status: 400 });
 
-    if (!resourceId) {
-      return NextResponse.json(
-        { success: false, error: "Resource ID is required" },
-        { status: 400 }
-      );
-    }
+    const resource = await prisma.resource.findUnique({ where: { id: resourceId } });
+    if (!resource) return NextResponse.json({ success: false, error: "Resource not found" }, { status: 404 });
 
-    const resource = await prisma.resource.findUnique({
-      where: { id: resourceId },
-    });
-
-    if (!resource) {
-      return NextResponse.json(
-        { success: false, error: "Resource not found" },
-        { status: 404 }
-      );
-    }
-
-    const where = { resourceId };
-    if (recipientIds?.length) where.id = { in: recipientIds };
-
-    const recipients = await prisma.resourceDeliveryRecipient.findMany({
-      where,
-      include: {
-        student: {
-          select: {
-            email: true,
-            firstName: true,
-            lastName: true,
-            admissionNumber: true,
-          },
-        },
-      },
-    });
-
-    if (recipients.length === 0) {
-      await prisma.resource.update({
-        where: { id: resourceId },
-        data: {
-          deliveryStatus: 'no_recipients',
-          deliverySummary: {
-            channel: 'email',
-            successCount: 0,
-            failureCount: 0,
-            totalRecipients: 0,
-            sentAt: new Date().toISOString(),
-            results: [],
-          },
-        },
-      });
-
-      return NextResponse.json({
-        success: true,
-        message: 'Email delivery completed. No recipients found.',
-        data: { successCount: 0, failureCount: 0, totalRecipients: 0, results: [] },
-      });
-    }
-
+    const resolved = await getResourceRecipients(resource, recipientIds);
     const sendResults = [];
     let successCount = 0;
     let failureCount = 0;
 
-    for (const recipient of recipients) {
-      const parentEmail = normalizeEmailAddress(recipient.student?.email);
-      const studentName = getStudentName(recipient);
-
+    for (const recipient of resolved.recipients) {
+      const parentEmail = normalizeEmailAddress(recipient.email);
       if (!parentEmail) {
         failureCount++;
-        await prisma.resourceDeliveryRecipient.update({
-          where: { id: recipient.id },
-          data: { status: "failed", updatedAt: new Date() },
-        });
-        sendResults.push({
-          recipientId: recipient.id,
-          admissionNumber: recipient.admissionNumber,
-          studentName,
-          success: false,
-          error: "No parent email address available",
-        });
+        sendResults.push({ admissionNumber: recipient.admissionNumber, studentName: recipient.studentName, success: false, error: "No parent email address available" });
         continue;
       }
 
-      const emailContent = buildResourceEmail(resource, studentName);
       const sendResult = await sendDeliveryEmail({
         to: parentEmail,
-        ...emailContent,
-        attachments: buildResourceAttachments(resource),
+        ...buildResourceEmail(resource, recipient.studentName || 'Student'),
+        attachments: buildResourceAttachments(resource)
       });
 
-      if (sendResult.success) {
-        successCount++;
-        await prisma.resourceDeliveryRecipient.update({
-          where: { id: recipient.id },
-          data: { status: "sent", updatedAt: new Date() },
-        });
-      } else {
-        failureCount++;
-        await prisma.resourceDeliveryRecipient.update({
-          where: { id: recipient.id },
-          data: { status: "failed", updatedAt: new Date() },
-        });
-      }
-
-      sendResults.push({
-        recipientId: recipient.id,
-        admissionNumber: recipient.admissionNumber,
-        studentName,
-        email: parentEmail,
-        ...sendResult,
-      });
+      if (sendResult.success) successCount++;
+      else failureCount++;
+      sendResults.push({ admissionNumber: recipient.admissionNumber, studentName: recipient.studentName, email: parentEmail, ...sendResult });
     }
-
-    await prisma.resource.update({
-      where: { id: resourceId },
-      data: {
-        deliveryStatus: successCount > 0 ? "sent" : "failed",
-        deliverySummary: {
-          channel: 'email',
-          successCount,
-          failureCount,
-          totalRecipients: recipients.length,
-          sentAt: new Date().toISOString(),
-          results: sendResults,
-        },
-      },
-    });
 
     return NextResponse.json({
       success: true,
       message: `Email delivery completed. ${successCount} sent, ${failureCount} failed`,
-      data: { successCount, failureCount, totalRecipients: recipients.length, results: sendResults },
+      data: { successCount, failureCount, totalRecipients: resolved.recipients.length, missingEmailCount: resolved.missingEmailCount, results: sendResults }
     });
   } catch (error) {
     console.error("Error sending resource delivery emails:", error);
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
 
 export async function PUT(req) {
-  try {
-    const auth = authenticateDeliveryRequest(req);
-    if (!auth.authenticated) return auth.response;
-
-    const body = await req.json();
-    const { resourceId, failedRecipientIds } = body;
-
-    if (!resourceId || !failedRecipientIds?.length) {
-      return NextResponse.json(
-        { success: false, error: "Resource ID and failed recipient IDs are required" },
-        { status: 400 }
-      );
-    }
-
-    const resource = await prisma.resource.findUnique({
-      where: { id: resourceId },
-    });
-
-    if (!resource) {
-      return NextResponse.json(
-        { success: false, error: "Resource not found" },
-        { status: 404 }
-      );
-    }
-
-    const recipients = await prisma.resourceDeliveryRecipient.findMany({
-      where: { resourceId, id: { in: failedRecipientIds } },
-      include: {
-        student: {
-          select: {
-            email: true,
-            firstName: true,
-            lastName: true,
-          },
-        },
-      },
-    });
-
-    const resendResults = [];
-    let successCount = 0;
-
-    for (const recipient of recipients) {
-      const parentEmail = normalizeEmailAddress(recipient.student?.email);
-      const studentName = getStudentName(recipient);
-
-      if (!parentEmail) {
-        resendResults.push({
-          recipientId: recipient.id,
-          success: false,
-          error: "Invalid parent email address",
-        });
-        continue;
-      }
-
-      const emailContent = buildResourceEmail(resource, studentName);
-      const sendResult = await sendDeliveryEmail({
-        to: parentEmail,
-        ...emailContent,
-        attachments: buildResourceAttachments(resource),
-      });
-
-      if (sendResult.success) {
-        successCount++;
-        await prisma.resourceDeliveryRecipient.update({
-          where: { id: recipient.id },
-          data: { status: "sent", updatedAt: new Date() },
-        });
-      }
-
-      resendResults.push({ recipientId: recipient.id, email: parentEmail, ...sendResult });
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: `Resent ${successCount} email(s)`,
-      data: {
-        successCount,
-        failureCount: resendResults.length - successCount,
-        results: resendResults,
-      },
-    });
-  } catch (error) {
-    console.error("Error resending resource delivery emails:", error);
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
-  }
+  return POST(req);
 }

@@ -1,11 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../../libs/prisma";
 import cloudinary from "../../../../libs/cloudinary";
-import {
-  buildDeliveryCriteriaFromFormData,
-  prepareAssignmentDelivery,
-  SCHOOL_COMMUNICATION_NUMBER
-} from "../../../../libs/delivery";
+import { SCHOOL_COMMUNICATION_NUMBER } from "../../../../libs/delivery";
 
 const decodeJwtPayload = (token) => {
   const payload = token.split('.')[1];
@@ -449,10 +445,7 @@ const cleanAssignmentResponse = (assignment) => {
     ...assignment,
     assignmentFileAttachments,
     attachmentAttachments,
-    senderReference: assignment.senderReference || SCHOOL_COMMUNICATION_NUMBER,
-    deliveryStatus: assignment.deliveryStatus || assignment.deliverySummary?.status || 'prepared',
-    deliverySummary: assignment.deliverySummary || null,
-    targetCriteria: assignment.targetCriteria || null
+    senderReference: SCHOOL_COMMUNICATION_NUMBER
   };
 };
 
@@ -545,7 +538,6 @@ export async function PUT(request, { params }) {
     const teacherRemarks = formData.get("teacherRemarks")?.toString().trim() || existingAssignment.teacherRemarks;
     const learningObjectives = formData.get("learningObjectives")?.toString();
     const dateAssigned = formData.get("dateAssigned")?.toString() || existingAssignment.dateAssigned;
-    const deliveryCriteria = buildDeliveryCriteriaFromFormData(formData, className);
     
     console.log('📝 Fields extracted:', { title, subject, className, teacher, dueDate });
 
@@ -665,43 +657,27 @@ export async function PUT(request, { params }) {
       attachments: updatedAttachments.length
     });
     
-    const updatedAssignment = await prisma.$transaction(async (tx) => {
-      const savedAssignment = await tx.assignment.update({
-        where: { id: assignmentId },
-        data: { 
-          title,
-          subject,
-          className,
-          teacher,
-          dueDate: dueDate ? new Date(dueDate) : existingAssignment.dueDate,
-          dateAssigned: dateAssigned ? new Date(dateAssigned) : existingAssignment.dateAssigned, // FIX: Added dateAssigned
-          status,
-          description,
-          instructions,
-          priority,
-          estimatedTime,
-          additionalWork,
-          teacherRemarks,
-          assignmentFiles: updatedAssignmentFiles,
-          attachments: updatedAttachments,
-          learningObjectives: learningObjectivesArray,
-          targetCriteria: deliveryCriteria,
-          senderReference: deliveryCriteria.senderReference,
-          deliveryStatus: 'preparing',
-          updatedAt: new Date()
-        },
-      });
-
-      const deliverySummary = await prepareAssignmentDelivery(tx, savedAssignment.id, deliveryCriteria);
-
-      return tx.assignment.update({
-        where: { id: savedAssignment.id },
-        data: {
-          deliverySummary,
-          deliveryStatus: deliverySummary.status,
-          updatedAt: new Date()
-        }
-      });
+    const updatedAssignment = await prisma.assignment.update({
+      where: { id: assignmentId },
+      data: { 
+        title,
+        subject,
+        className,
+        teacher,
+        dueDate: dueDate ? new Date(dueDate) : existingAssignment.dueDate,
+        dateAssigned: dateAssigned ? new Date(dateAssigned) : existingAssignment.dateAssigned,
+        status,
+        description,
+        instructions,
+        priority,
+        estimatedTime,
+        additionalWork,
+        teacherRemarks,
+        assignmentFiles: updatedAssignmentFiles,
+        attachments: updatedAttachments,
+        learningObjectives: learningObjectivesArray,
+        updatedAt: new Date()
+      },
     });
 
     console.log('✅ Update successful:', updatedAssignment.id);

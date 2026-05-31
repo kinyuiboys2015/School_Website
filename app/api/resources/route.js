@@ -1,11 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../libs/prisma";
 import cloudinary from "../../../libs/cloudinary";
-import {
-  buildDeliveryCriteriaFromFormData,
-  prepareResourceDelivery,
-  SCHOOL_COMMUNICATION_NUMBER
-} from "../../../libs/delivery";
+import { SCHOOL_COMMUNICATION_NUMBER } from "../../../libs/delivery";
 
 const decodeJwtPayload = (token) => {
   const payload = token.split('.')[1];
@@ -351,10 +347,7 @@ const cleanResourceResponse = (resource) => {
     uploadedBy: resource.uploadedBy,
     downloads: resource.downloads,
     isActive: resource.isActive,
-    senderReference: resource.senderReference || SCHOOL_COMMUNICATION_NUMBER,
-    deliveryStatus: resource.deliveryStatus || resource.deliverySummary?.status || 'prepared',
-    deliverySummary: resource.deliverySummary || null,
-    targetCriteria: resource.targetCriteria || null,
+    senderReference: SCHOOL_COMMUNICATION_NUMBER,
     createdAt: resource.createdAt,
     updatedAt: resource.updatedAt
   };
@@ -412,7 +405,6 @@ export async function POST(request) {
     const category = formData.get("category")?.trim() || "general";
     const accessLevel = formData.get("accessLevel")?.trim() || "student";
     const uploadedBy = formData.get("uploadedBy")?.trim() || auth.user.name;
-    const deliveryCriteria = buildDeliveryCriteriaFromFormData(formData, className, category);
 
     // Validate required fields
     if (!title || !subject || !teacher || !className) {
@@ -464,37 +456,21 @@ export async function POST(request) {
     const mainType = determineMainTypeFromFiles(uploadedFiles);
 
     // Create resource in database
-    const resource = await prisma.$transaction(async (tx) => {
-      const createdResource = await tx.resource.create({
-        data: {
-          title,
-          subject,
-          teacher,
-          className,
-          description,
-          category,
-          type: mainType,
-          files: uploadedFiles,
-          accessLevel,
-          uploadedBy,
-          downloads: 0,
-          isActive: true,
-          targetCriteria: deliveryCriteria,
-          senderReference: deliveryCriteria.senderReference,
-          deliveryStatus: 'preparing'
-        },
-      });
-
-      const deliverySummary = await prepareResourceDelivery(tx, createdResource.id, deliveryCriteria);
-
-      return tx.resource.update({
-        where: { id: createdResource.id },
-        data: {
-          deliverySummary,
-          deliveryStatus: deliverySummary.status,
-          updatedAt: new Date()
-        }
-      });
+    const resource = await prisma.resource.create({
+      data: {
+        title,
+        subject,
+        teacher,
+        className,
+        description,
+        category,
+        type: mainType,
+        files: uploadedFiles,
+        accessLevel,
+        uploadedBy,
+        downloads: 0,
+        isActive: true
+      },
     });
 
     console.log(`✅ Resource created with ID: ${resource.id}`);
