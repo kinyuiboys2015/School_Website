@@ -2,6 +2,10 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { Modal, Box, CircularProgress } from '@mui/material';
+import DeliveryProgressPanel from '../DeliveryProgressPanel';
+import SubjectSearchSelect from '../SubjectSearchSelect';
+import { createIdleDeliveryProgress, runRecipientDelivery } from '../deliveryClient';
+import { ALL_LEARNING_SUBJECTS } from '../../../libs/subjects';
 
 // Consolidated Feather Icons (Fi) - All Duplicates Removed
 import {
@@ -616,7 +620,7 @@ function ModernResourceDetailModal({ resource, onClose, onEdit }) {
 }
 
 
-function ModernResourceModal({ onClose, onSave, resource, loading }) {
+function ModernResourceModal({ onClose, onSave, resource, loading, deliveryProgress, onRetryDelivery }) {
   const [formData, setFormData] = useState({
     title: resource?.title || '',
     description: resource?.description || '',
@@ -696,14 +700,13 @@ useEffect(() => {
     !formData.className || 
     (files.length === 0 && existingFiles.length === 0 && !resource) ||
     totalSizeMB > 4.5 ||
-    fileSizeError;
+    fileSizeError ||
+    (deliveryProgress?.phase === 'failed' && deliveryProgress?.failedRecipients?.length > 0);
 
   // Class options
   const classOptions = [
     ...DELIVERY_LEVEL_OPTIONS
   ];
-
-  // Subject intentionally removed to simplify the create/edit form
 
   // Category options
   const categoryOptions = [
@@ -1019,6 +1022,14 @@ useEffect(() => {
               />
             </div>
 
+            <SubjectSearchSelect
+              value={formData.subject}
+              onChange={(subject) => handleChange('subject', subject)}
+              options={ALL_LEARNING_SUBJECTS}
+              disabled={loading}
+              required
+            />
+
             {/* Class selection (simplified) */}
             <div>
               <label className="block text-base font-bold text-gray-800 mb-3">Class *</label>
@@ -1333,6 +1344,13 @@ useEffect(() => {
             </div>
 
             {/* Form Actions */}
+            <DeliveryProgressPanel
+              progress={deliveryProgress}
+              onRetry={onRetryDelivery}
+              disabled={loading}
+            />
+
+            {/* Form Actions */}
             <div className="flex items-center justify-between pt-6 border-t border-gray-200">
               <button 
                 type="button"
@@ -1348,11 +1366,11 @@ useEffect(() => {
                 disabled={isSubmitDisabled}
                 className="px-6 py-3 text-white rounded-xl font-bold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 bg-gradient-to-r from-teal-600 to-green-600 text-md  hover:from-teal-700 hover:to-green-700 transition-all"
               >
-                {loading ? (
-                  <>
-                    <CircularProgress size={16} className="text-white" />
-                    {resource ? 'Updating...' : 'Uploading...'}
-                  </>
+	                {loading ? (
+	                  <>
+	                    <CircularProgress size={16} className="text-white" />
+	                    {deliveryProgress?.active ? 'Sending emails...' : resource ? 'Updating...' : 'Uploading...'}
+	                  </>
                 ) : (
                   <>
                     {resource ? <FiEdit /> : <FiUpload />}
@@ -1377,7 +1395,7 @@ export default function ResourcesManager() {
   const [filteredResources, setFilteredResources] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('all');
-  const [selectedSubject, setSelectedSubject] = useState('all');
+  const [selectedSubject, setSelectedSubject] = useState('All Subjects');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedClass, setSelectedClass] = useState('all');
   const [selectedAccessLevel, setSelectedAccessLevel] = useState('all');
@@ -1400,6 +1418,7 @@ export default function ResourcesManager() {
   const [deleteType, setDeleteType] = useState('single');
   const [bulkDeleting, setBulkDeleting] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [deliveryProgress, setDeliveryProgress] = useState(createIdleDeliveryProgress);
 
   // Notification state
   const [notification, setNotification] = useState({
@@ -1437,22 +1456,7 @@ export default function ResourcesManager() {
     { value: 'admin', label: 'Admin', color: 'green' }
   ];
 
-  // Subject options
-  const subjectOptions = [
-    'All Subjects',
-    'Mathematics',
-    'Science',
-    'English',
-    'History',
-    'Physics',
-    'Chemistry',
-    'Biology',
-    'Computer Science',
-    'Art',
-    'Music',
-    'Physical Education',
-    'Geography'
-  ];
+  const subjectOptions = ['All Subjects', ...ALL_LEARNING_SUBJECTS];
 
   // Category options
   const categoryOptions = [
@@ -1735,6 +1739,7 @@ export default function ResourcesManager() {
 
   // Edit resource
   const handleEdit = (resource) => {
+    setDeliveryProgress(createIdleDeliveryProgress());
     setEditingResource(resource);
     setShowModal(true);
   };
@@ -1859,8 +1864,61 @@ const confirmDelete = async () => {
   }
 };
 
+const sendResourceDelivery = async ({ resourceId, headers, failedRecipients = null }) => {
+  const recipientIds = failedRecipients?.map((recipient) => recipient.admissionNumber).filter(Boolean) || null;
+  return runRecipientDelivery({
+    endpoint: '/api/resources/delivery',
+    entityIdKey: 'resourceId',
+    entityId: resourceId,
+    headers,
+    setProgress: setDeliveryProgress,
+    recipientIds,
+    knownRecipients: failedRecipients,
+    label: 'resource email(s)'
+  });
+};
+
+const handleRetryResourceDelivery = async () => {
+  if (!deliveryProgress.entityId) return;
+
+  setSaving(true);
+  try {
+    const headers = getAuthHeaders();
+    const retryResult = await sendResourceDelivery({
+      resourceId: deliveryProgress.entityId,
+      headers,
+      failedRecipients: deliveryProgress.failedRecipients?.length ? deliveryProgress.failedRecipients : null
+    });
+
+    if (retryResult.failureCount > 0) {
+      showNotification(
+        'warning',
+        'Retry Partially Failed',
+        `${retryResult.successCount} email(s) sent. ${retryResult.failureCount} recipient(s) still failed.`
+      );
+      return;
+    }
+
+    await fetchResources();
+    showNotification('success', 'Delivery Complete', `All ${retryResult.totalRecipients} failed recipient(s) were retried successfully.`);
+    setShowModal(false);
+    setDeliveryProgress(createIdleDeliveryProgress());
+  } catch (error) {
+    showNotification('error', 'Retry Failed', error.message || 'Failed to retry resource delivery.');
+    setDeliveryProgress(prev => ({
+      ...prev,
+      phase: 'failed',
+      active: false,
+      statusText: error.message || 'Retry failed. Please try again.'
+    }));
+  } finally {
+    setSaving(false);
+  }
+};
+
 const handleSubmit = async (formData, id) => {
   setSaving(true);
+  setDeliveryProgress(createIdleDeliveryProgress());
   try {
     // Get authentication headers
     const headers = getAuthHeaders();
@@ -1902,35 +1960,54 @@ const handleSubmit = async (formData, id) => {
     const result = await response.json();
 
     if (result.success) {
-      let sentCount = null;
+      let deliveryResult = null;
       const savedResourceId = result.resource?.id;
       if (savedResourceId) {
         try {
-          const deliveryResponse = await fetch('/api/resources/delivery', {
-            method: 'POST',
-            headers: { ...headers, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ resourceId: savedResourceId }),
+          deliveryResult = await sendResourceDelivery({
+            resourceId: savedResourceId,
+            headers
           });
-          const deliveryResult = await deliveryResponse.json();
-          console.log('📬 Resource delivery response:', deliveryResponse.status, deliveryResult);
-          if (deliveryResult.success) {
-            sentCount = deliveryResult.data?.successCount || 0;
-          } else {
-            console.warn('Resource delivery endpoint returned an error:', deliveryResult.error);
-          }
         } catch (deliveryError) {
           console.error('Resource email delivery failed:', deliveryError);
+          setDeliveryProgress({
+            phase: 'failed',
+            active: false,
+            current: 0,
+            total: 0,
+            percent: 100,
+            statusText: deliveryError.message || 'Email delivery failed. Please retry.',
+            failedRecipients: [],
+            entityId: savedResourceId
+          });
+          await fetchResources();
+          showNotification('error', 'Delivery Failed', deliveryError.message || 'Resource was saved, but email delivery failed.');
+          return;
         }
       }
 
       // Refresh the list
       await fetchResources();
+
+      if (deliveryResult?.failureCount > 0) {
+        showNotification(
+          'warning',
+          'Delivery Partially Failed',
+          `${deliveryResult.successCount} email(s) sent. ${deliveryResult.failureCount} recipient(s) failed. Retry only the failed recipients below.`
+        );
+        return;
+      }
+
+      if (deliveryResult) {
+        await new Promise(resolve => setTimeout(resolve, 700));
+      }
+
       setShowModal(false);
       const recipientCount = result.resource?.deliverySummary?.recipientCount;
       showNotification(
         'success',
         id ? 'Updated' : 'Created',
-        `Resource ${id ? 'updated' : 'created'} successfully!${Number.isFinite(sentCount) ? ` ${sentCount} email(s) sent.` : Number.isFinite(recipientCount) ? ` ${recipientCount} email recipient(s) prepared.` : ''}`
+        `Resource ${id ? 'updated' : 'created'} successfully!${deliveryResult ? ` ${deliveryResult.successCount} email(s) sent.` : Number.isFinite(recipientCount) ? ` ${recipientCount} email recipient(s) prepared.` : ''}`
       );
     } else {
       throw new Error(result.error);
@@ -1954,6 +2031,7 @@ const handleSubmit = async (formData, id) => {
 };
   // Create new resource
   const handleCreate = () => {
+    setDeliveryProgress(createIdleDeliveryProgress());
     setEditingResource(null);
     setShowModal(true);
   };
@@ -2772,7 +2850,9 @@ const handleSubmit = async (formData, id) => {
           onClose={() => setShowModal(false)} 
           onSave={handleSubmit} 
           resource={editingResource}
-          loading={saving} 
+          loading={saving}
+          deliveryProgress={deliveryProgress}
+          onRetryDelivery={handleRetryResourceDelivery}
         />
       )}
       

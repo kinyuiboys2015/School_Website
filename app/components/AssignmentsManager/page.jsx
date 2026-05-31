@@ -1,6 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import DeliveryProgressPanel from '../DeliveryProgressPanel';
+import SubjectSearchSelect from '../SubjectSearchSelect';
+import { createIdleDeliveryProgress, runRecipientDelivery } from '../deliveryClient';
+import { ALL_LEARNING_SUBJECTS } from '../../../libs/subjects';
 import {
   FiPlus,
   FiSearch,
@@ -655,7 +659,7 @@ function ModernAssignmentDetailModal({ assignment, onClose, onEdit }) {
   );
 }
 
-function ModernAssignmentModal({ onClose, onSave, assignment, loading }) {
+function ModernAssignmentModal({ onClose, onSave, assignment, loading, deliveryProgress, onRetryDelivery }) {
   // Form fields state
   const [formData, setFormData] = useState({
     title: assignment?.title || '',
@@ -695,8 +699,6 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading }) {
   const classOptions = [
     ...DELIVERY_LEVEL_OPTIONS
   ];
-
-  // Subject options intentionally removed to simplify the form
 
   // Initialize with assignment data
   useEffect(() => {
@@ -1091,6 +1093,15 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading }) {
             </div>
 
             {/* Subject and Class in Grid */}
+            <SubjectSearchSelect
+              value={formData.subject}
+              onChange={(subject) => handleChange('subject', subject)}
+              options={ALL_LEARNING_SUBJECTS}
+              disabled={loading}
+              required
+            />
+
+            {/* Class */}
               <div>
                 <label className=" text-base font-bold text-gray-800 mb-3 flex items-center gap-2">
                   <span className="text-red-500">*</span>
@@ -1383,6 +1394,13 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading }) {
             </div>
 
             {/* Form Actions */}
+            <DeliveryProgressPanel
+              progress={deliveryProgress}
+              onRetry={onRetryDelivery}
+              disabled={loading}
+            />
+
+            {/* Form Actions */}
             <div className="flex items-center justify-between pt-6 border-t border-gray-200">
               <button 
                 type="button"
@@ -1392,17 +1410,17 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading }) {
               >
                 Cancel
               </button>
-              
-              <button 
+
+              <button
                 type="submit"
-                disabled={loading || totalSizeMB > 4.5 || !formData.title.trim() || !formData.className}
+                disabled={loading || totalSizeMB > 4.5 || !formData.title.trim() || !formData.className || (deliveryProgress?.phase === 'failed' && deliveryProgress?.failedRecipients?.length > 0)}
                 className="px-6 py-3 text-white rounded-xl font-bold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 bg-gradient-to-r from-teal-700 to-emerald-700 text-sm hover:from-teal-800 hover:to-emerald-800 transition-all"
               >
-                {loading ? (
-                  <>
-                    <CircularProgress size={16} className="text-white" />
-                    {assignment ? 'Updating...' : 'Creating...'}
-                  </>
+	                {loading ? (
+	                  <>
+	                    <CircularProgress size={16} className="text-white" />
+	                    {deliveryProgress?.active ? 'Sending emails...' : assignment ? 'Updating...' : 'Creating...'}
+	                  </>
                 ) : (
                   <>
                     <FiCheck className="text-sm" />
@@ -1445,6 +1463,7 @@ export default function AssignmentsManager() {
   const [deleteType, setDeleteType] = useState('single');
   const [bulkDeleting, setBulkDeleting] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [deliveryProgress, setDeliveryProgress] = useState(createIdleDeliveryProgress);
   
   // Notification state
   const [notification, setNotification] = useState({
@@ -1470,21 +1489,7 @@ export default function AssignmentsManager() {
     { value: 'high', label: 'High', color: 'red' }
   ];
 
-  // Subject options
-  const subjectOptions = [
-    'Mathematics',
-    'Science',
-    'English',
-    'History',
-    'Physics',
-    'Chemistry',
-    'Biology',
-    'Computer Science',
-    'Art',
-    'Music',
-    'Physical Education',
-    'Geography'
-  ];
+  const subjectOptions = ALL_LEARNING_SUBJECTS;
 
   // Class options
   const classOptions = [
@@ -1727,6 +1732,7 @@ export default function AssignmentsManager() {
 
   // Edit assignment
   const handleEdit = (assignment) => {
+    setDeliveryProgress(createIdleDeliveryProgress());
     setEditingAssignment(assignment);
     setShowModal(true);
   };
@@ -1839,8 +1845,61 @@ export default function AssignmentsManager() {
     }
   };
 
+  const sendAssignmentDelivery = async ({ assignmentId, headers, failedRecipients = null }) => {
+    const recipientIds = failedRecipients?.map((recipient) => recipient.admissionNumber).filter(Boolean) || null;
+    return runRecipientDelivery({
+      endpoint: '/api/assignment/delivery',
+      entityIdKey: 'assignmentId',
+      entityId: assignmentId,
+      headers,
+      setProgress: setDeliveryProgress,
+      recipientIds,
+      knownRecipients: failedRecipients,
+      label: 'assignment email(s)'
+    });
+  };
+
+  const handleRetryAssignmentDelivery = async () => {
+    if (!deliveryProgress.entityId) return;
+
+    setSaving(true);
+    try {
+      const headers = getAuthHeaders();
+      const retryResult = await sendAssignmentDelivery({
+        assignmentId: deliveryProgress.entityId,
+        headers,
+        failedRecipients: deliveryProgress.failedRecipients?.length ? deliveryProgress.failedRecipients : null
+      });
+
+      if (retryResult.failureCount > 0) {
+        showNotification(
+          'warning',
+          'Retry Partially Failed',
+          `${retryResult.successCount} email(s) sent. ${retryResult.failureCount} recipient(s) still failed.`
+        );
+        return;
+      }
+
+      await fetchAssignments();
+      showNotification('success', 'Delivery Complete', `All ${retryResult.totalRecipients} failed recipient(s) were retried successfully.`);
+      setShowModal(false);
+      setDeliveryProgress(createIdleDeliveryProgress());
+    } catch (error) {
+      showNotification('error', 'Retry Failed', error.message || 'Failed to retry assignment delivery.');
+      setDeliveryProgress(prev => ({
+        ...prev,
+        phase: 'failed',
+        active: false,
+        statusText: error.message || 'Retry failed. Please try again.'
+      }));
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleSubmit = async (formData, id, assignmentFiles = [], attachments = [], learningObjectives = [], assignmentFilesToRemove = [], attachmentsToRemove = []) => {
     setSaving(true);
+    setDeliveryProgress(createIdleDeliveryProgress());
     try {
       console.log('📤 Starting assignment submission...');
       
@@ -2007,35 +2066,54 @@ export default function AssignmentsManager() {
       const result = await response.json();
 
       if (result.success) {
-        let sentCount = null;
+        let deliveryResult = null;
         const savedAssignmentId = result.assignment?.id;
         if (savedAssignmentId) {
           try {
-            const deliveryResponse = await fetch('/api/assignment/delivery', {
-              method: 'POST',
-              headers: { ...headers, 'Content-Type': 'application/json' },
-              body: JSON.stringify({ assignmentId: savedAssignmentId }),
+            deliveryResult = await sendAssignmentDelivery({
+              assignmentId: savedAssignmentId,
+              headers
             });
-            const deliveryResult = await deliveryResponse.json();
-            console.log('📬 Assignment delivery response:', deliveryResponse.status, deliveryResult);
-            if (deliveryResult.success) {
-              sentCount = deliveryResult.data?.successCount || 0;
-            } else {
-              console.warn('Assignment delivery endpoint returned an error:', deliveryResult.error);
-            }
           } catch (deliveryError) {
             console.error('Assignment email delivery failed:', deliveryError);
+            setDeliveryProgress({
+              phase: 'failed',
+              active: false,
+              current: 0,
+              total: 0,
+              percent: 100,
+              statusText: deliveryError.message || 'Email delivery failed. Please retry.',
+              failedRecipients: [],
+              entityId: savedAssignmentId
+            });
+            await fetchAssignments();
+            showNotification('error', 'Delivery Failed', deliveryError.message || 'Assignment was saved, but email delivery failed.');
+            return;
           }
         }
 
         // Refresh the list
         await fetchAssignments();
+
+        if (deliveryResult?.failureCount > 0) {
+          showNotification(
+            'warning',
+            'Delivery Partially Failed',
+            `${deliveryResult.successCount} email(s) sent. ${deliveryResult.failureCount} recipient(s) failed. Retry only the failed recipients below.`
+          );
+          return;
+        }
+
+        if (deliveryResult) {
+          await new Promise(resolve => setTimeout(resolve, 700));
+        }
+
         setShowModal(false);
         const recipientCount = result.assignment?.deliverySummary?.recipientCount;
         showNotification(
           'success',
           id ? 'Updated' : 'Created',
-          `Assignment ${id ? 'updated' : 'created'} successfully!${Number.isFinite(sentCount) ? ` ${sentCount} email(s) sent.` : Number.isFinite(recipientCount) ? ` ${recipientCount} email recipient(s) prepared.` : ''}`
+          `Assignment ${id ? 'updated' : 'created'} successfully!${deliveryResult ? ` ${deliveryResult.successCount} email(s) sent.` : Number.isFinite(recipientCount) ? ` ${recipientCount} email recipient(s) prepared.` : ''}`
         );
       } else {
         throw new Error(result.error || 'Failed to save assignment');
@@ -2060,6 +2138,7 @@ export default function AssignmentsManager() {
 
   // Create new assignment
   const handleCreate = () => {
+    setDeliveryProgress(createIdleDeliveryProgress());
     setEditingAssignment(null);
     setShowModal(true);
   };
@@ -2840,11 +2919,13 @@ export default function AssignmentsManager() {
 
       {/* Create/Edit Modal */}
       {showModal && (
-        <ModernAssignmentModal 
-          onClose={() => setShowModal(false)} 
-          onSave={handleSubmit} 
+        <ModernAssignmentModal
+          onClose={() => setShowModal(false)}
+          onSave={handleSubmit}
           assignment={editingAssignment}
-          loading={saving} 
+          loading={saving}
+          deliveryProgress={deliveryProgress}
+          onRetryDelivery={handleRetryAssignmentDelivery}
         />
       )}
       
