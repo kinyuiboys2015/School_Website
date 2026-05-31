@@ -3,6 +3,27 @@ import { prisma } from "../../../libs/prisma";
 import cloudinary from "../../../libs/cloudinary";
 import { SCHOOL_COMMUNICATION_NUMBER } from "../../../libs/delivery";
 
+const DEFAULT_ASSIGNMENT_SUBJECT = "General Studies";
+
+const cleanFormValue = (value) => {
+  const text = value?.toString().trim() || "";
+  return ["undefined", "null"].includes(text.toLowerCase()) ? "" : text;
+};
+
+const getDefaultDueDate = () => {
+  const dueDate = new Date();
+  dueDate.setDate(dueDate.getDate() + 7);
+  return dueDate;
+};
+
+const parseDateOrDefault = (value, fallback = getDefaultDueDate()) => {
+  const cleanValue = cleanFormValue(value);
+  if (!cleanValue) return fallback;
+
+  const parsedDate = new Date(cleanValue);
+  return Number.isNaN(parsedDate.getTime()) ? fallback : parsedDate;
+};
+
 const decodeJwtPayload = (token) => {
   const payload = token.split('.')[1];
   const normalizedPayload = payload.replace(/-/g, '+').replace(/_/g, '/');
@@ -491,26 +512,27 @@ export async function POST(request) {
     const formData = await request.formData();
 
     // Get form fields
-    const title = formData.get("title")?.toString().trim() || "";
-    const subject = formData.get("subject")?.toString().trim() || "";
-    const className = formData.get("className")?.toString().trim() || "";
-    const teacher = formData.get("teacher")?.toString().trim() || auth.user.name;
-    const dueDate = formData.get("dueDate")?.toString();
-    const status = formData.get("status")?.toString() || "pending";
-    const description = formData.get("description")?.toString().trim() || "";
-    const instructions = formData.get("instructions")?.toString().trim() || "";
-    const priority = formData.get("priority")?.toString() || "medium";
-    const estimatedTime = formData.get("estimatedTime")?.toString().trim() || "";
-    const additionalWork = formData.get("additionalWork")?.toString().trim() || "";
-    const teacherRemarks = formData.get("teacherRemarks")?.toString().trim() || "";
-    const learningObjectives = formData.get("learningObjectives")?.toString();
+    const actorName = auth.user.name || auth.user.email || "Admin";
+    const title = cleanFormValue(formData.get("title"));
+    const subject = cleanFormValue(formData.get("subject")) || DEFAULT_ASSIGNMENT_SUBJECT;
+    const className = cleanFormValue(formData.get("className"));
+    const teacher = cleanFormValue(formData.get("teacher")) || actorName;
+    const dueDate = cleanFormValue(formData.get("dueDate"));
+    const status = cleanFormValue(formData.get("status")) || "pending";
+    const description = cleanFormValue(formData.get("description"));
+    const instructions = cleanFormValue(formData.get("instructions"));
+    const priority = cleanFormValue(formData.get("priority")) || "medium";
+    const estimatedTime = cleanFormValue(formData.get("estimatedTime"));
+    const additionalWork = cleanFormValue(formData.get("additionalWork"));
+    const teacherRemarks = cleanFormValue(formData.get("teacherRemarks"));
+    const learningObjectives = cleanFormValue(formData.get("learningObjectives"));
 
     // Validate required fields
-    if (!title || !subject || !className || !teacher) {
+    if (!title || !className) {
       return NextResponse.json(
         { 
           success: false, 
-          error: "Title, subject, class name, and teacher are required" 
+          error: "Title and class name are required" 
         },
         { status: 400 }
       );
@@ -565,7 +587,7 @@ export async function POST(request) {
         subject,
         className,
         teacher,
-        dueDate: dueDate ? new Date(dueDate) : null,
+        dueDate: parseDateOrDefault(dueDate),
         dateAssigned: new Date(),
         status,
         description,

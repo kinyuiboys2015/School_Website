@@ -1585,46 +1585,66 @@ export async function GET(request) {
     if (action === 'uploads') {
       try {
         console.log(`📝 Fetching uploads with pagination: page=${page}, limit=${limit}`);
-        
-        // Build a more flexible where clause that handles missing metadata gracefully
-        const uploadHistoryWhere = {};
-        
-        try {
-          // Try the metadata filter, but wrap in try-catch to handle schema issues
-          uploadHistoryWhere.NOT = {
+
+        const uploadSelect = {
+          id: true,
+          fileName: true,
+          fileType: true,
+          status: true,
+          uploadDate: true,
+          uploadedBy: true,
+          processedDate: true,
+          totalRows: true,
+          validRows: true,
+          skippedRows: true,
+          errorRows: true,
+          errorLog: true,
+          metadata: true
+        };
+        const baseQuery = {
+          orderBy: { uploadDate: 'desc' },
+          skip: Math.max(0, (page - 1) * limit),
+          take: limit,
+          select: uploadSelect
+        };
+        const uploadHistoryWhere = {
+          NOT: {
             metadata: {
               path: ['duplicateCheckOnly'],
               equals: true
             }
-          };
-        } catch (metadataError) {
-          // If metadata filtering fails, just skip this filter
-          console.warn('⚠️ Metadata filter not available, fetching all uploads');
+          }
+        };
+        const fetchUploadBatchPage = async (whereClause) => {
+          const [uploads, total] = await Promise.all([
+            prisma.studentBulkUpload.findMany({
+              ...baseQuery,
+              ...(whereClause ? { where: whereClause } : {})
+            }),
+            prisma.studentBulkUpload.count({
+              ...(whereClause ? { where: whereClause } : {})
+            })
+          ]);
+
+          return { uploads, total };
+        };
+
+        let uploadPage;
+        try {
+          uploadPage = await fetchUploadBatchPage(uploadHistoryWhere);
+        } catch (metadataFilterError) {
+          console.warn(
+            '⚠️ Metadata JSON filtering failed for student upload history; falling back to unfiltered batches:',
+            metadataFilterError.message
+          );
+          uploadPage = await fetchUploadBatchPage(null);
+          uploadPage.uploads = uploadPage.uploads.filter(
+            upload => upload?.metadata?.duplicateCheckOnly !== true
+          );
+          uploadPage.total = uploadPage.uploads.length;
         }
 
-        const uploads = await prisma.studentBulkUpload.findMany({
-          where: uploadHistoryWhere,
-          orderBy: { uploadDate: 'desc' },
-          skip: Math.max(0, (page - 1) * limit),
-          take: limit,
-          select: {
-            id: true,
-            fileName: true,
-            fileType: true,
-            status: true,
-            uploadDate: true,
-            uploadedBy: true,
-            processedDate: true,
-            totalRows: true,
-            validRows: true,
-            skippedRows: true,
-            errorRows: true,
-            errorLog: true,
-            metadata: true
-          }
-        });
-
-        const total = await prisma.studentBulkUpload.count({ where: uploadHistoryWhere });
+        const { uploads, total } = uploadPage;
         
         console.log(`✅ Fetched ${uploads.length} upload records (total: ${total}) in ${Date.now() - startTime}ms`);
         

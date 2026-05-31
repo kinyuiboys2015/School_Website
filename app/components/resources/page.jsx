@@ -620,6 +620,7 @@ function ModernResourceModal({ onClose, onSave, resource, loading }) {
   const [formData, setFormData] = useState({
     title: resource?.title || '',
     description: resource?.description || '',
+    subject: resource?.subject || 'General Studies',
     className: resource?.className || '',
     teacher: resource?.teacher || '',
     category: resource?.category || 'General',

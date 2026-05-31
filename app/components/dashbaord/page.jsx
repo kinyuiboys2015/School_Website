@@ -626,7 +626,7 @@ const [admissionGrowth, setAdmissionGrowth] = useState({});
   });
   
   // Calculate percentages for charts
-  const calculatePercentages = (data, key) => {
+	  const calculatePercentages = (data, key) => {
     const counts = {};
     data.forEach(item => {
       const value = item[key] || 'Unknown';
@@ -638,9 +638,35 @@ const [admissionGrowth, setAdmissionGrowth] = useState({});
       name,
       value: Math.round((count / total) * 100)
     }));
-  };
-  
-  // Authentication check
+	  };
+
+	  const getDashboardAuthHeaders = () => {
+	    const adminToken = localStorage.getItem('admin_token') ||
+	      localStorage.getItem('token') ||
+	      localStorage.getItem('auth_token') ||
+	      localStorage.getItem('jwt_token') ||
+	      localStorage.getItem('access_token');
+	    const deviceToken = localStorage.getItem('device_token') ||
+	      localStorage.getItem('deviceToken');
+
+	    if (!adminToken || !deviceToken) return {};
+
+	    return {
+	      headers: {
+	        'Authorization': `Bearer ${adminToken}`,
+	        'x-admin-token': adminToken,
+	        'x-device-token': deviceToken
+	      }
+	    };
+	  };
+
+	  const getStaffCountFromResponse = (staffResponse) => {
+	    const explicitCount = Number(staffResponse?.totalCount ?? staffResponse?.count);
+	    if (Number.isFinite(explicitCount)) return explicitCount;
+	    return Array.isArray(staffResponse?.staff) ? staffResponse.staff.length : 0;
+	  };
+	  
+	  // Authentication check
   const checkAuthentication = useCallback(() => {
     console.log('🔍 Checking localStorage for user data...');
     
@@ -760,7 +786,7 @@ const [admissionGrowth, setAdmissionGrowth] = useState({});
         smsRes
       ] = await Promise.allSettled([
         fetch('/api/studentupload?includeStats=true&limit=1000'),
-        fetch('/api/staff'),
+	        fetch('/api/staff', getDashboardAuthHeaders()),
         fetch('/api/subscriber'),
         fetch('/api/assignment'),
         fetch('/api/career'),
@@ -991,7 +1017,7 @@ if (newsRes.status === 'fulfilled' && newsRes.value.ok) {
         totalStudents: studentList.length || 0,
         activeStudents,
         inactiveStudents,
-        totalStaff: staff.staff?.length || 0,
+	        totalStaff: getStaffCountFromResponse(staff),
         totalSubscribers: subscribers.subscribers?.length || 0,
         pendingEmails: 0,
         activeAssignments,

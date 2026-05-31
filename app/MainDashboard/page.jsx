@@ -681,8 +681,8 @@ const ModernLoadingScreen = () => {
   );
 };
 
-  // Fetch student count
-  const fetchStudentCount = async () => {
+	  // Fetch student count
+	  const fetchStudentCount = async () => {
     try {
       const response = await fetch('/api/studentupload?action=stats');
       if (!response.ok) {
@@ -716,10 +716,35 @@ const ModernLoadingScreen = () => {
       console.error('Error fetching student count:', error);
       return 0;
     }
-  };
+	  };
 
-  // Fetch real counts from all APIs
-  const fetchRealCounts = async () => {
+	  const getDashboardAuthHeaders = () => {
+	    const adminToken = localStorage.getItem('admin_token') ||
+	      localStorage.getItem('token') ||
+	      localStorage.getItem('auth_token') ||
+	      localStorage.getItem('jwt_token');
+	    const deviceToken = localStorage.getItem('device_token') ||
+	      localStorage.getItem('deviceToken');
+
+	    if (!adminToken || !deviceToken) return {};
+
+	    return {
+	      headers: {
+	        'Authorization': `Bearer ${adminToken}`,
+	        'x-admin-token': adminToken,
+	        'x-device-token': deviceToken
+	      }
+	    };
+	  };
+
+	  const getStaffCountFromResponse = (staffResponse) => {
+	    const explicitCount = Number(staffResponse?.totalCount ?? staffResponse?.count);
+	    if (Number.isFinite(explicitCount)) return explicitCount;
+	    return Array.isArray(staffResponse?.staff) ? staffResponse.staff.length : 0;
+	  };
+
+	  // Fetch real counts from all APIs
+	  const fetchRealCounts = async () => {
     try {
       const studentCount = await fetchStudentCount();
       
@@ -740,22 +765,22 @@ const ModernLoadingScreen = () => {
         smsRes,
         achievementsRes
       ] = await Promise.allSettled([
-        fetch('/api/staff'),
-        fetch('/api/subscriber'),
-        fetch('/api/events'),
-        fetch('/api/news'),
-        fetch('/api/assignment'),
-        fetch('/api/gallery'),
-        fetch('/api/guidance'),
-        fetch('/api/sms'),
-        fetch('/api/applyadmission'),
-        fetch('/api/resources'),
-        fetch('/api/career'),
-        fetch('/api/studentupload'),
-        fetch('/api/feebalances'),
-        fetch('/api/schooldocuments'),
-        fetch('/api/achievements')
-      ]);
+	        fetch('/api/staff', getDashboardAuthHeaders()),
+	        fetch('/api/subscriber'),
+	        fetch('/api/events'),
+	        fetch('/api/news'),
+	        fetch('/api/assignment'),
+	        fetch('/api/gallery'),
+	        fetch('/api/guidance'),
+	        fetch('/api/applyadmission'),
+	        fetch('/api/resources'),
+	        fetch('/api/career'),
+	        fetch('/api/studentupload'),
+	        fetch('/api/feebalances'),
+	        fetch('/api/schooldocuments'),
+	        fetch('/api/sms'),
+	        fetch('/api/achievements')
+	      ]);
 
       const staff = staffRes.status === 'fulfilled' ? await staffRes.value.json() : { staff: [] };
       const subscribers = subscribersRes.status === 'fulfilled' ? await subscribersRes.value.json() : { subscribers: [] };
@@ -782,7 +807,7 @@ const ModernLoadingScreen = () => {
         : Object.values(achievements.achievements || {}).flat().length;
 
       setRealStats({
-        totalStaff: staff.staff?.length || 0,
+	        totalStaff: getStaffCountFromResponse(staff),
         totalSubscribers: subscribers.subscribers?.length || 0,
         upcomingEvents,
         totalNews: news.news?.length || 0,

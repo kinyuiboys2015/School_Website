@@ -3,6 +3,13 @@ import { prisma } from "../../../libs/prisma";
 import cloudinary from "../../../libs/cloudinary";
 import { SCHOOL_COMMUNICATION_NUMBER } from "../../../libs/delivery";
 
+const DEFAULT_RESOURCE_SUBJECT = "General Studies";
+
+const cleanFormValue = (value) => {
+  const text = value?.toString().trim() || "";
+  return ["undefined", "null"].includes(text.toLowerCase()) ? "" : text;
+};
+
 const decodeJwtPayload = (token) => {
   const payload = token.split('.')[1];
   const normalizedPayload = payload.replace(/-/g, '+').replace(/_/g, '/');
@@ -397,21 +404,22 @@ export async function POST(request) {
     const formData = await request.formData();
 
     // Get form fields
-    const title = formData.get("title")?.trim() || "";
-    const subject = formData.get("subject")?.trim() || "";
-    const teacher = formData.get("teacher")?.trim() || "";
-    const className = formData.get("className")?.trim() || "";
-    const description = formData.get("description")?.trim() || "";
-    const category = formData.get("category")?.trim() || "general";
-    const accessLevel = formData.get("accessLevel")?.trim() || "student";
-    const uploadedBy = formData.get("uploadedBy")?.trim() || auth.user.name;
+    const actorName = auth.user.name || auth.user.email || "Admin";
+    const title = cleanFormValue(formData.get("title"));
+    const subject = cleanFormValue(formData.get("subject")) || DEFAULT_RESOURCE_SUBJECT;
+    const teacher = cleanFormValue(formData.get("teacher")) || actorName;
+    const className = cleanFormValue(formData.get("className"));
+    const description = cleanFormValue(formData.get("description"));
+    const category = cleanFormValue(formData.get("category")) || "general";
+    const accessLevel = cleanFormValue(formData.get("accessLevel")) || "student";
+    const uploadedBy = cleanFormValue(formData.get("uploadedBy")) || actorName;
 
     // Validate required fields
-    if (!title || !subject || !teacher || !className) {
+    if (!title || !className) {
       return NextResponse.json(
         { 
           success: false, 
-          error: "Title, subject, teacher, and class name are required" 
+          error: "Title and class name are required" 
         },
         { status: 400 }
       );

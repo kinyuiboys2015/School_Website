@@ -1588,58 +1588,109 @@ export async function GET(request) {
     };
 
     // ========== ACTION HANDLERS ==========
-if (action === 'uploads') {
-  // Fetch upload history with optional filtering
-  const uploadWhere = {};
-  if (form) uploadWhere.targetForm = form;
-  if (uploadType) uploadWhere.uploadType = uploadType;
-  
-  const [rawUploads, total] = await Promise.all([
-    prisma.feeBalanceUpload.findMany({
-      where: uploadWhere,
-      orderBy: { uploadDate: 'desc' },
-      skip: (page - 1) * limit,
-      take: limit,
-      select: {
-        id: true,
-        fileName: true,
-        fileType: true,
-        status: true,
-        uploadedBy: true,
-        uploadDate: true,
-        processedDate: true,
-        term: true,
-        academicYear: true,
-        targetForm: true,
-        totalRows: true,
-        validRows: true,
-        skippedRows: true,
-        errorRows: true,
-        errorLog: true,
-        uploadType: true,
-        metadata: true
-      }
-    }),
-    prisma.feeBalanceUpload.count({ where: uploadWhere })
-  ]);
-  const uploads = rawUploads.map((upload) => ({
-    ...upload,
-    status: ['completed', 'success', 'successful'].includes(String(upload.status || '').toLowerCase())
-      ? 'completed'
-      : 'failed'
-  }));
-  
-  return NextResponse.json({
-    success: true,
-    uploads,
-    pagination: { 
-      page, 
-      limit, 
-      total, 
-      pages: Math.ceil(total / limit) 
-    }
-  });
-}
+	if (action === 'uploads') {
+	  try {
+	    // Fetch upload history with optional filtering
+	    const uploadWhere = {};
+	    if (form) uploadWhere.targetForm = form;
+	    if (uploadType) uploadWhere.uploadType = uploadType;
+
+	    const uploadSelect = {
+	      id: true,
+	      fileName: true,
+	      fileType: true,
+	      status: true,
+	      uploadedBy: true,
+	      uploadDate: true,
+	      processedDate: true,
+	      term: true,
+	      academicYear: true,
+	      targetForm: true,
+	      totalRows: true,
+	      validRows: true,
+	      skippedRows: true,
+	      errorRows: true,
+	      errorLog: true,
+	      uploadType: true,
+	      metadata: true
+	    };
+	    const fallbackUploadSelect = {
+	      id: true,
+	      fileName: true,
+	      fileType: true,
+	      status: true,
+	      uploadedBy: true,
+	      uploadDate: true,
+	      processedDate: true,
+	      term: true,
+	      academicYear: true,
+	      targetForm: true,
+	      totalRows: true,
+	      validRows: true,
+	      skippedRows: true,
+	      errorRows: true,
+	      errorLog: true,
+	      metadata: true
+	    };
+	    const normalizeUploads = (rawUploads) => rawUploads
+	      .map((upload) => ({
+	        ...upload,
+	        uploadType: upload.uploadType || upload.metadata?.uploadType || 'new',
+	        metadata: upload.metadata || {},
+	        status: ['completed', 'success', 'successful'].includes(String(upload.status || '').toLowerCase())
+	          ? 'completed'
+	          : 'failed'
+	      }))
+	      .filter((upload) => !uploadType || upload.uploadType === uploadType);
+	    const fetchFeeUploadPage = async (select, whereClause) => {
+	      const [rawUploads, total] = await Promise.all([
+	        prisma.feeBalanceUpload.findMany({
+	          where: whereClause,
+	          orderBy: { uploadDate: 'desc' },
+	          skip: Math.max(0, (page - 1) * limit),
+	          take: limit,
+	          select
+	        }),
+	        prisma.feeBalanceUpload.count({ where: whereClause })
+	      ]);
+
+	      return { uploads: normalizeUploads(rawUploads), total };
+	    };
+
+	    let uploadPage;
+	    try {
+	      uploadPage = await fetchFeeUploadPage(uploadSelect, uploadWhere);
+	    } catch (uploadHistoryError) {
+	      console.warn(
+	        '⚠️ Full fee upload history query failed; falling back to compatible upload fields:',
+	        uploadHistoryError.message
+	      );
+	      const fallbackWhere = {};
+	      if (form) fallbackWhere.targetForm = form;
+	      uploadPage = await fetchFeeUploadPage(fallbackUploadSelect, fallbackWhere);
+	      uploadPage.total = uploadPage.uploads.length;
+	    }
+	  
+	    return NextResponse.json({
+	      success: true,
+	      uploads: uploadPage.uploads,
+	      pagination: { 
+	        page, 
+	        limit, 
+	        total: uploadPage.total, 
+	        pages: Math.ceil(uploadPage.total / limit) 
+	      }
+	    });
+	  } catch (dbError) {
+	    console.error('❌ Fee upload history error:', dbError);
+	    return NextResponse.json({
+	      success: true,
+	      uploads: [],
+	      pagination: { page, limit, total: 0, pages: 0 },
+	      warning: 'Upload history could not be loaded from the database.'
+	    });
+	  }
+	}
 
     if (action === 'stats') {
       // Get current academic year

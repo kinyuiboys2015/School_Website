@@ -2799,48 +2799,61 @@ if (loading && view === 'fees' && schoolFees.length === 0) {
     <div className="p-6 space-y-6">
       <CustomToaster />
 
-      {/* Header */}
-      <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 rounded-2xl p-8 text-white overflow-hidden">
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-white/20 rounded-2xl">
-              <IoCash className="text-2xl text-yellow-300" />
+      {/* Header Section */}
+      <div className="bg-white rounded-[32px] border border-slate-200 shadow-xl overflow-hidden">
+        <div className="bg-gradient-to-r from-slate-900 via-teal-700 to-slate-900 px-8 py-10">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-4">
+              <div className="rounded-3xl bg-white/10 p-4 inline-flex items-center justify-center">
+                <IoSparkles className="text-3xl text-teal-200" />
+              </div>
+              <div>
+                <h1 className="text-4xl font-black tracking-tight text-white">School Fees Management System</h1>
+                <p className="mt-3 max-w-2xl text-base leading-7 text-slate-200">
+                  Upload and manage school fee balances, preserve duplicate checks, and keep the Excel import workflow consistent with the student upload experience.
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold">School Fees Management System</h1>
-              <p className="text-blue-100 text-lg mt-2 max-w-2xl">
-                Comprehensive fee tracking, management, and analytics with structured upload strategy
-              </p>
+
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => {
+                  setLoading(true);
+                  loadStatistics();
+                  loadSchoolFees();
+                }}
+                disabled={loading}
+                className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:bg-slate-800 disabled:opacity-60"
+              >
+                {loading ? (
+                  <CircularProgress size={16} color="inherit" thickness={6} />
+                ) : (
+                  <FiRefreshCw className="text-base" />
+                )}
+                {loading ? 'Syncing...' : 'Refresh Data'}
+              </button>
+
+              <button
+                onClick={exportFeesToCSV}
+                disabled={schoolFees.length === 0 || loading}
+                className="inline-flex items-center gap-2 rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-800 shadow-sm transition-all duration-300 hover:border-slate-400 hover:bg-slate-50 disabled:opacity-50"
+              >
+                <FiDownload className="text-base" />
+                Export Fees
+              </button>
             </div>
           </div>
+        </div>
 
-          <div className="flex items-center gap-4 mt-6">
-            <button
-              onClick={() => {
-                setLoading(true);
-                loadStatistics();
-                loadSchoolFees();
-              }}
-              disabled={loading}
-              className="bg-white text-blue-600 px-6 py-3 rounded-xl font-bold text-base flex items-center gap-2 shadow-lg disabled:opacity-60 hover:shadow-xl transition-all duration-300"
-            >
-              {loading ? (
-                <CircularProgress size={16} color="inherit" thickness={6} />
-              ) : (
-                <FiRefreshCw className="text-base" />
-              )}
-              {loading ? 'Refreshing...' : 'Refresh Data'}
-            </button>
-
-            <button
-              onClick={exportFeesToCSV}
-              disabled={schoolFees.length === 0 || loading}
-              className="text-white/80 hover:text-white px-6 py-3 rounded-xl font-bold text-base border border-white/20 flex items-center gap-2 disabled:opacity-50 hover:bg-white/10 transition-all duration-300"
-            >
-              <FiDownload className="text-base" />
-              Export Data
-            </button>
-
+        <div className="p-6 lg:p-8 bg-slate-50">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="space-y-2">
+              <p className="text-sm font-bold uppercase tracking-[0.25em] text-slate-500">Fees upload workflow</p>
+              <h2 className="text-2xl font-extrabold text-slate-900">Excel/CSV bulk upload with structured fee controls</h2>
+              <p className="max-w-2xl text-sm text-slate-600">
+                Keep the same upload APIs and file processing pathways while matching the modern student upload header layout and spacing.
+              </p>
+            </div>
           </div>
         </div>
       </div>

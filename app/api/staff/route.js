@@ -408,7 +408,13 @@ export async function GET(req) {
       ? staff
       : staff.filter(isLeadershipStaff).map(sanitizePublicStaff);
 
-    return NextResponse.json({ success: true, staff: visibleStaff });
+    return NextResponse.json({
+      success: true,
+      staff: visibleStaff,
+      count: visibleStaff.length,
+      totalCount: isAdmin ? staff.length : visibleStaff.length,
+      isFullRoster: isAdmin
+    });
   } catch (error) {
     console.error("❌ GET Staff Error:", error);
     return NextResponse.json(
