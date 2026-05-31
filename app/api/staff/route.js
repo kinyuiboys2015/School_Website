@@ -398,7 +398,7 @@ export async function GET(req) {
     const staff = await prisma.staff.findMany({
       orderBy: { createdAt: "desc" },
       include: {
-        departmentGroup: {
+        departmentRecord: {
           select: { id: true, name: true, category: true },
         },
       },
