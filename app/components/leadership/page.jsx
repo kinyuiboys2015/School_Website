@@ -339,7 +339,7 @@ export default function ModernStaffLeadership() {
   const joinedYear = Number.isFinite(parsedJoinYear) ? parsedJoinYear : null;
   const roleTitle = getLeaderTitle(selected);
   const leaderScope = getLeaderScope(selected);
-  const leaderDepartment = selected.department || selected.departmentGroup?.name || selected.subjectOffered || "School Leadership";
+  const leaderDepartment = selected.department || selected.departmentRecord?.name || selected.subjectOffered || "School Leadership";
   const experienceSummary = expertise[0] || selected.qualification || leaderScope;
   const achievementSummary = achievements[0] || "Leadership, mentorship, and school improvement.";
   const quickFacts = [

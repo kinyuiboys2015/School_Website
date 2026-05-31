@@ -396,7 +396,7 @@ export async function GET(req, { params }) {
     const staff = await prisma.staff.findUnique({
       where: { id: Number(params.id) },
       include: {
-        departmentGroup: {
+        departmentRecord: {
           select: { id: true, name: true, category: true },
         },
       },
