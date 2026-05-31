@@ -368,8 +368,8 @@ function ModernFileUpload({ onFileSelect, file, onRemove, dragActive, onDrag }) 
     <div
       className={`group relative overflow-hidden rounded-3xl border bg-white p-1 shadow-xl transition-all duration-300 ${
         dragActive
-          ? 'border-teal-500 ring-4 ring-teal-100'
-          : 'border-slate-200 hover:border-teal-300'
+          ? 'border-emerald-500 ring-4 ring-emerald-100'
+          : 'border-slate-200 hover:border-emerald-300'
       }`}
       onDragEnter={handleDragEvent}
       onDragLeave={handleDragEvent}
@@ -389,27 +389,27 @@ function ModernFileUpload({ onFileSelect, file, onRemove, dragActive, onDrag }) 
         onClick={() => fileInputRef.current?.click()}
         className={`relative w-full rounded-[1.35rem] border-2 border-dashed px-5 py-8 text-left transition-all duration-300 sm:px-8 ${
           dragActive
-            ? 'border-teal-500 bg-teal-50'
-            : 'border-slate-200 bg-gradient-to-br from-slate-50 via-white to-emerald-50/50 hover:border-teal-400'
+            ? 'border-emerald-500 bg-emerald-50'
+            : 'border-slate-200 bg-gradient-to-br from-slate-50 via-white to-emerald-50/50 hover:border-emerald-400'
         }`}
       >
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-start gap-4">
             <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl shadow-lg ${
-              dragActive ? 'bg-teal-700 text-white' : 'bg-slate-900 text-white'
+              dragActive ? 'bg-emerald-700 text-white' : 'bg-slate-900 text-white'
             }`}>
               {file ? <IoDocumentText className="h-6 w-6" /> : <FiUpload className="h-6 w-6" />}
             </div>
 
             <div className="min-w-0">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-teal-700">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">
                 Student contact register
               </p>
               <h3 className="mt-2 text-xl font-black tracking-tight text-slate-950 sm:text-2xl">
                 {dragActive ? 'Drop the file here' : file ? 'Student file selected' : 'Upload student contact file'}
               </h3>
               <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-slate-500">
-                Upload PDF, Excel, CSV, or spreadsheet files with names, admission numbers, classes, and phone contacts.
+                Upload PDF, Excel, CSV, or spreadsheet files with names, admission numbers, classes, and parent contacts.
               </p>
 
               <div className="mt-4 flex flex-wrap gap-2">
@@ -424,14 +424,14 @@ function ModernFileUpload({ onFileSelect, file, onRemove, dragActive, onDrag }) 
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             {file && (
-              <div className="min-w-0 rounded-2xl border border-teal-100 bg-white px-4 py-3 shadow-sm">
+              <div className="min-w-0 rounded-2xl border border-emerald-100 bg-white px-4 py-3 shadow-sm">
                 <p className="max-w-[260px] truncate text-sm font-black text-slate-900">{file.name}</p>
                 <p className="mt-1 text-xs font-bold text-slate-500">
                   {(file.size / 1024 / 1024).toFixed(2)} MB {fileExtension ? `- ${fileExtension}` : ''}
                 </p>
               </div>
             )}
-            <span className="inline-flex items-center justify-center rounded-2xl bg-teal-700 px-5 py-3 text-sm font-black text-white shadow-lg transition-colors group-hover:bg-teal-800">
+            <span className="inline-flex items-center justify-center rounded-2xl bg-emerald-700 px-5 py-3 text-sm font-black text-white shadow-lg transition-colors group-hover:bg-emerald-800">
               {file ? 'Replace File' : 'Choose File'}
             </span>
           </div>
@@ -2831,106 +2831,95 @@ const downloadExcelTemplate = () => {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-h-screen bg-slate-50 p-6">
       <CustomToaster />
 
-      {/* Welcome Section */}
-      <div className="relative bg-gradient-to-r from-teal-700 via-emerald-700 to-teal-900 rounded-2xl p-8 text-white overflow-hidden">
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-white/20 rounded-2xl">
-              <IoSparkles className="text-2xl text-yellow-300" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold">Student Bulk Upload & Analytics</h1>
-              <p className="text-emerald-100 text-lg mt-2 max-w-2xl">
-                Comprehensive student management with structured upload strategy, 
-                duplicate prevention, and real-time analytics.
-              </p>
+      {/* Header Section */}
+      <div className="max-w-[1440px] mx-auto space-y-6">
+        <div className="bg-white rounded-[32px] border border-slate-200 shadow-xl overflow-hidden">
+          <div className="bg-gradient-to-r from-slate-900 via-teal-700 to-slate-900 px-8 py-10">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex items-center gap-4">
+                <div className="rounded-3xl bg-white/10 p-4 inline-flex items-center justify-center">
+                  <IoSparkles className="text-3xl text-teal-200" />
+                </div>
+                <div>
+                  <h1 className="text-4xl font-black tracking-tight text-white">Student Management System</h1>
+                  <p className="mt-3 max-w-2xl text-base leading-7 text-slate-200">
+                    Upload and manage student contacts, preserve duplicate checks, and keep the Excel import workflow intact with the same API integrations.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={() => {
+                    setLoading(true);
+                    loadStats();
+                  }}
+                  disabled={loading}
+                  className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:bg-slate-800 disabled:opacity-60"
+                >
+                  {loading ? (
+                    <CircularProgress size={16} color="inherit" thickness={6} />
+                  ) : (
+                    <FiRefreshCwIcon className="text-base" />
+                  )}
+                  {loading ? 'Syncing...' : 'Refresh Data'}
+                </button>
+
+                <button
+                  onClick={exportStudentsToCSV}
+                  disabled={students.length === 0 || loading}
+                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-800 shadow-sm transition-all duration-300 hover:border-slate-400 hover:bg-slate-50 disabled:opacity-50"
+                >
+                  <FiDownload className="text-base" />
+                  Export Students
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 mt-6">
-            <button
-              onClick={() => {
-                setLoading(true);
-                loadStats();
-              }}
-              disabled={loading}
-              className="bg-white text-teal-700 px-6 py-3 rounded-xl font-bold text-base flex items-center gap-2 shadow-lg disabled:opacity-60 hover:shadow-xl transition-all duration-300"
-            >
-              {loading ? (
-                <CircularProgress size={16} color="inherit" thickness={6} />
-              ) : (
-                <FiRefreshCwIcon className="text-base" />
-              )}
-              {loading ? 'Syncing...' : 'Refresh Stats'}
-            </button>
-
-            <button
-              onClick={exportStudentsToCSV}
-              disabled={students.length === 0 || loading}
-              className="text-white/80 hover:text-white px-6 py-3 rounded-xl font-bold text-base border border-white/20 flex items-center gap-2 disabled:opacity-50 hover:bg-white/10 transition-all duration-300"
-            >
-              <FiDownload className="text-base" />
-              Export Data
-            </button>
+          <div className="p-6 lg:p-8 bg-slate-50">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="space-y-2">
+                <p className="text-sm font-bold uppercase tracking-[0.25em] text-slate-500">Student upload workflow</p>
+                <h2 className="text-2xl font-extrabold text-slate-900">Excel/CSV bulk upload with smart duplicate control</h2>
+                <p className="max-w-2xl text-sm text-slate-600">
+                  Keep the same upload APIs and file processing pathways while giving the admin student page a cleaner card-driven interface like the fee balance experience.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Navigation Tabs */}
-      <div className="bg-white rounded-2xl p-3 border-2 border-gray-200 shadow-2xl">
-        <div className="flex flex-wrap items-center gap-2 p-2">
+        {/* Navigation Tabs */}
+      <div className="bg-white rounded-[28px] border border-slate-200 shadow-xl transition-all duration-300">
+        <div className="flex flex-wrap items-center gap-2 p-3 bg-slate-50 rounded-xl">
           <button
             onClick={() => setView('upload')}
-            className={`px-6 py-3 rounded-xl font-bold flex items-center gap-3 text-base transition-all duration-300 ${
-              view === 'upload'
-                ? 'bg-gradient-to-r from-teal-700 to-emerald-800 text-white shadow-xl'
-                : 'text-gray-700 hover:text-teal-700'
-            }`}
+            className={`px-6 py-3 rounded-xl font-bold flex items-center gap-3 text-base transition-all duration-300 ${view === 'upload' ? 'bg-gradient-to-r from-teal-600 to-emerald-700 text-white shadow-xl scale-105' : 'text-gray-700 hover:text-teal-700 hover:bg-teal-50'}`}
           >
             <FiUpload className="text-sm" />
             Bulk Upload
           </button>
           <button
-            onClick={() => {
-              setView('students');
-              loadStudents(1);
-            }}
-            className={`px-6 py-3 rounded-xl font-bold flex items-center gap-3 text-base transition-all duration-300 ${
-              view === 'students'
-                ? 'bg-gradient-to-r from-teal-700 to-emerald-800 text-white shadow-xl'
-                : 'text-gray-700 hover:text-teal-700'
-            }`}
+            onClick={() => { setView('students'); loadStudents(1); }}
+            className={`px-6 py-3 rounded-xl font-bold flex items-center gap-3 text-base transition-all duration-300 ${view === 'students' ? 'bg-gradient-to-r from-teal-600 to-emerald-700 text-white shadow-xl scale-105' : 'text-gray-700 hover:text-teal-700 hover:bg-teal-50'}`}
           >
             <FiUsers className="text-sm" />
             Students ({stats.totalStudents || 0})
           </button>
           <button
-            onClick={() => {
-              setView('demographics');
-              loadStats();
-            }}
-            className={`px-6 py-3 rounded-xl font-bold flex items-center gap-3 text-base transition-all duration-300 ${
-              view === 'demographics'
-                ? 'bg-gradient-to-r from-teal-700 to-emerald-800 text-white shadow-xl'
-                : 'text-gray-700 hover:text-teal-700'
-            }`}
+            onClick={() => { setView('demographics'); loadStats(); }}
+            className={`px-6 py-3 rounded-xl font-bold flex items-center gap-3 text-base transition-all duration-300 ${view === 'demographics' ? 'bg-gradient-to-r from-teal-600 to-emerald-700 text-white shadow-xl scale-105' : 'text-gray-700 hover:text-teal-700 hover:bg-teal-50'}`}
           >
             <FiPieChart className="text-sm" />
             Demographics
           </button>
           <button
-            onClick={() => {
-              setView('history');
-              loadUploadHistory(1);
-            }}
-            className={`px-6 py-3 rounded-xl font-bold flex items-center gap-3 text-base transition-all duration-300 ${
-              view === 'history'
-                ? 'bg-gradient-to-r from-teal-700 to-emerald-800 text-white shadow-xl'
-                : 'text-gray-700 hover:text-teal-700'
-            }`}
+            onClick={() => { setView('history'); loadUploadHistory(1); }}
+            className={`px-6 py-3 rounded-xl font-bold flex items-center gap-3 text-base transition-all duration-300 ${view === 'history' ? 'bg-gradient-to-r from-teal-600 to-emerald-700 text-white shadow-xl scale-105' : 'text-gray-700 hover:text-teal-700 hover:bg-teal-50'}`}
           >
             <FiClock className="text-sm" />
             Upload History
@@ -2976,14 +2965,14 @@ const downloadExcelTemplate = () => {
             <div className="grid lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-8">
                 {/* Upload Strategy Info */}
-                <div className="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-2xl p-6 border-2 border-emerald-300">
+                <div className="bg-gradient-to-br from-emerald-50 via-teal-50 to-emerald-50 rounded-2xl p-6 border-2 border-emerald-300 shadow-lg">
                   <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-xl font-bold text-emerald-900 flex items-center gap-3">
+                    <h3 className="text-xl font-black text-emerald-900 flex items-center gap-3 tracking-tight">
                       <FiLayers className="text-emerald-700 text-2xl" />
                       Upload Strategy
                     </h3>
                     {uploadStrategy && (
-                      <span className="px-4 py-2 bg-teal-700 text-white rounded-lg font-bold text-sm">
+                      <span className="px-4 py-2 bg-gradient-to-r from-emerald-700 to-teal-700 text-white rounded-lg font-bold text-sm shadow-md">
                         {uploadStrategy.uploadType === 'new' 
                           ? `New Upload for ${uploadStrategy.selectedForms.join(', ')}`
                           : `Update Upload for ${uploadStrategy.targetForm}`
@@ -3945,6 +3934,7 @@ const downloadExcelTemplate = () => {
           </div>
         )}
       </div>
+    </div>
 
       {/* Modals */}
       {selectedStudent && (
