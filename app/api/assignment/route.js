@@ -1,6 +1,22 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../libs/prisma";
 import cloudinary from "../../../libs/cloudinary";
+import {
+  buildDeliveryCriteriaFromFormData,
+  prepareAssignmentDelivery,
+  SCHOOL_COMMUNICATION_NUMBER
+} from "../../../libs/delivery";
+
+const decodeJwtPayload = (token) => {
+  const payload = token.split('.')[1];
+  const normalizedPayload = payload.replace(/-/g, '+').replace(/_/g, '/');
+  const paddedPayload = normalizedPayload.padEnd(
+    normalizedPayload.length + ((4 - normalizedPayload.length % 4) % 4),
+    '='
+  );
+
+  return JSON.parse(Buffer.from(paddedPayload, 'base64').toString('utf-8'));
+};
 
 // ==================== TOKEN VERIFICATION ====================
 class DeviceTokenManager {
@@ -33,7 +49,7 @@ class DeviceTokenManager {
 
       let adminPayload;
       try {
-        adminPayload = JSON.parse(atob(adminParts[1]));
+        adminPayload = decodeJwtPayload(adminToken);
         
         const currentTime = Date.now() / 1000;
         if (adminPayload.exp && adminPayload.exp < currentTime) {
@@ -41,7 +57,7 @@ class DeviceTokenManager {
         }
         
         const userRole = adminPayload.role || adminPayload.userRole || '';
-        const validRoles = ['ADMIN', 'SUPER_ADMIN', 'administrator', 'PRINCIPAL', 'TEACHER', 'teacher'];
+        const validRoles = ['ADMIN', 'SUPER_ADMIN', 'ADMINISTRATOR', 'PRINCIPAL', 'TEACHER'];
         
         if (!validRoles.includes(userRole.toUpperCase())) {
           return { 
@@ -79,7 +95,6 @@ class DeviceTokenManager {
     }
   }
 
-  
   static validateDeviceToken(token) {
     try {
       const payloadStr = Buffer.from(token, 'base64').toString('utf-8');
@@ -416,7 +431,11 @@ const cleanAssignmentResponse = (assignment) => {
   return {
     ...assignment,
     assignmentFileAttachments,
-    attachmentAttachments
+    attachmentAttachments,
+    senderReference: assignment.senderReference || SCHOOL_COMMUNICATION_NUMBER,
+    deliveryStatus: assignment.deliveryStatus || assignment.deliverySummary?.status || 'prepared',
+    deliverySummary: assignment.deliverySummary || null,
+    targetCriteria: assignment.targetCriteria || null
   };
 };
 
@@ -429,20 +448,15 @@ export async function GET(request) {
     
     // Optional query parameters for filtering
     const { searchParams } = new URL(request.url);
-    const search = searchParams.get('search');
+    const subject = searchParams.get('subject');
     const className = searchParams.get('className');
+    const teacher = searchParams.get('teacher');
     const status = searchParams.get('status');
     
     const whereClause = {};
-    if (search) {
-      whereClause.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-        { subject: { contains: search, mode: 'insensitive' } },
-        { teacher: { contains: search, mode: 'insensitive' } }
-      ];
-    }
+    if (subject) whereClause.subject = { contains: subject, mode: 'insensitive' };
     if (className) whereClause.className = { contains: className, mode: 'insensitive' };
+    if (teacher) whereClause.teacher = { contains: teacher, mode: 'insensitive' };
     if (status) whereClause.status = status;
     
     const assignments = await prisma.assignment.findMany({
@@ -497,6 +511,7 @@ export async function POST(request) {
     const additionalWork = formData.get("additionalWork")?.toString().trim() || "";
     const teacherRemarks = formData.get("teacherRemarks")?.toString().trim() || "";
     const learningObjectives = formData.get("learningObjectives")?.toString();
+    const deliveryCriteria = buildDeliveryCriteriaFromFormData(formData, className);
 
     // Validate required fields
     if (!title || !subject || !className || !teacher) {
@@ -552,27 +567,43 @@ export async function POST(request) {
     }
 
     // FIX: Create assignment with dateAssigned field
-    const assignment = await prisma.assignment.create({
-      data: {
-        title,
-        subject,
-        className,
-        teacher,
-        dueDate: dueDate ? new Date(dueDate) : null,
-        dateAssigned: new Date(), // FIX: Added required field
-        status,
-        description,
-        instructions,
-        priority,
-        estimatedTime,
-        additionalWork,
-        teacherRemarks,
-        assignmentFiles,
-        attachments,
-        learningObjectives: learningObjectivesArray,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
+    const assignment = await prisma.$transaction(async (tx) => {
+      const createdAssignment = await tx.assignment.create({
+        data: {
+          title,
+          subject,
+          className,
+          teacher,
+          dueDate: dueDate ? new Date(dueDate) : null,
+          dateAssigned: new Date(), // FIX: Added required field
+          status,
+          description,
+          instructions,
+          priority,
+          estimatedTime,
+          additionalWork,
+          teacherRemarks,
+          assignmentFiles,
+          attachments,
+          learningObjectives: learningObjectivesArray,
+          targetCriteria: deliveryCriteria,
+          senderReference: deliveryCriteria.senderReference,
+          deliveryStatus: 'preparing',
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+      });
+
+      const deliverySummary = await prepareAssignmentDelivery(tx, createdAssignment.id, deliveryCriteria);
+
+      return tx.assignment.update({
+        where: { id: createdAssignment.id },
+        data: {
+          deliverySummary,
+          deliveryStatus: deliverySummary.status,
+          updatedAt: new Date()
+        }
+      });
     });
 
     console.log(`✅ Assignment created with ID: ${assignment.id}`);
