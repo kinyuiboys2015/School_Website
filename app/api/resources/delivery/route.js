@@ -164,6 +164,25 @@ export async function POST(req) {
         attachments: buildResourceAttachments(resource)
       });
 
+      if (sendResult.fatal) {
+        return NextResponse.json({
+          success: false,
+          error: sendResult.error,
+          code: sendResult.code,
+          message: sendResult.error,
+          data: {
+            successCount,
+            failureCount: failureCount + 1,
+            totalRecipients: resolved.recipients.length,
+            missingEmailCount: resolved.missingEmailCount,
+            results: [
+              ...sendResults,
+              { admissionNumber: recipient.admissionNumber, studentName: recipient.studentName, email: parentEmail, ...sendResult }
+            ]
+          }
+        }, { status: sendResult.code === 'SENDER_AUTH_RATE_LIMITED' ? 429 : 500 });
+      }
+
       if (sendResult.success) successCount++;
       else failureCount++;
       sendResults.push({ admissionNumber: recipient.admissionNumber, studentName: recipient.studentName, email: parentEmail, ...sendResult });

@@ -2076,7 +2076,7 @@ export default function AssignmentsManager() {
             });
           } catch (deliveryError) {
             console.error('Assignment email delivery failed:', deliveryError);
-            setDeliveryProgress({
+            setDeliveryProgress(prev => prev.phase === 'failed' ? prev : {
               phase: 'failed',
               active: false,
               current: 0,

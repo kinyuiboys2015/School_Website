@@ -1970,7 +1970,7 @@ const handleSubmit = async (formData, id) => {
           });
         } catch (deliveryError) {
           console.error('Resource email delivery failed:', deliveryError);
-          setDeliveryProgress({
+          setDeliveryProgress(prev => prev.phase === 'failed' ? prev : {
             phase: 'failed',
             active: false,
             current: 0,

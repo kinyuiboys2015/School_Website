@@ -20,7 +20,11 @@ const fetchJsonWithTimeout = async (url, options = {}, timeoutMs = 45000) => {
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
-      throw new Error(data.error || data.message || `Request failed with HTTP ${response.status}`);
+      const error = new Error(data.error || data.message || `Request failed with HTTP ${response.status}`);
+      error.status = response.status;
+      error.code = data.code;
+      error.data = data.data;
+      throw error;
     }
     return data;
   } catch (error) {
@@ -92,61 +96,58 @@ export const runRecipientDelivery = async ({
     return { successCount: 0, failureCount: 0, totalRecipients: 0, failedRecipients: [] };
   }
 
-  let successCount = 0;
-  const failedRecipients = [];
+  setProgress({
+    phase: 'sending',
+    active: true,
+    current: 0,
+    total,
+    percent: 25,
+    statusText: `Sending to ${total} recipient(s) in one secure email batch...`,
+    failedRecipients: [],
+    entityId
+  });
 
-  for (let index = 0; index < recipients.length; index++) {
-    const recipient = recipients[index];
+  let deliveryResult;
+  try {
+    deliveryResult = await fetchJsonWithTimeout(
+      endpoint,
+      {
+        method: 'POST',
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          [entityIdKey]: entityId,
+          recipientIds: recipients.map((recipient) => recipient.admissionNumber).filter(Boolean)
+        })
+      },
+      Math.max(60000, total * 15000)
+    );
+  } catch (error) {
+    const apiResults = Array.isArray(error.data?.results) ? error.data.results : [];
+    const failedRecipients = apiResults
+      .filter((result) => result.success === false)
+      .map((result) => normalizeRecipientFailure(result, result.error || error.message));
+
     setProgress({
-      phase: 'sending',
-      active: true,
-      current: index,
+      phase: 'failed',
+      active: false,
+      current: error.data?.successCount || 0,
       total,
-      percent: Math.round((index / total) * 100),
-      statusText: `Sending to ${index + 1} of ${total} recipients...`,
+      percent: 100,
+      statusText: error.code === 'SENDER_AUTH_RATE_LIMITED'
+        ? 'Gmail temporarily blocked the sender login. Wait before retrying and verify the sender app password.'
+        : error.message,
       failedRecipients,
       entityId
     });
 
-    try {
-      const deliveryResult = await fetchJsonWithTimeout(
-        endpoint,
-        {
-          method: 'POST',
-          headers: { ...headers, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            [entityIdKey]: entityId,
-            recipientIds: [recipient.admissionNumber]
-          })
-        },
-        60000
-      );
-
-      const resultRow = deliveryResult.data?.results?.[0];
-      const failed = deliveryResult.data?.failureCount > 0 || resultRow?.success === false;
-      if (failed) {
-        failedRecipients.push(normalizeRecipientFailure(
-          { ...recipient, email: resultRow?.email || recipient.email },
-          resultRow?.error || deliveryResult.error || 'Delivery failed'
-        ));
-      } else {
-        successCount += 1;
-      }
-    } catch (error) {
-      failedRecipients.push(normalizeRecipientFailure(recipient, error.message));
-    }
-
-    setProgress({
-      phase: 'sending',
-      active: true,
-      current: index + 1,
-      total,
-      percent: Math.round(((index + 1) / total) * 100),
-      statusText: `Sending to ${index + 1} of ${total} recipients...`,
-      failedRecipients,
-      entityId
-    });
+    throw error;
   }
+
+  const results = Array.isArray(deliveryResult.data?.results) ? deliveryResult.data.results : [];
+  const failedRecipients = results
+    .filter((result) => result.success === false)
+    .map((result) => normalizeRecipientFailure(result, result.error || 'Delivery failed'));
+  const successCount = Number(deliveryResult.data?.successCount || 0);
 
   const failureCount = failedRecipients.length;
   const completedProgress = {
