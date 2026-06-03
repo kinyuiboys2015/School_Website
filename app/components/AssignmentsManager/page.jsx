@@ -1,9 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import DeliveryProgressPanel from '../DeliveryProgressPanel';
 import SubjectSearchSelect from '../SubjectSearchSelect';
-import { createIdleDeliveryProgress, runRecipientDelivery } from '../deliveryClient';
 import { ALL_LEARNING_SUBJECTS } from '../../../libs/subjects';
 import {
   FiPlus,
@@ -30,7 +28,6 @@ import {
   FiPaperclip,
   FiFileText,
   FiDownload,
-  FiSend,
   FiTarget,
   FiBarChart,
   FiEdit2,
@@ -59,8 +56,7 @@ import {
   FiCopy,
   FiShare2,
   FiInfo, 
-  FiHeart,
-  FiMessageCircle
+  FiHeart
 } from 'react-icons/fi';
 
 import {
@@ -82,7 +78,6 @@ import {
 } from 'react-icons/io5';
 import { Modal, Box, CircularProgress } from '@mui/material';
 
-const SCHOOL_COMMUNICATION_NUMBER = '0793472960';
 const DELIVERY_LEVEL_OPTIONS = ['Grade 10', 'Grade 11', 'Grade 12', 'Form 3', 'Form 4', 'Form 1', 'Form 2'];
 
 // Modern Loading Spinner Component
@@ -461,12 +456,6 @@ function ModernAssignmentDetailModal({ assignment, onClose, onEdit }) {
                 {assignment.className}
               </div>
             )}
-            {assignment.deliverySummary && (
-              <div className="flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-teal-50 text-teal-800 border border-teal-100">
-                <FiSend className="w-3 h-3" />
-                {assignment.deliverySummary.recipientCount || 0} prepared
-              </div>
-            )}
           </div>
         </div>
 
@@ -659,12 +648,12 @@ function ModernAssignmentDetailModal({ assignment, onClose, onEdit }) {
   );
 }
 
-function ModernAssignmentModal({ onClose, onSave, assignment, loading, deliveryProgress, onRetryDelivery }) {
+function ModernAssignmentModal({ onClose, onSave, assignment, loading }) {
   // Form fields state
   const [formData, setFormData] = useState({
     title: assignment?.title || '',
     description: assignment?.description || '',
-    // simplified: keep only title, description, class, teacher and delivery-related fields
+    // simplified: keep only title, description, class, teacher and learning fields
     subject: assignment?.subject || 'General Studies',
     dueDate: assignment?.dueDate ? new Date(assignment.dueDate).toISOString().split('T')[0] : '',
     className: assignment?.className || '',
@@ -675,10 +664,6 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading, deliveryP
     instructions: assignment?.instructions || '',
     additionalWork: assignment?.additionalWork || '',
     teacherRemarks: assignment?.teacherRemarks || '',
-    targetGrades: assignment?.targetCriteria?.grades || [],
-    targetClasses: assignment?.targetCriteria?.classes || (assignment?.className ? [assignment.className] : []),
-    targetCategories: assignment?.targetCriteria?.categories || [],
-    deliveryCategoryInput: '',
   });
 
   // File states with size tracking
@@ -933,18 +918,6 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading, deliveryP
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const toggleTargetValue = (field, value) => {
-    setFormData(prev => {
-      const selected = prev[field] || [];
-      return {
-        ...prev,
-        [field]: selected.includes(value)
-          ? selected.filter(item => item !== value)
-          : [...selected, value]
-      };
-    });
-  };
-
   // Get size color based on current usage
   const getSizeColor = () => {
     if (totalSizeMB > 4.5) return 'text-red-600';
@@ -974,19 +947,9 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading, deliveryP
       return;
     }
     
-    const deliveryReadyData = {
-      ...formData,
-      targetClasses: formData.targetClasses.length > 0
-        ? formData.targetClasses
-        : (formData.targetGrades.length > 0 || formData.targetCategories.length > 0 ? [] : [formData.className].filter(Boolean)),
-      targetGrades: formData.targetGrades.length > 0 ? formData.targetGrades : [],
-      targetCategories: formData.targetCategories,
-      senderReference: SCHOOL_COMMUNICATION_NUMBER
-    };
-
     // Call parent's onSave with all data
     await onSave(
-      deliveryReadyData, 
+      formData, 
       assignment?.id, 
       assignmentFiles, 
       attachments, 
@@ -1121,28 +1084,6 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading, deliveryP
                   ))}
                 </select>
               </div>
-
-            <div className="rounded-[1.6rem] border border-slate-200 bg-white p-4 shadow-sm">
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#0f5b4c,#d4b15f)] text-white">
-                  <FiSend className="h-5 w-5" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-[11px] font-extrabold uppercase tracking-[0.28em] text-slate-500">Delivery Desk</p>
-                  <h3 className="mt-1 text-lg font-black text-slate-950">Email Delivery</h3>
-                  <p className="mt-1 text-sm text-slate-600">Select recipient grades and optional categories. Contacts previewed on save.</p>
-                </div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-teal-50 px-3 py-1 text-xs font-black text-teal-800">
-                  <FiMessageCircle />
-                  Preview on save
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <p className="mb-2 text-sm font-bold text-slate-700">Delivery</p>
-                <p className="text-sm text-slate-600">Assignment notices will be sent to parent email addresses for the selected class.</p>
-              </div>
-            </div>
 
             {/* Teacher - Full Width */}
             <div>
@@ -1394,13 +1335,6 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading, deliveryP
             </div>
 
             {/* Form Actions */}
-            <DeliveryProgressPanel
-              progress={deliveryProgress}
-              onRetry={onRetryDelivery}
-              disabled={loading}
-            />
-
-            {/* Form Actions */}
             <div className="flex items-center justify-between pt-6 border-t border-gray-200">
               <button 
                 type="button"
@@ -1413,13 +1347,13 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading, deliveryP
 
               <button
                 type="submit"
-                disabled={loading || totalSizeMB > 4.5 || !formData.title.trim() || !formData.className || (deliveryProgress?.phase === 'failed' && deliveryProgress?.failedRecipients?.length > 0)}
+                disabled={loading || totalSizeMB > 4.5 || !formData.title.trim() || !formData.className}
                 className="px-6 py-3 text-white rounded-xl font-bold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 bg-gradient-to-r from-teal-700 to-emerald-700 text-sm hover:from-teal-800 hover:to-emerald-800 transition-all"
               >
 	                {loading ? (
 	                  <>
 	                    <CircularProgress size={16} className="text-white" />
-	                    {deliveryProgress?.active ? 'Sending emails...' : assignment ? 'Updating...' : 'Creating...'}
+	                    {assignment ? 'Updating...' : 'Creating...'}
 	                  </>
                 ) : (
                   <>
@@ -1463,7 +1397,6 @@ export default function AssignmentsManager() {
   const [deleteType, setDeleteType] = useState('single');
   const [bulkDeleting, setBulkDeleting] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [deliveryProgress, setDeliveryProgress] = useState(createIdleDeliveryProgress);
   
   // Notification state
   const [notification, setNotification] = useState({
@@ -1547,9 +1480,6 @@ export default function AssignmentsManager() {
       feedback: apiAssignment.feedback || null,
       learningObjectives: apiAssignment.learningObjectives || [],
       targetCriteria: apiAssignment.targetCriteria || null,
-      deliverySummary: apiAssignment.deliverySummary || null,
-      deliveryStatus: apiAssignment.deliveryStatus || 'prepared',
-      senderReference: apiAssignment.senderReference || SCHOOL_COMMUNICATION_NUMBER,
       createdAt: apiAssignment.createdAt || new Date().toISOString(),
       updatedAt: apiAssignment.updatedAt || new Date().toISOString(),
       
@@ -1732,7 +1662,6 @@ export default function AssignmentsManager() {
 
   // Edit assignment
   const handleEdit = (assignment) => {
-    setDeliveryProgress(createIdleDeliveryProgress());
     setEditingAssignment(assignment);
     setShowModal(true);
   };
@@ -1845,61 +1774,8 @@ export default function AssignmentsManager() {
     }
   };
 
-  const sendAssignmentDelivery = async ({ assignmentId, headers, failedRecipients = null }) => {
-    const recipientIds = failedRecipients?.map((recipient) => recipient.admissionNumber).filter(Boolean) || null;
-    return runRecipientDelivery({
-      endpoint: '/api/assignment/delivery',
-      entityIdKey: 'assignmentId',
-      entityId: assignmentId,
-      headers,
-      setProgress: setDeliveryProgress,
-      recipientIds,
-      knownRecipients: failedRecipients,
-      label: 'assignment email(s)'
-    });
-  };
-
-  const handleRetryAssignmentDelivery = async () => {
-    if (!deliveryProgress.entityId) return;
-
-    setSaving(true);
-    try {
-      const headers = getAuthHeaders();
-      const retryResult = await sendAssignmentDelivery({
-        assignmentId: deliveryProgress.entityId,
-        headers,
-        failedRecipients: deliveryProgress.failedRecipients?.length ? deliveryProgress.failedRecipients : null
-      });
-
-      if (retryResult.failureCount > 0) {
-        showNotification(
-          'warning',
-          'Retry Partially Failed',
-          `${retryResult.successCount} email(s) sent. ${retryResult.failureCount} recipient(s) still failed.`
-        );
-        return;
-      }
-
-      await fetchAssignments();
-      showNotification('success', 'Delivery Complete', `All ${retryResult.totalRecipients} failed recipient(s) were retried successfully.`);
-      setShowModal(false);
-      setDeliveryProgress(createIdleDeliveryProgress());
-    } catch (error) {
-      showNotification('error', 'Retry Failed', error.message || 'Failed to retry assignment delivery.');
-      setDeliveryProgress(prev => ({
-        ...prev,
-        phase: 'failed',
-        active: false,
-        statusText: error.message || 'Retry failed. Please try again.'
-      }));
-    } finally {
-      setSaving(false);
-    }
-  };
-
   const handleSubmit = async (formData, id, assignmentFiles = [], attachments = [], learningObjectives = [], assignmentFilesToRemove = [], attachmentsToRemove = []) => {
     setSaving(true);
-    setDeliveryProgress(createIdleDeliveryProgress());
     try {
       console.log('📤 Starting assignment submission...');
       
@@ -1962,10 +1838,6 @@ export default function AssignmentsManager() {
       formDataToSend.append('instructions', formData.instructions);
       formDataToSend.append('additionalWork', formData.additionalWork);
       formDataToSend.append('teacherRemarks', formData.teacherRemarks);
-      (formData.targetGrades || []).forEach(level => formDataToSend.append('targetGrades', level));
-      (formData.targetClasses || []).forEach(className => formDataToSend.append('targetClasses', className));
-      (formData.targetCategories || []).forEach(category => formDataToSend.append('targetCategories', category));
-      formDataToSend.append('senderReference', formData.senderReference || SCHOOL_COMMUNICATION_NUMBER);
       
       // Handle learning objectives
       const learningObjectivesString = JSON.stringify(learningObjectives || []);
@@ -2066,54 +1938,14 @@ export default function AssignmentsManager() {
       const result = await response.json();
 
       if (result.success) {
-        let deliveryResult = null;
-        const savedAssignmentId = result.assignment?.id;
-        if (savedAssignmentId) {
-          try {
-            deliveryResult = await sendAssignmentDelivery({
-              assignmentId: savedAssignmentId,
-              headers
-            });
-          } catch (deliveryError) {
-            console.error('Assignment email delivery failed:', deliveryError);
-            setDeliveryProgress(prev => prev.phase === 'failed' ? prev : {
-              phase: 'failed',
-              active: false,
-              current: 0,
-              total: 0,
-              percent: 100,
-              statusText: deliveryError.message || 'Email delivery failed. Please retry.',
-              failedRecipients: [],
-              entityId: savedAssignmentId
-            });
-            await fetchAssignments();
-            showNotification('error', 'Delivery Failed', deliveryError.message || 'Assignment was saved, but email delivery failed.');
-            return;
-          }
-        }
-
         // Refresh the list
         await fetchAssignments();
 
-        if (deliveryResult?.failureCount > 0) {
-          showNotification(
-            'warning',
-            'Delivery Partially Failed',
-            `${deliveryResult.successCount} email(s) sent. ${deliveryResult.failureCount} recipient(s) failed. Retry only the failed recipients below.`
-          );
-          return;
-        }
-
-        if (deliveryResult) {
-          await new Promise(resolve => setTimeout(resolve, 700));
-        }
-
         setShowModal(false);
-        const recipientCount = result.assignment?.deliverySummary?.recipientCount;
         showNotification(
           'success',
           id ? 'Updated' : 'Created',
-          `Assignment ${id ? 'updated' : 'created'} successfully!${deliveryResult ? ` ${deliveryResult.successCount} email(s) sent.` : Number.isFinite(recipientCount) ? ` ${recipientCount} email recipient(s) prepared.` : ''}`
+          `Assignment ${id ? 'updated' : 'created'} successfully!`
         );
       } else {
         throw new Error(result.error || 'Failed to save assignment');
@@ -2138,7 +1970,6 @@ export default function AssignmentsManager() {
 
   // Create new assignment
   const handleCreate = () => {
-    setDeliveryProgress(createIdleDeliveryProgress());
     setEditingAssignment(null);
     setShowModal(true);
   };
@@ -2924,8 +2755,6 @@ export default function AssignmentsManager() {
           onSave={handleSubmit}
           assignment={editingAssignment}
           loading={saving}
-          deliveryProgress={deliveryProgress}
-          onRetryDelivery={handleRetryAssignmentDelivery}
         />
       )}
       

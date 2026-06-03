@@ -2,9 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { Modal, Box, CircularProgress } from '@mui/material';
-import DeliveryProgressPanel from '../DeliveryProgressPanel';
 import SubjectSearchSelect from '../SubjectSearchSelect';
-import { createIdleDeliveryProgress, runRecipientDelivery } from '../deliveryClient';
 import { ALL_LEARNING_SUBJECTS } from '../../../libs/subjects';
 
 // Consolidated Feather Icons (Fi) - All Duplicates Removed
@@ -34,7 +32,6 @@ import {
   FiPaperclip,
   FiFileText,
   FiDownload,
-  FiSend,
   FiTarget,
   FiBarChart,
   FiPercent,
@@ -64,8 +61,7 @@ import {
   FiMoreVertical,
   FiCopy,
   FiShare2,
-  FiHeart,
-  FiMessageCircle
+  FiHeart
 } from 'react-icons/fi';
 
 // Consolidated Heroicons (Hi)
@@ -89,7 +85,6 @@ import {
 } from 'react-icons/io5';
 // Rest of your component logic goes here...
 
-const SCHOOL_COMMUNICATION_NUMBER = '0793472960';
 const DELIVERY_LEVEL_OPTIONS = ['Grade 10', 'Grade 11', 'Grade 12', 'Form 3', 'Form 4', 'Form 1', 'Form 2'];
 
 // Modern Loading Spinner Component
@@ -473,13 +468,6 @@ function ModernResourceDetailModal({ resource, onClose, onEdit }) {
         </span>
       )}
 
-      {/* Delivery Summary Tag */}
-      {resource.deliverySummary && (
-        <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-emerald-900/40 text-emerald-300 border border-emerald-700">
-          <FiSend size={12} />
-          {resource.deliverySummary.recipientCount || 0} prepared
-        </span>
-      )}
     </div>
 
     {/* Quick Stats */}
@@ -620,7 +608,7 @@ function ModernResourceDetailModal({ resource, onClose, onEdit }) {
 }
 
 
-function ModernResourceModal({ onClose, onSave, resource, loading, deliveryProgress, onRetryDelivery }) {
+function ModernResourceModal({ onClose, onSave, resource, loading }) {
   const [formData, setFormData] = useState({
     title: resource?.title || '',
     description: resource?.description || '',
@@ -630,11 +618,7 @@ function ModernResourceModal({ onClose, onSave, resource, loading, deliveryProgr
     category: resource?.category || 'General',
     accessLevel: resource?.accessLevel || 'student',
     uploadedBy: resource?.uploadedBy || 'Admin',
-    isActive: resource?.isActive ?? true,
-    targetGrades: resource?.targetCriteria?.grades || [],
-    targetClasses: resource?.targetCriteria?.classes || (resource?.className ? [resource.className] : []),
-    targetCategories: resource?.targetCriteria?.categories || [],
-    deliveryCategoryInput: ''
+    isActive: resource?.isActive ?? true
   });
 
   // File states
@@ -700,8 +684,7 @@ useEffect(() => {
     !formData.className || 
     (files.length === 0 && existingFiles.length === 0 && !resource) ||
     totalSizeMB > 4.5 ||
-    fileSizeError ||
-    (deliveryProgress?.phase === 'failed' && deliveryProgress?.failedRecipients?.length > 0);
+    fileSizeError;
 
   // Class options
   const classOptions = [
@@ -871,30 +854,17 @@ useEffect(() => {
       return;
     }
 
-    const deliveryTargetGrades = formData.targetGrades.length > 0 ? formData.targetGrades : [];
-    const deliveryTargetCategories = formData.targetCategories.length > 0 ? formData.targetCategories : [];
-    const deliveryTargetClasses = formData.targetClasses.length > 0
-      ? formData.targetClasses
-      : (deliveryTargetGrades.length > 0 || deliveryTargetCategories.length > 0 ? [] : [formData.className].filter(Boolean));
-
     // Create FormData for submission
     const formDataToSend = new FormData();
     
     // Add form data
     Object.keys(formData).forEach(key => {
-      if (['targetGrades', 'targetClasses', 'targetCategories', 'deliveryCategoryInput'].includes(key)) {
-        return;
-      }
       if (key === 'isActive') {
         formDataToSend.append(key, formData[key] ? 'true' : 'false');
       } else {
         formDataToSend.append(key, formData[key]);
       }
     });
-    deliveryTargetGrades.forEach(level => formDataToSend.append('targetGrades', level));
-    deliveryTargetClasses.forEach(className => formDataToSend.append('targetClasses', className));
-    deliveryTargetCategories.forEach(category => formDataToSend.append('targetCategories', category));
-    formDataToSend.append('senderReference', SCHOOL_COMMUNICATION_NUMBER);
 
     if (resource) {
       formDataToSend.append('action', 'update');
@@ -931,18 +901,6 @@ useEffect(() => {
 
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const toggleTargetValue = (field, value) => {
-    setFormData(prev => {
-      const selected = prev[field] || [];
-      return {
-        ...prev,
-        [field]: selected.includes(value)
-          ? selected.filter(item => item !== value)
-          : [...selected, value]
-      };
-    });
   };
 
   const formatFileSize = (bytes) => {
@@ -1044,28 +1002,6 @@ useEffect(() => {
                   <option key={className} value={className}>{className}</option>
                 ))}
               </select>
-            </div>
-
-            <div className="rounded-[1.6rem] border border-slate-200 bg-white p-4 shadow-sm">
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#0f5b4c,#d4b15f)] text-white">
-                  <FiSend className="h-5 w-5" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-[11px] font-extrabold uppercase tracking-[0.28em] text-slate-500">Delivery Desk</p>
-                  <h3 className="mt-1 text-lg font-black text-slate-950">Email Delivery</h3>
-                  <p className="mt-1 text-sm text-slate-600">Select recipient grades and optional categories. Contacts previewed on save.</p>
-                </div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-teal-50 px-3 py-1 text-xs font-black text-teal-800">
-                  <FiMessageCircle />
-                  Preview on save
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <p className="mb-2 text-sm font-bold text-slate-700">Delivery</p>
-                <p className="text-sm text-slate-600">Resource notices will be sent to parent email addresses for the selected class.</p>
-              </div>
             </div>
 
             {/* Teacher - Full Width */}
@@ -1344,13 +1280,6 @@ useEffect(() => {
             </div>
 
             {/* Form Actions */}
-            <DeliveryProgressPanel
-              progress={deliveryProgress}
-              onRetry={onRetryDelivery}
-              disabled={loading}
-            />
-
-            {/* Form Actions */}
             <div className="flex items-center justify-between pt-6 border-t border-gray-200">
               <button 
                 type="button"
@@ -1369,7 +1298,7 @@ useEffect(() => {
 	                {loading ? (
 	                  <>
 	                    <CircularProgress size={16} className="text-white" />
-	                    {deliveryProgress?.active ? 'Sending emails...' : resource ? 'Updating...' : 'Uploading...'}
+	                    {resource ? 'Updating...' : 'Uploading...'}
 	                  </>
                 ) : (
                   <>
@@ -1418,7 +1347,6 @@ export default function ResourcesManager() {
   const [deleteType, setDeleteType] = useState('single');
   const [bulkDeleting, setBulkDeleting] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [deliveryProgress, setDeliveryProgress] = useState(createIdleDeliveryProgress);
 
   // Notification state
   const [notification, setNotification] = useState({
@@ -1508,9 +1436,6 @@ export default function ResourcesManager() {
       downloads: apiResource.downloads || 0,
       isActive: apiResource.isActive ?? true,
       targetCriteria: apiResource.targetCriteria || null,
-      deliverySummary: apiResource.deliverySummary || null,
-      deliveryStatus: apiResource.deliveryStatus || 'prepared',
-      senderReference: apiResource.senderReference || SCHOOL_COMMUNICATION_NUMBER,
       createdAt: apiResource.createdAt || new Date().toISOString(),
       updatedAt: apiResource.updatedAt || new Date().toISOString(),
       
@@ -1739,7 +1664,6 @@ export default function ResourcesManager() {
 
   // Edit resource
   const handleEdit = (resource) => {
-    setDeliveryProgress(createIdleDeliveryProgress());
     setEditingResource(resource);
     setShowModal(true);
   };
@@ -1864,61 +1788,8 @@ const confirmDelete = async () => {
   }
 };
 
-const sendResourceDelivery = async ({ resourceId, headers, failedRecipients = null }) => {
-  const recipientIds = failedRecipients?.map((recipient) => recipient.admissionNumber).filter(Boolean) || null;
-  return runRecipientDelivery({
-    endpoint: '/api/resources/delivery',
-    entityIdKey: 'resourceId',
-    entityId: resourceId,
-    headers,
-    setProgress: setDeliveryProgress,
-    recipientIds,
-    knownRecipients: failedRecipients,
-    label: 'resource email(s)'
-  });
-};
-
-const handleRetryResourceDelivery = async () => {
-  if (!deliveryProgress.entityId) return;
-
-  setSaving(true);
-  try {
-    const headers = getAuthHeaders();
-    const retryResult = await sendResourceDelivery({
-      resourceId: deliveryProgress.entityId,
-      headers,
-      failedRecipients: deliveryProgress.failedRecipients?.length ? deliveryProgress.failedRecipients : null
-    });
-
-    if (retryResult.failureCount > 0) {
-      showNotification(
-        'warning',
-        'Retry Partially Failed',
-        `${retryResult.successCount} email(s) sent. ${retryResult.failureCount} recipient(s) still failed.`
-      );
-      return;
-    }
-
-    await fetchResources();
-    showNotification('success', 'Delivery Complete', `All ${retryResult.totalRecipients} failed recipient(s) were retried successfully.`);
-    setShowModal(false);
-    setDeliveryProgress(createIdleDeliveryProgress());
-  } catch (error) {
-    showNotification('error', 'Retry Failed', error.message || 'Failed to retry resource delivery.');
-    setDeliveryProgress(prev => ({
-      ...prev,
-      phase: 'failed',
-      active: false,
-      statusText: error.message || 'Retry failed. Please try again.'
-    }));
-  } finally {
-    setSaving(false);
-  }
-};
-
 const handleSubmit = async (formData, id) => {
   setSaving(true);
-  setDeliveryProgress(createIdleDeliveryProgress());
   try {
     // Get authentication headers
     const headers = getAuthHeaders();
@@ -1960,54 +1831,14 @@ const handleSubmit = async (formData, id) => {
     const result = await response.json();
 
     if (result.success) {
-      let deliveryResult = null;
-      const savedResourceId = result.resource?.id;
-      if (savedResourceId) {
-        try {
-          deliveryResult = await sendResourceDelivery({
-            resourceId: savedResourceId,
-            headers
-          });
-        } catch (deliveryError) {
-          console.error('Resource email delivery failed:', deliveryError);
-          setDeliveryProgress(prev => prev.phase === 'failed' ? prev : {
-            phase: 'failed',
-            active: false,
-            current: 0,
-            total: 0,
-            percent: 100,
-            statusText: deliveryError.message || 'Email delivery failed. Please retry.',
-            failedRecipients: [],
-            entityId: savedResourceId
-          });
-          await fetchResources();
-          showNotification('error', 'Delivery Failed', deliveryError.message || 'Resource was saved, but email delivery failed.');
-          return;
-        }
-      }
-
       // Refresh the list
       await fetchResources();
 
-      if (deliveryResult?.failureCount > 0) {
-        showNotification(
-          'warning',
-          'Delivery Partially Failed',
-          `${deliveryResult.successCount} email(s) sent. ${deliveryResult.failureCount} recipient(s) failed. Retry only the failed recipients below.`
-        );
-        return;
-      }
-
-      if (deliveryResult) {
-        await new Promise(resolve => setTimeout(resolve, 700));
-      }
-
       setShowModal(false);
-      const recipientCount = result.resource?.deliverySummary?.recipientCount;
       showNotification(
         'success',
         id ? 'Updated' : 'Created',
-        `Resource ${id ? 'updated' : 'created'} successfully!${deliveryResult ? ` ${deliveryResult.successCount} email(s) sent.` : Number.isFinite(recipientCount) ? ` ${recipientCount} email recipient(s) prepared.` : ''}`
+        `Resource ${id ? 'updated' : 'created'} successfully!`
       );
     } else {
       throw new Error(result.error);
@@ -2031,7 +1862,6 @@ const handleSubmit = async (formData, id) => {
 };
   // Create new resource
   const handleCreate = () => {
-    setDeliveryProgress(createIdleDeliveryProgress());
     setEditingResource(null);
     setShowModal(true);
   };
@@ -2851,8 +2681,6 @@ const handleSubmit = async (formData, id) => {
           onSave={handleSubmit} 
           resource={editingResource}
           loading={saving}
-          deliveryProgress={deliveryProgress}
-          onRetryDelivery={handleRetryResourceDelivery}
         />
       )}
       

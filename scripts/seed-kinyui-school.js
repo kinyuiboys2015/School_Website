@@ -29,12 +29,14 @@ const schoolData = {
     "History and Government",
     "Christian Religious Education",
     "Agriculture",
-    "Computer Studies"
+    "Computer Studies",
+    "Home Science"
   ],
   departments: [
     "Languages",
     "Mathematics",
     "Sciences",
+    "Applied Sciences",
     "Humanities",
     "Technical and Applied",
     "Guidance and Counselling",
@@ -132,17 +134,17 @@ const staffDepartments = [
     name: "Applied Sciences",
     category: "TEACHING",
     description:
-      "Applied Sciences department guiding students in science, technical studies, and laboratory-based learning.",
+      "Applied Sciences department guiding students in Agriculture, Computer Studies, Home Science, and biology-based practical learning.",
     headName: "Madam Mutuku",
     assistantHeadName: "",
     staffCount: 1,
     displayOrder: 4,
     image: "/male.png",
     extra: {
-      focusAreas: ["Applied sciences", "Laboratory skills", "Practical learning"],
-      subjects: ["Physics", "Chemistry", "Biology"],
-      location: "Science Block",
-      notes: "Responsible for applied science teaching and practical learner support."
+      focusAreas: ["Agriculture", "Digital literacy", "Home Science", "Practical learning"],
+      subjects: ["Biology", "Agriculture", "Computer Studies", "Home Science"],
+      location: "Applied Sciences Block",
+      notes: "Responsible for Agriculture, Computer Studies, Home Science, and practical applied science learner support."
     }
   },
   {

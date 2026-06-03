@@ -128,6 +128,13 @@ const authenticateRequest = (req) => {
   };
 };
 
+const parseNullableFloat = (value) => {
+  if (value === undefined) return undefined;
+  if (value === null || value === "") return null;
+  const parsed = parseFloat(value);
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
 // ============ API ROUTES ============
 
 // 🟡 GET school stats (PUBLIC - no authentication required)
@@ -205,9 +212,9 @@ export async function POST(req) {
     // Create new stats
     const stats = await prisma.schoolStats.create({
       data: {
-        meanScore: body.meanScore !== undefined ? parseFloat(body.meanScore) : null,
-        lastYearMean: body.lastYearMean !== undefined ? parseFloat(body.lastYearMean) : null,
-        targetMean: body.targetMean !== undefined ? parseFloat(body.targetMean) : null,
+        meanScore: parseNullableFloat(body.meanScore) ?? null,
+        lastYearMean: parseNullableFloat(body.lastYearMean) ?? null,
+        targetMean: parseNullableFloat(body.targetMean) ?? null,
         slogan: body.slogan || null,
         sloganDescription: body.sloganDescription || null,
         sloganAuthor: body.sloganAuthor || null
@@ -263,9 +270,9 @@ export async function PUT(req) {
     let stats = await prisma.schoolStats.findFirst();
     
     const updateData = {
-      meanScore: body.meanScore !== undefined ? parseFloat(body.meanScore) : undefined,
-      lastYearMean: body.lastYearMean !== undefined ? parseFloat(body.lastYearMean) : undefined,
-      targetMean: body.targetMean !== undefined ? parseFloat(body.targetMean) : undefined,
+      meanScore: parseNullableFloat(body.meanScore),
+      lastYearMean: parseNullableFloat(body.lastYearMean),
+      targetMean: parseNullableFloat(body.targetMean),
       slogan: body.slogan !== undefined ? body.slogan : undefined,
       sloganDescription: body.sloganDescription !== undefined ? body.sloganDescription : undefined,
       sloganAuthor: body.sloganAuthor !== undefined ? body.sloganAuthor : undefined,
@@ -286,9 +293,9 @@ export async function PUT(req) {
       // If no stats exist, create them
       stats = await prisma.schoolStats.create({
         data: {
-          meanScore: updateData.meanScore || null,
-          lastYearMean: updateData.lastYearMean || null,
-          targetMean: updateData.targetMean || null,
+          meanScore: updateData.meanScore ?? null,
+          lastYearMean: updateData.lastYearMean ?? null,
+          targetMean: updateData.targetMean ?? null,
           slogan: updateData.slogan || null,
           sloganDescription: updateData.sloganDescription || null,
           sloganAuthor: updateData.sloganAuthor || null

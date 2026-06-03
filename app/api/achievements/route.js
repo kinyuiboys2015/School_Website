@@ -723,7 +723,14 @@ export async function PUT(req) {
     const keepExistingImages = formData.get("keepExistingImages") === 'true';
     const imagesToDelete = formData.get("imagesToDelete");
     
-    let images = keepExistingImages ? normalizeJsonArray(existing.images) : [];
+    const currentExistingImages = normalizeJsonArray(existing.images);
+    const currentImageUrls = new Set(currentExistingImages.map((image) => image.url).filter(Boolean));
+    const editedExistingImages = formData.has("existingImages")
+      ? normalizePresetImages(formData.get("existingImages")).filter((image) => currentImageUrls.has(image.url))
+      : [];
+    let images = keepExistingImages
+      ? (editedExistingImages.length > 0 || formData.has("existingImages") ? editedExistingImages : currentExistingImages)
+      : [];
     
     // Delete images marked for removal
     if (imagesToDelete) {

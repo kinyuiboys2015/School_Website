@@ -53,6 +53,7 @@ const HIERARCHY_ICONS = {
 const DEPT_ICONS = {
   administration: FiShield,
   sciences: FiActivity,
+  applied: FiCpu,
   mathematics: FiTarget,
   languages: FiGlobe,
   humanities: FiBook,
@@ -86,6 +87,7 @@ const STAFF_HIERARCHY = [
 const DEPARTMENTS = [
   { id: 'administration', label: 'Administration', color: 'blue', hierarchy: 'leadership' },
   { id: 'sciences', label: 'Sciences', color: 'blue', hierarchy: 'teaching' },
+  { id: 'applied', label: 'Applied Sciences', color: 'sky', hierarchy: 'teaching' },
   { id: 'mathematics', label: 'Mathematics', color: 'indigo', hierarchy: 'teaching' },
   { id: 'languages', label: 'Languages', color: 'blue', hierarchy: 'teaching' },
   { id: 'humanities', label: 'Humanities', color: 'sky', hierarchy: 'teaching' },

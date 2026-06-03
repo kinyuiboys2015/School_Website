@@ -234,7 +234,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
     year: achievement?.year?.toString() || new Date().getFullYear().toString(),
     awardingBody: achievement?.awardingBody || '',
     recipients: achievement?.recipients || [],
-    featured: achievement?.featured ?? achievement?.featuteal ?? false,
+    featured: achievement?.featured ?? false,
     isActive: achievement?.isActive !== false,
     displayOrder: achievement?.displayOrder?.toString() || '0',
     achievedDate: achievement?.achievedDate ? new Date(achievement.achievedDate).toISOString().split('T')[0] : ''
@@ -263,7 +263,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
     e.preventDefault();
     
     if (!formData.title || !formData.category || !formData.year) {
-      toast.error('Please fill in all requiteal fields');
+      toast.error('Please fill in all required fields');
       return;
     }
     
@@ -274,7 +274,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
       const deviceToken = localStorage.getItem('device_token');
       
       if (!adminToken || !deviceToken) {
-        throw new Error('Authentication requiteal. Please login again.');
+        throw new Error('Authentication required. Please login again.');
       }
       
       const formDataObj = new FormData();
@@ -294,16 +294,28 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
       formDataObj.append('displayOrder', formData.displayOrder);
       formDataObj.append('achievedDate', formData.achievedDate);
       
-      // Add new images
-      images.forEach(img => {
+      const newImages = images.filter(img => img.file);
+      const existingImages = images
+        .filter(img => !img.file && img.url)
+        .map(({ url, public_id, publicId, caption, bytes, format }) => ({
+          url,
+          public_id: public_id || publicId,
+          caption: caption || '',
+          bytes,
+          format
+        }));
+
+      newImages.forEach(img => {
         if (img.file) {
           formDataObj.append('images', img.file);
         }
       });
+      formDataObj.append('imageCaptions', JSON.stringify(newImages.map(img => img.caption || '')));
       
       // Handle existing images
       if (isEditMode) {
         formDataObj.append('keepExistingImages', 'true');
+        formDataObj.append('existingImages', JSON.stringify(existingImages));
         if (imagesToDelete.length > 0) {
           formDataObj.append('imagesToDelete', JSON.stringify(imagesToDelete));
         }
@@ -324,7 +336,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
       
       if (!response.ok) {
         if (response.status === 401) {
-          throw new Error('Session expiteal. Please login again.');
+          throw new Error('Session expired. Please login again.');
         }
         throw new Error(data.error || 'Failed to save achievement');
       }
@@ -374,7 +386,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
                   onChange={(e) => handleChange('title', e.target.value)}
                   placeholder="e.g., National Science Fair Winner"
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  requiteal
+                  required
                 />
               </div>
               
@@ -386,7 +398,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
                   value={formData.category}
                   onChange={(e) => handleChange('category', e.target.value)}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  requiteal
+                  required
                 >
                   {categories.map(cat => (
                     <option key={cat} value={cat}>{cat}</option>
@@ -405,7 +417,7 @@ function AchievementModal({ onClose, onSave, achievement, loading }) {
                   min="2000"
                   max={new Date().getFullYear() + 1}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  requiteal
+                  required
                 />
               </div>
               
@@ -554,13 +566,11 @@ function SchoolStatsModal({ onClose, onSave, stats, loading }) {
       const deviceToken = localStorage.getItem('device_token');
       
       if (!adminToken || !deviceToken) {
-        throw new Error('Authentication requiteal. Please login again.');
+        throw new Error('Authentication required. Please login again.');
       }
       
-      const method = isEditMode ? 'PUT' : 'POST';
-      
       const response = await fetch('/api/school-stats', {
-        method,
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${adminToken}`,
@@ -580,7 +590,7 @@ function SchoolStatsModal({ onClose, onSave, stats, loading }) {
       
       if (!response.ok) {
         if (response.status === 401) {
-          throw new Error('Session expiteal. Please login again.');
+          throw new Error('Session expired. Please login again.');
         }
         throw new Error(data.error || 'Failed to save school stats');
       }
@@ -953,7 +963,7 @@ export default function AchievementsPage() {
       const deviceToken = localStorage.getItem('device_token');
       
       if (!adminToken || !deviceToken) {
-        throw new Error('Authentication requiteal. Please login again.');
+        throw new Error('Authentication required. Please login again.');
       }
       
       const response = await fetch(`/api/achievements?id=${deleteId}`, {

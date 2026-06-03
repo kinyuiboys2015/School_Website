@@ -19,15 +19,15 @@ const departments = [
     },
   },
   {
-    name: "Applied Science Department",
+    name: "Applied Sciences Department",
     category: "TEACHING",
     displayOrder: 2,
     description:
-      "Brings together science, technical, practical, and applied subjects including laboratory and skills-based learning.",
+      "Brings together Agriculture, Computer Studies, Home Science, biology-based practicals, and applied skills learning.",
     extra: {
-      focusAreas: ["Science practicals", "Technical skills", "Applied learning"],
-      subjects: ["Biology", "Chemistry", "Physics", "Agriculture", "Computer Studies", "Woodwork", "Physical Education"],
-      location: "Science and practical learning areas",
+      focusAreas: ["Agriculture", "Computer Studies", "Home Science", "Applied learning"],
+      subjects: ["Biology", "Agriculture", "Computer Studies", "Home Science"],
+      location: "Applied sciences and practical learning areas",
       notes: "Seeded from the 2025 Kinyui Boys teacher list.",
     },
   },
@@ -113,7 +113,7 @@ const teachers = [
     phone: "0727448035",
     subjects: "Woodwork / PE",
     teachingLoad: 14,
-    departmentName: "Applied Science Department",
+    departmentName: "Applied Sciences Department",
     gender: "male",
   },
   {
@@ -167,7 +167,7 @@ const teachers = [
     phone: "0700108683",
     subjects: "Physics / Chemistry",
     teachingLoad: 23,
-    departmentName: "Applied Science Department",
+    departmentName: "Applied Sciences Department",
     gender: "male",
   },
   {
@@ -176,7 +176,7 @@ const teachers = [
     phone: "0722645933",
     subjects: "Computer / PE",
     teachingLoad: 12,
-    departmentName: "Applied Science Department",
+    departmentName: "Applied Sciences Department",
     gender: "male",
   },
   {
@@ -203,7 +203,7 @@ const teachers = [
     phone: "0726557439",
     subjects: "Agriculture / Biology",
     teachingLoad: 23,
-    departmentName: "Applied Science Department",
+    departmentName: "Applied Sciences Department",
     gender: "female",
   },
   {
