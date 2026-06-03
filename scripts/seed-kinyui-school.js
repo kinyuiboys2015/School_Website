@@ -515,35 +515,6 @@ const createOrUpdateDepartment = async (department) => {
   });
 };
 
-const createOrUpdateTeamMember = async (member) => {
-  const existing = await prisma.teamMember.findFirst({
-    where: { name: member.name, title: member.title },
-  });
-
-  const memberData = {
-    role: member.role,
-    title: member.title || null,
-    phone: member.phone || null,
-    email: member.email || null,
-    bio: member.bio || null,
-    image: member.image || null,
-  };
-
-  if (existing) {
-    return prisma.teamMember.update({
-      where: { id: existing.id },
-      data: memberData,
-    });
-  }
-
-  return prisma.teamMember.create({
-    data: {
-      name: member.name,
-      ...memberData,
-    },
-  });
-};
-
 const createOrUpdateSchoolHubItem = async (item) => {
   const existing = await prisma.schoolHubItem.findFirst({
     where: { type: item.type, title: item.title },

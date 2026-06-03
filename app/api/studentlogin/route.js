@@ -22,30 +22,67 @@ const normalizeName = (name) => String(name || '')
   .filter(Boolean)
   .sort();
 
-const getFullName = (student) => [student.firstName, student.middleName, student.lastName]
-  .filter(Boolean)
-  .join(' ')
-  .replace(/\s+/g, ' ')
-  .trim();
+const getFullName = (student) => {
+  const composed = [student?.firstName, student?.middleName, student?.lastName]
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 
-const toSafeStudent = (student, account = null) => ({
-  id: student.id,
-  admissionNumber: student.admissionNumber,
-  firstName: student.firstName,
-  lastName: student.lastName,
-  middleName: student.middleName,
-  name: getFullName(student),
-  fullName: getFullName(student),
-  form: student.form,
-  stream: student.stream,
-  email: student.email,
-  gender: student.gender,
-  dateOfBirth: student.dateOfBirth,
-  parentPhone: student.parentPhone,
-  address: student.address,
-  portalUsername: account?.username || student.admissionNumber,
-  hasPortalPassword: Boolean(account?.passwordHash)
+  return composed || student?.fullName || '';
+};
+
+const getAcademicLevel = (student) => student?.gradeLevel || student?.className || student?.form || '';
+const getDisplayClass = (student) => {
+  const level = getAcademicLevel(student);
+  const stream = student?.stream;
+  return [level, stream].filter(Boolean).join(' ') || 'Class not set';
+};
+
+const buildPortalAccountSnapshot = (student) => ({
+  firstName: student.firstName || null,
+  middleName: student.middleName || null,
+  lastName: student.lastName || null,
+  fullName: student.fullName || getFullName(student) || null,
+  form: student.form || null,
+  gradeLevel: student.gradeLevel || null,
+  className: student.className || null,
+  stream: student.stream || null,
+  email: student.email || null,
+  parentPhone: student.parentPhone || null,
+  studentPhone: student.studentPhone || null,
+  whatsappPhone: student.whatsappPhone || null,
 });
+
+const toSafeStudent = (student, account = null) => {
+  const fullName = getFullName(student);
+  const academicLevel = getAcademicLevel(student);
+
+  return {
+    id: student.id,
+    admissionNumber: student.admissionNumber,
+    firstName: student.firstName,
+    lastName: student.lastName,
+    middleName: student.middleName,
+    name: fullName,
+    fullName,
+    form: student.form,
+    gradeLevel: student.gradeLevel,
+    className: student.className,
+    academicLevel,
+    displayClass: getDisplayClass(student),
+    stream: student.stream,
+    email: student.email,
+    gender: student.gender,
+    dateOfBirth: student.dateOfBirth,
+    parentPhone: student.parentPhone,
+    studentPhone: student.studentPhone,
+    whatsappPhone: student.whatsappPhone,
+    address: student.address,
+    portalUsername: account?.username || student.admissionNumber,
+    hasPortalPassword: Boolean(account?.passwordHash)
+  };
+};
 
 const findStudentByName = (student, nameParts) => {
   const dbNameParts = [
@@ -71,15 +108,17 @@ const findActiveStudentByAdmission = async (admissionNumber) => {
   return student;
 };
 
-const getOrCreatePortalAccount = async (admissionNumber) => prisma.studentPortalAccount.upsert({
-  where: { admissionNumber },
+const getOrCreatePortalAccount = async (student) => prisma.studentPortalAccount.upsert({
+  where: { admissionNumber: student.admissionNumber },
   update: {
+    ...buildPortalAccountSnapshot(student),
     status: 'active',
     updatedAt: new Date()
   },
   create: {
-    admissionNumber,
-    username: admissionNumber.toLowerCase(),
+    admissionNumber: student.admissionNumber,
+    username: student.admissionNumber.toLowerCase(),
+    ...buildPortalAccountSnapshot(student),
     status: 'active'
   }
 });
@@ -91,6 +130,9 @@ const generateStudentToken = (student, account) => jwt.sign(
     admissionNumber: account.admissionNumber,
     name: getFullName(student),
     form: student.form,
+    gradeLevel: student.gradeLevel,
+    className: student.className,
+    academicLevel: getAcademicLevel(student),
     stream: student.stream,
     role: 'student'
   },
@@ -255,7 +297,7 @@ const passwordLogin = async (body, request) => {
 
   const passwordMatches = await bcrypt.compare(password, account.passwordHash);
   if (!passwordMatches) {
-    const failedLoginCount = account.failedLoginCount + 1;
+    const failedLoginCount = (account.failedLoginCount || 0) + 1;
     const lockedUntil = failedLoginCount >= MAX_FAILED_LOGINS
       ? new Date(Date.now() + LOCK_MINUTES * 60 * 1000)
       : null;
@@ -291,6 +333,7 @@ const passwordLogin = async (body, request) => {
   const updatedAccount = await prisma.studentPortalAccount.update({
     where: { id: account.id },
     data: {
+      ...buildPortalAccountSnapshot(student),
       failedLoginCount: 0,
       lockedUntil: null,
       lastLoginAt: new Date()
@@ -331,7 +374,7 @@ const verifyFirstAccess = async (body) => {
   }
 
   const student = validation.student;
-  const account = await getOrCreatePortalAccount(student.admissionNumber);
+  const account = await getOrCreatePortalAccount(student);
 
   if (account.passwordHash) {
     return NextResponse.json(
@@ -420,8 +463,10 @@ const setupPassword = async (body, request) => {
     account = await prisma.studentPortalAccount.upsert({
       where: { admissionNumber },
       update: {
+        ...buildPortalAccountSnapshot(student),
         username,
         passwordHash,
+        passwordSetAt: new Date(),
         passwordCreatedAt: new Date(),
         failedLoginCount: 0,
         lockedUntil: null,
@@ -431,6 +476,8 @@ const setupPassword = async (body, request) => {
         admissionNumber,
         username,
         passwordHash,
+        ...buildPortalAccountSnapshot(student),
+        passwordSetAt: new Date(),
         passwordCreatedAt: new Date(),
         status: 'active'
       }

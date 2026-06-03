@@ -37,6 +37,14 @@ import {
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
+const getStudentAcademicLevel = (student) =>
+  student?.academicLevel || student?.gradeLevel || student?.className || student?.form || '—';
+
+const getStudentDisplayClass = (student) =>
+  student?.displayClass ||
+  [getStudentAcademicLevel(student), student?.stream].filter(value => value && value !== '—').join(' ') ||
+  'Class not set';
+
 // ==================== GLOBAL STYLES ====================
 const portalStyles = `
   @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
@@ -113,7 +121,7 @@ function StudentHeader({ student, onMenuToggle, isMenuOpen, currentView }) {
                     {student.fullName}
                   </p>
                   <p className="text-[11px] font-semibold text-slate-500">
-                    {student.form} • {student.stream}
+                    {getStudentDisplayClass(student)}
                   </p>
                 </div>
               </div>
@@ -157,7 +165,7 @@ function HomeDashboardView({ student, token, onNavigate }) {
   const greeting = currentDate.getHours() < 12 ? 'Good morning' : currentDate.getHours() < 17 ? 'Good afternoon' : 'Good evening';
 
   const infoCards = [
-    { label: 'Form', value: student?.form || '—', icon: FaUser, color: 'from-slate-600 to-slate-800' },
+    { label: 'Class Level', value: getStudentAcademicLevel(student), icon: FaUser, color: 'from-slate-600 to-slate-800' },
     { label: 'Stream', value: student?.stream || '—', icon: FaBook, color: 'from-slate-700 to-slate-900' },
     { label: 'Admission No.', value: student?.admissionNumber || '—', icon: FaIdCard, color: 'from-slate-600 to-slate-800' },
     { label: 'Academic Year', value: currentDate.getFullYear().toString(), icon: FaCalendar, color: 'from-slate-700 to-slate-900' },
@@ -260,8 +268,8 @@ function HomeDashboardView({ student, token, onNavigate }) {
             </div>
             <div className="mt-5 grid grid-cols-2 gap-3">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
-                <p className="text-2xl font-black">{student?.form || '-'}</p>
-                <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-white/45">Form</p>
+                <p className="text-2xl font-black">{getStudentAcademicLevel(student)}</p>
+                <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-white/45">Class Level</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
                 <p className="text-2xl font-black">{student?.stream || '-'}</p>

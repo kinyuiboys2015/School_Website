@@ -1057,25 +1057,31 @@ model StudentSession {
 model StudentPortalAccount {
   id              String    @id @default(cuid())
   admissionNumber String    @unique @db.VarChar(50)
-  passwordHash    String    @db.VarChar(255)
+  passwordHash    String?   @db.VarChar(255)
   firstName       String?   @db.VarChar(100)
   middleName      String?   @db.VarChar(100)
   lastName        String?   @db.VarChar(100)
   fullName        String?   @db.VarChar(255)
   form            String?   @db.VarChar(20)
+  gradeLevel      String?   @db.VarChar(50)
+  className       String?   @db.VarChar(100)
   stream          String?   @db.VarChar(50)
   email           String?   @db.VarChar(100)
   parentPhone     String?   @db.VarChar(20)
-  status          String    @default("active")
-  passwordSetAt   DateTime  @default(now())
+  studentPhone    String?   @db.VarChar(20)
+  whatsappPhone   String?   @db.VarChar(20)
+  status          String    @default("active") @db.VarChar(20)
+  passwordSetAt   DateTime?
   lastLoginAt     DateTime?
-  failedLoginCount Int?                       // Deprecated but preserved for data compatibility
+  failedLoginCount Int       @default(0)
+  lockedUntil     DateTime?
   passwordCreatedAt DateTime?                 // Deprecated but preserved for data compatibility
   username        String?   @db.VarChar(100) // Deprecated but preserved for data compatibility
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
   @@index([admissionNumber])
+  @@index([status])
   @@map("student_portal_accounts")
 }
 
@@ -1093,9 +1099,13 @@ model ArchivedStudentPortalCredential {
   lastName                String?   @db.VarChar(100)
   fullName                String?   @db.VarChar(255)
   form                    String?   @db.VarChar(20)
+  gradeLevel              String?   @db.VarChar(50)
+  className               String?   @db.VarChar(100)
   stream                  String?   @db.VarChar(50)
   email                   String?   @db.VarChar(100)
   parentPhone             String?   @db.VarChar(20)
+  studentPhone            String?   @db.VarChar(20)
+  whatsappPhone           String?   @db.VarChar(20)
   status                  String    @default("archived") @db.VarChar(50)
   passwordSetAt           DateTime?
   lastLoginAt             DateTime?

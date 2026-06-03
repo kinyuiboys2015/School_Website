@@ -91,6 +91,11 @@ const FeesView = ({ student, token }) => {
     });
   };
 
+  const getStudentDisplayClass = (record) => {
+    const level = record?.academicLevel || record?.gradeLevel || record?.className || record?.form;
+    return record?.displayClass || [level, record?.stream].filter(Boolean).join(' ') || 'Class not set';
+  };
+
   // Get status based on balance with new logic
   const getPaymentStatus = (fee) => {
     if (fee.balance === 0) {
@@ -397,7 +402,7 @@ if (loading) {
                 <div>
                   <p className="text-xs text-slate-400 uppercase font-bold tracking-tight">Current Class</p>
                   <p className="text-sm font-semibold text-slate-700">
-                    {firstStudent?.form} {firstStudent?.stream || ''}
+                    {getStudentDisplayClass(firstStudent || student)}
                   </p>
                 </div>
               </div>

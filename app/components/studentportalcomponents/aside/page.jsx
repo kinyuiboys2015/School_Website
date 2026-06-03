@@ -25,6 +25,11 @@ export default function NavigationSidebar({
   onRefresh,
   onMenuClose
 }) {
+  const academicLevel = student?.academicLevel || student?.gradeLevel || student?.className || student?.form || '';
+  const displayClass = student?.displayClass ||
+    [academicLevel, student?.stream].filter(Boolean).join(' ') ||
+    'Class not set';
+
   const navItems = [
     { id: 'home', label: 'Dashboard', icon: <FiHome /> },
     { id: 'results', label: 'Academic Results', icon: <FiBarChart2 /> },
@@ -111,7 +116,7 @@ export default function NavigationSidebar({
               </h3>
               <div className="flex items-center gap-1.5 sm:gap-2 mt-1.5">
                 <span className="px-2 sm:px-3 py-0.5 bg-slate-950 text-white text-[10px] sm:text-xs font-bold rounded-full">
-                  {student?.form} {student?.stream}
+                  {displayClass}
                 </span>
               </div>
               <div className="flex items-center gap-1 mt-1.5">
