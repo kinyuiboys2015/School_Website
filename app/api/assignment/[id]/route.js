@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../../libs/prisma";
-import cloudinary from "../../../../libs/cloudinary";
+import cloudinary, { requireCloudinary } from "../../../../libs/cloudinary";
 import { SCHOOL_COMMUNICATION_NUMBER } from "../../../../libs/delivery";
 
 const decodeJwtPayload = (token) => {
@@ -143,6 +143,7 @@ const authenticateRequest = (req) => {
 // ==================== CLOUDINARY HELPERS (FIXED FOR EXTENSIONS) ====================
 const uploadFileToCloudinary = async (file, folder = "files") => {
   if (!file?.name || file.size === 0) return null;
+  requireCloudinary();
 
   try {
     // Get file extension properly
@@ -254,6 +255,7 @@ const uploadMultipleFilesToCloudinary = async (files, folder = "files") => {
 // FIXED: Delete function for new folder structure
 const deleteFileFromCloudinary = async (fileUrl) => {
   if (!fileUrl) return;
+  requireCloudinary();
 
   try {
     // Extract full public ID including extension

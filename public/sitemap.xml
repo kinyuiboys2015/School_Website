@@ -102,6 +102,39 @@
   </url>
 
   <url>
+    <loc>https://kinyuiboyssenior.school/assingments</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://kinyuiboyssenior.school/seo/SchoolLogo.png</image:loc>
+      <image:title>Kinyui Boys Senior School student assignments</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://kinyuiboyssenior.school/resource-exams</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://kinyuiboyssenior.school/seo/SchoolLogo.png</image:loc>
+      <image:title>Kinyui Boys Senior School resources and examinations</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://kinyuiboyssenior.school/alumini</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://kinyuiboyssenior.school/seo/SchoolLogo.png</image:loc>
+      <image:title>Kinyui Boys Senior School alumni community</image:title>
+    </image:image>
+  </url>
+
+  <url>
     <loc>https://kinyuiboyssenior.school/pages/Guidance-and-Counselling</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>monthly</changefreq>

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../../libs/prisma";
-import cloudinary from "../../../../libs/cloudinary";
+import cloudinary, { requireCloudinary } from "../../../../libs/cloudinary";
 import { SCHOOL_COMMUNICATION_NUMBER } from "../../../../libs/delivery";
 
 const decodeJwtPayload = (token) => {
@@ -144,6 +144,7 @@ const authenticateRequest = (req) => {
 // FIXED: Works EXACTLY like school-documents API
 const uploadFileToCloudinary = async (file) => {
   if (!file?.name || file.size === 0) return null;
+  requireCloudinary();
 
   try {
     const originalName = file.name;
@@ -238,6 +239,7 @@ const uploadMultipleFilesToCloudinary = async (files) => {
 // FIXED: Delete function for new folder structure
 const deleteFileFromCloudinary = async (fileUrl) => {
   if (!fileUrl) return;
+  requireCloudinary();
 
   try {
     // Extract full public ID including extension

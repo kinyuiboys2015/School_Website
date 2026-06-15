@@ -113,6 +113,24 @@ export const publicSitePages = [
       "Access the Kinyui Boys Senior School student portal for assignments, resources, results, fee balances, guidance sessions, and student services.",
   },
   {
+    path: "/assingments",
+    title: "Student Assignments",
+    description:
+      "Download current Kinyui Boys Senior School assignments, instructions, and supporting learning files.",
+  },
+  {
+    path: "/resource-exams",
+    title: "Resources and Exams",
+    description:
+      "Browse Kinyui Boys Senior School revision materials, examination resources, and student learning downloads.",
+  },
+  {
+    path: "/alumini",
+    title: "Alumni",
+    description:
+      "Reconnect with the Kinyui Boys alumni community and support mentorship, careers, and school initiatives.",
+  },
+  {
     path: "/pages/Guidance-and-Counselling",
     title: "Guidance and Counselling",
     description:

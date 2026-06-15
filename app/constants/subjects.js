@@ -1,0 +1,14 @@
+import {
+  ALL_LEARNING_SUBJECTS,
+  CBC_SUBJECTS,
+  EIGHT_FOUR_FOUR_SUBJECTS,
+} from "../../libs/subjects";
+
+export const ALL_SUBJECTS_LABEL = "All Subjects";
+export const SUBJECT_OPTIONS = [ALL_SUBJECTS_LABEL, ...ALL_LEARNING_SUBJECTS];
+
+export {
+  ALL_LEARNING_SUBJECTS,
+  CBC_SUBJECTS,
+  EIGHT_FOUR_FOUR_SUBJECTS,
+};

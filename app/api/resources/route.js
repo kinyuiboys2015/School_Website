@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../libs/prisma";
-import cloudinary from "../../../libs/cloudinary";
+import cloudinary, { requireCloudinary } from "../../../libs/cloudinary";
 import { SCHOOL_COMMUNICATION_NUMBER } from "../../../libs/delivery";
 
 const DEFAULT_RESOURCE_SUBJECT = "General Studies";
@@ -151,6 +151,7 @@ const authenticateRequest = (req) => {
 // FIXED: UPDATED to work EXACTLY like school-documents API
 const uploadFileToCloudinary = async (file) => {
   if (!file?.name || file.size === 0) return null;
+  requireCloudinary();
 
   try {
     const originalName = file.name;
@@ -255,6 +256,7 @@ const uploadMultipleFilesToCloudinary = async (files) => {
 // FIXED: Delete function updated for new folder structure
 const deleteFileFromCloudinary = async (fileUrl) => {
   if (!fileUrl) return;
+  requireCloudinary();
 
   try {
     // Extract public ID from URL - updated for new folder structure
@@ -363,12 +365,33 @@ const cleanResourceResponse = (resource) => {
 // ==================== API ENDPOINTS ====================
 
 // GET - Fetch all resources (PUBLIC)
-export async function GET() {
+export async function GET(request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const subject = cleanFormValue(searchParams.get("subject"));
+    const className = cleanFormValue(searchParams.get("className"));
+    const category = cleanFormValue(searchParams.get("category"));
+    const accessLevel = cleanFormValue(searchParams.get("accessLevel"));
+    const isActiveParam = cleanFormValue(searchParams.get("isActive"));
+    const requestedLimit = Number.parseInt(searchParams.get("limit") || "", 10);
+    const limit = Number.isFinite(requestedLimit)
+      ? Math.min(Math.max(requestedLimit, 1), 250)
+      : undefined;
+
+    const where = {};
+    if (subject) where.subject = { contains: subject };
+    if (className) where.className = { contains: className };
+    if (category) where.category = { contains: category };
+    if (accessLevel) where.accessLevel = accessLevel;
+    if (["true", "false"].includes(isActiveParam.toLowerCase())) {
+      where.isActive = isActiveParam.toLowerCase() === "true";
+    }
     console.log("📥 GET /api/resources");
     
     const resources = await prisma.resource.findMany({
+      where,
       orderBy: { createdAt: "desc" },
+      ...(limit ? { take: limit } : {}),
     });
 
     const formattedResources = resources.map(cleanResourceResponse);

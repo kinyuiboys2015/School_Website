@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../libs/prisma";
-import cloudinary from "../../../libs/cloudinary";
+import cloudinary, { requireCloudinary } from "../../../libs/cloudinary";
 import { SCHOOL_COMMUNICATION_NUMBER } from "../../../libs/delivery";
 
 const DEFAULT_ASSIGNMENT_SUBJECT = "General Studies";
@@ -164,6 +164,7 @@ const authenticateRequest = (req) => {
 // ==================== CLOUDINARY HELPERS (FIXED FOR EXTENSIONS) ====================
 const uploadFileToCloudinary = async (file, folder = "files") => {
   if (!file?.name || file.size === 0) return null;
+  requireCloudinary();
 
   try {
     const originalName = file.name;
@@ -266,6 +267,7 @@ const uploadMultipleFilesToCloudinary = async (files, folder = "files") => {
 
 const deleteFileFromCloudinary = async (fileUrl) => {
   if (!fileUrl) return;
+  requireCloudinary();
 
   try {
     // Extract full public ID including extension (FIXED for new folder structure)
@@ -466,16 +468,22 @@ export async function GET(request) {
     const className = searchParams.get('className');
     const teacher = searchParams.get('teacher');
     const status = searchParams.get('status');
+    const requestedLimit = Number.parseInt(searchParams.get('limit') || '', 10);
+    const limit = Number.isFinite(requestedLimit)
+      ? Math.min(Math.max(requestedLimit, 1), 250)
+      : undefined;
     
     const whereClause = {};
-    if (subject) whereClause.subject = { contains: subject, mode: 'insensitive' };
-    if (className) whereClause.className = { contains: className, mode: 'insensitive' };
-    if (teacher) whereClause.teacher = { contains: teacher, mode: 'insensitive' };
+    // MySQL string comparisons follow the configured database collation.
+    if (subject) whereClause.subject = { contains: subject };
+    if (className) whereClause.className = { contains: className };
+    if (teacher) whereClause.teacher = { contains: teacher };
     if (status) whereClause.status = status;
     
     const assignments = await prisma.assignment.findMany({
       where: whereClause,
       orderBy: { createdAt: "desc" },
+      ...(limit ? { take: limit } : {}),
     });
 
     const formattedAssignments = assignments.map(cleanAssignmentResponse);

@@ -47,7 +47,25 @@ const utilityLinks = [
   { name: 'Admin Login', href: '/pages/Sign%20In', icon: FiLock, secure: true, rel: 'nofollow' },
 ];
 
+const topBarLearningLinks = [
+  { name: 'Assignments', href: '/assingments', icon: FiFileText },
+  { name: 'Resources & Exams', href: '/resource-exams', icon: FiBookOpen },
+  { name: 'Alumni', href: '/alumini', icon: FiUsers },
+];
+
 const academicLinks = [
+  {
+    name: 'Assignments',
+    href: '/assingments',
+    icon: FiFileText,
+    description: 'Current assignments and supporting files',
+  },
+  {
+    name: 'Exam Resources',
+    href: '/resource-exams',
+    icon: FiBook,
+    description: 'Revision materials and examination resources',
+  },
   {
     name: 'Staff Directory',
     href: '/pages/staff',
@@ -150,10 +168,9 @@ const schoolHubLinks = [
   },
   {
     name: 'Alumni',
-    href: 'https://www.facebook.com/KinyuiBoysHighSchool/',
-    icon: FiExternalLink,
+    href: '/alumini',
+    icon: FiUsers,
     description: 'Connect with fellow alumni',
-    external: true,
   },
 ];
 
@@ -291,6 +308,10 @@ export default function ModernNavbar() {
                 closeAll={closeAll}
                 variant="top"
               />
+
+              {topBarLearningLinks.map((item) => (
+                <NavLink key={item.name} item={item} compact isActiveLink={isActiveLink} onClose={closeAll} />
+              ))}
 
               {utilityLinks.map((item) => (
                 <NavLink key={item.name} item={item} compact isActiveLink={isActiveLink} onClose={closeAll} />
