@@ -40,6 +40,7 @@ import {
 import { toast } from 'sonner';
 import { SiGmail } from 'react-icons/si';
 import {
+  buildDepartmentHierarchy,
   getDepartmentLeader,
   getDepartmentPathway,
   isCbcDepartment,
@@ -311,6 +312,7 @@ export default function StaffDirectory() {
     TEACHING: [],
     SUPPORT: []
   });
+  const [departmentHierarchy, setDepartmentHierarchy] = useState([]);
   const [departmentsLoading, setDepartmentsLoading] = useState(true);
   
   const [viewMode, setViewMode] = useState('list');
@@ -452,7 +454,7 @@ export default function StaffDirectory() {
   async function fetchDepartmentsData() {
     try {
       setDepartmentsLoading(true);
-      const data = await fetchPublicJson('/api/staff/departments?grouped=1');
+      const data = await fetchPublicJson('/api/staff/departments?grouped=1&includeStaff=1');
       if (data.success) {
         const grouped = data.departmentsByCategory || {};
         setDepartmentsByCategory({
@@ -461,12 +463,16 @@ export default function StaffDirectory() {
           TEACHING: grouped.TEACHING || [],
           SUPPORT: grouped.SUPPORT || []
         });
+        setDepartmentHierarchy(
+          data.departmentHierarchy || buildDepartmentHierarchy(data.departments || [])
+        );
       } else {
         throw new Error(data.error || 'Invalid departments response');
       }
     } catch (err) {
       console.error('Error fetching departments:', err);
       setDepartmentsByCategory({ CBC: [], EIGHT_FOUR_FOUR: [], TEACHING: [], SUPPORT: [] });
+      setDepartmentHierarchy([]);
     } finally {
       setDepartmentsLoading(false);
     }
@@ -537,11 +543,42 @@ export default function StaffDirectory() {
     });
   }, [departmentsByCategory, searchQuery]);
 
-  const departmentResultCount = Object.values(filteredDepartmentsByCategory)
-    .reduce((sum, departments) => sum + (departments?.length || 0), 0);
-  const totalDepartmentCount = Object.values(departmentsByCategory)
-    .reduce((sum, departments) => sum + (departments?.length || 0), 0);
+  const filteredDepartmentHierarchy = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    const matchesHierarchyFilter = (department) => {
+      if (selectedHierarchy === 'support') return department.category === 'SUPPORT';
+      if (selectedHierarchy === 'teaching') return department.category !== 'SUPPORT';
+      return true;
+    };
 
+    return departmentHierarchy
+      .map((mainDepartment) => {
+        const mainMatchesSearch =
+          !query || departmentSearchText(mainDepartment).includes(query);
+        const subDepartments = (mainDepartment.subDepartments || []).filter(
+          (subDepartment) =>
+            matchesHierarchyFilter(subDepartment) &&
+            (!query || departmentSearchText(subDepartment).includes(query))
+        );
+        const mainMatchesFilter = matchesHierarchyFilter(mainDepartment);
+
+        if (
+          selectedHierarchy === 'leadership' ||
+          (!mainMatchesFilter && subDepartments.length === 0) ||
+          (!mainMatchesSearch && subDepartments.length === 0)
+        ) {
+          return null;
+        }
+
+        return { ...mainDepartment, subDepartments };
+      })
+      .filter(Boolean);
+  }, [departmentHierarchy, searchQuery, selectedHierarchy]);
+
+  const departmentResultCount = filteredDepartmentHierarchy.reduce(
+    (count, department) => count + 1 + (department.subDepartments?.length || 0),
+    0
+  );
   const totalPages = Math.ceil(filteredStaff.length / ITEMS_PER_PAGE);
   const paginatedStaff = useMemo(() => {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -866,7 +903,7 @@ export default function StaffDirectory() {
         </p>
       </div>
     ) : staffByHierarchy.leadership.length > 0 ||
-      Object.values(filteredDepartmentsByCategory).some((d) => d.length > 0) ? (
+      filteredDepartmentHierarchy.length > 0 ? (
       <div className="space-y-12">
         {/* LEADERSHIP SECTION */}
     {(selectedHierarchy === 'all' || selectedHierarchy === 'leadership') && (
@@ -1044,102 +1081,154 @@ export default function StaffDirectory() {
         {(selectedHierarchy === 'all' ||
           selectedHierarchy === 'teaching' ||
           selectedHierarchy === 'support') && (
-          <section className="space-y-10">
-            {[
-              ['CBC', filteredDepartmentsByCategory.CBC],
-              ['EIGHT_FOUR_FOUR', filteredDepartmentsByCategory.EIGHT_FOUR_FOUR],
-              ['TEACHING', filteredDepartmentsByCategory.TEACHING],
-              ['SUPPORT', filteredDepartmentsByCategory.SUPPORT],
-            ].map(([category, depts]) =>
-              depts && depts.length > 0 ? (
-                <div key={category}>
-                  <div className="mb-5 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#38bdf8]">
-                      <FiLayers size={16} className="text-[#071527]" />
-                    </div>
+          <section className="space-y-8">
+            {filteredDepartmentHierarchy.map((mainDepartment) => {
+              const leader = getDepartmentLeader(mainDepartment);
+              const pathway = getDepartmentPathway(mainDepartment);
+              const departmentImage =
+                mainDepartment.image || mainDepartment.images?.[0]?.url;
 
-                    <div>
-                      <h2 className="text-sm font-black uppercase tracking-[0.18em] text-[#071527]">
-                        {category === 'CBC'
-                          ? 'CBC'
-                          : category === 'EIGHT_FOUR_FOUR'
-                          ? '8-4-4'
-                          : category}{' '}
-                        Departments
-                      </h2>
-                      <p className="text-xs font-semibold text-slate-400">
-                        Department groups, leadership, and academic focus
+              return (
+                <article
+                  key={mainDepartment.id}
+                  className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm"
+                >
+                  <div className="grid lg:grid-cols-[minmax(280px,0.85fr)_1.4fr]">
+                    <Link
+                      href={`/pages/staff/departments/${mainDepartment.id}`}
+                      className="relative min-h-64 overflow-hidden bg-slate-100"
+                    >
+                      {departmentImage ? (
+                        <img
+                          src={departmentImage}
+                          alt={mainDepartment.name}
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full min-h-64 items-center justify-center text-slate-400">
+                          <FiBookOpen size={34} />
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#071527]/80 via-transparent to-transparent" />
+                      <span className="absolute bottom-5 left-5 rounded-full bg-white/95 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-[#071527]">
+                        Main Department
+                      </span>
+                    </Link>
+
+                    <div className="p-5 sm:p-7 lg:p-8">
+                      <div className="flex flex-wrap items-center gap-2 text-[10px] font-black uppercase tracking-widest">
+                        <span className="rounded-full bg-[#071527] px-3 py-1 text-white">
+                          {mainDepartment.category === 'EIGHT_FOUR_FOUR'
+                            ? '8-4-4'
+                            : mainDepartment.category}
+                        </span>
+                        {isCbcDepartment(mainDepartment) && pathway?.name && (
+                          <span className="rounded-full bg-blue-50 px-3 py-1 text-blue-700">
+                            {pathway.name}
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 className="mt-4 text-2xl font-black tracking-tight text-[#071527] sm:text-3xl">
+                        {mainDepartment.name}
+                      </h3>
+                      <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+                        {mainDepartment.description || 'Department information is being updated.'}
                       </p>
+
+                      <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                        <div className="rounded-2xl bg-slate-50 p-4">
+                          <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">
+                            {leader.shortLabel}
+                          </p>
+                          <p className="mt-1 truncate text-sm font-bold text-slate-800">
+                            {leader.name || 'Not listed'}
+                          </p>
+                        </div>
+                        <div className="rounded-2xl bg-slate-50 p-4">
+                          <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">
+                            Total Staff
+                          </p>
+                          <p className="mt-1 text-xl font-black text-[#071527]">
+                            {mainDepartment.staffCount || 0}
+                          </p>
+                        </div>
+                        <div className="rounded-2xl bg-slate-50 p-4">
+                          <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">
+                            Sub-Departments
+                          </p>
+                          <p className="mt-1 text-xl font-black text-[#071527]">
+                            {mainDepartment.subDepartments?.length || 0}
+                          </p>
+                        </div>
+                      </div>
+
+                      <Link
+                        href={`/pages/staff/departments/${mainDepartment.id}`}
+                        className="mt-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-blue-700"
+                      >
+                        View department <FiChevronRight size={13} />
+                      </Link>
                     </div>
-
-                    <span className="ml-auto rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-500">
-                      {depts.length}
-                    </span>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-                    {depts.map((dept) => {
-                      const leader = getDepartmentLeader(dept);
-                      const pathway = getDepartmentPathway(dept);
-                      const departmentImage = dept.image || dept.images?.[0]?.url;
-                      return (
-                        <Link
-                          key={dept.id}
-                          href={`/pages/staff/departments/${dept.id}`}
-                          className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-[#38bdf8]/70 hover:shadow-xl"
-                        >
-                          {departmentImage ? (
-                            <img
-                              src={departmentImage}
-                              alt={dept.name}
-                              className="h-40 w-full object-cover transition duration-500 group-hover:scale-105"
-                            />
-                          ) : (
-                            <div className="flex h-40 items-center justify-center bg-slate-100 text-slate-400">
-                              <FiBookOpen size={28} />
-                            </div>
-                          )}
-
-                          <div className="relative z-10 p-5">
-                            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#071527] text-white shadow-md">
-                              <FiBookOpen size={18} className="text-[#38bdf8]" />
-                            </div>
-
-                            <h3 className="text-lg font-black leading-tight text-[#071527]">
-                              {dept.name}
-                            </h3>
-
-                            {dept.description && (
-                              <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-500">
-                                {dept.description}
-                              </p>
-                            )}
-
-                            <div className="mt-5 flex flex-wrap gap-2">
-                              {leader.name && (
-                                <span className="rounded-full bg-blue-50 px-3 py-1 text-[10px] font-black text-blue-700">
-                                  {leader.shortLabel}: {leader.name}
-                                </span>
-                              )}
-
-                              {isCbcDepartment(dept) && pathway?.name && (
-                                <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-black text-slate-600">
-                                  {pathway.name}
-                                </span>
-                              )}
-                            </div>
-
-                            <span className="mt-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#1d4ed8]">
-                              View department <FiChevronRight size={13} />
-                            </span>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : null
-            )}
+                  {mainDepartment.subDepartments?.length > 0 && (
+                    <details open className="group border-t border-slate-100 bg-slate-50/70">
+                      <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 sm:px-7">
+                        <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+                          Sub-Departments
+                        </span>
+                        <FiChevronDown className="text-slate-500 transition-transform group-open:rotate-180" />
+                      </summary>
+                      <div className="grid gap-4 px-5 pb-5 sm:grid-cols-2 sm:px-7 sm:pb-7 xl:grid-cols-3">
+                        {mainDepartment.subDepartments.map((subDepartment) => {
+                          const subLeader = getDepartmentLeader(subDepartment);
+                          const subImage =
+                            subDepartment.image || subDepartment.images?.[0]?.url;
+                          return (
+                            <Link
+                              key={subDepartment.id}
+                              href={`/pages/staff/departments/${subDepartment.id}`}
+                              className="overflow-hidden rounded-2xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                              <div className="flex gap-4 p-4">
+                                <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-slate-100">
+                                  {subImage ? (
+                                    <img
+                                      src={subImage}
+                                      alt={subDepartment.name}
+                                      className="h-full w-full object-cover"
+                                    />
+                                  ) : (
+                                    <div className="flex h-full items-center justify-center text-slate-400">
+                                      <FiLayers />
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="min-w-0">
+                                  <p className="text-[9px] font-black uppercase tracking-widest text-blue-600">
+                                    Sub-Department
+                                  </p>
+                                  <h4 className="mt-1 text-base font-black leading-tight text-[#071527]">
+                                    {subDepartment.name}
+                                  </h4>
+                                  <p className="mt-2 truncate text-xs font-semibold text-slate-500">
+                                    {subLeader.name || 'Head not listed'}
+                                  </p>
+                                  <p className="mt-1 text-xs font-black text-slate-800">
+                                    {subDepartment.staffCount || 0} staff
+                                  </p>
+                                </div>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </details>
+                  )}
+                </article>
+              );
+            })}
           </section>
         )}
       </div>

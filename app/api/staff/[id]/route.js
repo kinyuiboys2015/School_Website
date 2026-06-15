@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../../libs/prisma";
 import cloudinary from "../../../../libs/cloudinary";
+import {
+  resolveDepartmentAssignments as resolveHierarchicalDepartmentAssignments,
+  syncDepartmentStaffCounts as syncHierarchicalDepartmentStaffCounts,
+} from "../../../../libs/staffDepartmentServer";
 
 // ==================== AUTHENTICATION UTILITIES ====================
 
@@ -262,53 +266,21 @@ const isTeacherStaff = (role = "", staffType = "") => {
   return normalizedRole === "teacher" || normalizedType === "teacher";
 };
 
-const resolveDepartmentMapping = async (departmentId, departmentName = "") => {
-  const numericDepartmentId =
-    departmentId !== null && departmentId !== undefined && departmentId !== ""
-      ? Number(departmentId)
-      : null;
-
-  if (numericDepartmentId !== null) {
-    if (!Number.isFinite(numericDepartmentId)) {
-      throw new Error("Invalid department selected.");
-    }
-
-    const department = await prisma.staffDepartment.findFirst({
-      where: { id: Math.floor(numericDepartmentId), isActive: true },
-      select: { id: true, name: true },
-    });
-
-    if (!department) {
-      throw new Error("Selected department was not found or is inactive.");
-    }
-
-    return department;
-  }
-
-  const cleanDepartmentName = departmentName?.toString().trim();
-  if (!cleanDepartmentName) return null;
-
-  const department = await prisma.staffDepartment.findFirst({
-    where: { name: cleanDepartmentName, isActive: true },
-    select: { id: true, name: true },
+const resolveDepartmentMapping = async ({
+  departmentId,
+  departmentName = "",
+  mainDepartmentId,
+  subDepartmentId,
+}) =>
+  resolveHierarchicalDepartmentAssignments(prisma, {
+    departmentId,
+    departmentName,
+    mainDepartmentId,
+    subDepartmentId,
   });
 
-  return department || { id: null, name: cleanDepartmentName };
-};
-
-const syncDepartmentStaffCount = async (departmentId) => {
-  if (!departmentId) return;
-  const staffCount = await prisma.staff.count({
-    where: {
-      departmentId,
-      role: "Teacher",
-    },
-  });
-  await prisma.staffDepartment.update({
-    where: { id: departmentId },
-    data: { staffCount },
-  });
-};
+const syncDepartmentStaffCount = async (...departmentIds) =>
+  syncHierarchicalDepartmentStaffCounts(prisma, departmentIds);
 
 // 🔹 Check principal/deputy principal limits
 async function checkRoleLimits(role, staffId = null, position = null) {
@@ -392,7 +364,24 @@ export async function GET(req, { params }) {
       where: { id: Number(params.id) },
       include: {
         departmentRecord: {
-          select: { id: true, name: true, category: true },
+          select: {
+            id: true,
+            name: true,
+            category: true,
+            departmentType: true,
+            parentDepartmentId: true,
+          },
+        },
+        mainDepartmentRecord: {
+          select: { id: true, name: true, departmentType: true },
+        },
+        subDepartmentRecord: {
+          select: {
+            id: true,
+            name: true,
+            departmentType: true,
+            parentDepartmentId: true,
+          },
         },
       },
     });
@@ -457,6 +446,8 @@ export async function PUT(req, { params }) {
     const newPosition = formData.get("position");
     const newStaffType = formData.get("staffType");
     const newDepartmentId = formData.get("departmentId");
+    const newMainDepartmentId = formData.get("mainDepartmentId");
+    const newSubDepartmentId = formData.get("subDepartmentId");
     const newDepartment = formData.get("department");
     const newSubjectOffered = formData.get("subjectOffered");
     const effectiveStaffType = newStaffType || existingStaff.staffType;
@@ -479,15 +470,27 @@ export async function PUT(req, { params }) {
     let mappedDepartment = null;
     if (
       formData.has("departmentId") ||
+      formData.has("mainDepartmentId") ||
+      formData.has("subDepartmentId") ||
       formData.has("department") ||
       isTeacher ||
       existingStaff.departmentId
     ) {
       try {
-        mappedDepartment = await resolveDepartmentMapping(
-          formData.has("departmentId") ? newDepartmentId : existingStaff.departmentId,
-          formData.has("department") ? newDepartment : existingStaff.department
-        );
+        mappedDepartment = await resolveDepartmentMapping({
+          departmentId: formData.has("departmentId")
+            ? newDepartmentId
+            : existingStaff.departmentId,
+          departmentName: formData.has("department")
+            ? newDepartment
+            : existingStaff.department,
+          mainDepartmentId: formData.has("mainDepartmentId")
+            ? newMainDepartmentId
+            : existingStaff.mainDepartmentId,
+          subDepartmentId: formData.has("subDepartmentId")
+            ? newSubDepartmentId
+            : existingStaff.subDepartmentId,
+        });
       } catch (error) {
         return NextResponse.json(
           {
@@ -500,7 +503,7 @@ export async function PUT(req, { params }) {
       }
     }
 
-    if (isTeacher && !mappedDepartment?.id) {
+    if (isTeacher && !mappedDepartment?.mainDepartment?.id) {
       return NextResponse.json(
         {
           success: false,
@@ -622,10 +625,20 @@ export async function PUT(req, { params }) {
     if (formData.has("staffType")) data.staffType = isTeacher ? "Teacher" : (newStaffType || "Leadership");
     if (formData.has("subjectOffered")) data.subjectOffered = isTeacher ? newSubjectOffered?.toString().trim() || null : null;
     if (mappedDepartment) {
-      data.departmentId = mappedDepartment.id || null;
-      data.department = mappedDepartment.name || data.department || null;
-    } else if (!isTeacher && formData.has("departmentId") && !newDepartmentId) {
+      data.departmentId = mappedDepartment.departmentId || null;
+      data.mainDepartmentId = mappedDepartment.mainDepartment?.id || null;
+      data.subDepartmentId = mappedDepartment.subDepartment?.id || null;
+      data.department =
+        mappedDepartment.departmentName || data.department || null;
+    } else if (
+      !isTeacher &&
+      (formData.has("departmentId") ||
+        formData.has("mainDepartmentId") ||
+        formData.has("subDepartmentId"))
+    ) {
       data.departmentId = null;
+      data.mainDepartmentId = null;
+      data.subDepartmentId = null;
     }
     if (formData.get("email")) data.email = formData.get("email");
     if (formData.get("phone")) data.phone = formData.get("phone");
@@ -723,11 +736,16 @@ export async function PUT(req, { params }) {
     });
 
     const departmentsToSync = new Set(
-      [existingStaff.departmentId, updatedStaff.departmentId].filter(Boolean)
+      [
+        existingStaff.departmentId,
+        existingStaff.mainDepartmentId,
+        existingStaff.subDepartmentId,
+        updatedStaff.departmentId,
+        updatedStaff.mainDepartmentId,
+        updatedStaff.subDepartmentId,
+      ].filter(Boolean)
     );
-    for (const departmentId of departmentsToSync) {
-      await syncDepartmentStaffCount(departmentId);
-    }
+    await syncDepartmentStaffCount(...departmentsToSync);
 
     console.log(`✅ Staff member updated by ${auth.user.name}: ${updatedStaff.name} (${updatedStaff.role}${updatedStaff.position ? ' - ' + updatedStaff.position : ''})`);
 
@@ -814,9 +832,11 @@ export async function DELETE(req, { params }) {
       where: { id },
     });
 
-    if (staff.departmentId) {
-      await syncDepartmentStaffCount(staff.departmentId);
-    }
+    await syncDepartmentStaffCount(
+      staff.departmentId,
+      staff.mainDepartmentId,
+      staff.subDepartmentId
+    );
 
     console.log(`✅ Staff member deleted by ${auth.user.name}: ${staff.name}`);
 

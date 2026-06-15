@@ -12,8 +12,16 @@ import {
   VALID_CBC_PATHWAY_TYPES,
   VALID_STAFF_DEPARTMENT_CATEGORIES,
   isDepartmentLibraryImage,
+  isSubDepartment,
   normalizeDepartmentCategory,
 } from "../../../../../libs/staffDepartmentConfig";
+import {
+  decorateDepartment,
+  departmentInclude,
+  loadDepartmentStaff,
+  syncDepartmentStaffCounts,
+  validateDepartmentHierarchyInput,
+} from "../../../../../libs/staffDepartmentServer";
 
 // ==================== AUTHENTICATION UTILITIES ====================
 
@@ -169,78 +177,6 @@ const authenticateWriteRequest = (req) => {
   return { authenticated: true, user: validationResult.user };
 };
 
-const teacherSelect = {
-  id: true,
-  name: true,
-  role: true,
-  position: true,
-  department: true,
-  departmentId: true,
-  staffType: true,
-  subjectOffered: true,
-  bio: true,
-  gender: true,
-  status: true,
-  image: true,
-  joinDate: true,
-  createdAt: true,
-  updatedAt: true,
-};
-
-const cleanDepartmentResponse = (department) => {
-  if (!department) return department;
-  const teachers = Array.isArray(department.teachers) ? department.teachers : undefined;
-  return {
-    ...department,
-    cbePathwayType: department.cbePathway?.type || null,
-    pathwayName: department.cbePathway?.name || null,
-    staffCount: teachers ? teachers.length : department.staffCount,
-    teacherCount: teachers ? teachers.length : department.staffCount,
-    teachers,
-  };
-};
-
-const normalizeDepartmentName = (value = "") =>
-  value.toString().trim().toLowerCase().replace(/\s+/g, " ");
-
-const isVisibleTeacher = (teacher, includeInactive = false) => {
-  if (includeInactive) return true;
-  return (teacher?.status || "active").toString().trim().toLowerCase() !== "inactive";
-};
-
-const isTeacherRecord = (teacher) => {
-  const role = (teacher?.role || "").toString().trim().toLowerCase();
-  const staffType = (teacher?.staffType || "").toString().trim().toLowerCase();
-  return role === "teacher" || staffType === "teacher";
-};
-
-const attachMappedTeachers = (department, allTeachers, includeInactive = false) => {
-  const departmentName = normalizeDepartmentName(department.name);
-  const relationTeachers = Array.isArray(department.teachers) ? department.teachers : [];
-  const merged = [...relationTeachers];
-  const seen = new Set(merged.map((teacher) => teacher.id));
-
-  allTeachers.forEach((teacher) => {
-    if (seen.has(teacher.id) || !isVisibleTeacher(teacher, includeInactive)) return;
-
-    const matchesId = teacher.departmentId && Number(teacher.departmentId) === Number(department.id);
-    const matchesName = normalizeDepartmentName(teacher.department) === departmentName;
-
-    if (matchesId || matchesName) {
-      merged.push(teacher);
-      seen.add(teacher.id);
-    }
-  });
-
-  merged.sort((a, b) => {
-    const subjectCompare = (a.subjectOffered || "").localeCompare(b.subjectOffered || "");
-    if (subjectCompare !== 0) return subjectCompare;
-    return (a.name || "").localeCompare(b.name || "");
-  });
-
-  return { ...department, teachers: merged };
-};
-
 export async function GET(req, { params }) {
   try {
     const id = Number(params.id);
@@ -248,47 +184,45 @@ export async function GET(req, { params }) {
       return NextResponse.json({ success: false, error: "Invalid id" }, { status: 400 });
     }
     const url = new URL(req.url);
-    const includeTeachers = url.searchParams.get("includeTeachers") === "1";
+    const includeStaff =
+      url.searchParams.get("includeStaff") === "1" ||
+      url.searchParams.get("includeTeachers") === "1";
     const includeInactive = url.searchParams.get("includeInactive") === "1";
 
     const department = await prisma.staffDepartment.findUnique({
       where: { id },
-      include: {
-        images: { orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }] },
-        cbePathway: true,
-        ...(includeTeachers
-          ? {
-              teachers: {
-                where: includeInactive ? undefined : { status: "active" },
-                select: teacherSelect,
-                orderBy: [
-                  { subjectOffered: "asc" },
-                  { name: "asc" },
-                ],
-              },
-            }
-          : {}),
-      },
+      include: departmentInclude,
     });
     if (!department) {
       return NextResponse.json({ success: false, error: "Department not found" }, { status: 404 });
     }
 
-    const allTeachers = includeTeachers
-      ? (await prisma.staff.findMany({
-          select: teacherSelect,
-          orderBy: [
-            { subjectOffered: "asc" },
-            { name: "asc" },
-          ],
-        })).filter((teacher) => isTeacherRecord(teacher) && isVisibleTeacher(teacher, includeInactive))
-      : [];
+    const [allStaff, childDepartments] = await Promise.all([
+      loadDepartmentStaff(prisma, includeInactive),
+      prisma.staffDepartment.findMany({
+        where: {
+          parentDepartmentId: id,
+          ...(includeInactive ? {} : { isActive: true }),
+        },
+        orderBy: [{ displayOrder: "asc" }, { name: "asc" }],
+        include: departmentInclude,
+      }),
+    ]);
+    const decoratedDepartment = decorateDepartment(
+      department,
+      allStaff,
+      includeStaff
+    );
 
-    const departmentWithTeachers = includeTeachers
-      ? attachMappedTeachers(department, allTeachers, includeInactive)
-      : department;
-
-    return NextResponse.json({ success: true, department: cleanDepartmentResponse(departmentWithTeachers) });
+    return NextResponse.json({
+      success: true,
+      department: {
+        ...decoratedDepartment,
+        subDepartments: childDepartments.map((child) =>
+          decorateDepartment(child, allStaff, includeStaff)
+        ),
+      },
+    });
   } catch (error) {
     console.error("❌ GET Department Error:", error);
     return NextResponse.json(
@@ -313,7 +247,11 @@ export async function PUT(req, { params }) {
 
     const existing = await prisma.staffDepartment.findUnique({
       where: { id },
-      include: { images: true, cbePathway: true },
+      include: {
+        images: true,
+        cbePathway: true,
+        subDepartments: { select: { id: true } },
+      },
     });
     if (!existing) {
       return NextResponse.json(
@@ -328,9 +266,47 @@ export async function PUT(req, { params }) {
 
     const name = formData.get("name");
     const category = formData.get("category");
+    const departmentType = formData.has("departmentType")
+      ? formData.get("departmentType")
+      : existing.departmentType;
+    const parentDepartmentId = formData.has("parentDepartmentId")
+      ? formData.get("parentDepartmentId")
+      : existing.parentDepartmentId;
     const nextCategory = normalizeDepartmentCategory(
       category !== null ? category : existing.category
     );
+
+    let hierarchy;
+    try {
+      hierarchy = await validateDepartmentHierarchyInput(prisma, {
+        departmentType,
+        parentDepartmentId,
+        currentDepartmentId: id,
+      });
+    } catch (error) {
+      return NextResponse.json(
+        { success: false, error: error.message, authenticated: true },
+        { status: 400 }
+      );
+    }
+
+    if (
+      isSubDepartment(hierarchy.departmentType) &&
+      existing.subDepartments.length > 0
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "Move or delete this department's sub-departments before converting it to a sub-department.",
+          authenticated: true,
+        },
+        { status: 400 }
+      );
+    }
+
+    data.departmentType = hierarchy.departmentType;
+    data.parentDepartmentId = hierarchy.parentDepartmentId;
 
     if (name !== null) {
       const trimmed = name.toString().trim();
@@ -356,6 +332,38 @@ export async function PUT(req, { params }) {
     const description = formData.get("description");
     if (description !== null) data.description = description.toString().trim() || null;
 
+    let selectedDepartmentHead = null;
+    if (formData.has("departmentHeadId")) {
+      const departmentHeadIdRaw = formData.get("departmentHeadId");
+      if (departmentHeadIdRaw === null || departmentHeadIdRaw === "") {
+        data.departmentHeadId = null;
+      } else {
+        const departmentHeadId = Number(departmentHeadIdRaw);
+        if (!Number.isFinite(departmentHeadId)) {
+          return NextResponse.json(
+            { success: false, error: "Invalid department head selected", authenticated: true },
+            { status: 400 }
+          );
+        }
+        selectedDepartmentHead = await prisma.staff.findUnique({
+          where: { id: Math.floor(departmentHeadId) },
+          select: { id: true, name: true },
+        });
+        if (!selectedDepartmentHead) {
+          return NextResponse.json(
+            { success: false, error: "Selected department head was not found", authenticated: true },
+            { status: 400 }
+          );
+        }
+        data.departmentHeadId = selectedDepartmentHead.id;
+      }
+    } else if (existing.departmentHeadId) {
+      selectedDepartmentHead = await prisma.staff.findUnique({
+        where: { id: existing.departmentHeadId },
+        select: { id: true, name: true },
+      });
+    }
+
     const headName = (
       formData.has("headName") ? formData.get("headName") : existing.headName
     )?.toString().trim() || "";
@@ -377,7 +385,7 @@ export async function PUT(req, { params }) {
           { status: 400 }
         );
       }
-      if (!pathwayHeadName) {
+      if (!selectedDepartmentHead && !pathwayHeadName) {
         return NextResponse.json(
           { success: false, error: "Pathway head is required for CBC departments", authenticated: true },
           { status: 400 }
@@ -400,17 +408,12 @@ export async function PUT(req, { params }) {
         },
       });
       data.headName = null;
-      data.pathwayHeadName = pathwayHeadName;
+      data.pathwayHeadName =
+        selectedDepartmentHead?.name || pathwayHeadName || null;
       data.cbePathwayId = cbePathway.id;
       data.cbeTrackId = null;
     } else {
-      if (!headName) {
-        return NextResponse.json(
-          { success: false, error: "Head of Department is required", authenticated: true },
-          { status: 400 }
-        );
-      }
-      data.headName = headName;
+      data.headName = selectedDepartmentHead?.name || headName || null;
       data.pathwayHeadName = null;
       data.cbePathwayId = null;
       data.cbeTrackId = null;
@@ -536,15 +539,50 @@ export async function PUT(req, { params }) {
     const department = await prisma.staffDepartment.update({
       where: { id },
       data,
-      include: {
-        images: { orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }] },
-        cbePathway: true,
-      },
+      include: departmentInclude,
     });
+
+    const nextName = department.name;
+    if (isSubDepartment(department)) {
+      await prisma.staff.updateMany({
+        where: {
+          OR: [
+            { subDepartmentId: id },
+            { mainDepartmentId: id },
+            { departmentId: id },
+          ],
+        },
+        data: {
+          mainDepartmentId: department.parentDepartmentId,
+          subDepartmentId: id,
+          departmentId: id,
+          department: nextName,
+        },
+      });
+    } else {
+      await prisma.staff.updateMany({
+        where: {
+          OR: [{ subDepartmentId: id }, { departmentId: id }],
+        },
+        data: {
+          mainDepartmentId: id,
+          subDepartmentId: null,
+          departmentId: id,
+          department: nextName,
+        },
+      });
+    }
+
+    await syncDepartmentStaffCounts(prisma, [
+      id,
+      existing.parentDepartmentId,
+      department.parentDepartmentId,
+    ]);
+    const allStaff = await loadDepartmentStaff(prisma, false);
 
     return NextResponse.json({
       success: true,
-      department: cleanDepartmentResponse(department),
+      department: decorateDepartment(department, allStaff, false),
     });
   } catch (error) {
     console.error("❌ PUT Department Error:", error);
@@ -570,7 +608,10 @@ export async function DELETE(req, { params }) {
 
     const existing = await prisma.staffDepartment.findUnique({
       where: { id },
-      include: { images: true },
+      include: {
+        images: true,
+        subDepartments: { select: { id: true, name: true } },
+      },
     });
     if (!existing) {
       return NextResponse.json(
@@ -579,7 +620,57 @@ export async function DELETE(req, { params }) {
       );
     }
 
+    if (existing.subDepartments.length > 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Move or delete this department's sub-departments first.",
+          authenticated: true,
+        },
+        { status: 409 }
+      );
+    }
+
+    if (isSubDepartment(existing) && existing.parentDepartmentId) {
+      const parentDepartment = await prisma.staffDepartment.findUnique({
+        where: { id: existing.parentDepartmentId },
+        select: { id: true, name: true },
+      });
+
+      await prisma.staff.updateMany({
+        where: {
+          OR: [
+            { subDepartmentId: id },
+            { departmentId: id },
+          ],
+        },
+        data: {
+          mainDepartmentId: parentDepartment?.id || null,
+          subDepartmentId: null,
+          departmentId: parentDepartment?.id || null,
+          department: parentDepartment?.name || null,
+        },
+      });
+    } else {
+      await prisma.staff.updateMany({
+        where: {
+          OR: [
+            { mainDepartmentId: id },
+            { subDepartmentId: id },
+            { departmentId: id },
+          ],
+        },
+        data: {
+          mainDepartmentId: null,
+          subDepartmentId: null,
+          departmentId: null,
+          department: null,
+        },
+      });
+    }
+
     await prisma.staffDepartment.delete({ where: { id } });
+    await syncDepartmentStaffCounts(prisma, [existing.parentDepartmentId]);
 
     await deleteSchoolImages([...(existing.images || []), existing.image].filter(Boolean));
 

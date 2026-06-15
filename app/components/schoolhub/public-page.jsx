@@ -248,6 +248,7 @@ const buildDepartmentItem = (dept) => {
     shortDescription: dept.description,
     description: dept.description,
     contactName: leader.name,
+    subDepartments: (dept.subDepartments || []).map(buildDepartmentItem),
     details: [
       { title: 'Category', content: getDepartmentCategoryLabel(dept.category) },
       ...(isCbcDepartment(dept) && pathway?.name
@@ -703,67 +704,116 @@ const HubCarousel = ({ items, onView }) => {
   );
 };
 
-const HubList = ({ items, onView }) => {
+const DepartmentHierarchyGrid = ({ items, onView }) => {
   if (!items?.length) return null;
 
   return (
-    <div className="w-full divide-y divide-slate-100 border-y border-slate-200 bg-white">
-      {items.map((item) => {
-        const images = normalizeSchoolImages(item);
+    <div className="space-y-7">
+      {items.map((mainDepartment) => {
+        const images = normalizeSchoolImages(mainDepartment);
         const image = images[0]?.url;
-        const Icon = ICONS[item.type] || FiLayers;
-        const theme = TYPE_THEMES[item.type] || TYPE_THEMES.DEPARTMENT;
-        const detailCount = Array.isArray(item.details) ? item.details.length : 0;
 
         return (
-          <button
-            key={`${item.type}-${item.id}`}
-            onClick={() => onView(item)}
-            className="group flex w-full flex-col gap-4 py-5 text-left transition hover:bg-slate-50 sm:flex-row sm:items-center"
+          <article
+            key={mainDepartment.id}
+            className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
           >
-            <div className="h-20 w-full shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:w-28">
-              {image ? (
-                <img src={image} alt={item.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-              ) : (
-                <div className={`flex h-full w-full items-center justify-center ${theme.bg}`}>
-                  <Icon className={`text-3xl ${theme.text}`} />
-                </div>
-              )}
-            </div>
-
-            <div className="min-w-0 flex-1">
-              <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-wider ${theme.bg} ${theme.text}`}>
-                <Icon className="text-xs" /> {getTypeLabel(item.type)}
-              </span>
-              <h3 className="mt-2 text-xl font-black text-slate-950">{item.title}</h3>
-              {(item.shortDescription || item.description) && (
-                <p className="mt-2 max-w-5xl text-sm leading-6 text-slate-600">
-                  {item.shortDescription || item.description}
-                </p>
-              )}
-              <div className="mt-3 flex flex-wrap gap-2">
-                {detailCount > 0 && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
-                    <FiLayers className="text-xs" /> {detailCount} details
-                  </span>
-                )}
-                {item.contactName && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700">
-                    <FiUserCheck className="text-xs" /> {item.contactName}
-                  </span>
-                )}
-                {images.length > 0 && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
-                    <FiImage className="text-xs" /> {images.length} photo{images.length === 1 ? '' : 's'}
-                  </span>
+            <button
+              type="button"
+              onClick={() => onView(mainDepartment)}
+              className="grid w-full text-left lg:grid-cols-[300px_1fr]"
+            >
+              <div className="min-h-56 bg-slate-100">
+                {image ? (
+                  <img
+                    src={image}
+                    alt={mainDepartment.title}
+                    className="h-full min-h-56 w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full min-h-56 items-center justify-center text-slate-400">
+                    <FiLayers className="text-4xl" />
+                  </div>
                 )}
               </div>
-            </div>
+              <div className="p-5 sm:p-7">
+                <span className="inline-flex rounded-full bg-slate-900 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">
+                  Main Department
+                </span>
+                <h3 className="mt-4 text-2xl font-black text-slate-950">
+                  {mainDepartment.title}
+                </h3>
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+                  {mainDepartment.description || 'Department information is being updated.'}
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {mainDepartment.contactName && (
+                    <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-800">
+                      Head: {mainDepartment.contactName}
+                    </span>
+                  )}
+                  <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-800">
+                    {mainDepartment.staffCount || 0} staff
+                  </span>
+                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-700">
+                    {mainDepartment.subDepartments?.length || 0} sub-departments
+                  </span>
+                </div>
+              </div>
+            </button>
 
-            <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${theme.iconBg} text-white transition group-hover:translate-x-0.5`}>
-              <FiChevronRight className="text-sm" />
-            </span>
-          </button>
+            {mainDepartment.subDepartments?.length > 0 && (
+              <details open className="group border-t border-slate-100 bg-slate-50/70">
+                <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 sm:px-7">
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+                    Sub-Departments
+                  </span>
+                  <FiChevronRight className="rotate-90 text-slate-500 transition group-open:-rotate-90" />
+                </summary>
+                <div className="grid gap-4 px-5 pb-5 sm:grid-cols-2 sm:px-7 sm:pb-7 xl:grid-cols-3">
+                  {mainDepartment.subDepartments.map((subDepartment) => {
+                    const subImage = normalizeSchoolImages(subDepartment)[0]?.url;
+                    return (
+                      <button
+                        type="button"
+                        key={subDepartment.id}
+                        onClick={() => onView(subDepartment)}
+                        className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-slate-100">
+                          {subImage ? (
+                            <img
+                              src={subImage}
+                              alt={subDepartment.title}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full items-center justify-center text-slate-400">
+                              <FiBookOpen />
+                            </div>
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-[9px] font-black uppercase tracking-widest text-blue-600">
+                            Sub-Department
+                          </p>
+                          <h4 className="mt-1 text-base font-black leading-tight text-slate-950">
+                            {subDepartment.title}
+                          </h4>
+                          <p className="mt-2 truncate text-xs font-semibold text-slate-500">
+                            {subDepartment.contactName || 'Head not listed'}
+                          </p>
+                          <p className="mt-1 text-xs font-black text-slate-800">
+                            {subDepartment.staffCount || 0} staff
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </details>
+            )}
+          </article>
         );
       })}
     </div>
@@ -797,7 +847,9 @@ export default function PublicSchoolHubPage({
         const res = await fetch('/api/staff/departments?grouped=1', { cache: 'no-store' });
         const data = await res.json();
         if (!res.ok || !data.success) throw new Error(data.error || `Failed to load departments (${res.status})`);
-        setItems((data.departments || []).map(buildDepartmentItem));
+        setItems(
+          (data.departmentHierarchy || data.departments || []).map(buildDepartmentItem)
+        );
       } else if (Array.isArray(sections) && sections.length > 0) {
         const responses = await Promise.all(sections.map((section) => fetch(`/api/schoolhub?type=${section.type}`, { cache: 'no-store' })));
         const payloads = await Promise.all(responses.map((res) => res.json()));
@@ -827,12 +879,34 @@ export default function PublicSchoolHubPage({
   const visibleItems = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return items;
+    if (departments) {
+      return items
+        .map((item) => {
+          const subDepartments = (item.subDepartments || []).filter((subDepartment) =>
+            [subDepartment.title, subDepartment.description, subDepartment.contactName]
+              .filter(Boolean)
+              .some((value) => String(value).toLowerCase().includes(q))
+          );
+          const mainMatches = [
+            item.title,
+            item.shortDescription,
+            item.description,
+            item.contactName,
+          ]
+            .filter(Boolean)
+            .some((value) => String(value).toLowerCase().includes(q));
+          return mainMatches || subDepartments.length
+            ? { ...item, subDepartments }
+            : null;
+        })
+        .filter(Boolean);
+    }
     return items.filter((item) =>
       [item.title, item.shortDescription, item.description, item.contactName, item.location, item.established, item.sectionTitle]
         .filter(Boolean)
         .some((value) => String(value).toLowerCase().includes(q))
     );
-  }, [items, search]);
+  }, [departments, items, search]);
 
   const renderedSections = useMemo(() => {
     if (Array.isArray(sections) && sections.length > 0) {
@@ -843,21 +917,37 @@ export default function PublicSchoolHubPage({
     }
     if (departments) {
       return [
-        { title: 'CBC Departments', type: 'DEPARTMENT', icon: FiLayers, items: visibleItems.filter((item) => item.category === 'CBC') },
-        { title: '8-4-4 Departments', type: 'DEPARTMENT', icon: FiBookOpen, items: visibleItems.filter((item) => item.category === 'EIGHT_FOUR_FOUR') },
-        { title: 'Teaching Departments', type: 'DEPARTMENT', icon: FiBookOpen, items: visibleItems.filter((item) => item.category === 'TEACHING') },
-        { title: 'Support Departments', type: 'DEPARTMENT', icon: FiShield, items: visibleItems.filter((item) => item.category === 'SUPPORT') },
+        {
+          title: 'Department Structure',
+          type: 'DEPARTMENT',
+          icon: FiLayers,
+          items: visibleItems,
+        },
       ];
     }
     return [{ title, type: singleType || 'CLUB', items: visibleItems }];
   }, [departments, sections, singleType, title, visibleItems]);
 
-  const totalImages = items.reduce((sum, item) => sum + normalizeSchoolImages(item).length, 0);
+  const totalImages = items.reduce(
+    (sum, item) =>
+      sum +
+      normalizeSchoolImages(item).length +
+      (item.subDepartments || []).reduce(
+        (subTotal, subDepartment) =>
+          subTotal + normalizeSchoolImages(subDepartment).length,
+        0
+      ),
+    0
+  );
+  const publishedItemCount = items.reduce(
+    (count, item) => count + 1 + (item.subDepartments?.length || 0),
+    0
+  );
   const activeSectionCount = renderedSections.filter((section) => section.items.length > 0).length;
   const heroType = singleType || sections?.[0]?.type || 'DEPARTMENT';
   const HeroIcon = ICONS[heroType] || FiGrid;
   const heroStats = [
-    { label: 'Published Items', value: items.length, icon: FiLayers },
+    { label: 'Published Items', value: publishedItemCount, icon: FiLayers },
     { label: 'Gallery Photos', value: totalImages, icon: FiImage },
     { label: 'Active Sections', value: activeSectionCount || renderedSections.length, icon: FiGrid },
   ];
@@ -1030,7 +1120,7 @@ export default function PublicSchoolHubPage({
               </div>
 
               {departments ? (
-                <HubList items={section.items} onView={setActive} />
+                <DepartmentHierarchyGrid items={section.items} onView={setActive} />
               ) : (
                 <HubCarousel items={section.items} onView={setActive} />
               )}

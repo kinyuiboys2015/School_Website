@@ -1,4 +1,15 @@
 export const CBC_CATEGORY = "CBC";
+export const MAIN_DEPARTMENT_TYPE = "MAIN";
+export const SUB_DEPARTMENT_TYPE = "SUB";
+
+export const DEPARTMENT_TYPES = [
+  { value: MAIN_DEPARTMENT_TYPE, label: "Main Department" },
+  { value: SUB_DEPARTMENT_TYPE, label: "Sub-Department" },
+];
+
+export const VALID_DEPARTMENT_TYPES = new Set(
+  DEPARTMENT_TYPES.map((type) => type.value)
+);
 
 export const STAFF_DEPARTMENT_CATEGORIES = [
   { value: CBC_CATEGORY, label: "CBC Department" },
@@ -61,6 +72,21 @@ export const normalizeDepartmentCategory = (category = "") =>
     ? CBC_CATEGORY
     : category.toString().trim().toUpperCase();
 
+export const normalizeDepartmentType = (type = "") => {
+  const normalized = type.toString().trim().toUpperCase().replace(/[-\s]+/g, "_");
+  return normalized === "SUB" || normalized === "SUB_DEPARTMENT"
+    ? SUB_DEPARTMENT_TYPE
+    : MAIN_DEPARTMENT_TYPE;
+};
+
+export const isSubDepartment = (departmentOrType) => {
+  const type =
+    typeof departmentOrType === "string"
+      ? departmentOrType
+      : departmentOrType?.departmentType;
+  return normalizeDepartmentType(type) === SUB_DEPARTMENT_TYPE;
+};
+
 export const isCbcDepartment = (departmentOrCategory) => {
   const category =
     typeof departmentOrCategory === "string"
@@ -82,8 +108,48 @@ export const getDepartmentLeader = (department) => {
   return {
     label: cbc ? "Pathway Head" : "Head of Department",
     shortLabel: cbc ? "Pathway Head" : "HOD",
-    name: cbc ? department?.pathwayHeadName : department?.headName,
+    name:
+      department?.departmentHead?.name ||
+      (cbc ? department?.pathwayHeadName : department?.headName),
   };
+};
+
+export const buildDepartmentHierarchy = (departments = []) => {
+  const activeDepartments = Array.isArray(departments) ? departments : [];
+  const mainDepartments = activeDepartments
+    .filter((department) => !isSubDepartment(department))
+    .map((department) => ({
+      ...department,
+      subDepartments: activeDepartments
+        .filter(
+          (candidate) =>
+            isSubDepartment(candidate) &&
+            Number(candidate.parentDepartmentId) === Number(department.id)
+        )
+        .sort(
+          (a, b) =>
+            (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0) ||
+            (a.name || "").localeCompare(b.name || "")
+        ),
+    }))
+    .sort(
+      (a, b) =>
+        (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0) ||
+        (a.name || "").localeCompare(b.name || "")
+    );
+
+  const orphanSubDepartments = activeDepartments
+    .filter(
+      (department) =>
+        isSubDepartment(department) &&
+        !mainDepartments.some(
+          (mainDepartment) =>
+            Number(mainDepartment.id) === Number(department.parentDepartmentId)
+        )
+    )
+    .map((department) => ({ ...department, subDepartments: [] }));
+
+  return [...mainDepartments, ...orphanSubDepartments];
 };
 
 export const isDepartmentLibraryImage = (url = "") =>

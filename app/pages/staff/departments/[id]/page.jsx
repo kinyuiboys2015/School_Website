@@ -17,6 +17,8 @@ import {
   FiBook,
   FiClipboard,
   FiInfo,
+  FiUsers,
+  FiChevronRight,
 } from "react-icons/fi";
 import {
   getDepartmentLeader,
@@ -155,7 +157,9 @@ export default function StaffDepartmentDetailPage() {
       setLoading(true);
       setError(null);
 
-      const data = await fetchDepartmentJson(`/api/staff/departments/${params.id}`);
+      const data = await fetchDepartmentJson(
+        `/api/staff/departments/${params.id}?includeStaff=1`
+      );
 
       setDepartment(data.department);
     } catch (err) {
@@ -213,6 +217,7 @@ export default function StaffDepartmentDetailPage() {
   const Icon = meta.icon;
   const leader = getDepartmentLeader(department);
   const pathway = getDepartmentPathway(department);
+  const departmentStaff = department.staff || department.teachers || [];
 
   // Default Kinyui Boys Mathematics Department data
   const defaultOverview = "Coordinates Mathematics teaching, numeracy support, assessment preparation, and performance tracking across the school.";
@@ -232,6 +237,15 @@ export default function StaffDepartmentDetailPage() {
         >
           <FiArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" /> Staff Directory
         </Link>
+
+        {department.parentDepartment && (
+          <Link
+            href={`/pages/staff/departments/${department.parentDepartment.id}`}
+            className="mb-5 ml-2 inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-blue-700"
+          >
+            {department.parentDepartment.name} <FiChevronRight size={13} />
+          </Link>
+        )}
 
         <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
           
@@ -265,12 +279,13 @@ export default function StaffDepartmentDetailPage() {
           <div className="p-5 sm:p-8">
             
             {/* REDESIGNED STATS GRID - Modern cards with different colors */}
-            <div className={`grid gap-4 grid-cols-1 ${isCbcDepartment(department) ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
+            <div className={`grid gap-4 grid-cols-1 ${isCbcDepartment(department) ? "sm:grid-cols-4" : "sm:grid-cols-3"}`}>
               <ModernStatCard icon={FiUser} label={leader.label} value={leader.name || "Not listed"} color="emerald" />
               {isCbcDepartment(department) && (
                 <ModernStatCard icon={FiTarget} label="CBC Pathway" value={pathway?.name || "Not listed"} color="blue" />
               )}
               <ModernStatCard icon={Icon} label="Category" value={meta.label} color="purple" />
+              <ModernStatCard icon={FiUsers} label="Staff Members" value={department.staffCount || 0} color="blue" />
             </div>
 
             {/* REDESIGNED TWO-COLUMN LAYOUT */}
@@ -311,6 +326,88 @@ export default function StaffDepartmentDetailPage() {
                       {defaultExtraDetails.map((item) => (
                         <InfoBadge key={item.key} icon={item.icon} label={item.key} value={item.value} />
                       ))}
+                    </div>
+                  )}
+                </section>
+
+                {department.subDepartments?.length > 0 && (
+                  <section>
+                    <div className="mb-4 flex items-center gap-2">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                        <FiLayers size={14} />
+                      </div>
+                      <h2 className="text-sm font-black uppercase tracking-widest text-slate-900">
+                        Sub-Departments
+                      </h2>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      {department.subDepartments.map((subDepartment) => (
+                        <Link
+                          key={subDepartment.id}
+                          href={`/pages/staff/departments/${subDepartment.id}`}
+                          className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <img
+                            src={getDepartmentImage(subDepartment)}
+                            alt={subDepartment.name}
+                            className="h-20 w-20 shrink-0 rounded-xl object-cover"
+                          />
+                          <div className="min-w-0">
+                            <p className="text-[9px] font-black uppercase tracking-widest text-blue-600">
+                              Sub-Department
+                            </p>
+                            <h3 className="mt-1 text-base font-black text-slate-900">
+                              {subDepartment.name}
+                            </h3>
+                            <p className="mt-2 text-xs font-bold text-slate-500">
+                              {subDepartment.staffCount || 0} staff members
+                            </p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                <section>
+                  <div className="mb-4 flex items-center gap-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
+                      <FiUsers size={14} />
+                    </div>
+                    <h2 className="text-sm font-black uppercase tracking-widest text-slate-900">
+                      Assigned Staff
+                    </h2>
+                  </div>
+
+                  {departmentStaff.length > 0 ? (
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {departmentStaff.map((staffMember) => (
+                        <div
+                          key={staffMember.id}
+                          className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 shadow-sm"
+                        >
+                          <img
+                            src={staffMember.image || "/teachers.png"}
+                            alt={staffMember.name}
+                            className="h-14 w-14 shrink-0 rounded-xl object-cover"
+                          />
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-black text-slate-900">
+                              {staffMember.name}
+                            </p>
+                            <p className="mt-1 truncate text-xs font-semibold text-slate-500">
+                              {staffMember.position || staffMember.role}
+                              {staffMember.subjectOffered
+                                ? ` - ${staffMember.subjectOffered}`
+                                : ""}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm font-semibold text-slate-500">
+                      No staff members are assigned to this department yet.
                     </div>
                   )}
                 </section>

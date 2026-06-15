@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { 
   FiPlus, 
   FiSearch, 
@@ -34,6 +34,7 @@ import {
   FiTag,
   FiEdit2,
   FiUsers,
+  FiLayers,
   FiTarget,    // Added for Total Staff stat
   FiArchive    // Added for Archive stat
 } from 'react-icons/fi';
@@ -89,10 +90,13 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import {
   CBC_PATHWAYS,
+  DEPARTMENT_TYPES,
   DEPARTMENT_IMAGE_LIBRARY,
+  buildDepartmentHierarchy,
   getDepartmentLeader,
   getDepartmentPathway,
   isCbcDepartment,
+  isSubDepartment,
 } from '../../../libs/staffDepartmentConfig';
 
 // Custom Spinner Component using Material-UI CircularProgress
@@ -845,6 +849,22 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
     position: isInitialTeacher ? 'Teacher' : (staff?.position || ''),
     department: staff?.department || '',
     departmentId: staff?.departmentId ? String(staff.departmentId) : '',
+    mainDepartmentId: staff?.mainDepartmentId
+      ? String(staff.mainDepartmentId)
+      : staff?.mainDepartmentRecord?.id
+        ? String(staff.mainDepartmentRecord.id)
+        : staff?.departmentRecord && isSubDepartment(staff.departmentRecord)
+          ? String(staff.departmentRecord.parentDepartmentId || '')
+        : staff?.departmentRecord && !isSubDepartment(staff.departmentRecord)
+          ? String(staff.departmentRecord.id)
+          : '',
+    subDepartmentId: staff?.subDepartmentId
+      ? String(staff.subDepartmentId)
+      : staff?.subDepartmentRecord?.id
+        ? String(staff.subDepartmentRecord.id)
+        : staff?.departmentRecord && isSubDepartment(staff.departmentRecord)
+          ? String(staff.departmentRecord.id)
+          : '',
     subjectOffered: staff?.subjectOffered || '',
     email: staff?.email || '',
     phone: staff?.phone || '',
@@ -915,16 +935,22 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
     ...((Array.isArray(departmentOptions) ? departmentOptions : []).filter(Boolean))
   ];
 
-  if (
-    formData.departmentId &&
-    !normalizedDepartmentOptions.some((dept) => String(dept.id) === String(formData.departmentId))
-  ) {
-    normalizedDepartmentOptions.unshift({
-      id: formData.departmentId,
-      name: formData.department || `Department ${formData.departmentId}`,
-      isActive: false
+  [staff?.mainDepartmentRecord, staff?.subDepartmentRecord, staff?.departmentRecord]
+    .filter(Boolean)
+    .forEach((department) => {
+      if (!normalizedDepartmentOptions.some((item) => Number(item.id) === Number(department.id))) {
+        normalizedDepartmentOptions.unshift({ ...department, isActive: false });
+      }
     });
-  }
+
+  const mainDepartmentOptions = normalizedDepartmentOptions.filter(
+    (department) => !isSubDepartment(department)
+  );
+  const subDepartmentOptions = normalizedDepartmentOptions.filter(
+    (department) =>
+      isSubDepartment(department) &&
+      Number(department.parentDepartmentId) === Number(formData.mainDepartmentId)
+  );
 
   useEffect(() => {
     if (staff?.image && typeof staff.image === 'string') {
@@ -984,7 +1010,6 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
       staffType: 'Leadership',
       role: prev.role === 'Teacher' ? 'Senior Teacher' : (prev.role || 'Senior Teacher'),
       position: prev.role === 'Teacher' ? '' : prev.position,
-      departmentId: '',
       subjectOffered: ''
     }));
   };
@@ -1078,12 +1103,32 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
   };
 
   const handleChange = (field, value) => {
-    if (field === 'departmentId') {
-      const selectedDepartment = normalizedDepartmentOptions.find((dept) => String(dept.id) === String(value));
+    if (field === 'mainDepartmentId') {
+      const selectedDepartment = mainDepartmentOptions.find(
+        (department) => String(department.id) === String(value)
+      );
       setFormData(prev => ({
         ...prev,
+        mainDepartmentId: value,
+        subDepartmentId: '',
         departmentId: value,
-        department: selectedDepartment?.name || prev.department
+        department: selectedDepartment?.name || ''
+      }));
+      return;
+    }
+
+    if (field === 'subDepartmentId') {
+      const selectedDepartment = subDepartmentOptions.find(
+        (department) => String(department.id) === String(value)
+      );
+      const mainDepartment = mainDepartmentOptions.find(
+        (department) => String(department.id) === String(formData.mainDepartmentId)
+      );
+      setFormData(prev => ({
+        ...prev,
+        subDepartmentId: value,
+        departmentId: value || prev.mainDepartmentId,
+        department: selectedDepartment?.name || mainDepartment?.name || ''
       }));
       return;
     }
@@ -1108,7 +1153,7 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
     if (isTeacherForm) {
       switch (currentStep) {
         case 0:
-          return formData.name.trim() && formData.departmentId && formData.subjectOffered.trim();
+          return formData.name.trim() && formData.mainDepartmentId && formData.subjectOffered.trim();
         case 1:
           return (imageFile || staff?.image || imagePreview) && !imageError;
         case 2:
@@ -1126,6 +1171,57 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
       default: return true;
     }
   };
+
+  const renderDepartmentAssignmentFields = (required = false) => (
+    <div className="space-y-4 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-5">
+      <div>
+        <label className="mb-3 flex items-center gap-2 text-base font-bold text-gray-900">
+          <FaBuilding className="text-emerald-600" />
+          Main Department {required && <span className="text-red-500">*</span>}
+        </label>
+        <select
+          value={formData.mainDepartmentId}
+          onChange={(event) => handleChange('mainDepartmentId', event.target.value)}
+          className="w-full rounded-xl border-2 border-emerald-200 bg-white px-4 py-3 text-base font-bold focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
+          required={required}
+        >
+          <option value="">Select a main department...</option>
+          {mainDepartmentOptions.map((department) => (
+            <option key={department.id} value={department.id}>
+              {department.name}{department.isActive === false ? ' (Inactive)' : ''}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="mb-3 flex items-center gap-2 text-base font-bold text-gray-900">
+          <FiLayers className="text-teal-700" />
+          Sub-Department
+        </label>
+        <select
+          value={formData.subDepartmentId}
+          onChange={(event) => handleChange('subDepartmentId', event.target.value)}
+          disabled={!formData.mainDepartmentId}
+          className="w-full rounded-xl border-2 border-teal-200 bg-white px-4 py-3 text-base font-bold focus:border-teal-500 focus:ring-2 focus:ring-teal-500 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400"
+        >
+          <option value="">
+            {formData.mainDepartmentId
+              ? 'No sub-department / select one...'
+              : 'Select a main department first'}
+          </option>
+          {subDepartmentOptions.map((department) => (
+            <option key={department.id} value={department.id}>
+              {department.name}{department.isActive === false ? ' (Inactive)' : ''}
+            </option>
+          ))}
+        </select>
+        <p className="mt-2 text-xs font-semibold text-slate-500">
+          Staff assigned to a sub-department are also counted in its main department.
+        </p>
+      </div>
+    </div>
+  );
 
   return (
     <Modal open={true} onClose={onClose}>
@@ -1280,27 +1376,7 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
 
                     {isTeacherForm ? (
                       <>
-                        <div className="bg-gradient-to-br from-emerald-50 to-teal-100 rounded-2xl p-5 border border-emerald-200">
-                          <label className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
-                            <FaBuilding className="text-emerald-600" /> Department <span className="text-red-500">*</span>
-                          </label>
-                          <select
-                            value={formData.departmentId}
-                            onChange={(e) => handleChange('departmentId', e.target.value)}
-                            className="w-full px-4 py-3 border-2 border-emerald-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white text-base font-bold"
-                            required
-                          >
-                            <option value="">Select an existing department...</option>
-                            {normalizedDepartmentOptions.map((dept) => (
-                              <option key={dept.id} value={dept.id}>
-                                {dept.name}{dept.isActive === false ? ' (Inactive)' : ''}
-                              </option>
-                            ))}
-                          </select>
-                          <p className="mt-2 text-xs font-semibold text-slate-500">
-                            Teachers can only be attached to departments already added in the system.
-                          </p>
-                        </div>
+                        {renderDepartmentAssignmentFields(true)}
 
                         <div className="bg-gradient-to-br from-cyan-50 to-blue-100 rounded-2xl p-5 border border-cyan-200">
                           <label className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
@@ -1342,18 +1418,7 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
                           </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-5 border border-orange-200">
-                          <label className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
-                            <FaBuilding className="text-orange-600" /> Department
-                          </label>
-                          <input
-                            type="text"
-                            value={formData.department}
-                            onChange={(e) => handleChange('department', e.target.value)}
-                            placeholder="Leadership department or office"
-                            className="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-base font-bold"
-                          />
-                        </div>
+                        {renderDepartmentAssignmentFields(false)}
                       </>
                     )}
                   </div>
@@ -1977,19 +2042,40 @@ const parseDepartmentExtra = (extra) => {
 
 const MAX_DEPARTMENT_IMAGE_SIZE = 3 * 1024 * 1024;
 
-function DepartmentFormModal({ department, onClose, onSave, loading }) {
+function DepartmentFormModal({
+  department,
+  departments = [],
+  staffOptions = [],
+  onClose,
+  onSave,
+  loading
+}) {
   const extra = parseDepartmentExtra(department?.extra);
-  const existingDepartmentImageUrls = Array.from(new Set([
-    department?.image,
-    ...(department?.images?.map((image) => image.url) || []),
-  ].filter(isAllowedDepartmentImage)));
+  const existingDepartmentImageUrls = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          [
+            department?.image,
+            ...(department?.images?.map((image) => image.url) || []),
+          ].filter(isAllowedDepartmentImage)
+        )
+      ),
+    [department]
+  );
   const [formData, setFormData] = useState({
     name: department?.name || '',
+    departmentType: department?.departmentType || 'MAIN',
+    parentDepartmentId: department?.parentDepartmentId
+      ? String(department.parentDepartmentId)
+      : '',
+    departmentHeadId: department?.departmentHeadId
+      ? String(department.departmentHeadId)
+      : '',
     category: department?.category || 'TEACHING',
     headName: department?.headName || '',
     pathwayHeadName: department?.pathwayHeadName || '',
     cbePathwayType: department?.cbePathwayType || department?.cbePathway?.type || '',
-    staffCount: department?.staffCount || 0,
     description: department?.description || '',
     displayOrder: department?.displayOrder || 0,
     isActive: department?.isActive !== false,
@@ -2008,9 +2094,17 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
     (url) => !removedImageUrls.includes(url)
   );
   const isCbc = isCbcDepartment(formData.category);
-  const hasValidLeader = isCbc
-    ? Boolean(formData.cbePathwayType && formData.pathwayHeadName.trim())
-    : Boolean(formData.headName.trim());
+  const isSub = isSubDepartment(formData.departmentType);
+  const mainDepartmentOptions = departments.filter(
+    (item) => !isSubDepartment(item) && Number(item.id) !== Number(department?.id)
+  );
+  const selectedHead = staffOptions.find(
+    (staffMember) => String(staffMember.id) === String(formData.departmentHeadId)
+  );
+  const hasValidLeader = !isCbc || Boolean(
+    formData.cbePathwayType &&
+    (selectedHead?.name || formData.pathwayHeadName.trim())
+  );
   const hasDepartmentImage =
     selectedImages.length > 0 ||
     remainingExistingImageUrls.length > 0 ||
@@ -2076,14 +2170,16 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
 
     const payload = new FormData();
     payload.append('name', formData.name.trim());
+    payload.append('departmentType', formData.departmentType);
+    payload.append('parentDepartmentId', isSub ? formData.parentDepartmentId : '');
+    payload.append('departmentHeadId', formData.departmentHeadId);
     payload.append('category', formData.category);
     if (isCbc) {
       payload.append('cbePathwayType', formData.cbePathwayType);
-      payload.append('pathwayHeadName', formData.pathwayHeadName.trim());
+      payload.append('pathwayHeadName', selectedHead?.name || formData.pathwayHeadName.trim());
     } else {
-      payload.append('headName', formData.headName.trim());
+      payload.append('headName', selectedHead?.name || formData.headName.trim());
     }
-    payload.append('staffCount', String(Math.max(0, Number(formData.staffCount) || 0)));
     payload.append('description', formData.description.trim());
     payload.append('displayOrder', String(Number(formData.displayOrder) || 0));
     payload.append('isActive', formData.isActive ? 'true' : 'false');
@@ -2137,6 +2233,35 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
             <div className="space-y-4">
               <div>
                 <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">
+                  Department Type
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {DEPARTMENT_TYPES.map((type) => (
+                    <button
+                      type="button"
+                      key={type.value}
+                      onClick={() => {
+                        updateField('departmentType', type.value);
+                        if (!isSubDepartment(type.value)) {
+                          updateField('parentDepartmentId', '');
+                        }
+                      }}
+                      className={`rounded-xl border-2 p-3 text-left transition ${
+                        formData.departmentType === type.value
+                          ? 'border-slate-900 bg-slate-900 text-white'
+                          : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400'
+                      }`}
+                    >
+                      <span className="text-xs font-black uppercase tracking-wide">
+                        {type.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">
                   Department Name
                 </label>
                 <input
@@ -2148,9 +2273,35 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
                 />
               </div>
 
+              {isSub && (
+                <div>
+                  <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">
+                    Parent / Main Department
+                  </label>
+                  <select
+                    value={formData.parentDepartmentId}
+                    onChange={(event) => updateField('parentDepartmentId', event.target.value)}
+                    required
+                    className="w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm font-bold outline-none focus:border-blue-500"
+                  >
+                    <option value="">Select a main department...</option>
+                    {mainDepartmentOptions.map((mainDepartment) => (
+                      <option key={mainDepartment.id} value={mainDepartment.id}>
+                        {mainDepartment.name}
+                      </option>
+                    ))}
+                  </select>
+                  {mainDepartmentOptions.length === 0 && (
+                    <p className="mt-2 text-xs font-bold text-amber-700">
+                      Create a main department before adding a sub-department.
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div>
                 <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">
-                  Department Type / Category
+                  Department Category
                 </label>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {STAFF_DEPARTMENT_CATEGORIES.map((category) => (
@@ -2200,32 +2351,30 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
 
               <div>
                 <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">
-                  {isCbc ? 'Pathway Head' : 'Head of Department'}
+                  Department Head
                 </label>
-                <input
-                  value={isCbc ? formData.pathwayHeadName : formData.headName}
-                  onChange={(event) =>
-                    updateField(isCbc ? 'pathwayHeadName' : 'headName', event.target.value)
-                  }
-                  required
+                <select
+                  value={formData.departmentHeadId}
+                  onChange={(event) => updateField('departmentHeadId', event.target.value)}
                   className="w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm font-bold outline-none focus:border-blue-500"
-                  placeholder={isCbc ? 'Name of pathway head' : 'Name of HOD'}
-                />
+                >
+                  <option value="">
+                    {(isCbc ? formData.pathwayHeadName : formData.headName)
+                      ? `Current: ${isCbc ? formData.pathwayHeadName : formData.headName}`
+                      : 'Not assigned'}
+                  </option>
+                  {staffOptions.map((staffMember) => (
+                    <option key={staffMember.id} value={staffMember.id}>
+                      {staffMember.name} - {staffMember.position || staffMember.role}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-2 text-xs font-semibold text-slate-500">
+                  Select an existing staff member. Legacy head names remain until replaced.
+                </p>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-3">
-                <div>
-                  <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">
-                    Staff Count
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    value={formData.staffCount}
-                    onChange={(event) => updateField('staffCount', event.target.value)}
-                    className="w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm font-bold outline-none focus:border-blue-500"
-                  />
-                </div>
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">
                     Display Order
@@ -2247,6 +2396,19 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
                   Active
                 </label>
               </div>
+              {department && (
+                <div className="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-blue-500">
+                    Assigned Staff
+                  </p>
+                  <p className="mt-1 text-xl font-black text-blue-950">
+                    {department.staffCount || 0}
+                  </p>
+                  <p className="mt-1 text-xs font-semibold text-blue-700">
+                    Calculated automatically from staff assignments.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="space-y-4">
@@ -2396,7 +2558,13 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
             </button>
             <button
               type="submit"
-              disabled={loading || !formData.name.trim() || !hasDepartmentImage || !hasValidLeader}
+              disabled={
+                loading ||
+                !formData.name.trim() ||
+                !hasDepartmentImage ||
+                !hasValidLeader ||
+                (isSub && !formData.parentDepartmentId)
+              }
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-black uppercase tracking-widest text-white disabled:opacity-50"
             >
               {loading ? <Spinner size={16} /> : <FaSave />}
@@ -2409,7 +2577,7 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
   );
 }
 
-function StaffDepartmentManager({ showNotification }) {
+function StaffDepartmentManager({ showNotification, staffOptions = [] }) {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -2506,7 +2674,7 @@ function StaffDepartmentManager({ showNotification }) {
     }
   };
 
-  const filteredDepartments = departments.filter((department) => {
+  const matchesDepartmentFilters = (department) => {
     const query = search.toLowerCase();
     const matchesCategory = category === 'all' || department.category === category;
     const matchesSearch = !query || [
@@ -2515,12 +2683,34 @@ function StaffDepartmentManager({ showNotification }) {
       department.headName,
       department.pathwayHeadName,
       department.cbePathway?.name,
-      department.category
+      department.category,
+      department.departmentType,
+      department.parentDepartment?.name
     ].filter(Boolean).join(' ').toLowerCase().includes(query);
     return matchesCategory && matchesSearch;
-  });
+  };
 
-  const totalGroupedStaff = departments.reduce((sum, department) => sum + (Number(department.staffCount) || 0), 0);
+  const filteredDepartmentHierarchy = buildDepartmentHierarchy(departments)
+    .map((mainDepartment) => {
+      const subDepartments = (mainDepartment.subDepartments || []).filter(
+        matchesDepartmentFilters
+      );
+      if (!matchesDepartmentFilters(mainDepartment) && subDepartments.length === 0) {
+        return null;
+      }
+      return { ...mainDepartment, subDepartments };
+    })
+    .filter(Boolean);
+
+  const filteredDepartmentCount = filteredDepartmentHierarchy.reduce(
+    (count, mainDepartment) =>
+      count + 1 + (mainDepartment.subDepartments?.length || 0),
+    0
+  );
+
+  const totalGroupedStaff = staffOptions.filter(
+    (staffMember) => staffMember.mainDepartmentId || staffMember.departmentId
+  ).length;
 
   return (
     <div className="space-y-6">
@@ -2555,9 +2745,10 @@ function StaffDepartmentManager({ showNotification }) {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {[
-            { label: 'Departments', value: departments.length, icon: FiUsers },
+            { label: 'Main Departments', value: departments.filter((item) => !isSubDepartment(item)).length, icon: FiLayers },
+            { label: 'Sub-Departments', value: departments.filter((item) => isSubDepartment(item)).length, icon: FiArchive },
             { label: 'Grouped Staff', value: totalGroupedStaff, icon: FiArchive },
             { label: 'Active', value: departments.filter((item) => item.isActive !== false).length, icon: FiCheckCircle },
             { label: 'Inactive', value: departments.filter((item) => item.isActive === false).length, icon: FiShield },
@@ -2597,69 +2788,174 @@ function StaffDepartmentManager({ showNotification }) {
         <div className="flex justify-center rounded-2xl bg-white p-10">
           <Spinner size={42} />
         </div>
-      ) : filteredDepartments.length > 0 ? (
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {filteredDepartments.map((department) => {
-            const categoryInfo = STAFF_DEPARTMENT_CATEGORIES.find((item) => item.value === department.category) || STAFF_DEPARTMENT_CATEGORIES[2];
-            const departmentImage = getDepartmentImage(department);
-            const leader = getDepartmentLeader(department);
-            const pathway = getDepartmentPathway(department);
+      ) : filteredDepartmentCount > 0 ? (
+        <div className="space-y-8">
+          {filteredDepartmentHierarchy.map((mainDepartment) => {
+            const categoryInfo =
+              STAFF_DEPARTMENT_CATEGORIES.find(
+                (item) => item.value === mainDepartment.category
+              ) || STAFF_DEPARTMENT_CATEGORIES[2];
+            const departmentImage = getDepartmentImage(mainDepartment);
+            const leader = getDepartmentLeader(mainDepartment);
+            const pathway = getDepartmentPathway(mainDepartment);
+
             return (
-              <article key={department.id} className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-xl shadow-slate-200/50">
-                {departmentImage ? (
-                  <img src={departmentImage} alt={department.name} className="h-44 w-full object-cover" />
-                ) : (
-                  <div className="flex h-44 w-full items-center justify-center bg-slate-100 text-center text-xs font-black uppercase tracking-widest text-slate-400">
-                    Department image required
-                  </div>
-                )}
-                <div className="p-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className={`inline-flex items-center gap-2 rounded-full bg-gradient-to-r ${categoryInfo.color} px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white`}>
-                      <categoryInfo.icon size={12} /> {categoryInfo.label}
-                    </span>
-                    <span className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest ${
-                      department.isActive === false ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700'
-                    }`}>
-                      {department.isActive === false ? 'Inactive' : 'Active'}
-                    </span>
-                  </div>
-                  <h3 className="mt-4 text-xl font-black text-slate-900">{department.name}</h3>
-                  <p className="mt-2 line-clamp-3 min-h-[4rem] text-sm leading-relaxed text-slate-600">
-                    {department.description || 'No public description added yet.'}
-                  </p>
-                  <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
-                    <div className="rounded-xl bg-slate-50 p-3">
-                      <p className="font-black uppercase tracking-widest text-slate-400">{leader.shortLabel}</p>
-                      <p className="mt-1 truncate font-bold text-slate-800">{leader.name || 'Not set'}</p>
-                    </div>
-                    <div className="rounded-xl bg-slate-50 p-3">
-                      <p className="font-black uppercase tracking-widest text-slate-400">Staff</p>
-                      <p className="mt-1 font-bold text-slate-800">{department.staffCount || 0}</p>
-                    </div>
-                    {isCbcDepartment(department) && (
-                      <div className="col-span-2 rounded-xl bg-blue-50 p-3">
-                        <p className="font-black uppercase tracking-widest text-blue-400">CBC Pathway</p>
-                        <p className="mt-1 truncate font-bold text-blue-900">{pathway?.name || 'Not set'}</p>
+              <section
+                key={mainDepartment.id}
+                className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-lg shadow-slate-200/40"
+              >
+                <div className="grid lg:grid-cols-[320px_1fr]">
+                  <div className="min-h-64 bg-slate-100">
+                    {departmentImage ? (
+                      <img
+                        src={departmentImage}
+                        alt={mainDepartment.name}
+                        className="h-full min-h-64 w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full min-h-64 items-center justify-center text-xs font-black uppercase tracking-widest text-slate-400">
+                        Department image required
                       </div>
                     )}
                   </div>
-                  <div className="mt-5 flex gap-2">
-                    <button
-                      onClick={() => handleEdit(department)}
-                      className="flex-1 rounded-xl bg-slate-900 px-4 py-3 text-xs font-black uppercase tracking-widest text-white"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDeleteDepartment(department)}
-                      className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-50 text-red-600"
-                    >
-                      <FiTrash2 />
-                    </button>
+
+                  <div className="p-5 sm:p-7">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="rounded-full bg-slate-900 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">
+                        {isSubDepartment(mainDepartment) ? 'Sub-Department' : 'Main Department'}
+                      </span>
+                      <span className={`inline-flex items-center gap-2 rounded-full bg-gradient-to-r ${categoryInfo.color} px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white`}>
+                        <categoryInfo.icon size={12} /> {categoryInfo.label}
+                      </span>
+                      <span className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest ${
+                        mainDepartment.isActive === false
+                          ? 'bg-amber-50 text-amber-700'
+                          : 'bg-emerald-50 text-emerald-700'
+                      }`}>
+                        {mainDepartment.isActive === false ? 'Inactive' : 'Active'}
+                      </span>
+                    </div>
+
+                    <h3 className="mt-4 text-2xl font-black text-slate-900 sm:text-3xl">
+                      {mainDepartment.name}
+                    </h3>
+                    <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+                      {mainDepartment.description || 'No public description added yet.'}
+                    </p>
+
+                    <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                      <div className="rounded-xl bg-slate-50 p-3">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                          {leader.shortLabel}
+                        </p>
+                        <p className="mt-1 truncate text-sm font-bold text-slate-800">
+                          {leader.name || 'Not set'}
+                        </p>
+                      </div>
+                      <div className="rounded-xl bg-slate-50 p-3">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                          Total Staff
+                        </p>
+                        <p className="mt-1 text-sm font-bold text-slate-800">
+                          {mainDepartment.staffCount || 0}
+                        </p>
+                      </div>
+                      <div className="rounded-xl bg-slate-50 p-3">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                          Sub-Departments
+                        </p>
+                        <p className="mt-1 text-sm font-bold text-slate-800">
+                          {mainDepartment.subDepartments?.length || 0}
+                        </p>
+                      </div>
+                    </div>
+
+                    {isCbcDepartment(mainDepartment) && pathway?.name && (
+                      <p className="mt-3 rounded-xl bg-blue-50 px-4 py-3 text-xs font-bold text-blue-900">
+                        CBC Pathway: {pathway.name}
+                      </p>
+                    )}
+
+                    <div className="mt-5 flex gap-2">
+                      <button
+                        onClick={() => handleEdit(mainDepartment)}
+                        className="rounded-xl bg-slate-900 px-5 py-3 text-xs font-black uppercase tracking-widest text-white"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(mainDepartment)}
+                        className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-50 text-red-600"
+                        aria-label={`Delete ${mainDepartment.name}`}
+                      >
+                        <FiTrash2 />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </article>
+
+                {mainDepartment.subDepartments?.length > 0 && (
+                  <div className="border-t border-slate-100 bg-slate-50/70 p-5 sm:p-7">
+                    <p className="mb-4 text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">
+                      Sub-Departments
+                    </p>
+                    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                      {mainDepartment.subDepartments.map((subDepartment) => {
+                        const subImage = getDepartmentImage(subDepartment);
+                        const subLeader = getDepartmentLeader(subDepartment);
+                        return (
+                          <article
+                            key={subDepartment.id}
+                            className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+                          >
+                            <div className="flex gap-4 p-4">
+                              <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-slate-100">
+                                {subImage ? (
+                                  <img
+                                    src={subImage}
+                                    alt={subDepartment.name}
+                                    className="h-full w-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="flex h-full items-center justify-center text-slate-300">
+                                    <FiLayers />
+                                  </div>
+                                )}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h4 className="text-base font-black leading-tight text-slate-900">
+                                  {subDepartment.name}
+                                </h4>
+                                <p className="mt-2 truncate text-xs font-semibold text-slate-500">
+                                  {subLeader.name || 'Department head not set'}
+                                </p>
+                                <p className="mt-1 text-xs font-black text-blue-700">
+                                  {subDepartment.staffCount || 0} staff
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex border-t border-slate-100">
+                              <button
+                                onClick={() => handleEdit(subDepartment)}
+                                className="flex-1 px-4 py-3 text-xs font-black uppercase tracking-wider text-slate-700"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onClick={() => handleDelete(subDepartment)}
+                                className="border-l border-slate-100 px-4 py-3 text-red-600"
+                                aria-label={`Delete ${subDepartment.name}`}
+                              >
+                                <FiTrash2 />
+                              </button>
+                            </div>
+                          </article>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </section>
             );
           })}
         </div>
@@ -2680,6 +2976,8 @@ function StaffDepartmentManager({ showNotification }) {
       {showModal && (
         <DepartmentFormModal
           department={editingDepartment}
+          departments={departments}
+          staffOptions={staffOptions}
           onClose={() => {
             setShowModal(false);
             setEditingDepartment(null);
@@ -3453,7 +3751,7 @@ const handleSubmit = async (formData, id) => {
 </div>
 
 {activeTab === 'departments' ? (
-  <StaffDepartmentManager showNotification={showNotification} />
+  <StaffDepartmentManager showNotification={showNotification} staffOptions={staff} />
 ) : (
 <>
 {/* --- ENLARGED SEARCH & FILTER ENGINE --- */}

@@ -262,28 +262,33 @@ model News {
 }
 
 model Staff {
-  id               Int              @id @default(autoincrement())
-  name             String
-  role             String
-  staffType        String?          @default("Leadership") @db.VarChar(50)
-  position         String?
-  department       String?
-  departmentId     Int?
-  departmentRecord StaffDepartment? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
-  subjectOffered   String?          @db.VarChar(255)
-  education        String?          @db.Text
-  experience       String?          @db.Text
-  email            String?
-  phone            String?
-  bio              String?          @db.Text
-  quote            String?          @db.Text
-  gender           String?          @default("male")
-  status           String?          @default("active")
-  joinDate         String?
-  responsibilities Json?
-  expertise        Json?
-  achievements     Json?
-  image            String?
+  id                   Int               @id @default(autoincrement())
+  name                 String
+  role                 String
+  staffType            String?           @default("Leadership") @db.VarChar(50)
+  position             String?
+  department           String?
+  departmentId         Int?
+  mainDepartmentId     Int?
+  subDepartmentId      Int?
+  departmentRecord     StaffDepartment?  @relation("LegacyDepartmentStaff", fields: [departmentId], references: [id], onDelete: SetNull)
+  mainDepartmentRecord StaffDepartment?  @relation("MainDepartmentStaff", fields: [mainDepartmentId], references: [id], onDelete: SetNull)
+  subDepartmentRecord  StaffDepartment?  @relation("SubDepartmentStaff", fields: [subDepartmentId], references: [id], onDelete: SetNull)
+  headedDepartments    StaffDepartment[] @relation("DepartmentHead")
+  subjectOffered       String?           @db.VarChar(255)
+  education            String?           @db.Text
+  experience           String?           @db.Text
+  email                String?
+  phone                String?
+  bio                  String?           @db.Text
+  quote                String?           @db.Text
+  gender               String?           @default("male")
+  status               String?           @default("active")
+  joinDate             String?
+  responsibilities     Json?
+  expertise            Json?
+  achievements         Json?
+  image                String?
 
   // CBE fields
   cbeRoleType  CBERoleType? @default(TEACHER)
@@ -296,6 +301,8 @@ model Staff {
   updatedAt DateTime @updatedAt
 
   @@index([departmentId])
+  @@index([mainDepartmentId])
+  @@index([subDepartmentId])
   @@index([cbePathwayId])
   @@index([cbeTrackId])
   @@index([cbeRoleType])
@@ -334,30 +341,41 @@ enum CBETrackType {
 }
 
 model StaffDepartment {
-  id                Int                       @id @default(autoincrement())
-  name              String                   @db.VarChar(255)
-  category          String                   @db.VarChar(50) // Keep as string for data compatibility, can be DepartmentCategory enum
-  description       String?                  @db.Text
-  image             String?                  @db.Text
-  images            StaffDepartmentImage[]
-  staffCount        Int                      @default(0)
-  headName          String?                  @db.VarChar(255)
-  pathwayHeadName   String?                  @db.VarChar(255)
-  extra             Json?
-  isActive          Boolean                  @default(true)
-  displayOrder      Int                      @default(0)
-  teachers          Staff[]
-  
+  id                  Int                    @id @default(autoincrement())
+  name                String                 @db.VarChar(255)
+  departmentType      String                 @default("MAIN") @db.VarChar(20)
+  parentDepartmentId  Int?
+  departmentHeadId    Int?
+  category            String                 @db.VarChar(50) // Keep as string for data compatibility, can be DepartmentCategory enum
+  description         String?                @db.Text
+  image               String?                @db.Text
+  images              StaffDepartmentImage[]
+  staffCount          Int                    @default(0)
+  headName            String?                @db.VarChar(255)
+  pathwayHeadName     String?                @db.VarChar(255)
+  extra               Json?
+  isActive            Boolean                @default(true)
+  displayOrder        Int                    @default(0)
+  teachers            Staff[]                @relation("LegacyDepartmentStaff")
+  mainDepartmentStaff Staff[]                @relation("MainDepartmentStaff")
+  subDepartmentStaff  Staff[]                @relation("SubDepartmentStaff")
+  departmentHead      Staff?                 @relation("DepartmentHead", fields: [departmentHeadId], references: [id], onDelete: SetNull)
+  parentDepartment    StaffDepartment?       @relation("DepartmentHierarchy", fields: [parentDepartmentId], references: [id], onDelete: Restrict)
+  subDepartments      StaffDepartment[]      @relation("DepartmentHierarchy")
+
   // CBE-specific fields
   cbePathwayId      Int?
   cbeTrackId        Int?
   cbePathway        CBEPathway?              @relation(fields: [cbePathwayId], references: [id], onDelete: SetNull)
   cbeTrack          CBETrack?                @relation(fields: [cbeTrackId], references: [id], onDelete: SetNull)
-  
+
   createdAt         DateTime                 @default(now())
   updatedAt         DateTime                 @updatedAt
 
   @@index([category])
+  @@index([departmentType])
+  @@index([parentDepartmentId])
+  @@index([departmentHeadId])
   @@index([isActive])
   @@index([displayOrder])
   @@index([cbePathwayId])
