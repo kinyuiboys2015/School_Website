@@ -1256,8 +1256,8 @@ const handleLogout = () => {
       badge: 'purple'
     },
     { 
-      id: 'resources', 
-      label: 'Resources',
+      id: 'resources',
+      label: 'Resources and Exams',
       icon: FiFileText,
       badge: 'cyan' 
     },

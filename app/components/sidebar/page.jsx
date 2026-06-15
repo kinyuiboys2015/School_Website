@@ -240,8 +240,8 @@ const handleLogout = () => {
       badge: 'blue'
     },
   { 
-    id: 'resources', 
-    label: 'Learning Resources', 
+    id: 'resources',
+    label: 'Resources and Exams',
     icon: FiFolder,
     badge: 'emerald',
   },

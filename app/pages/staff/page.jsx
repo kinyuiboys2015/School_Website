@@ -170,6 +170,28 @@ const departmentSearchText = (department) => {
     .toLowerCase();
 };
 
+const fetchPublicJson = async (url, attempts = 3) => {
+  let lastError;
+
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    try {
+      const response = await fetch(url, { cache: 'no-store' });
+      const data = await response.json();
+
+      if (response.ok && data.success) return data;
+      lastError = new Error(data.error || `Request failed: ${response.status}`);
+    } catch (error) {
+      lastError = error;
+    }
+
+    if (attempt < attempts - 1) {
+      await new Promise((resolve) => setTimeout(resolve, 750 * (attempt + 1)));
+    }
+  }
+
+  throw lastError || new Error('Unable to load data');
+};
+
 const getStaffHierarchy = (staffOrPosition) => {
   const role =
     typeof staffOrPosition === 'object'
@@ -376,12 +398,7 @@ export default function StaffDirectory() {
   const fetchStaffData = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/staff', { cache: 'no-store' });
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || `Failed to fetch staff data: ${response.status}`);
-      }
+      const data = await fetchPublicJson('/api/staff');
       
       if (data.success && data.staff) {
         const mappedStaff = data.staff.map(staff => ({
@@ -418,18 +435,18 @@ export default function StaffDirectory() {
   };
 
   useEffect(() => {
-    fetchStaffData();
-    fetchDepartmentsData();
+    const loadDirectory = async () => {
+      await fetchStaffData();
+      await fetchDepartmentsData();
+    };
+
+    loadDirectory();
   }, []);
 
   async function fetchDepartmentsData() {
     try {
       setDepartmentsLoading(true);
-      const response = await fetch('/api/staff/departments?grouped=1', { cache: 'no-store' });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || `Failed to fetch departments: ${response.status}`);
-      }
+      const data = await fetchPublicJson('/api/staff/departments?grouped=1');
       if (data.success) {
         const grouped = data.departmentsByCategory || {};
         setDepartmentsByCategory({

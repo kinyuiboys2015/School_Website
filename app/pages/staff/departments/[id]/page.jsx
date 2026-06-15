@@ -78,6 +78,28 @@ const formatValue = (value) => {
   return value?.toString() || "";
 };
 
+const fetchDepartmentJson = async (url, attempts = 3) => {
+  let lastError;
+
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    try {
+      const response = await fetch(url, { cache: "no-store" });
+      const data = await response.json();
+
+      if (response.ok && data.success) return data;
+      lastError = new Error(data.error || `Request failed: ${response.status}`);
+    } catch (error) {
+      lastError = error;
+    }
+
+    if (attempt < attempts - 1) {
+      await new Promise((resolve) => setTimeout(resolve, 750 * (attempt + 1)));
+    }
+  }
+
+  throw lastError || new Error("Unable to load department");
+};
+
 // REDESIGNED: Modern stat card with gradient accent
 const ModernStatCard = ({ icon: Icon, label, value, color = "slate" }) => {
   const colorStyles = {
@@ -128,14 +150,7 @@ export default function StaffDepartmentDetailPage() {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/staff/departments/${params.id}`, {
-        cache: "no-store",
-      });
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.error || "Department not found");
-      }
+      const data = await fetchDepartmentJson(`/api/staff/departments/${params.id}`);
 
       setDepartment(data.department);
     } catch (err) {
