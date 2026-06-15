@@ -522,6 +522,48 @@ model SchoolHubImage {
   @@map("school_hub_images")
 }
 
+model Alumni {
+  id             Int           @id @default(autoincrement())
+  title          String        @db.VarChar(255)
+  graduationYear Int?
+  currentRole    String?       @db.VarChar(255)
+  organization   String?       @db.VarChar(255)
+  location       String?       @db.VarChar(255)
+  story          String?       @db.Text
+  achievement    String?       @db.Text
+  website        String?       @db.VarChar(500)
+  image          String?       @db.Text
+  images         AlumniImage[]
+  isFeatured     Boolean       @default(false)
+  isActive       Boolean       @default(true)
+  displayOrder   Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([graduationYear])
+  @@index([isFeatured])
+  @@index([isActive])
+  @@index([displayOrder])
+  @@map("alumni")
+}
+
+model AlumniImage {
+  id           Int      @id @default(autoincrement())
+  alumniId     Int
+  url          String   @db.Text
+  publicId     String?  @db.Text
+  caption      String?  @db.VarChar(255)
+  altText      String?  @db.VarChar(255)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  alumni       Alumni   @relation(fields: [alumniId], references: [id], onDelete: Cascade)
+
+  @@index([alumniId])
+  @@index([displayOrder])
+  @@map("alumni_images")
+}
+
 model EmailCampaign {
   id            String    @id @default(cuid())
   title         String
