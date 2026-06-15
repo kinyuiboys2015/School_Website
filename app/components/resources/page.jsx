@@ -2004,7 +2004,7 @@ const handleSubmit = async (formData, id) => {
       {/* Text */}
       <div className="min-w-0 flex-1">
         <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-blue-200/80">
-          Matungulu Girls Senior School
+          Kinyui Boys Senior School
         </p>
 
         <h1 className="text-2xl font-black leading-tight text-white sm:text-3xl md:text-4xl">

@@ -417,7 +417,7 @@ export default function StaffDirectory() {
           bio: staff.bio,
           responsibilities: Array.isArray(staff.responsibilities) ? staff.responsibilities : [],
           achievements: Array.isArray(staff.achievements) ? staff.achievements : [],
-          location: 'Katwanyaa Senior School',
+          location: 'Kinyui Boys Senior School',
           joinDate: '2020'
         }));
         

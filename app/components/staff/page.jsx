@@ -1942,9 +1942,10 @@ const getDepartmentAuthHeaders = () => {
 const isAllowedDepartmentImage = (imageUrl) => {
   if (!imageUrl || typeof imageUrl !== 'string') return false;
   const normalized = imageUrl.toLowerCase();
+  const legacySchoolImagePattern = /(?:a\.i\.c_)?katw[a-z]*yaa/i;
+
   return !normalized.includes('/teachers.png') &&
-    !normalized.includes('a.i.c_katwanyaa') &&
-    !normalized.includes('katwanyaa') &&
+    !legacySchoolImagePattern.test(normalized) &&
     !normalized.includes('/katz');
 };
 
