@@ -369,17 +369,6 @@ function Notification({
 function ModernResourceDetailModal({ resource, onClose, onEdit }) {
   if (!resource) return null;
 
-  // Modern Color Palette
-  const getFileTypeColor = (type) => {
-    switch (type?.toLowerCase()) {
-      case 'pdf': return { bg: 'bg-rose-50', text: 'text-rose-600', border: 'border-rose-100', icon: 'bg-rose-500' };
-      case 'video': return { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'border-indigo-100', icon: 'bg-indigo-500' };
-      default: return { bg: 'bg-slate-50', text: 'text-slate-600', border: 'border-slate-100', icon: 'bg-slate-500' };
-    }
-  };
-
-  const typeColor = getFileTypeColor(resource.type);
-
   const getFileIcon = (type) => {
     switch (type?.toLowerCase()) {
       case 'pdf': return <FiFileText />;
@@ -430,20 +419,6 @@ function ModernResourceDetailModal({ resource, onClose, onEdit }) {
 
     {/* Simple Tags Bar */}
     <div className="flex flex-wrap gap-2 mt-6">
-      {/* Resource Type Tag */}
-      <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold ${typeColor.bg} ${typeColor.text} border ${typeColor.border}`}>
-        <span className={`w-2 h-2 rounded-full ${typeColor.icon}`} />
-        {resource.type || 'Resource'}
-      </span>
-      
-      {/* Category Tag */}
-      {resource.category && (
-        <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-green-900/40 text-green-300 border border-green-700">
-          <FiTag size={12} />
-          {resource.category}
-        </span>
-      )}
-      
       {/* Class Tag */}
       {resource.className && (
         <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-slate-800 text-slate-300 border border-slate-600">
@@ -460,26 +435,6 @@ function ModernResourceDetailModal({ resource, onClose, onEdit }) {
         </span>
       )}
       
-      {/* Difficulty Tag */}
-      {resource.difficulty && (
-        <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-amber-900/40 text-amber-300 border border-amber-700">
-          <FiTrendingUp size={12} />
-          {resource.difficulty.charAt(0).toUpperCase() + resource.difficulty.slice(1)}
-        </span>
-      )}
-
-    </div>
-
-    {/* Quick Stats */}
-    <div className="flex flex-wrap items-center gap-4 mt-6 text-xs text-slate-400">
-      <div className="flex items-center gap-1.5">
-        <FiClock size={14} />
-        Updated {new Date(resource.updatedAt || Date.now()).toLocaleDateString()}
-      </div>
-      <div className="flex items-center gap-1.5">
-        <FiEye size={14} />
-        {resource.views || 0} views
-      </div>
     </div>
   </div>
 </div>
@@ -553,33 +508,7 @@ function ModernResourceDetailModal({ resource, onClose, onEdit }) {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center">
-                        <FiUsers className="text-emerald-400" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-bold text-white/40 uppercase">Publisher</p>
-                        <p className="text-sm font-bold">{resource.uploadedBy || 'System'}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center">
-                        <FiClock className="text-amber-400" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-bold text-white/40 uppercase">Last Updated</p>
-                        <p className="text-sm font-bold">Today</p>
-                      </div>
-                    </div>
                   </div>
-                </div>
-
-                <div className="p-6 bg-teal-50 rounded-[32px] border border-teal-100">
-                   <p className="text-[10px] font-black text-teal-600 uppercase mb-2">Security</p>
-                   <p className="text-xs font-bold text-teal-900/70 leading-relaxed">
-                     This resource is restricted to <span className="text-teal-600 underline font-black">{resource.accessLevel}</span> roles only.
-                   </p>
                 </div>
               </div>
             </div>
@@ -1323,12 +1252,8 @@ export default function ResourcesManager() {
   const [resources, setResources] = useState([]);
   const [filteredResources, setFilteredResources] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedType, setSelectedType] = useState('all');
   const [selectedSubject, setSelectedSubject] = useState('All Subjects');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedClass, setSelectedClass] = useState('all');
-  const [selectedAccessLevel, setSelectedAccessLevel] = useState('all');
-  const [selectedStatus, setSelectedStatus] = useState('all');
+  const [selectedClass, setSelectedClass] = useState('All Classes');
   const [showModal, setShowModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -1340,7 +1265,6 @@ export default function ResourcesManager() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [stats, setStats] = useState(null);
 
   // NEW: Bulk delete states
   const [selectedResources, setSelectedResources] = useState(new Set());
@@ -1356,50 +1280,7 @@ export default function ResourcesManager() {
     message: ''
   });
 
-  // Status options
-  const statusOptions = [
-    { value: 'all', label: 'All Status', color: 'gray' },
-    { value: 'active', label: 'Active', color: 'green' },
-    { value: 'inactive', label: 'Inactive', color: 'gray' }
-  ];
-
-  // Type options
-  const typeOptions = [
-    { value: 'all', label: 'All Types', color: 'gray', icon: <FiFolder /> },
-    { value: 'document', label: 'Document', color: 'teal', icon: <FiFileText /> },
-    { value: 'pdf', label: 'PDF', color: 'red', icon: <FiFileText /> },
-    { value: 'video', label: 'Video', color: 'green', icon: <FiVideo /> },
-    { value: 'presentation', label: 'Presentation', color: 'orange', icon: <FiBarChart /> },
-    { value: 'spreadsheet', label: 'Spreadsheet', color: 'green', icon: <FiGrid /> },
-    { value: 'image', label: 'Image', color: 'pink', icon: <FiImage /> },
-    { value: 'audio', label: 'Audio', color: 'indigo', icon: <FiMusic /> },
-    { value: 'archive', label: 'Archive', color: 'gray', icon: <FiArchive /> }
-  ];
-
-  // Priority options
-  const accessOptions = [
-    { value: 'all', label: 'All Access', color: 'gray' },
-    { value: 'student', label: 'Student', color: 'teal' },
-    { value: 'teacher', label: 'Teacher', color: 'green' },
-    { value: 'admin', label: 'Admin', color: 'green' }
-  ];
-
   const subjectOptions = ['All Subjects', ...ALL_LEARNING_SUBJECTS];
-
-  // Category options
-  const categoryOptions = [
-    'All Categories',
-    'General',
-    'Lesson Notes',
-    'Past Papers',
-    'Reference Materials',
-    'Study Guides',
-    'Worksheets',
-    'Presentations',
-    'Videos',
-    'Audio Resources',
-    'Other'
-  ];
 
   // Class options
   const classOptions = [
@@ -1419,28 +1300,25 @@ export default function ResourcesManager() {
 
 
 
-  // Map API data to our component structure
+  // Keep only values returned by the database; do not manufacture display records.
   const mapResourceData = (apiResource) => {
     return {
       id: apiResource.id,
-      title: apiResource.title || 'Untitled Resource',
+      title: apiResource.title,
       description: apiResource.description || '',
-      subject: apiResource.subject || 'General',
+      subject: apiResource.subject,
       className: apiResource.className || '',
       teacher: apiResource.teacher || '',
-      category: apiResource.category || 'General',
-      type: apiResource.type || 'document',
+      category: apiResource.category || '',
+      type: apiResource.type || '',
       files: apiResource.files || [],
-      accessLevel: apiResource.accessLevel || 'student',
-      uploadedBy: apiResource.uploadedBy || 'System',
-      downloads: apiResource.downloads || 0,
-      isActive: apiResource.isActive ?? true,
+      accessLevel: apiResource.accessLevel || '',
+      uploadedBy: apiResource.uploadedBy || '',
+      downloads: apiResource.downloads,
+      isActive: apiResource.isActive,
       targetCriteria: apiResource.targetCriteria || null,
-      createdAt: apiResource.createdAt || new Date().toISOString(),
-      updatedAt: apiResource.updatedAt || new Date().toISOString(),
-      
-      // Legacy fields for compatibility
-      size: apiResource.size || 0
+      createdAt: apiResource.createdAt || '',
+      updatedAt: apiResource.updatedAt || ''
     };
   };
 
@@ -1486,12 +1364,8 @@ export default function ResourcesManager() {
 
   // Fetch resources
   const fetchResources = async (isRefresh = false) => {
-    setSelectedType('all');
     setSelectedSubject('All Subjects');
-    setSelectedCategory('All Categories');
     setSelectedClass('All Classes');
-    setSelectedAccessLevel('all');
-    setSelectedStatus('all');
     setSearchTerm('');
     
     if (isRefresh) {
@@ -1518,7 +1392,6 @@ export default function ResourcesManager() {
         const mappedResources = result.resources.map(mapResourceData);
         setResources(mappedResources);
         setFilteredResources(mappedResources);
-        calculateStats(mappedResources);
         
         if (mappedResources.length === 0) {
           showNotification('info', 'No Resources', 'No resources found in the system.');
@@ -1528,7 +1401,6 @@ export default function ResourcesManager() {
       } else if (result.success && result.resources === null) {
         setResources([]);
         setFilteredResources([]);
-        calculateStats([]);
         showNotification('info', 'No Resources', 'No resources found in the system.');
       } else {
         throw new Error(result.error || 'Invalid response from server');
@@ -1538,7 +1410,6 @@ export default function ResourcesManager() {
       showNotification('error', 'Load Failed', error.message || 'Failed to load resources. Please try again.');
       setResources([]);
       setFilteredResources([]);
-      calculateStats([]);
     } finally {
       if (isRefresh) {
         setRefreshing(false);
@@ -1546,30 +1417,6 @@ export default function ResourcesManager() {
         setLoading(false);
       }
     }
-  };
-
-  // Calculate statistics
-  const calculateStats = (resourcesList) => {
-    const stats = {
-      total: resourcesList.length,
-      active: resourcesList.filter(r => r.isActive === true).length,
-      inactive: resourcesList.filter(r => r.isActive === false).length,
-      totalFiles: resourcesList.reduce((acc, r) => acc + (Array.isArray(r.files) ? r.files.length : 1), 0),
-      totalDownloads: resourcesList.reduce((acc, r) => acc + (r.downloads || 0), 0),
-      studentAccess: resourcesList.filter(r => r.accessLevel === 'student').length,
-      teacherAccess: resourcesList.filter(r => r.accessLevel === 'teacher').length,
-      adminAccess: resourcesList.filter(r => r.accessLevel === 'admin').length,
-      
-      // Class stats
-      grade10: resourcesList.filter(r => r.className === 'Grade 10').length,
-      grade11: resourcesList.filter(r => r.className === 'Grade 11').length,
-      grade12: resourcesList.filter(r => r.className === 'Grade 12').length,
-      form1: resourcesList.filter(r => r.className === 'Form 1').length,
-      form2: resourcesList.filter(r => r.className === 'Form 2').length,
-      form3: resourcesList.filter(r => r.className === 'Form 3').length,
-      form4: resourcesList.filter(r => r.className === 'Form 4').length
-    };
-    setStats(stats);
   };
 
   // Initial load
@@ -1592,19 +1439,9 @@ export default function ResourcesManager() {
       );
     }
 
-    // Type filter
-    if (selectedType !== 'all') {
-      filtered = filtered.filter(resource => resource.type === selectedType);
-    }
-
     // Subject filter
     if (selectedSubject !== 'All Subjects') {
       filtered = filtered.filter(resource => resource.subject === selectedSubject);
-    }
-
-    // Category filter
-    if (selectedCategory !== 'All Categories') {
-      filtered = filtered.filter(resource => resource.category === selectedCategory);
     }
 
     // Class filter
@@ -1612,21 +1449,9 @@ export default function ResourcesManager() {
       filtered = filtered.filter(resource => resource.className === selectedClass);
     }
 
-    // Access level filter
-    if (selectedAccessLevel !== 'all') {
-      filtered = filtered.filter(resource => resource.accessLevel === selectedAccessLevel);
-    }
-
-    // Status filter
-    if (selectedStatus !== 'all') {
-      filtered = filtered.filter(resource => 
-        selectedStatus === 'active' ? resource.isActive === true : resource.isActive === false
-      );
-    }
-
     setFilteredResources(filtered);
     setCurrentPage(1);
-  }, [searchTerm, selectedType, selectedSubject, selectedCategory, selectedClass, selectedAccessLevel, selectedStatus, resources]);
+  }, [searchTerm, selectedSubject, selectedClass, resources]);
 
 
 
@@ -1638,21 +1463,13 @@ export default function ResourcesManager() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const hasActiveFilters = selectedType !== 'all' ||
-    selectedSubject !== 'All Subjects' ||
-    selectedCategory !== 'All Categories' ||
+  const hasActiveFilters = selectedSubject !== 'All Subjects' ||
     selectedClass !== 'All Classes' ||
-    selectedAccessLevel !== 'all' ||
-    selectedStatus !== 'all' ||
     Boolean(searchTerm);
 
   const clearResourceFilters = () => {
-    setSelectedType('all');
     setSelectedSubject('All Subjects');
-    setSelectedCategory('All Categories');
     setSelectedClass('All Classes');
-    setSelectedAccessLevel('all');
-    setSelectedStatus('all');
     setSearchTerm('');
   };
 
@@ -1958,40 +1775,8 @@ const handleSubmit = async (formData, id) => {
       />
 
 
-{/* Modern Responsive Header with Bronze Gradient */}
-{/* Modern Responsive Header – Resources Theme */}
-<div className="relative mb-6 sm:mb-8 overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem]
-                bg-gradient-to-br from-indigo-700 via-green-700 to-violet-700
-                p-4 sm:p-6 md:p-8 shadow-xl sm:shadow-2xl">
-
-  {/* Abstract Gradient Orbs - green/Indigo Theme */}
-  <div className="absolute top-[-25%] right-[-10%] w-[250px] h-[250px] md:w-[420px] md:h-[420px] 
-                  bg-gradient-to-br from-indigo-500/30 via-green-500/20 to-violet-500/30 
-                  rounded-full blur-[100px] pointer-events-none animate-pulse" />
-  
-  <div className="absolute bottom-[-25%] left-[-10%] w-[200px] h-[200px] md:w-[340px] md:h-[340px] 
-                  bg-gradient-to-tr from-green-500/20 via-indigo-500/10 to-violet-500/20 
-                  rounded-full blur-[80px] pointer-events-none" />
-  
-  {/* Central Floating Orb */}
-  <div className="absolute top-[30%] right-[20%] w-[180px] h-[180px] 
-                  bg-gradient-to-r from-indigo-500/20 to-green-500/20 
-                  rounded-full blur-[70px] pointer-events-none animate-pulse" />
-  
-  {/* Subtle Grid Pattern */}
-  <div className="absolute inset-0 opacity-[0.02]" 
-       style={{ 
-         backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-         backgroundSize: '40px 40px'
-       }} />
-  
-  {/* Shine Effect Overlay */}
-  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 
-                  bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full 
-                  group-hover:translate-x-full" 
-       style={{ transform: 'skewX(-20deg)' }} />
-{/* ── Clean Responsive Resources Header ── */}
-<div className="relative z-10 rounded-2xl bg-[#071527] p-4 sm:p-6 shadow-sm">
+{/* Clean Responsive Resources Header */}
+<div className="relative mb-6 overflow-hidden rounded-2xl bg-[#071527] p-4 shadow-sm sm:mb-8 sm:p-6">
   <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
     
     {/* Left Content */}
@@ -2015,16 +1800,6 @@ const handleSubmit = async (formData, id) => {
           Upload, organize, and manage school learning resources and documents in one place.
         </p>
 
-        {/* Simple Stats */}
-        <div className="mt-4 flex flex-wrap gap-2">
-          <div className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/85">
-            {stats?.total || 0} Resources
-          </div>
-
-          <div className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/85">
-            {stats?.totalFiles || 0} Files
-          </div>
-        </div>
       </div>
     </div>
 
@@ -2058,105 +1833,7 @@ const handleSubmit = async (formData, id) => {
     </div>
   </div>
 </div>
-</div>
 
-
-      {/* Stats Overview */}
-      {stats && (
-        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
-          
-          {/* Total Card */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-5 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 transform-gpu">
-            <div className="flex items-center justify-between">
-              <div className="min-w-0">
-                <p className="text-xs sm:text-md  font-semibold text-gray-600 mb-1 truncate">Total</p>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">{stats.total}</p>
-              </div>
-              <div className="flex-shrink-0 ml-3 p-2.5 sm:p-3 bg-gradient-to-br from-teal-50 to-teal-100 text-teal-600 rounded-2xl">
-                <FiFolder className="text-lg sm:text-xl" />
-              </div>
-            </div>
-          </div>
-
-          {/* Total Files Card */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-5 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 transform-gpu">
-            <div className="flex items-center justify-between">
-              <div className="min-w-0">
-                <p className="text-xs sm:text-md  font-semibold text-gray-600 mb-1 truncate">Total Files</p>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">{stats.totalFiles}</p>
-              </div>
-              <div className="flex-shrink-0 ml-3 p-2.5 sm:p-3 bg-gradient-to-br from-green-50 to-green-100 text-green-600 rounded-2xl">
-                <FiFileText className="text-lg sm:text-xl" />
-              </div>
-            </div>
-          </div>
-
-          {/* Grade 10 Card */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-5 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 transform-gpu">
-            <div className="flex items-center justify-between">
-              <div className="min-w-0">
-                <p className="text-xs sm:text-md  font-semibold text-gray-600 mb-1 truncate">Grade 10</p>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">{stats.grade10 || 0}</p>
-              </div>
-              <div className="flex-shrink-0 ml-3 p-2.5 sm:p-3 bg-gradient-to-br from-teal-50 to-teal-100 text-teal-600 rounded-2xl">
-                <FiUsers className="text-lg sm:text-xl" />
-              </div>
-            </div>
-          </div>
-
-          {/* Grade 11 Card */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-5 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 transform-gpu">
-            <div className="flex items-center justify-between">
-              <div className="min-w-0">
-                <p className="text-xs sm:text-md  font-semibold text-gray-600 mb-1 truncate">Grade 11</p>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">{stats.grade11 || 0}</p>
-              </div>
-              <div className="flex-shrink-0 ml-3 p-2.5 sm:p-3 bg-gradient-to-br from-green-50 to-green-100 text-green-600 rounded-2xl">
-                <FiUsers className="text-lg sm:text-xl" />
-              </div>
-            </div>
-          </div>
-
-          {/* Grade 12 Card */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-5 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 transform-gpu">
-            <div className="flex items-center justify-between">
-              <div className="min-w-0">
-                <p className="text-xs sm:text-md  font-semibold text-gray-600 mb-1 truncate">Grade 12</p>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">{stats.grade12 || 0}</p>
-              </div>
-              <div className="flex-shrink-0 ml-3 p-2.5 sm:p-3 bg-gradient-to-br from-green-50 to-green-100 text-green-600 rounded-2xl">
-                <FiUsers className="text-lg sm:text-xl" />
-              </div>
-            </div>
-          </div>
-
-          {/* Form 3 Card */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-5 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 transform-gpu">
-            <div className="flex items-center justify-between">
-              <div className="min-w-0">
-                <p className="text-xs sm:text-md  font-semibold text-gray-600 mb-1 truncate">Form 3</p>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">{stats.form3 || 0}</p>
-              </div>
-              <div className="flex-shrink-0 ml-3 p-2.5 sm:p-3 bg-gradient-to-br from-green-50 to-green-100 text-green-600 rounded-2xl">
-                <FiUsers className="text-lg sm:text-xl" />
-              </div>
-            </div>
-          </div>
-
-          {/* Form 4 Card */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-5 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 transform-gpu">
-            <div className="flex items-center justify-between">
-              <div className="min-w-0">
-                <p className="text-xs sm:text-md  font-semibold text-gray-600 mb-1 truncate">Form 4</p>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">{stats.form4 || 0}</p>
-              </div>
-              <div className="flex-shrink-0 ml-3 p-2.5 sm:p-3 bg-gradient-to-br from-green-50 to-green-100 text-green-600 rounded-2xl">
-                <FiUsers className="text-lg sm:text-xl" />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Bulk Actions Section - NEW */}
       {selectedResources.size > 0 && (

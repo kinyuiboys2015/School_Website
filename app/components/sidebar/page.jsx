@@ -18,8 +18,7 @@ import {
   FiFileText,
   FiDollarSign,
   FiFolder, 
-  FiArchive,
-  FiMessageSquare
+  FiArchive
 } from 'react-icons/fi';
 
 import { 
@@ -250,12 +249,6 @@ const handleLogout = () => {
     label: 'Admission Applications', 
     icon: FiClipboard,
     badge: 'purple',
-  },
-  { 
-    id: 'sms',
-    label: 'SMS Management',
-    icon: FiMessageSquare,
-    badge: 'orange'
   },
   { 
     id: 'assignments', 

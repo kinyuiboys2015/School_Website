@@ -41,7 +41,6 @@ import {
   FiTrendingDown as FiTrendingDownSolid,
   FiActivity as FiActivitySolid,
   FiBriefcase,
-  FiSend,          // SMS icon
 } from 'react-icons/fi';
 import { 
   IoPeopleCircle,
@@ -467,12 +466,12 @@ const decodeJWTToken = (token) => {
   }
 };
 
-// ========== SMS OVERVIEW CARD (replaces Student Engagement) ==========
-const SmsOverviewCard = ({ smsStats, recentCampaigns }) => {
-  const total = smsStats?.total || 0;
-  const drafts = smsStats?.draft || 0;
-  const sent = smsStats?.sent || 0;
-  const campaigns = recentCampaigns || [];
+// ========== ALUMNI OVERVIEW CARD ==========
+const AlumniOverviewCard = ({ alumniStats, recentAlumni }) => {
+  const total = alumniStats?.total || 0;
+  const featured = alumniStats?.featured || 0;
+  const graduationYears = alumniStats?.graduationYears || 0;
+  const alumni = recentAlumni || [];
 
   return (
     <div className="group relative bg-white rounded-[2rem] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)]">
@@ -482,11 +481,11 @@ const SmsOverviewCard = ({ smsStats, recentCampaigns }) => {
       
       <div className="flex items-center justify-between mb-6 relative z-10">
         <div>
-          <h3 className="text-lg font-black text-slate-800 tracking-tight">SMS Campaigns</h3>
-          <p className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Communication Hub</p>
+          <h3 className="text-lg font-black text-slate-800 tracking-tight">Alumni Network</h3>
+          <p className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Graduate Community</p>
         </div>
-        <div className="p-3 rounded-2xl bg-blue-50 border border-blue-100 text-blue-600 shadow-sm transition-transform group-hover:scale-100">
-          <FiSend className="text-xl" />
+        <div className="p-3 rounded-2xl bg-orange-50 border border-orange-100 text-orange-700 shadow-sm transition-transform group-hover:scale-100">
+          <FiAward className="text-xl" />
         </div>
       </div>
       
@@ -496,40 +495,42 @@ const SmsOverviewCard = ({ smsStats, recentCampaigns }) => {
           <span className="text-[11px] font-black text-slate-400 uppercase tracking-wider">Total</span>
           <div className="flex items-baseline gap-1 mt-1">
             <span className="text-2xl font-black text-slate-900">{total}</span>
-            <span className="text-xs font-bold text-slate-400">campaigns</span>
+            <span className="text-xs font-bold text-slate-400">profiles</span>
           </div>
         </div>
         
         <div className="grid grid-cols-2 gap-2">
           <div className="bg-amber-50/80 rounded-xl p-3 border border-amber-100">
-            <span className="text-[10px] font-black text-amber-600 uppercase">Draft</span>
-            <p className="text-xl font-black text-amber-700 mt-1">{drafts}</p>
+            <span className="text-[10px] font-black text-amber-600 uppercase">Featured</span>
+            <p className="text-xl font-black text-amber-700 mt-1">{featured}</p>
           </div>
           <div className="bg-emerald-50/80 rounded-xl p-3 border border-emerald-100">
-            <span className="text-[10px] font-black text-emerald-600 uppercase">Sent</span>
-            <p className="text-xl font-black text-emerald-700 mt-1">{sent}</p>
+            <span className="text-[10px] font-black text-emerald-600 uppercase">Years</span>
+            <p className="text-xl font-black text-emerald-700 mt-1">{graduationYears}</p>
           </div>
         </div>
       </div>
       
-      {/* Recent Campaigns */}
+      {/* Recent Alumni */}
       <div className="mb-4">
-        <h4 className="text-[11px] font-black text-slate-400 uppercase tracking-wider mb-3">Recent Campaigns</h4>
+        <h4 className="text-[11px] font-black text-slate-400 uppercase tracking-wider mb-3">Recent Alumni</h4>
         <div className="space-y-3">
-          {campaigns.length > 0 ? (
-            campaigns.slice(0, 3).map((campaign, index) => (
-              <div key={index} className="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
+          {alumni.length > 0 ? (
+            alumni.slice(0, 3).map((record) => (
+              <div key={record.id} className="flex items-center justify-between gap-3 p-2 bg-slate-50 rounded-xl border border-slate-100">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className={`p-1.5 rounded-lg ${campaign.status === 'sent' ? 'bg-emerald-100' : 'bg-amber-100'}`}>
-                    <FiSend className={`w-3 h-3 ${campaign.status === 'sent' ? 'text-emerald-600' : 'text-amber-600'}`} />
+                  <div className="p-1.5 rounded-lg bg-orange-100">
+                    <FiAward className="w-3 h-3 text-orange-700" />
                   </div>
-                  <span className="text-xs font-bold text-slate-700 truncate">{campaign.title || 'Untitled'}</span>
+                  <span className="text-xs font-bold text-slate-700 truncate">{record.title}</span>
                 </div>
-                <span className="text-[10px] font-bold text-slate-400">{campaign.recipientCount || 0} recipients</span>
+                <span className="text-[10px] font-bold text-slate-400 truncate">
+                  {record.graduationYear || record.currentRole || 'Alumni'}
+                </span>
               </div>
             ))
           ) : (
-            <p className="text-xs text-slate-400 text-center py-2">No recent campaigns</p>
+            <p className="text-xs text-slate-400 text-center py-2">No alumni records yet</p>
           )}
         </div>
       </div>
@@ -579,15 +580,13 @@ export default function DashboardOverview() {
     averageAge: 0
   });
   
-  // New SMS stats
-  const [smsStats, setSmsStats] = useState({
+  const [alumniStats, setAlumniStats] = useState({
     total: 0,
-    draft: 0,
-    sent: 0,
-    totalRecipients: 0,
-    successRate: 0
+    featured: 0,
+    graduationYears: 0,
+    images: 0
   });
-  const [recentSmsCampaigns, setRecentSmsCampaigns] = useState([]);
+  const [recentAlumni, setRecentAlumni] = useState([]);
   
   const [recentActivity, setRecentActivity] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
@@ -783,7 +782,7 @@ const [admissionGrowth, setAdmissionGrowth] = useState({});
         admissionsRes,
         resourcesRes,
         emailCampaignsRes,
-        smsRes
+        alumniRes
       ] = await Promise.allSettled([
         fetch('/api/studentupload?includeStats=true&limit=1000'),
 	        fetch('/api/staff', getDashboardAuthHeaders()),
@@ -798,7 +797,7 @@ const [admissionGrowth, setAdmissionGrowth] = useState({});
         fetch('/api/applyadmission'),
         fetch('/api/resources'),
         fetch('/api/emails'),
-        fetch('/api/sms')  // Added SMS campaigns fetch
+        fetch('/api/alumini')
       ]);
       
       // Process responses
@@ -851,34 +850,25 @@ if (newsRes.status === 'fulfilled' && newsRes.value.ok) {
       const admissions = admissionsRes.status === 'fulfilled' ? await admissionsRes.value.json() : { applications: [] };
       const resources = resourcesRes.status === 'fulfilled' ? await resourcesRes.value.json() : { resources: [] };
       const emailCampaignsData = emailCampaignsRes.status === 'fulfilled' ? await emailCampaignsRes.value.json() : { campaigns: [] };
-      
-      // Process SMS campaigns
-      const smsData = smsRes.status === 'fulfilled' ? await smsRes.value.json() : { campaigns: [] };
-      if (smsData.success) {
-        const campaigns = smsData.campaigns || [];
-        const draftCount = campaigns.filter(c => c.status === 'draft').length;
-        const sentCount = campaigns.filter(c => c.status === 'sent').length;
-        const totalRecipients = campaigns.reduce((acc, c) => acc + (c.recipients ? c.recipients.split(',').length : 0), 0);
-        const successRate = sentCount > 0 ? Math.round((sentCount / campaigns.length) * 100) : 0;
-        
-        setSmsStats({
-          total: campaigns.length,
-          draft: draftCount,
-          sent: sentCount,
-          totalRecipients,
-          successRate
-        });
-        
-        // Get recent campaigns for display
-        const recent = campaigns
+      const alumniData = alumniRes.status === 'fulfilled' ? await alumniRes.value.json() : { alumni: [] };
+      const alumniRecords = Array.isArray(alumniData.alumni) ? alumniData.alumni : [];
+      const alumniOverview = {
+        total: alumniRecords.length,
+        featured: alumniRecords.filter(record => record.isFeatured).length,
+        graduationYears: new Set(
+          alumniRecords.map(record => record.graduationYear).filter(Boolean)
+        ).size,
+        images: alumniRecords.reduce(
+          (total, record) => total + (Array.isArray(record.images) ? record.images.length : 0),
+          0
+        )
+      };
+      setAlumniStats(alumniOverview);
+      setRecentAlumni(
+        [...alumniRecords]
           .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
           .slice(0, 3)
-          .map(c => ({
-            ...c,
-            recipientCount: c.recipients ? c.recipients.split(',').length : 0
-          }));
-        setRecentSmsCampaigns(recent);
-      }
+      );
       
       // Store school video for quick tour
       if (schoolInfo.school?.videoTour) {
@@ -1154,11 +1144,11 @@ setGrowthMetrics({
           description: 'Student support engagement'
         },
         { 
-          label: 'SMS Campaigns', 
-          value: smsStats.total,
+          label: 'Alumni Records', 
+          value: alumniOverview.total,
           change: 0,
-          color: 'green',
-          description: 'Total SMS campaigns created'
+          color: 'orange',
+          description: 'Published alumni profiles'
         }
       ];
       
@@ -1175,12 +1165,12 @@ setGrowthMetrics({
           calculation: 'Based on assignment completion'
         },
         { 
-          label: 'SMS Campaigns', 
-          value: `${smsStats.total}`, 
+          label: 'Alumni Network', 
+          value: `${alumniOverview.total}`, 
           change: 0, 
-          icon: smsStats.total > 0 ? FiTrendingUp : FiTrendingDown, 
-          color: smsStats.total > 0 ? 'blue' : 'red',
-          calculation: 'Total campaigns'
+          icon: alumniOverview.total > 0 ? FiTrendingUp : FiTrendingDown, 
+          color: alumniOverview.total > 0 ? 'orange' : 'red',
+          calculation: `${alumniOverview.featured} featured profiles`
         },
         { 
           label: 'Admission Growth', 
@@ -1871,10 +1861,9 @@ const StatCard = ({ icon: Icon, label, value, change, color, subtitle, trend }) 
           })}
         </div>
         
-        {/* Main Stats Grid - Updated with SMS Overview Card replacing Student Engagement */}
+        {/* Main Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* SMS Overview Card (replaces Student Engagement) */}
-          <SmsOverviewCard smsStats={smsStats} recentCampaigns={recentSmsCampaigns} />
+          <AlumniOverviewCard alumniStats={alumniStats} recentAlumni={recentAlumni} />
           
           {/* Staff Distribution Card */}
           <div className="bg-white rounded-[2rem] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition-all duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] overflow-hidden">

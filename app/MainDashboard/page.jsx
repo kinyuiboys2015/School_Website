@@ -23,7 +23,6 @@ import {
   FiSmartphone,
   FiArrowLeft,
   FiArchive,
-  FiMessageSquare,
 } from 'react-icons/fi';
 import { 
   IoStatsChart,
@@ -53,7 +52,6 @@ import Careers from "../components/career/page";
 import Student from "../components/student/page";
 import Fees from "../components/fees/page";
 import SchoolDocs from "../components/schooldocuments/page";
-import SMSManager from "../components/sms/page";
 import AchievementsManager from "../components/Achievements/page";
 import SchoolHubManager from "../components/schoolhub/page";
 
@@ -1178,9 +1176,6 @@ const handleLogout = () => {
         return <GalleryManager />;
       case 'careers':
         return <Careers />; 
-        case 'sms':      
-          return <SMSManager />;
-
       case 'achievements':
         return <AchievementsManager />;    
 
@@ -1278,12 +1273,6 @@ const handleLogout = () => {
       label: 'Careers',
       icon: FiCalendar,
       badge: 'lime'
-    },
-    { 
-      id: 'sms',
-      label: 'SMS Management',
-      icon: FiMessageSquare,
-      badge: 'orange'
     },
     { 
       id: 'newsevents', 
