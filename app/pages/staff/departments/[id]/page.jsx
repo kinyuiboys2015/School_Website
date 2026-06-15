@@ -11,11 +11,9 @@ import {
   FiCheckCircle,
   FiLayers,
   FiMapPin,
-  FiRefreshCw,
   FiShield,
   FiTarget,
   FiUser,
-  FiUsers,
   FiBook,
   FiClipboard,
   FiInfo,
@@ -52,11 +50,6 @@ const getCategoryMeta = (category) => CATEGORY_META[category] || CATEGORY_META.T
 
 const getDepartmentImage = (department) => {
   return department?.image || department?.images?.[0]?.url || "/teachers.png";
-};
-
-const getTeacherImage = (teacher) => {
-  if (teacher?.image) return teacher.image;
-  return teacher?.gender === "female" ? "/female.png" : "/male.png";
 };
 
 const parseExtra = (extra) => {
@@ -111,39 +104,6 @@ const ModernStatCard = ({ icon: Icon, label, value, color = "slate" }) => {
   );
 };
 
-// REDESIGNED: Teacher card with modern hover effects
-const ModernTeacherCard = ({ teacher }) => (
-  <article className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-    <div className="relative aspect-[4/3] bg-gradient-to-br from-slate-200 to-slate-100 overflow-hidden">
-      <img
-        src={getTeacherImage(teacher)}
-        alt={teacher.name}
-        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      {teacher.subjectOffered && (
-        <span className="absolute bottom-3 left-3 right-3 rounded-full bg-white/95 backdrop-blur-sm px-3 py-1.5 text-center text-[10px] font-black uppercase tracking-widest text-emerald-700 shadow-md">
-          {teacher.subjectOffered}
-        </span>
-      )}
-    </div>
-    <div className="p-4">
-      <h3 className="truncate text-base font-black text-slate-900 group-hover:text-blue-600 transition-colors">
-        {teacher.name}
-      </h3>
-      <div className="mt-1 flex items-center gap-2">
-        <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Teaching Staff</p>
-      </div>
-      {teacher.bio && (
-        <p className="mt-3 line-clamp-2 text-xs font-medium leading-relaxed text-slate-500">
-          {teacher.bio}
-        </p>
-      )}
-    </div>
-  </article>
-);
-
 // REDESIGNED: Info badge component
 const InfoBadge = ({ icon: Icon, label, value }) => (
   <div className="flex items-start gap-3 rounded-xl border border-slate-100 bg-white p-4 shadow-sm transition-all hover:shadow-md hover:border-slate-200">
@@ -168,7 +128,7 @@ export default function StaffDepartmentDetailPage() {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/staff/departments/${params.id}?includeTeachers=1`, {
+      const response = await fetch(`/api/staff/departments/${params.id}`, {
         cache: "no-store",
       });
       const data = await response.json();
@@ -231,16 +191,11 @@ export default function StaffDepartmentDetailPage() {
 
   const meta = getCategoryMeta(department.category);
   const Icon = meta.icon;
-  const teachers = Array.isArray(department.teachers)
-    ? department.teachers
-    : Array.isArray(department.staff)
-    ? department.staff
-    : [];
 
   // Default Kinyui Boys Mathematics Department data
   const defaultOverview = "Coordinates Mathematics teaching, numeracy support, assessment preparation, and performance tracking across the school.";
   const defaultExtraDetails = [
-    { key: "Notes", value: "Seeded from the 2025 Kinyui Boys teacher list.", icon: FiClipboard },
+    { key: "Notes", value: "Department information is maintained at group level.", icon: FiClipboard },
     { key: "Location", value: "Academic block", icon: FiMapPin },
     { key: "Subjects", value: "Mathematics", icon: FiBook },
     { key: "Focus Areas", value: "Mathematics, Numeracy, Assessment preparation", icon: FiTarget },
@@ -288,9 +243,8 @@ export default function StaffDepartmentDetailPage() {
           <div className="p-5 sm:p-8">
             
             {/* REDESIGNED STATS GRID - Modern cards with different colors */}
-            <div className="grid gap-4 grid-cols-2 sm:grid-cols-4">
-              <ModernStatCard icon={FiUsers} label="Teachers/Staff" value={`${department.staffCount || 0} members`} color="blue" />
-              <ModernStatCard icon={FiUser} label="Head of Department" value={department.headName || "Miss Stella Marris"} color="emerald" />
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
+              <ModernStatCard icon={FiUser} label="Head of Department" value={department.headName || "Not listed"} color="emerald" />
               <ModernStatCard icon={FiShield} label="AHOD" value={department.assistantHeadName || "Not listed"} color="amber" />
               <ModernStatCard icon={Icon} label="Category" value={meta.label} color="purple" />
             </div>
@@ -359,42 +313,6 @@ export default function StaffDepartmentDetailPage() {
 
             </div>
 
-            {/* REDESIGNED TEACHERS GRID SECTION */}
-            <section className="mt-10">
-              <div className="flex items-center justify-between mb-5">
-                <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
-                    <FiUsers size={14} />
-                  </div>
-                  <h2 className="text-sm font-black uppercase tracking-widest text-slate-900">Department Teachers</h2>
-                </div>
-                {teachers.length > 0 && (
-                  <span className="text-[10px] font-black text-slate-400 bg-slate-100 px-2 py-1 rounded-full">
-                    {teachers.length} members
-                  </span>
-                )}
-              </div>
-              
-              {teachers.length > 0 ? (
-                <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                  {teachers.map((teacher) => (
-                    <ModernTeacherCard key={teacher.id} teacher={teacher} />
-                  ))}
-                </div>
-              ) : (
-                <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 p-12 text-center">
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-400">
-                      <FiUsers size={20} />
-                    </div>
-                    <p className="text-sm font-semibold text-slate-500">
-                      Teachers assigned to this department will appear here.
-                    </p>
-                    <p className="text-xs text-slate-400">Check back soon for updates</p>
-                  </div>
-                </div>
-              )}
-            </section>
           </div>
         </article>
       </div>

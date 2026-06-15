@@ -15,6 +15,7 @@ import {
   FiSearch,
   FiTarget,
   FiUser,
+  FiX,
 } from "react-icons/fi";
 import SearchableSubjectDropdown from "./SearchableSubjectDropdown/page";
 import {
@@ -28,6 +29,8 @@ import {
 } from "../../libs/displayNames";
 
 const ALL_CLASSES = "All Classes";
+const normalizeFilterValue = (value) =>
+  String(value || "").trim().toLowerCase();
 
 const getItemFiles = (item, contentType) => {
   const rawFiles =
@@ -145,16 +148,33 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
   );
 
   const visibleItems = useMemo(() => {
-    const query = searchTerm.trim().toLowerCase();
+    const query = normalizeFilterValue(searchTerm);
+    const selectedSubject = normalizeFilterValue(subject);
+    const selectedClass = normalizeFilterValue(className);
 
     return items.filter((item) => {
+      const files = getItemFiles(item, contentType);
       const searchableText = [
         item.title,
         item.description,
+        item.instructions,
         item.subject,
         item.teacher,
+        item.uploadedBy,
         item.className,
         item.category,
+        item.type,
+        item.status,
+        item.priority,
+        item.dueDate,
+        item.createdAt,
+        formatDisplayDate(item.dueDate, ""),
+        formatDisplayDate(item.createdAt, ""),
+        ...files.flatMap((file) => [
+          file.name,
+          file.extension,
+          file.fileType,
+        ]),
       ]
         .filter(Boolean)
         .join(" ")
@@ -162,11 +182,24 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
 
       return (
         (!query || searchableText.includes(query)) &&
-        (subject === ALL_SUBJECTS_LABEL || item.subject === subject) &&
-        (className === ALL_CLASSES || item.className === className)
+        (subject === ALL_SUBJECTS_LABEL ||
+          normalizeFilterValue(item.subject) === selectedSubject) &&
+        (className === ALL_CLASSES ||
+          normalizeFilterValue(item.className) === selectedClass)
       );
     });
-  }, [className, items, searchTerm, subject]);
+  }, [className, contentType, items, searchTerm, subject]);
+
+  const hasActiveFilters =
+    Boolean(searchTerm.trim()) ||
+    subject !== ALL_SUBJECTS_LABEL ||
+    className !== ALL_CLASSES;
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSubject(ALL_SUBJECTS_LABEL);
+    setClassName(ALL_CLASSES);
+  };
 
   const dueSoonCount = useMemo(
     () => items.filter(isDueWithinAWeek).length,
@@ -290,8 +323,21 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
                 placeholder={`Search ${
                   isAssignments ? "assignments" : "resources"
                 }...`}
+                aria-label={`Search ${
+                  isAssignments ? "assignment" : "resource"
+                } table`}
                 className="min-w-0 flex-1 bg-transparent text-sm outline-none"
               />
+              {searchTerm ? (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm("")}
+                  aria-label="Clear search"
+                  className="rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+                >
+                  <FiX className="h-4 w-4" />
+                </button>
+              ) : null}
             </div>
           </div>
 
@@ -322,36 +368,44 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
           </div>
         </div>
 
-        <div className="mt-8 flex items-center justify-between gap-4">
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
           <p className="text-sm font-semibold text-slate-600">
-            {visibleItems.length} {visibleItems.length === 1 ? "item" : "items"}{" "}
-            available
+            {loading
+              ? `Loading ${isAssignments ? "assignments" : "resources"}...`
+              : `${visibleItems.length} ${
+                  visibleItems.length === 1 ? "item" : "items"
+                } available`}
           </p>
-          <button
-            type="button"
-            onClick={() => setRefreshKey((key) => key + 1)}
-            disabled={loading}
-            className={`inline-flex items-center gap-2 rounded-xl border bg-white px-4 py-2 text-sm font-bold shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 ${
-              isAssignments
-                ? "border-amber-200 text-amber-900 hover:bg-amber-50"
-                : "border-teal-200 text-teal-900 hover:bg-teal-50"
-            }`}
-          >
-            <FiRefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-            Refresh
-          </button>
+          <div className="flex items-center gap-2">
+            {hasActiveFilters ? (
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50"
+              >
+                <FiX className="h-4 w-4" />
+                Clear filters
+              </button>
+            ) : null}
+            <button
+              type="button"
+              onClick={() => setRefreshKey((key) => key + 1)}
+              disabled={loading}
+              className={`inline-flex items-center gap-2 rounded-xl border bg-white px-4 py-2 text-sm font-bold shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 ${
+                isAssignments
+                  ? "border-amber-200 text-amber-900 hover:bg-amber-50"
+                  : "border-teal-200 text-teal-900 hover:bg-teal-50"
+              }`}
+            >
+              <FiRefreshCw
+                className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
+              />
+              Refresh
+            </button>
+          </div>
         </div>
 
-        {loading ? (
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {[0, 1, 2, 3].map((item) => (
-              <div
-                key={item}
-                className="h-72 animate-pulse rounded-3xl border border-slate-200 bg-white"
-              />
-            ))}
-          </div>
-        ) : error ? (
+        {error ? (
           <div className="mt-8 rounded-3xl border border-red-200 bg-red-50 p-8 text-center">
             <FiAlertCircle className="mx-auto h-10 w-10 text-red-600" />
             <h2 className="mt-4 text-lg font-black text-red-950">
@@ -359,7 +413,7 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
             </h2>
             <p className="mt-2 text-sm text-red-800">{error}</p>
           </div>
-        ) : visibleItems.length ? (
+        ) : (
           <div
             className={`mt-8 overflow-hidden rounded-3xl border bg-white shadow-sm ${
               isAssignments ? "border-amber-200" : "border-cyan-200"
@@ -391,7 +445,9 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
                     {isAssignments ? "Academic Assignments" : "Digital Resources"}
                   </h2>
                   <p className="text-xs font-semibold text-slate-500">
-                    {visibleItems.length} visible records
+                    {loading
+                      ? "Loading records..."
+                      : `${visibleItems.length} visible records`}
                   </p>
                 </div>
               </div>
@@ -432,14 +488,24 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {visibleItems.map((item) => {
-                      const files = getItemFiles(item, contentType);
+                    {loading ? (
+                      <tr>
+                        <td colSpan={6} className="px-6 py-16 text-center">
+                          <FiRefreshCw className="mx-auto h-7 w-7 animate-spin text-amber-600" />
+                          <p className="mt-3 text-sm font-bold text-slate-600">
+                            Loading assignments into the table...
+                          </p>
+                        </td>
+                      </tr>
+                    ) : visibleItems.length ? (
+                      visibleItems.map((item) => {
+                        const files = getItemFiles(item, contentType);
 
-                      return (
-                        <tr
-                          key={item.id}
-                          className="align-top transition hover:bg-amber-50/50"
-                        >
+                        return (
+                          <tr
+                            key={item.id}
+                            className="align-top transition hover:bg-amber-50/50"
+                          >
                           <td className="max-w-[330px] px-6 py-5">
                             <div className="flex items-start gap-3">
                               <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-800">
@@ -507,9 +573,22 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
                               </span>
                             )}
                           </td>
-                        </tr>
-                      );
-                    })}
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <td colSpan={6} className="px-6 py-16 text-center">
+                          <FiBookOpen className="mx-auto h-9 w-9 text-slate-400" />
+                          <p className="mt-3 font-black text-slate-900">
+                            No matching assignments
+                          </p>
+                          <p className="mt-1 text-sm text-slate-500">
+                            Change the search phrase, subject, or class.
+                          </p>
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               ) : (
@@ -537,14 +616,24 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {visibleItems.map((item) => {
-                      const files = getItemFiles(item, contentType);
+                    {loading ? (
+                      <tr>
+                        <td colSpan={6} className="px-6 py-16 text-center">
+                          <FiRefreshCw className="mx-auto h-7 w-7 animate-spin text-teal-600" />
+                          <p className="mt-3 text-sm font-bold text-slate-600">
+                            Loading resources into the table...
+                          </p>
+                        </td>
+                      </tr>
+                    ) : visibleItems.length ? (
+                      visibleItems.map((item) => {
+                        const files = getItemFiles(item, contentType);
 
-                      return (
-                        <tr
-                          key={item.id}
-                          className="align-top transition hover:bg-cyan-50/50"
-                        >
+                        return (
+                          <tr
+                            key={item.id}
+                            className="align-top transition hover:bg-cyan-50/50"
+                          >
                           <td className="max-w-[330px] px-6 py-5">
                             <div className="flex items-start gap-3">
                               <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 text-white">
@@ -619,27 +708,26 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
                               </span>
                             )}
                           </td>
-                        </tr>
-                      );
-                    })}
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <td colSpan={6} className="px-6 py-16 text-center">
+                          <FiBookOpen className="mx-auto h-9 w-9 text-slate-400" />
+                          <p className="mt-3 font-black text-slate-900">
+                            No matching resources
+                          </p>
+                          <p className="mt-1 text-sm text-slate-500">
+                            Change the search phrase, subject, or class.
+                          </p>
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               )}
             </div>
-          </div>
-        ) : (
-          <div
-            className={`mt-8 rounded-3xl border border-dashed bg-white p-12 text-center ${
-              isAssignments ? "border-amber-300" : "border-cyan-300"
-            }`}
-          >
-            <FiBookOpen className="mx-auto h-10 w-10 text-slate-400" />
-            <h2 className="mt-4 text-lg font-black text-slate-900">
-              No matching {isAssignments ? "assignments" : "resources"}
-            </h2>
-            <p className="mt-2 text-sm text-slate-600">
-              Try a different subject, class, or search phrase.
-            </p>
           </div>
         )}
       </section>

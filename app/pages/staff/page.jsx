@@ -157,27 +157,13 @@ const getImageSrc = (staff) => {
   return '/images/default-staff.jpg';
 };
 
-const getTeacherImage = (teacher) => {
-  if (teacher?.image) return teacher.image;
-  return teacher?.gender === 'female' ? '/female.png' : '/male.png';
-};
-
-const getDepartmentTeachers = (department) =>
-  Array.isArray(department?.staff) ? department.staff : [];
-
 const departmentSearchText = (department) => {
-  const teachers = getDepartmentTeachers(department);
   return [
     department?.name,
     department?.description,
     department?.headName,
     department?.assistantHeadName,
     department?.category,
-    ...teachers.flatMap((teacher) => [
-      teacher?.name,
-      teacher?.subjectOffered,
-      teacher?.department,
-    ]),
   ]
     .filter(Boolean)
     .join(' ')
@@ -199,11 +185,8 @@ const getStaffHierarchy = (staffOrPosition) => {
   if (
     combined.includes('principal') ||
     combined.includes('deputy principal') ||
-    combined.includes('senior teacher') ||
     combined.includes('head of department') ||
-    combined.includes('assistant head of department') ||
-    /\bhod\b/.test(combined) ||
-    /\bahod\b/.test(combined)
+    /\bhod\b/.test(combined)
   ) {
     return 'leadership';
   }
@@ -875,7 +858,7 @@ export default function StaffDirectory() {
           School Leadership
         </h2>
         <p className="text-xs font-semibold text-slate-400">
-          Principal and senior administration team
+          Principal, deputy principals, and heads of department
         </p>
       </div>
 
@@ -1062,7 +1045,7 @@ export default function StaffDirectory() {
                         Departments
                       </h2>
                       <p className="text-xs font-semibold text-slate-400">
-                        Department groups and staff allocation
+                        Department groups, leadership, and academic focus
                       </p>
                     </div>
 
@@ -1072,11 +1055,7 @@ export default function StaffDirectory() {
                   </div>
 
                   <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-                    {depts.map((dept) => {
-                      const teachers = getDepartmentTeachers(dept);
-                      const teacherCount = Number(dept.staffCount) || teachers.length;
-
-                      return (
+                    {depts.map((dept) => (
                         <Link
                           key={dept.id}
                           href={`/pages/staff/departments/${dept.id}`}
@@ -1106,63 +1085,19 @@ export default function StaffDirectory() {
                                 </span>
                               )}
 
-                              <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-black text-slate-600">
-                                {teacherCount} {teacherCount === 1 ? 'teacher' : 'teachers'}
-                              </span>
+                              {dept.assistantHeadName && (
+                                <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-black text-slate-600">
+                                  AHOD: {dept.assistantHeadName}
+                                </span>
+                              )}
                             </div>
 
-                            {teachers.length > 0 && (
-                              <div className="mt-5">
-                                <div className="mb-3 flex items-center justify-between gap-3">
-                                  <p className="text-xs font-black uppercase tracking-[0.22em] text-slate-500">
-                                    Teachers in this department
-                                  </p>
-                                  <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">
-                                    {teacherCount} {teacherCount === 1 ? 'teacher' : 'teachers'}
-                                  </span>
-                                </div>
-
-                                <div className="overflow-x-auto scroll-smooth rounded-3xl border border-slate-200 bg-slate-50/90 p-3 shadow-sm" style={{ WebkitOverflowScrolling: 'touch' }}>
-                                  <div className="flex snap-x snap-mandatory gap-3 min-w-[100%] sm:min-w-full">
-                                    {teachers.map((teacher) => (
-                                      <div
-                                        key={teacher.id}
-                                        className="snap-start min-w-[220px] flex-shrink-0 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                                      >
-                                        <div className="flex items-center gap-3">
-                                          <img
-                                            src={getTeacherImage(teacher)}
-                                            alt={teacher.name}
-                                            className="h-12 w-12 rounded-2xl border border-slate-200 object-cover"
-                                          />
-                                          <div className="min-w-0">
-                                            <p className="truncate text-sm font-black text-[#071527]">
-                                              {teacher.name}
-                                            </p>
-                                            <p className="mt-1 truncate text-[10px] uppercase tracking-[0.16em] text-slate-500">
-                                              {teacher.position || teacher.staffType || 'Teacher'}
-                                            </p>
-                                          </div>
-                                        </div>
-                                        {teacher.subjectOffered && (
-                                          <p className="mt-3 text-xs text-slate-500">
-                                            {teacher.subjectOffered}
-                                          </p>
-                                        )}
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-
                             <span className="mt-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#1d4ed8]">
-                              View teachers <FiChevronRight size={13} />
+                              View department <FiChevronRight size={13} />
                             </span>
                           </div>
                         </Link>
-                      );
-                    })}
+                      ))}
                   </div>
                 </div>
               ) : null

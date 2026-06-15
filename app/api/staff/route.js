@@ -238,23 +238,17 @@ const isAllowedLeadershipRole = (role = "", position = "") => {
   return false;
 };
 
-const isLeadershipStaff = (staff) => {
+const isPublicLeadershipStaff = (staff) => {
   if (!staff) return false;
   const role = (staff.role || "").trim();
   const position = (staff.position || "").trim();
-  const positionLower = position.toLowerCase();
+  const combined = `${role} ${position}`.toLowerCase();
 
-  if (isAllowedLeadershipRole(role, position)) return true;
-  if (positionLower.includes("senior teacher")) return true;
-
-  if (role === "Deputy Principal") {
-    // Prefer the new, explicit positions but allow legacy deputy records too
-    if (!position) return true;
-    const normalized = position.toLowerCase();
-    return normalized.includes("academics") || normalized.includes("academic") || normalized.includes("admin");
-  }
-
-  return false;
+  return (
+    combined.includes("principal") ||
+    isHodValue(role) ||
+    isHodValue(position)
+  );
 };
 
 const sanitizePublicStaff = (staff) => {
@@ -406,7 +400,7 @@ export async function GET(req) {
 
     const visibleStaff = isAdmin
       ? staff
-      : staff.filter(isLeadershipStaff).map(sanitizePublicStaff);
+      : staff.filter(isPublicLeadershipStaff).map(sanitizePublicStaff);
 
     return NextResponse.json({
       success: true,

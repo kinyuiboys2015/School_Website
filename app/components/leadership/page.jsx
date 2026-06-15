@@ -25,8 +25,7 @@ import {
   GraduationCap,
   Medal,
   Sparkles,
-  Trophy,
-  UserRoundCheck
+  Trophy
 } from "lucide-react";
 
 const getImageUrl = (imagePath) => {
@@ -89,14 +88,12 @@ const isDeputyStaff = (staff) => {
   return role.includes("deputy") || position.includes("deputy");
 };
 
-const isSeniorTeacher = (staff) => {
-  const combined = `${normalizeText(staff?.role)} ${normalizeText(staff?.position)}`;
-  return combined.includes("senior teacher");
-};
-
 const isHodStaff = (staff) => {
   const combined = `${normalizeText(staff?.role)} ${normalizeText(staff?.position)}`;
-  return combined.includes("head of department") || combined.includes("hod");
+  return (
+    (combined.includes("head of department") && !combined.includes("assistant")) ||
+    /\bhod\b/.test(combined)
+  );
 };
 
 const getDeputyType = (staff) => {
@@ -114,9 +111,8 @@ const getLeaderRank = (staff) => {
     if (type === "administration") return 2;
     return 3;
   }
-  if (isSeniorTeacher(staff)) return 4;
-  if (isHodStaff(staff)) return 5;
-  return 6;
+  if (isHodStaff(staff)) return 4;
+  return 5;
 };
 
 const getLeaderTitle = (staff) => {
@@ -128,7 +124,6 @@ const getLeaderTitle = (staff) => {
     if (type === "administration") return "Deputy Principal - Administration";
     return staff.position || "Deputy Principal";
   }
-  if (isSeniorTeacher(staff)) return staff.position || "Senior Teacher";
   if (isHodStaff(staff)) return staff.position || staff.role || "Head of Department";
   return staff.position || staff.role || "Leadership Team";
 };
@@ -142,7 +137,6 @@ const getLeaderScope = (staff) => {
     if (type === "administration") return "Administration, Welfare and Discipline";
     return "Deputy Leadership";
   }
-  if (isSeniorTeacher(staff)) return "Teaching Coordination";
   if (isHodStaff(staff)) return staff.department || staff.subjectOffered || "Department Leadership";
   return staff.department || staff.subjectOffered || "School Leadership";
 };
@@ -163,15 +157,6 @@ const getRolePalette = (staff) => {
       badge: "bg-white/15 text-white",
       soft: "bg-amber-50 text-amber-900 border-amber-200",
       icon: Medal
-    };
-  }
-
-  if (isSeniorTeacher(staff)) {
-    return {
-      gradient: "from-amber-900 via-orange-800 to-yellow-700",
-      badge: "bg-white/15 text-white",
-      soft: "bg-yellow-50 text-yellow-900 border-yellow-200",
-      icon: UserRoundCheck
     };
   }
 
@@ -368,7 +353,7 @@ export default function ModernStaffLeadership() {
               The team guiding Kinyui Boys forward.
             </h2>
             <p className="mt-5 max-w-2xl text-sm font-medium leading-7 text-orange-100/80 sm:text-base">
-              Explore the principal, deputies, senior teachers, and department leaders through one focused leadership view with the full profile details available from the staff records.
+              Explore the principal, deputy principals, and heads of department through one focused leadership view with full profile details from the staff records.
             </p>
           </div>
 

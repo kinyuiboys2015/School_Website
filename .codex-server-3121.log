@@ -1,0 +1,44 @@
+
+> kinyui-boys-high@0.1.0 start
+> next start -p 3121
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3121
+
+ ✓ Starting...
+ ✓ Ready in 424ms
+prisma:error 
+Invalid `prisma.staffDepartment.findMany()` invocation:
+
+
+Can't reach database server at `tramway.proxy.rlwy.net`:`27822`
+
+Please make sure your database server is running at `tramway.proxy.rlwy.net`:`27822`.
+❌ GET Departments Error: PrismaClientInitializationError: 
+Invalid `prisma.staffDepartment.findMany()` invocation:
+
+
+Can't reach database server at `tramway.proxy.rlwy.net`:`27822`
+
+Please make sure your database server is running at `tramway.proxy.rlwy.net`:`27822`.
+    at An.handleRequestError (C:\Users\HP\School Projects\Kinyui\School_Website\node_modules\@prisma\client\runtime\library.js:174:7205)
+    at An.handleAndLogRequestError (C:\Users\HP\School Projects\Kinyui\School_Website\node_modules\@prisma\client\runtime\library.js:174:6358)
+    at C:\Users\HP\School Projects\Kinyui\School_Website\node_modules\@prisma\client\runtime\library.js:177:2908
+    at async C:\Users\HP\School Projects\Kinyui\School_Website\node_modules\@prisma\client\runtime\library.js:177:3123 {
+  clientVersion: '4.15.0',
+  errorCode: undefined
+}
+❌ GET Staff Error: PrismaClientInitializationError: 
+Invalid `prisma.staffDepartment.findMany()` invocation:
+
+
+Can't reach database server at `tramway.proxy.rlwy.net`:`27822`
+
+Please make sure your database server is running at `tramway.proxy.rlwy.net`:`27822`.
+    at An.handleRequestError (C:\Users\HP\School Projects\Kinyui\School_Website\node_modules\@prisma\client\runtime\library.js:174:7205)
+    at An.handleAndLogRequestError (C:\Users\HP\School Projects\Kinyui\School_Website\node_modules\@prisma\client\runtime\library.js:174:6358)
+    at C:\Users\HP\School Projects\Kinyui\School_Website\node_modules\@prisma\client\runtime\library.js:177:2908
+    at async C:\Users\HP\School Projects\Kinyui\School_Website\node_modules\@prisma\client\runtime\library.js:177:3123 {
+  clientVersion: '4.15.0',
+  errorCode: undefined
+}

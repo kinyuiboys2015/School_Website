@@ -238,22 +238,17 @@ const isAllowedLeadershipRole = (role = "", position = "") => {
   return false;
 };
 
-const isLeadershipStaff = (staff) => {
+const isPublicLeadershipStaff = (staff) => {
   if (!staff) return false;
   const role = (staff.role || "").trim();
   const position = (staff.position || "").trim();
-  const positionLower = position.toLowerCase();
+  const combined = `${role} ${position}`.toLowerCase();
 
-  if (isAllowedLeadershipRole(role, position)) return true;
-  if (positionLower.includes("senior teacher")) return true;
-
-  if (role === "Deputy Principal") {
-    if (!position) return true;
-    const normalized = position.toLowerCase();
-    return normalized.includes("academics") || normalized.includes("academic") || normalized.includes("admin");
-  }
-
-  return false;
+  return (
+    combined.includes("principal") ||
+    isHodValue(role) ||
+    isHodValue(position)
+  );
 };
 
 const sanitizePublicStaff = (staff) => {
@@ -409,7 +404,7 @@ export async function GET(req, { params }) {
       );
     }
 
-    if (!isAdmin && !isLeadershipStaff(staff)) {
+    if (!isAdmin && !isPublicLeadershipStaff(staff)) {
       return NextResponse.json(
         { success: false, error: "Staff not found" },
         { status: 404 }
