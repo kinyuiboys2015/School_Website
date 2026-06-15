@@ -33,18 +33,13 @@ import {
   FiArrowUp,
   FiCompass,
   FiAward,
-  FiExternalLink,
   FiGrid,
 } from 'react-icons/fi';
 import {
   SiFacebook,
   SiYoutube,
-  SiLinkedin,
-  SiWhatsapp,
-  SiInstagram,
-  SiTwitter,
 } from 'react-icons/si';
-import { FaLinkedin, FaTiktok } from 'react-icons/fa';
+import { FaTiktok } from 'react-icons/fa';
 
 // ----------------------------------------------------------------------
 // Data Layer - RESTRUCTURED for better organization
@@ -85,10 +80,8 @@ const SUPPORT_LINKS = [
 // Social Media Links - Updated with correct info
 const SOCIAL_LINKS = [
   { icon: SiFacebook, href: 'https://www.facebook.com/KinyuiBoysHighSchool/', label: 'Facebook', color: '#1877F2', bgClass: 'bg-[#1877F2]' },
-  { icon: FaLinkedin, href: 'https://www.linkedin.com/company/kinyui-boys-senior-school/', label: 'LinkedIn', color: '#0A66C2', bgClass: 'bg-[#0A66C2]' },
   { icon: SiYoutube, href: 'https://www.youtube.com/channel/UCybL9mGxlEKqIAVnwOaFQ2w', label: 'YouTube', color: '#FF0000', bgClass: 'bg-[#FF0000]' },
   { icon: FaTiktok, href: 'https://www.tiktok.com/@kinyui.boys.high', label: 'TikTok', color: '#010101', bgClass: 'bg-[#010101]' },
-  { icon: SiInstagram, href: 'https://www.instagram.com/kinyuiboys/', label: 'Instagram', color: '#E4405F', bgClass: 'bg-[#E4405F]' },
 ];
 
 // Contact Information - Grouped by type
@@ -419,15 +412,9 @@ const FooterBottom = ({ currentYear, onShowSitemap, onShowPrivacy }) => (
           <FiShield size={10} />
           Privacy Policy
         </button>
-        <a
-          href="https://www.linkedin.com/in/emmanuel-makau-40a12028b/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-white/50 hover:text-amber-400 text-xs font-medium transition-colors flex items-center gap-1"
-        >
-          <FiExternalLink size={10} />
+        <span className="text-white/50 text-xs font-medium">
           Developed by Emmanuel Makau
-        </a>
+        </span>
       </div>
       
       <div className="flex items-center gap-2">

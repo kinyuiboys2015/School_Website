@@ -70,6 +70,10 @@ removed while preserving each section's actions, filters, tabs, and CRUD workflo
 - SMS pages, navigation entries, API routes, widgets, integrations, and runtime requests were removed.
 - The dashboard now loads real alumni data from `/api/alumini`.
 - Alumni summaries include total profiles, featured profiles, graduation-year coverage, and recent records.
+- The repeatable alumni seed provides six cohort collections covering leadership,
+  academics, sports, creative arts, STEM, mentorship, and community service.
+- Seeded alumni galleries use authentic Kinyui school images stored under `public/home`
+  and `public/hero`.
 - Historical `SmsCampaign` and `SmsLog` Prisma models remain in the schema only to
   preserve existing database tables and avoid destructive data loss. No application
   runtime code uses them.
@@ -134,6 +138,27 @@ The database was verified on June 15, 2026 and reported:
 ```text
 The database is already in sync with the Prisma schema.
 ```
+
+### Alumni Seed
+
+Populate or refresh the standard alumni cohort collections:
+
+```bash
+npm run seed:alumni
+```
+
+The seed is idempotent. It matches records by title and graduation year, updates the
+known cohort fields, and rebuilds only those cohort image galleries. It does not delete
+other alumni records created through the admin dashboard.
+
+Seeded areas:
+
+- Leadership and service
+- Academic and professional development
+- Sports and wellness
+- Creative arts and music
+- STEM and innovation
+- Mentorship and community
 
 ## Development
 

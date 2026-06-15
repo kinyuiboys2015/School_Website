@@ -8,6 +8,7 @@
     "start": "next start",
     "prisma:generate": "prisma generate",
     "prisma:db-push": "prisma db push",
+    "seed:alumni": "node scripts/seed-kinyui-alumni.js",
     "dev:full": "npm run prisma:generate && npm run prisma:db-push && npm run dev"
   },
   "dependencies": {
