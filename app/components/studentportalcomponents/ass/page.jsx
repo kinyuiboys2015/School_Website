@@ -104,67 +104,20 @@ const downloadFile = (fileUrl, fileName) => {
   document.body.removeChild(link);
 };
 
-const downloadMultipleFiles = async (files) => {
-  if (!files || files.length === 0) {
-    alert('No files available for download');
+const downloadItemArchive = (item, type) => {
+  if (!item?.id) {
+    alert('This item is not ready for download');
     return;
   }
 
-  const loadingAlert = document.createElement('div');
-  loadingAlert.className = 'fixed top-4 right-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-3 rounded-xl shadow-2xl z-[10000] backdrop-blur-sm border border-white/20';
-  loadingAlert.innerHTML = `
-    <div class="flex items-center gap-3">
-      <div class="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
-      <div>
-        <p class="font-bold">Preparing Download</p>
-        <p class="text-sm opacity-90">Processing ${files.length} files...</p>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(loadingAlert);
-
-  try {
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      if (file && file.url) {
-        downloadFile(file.url, file.fileName);
-        await new Promise(resolve => setTimeout(resolve, 300));
-      }
-    }
-
-    loadingAlert.innerHTML = `
-      <div class="flex items-center gap-3">
-        <div class="h-6 w-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
-          <IoCheckmarkCircle className="text-white" size={16} />
-        </div>
-        <div>
-          <p class="font-bold">Download Complete</p>
-          <p class="text-sm opacity-90">${files.length} files downloaded!</p>
-        </div>
-      </div>
-    `;
-    
-    setTimeout(() => {
-      document.body.removeChild(loadingAlert);
-    }, 3000);
-
-  } catch (error) {
-    console.error('Error downloading files:', error);
-    loadingAlert.innerHTML = `
-      <div class="flex items-center gap-3">
-        <div class="h-6 w-6 bg-gradient-to-r from-red-400 to-rose-500 rounded-full flex items-center justify-center">
-          <IoWarning className="text-white" size={16} />
-        </div>
-        <div>
-          <p class="font-bold">Download Failed</p>
-          <p class="text-sm opacity-90">Please try again</p>
-        </div>
-      </div>
-    `;
-    setTimeout(() => {
-      document.body.removeChild(loadingAlert);
-    }, 3000);
-  }
+  const downloadType =
+    type === 'resource' || type === 'resources' ? 'resource' : 'assignment';
+  const link = document.createElement('a');
+  link.href = `/api/academic-downloads/${downloadType}/${item.id}`;
+  link.download = '';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 };
 
 // ==================== COMPONENTS ====================
@@ -612,12 +565,7 @@ function DetailModal({ item, type, onClose, onDownload }) {
                     <span>Resource Files ({item.files.length})</span>
                   </h3>
                   <button
-                    onClick={() => downloadMultipleFiles(item.files.map(file => ({
-                      url: file.url,
-                      fileName: file.name,
-                      fileType: file.fileType,
-                      extension: file.extension
-                    })))}
+                    onClick={() => downloadItemArchive(item, type)}
                     className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg sm:rounded-xl font-bold shadow-md flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
                   >
                     <IoCloudDownload className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -654,7 +602,7 @@ function DetailModal({ item, type, onClose, onDownload }) {
                         <span>Assignment Files ({item.assignmentFileAttachments?.length || 0})</span>
                       </h3>
                       <button
-                        onClick={() => downloadMultipleFiles(item.assignmentFileAttachments || [])}
+                        onClick={() => downloadItemArchive(item, type)}
                         className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg sm:rounded-xl font-bold shadow-md flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
                       >
                         <IoCloudDownload className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -683,7 +631,7 @@ function DetailModal({ item, type, onClose, onDownload }) {
                         <span>Additional Attachments ({item.attachmentAttachments?.length || 0})</span>
                       </h3>
                       <button
-                        onClick={() => downloadMultipleFiles(item.attachmentAttachments || [])}
+                        onClick={() => downloadItemArchive(item, type)}
                         className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-lg sm:rounded-xl font-bold shadow-md flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
                       >
                         <IoCloudDownload className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -988,56 +936,9 @@ export default function ModernResourcesAssignmentsView({
 
   // Download functions
   const handleDownload = useCallback((item) => {
-    if (activeTab === 'resources') {
-      if (item.files && item.files.length > 0) {
-        if (item.files.length === 1) {
-          downloadFile(item.files[0].url, item.files[0].name);
-        } else {
-          downloadMultipleFiles(item.files.map(file => ({
-            url: file.url,
-            fileName: file.name
-          })));
-        }
-      }
-    } else {
-      const allFiles = [
-        ...(item.assignmentFileAttachments || []),
-        ...(item.attachmentAttachments || [])
-      ];
-      if (allFiles.length === 1) {
-        downloadFile(allFiles[0].url, allFiles[0].fileName);
-      } else {
-        downloadMultipleFiles(allFiles);
-      }
-    }
+    downloadItemArchive(item, activeTab);
     onDownload?.(item);
   }, [activeTab, onDownload]);
-
-  const handleDownloadAll = useCallback(() => {
-    const items = activeTab === 'assignments' ? filteredAssignments : filteredResources;
-    const allFiles = [];
-    
-    items.forEach(item => {
-      if (activeTab === 'resources' && item.files) {
-        item.files.forEach(file => 
-          allFiles.push({ url: file.url, fileName: file.name })
-        );
-      } else if (activeTab === 'assignments') {
-        (item.assignmentFileAttachments || []).forEach(file => 
-          allFiles.push({ url: file.url, fileName: file.fileName })
-        );
-        (item.attachmentAttachments || []).forEach(file => 
-          allFiles.push({ url: file.url, fileName: file.fileName })
-        );
-      }
-    });
-    
-    if (allFiles.length > 0) {
-      downloadMultipleFiles(allFiles);
-    } else {
-      alert('No files available for download');
-    }
-  }, [activeTab, filteredAssignments, filteredResources]);
 
   // Clear filters
   const clearFilters = useCallback(() => {

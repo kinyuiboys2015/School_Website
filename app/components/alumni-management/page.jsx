@@ -71,6 +71,8 @@ export default function AlumniManager() {
   const [editingRecord, setEditingRecord] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
   const [imageFiles, setImageFiles] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [imagesToRemove, setImagesToRemove] = useState([]);
 
   const loadAlumni = useCallback(async () => {
     setLoading(true);
@@ -98,6 +100,19 @@ export default function AlumniManager() {
     loadAlumni();
   }, [loadAlumni]);
 
+  useEffect(() => {
+    const previews = imageFiles.map((file, index) => ({
+      id: `${file.name}-${file.lastModified}-${index}`,
+      file,
+      url: URL.createObjectURL(file),
+    }));
+    setImagePreviews(previews);
+
+    return () => {
+      previews.forEach((preview) => URL.revokeObjectURL(preview.url));
+    };
+  }, [imageFiles]);
+
   const filteredAlumni = useMemo(() => {
     const query = search.trim().toLowerCase();
     if (!query) return alumni;
@@ -119,6 +134,7 @@ export default function AlumniManager() {
     setEditingRecord(null);
     setForm(EMPTY_FORM);
     setImageFiles([]);
+    setImagesToRemove([]);
     setShowForm(true);
   };
 
@@ -138,6 +154,7 @@ export default function AlumniManager() {
       isActive: Boolean(record.isActive),
     });
     setImageFiles([]);
+    setImagesToRemove([]);
     setShowForm(true);
   };
 
@@ -146,6 +163,7 @@ export default function AlumniManager() {
     setShowForm(false);
     setEditingRecord(null);
     setImageFiles([]);
+    setImagesToRemove([]);
   };
 
   const updateField = (event) => {
@@ -154,6 +172,30 @@ export default function AlumniManager() {
       ...current,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  const addImageFiles = (event) => {
+    const selectedFiles = Array.from(event.target.files || []).filter((file) =>
+      file.type.startsWith("image/")
+    );
+    if (selectedFiles.length) {
+      setImageFiles((current) => [...current, ...selectedFiles]);
+    }
+    event.target.value = "";
+  };
+
+  const removeNewImage = (index) => {
+    setImageFiles((current) =>
+      current.filter((_, imageIndex) => imageIndex !== index)
+    );
+  };
+
+  const toggleExistingImageRemoval = (url) => {
+    setImagesToRemove((current) =>
+      current.includes(url)
+        ? current.filter((imageUrl) => imageUrl !== url)
+        : [...current, url]
+    );
   };
 
   const handleSubmit = async (event) => {
@@ -171,6 +213,7 @@ export default function AlumniManager() {
         payload.append(key, String(value));
       });
       imageFiles.forEach((file) => payload.append("images", file));
+      imagesToRemove.forEach((url) => payload.append("imagesToRemove", url));
 
       const response = await fetch(
         editingRecord ? `/api/alumini/${editingRecord.id}` : "/api/alumini",
@@ -192,6 +235,7 @@ export default function AlumniManager() {
       setShowForm(false);
       setEditingRecord(null);
       setImageFiles([]);
+      setImagesToRemove([]);
       await loadAlumni();
     } catch (error) {
       toast.error(error.message || "Unable to save alumni profile");
@@ -502,24 +546,134 @@ export default function AlumniManager() {
                     className="form-input"
                   />
                 </FormField>
-                <FormField label="Profile Images">
-                  <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-dashed border-orange-300 bg-orange-50 px-4 py-3 text-sm font-bold text-orange-800">
-                    <FiImage />
-                    <span>
-                      {imageFiles.length
-                        ? `${imageFiles.length} image(s) selected`
-                        : "Choose one or more images"}
-                    </span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      className="sr-only"
-                      onChange={(event) =>
-                        setImageFiles(Array.from(event.target.files || []))
-                      }
-                    />
-                  </label>
+                <FormField label="Profile Images" wide>
+                  <div className="rounded-2xl border border-orange-200 bg-orange-50/60 p-4">
+                    <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-orange-300 bg-white px-4 py-6 text-center text-sm font-bold text-orange-800 transition hover:border-orange-500 hover:bg-orange-50 sm:flex-row">
+                      <FiImage className="h-5 w-5" />
+                      <span>
+                        {imageFiles.length
+                          ? "Add more images"
+                          : "Choose one or more images"}
+                      </span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="sr-only"
+                        onChange={addImageFiles}
+                      />
+                    </label>
+
+                    {(editingRecord && getRecordImages(editingRecord).length) ||
+                    imagePreviews.length ? (
+                      <div className="mt-4">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <p className="text-xs font-black uppercase tracking-widest text-slate-500">
+                            Review selected images
+                          </p>
+                          <p className="text-xs font-bold text-slate-500">
+                            {imagePreviews.length} new,{" "}
+                            {imagesToRemove.length} marked for removal
+                          </p>
+                        </div>
+
+                        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                          {editingRecord
+                            ? getRecordImages(editingRecord).map((image, index) => {
+                                const markedForRemoval =
+                                  imagesToRemove.includes(image.url);
+                                return (
+                                  <div
+                                    key={`${image.url}-${index}`}
+                                    className={`relative overflow-hidden rounded-xl border-2 bg-white ${
+                                      markedForRemoval
+                                        ? "border-red-400 opacity-60"
+                                        : "border-slate-200"
+                                    }`}
+                                  >
+                                    <img
+                                      src={image.url}
+                                      alt={
+                                        image.altText ||
+                                        `${editingRecord.title} image ${index + 1}`
+                                      }
+                                      className="aspect-square w-full object-cover"
+                                    />
+                                    <span className="absolute bottom-2 left-2 rounded-full bg-slate-950/80 px-2 py-1 text-[9px] font-black uppercase tracking-wider text-white">
+                                      Existing
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        toggleExistingImageRemoval(image.url)
+                                      }
+                                      className={`absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full shadow-lg ${
+                                        markedForRemoval
+                                          ? "bg-emerald-600 text-white"
+                                          : "bg-white text-red-600"
+                                      }`}
+                                      aria-label={
+                                        markedForRemoval
+                                          ? "Undo image removal"
+                                          : "Remove existing image"
+                                      }
+                                      title={
+                                        markedForRemoval
+                                          ? "Undo removal"
+                                          : "Remove image"
+                                      }
+                                    >
+                                      {markedForRemoval ? (
+                                        <FiRefreshCw />
+                                      ) : (
+                                        <FiX />
+                                      )}
+                                    </button>
+                                    {markedForRemoval ? (
+                                      <div className="absolute inset-x-2 bottom-2 rounded-lg bg-red-700 px-2 py-1 text-center text-[9px] font-black uppercase tracking-wider text-white">
+                                        Will be removed
+                                      </div>
+                                    ) : null}
+                                  </div>
+                                );
+                              })
+                            : null}
+
+                          {imagePreviews.map((preview, index) => (
+                            <div
+                              key={preview.id}
+                              className="relative overflow-hidden rounded-xl border-2 border-orange-300 bg-white"
+                            >
+                              <img
+                                src={preview.url}
+                                alt={preview.file.name}
+                                className="aspect-square w-full object-cover"
+                              />
+                              <span className="absolute bottom-2 left-2 rounded-full bg-orange-700 px-2 py-1 text-[9px] font-black uppercase tracking-wider text-white">
+                                New
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => removeNewImage(index)}
+                                className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-white text-red-600 shadow-lg"
+                                aria-label={`Remove ${preview.file.name}`}
+                                title="Remove selected image"
+                              >
+                                <FiX />
+                              </button>
+                              <div className="truncate px-2 py-2 text-[10px] font-bold text-slate-600">
+                                {preview.file.name}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="mt-3 text-center text-xs font-semibold text-slate-500">
+                        Selected images will appear here for review before upload.
+                      </p>
+                    )}
+                  </div>
                 </FormField>
                 <FormField label="Alumni Story" wide>
                   <textarea

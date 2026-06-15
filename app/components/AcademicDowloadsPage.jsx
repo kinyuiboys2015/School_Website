@@ -190,19 +190,14 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
     setClassName(ALL_CLASSES);
   };
 
-  const downloadAllFiles = (files) => {
-    files.forEach((file, index) => {
-      window.setTimeout(() => {
-        const link = document.createElement("a");
-        link.href = file.url;
-        link.download = file.name || `academic-file-${index + 1}`;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      }, index * 250);
-    });
+  const downloadAllFiles = (item) => {
+    const type = isAssignments ? "assignment" : "resource";
+    const link = document.createElement("a");
+    link.href = `/api/academic-downloads/${type}/${item.id}`;
+    link.download = "";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   };
 
   const pageTitle = isAssignments ? "Student Assignments" : "Exam Resources";
@@ -513,7 +508,7 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
                                 ))}
                                 <button
                                   type="button"
-                                  onClick={() => downloadAllFiles(files)}
+                                  onClick={() => downloadAllFiles(item)}
                                   className="flex w-full max-w-[240px] items-center justify-center gap-2 rounded-lg bg-[#2b1208] px-3 py-2 text-xs font-black text-white transition hover:bg-amber-700"
                                 >
                                   <FiDownload className="h-3.5 w-3.5" />
@@ -636,7 +631,7 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
                                 ))}
                                 <button
                                   type="button"
-                                  onClick={() => downloadAllFiles(files)}
+                                  onClick={() => downloadAllFiles(item)}
                                   className="flex w-full max-w-[240px] items-center justify-center gap-2 rounded-lg bg-teal-700 px-3 py-2 text-xs font-black text-white transition hover:bg-teal-800"
                                 >
                                   <FiDownload className="h-3.5 w-3.5" />
@@ -761,11 +756,7 @@ export default function AcademicDowloadsPage({ contentType = "assignments" }) {
                   {getItemFiles(selectedItem, contentType).length ? (
                     <button
                       type="button"
-                      onClick={() =>
-                        downloadAllFiles(
-                          getItemFiles(selectedItem, contentType)
-                        )
-                      }
+                      onClick={() => downloadAllFiles(selectedItem)}
                       className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-black text-white transition ${
                         isAssignments
                           ? "bg-amber-700 hover:bg-amber-800"
