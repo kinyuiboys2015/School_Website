@@ -6,6 +6,14 @@ import {
   uploadSchoolImagesFromFormData,
   validateSchoolImage,
 } from "../../../../../libs/schoolContentUpload";
+import {
+  CBC_CATEGORY,
+  CBC_PATHWAYS,
+  VALID_CBC_PATHWAY_TYPES,
+  VALID_STAFF_DEPARTMENT_CATEGORIES,
+  isDepartmentLibraryImage,
+  normalizeDepartmentCategory,
+} from "../../../../../libs/staffDepartmentConfig";
 
 // ==================== AUTHENTICATION UTILITIES ====================
 
@@ -161,8 +169,6 @@ const authenticateWriteRequest = (req) => {
   return { authenticated: true, user: validationResult.user };
 };
 
-const VALID_CATEGORIES = new Set(["CBC", "EIGHT_FOUR_FOUR", "TEACHING", "SUPPORT"]);
-
 const teacherSelect = {
   id: true,
   name: true,
@@ -186,6 +192,8 @@ const cleanDepartmentResponse = (department) => {
   const teachers = Array.isArray(department.teachers) ? department.teachers : undefined;
   return {
     ...department,
+    cbePathwayType: department.cbePathway?.type || null,
+    pathwayName: department.cbePathway?.name || null,
     staffCount: teachers ? teachers.length : department.staffCount,
     teacherCount: teachers ? teachers.length : department.staffCount,
     teachers,
@@ -247,6 +255,7 @@ export async function GET(req, { params }) {
       where: { id },
       include: {
         images: { orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }] },
+        cbePathway: true,
         ...(includeTeachers
           ? {
               teachers: {
@@ -304,7 +313,7 @@ export async function PUT(req, { params }) {
 
     const existing = await prisma.staffDepartment.findUnique({
       where: { id },
-      include: { images: true },
+      include: { images: true, cbePathway: true },
     });
     if (!existing) {
       return NextResponse.json(
@@ -319,6 +328,9 @@ export async function PUT(req, { params }) {
 
     const name = formData.get("name");
     const category = formData.get("category");
+    const nextCategory = normalizeDepartmentCategory(
+      category !== null ? category : existing.category
+    );
 
     if (name !== null) {
       const trimmed = name.toString().trim();
@@ -332,28 +344,76 @@ export async function PUT(req, { params }) {
     }
 
     if (category !== null) {
-      const cat = category.toString().trim();
-      if (!VALID_CATEGORIES.has(cat)) {
+      if (!VALID_STAFF_DEPARTMENT_CATEGORIES.has(nextCategory)) {
         return NextResponse.json(
           { success: false, error: "Invalid department category", authenticated: true },
           { status: 400 }
         );
       }
-      data.category = cat;
+      data.category = nextCategory;
     }
 
     const description = formData.get("description");
     if (description !== null) data.description = description.toString().trim() || null;
 
-    const headName = formData.get("headName");
-    if (headName !== null) data.headName = headName.toString().trim() || null;
+    const headName = (
+      formData.has("headName") ? formData.get("headName") : existing.headName
+    )?.toString().trim() || "";
+    const pathwayHeadName = (
+      formData.has("pathwayHeadName")
+        ? formData.get("pathwayHeadName")
+        : existing.pathwayHeadName
+    )?.toString().trim() || "";
+    const cbePathwayType = (
+      formData.has("cbePathwayType")
+        ? formData.get("cbePathwayType")
+        : existing.cbePathway?.type
+    )?.toString().trim() || "";
 
-    let assistantHeadName = null;
-    if (formData.has("assistantHeadName")) assistantHeadName = formData.get("assistantHeadName");
-    else if (formData.has("ahodName")) assistantHeadName = formData.get("ahodName");
-    else if (formData.has("aHOD")) assistantHeadName = formData.get("aHOD");
-    if (assistantHeadName !== null) {
-      data.assistantHeadName = assistantHeadName.toString().trim() || null;
+    if (nextCategory === CBC_CATEGORY) {
+      if (!VALID_CBC_PATHWAY_TYPES.has(cbePathwayType)) {
+        return NextResponse.json(
+          { success: false, error: "Select a valid CBC pathway", authenticated: true },
+          { status: 400 }
+        );
+      }
+      if (!pathwayHeadName) {
+        return NextResponse.json(
+          { success: false, error: "Pathway head is required for CBC departments", authenticated: true },
+          { status: 400 }
+        );
+      }
+
+      const pathway = CBC_PATHWAYS.find((item) => item.type === cbePathwayType);
+      const cbePathway = await prisma.cBEPathway.upsert({
+        where: { type: pathway.type },
+        update: {
+          name: pathway.name,
+          description: pathway.description,
+          isActive: true,
+        },
+        create: {
+          name: pathway.name,
+          type: pathway.type,
+          description: pathway.description,
+          isActive: true,
+        },
+      });
+      data.headName = null;
+      data.pathwayHeadName = pathwayHeadName;
+      data.cbePathwayId = cbePathway.id;
+      data.cbeTrackId = null;
+    } else {
+      if (!headName) {
+        return NextResponse.json(
+          { success: false, error: "Head of Department is required", authenticated: true },
+          { status: 400 }
+        );
+      }
+      data.headName = headName;
+      data.pathwayHeadName = null;
+      data.cbePathwayId = null;
+      data.cbeTrackId = null;
     }
 
     const staffCountRaw = formData.get("staffCount");
@@ -429,6 +489,28 @@ export async function PUT(req, { params }) {
       data.image = legacyImageFile.trim();
     }
 
+    const imageUrl = (formData.get("imageUrl") || "").toString().trim();
+    if (imageUrl && !isDepartmentLibraryImage(imageUrl)) {
+      return NextResponse.json(
+        { success: false, error: "Invalid department library image", authenticated: true },
+        { status: 400 }
+      );
+    }
+
+    if (imageUrl && !existing.images.some((image) => image.url === imageUrl)) {
+      await prisma.staffDepartmentImage.create({
+        data: {
+          staffDepartmentId: id,
+          url: imageUrl,
+          altText: data.name || existing.name,
+          caption: `${data.name || existing.name} department`,
+          displayOrder: existing.images.length + uploadedImages.length,
+        },
+      });
+      imagesChanged = true;
+      if (!uploadedImages.length) data.image = imageUrl;
+    }
+
     if (uploadedImages.length > 0) {
       imagesChanged = true;
       await prisma.staffDepartmentImage.createMany({
@@ -454,10 +536,16 @@ export async function PUT(req, { params }) {
     const department = await prisma.staffDepartment.update({
       where: { id },
       data,
-      include: { images: { orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }] } },
+      include: {
+        images: { orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }] },
+        cbePathway: true,
+      },
     });
 
-    return NextResponse.json({ success: true, department });
+    return NextResponse.json({
+      success: true,
+      department: cleanDepartmentResponse(department),
+    });
   } catch (error) {
     console.error("❌ PUT Department Error:", error);
     return NextResponse.json(

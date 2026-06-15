@@ -5,6 +5,14 @@ import {
   uploadSchoolImagesFromFormData,
   validateSchoolImage,
 } from "../../../../libs/schoolContentUpload";
+import {
+  CBC_CATEGORY,
+  CBC_PATHWAYS,
+  VALID_CBC_PATHWAY_TYPES,
+  VALID_STAFF_DEPARTMENT_CATEGORIES,
+  isDepartmentLibraryImage,
+  normalizeDepartmentCategory,
+} from "../../../../libs/staffDepartmentConfig";
 
 // ==================== AUTHENTICATION UTILITIES ====================
 
@@ -162,8 +170,6 @@ const authenticateWriteRequest = (req) => {
 
 // ==================== ROUTE HANDLERS ====================
 
-const VALID_CATEGORIES = new Set(["CBC", "EIGHT_FOUR_FOUR", "TEACHING", "SUPPORT"]);
-
 const teacherSelect = {
   id: true,
   name: true,
@@ -187,6 +193,8 @@ const cleanDepartmentResponse = (department) => {
   const teachers = Array.isArray(department.teachers) ? department.teachers : undefined;
   return {
     ...department,
+    cbePathwayType: department.cbePathway?.type || null,
+    pathwayName: department.cbePathway?.name || null,
     staffCount: teachers ? teachers.length : department.staffCount,
     teacherCount: teachers ? teachers.length : department.staffCount,
     teachers,
@@ -268,13 +276,14 @@ export async function GET(req) {
     const where = {};
 
     if (category) {
-      if (!VALID_CATEGORIES.has(category)) {
+      const normalizedCategory = normalizeDepartmentCategory(category);
+      if (!VALID_STAFF_DEPARTMENT_CATEGORIES.has(normalizedCategory)) {
         return NextResponse.json(
           { success: false, error: "Invalid department category" },
           { status: 400 }
         );
       }
-      where.category = category;
+      where.category = normalizedCategory;
     }
 
     if (!includeInactive) {
@@ -286,6 +295,7 @@ export async function GET(req) {
       orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
       include: {
         images: { orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }] },
+        cbePathway: true,
         ...(includeTeachers
           ? {
               teachers: {
@@ -346,15 +356,11 @@ export async function POST(req) {
     const formData = await req.formData();
 
     const name = (formData.get("name") || "").toString().trim();
-    const category = (formData.get("category") || "").toString().trim();
+    const category = normalizeDepartmentCategory(formData.get("category") || "");
     const description = (formData.get("description") || "").toString().trim();
     const headName = (formData.get("headName") || "").toString().trim();
-    const assistantHeadName = (
-      formData.get("assistantHeadName") ||
-      formData.get("ahodName") ||
-      formData.get("aHOD") ||
-      ""
-    ).toString().trim();
+    const pathwayHeadName = (formData.get("pathwayHeadName") || "").toString().trim();
+    const cbePathwayType = (formData.get("cbePathwayType") || "").toString().trim();
 
     const staffCountRaw = formData.get("staffCount");
     const displayOrderRaw = formData.get("displayOrder");
@@ -367,9 +373,29 @@ export async function POST(req) {
       );
     }
 
-    if (!VALID_CATEGORIES.has(category)) {
+    if (!VALID_STAFF_DEPARTMENT_CATEGORIES.has(category)) {
       return NextResponse.json(
         { success: false, error: "Invalid department category" },
+        { status: 400 }
+      );
+    }
+
+    if (category === CBC_CATEGORY) {
+      if (!VALID_CBC_PATHWAY_TYPES.has(cbePathwayType)) {
+        return NextResponse.json(
+          { success: false, error: "Select a valid CBC pathway" },
+          { status: 400 }
+        );
+      }
+      if (!pathwayHeadName) {
+        return NextResponse.json(
+          { success: false, error: "Pathway head is required for CBC departments" },
+          { status: 400 }
+        );
+      }
+    } else if (!headName) {
+      return NextResponse.json(
+        { success: false, error: "Head of Department is required" },
         { status: 400 }
       );
     }
@@ -422,23 +448,64 @@ export async function POST(req) {
     if (isFileUpload(legacyImageFile)) {
       uploadedImages.push(...(await uploadSchoolImagesFromFormData(formData, "image", "school_departments")));
     }
-    const primaryImage = uploadedImages[0]?.url || null;
+    const imageUrl = (formData.get("imageUrl") || "").toString().trim();
+    if (imageUrl && !isDepartmentLibraryImage(imageUrl)) {
+      return NextResponse.json(
+        { success: false, error: "Invalid department library image" },
+        { status: 400 }
+      );
+    }
+
+    const selectedImages = imageUrl
+      ? [
+          ...uploadedImages,
+          {
+            url: imageUrl,
+            publicId: null,
+            altText: name,
+            caption: `${name} department`,
+          },
+        ]
+      : uploadedImages;
+    const primaryImage = uploadedImages[0]?.url || imageUrl || null;
+
+    let cbePathwayId = null;
+    if (category === CBC_CATEGORY) {
+      const pathway = CBC_PATHWAYS.find((item) => item.type === cbePathwayType);
+      const cbePathway = await prisma.cBEPathway.upsert({
+        where: { type: pathway.type },
+        update: {
+          name: pathway.name,
+          description: pathway.description,
+          isActive: true,
+        },
+        create: {
+          name: pathway.name,
+          type: pathway.type,
+          description: pathway.description,
+          isActive: true,
+        },
+      });
+      cbePathwayId = cbePathway.id;
+    }
 
     const department = await prisma.staffDepartment.create({
       data: {
         name,
         category,
         description: description || null,
-        headName: headName || null,
-        assistantHeadName: assistantHeadName || null,
+        headName: category === CBC_CATEGORY ? null : headName,
+        pathwayHeadName: category === CBC_CATEGORY ? pathwayHeadName : null,
+        cbePathwayId,
+        cbeTrackId: null,
         staffCount: Math.floor(staffCount),
         displayOrder: Math.floor(displayOrder),
         isActive,
         image: primaryImage,
         extra,
-        images: uploadedImages.length
+        images: selectedImages.length
           ? {
-              create: uploadedImages.map((image, index) => ({
+              create: selectedImages.map((image, index) => ({
                 url: image.url,
                 publicId: image.publicId,
                 altText: image.altText || name,
@@ -450,10 +517,14 @@ export async function POST(req) {
       },
       include: {
         images: { orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }] },
+        cbePathway: true,
       },
     });
 
-    return NextResponse.json({ success: true, department }, { status: 201 });
+    return NextResponse.json(
+      { success: true, department: cleanDepartmentResponse(department) },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("❌ POST Department Error:", error);
     return NextResponse.json(

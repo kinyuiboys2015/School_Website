@@ -81,6 +81,11 @@ import {
   FiCompass as FiCompassIcon,
   FiAlertTriangle,
 } from 'react-icons/fi';
+import {
+  getDepartmentLeader,
+  getDepartmentPathway,
+  isCbcDepartment,
+} from '../../../libs/staffDepartmentConfig';
 import { 
   FaGraduationCap, 
   FaHome, 
@@ -232,18 +237,27 @@ const getDepartmentCategoryLabel = (category) => {
   return labels[category] || 'Department';
 };
 
-const buildDepartmentItem = (dept) => ({
-  ...dept,
-  type: 'DEPARTMENT',
-  title: dept.name,
-  shortDescription: dept.description,
-  description: dept.description,
-  contactName: dept.headName,
-  details: [
-    { title: 'Category', content: getDepartmentCategoryLabel(dept.category) },
-    { title: 'Staffing', content: `${Number(dept.staffCount) || 0} staff members` },
-  ].filter((item) => item.content),
-});
+const buildDepartmentItem = (dept) => {
+  const leader = getDepartmentLeader(dept);
+  const pathway = getDepartmentPathway(dept);
+
+  return {
+    ...dept,
+    type: 'DEPARTMENT',
+    title: dept.name,
+    shortDescription: dept.description,
+    description: dept.description,
+    contactName: leader.name,
+    details: [
+      { title: 'Category', content: getDepartmentCategoryLabel(dept.category) },
+      ...(isCbcDepartment(dept) && pathway?.name
+        ? [{ title: 'CBC Pathway', content: pathway.name }]
+        : []),
+      { title: leader.label, content: leader.name },
+      { title: 'Staffing', content: `${Number(dept.staffCount) || 0} staff members` },
+    ].filter((item) => item.content),
+  };
+};
 
 const getSocialLinks = (item) => {
   let social = item?.socialMedia || {};

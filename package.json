@@ -9,6 +9,7 @@
     "prisma:generate": "prisma generate",
     "prisma:db-push": "prisma db push",
     "seed:alumni": "node scripts/seed-kinyui-alumni.js",
+    "migrate:staff-departments": "node scripts/migrate-staff-departments.js",
     "dev:full": "npm run prisma:generate && npm run prisma:db-push && npm run dev"
   },
   "dependencies": {

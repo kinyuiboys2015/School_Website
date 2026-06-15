@@ -18,6 +18,11 @@ import {
   FiClipboard,
   FiInfo,
 } from "react-icons/fi";
+import {
+  getDepartmentLeader,
+  getDepartmentPathway,
+  isCbcDepartment,
+} from "../../../../../libs/staffDepartmentConfig";
 
 const CATEGORY_META = {
   CBC: {
@@ -206,6 +211,8 @@ export default function StaffDepartmentDetailPage() {
 
   const meta = getCategoryMeta(department.category);
   const Icon = meta.icon;
+  const leader = getDepartmentLeader(department);
+  const pathway = getDepartmentPathway(department);
 
   // Default Kinyui Boys Mathematics Department data
   const defaultOverview = "Coordinates Mathematics teaching, numeracy support, assessment preparation, and performance tracking across the school.";
@@ -258,9 +265,11 @@ export default function StaffDepartmentDetailPage() {
           <div className="p-5 sm:p-8">
             
             {/* REDESIGNED STATS GRID - Modern cards with different colors */}
-            <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
-              <ModernStatCard icon={FiUser} label="Head of Department" value={department.headName || "Not listed"} color="emerald" />
-              <ModernStatCard icon={FiShield} label="AHOD" value={department.assistantHeadName || "Not listed"} color="amber" />
+            <div className={`grid gap-4 grid-cols-1 ${isCbcDepartment(department) ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
+              <ModernStatCard icon={FiUser} label={leader.label} value={leader.name || "Not listed"} color="emerald" />
+              {isCbcDepartment(department) && (
+                <ModernStatCard icon={FiTarget} label="CBC Pathway" value={pathway?.name || "Not listed"} color="blue" />
+              )}
               <ModernStatCard icon={Icon} label="Category" value={meta.label} color="purple" />
             </div>
 

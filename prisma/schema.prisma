@@ -342,7 +342,7 @@ model StaffDepartment {
   images            StaffDepartmentImage[]
   staffCount        Int                      @default(0)
   headName          String?                  @db.VarChar(255)
-  assistantHeadName String?                  @db.VarChar(255)
+  pathwayHeadName   String?                  @db.VarChar(255)
   extra             Json?
   isActive          Boolean                  @default(true)
   displayOrder      Int                      @default(0)

@@ -87,6 +87,13 @@ import {
 import CircularProgress from '@mui/material/CircularProgress';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import {
+  CBC_PATHWAYS,
+  DEPARTMENT_IMAGE_LIBRARY,
+  getDepartmentLeader,
+  getDepartmentPathway,
+  isCbcDepartment,
+} from '../../../libs/staffDepartmentConfig';
 
 // Custom Spinner Component using Material-UI CircularProgress
 const Spinner = ({ size = 40, color = 'inherit', thickness = 3.6, variant = 'indeterminate', value = 0 }) => {
@@ -1980,7 +1987,8 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
     name: department?.name || '',
     category: department?.category || 'TEACHING',
     headName: department?.headName || '',
-    assistantHeadName: department?.assistantHeadName || '',
+    pathwayHeadName: department?.pathwayHeadName || '',
+    cbePathwayType: department?.cbePathwayType || department?.cbePathway?.type || '',
     staffCount: department?.staffCount || 0,
     description: department?.description || '',
     displayOrder: department?.displayOrder || 0,
@@ -1991,6 +1999,7 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
     notes: extra.notes || ''
   });
   const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedLibraryImage, setSelectedLibraryImage] = useState('');
   const [removedImageUrls, setRemovedImageUrls] = useState([]);
   const [imageError, setImageError] = useState('');
 
@@ -1998,15 +2007,26 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
   const remainingExistingImageUrls = existingImageUrls.filter(
     (url) => !removedImageUrls.includes(url)
   );
-  const hasDepartmentImage = selectedImages.length > 0 || remainingExistingImageUrls.length > 0;
+  const isCbc = isCbcDepartment(formData.category);
+  const hasValidLeader = isCbc
+    ? Boolean(formData.cbePathwayType && formData.pathwayHeadName.trim())
+    : Boolean(formData.headName.trim());
+  const hasDepartmentImage =
+    selectedImages.length > 0 ||
+    remainingExistingImageUrls.length > 0 ||
+    Boolean(selectedLibraryImage);
   const displayImagePreviews = [
     ...remainingExistingImageUrls,
+    ...(selectedLibraryImage && !remainingExistingImageUrls.includes(selectedLibraryImage)
+      ? [selectedLibraryImage]
+      : []),
     ...selectedImages.map((image) => image.previewUrl),
   ];
 
   useEffect(() => {
     setRemovedImageUrls([]);
     setSelectedImages([]);
+    setSelectedLibraryImage('');
   }, [existingDepartmentImageUrls]);
 
   const updateField = (field, value) => {
@@ -2031,6 +2051,10 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
   };
 
   const handleRemoveImage = (previewUrl) => {
+    if (previewUrl === selectedLibraryImage) {
+      setSelectedLibraryImage('');
+      return;
+    }
     if (existingImageUrls.includes(previewUrl)) {
       setRemovedImageUrls((previous) => [...previous, previewUrl]);
       return;
@@ -2053,8 +2077,12 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
     const payload = new FormData();
     payload.append('name', formData.name.trim());
     payload.append('category', formData.category);
-    payload.append('headName', formData.headName.trim());
-    payload.append('assistantHeadName', formData.assistantHeadName.trim());
+    if (isCbc) {
+      payload.append('cbePathwayType', formData.cbePathwayType);
+      payload.append('pathwayHeadName', formData.pathwayHeadName.trim());
+    } else {
+      payload.append('headName', formData.headName.trim());
+    }
     payload.append('staffCount', String(Math.max(0, Number(formData.staffCount) || 0)));
     payload.append('description', formData.description.trim());
     payload.append('displayOrder', String(Number(formData.displayOrder) || 0));
@@ -2079,6 +2107,9 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
       payload.append('image', department.image);
     } else if (department?.images?.[0]?.url && !removedImageUrls.includes(department.images[0].url)) {
       payload.append('image', department.images[0].url);
+    }
+    if (selectedLibraryImage) {
+      payload.append('imageUrl', selectedLibraryImage);
     }
 
     onSave(payload, department?.id);
@@ -2146,29 +2177,40 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              {isCbc && (
                 <div>
                   <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">
-                    HOD Name
+                    CBC Pathway
                   </label>
-                  <input
-                    value={formData.headName}
-                    onChange={(event) => updateField('headName', event.target.value)}
+                  <select
+                    value={formData.cbePathwayType}
+                    onChange={(event) => updateField('cbePathwayType', event.target.value)}
+                    required
                     className="w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm font-bold outline-none focus:border-blue-500"
-                    placeholder="Head of Department"
-                  />
+                  >
+                    <option value="">Select pathway</option>
+                    {CBC_PATHWAYS.map((pathway) => (
+                      <option key={pathway.type} value={pathway.type}>
+                        {pathway.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <div>
-                  <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">
-                    AHOD Name
-                  </label>
-                  <input
-                    value={formData.assistantHeadName}
-                    onChange={(event) => updateField('assistantHeadName', event.target.value)}
-                    className="w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm font-bold outline-none focus:border-blue-500"
-                    placeholder="Assistant HOD"
-                  />
-                </div>
+              )}
+
+              <div>
+                <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">
+                  {isCbc ? 'Pathway Head' : 'Head of Department'}
+                </label>
+                <input
+                  value={isCbc ? formData.pathwayHeadName : formData.headName}
+                  onChange={(event) =>
+                    updateField(isCbc ? 'pathwayHeadName' : 'headName', event.target.value)
+                  }
+                  required
+                  className="w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm font-bold outline-none focus:border-blue-500"
+                  placeholder={isCbc ? 'Name of pathway head' : 'Name of HOD'}
+                />
               </div>
 
               <div className="grid gap-4 sm:grid-cols-3">
@@ -2253,6 +2295,37 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
 
               <div>
                 <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">
+                  Kinyui Department Image Library
+                </label>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                  {DEPARTMENT_IMAGE_LIBRARY.map((image) => {
+                    const selected = selectedLibraryImage === image.url;
+                    return (
+                      <button
+                        type="button"
+                        key={image.url}
+                        onClick={() => setSelectedLibraryImage(selected ? '' : image.url)}
+                        className={`overflow-hidden rounded-xl border-2 text-left transition ${
+                          selected
+                            ? 'border-blue-600 ring-2 ring-blue-100'
+                            : 'border-slate-100 hover:border-slate-300'
+                        }`}
+                      >
+                        <img src={image.url} alt={image.label} className="h-20 w-full object-cover" />
+                        <span className="block truncate px-2 py-2 text-[10px] font-black uppercase tracking-wide text-slate-600">
+                          {image.label}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="mt-2 text-xs font-semibold text-slate-500">
+                  Select an existing school photo or upload a new department image above.
+                </p>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">
                   Short Description
                 </label>
                 <textarea
@@ -2323,7 +2396,7 @@ function DepartmentFormModal({ department, onClose, onSave, loading }) {
             </button>
             <button
               type="submit"
-              disabled={loading || !formData.name.trim() || !hasDepartmentImage}
+              disabled={loading || !formData.name.trim() || !hasDepartmentImage || !hasValidLeader}
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-black uppercase tracking-widest text-white disabled:opacity-50"
             >
               {loading ? <Spinner size={16} /> : <FaSave />}
@@ -2440,7 +2513,8 @@ function StaffDepartmentManager({ showNotification }) {
       department.name,
       department.description,
       department.headName,
-      department.assistantHeadName,
+      department.pathwayHeadName,
+      department.cbePathway?.name,
       department.category
     ].filter(Boolean).join(' ').toLowerCase().includes(query);
     return matchesCategory && matchesSearch;
@@ -2503,7 +2577,7 @@ function StaffDepartmentManager({ showNotification }) {
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search department, HOD, AHOD or description..."
+            placeholder="Search department, pathway, department head or description..."
             className="w-full rounded-xl border-2 border-slate-100 bg-slate-50 py-4 pl-12 pr-4 text-sm font-bold outline-none focus:border-blue-500 focus:bg-white"
           />
         </div>
@@ -2528,6 +2602,8 @@ function StaffDepartmentManager({ showNotification }) {
           {filteredDepartments.map((department) => {
             const categoryInfo = STAFF_DEPARTMENT_CATEGORIES.find((item) => item.value === department.category) || STAFF_DEPARTMENT_CATEGORIES[2];
             const departmentImage = getDepartmentImage(department);
+            const leader = getDepartmentLeader(department);
+            const pathway = getDepartmentPathway(department);
             return (
               <article key={department.id} className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-xl shadow-slate-200/50">
                 {departmentImage ? (
@@ -2554,17 +2630,19 @@ function StaffDepartmentManager({ showNotification }) {
                   </p>
                   <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
                     <div className="rounded-xl bg-slate-50 p-3">
-                      <p className="font-black uppercase tracking-widest text-slate-400">HOD</p>
-                      <p className="mt-1 truncate font-bold text-slate-800">{department.headName || 'Not set'}</p>
+                      <p className="font-black uppercase tracking-widest text-slate-400">{leader.shortLabel}</p>
+                      <p className="mt-1 truncate font-bold text-slate-800">{leader.name || 'Not set'}</p>
                     </div>
                     <div className="rounded-xl bg-slate-50 p-3">
                       <p className="font-black uppercase tracking-widest text-slate-400">Staff</p>
                       <p className="mt-1 font-bold text-slate-800">{department.staffCount || 0}</p>
                     </div>
-                    <div className="col-span-2 rounded-xl bg-slate-50 p-3">
-                      <p className="font-black uppercase tracking-widest text-slate-400">AHOD</p>
-                      <p className="mt-1 truncate font-bold text-slate-800">{department.assistantHeadName || 'Not set'}</p>
-                    </div>
+                    {isCbcDepartment(department) && (
+                      <div className="col-span-2 rounded-xl bg-blue-50 p-3">
+                        <p className="font-black uppercase tracking-widest text-blue-400">CBC Pathway</p>
+                        <p className="mt-1 truncate font-bold text-blue-900">{pathway?.name || 'Not set'}</p>
+                      </div>
+                    )}
                   </div>
                   <div className="mt-5 flex gap-2">
                     <button

@@ -39,6 +39,11 @@ import {
 } from 'react-icons/fi';
 import { toast } from 'sonner';
 import { SiGmail } from 'react-icons/si';
+import {
+  getDepartmentLeader,
+  getDepartmentPathway,
+  isCbcDepartment,
+} from '../../../libs/staffDepartmentConfig';
 
 // ==========================================
 // 1. ENHANCED CONFIGURATION WITH HIERARCHY
@@ -162,7 +167,8 @@ const departmentSearchText = (department) => {
     department?.name,
     department?.description,
     department?.headName,
-    department?.assistantHeadName,
+    department?.pathwayHeadName,
+    department?.cbePathway?.name,
     department?.category,
   ]
     .filter(Boolean)
@@ -1072,15 +1078,29 @@ export default function StaffDirectory() {
                   </div>
 
                   <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-                    {depts.map((dept) => (
+                    {depts.map((dept) => {
+                      const leader = getDepartmentLeader(dept);
+                      const pathway = getDepartmentPathway(dept);
+                      const departmentImage = dept.image || dept.images?.[0]?.url;
+                      return (
                         <Link
                           key={dept.id}
                           href={`/pages/staff/departments/${dept.id}`}
-                          className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-1 hover:border-[#38bdf8]/70 hover:shadow-xl"
+                          className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-[#38bdf8]/70 hover:shadow-xl"
                         >
-                          <div className="absolute right-0 top-0 h-24 w-24 rounded-bl-full bg-slate-50 transition group-hover:bg-[#38bdf8]/20" />
+                          {departmentImage ? (
+                            <img
+                              src={departmentImage}
+                              alt={dept.name}
+                              className="h-40 w-full object-cover transition duration-500 group-hover:scale-105"
+                            />
+                          ) : (
+                            <div className="flex h-40 items-center justify-center bg-slate-100 text-slate-400">
+                              <FiBookOpen size={28} />
+                            </div>
+                          )}
 
-                          <div className="relative z-10">
+                          <div className="relative z-10 p-5">
                             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#071527] text-white shadow-md">
                               <FiBookOpen size={18} className="text-[#38bdf8]" />
                             </div>
@@ -1096,15 +1116,15 @@ export default function StaffDirectory() {
                             )}
 
                             <div className="mt-5 flex flex-wrap gap-2">
-                              {dept.headName && (
+                              {leader.name && (
                                 <span className="rounded-full bg-blue-50 px-3 py-1 text-[10px] font-black text-blue-700">
-                                  HOD: {dept.headName}
+                                  {leader.shortLabel}: {leader.name}
                                 </span>
                               )}
 
-                              {dept.assistantHeadName && (
+                              {isCbcDepartment(dept) && pathway?.name && (
                                 <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-black text-slate-600">
-                                  AHOD: {dept.assistantHeadName}
+                                  {pathway.name}
                                 </span>
                               )}
                             </div>
@@ -1114,7 +1134,8 @@ export default function StaffDirectory() {
                             </span>
                           </div>
                         </Link>
-                      ))}
+                      );
+                    })}
                   </div>
                 </div>
               ) : null
