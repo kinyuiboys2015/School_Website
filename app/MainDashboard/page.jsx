@@ -74,6 +74,7 @@ export default function AdminDashboard() {
     totalApplications: 0,
     pendingApplications: 0,
     Resources: 0,
+    alumni: 0,
     Careers: 0,
     totalStudent: 0,
 
@@ -760,7 +761,7 @@ const ModernLoadingScreen = () => {
         studentRes,
         feesRes,
         schooldocumentsRes,
-        smsRes,
+        alumniRes,
         achievementsRes
       ] = await Promise.allSettled([
 	        fetch('/api/staff', getDashboardAuthHeaders()),
@@ -776,7 +777,7 @@ const ModernLoadingScreen = () => {
 	        fetch('/api/studentupload'),
 	        fetch('/api/feebalances'),
 	        fetch('/api/schooldocuments'),
-	        fetch('/api/sms'),
+	        fetch('/api/alumini'),
 	        fetch('/api/achievements')
 	      ]);
 
@@ -793,7 +794,7 @@ const ModernLoadingScreen = () => {
       const student = studentRes.status === 'fulfilled' ? await studentRes.value.json() : { students: [] };
       const fees = feesRes.status === 'fulfilled' ? await feesRes.value.json() : { feebalances: [] };
       const schoolDocs = schooldocumentsRes.status === 'fulfilled' ? await schooldocumentsRes.value.json() : { documents: [] };
-      const sms = smsRes.status === 'fulfilled' ? await smsRes.value.json() : { sms: [] };
+      const alumni = alumniRes.status === 'fulfilled' ? await alumniRes.value.json() : { alumni: [] };
       const achievements = achievementsRes.status === 'fulfilled' ? await achievementsRes.value.json() : { achievements: [] };
       
       const upcomingEvents = events.events?.filter(e => new Date(e.eventDate) >= new Date()).length || 0;
@@ -815,7 +816,7 @@ const ModernLoadingScreen = () => {
         totalApplications: admissionsData.length || 0,
         pendingApplications: pendingApps,
         Resources: resources.resources?.length || 0,
-        sms: sms.sms?.length || 0,
+        alumni: alumni.alumni?.length || 0,
         Careers: careers.careers?.length || 0,
         totalStudent: student.students?.length || 0,
         totalFees: fees.feebalances?.length || 0,

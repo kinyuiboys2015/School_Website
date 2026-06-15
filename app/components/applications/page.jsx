@@ -1402,7 +1402,32 @@ const EmptyState = () => (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-emerald-50/20 p-4 md:p-6">
       <Toaster position="top-right" richColors />
 
-{/* Modern Applications Dashboard Header - Enhanced with Premium Design */}
+{/* Clean Responsive Admissions Header */}
+<div className="mb-6 overflow-hidden rounded-2xl bg-[#0F172A] p-4 text-white shadow-sm sm:mb-8 sm:p-6">
+  <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+    <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10">
+        <GraduationCap className="h-6 w-6 text-white" />
+      </div>
+      <div className="min-w-0">
+        <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-blue-200/80">Kinyui Boys Senior School</p>
+        <h1 className="text-2xl font-black leading-tight text-white sm:text-3xl md:text-4xl">Admission Applications</h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">Review, filter, and manage student admission applications.</p>
+      </div>
+    </div>
+    <div className="flex w-full flex-col gap-2 sm:flex-row lg:w-auto">
+      <button onClick={fetchApplications} disabled={refreshing || loadingStates?.fetching} className="flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/15 disabled:opacity-50">
+        <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />{refreshing ? 'Refreshing...' : 'Refresh'}
+      </button>
+      <button onClick={exportApplications} className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
+        <Download className="h-4 w-4" />Export
+      </button>
+    </div>
+  </div>
+</div>
+
+{/* Legacy header retained for compatibility but no longer rendered */}
+<div className="hidden">
 <div className="relative mb-6 sm:mb-8 overflow-hidden
                 rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem]
                 bg-gradient-to-br from-blue-700 via-purple-700 to-indigo-700
@@ -1637,7 +1662,7 @@ const EmptyState = () => (
     </div>
   </div>
 </div>
-
+</div>
 
 <div className="mb-8 space-y-6">
 
@@ -1676,7 +1701,7 @@ const EmptyState = () => (
   </div>
 
   {/* 2. Modern Stats Grid - Zoom Responsive */}
-  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+  <div className="hidden">
     {[
       { label: 'Total', value: stats.total, icon: <FcAdvertising />, bg: 'hover:border-blue-200' },
       { label: 'Pending', value: stats.pending + stats.underReview, icon: <FcClock />, bg: 'hover:border-amber-200' },

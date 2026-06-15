@@ -1828,7 +1828,32 @@ const CampaignAttachmentsDisplay = ({ campaign }) => {
         />
       )}
       
-{/* Modern Email Campaigns Manager Header */}
+{/* Clean Responsive Email Header */}
+<div className="mb-6 overflow-hidden rounded-2xl bg-[#0F172A] p-4 text-white shadow-sm sm:mb-8 sm:p-6">
+  <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+    <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10">
+        <Mail className="h-6 w-6 text-white" />
+      </div>
+      <div className="min-w-0">
+        <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-blue-200/80">Kinyui Boys Senior School</p>
+        <h1 className="text-2xl font-black leading-tight text-white sm:text-3xl md:text-4xl">Email Campaigns</h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">Create and manage school email communication.</p>
+      </div>
+    </div>
+    <div className="flex w-full flex-col gap-2 sm:flex-row lg:w-auto">
+      <button onClick={fetchData} disabled={refreshing || loadingStates.fetching} className="flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/15 disabled:opacity-50">
+        <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />{refreshing ? 'Refreshing...' : 'Refresh'}
+      </button>
+      <button onClick={openCreateModal} className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
+        <Plus className="h-4 w-4" />New Campaign
+      </button>
+    </div>
+  </div>
+</div>
+
+{/* Legacy header retained for compatibility but no longer rendered */}
+<div className="hidden">
 <div className="group relative bg-[#0F172A] rounded-xl md:rounded-[2.5rem] p-5 md:p-8 text-white overflow-hidden shadow-2xl border border-white/5 transition-all duration-500 mb-6 sm:mb-8">
   
   {/* Abstract Gradient Orbs - Blue/Cyan/ Emerald Theme */}
@@ -2030,6 +2055,7 @@ const CampaignAttachmentsDisplay = ({ campaign }) => {
     </div>
   </div>
 </div>
+</div>
 
 <div className="mb-8 space-y-6">
 
@@ -2068,7 +2094,7 @@ const CampaignAttachmentsDisplay = ({ campaign }) => {
   </div>
 
   {/* 2. Modern Stats Grid - Zoom Responsive */}
-  <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+  <div className="hidden">
     {[
       { label: 'Campaigns', value: stats.total, icon: <FcAdvertising />, bg: 'hover:border-blue-200' },
       { label: 'Draft', value: stats.draft, icon: <FcClock />, bg: 'hover:border-amber-200' },

@@ -23,7 +23,6 @@ import {
   FiCalendar,
   FiChevronRight,
   FiStar,
-  FiTrendingUp,
   FiUploadCloud,
   FiUser,
   FiMail,
@@ -571,31 +570,6 @@ const FormPanel = ({ title, subtitle, icon: Icon, children, theme }) => {
   );
 };
 
-// Stat Card Component
-const StatCard = ({ label, value, icon: Icon, color, description, trend, onClick }) => (
-  <div onClick={onClick} className="group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-6 shadow-xl shadow-slate-200/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl cursor-pointer">
-    <div className={`absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-10 blur-2xl ${color}`} />
-    <div className="relative z-10">
-      <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl text-white shadow-lg ${color}`}>
-        <Icon className="text-xl" />
-      </div>
-      <div className="flex items-end justify-between gap-3">
-        <div>
-          <p className="text-3xl font-black tracking-tight text-slate-950">{typeof value === 'number' ? value.toLocaleString() : value}</p>
-          <p className="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">{label}</p>
-        </div>
-        {trend && (
-          <div className="mb-2 flex items-center gap-1 text-emerald-500">
-            <FiTrendingUp className="text-sm" />
-            <span className="text-xs font-bold">{trend}</span>
-          </div>
-        )}
-      </div>
-      {description && <p className="mt-4 border-t border-slate-100 pt-4 text-xs font-semibold leading-5 text-slate-400">{description}</p>}
-    </div>
-  </div>
-);
-
 // Hub Item Modal Component
 const HubItemModal = ({ open, onClose, onSave, initial, defaultType }) => {
   const [form, setForm] = useState({
@@ -982,8 +956,6 @@ export default function SchoolHubManager() {
   }, [items, activeType, searchTerm, sortBy]);
 
   const groupedCounts = useMemo(() => TYPE_OPTIONS.reduce((acc, opt) => { acc[opt.value] = items.filter(i => i.type === opt.value).length; return acc; }, {}), [items]);
-  const activeCount = useMemo(() => items.filter(item => item.isActive).length, [items]);
-  const imageCount = useMemo(() => items.reduce((sum, item) => sum + normalizeSchoolImages(item).length, 0), [items]);
   const totalItems = items.length;
 
   const saveItem = async (formData) => {
@@ -1014,7 +986,6 @@ export default function SchoolHubManager() {
 
   const getTypeTheme = (type) => TYPE_THEMES[type] || TYPE_THEMES.CLUB;
   const getTypeMeta = (type) => TYPE_OPTIONS.find(t => t.value === type);
-  const trendPercentage = activeCount ? Math.floor((activeCount / totalItems) * 100) : 0;
 
   if (loading && !items.length) return <ModernLoadingSpinner message="Loading School Hub data..." size="large" />;
 
@@ -1023,47 +994,28 @@ export default function SchoolHubManager() {
       <DeleteConfirmationModal open={deleteModal.open} onClose={() => setDeleteModal({ open: false, itemId: null, itemName: '', loading: false })} onConfirm={confirmDelete} itemName={deleteModal.itemName} loading={deleteModal.loading} />
       <HubItemModal open={modalOpen} onClose={() => { setModalOpen(false); setEditing(null); }} onSave={saveItem} initial={editing} defaultType={activeType !== 'ALL' ? activeType : 'CLUB'} />
 
-      {/* Hero Header */}
-      <div className="group relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#0F172A] via-[#1E1B4B] to-[#0C4A6E] p-7 text-white shadow-2xl md:rounded-[2.5rem] md:p-10 mb-8">
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '42px 42px' }} />
-        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-indigo-300/20 blur-[90px]" />
-        <div className="absolute -bottom-24 left-0 h-72 w-72 rounded-full bg-emerald-300/10 blur-[90px]" />
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 rounded-full blur-[80px] animate-pulse" />
-        
-        <div className="relative z-10 flex flex-col gap-8 xl:flex-row xl:items-center xl:justify-between">
-          <div className="max-w-3xl">
-            <div className="mb-7 flex items-center gap-5">
-              <div className="h-12 w-1.5 rounded-full bg-gradient-to-b from-amber-300 via-yellow-300 to-emerald-300 shadow-[0_0_24px_rgba(245,158,11,0.55)]" />
-              <div className="space-y-1">
-                <p className="text-[11px] font-black uppercase tracking-[0.32em] text-amber-200">Kinyui Boys Senior School</p>
-                <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/45"><span className="h-1.5 w-1.5 rounded-full bg-amber-400" />School Hub Administration Portal</p>
-              </div>
+      {/* Clean Responsive School Hub Header */}
+      <div className="mb-8 overflow-hidden rounded-2xl bg-[#0F172A] p-4 text-white shadow-sm sm:p-6">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10">
+              <FiLayers className="h-6 w-6 text-white" />
             </div>
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl border border-white/15 bg-gradient-to-br from-amber-500/20 to-yellow-500/20 shadow-xl backdrop-blur-xl"><FiLayers className="text-3xl text-amber-200" /></div>
-              <h2 className="text-3xl font-black leading-none tracking-tight md:text-5xl">School <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-200 to-emerald-200">Hub</span> Manager</h2>
-            </div>
-            <p className="mt-5 max-w-2xl rounded-2xl bg-white/[0.03] px-4 py-3 text-sm font-semibold leading-7 text-white/65 backdrop-blur-sm">Centralized management for clubs, societies, student council, computer lab, farm activities, boarding facilities, security services, and school departments. Upload multiple images, manage structured content, and control public visibility from a single interface.</p>
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/15 px-4 py-2 text-xs font-black uppercase tracking-widest text-emerald-100 backdrop-blur-sm"><span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />{activeCount} Active Items</span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-black uppercase tracking-widest text-white/60 backdrop-blur-sm"><FiImage className="text-amber-400" />{imageCount} Images Managed</span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-black uppercase tracking-widest text-white/60 backdrop-blur-sm"><FiGrid className="text-amber-400" />{totalItems} Total Records</span>
+            <div className="min-w-0">
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-indigo-200/80">Kinyui Boys Senior School</p>
+              <h1 className="text-2xl font-black leading-tight text-white sm:text-3xl md:text-4xl">School Hub</h1>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">Manage school clubs, facilities, departments, activities, and their public content.</p>
             </div>
           </div>
-          <div className="flex flex-col gap-3 sm:flex-row xl:flex-col">
-            <button onClick={() => fetchItems(true)} className="group/btn relative flex items-center justify-center gap-3 overflow-hidden rounded-2xl border border-white/15 bg-white/10 px-6 py-4 text-[11px] font-black uppercase tracking-[0.2em] text-white transition hover:bg-white/15 disabled:opacity-50 backdrop-blur-sm" disabled={refreshing}><FiRefreshCw className={refreshing ? 'animate-spin text-base' : 'text-base transition-transform group-hover/btn:rotate-180'} />{refreshing ? 'Refreshing' : 'Refresh Data'}</button>
-            <button onClick={() => { setEditing(null); setModalOpen(true); }} className="group/btn relative flex items-center justify-center gap-3 overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 px-6 py-4 text-[11px] font-black uppercase tracking-[0.2em] text-white shadow-lg hover:shadow-xl transition-all"><FiPlus className="text-base transition-transform group-hover/btn:rotate-90" />Create New Item</button>
+          <div className="flex w-full flex-col gap-2 sm:flex-row lg:w-auto">
+            <button onClick={() => fetchItems(true)} className="flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/15 disabled:opacity-50" disabled={refreshing}>
+              <FiRefreshCw className={refreshing ? 'animate-spin' : ''} />{refreshing ? 'Refreshing...' : 'Refresh'}
+            </button>
+            <button onClick={() => { setEditing(null); setModalOpen(true); }} className="flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
+              <FiPlus />Create Item
+            </button>
           </div>
         </div>
-        <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-[10px] font-bold uppercase tracking-wider"><div className="flex items-center gap-4"><div className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /><span className="text-white/40">Status:</span><span className="text-emerald-400">Operational</span></div><div className="flex items-center gap-2"><FiShield className="text-amber-400" /><span className="text-white/40">Security:</span><span className="text-amber-400">Encrypted</span></div></div><div className="flex items-center gap-2"><FiClock className="text-white/30" /><span className="text-white/40">Last Updated: {new Date().toLocaleTimeString()}</span></div></div>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-        <StatCard label="Total Items" value={totalItems} icon={FiLayers} color="bg-gradient-to-br from-indigo-500 to-violet-600" description="All managed records" trend={`+${Math.floor(totalItems * 0.12)}%`} />
-        <StatCard label="Active Items" value={activeCount} icon={FiCheckCircle} color="bg-gradient-to-br from-emerald-500 to-teal-600" description="Published content" trend={`${trendPercentage}%`} />
-        <StatCard label="Total Images" value={imageCount} icon={FiImage} color="bg-gradient-to-br from-blue-500 to-cyan-600" description="Media assets" trend={`+${Math.floor(imageCount * 0.08)}`} />
-        <StatCard label="Categories" value={TYPE_OPTIONS.length} icon={FiGrid} color="bg-gradient-to-br from-amber-500 to-orange-600" description="Content groups" />
       </div>
 
       {/* Filter Section */}
