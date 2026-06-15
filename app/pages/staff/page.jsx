@@ -454,7 +454,7 @@ export default function StaffDirectory() {
   async function fetchDepartmentsData() {
     try {
       setDepartmentsLoading(true);
-      const data = await fetchPublicJson('/api/staff/departments?grouped=1&includeStaff=1');
+      const data = await fetchPublicJson('/api/staff/departments?grouped=1');
       if (data.success) {
         const grouped = data.departmentsByCategory || {};
         setDepartmentsByCategory({

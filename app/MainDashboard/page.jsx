@@ -54,6 +54,7 @@ import Fees from "../components/fees/page";
 import SchoolDocs from "../components/schooldocuments/page";
 import AchievementsManager from "../components/Achievements/page";
 import SchoolHubManager from "../components/schoolhub/page";
+import AlumniManager from "../components/alumni-management/page";
 
 
 export default function AdminDashboard() {
@@ -1165,6 +1166,8 @@ const handleLogout = () => {
         return <GuidanceCounselingTab />;
       case 'staff':
         return <StaffManager />;
+      case 'alumni':
+        return <AlumniManager />;
       case 'assignments':
         return <AssignmentsManager />;
       case 'admissions':
@@ -1229,9 +1232,15 @@ const handleLogout = () => {
     },
     { 
       id: 'staff', 
-      label: 'Staff & BOM', 
+      label: 'Staff & BOM',
       icon: IoPeopleCircle,
       badge: 'orange'
+    },
+    {
+      id: 'alumni',
+      label: 'Alumni',
+      icon: FiUsers,
+      badge: 'amber'
     },
     {
       id: 'achievements',

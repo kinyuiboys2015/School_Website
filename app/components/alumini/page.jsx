@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import {
   FiAward,
   FiBriefcase,
@@ -10,6 +11,12 @@ import {
   FiRefreshCw,
   FiUsers,
 } from "react-icons/fi";
+
+const createSlug = (value = "") =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "") || "alumni";
 
 const normalizeImages = (record) => {
   const images = Array.isArray(record.images)
@@ -191,17 +198,27 @@ export default function AlumniPage() {
                       </p>
                     ) : null}
 
-                    {record.website ? (
-                      <a
-                        href={record.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-5 inline-flex items-center gap-2 text-sm font-black text-orange-700 hover:text-orange-900"
+                    <div className="mt-5 flex flex-wrap items-center gap-4">
+                      <Link
+                        href={`/alumini/${record.id}/${createSlug(record.title || record.name)}`}
+                        className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-black text-white transition hover:bg-orange-700"
                       >
-                        Visit profile
+                        View Profile
                         <FiExternalLink />
-                      </a>
-                    ) : null}
+                      </Link>
+
+                      {record.website ? (
+                        <a
+                          href={record.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-sm font-black text-orange-700 hover:text-orange-900"
+                        >
+                          External website
+                          <FiExternalLink />
+                        </a>
+                      ) : null}
+                    </div>
                   </div>
                 </article>
               );

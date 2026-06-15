@@ -469,12 +469,14 @@ export async function PUT(req, { params }) {
 
     let mappedDepartment = null;
     if (
-      formData.has("departmentId") ||
-      formData.has("mainDepartmentId") ||
-      formData.has("subDepartmentId") ||
-      formData.has("department") ||
-      isTeacher ||
-      existingStaff.departmentId
+      !isTeacher &&
+      (
+        formData.has("departmentId") ||
+        formData.has("mainDepartmentId") ||
+        formData.has("subDepartmentId") ||
+        formData.has("department") ||
+        existingStaff.departmentId
+      )
     ) {
       try {
         mappedDepartment = await resolveDepartmentMapping({
@@ -501,17 +503,6 @@ export async function PUT(req, { params }) {
           { status: 400 }
         );
       }
-    }
-
-    if (isTeacher && !mappedDepartment?.mainDepartment?.id) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Teacher records must be linked to an existing active department.",
-          authenticated: true,
-        },
-        { status: 400 }
-      );
     }
 
     const effectiveSubject = newSubjectOffered ?? existingStaff.subjectOffered;
@@ -621,10 +612,17 @@ export async function PUT(req, { params }) {
     if (formData.get("name")) data.name = formData.get("name");
     if (formData.get("role")) data.role = formData.get("role");
     if (formData.get("position")) data.position = formData.get("position");
-    if (formData.get("department")) data.department = formData.get("department");
     if (formData.has("staffType")) data.staffType = isTeacher ? "Teacher" : (newStaffType || "Leadership");
     if (formData.has("subjectOffered")) data.subjectOffered = isTeacher ? newSubjectOffered?.toString().trim() || null : null;
-    if (mappedDepartment) {
+    if (isTeacher) {
+      data.department = null;
+      data.departmentId = null;
+      data.mainDepartmentId = null;
+      data.subDepartmentId = null;
+    } else if (formData.get("department")) {
+      data.department = formData.get("department");
+    }
+    if (!isTeacher && mappedDepartment) {
       data.departmentId = mappedDepartment.departmentId || null;
       data.mainDepartmentId = mappedDepartment.mainDepartment?.id || null;
       data.subDepartmentId = mappedDepartment.subDepartment?.id || null;

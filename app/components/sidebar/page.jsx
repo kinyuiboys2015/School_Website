@@ -219,6 +219,12 @@ const handleLogout = () => {
     icon: IoSchoolOutline,
     badge: 'cyan'
   },
+  {
+    id: 'alumni',
+    label: 'Alumni',
+    icon: IoPeopleCircle,
+    badge: 'amber'
+  },
   // Shuffled operational tabs
   { 
     id: 'newsevents', 

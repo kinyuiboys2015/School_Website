@@ -217,7 +217,7 @@ export default function StaffDepartmentDetailPage() {
   const Icon = meta.icon;
   const leader = getDepartmentLeader(department);
   const pathway = getDepartmentPathway(department);
-  const departmentStaff = department.staff || department.teachers || [];
+  const departmentStaff = department.staff || [];
 
   // Default Kinyui Boys Mathematics Department data
   const defaultOverview = "Coordinates Mathematics teaching, numeracy support, assessment preparation, and performance tracking across the school.";
@@ -397,9 +397,6 @@ export default function StaffDepartmentDetailPage() {
                             </p>
                             <p className="mt-1 truncate text-xs font-semibold text-slate-500">
                               {staffMember.position || staffMember.role}
-                              {staffMember.subjectOffered
-                                ? ` - ${staffMember.subjectOffered}`
-                                : ""}
                             </p>
                           </div>
                         </div>
@@ -407,10 +404,11 @@ export default function StaffDepartmentDetailPage() {
                     </div>
                   ) : (
                     <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm font-semibold text-slate-500">
-                      No staff members are assigned to this department yet.
+                      No non-teaching staff members are assigned to this department yet.
                     </div>
                   )}
                 </section>
+
               </div>
 
               {/* RIGHT SIDE - Privacy Panel - Redesigned */}

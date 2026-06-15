@@ -847,22 +847,22 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
     staffType: isInitialTeacher ? 'Teacher' : 'Leadership',
     role: isInitialTeacher ? 'Teacher' : (staff?.role || 'Senior Teacher'),
     position: isInitialTeacher ? 'Teacher' : (staff?.position || ''),
-    department: staff?.department || '',
-    departmentId: staff?.departmentId ? String(staff.departmentId) : '',
-    mainDepartmentId: staff?.mainDepartmentId
+    department: isInitialTeacher ? '' : (staff?.department || ''),
+    departmentId: !isInitialTeacher && staff?.departmentId ? String(staff.departmentId) : '',
+    mainDepartmentId: !isInitialTeacher && staff?.mainDepartmentId
       ? String(staff.mainDepartmentId)
-      : staff?.mainDepartmentRecord?.id
+      : !isInitialTeacher && staff?.mainDepartmentRecord?.id
         ? String(staff.mainDepartmentRecord.id)
-        : staff?.departmentRecord && isSubDepartment(staff.departmentRecord)
+        : !isInitialTeacher && staff?.departmentRecord && isSubDepartment(staff.departmentRecord)
           ? String(staff.departmentRecord.parentDepartmentId || '')
-        : staff?.departmentRecord && !isSubDepartment(staff.departmentRecord)
+        : !isInitialTeacher && staff?.departmentRecord && !isSubDepartment(staff.departmentRecord)
           ? String(staff.departmentRecord.id)
           : '',
-    subDepartmentId: staff?.subDepartmentId
+    subDepartmentId: !isInitialTeacher && staff?.subDepartmentId
       ? String(staff.subDepartmentId)
-      : staff?.subDepartmentRecord?.id
+      : !isInitialTeacher && staff?.subDepartmentRecord?.id
         ? String(staff.subDepartmentRecord.id)
-        : staff?.departmentRecord && isSubDepartment(staff.departmentRecord)
+        : !isInitialTeacher && staff?.departmentRecord && isSubDepartment(staff.departmentRecord)
           ? String(staff.departmentRecord.id)
           : '',
     subjectOffered: staff?.subjectOffered || '',
@@ -989,8 +989,10 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
         staffType: 'Teacher',
         role: 'Teacher',
         position: 'Teacher',
-        department: prev.department || '',
-        departmentId: prev.departmentId || '',
+        department: '',
+        departmentId: '',
+        mainDepartmentId: '',
+        subDepartmentId: '',
         subjectOffered: prev.subjectOffered || '',
         email: '',
         phone: '',
@@ -1153,7 +1155,7 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
     if (isTeacherForm) {
       switch (currentStep) {
         case 0:
-          return formData.name.trim() && formData.mainDepartmentId && formData.subjectOffered.trim();
+          return formData.name.trim() && formData.subjectOffered.trim();
         case 1:
           return (imageFile || staff?.image || imagePreview) && !imageError;
         case 2:
@@ -1172,18 +1174,17 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
     }
   };
 
-  const renderDepartmentAssignmentFields = (required = false) => (
+  const renderDepartmentAssignmentFields = () => (
     <div className="space-y-4 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-5">
       <div>
         <label className="mb-3 flex items-center gap-2 text-base font-bold text-gray-900">
           <FaBuilding className="text-emerald-600" />
-          Main Department {required && <span className="text-red-500">*</span>}
+          Main Department
         </label>
         <select
           value={formData.mainDepartmentId}
           onChange={(event) => handleChange('mainDepartmentId', event.target.value)}
           className="w-full rounded-xl border-2 border-emerald-200 bg-white px-4 py-3 text-base font-bold focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
-          required={required}
         >
           <option value="">Select a main department...</option>
           {mainDepartmentOptions.map((department) => (
@@ -1376,8 +1377,6 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
 
                     {isTeacherForm ? (
                       <>
-                        {renderDepartmentAssignmentFields(true)}
-
                         <div className="bg-gradient-to-br from-cyan-50 to-blue-100 rounded-2xl p-5 border border-cyan-200">
                           <label className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
                             <FaBook className="text-cyan-700" /> Subject Offered <span className="text-red-500">*</span>
@@ -1418,7 +1417,7 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
                           </div>
                         </div>
 
-                        {renderDepartmentAssignmentFields(false)}
+                        {renderDepartmentAssignmentFields()}
                       </>
                     )}
                   </div>
@@ -1428,17 +1427,13 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
                       <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
                         <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-700">
                           <FaCheckCircle />
-                          Department-linked teacher
+                          Standalone teacher record
                         </div>
-                        <h3 className="mt-4 text-xl font-black text-slate-900">Teacher records stay department-first</h3>
+                        <h3 className="mt-4 text-xl font-black text-slate-900">Teacher records are not mapped to departments</h3>
                         <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                          This teacher will be published under the selected department on the public staff page. Leadership-only fields stay hidden here so the setup stays clean.
+                          The teacher profile stores the name, subject offered, and image without linking it to main or sub-department cards.
                         </p>
                         <div className="mt-5 space-y-3 rounded-2xl bg-slate-50 p-4 text-sm">
-                          <div className="flex items-center justify-between gap-3">
-                            <span className="font-black uppercase tracking-[0.14em] text-slate-400">Selected Department</span>
-                            <span className="font-bold text-slate-900">{formData.department || 'Not selected yet'}</span>
-                          </div>
                           <div className="flex items-center justify-between gap-3">
                             <span className="font-black uppercase tracking-[0.14em] text-slate-400">Subject</span>
                             <span className="font-bold text-slate-900">{formData.subjectOffered || 'Not set yet'}</span>
@@ -1608,7 +1603,7 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
                             {formData.subjectOffered || 'Subject offered'}
                           </p>
                           <p className="mt-1 text-sm font-semibold text-slate-500">
-                            {formData.department || 'Selected department'}
+                            Standalone teacher profile
                           </p>
                         </div>
                       </div>
@@ -1687,7 +1682,6 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
                     <div className="space-y-2 text-sm bg-white p-4 rounded-xl">
                       <p><span className="font-bold">Name:</span> {formData.name || '—'}</p>
                       <p><span className="font-bold">Type:</span> Teacher</p>
-                      <p><span className="font-bold">Department:</span> {formData.department || '—'}</p>
                       <p><span className="font-bold">Subject Offered:</span> {formData.subjectOffered || '—'}</p>
                       <p><span className="font-bold">Image:</span> {imagePreview ? 'Ready for upload' : 'Not selected yet'}</p>
                     </div>
@@ -2709,7 +2703,10 @@ function StaffDepartmentManager({ showNotification, staffOptions = [] }) {
   );
 
   const totalGroupedStaff = staffOptions.filter(
-    (staffMember) => staffMember.mainDepartmentId || staffMember.departmentId
+    (staffMember) =>
+      staffMember.staffType !== 'Teacher' &&
+      staffMember.role !== 'Teacher' &&
+      (staffMember.mainDepartmentId || staffMember.departmentId)
   ).length;
 
   return (

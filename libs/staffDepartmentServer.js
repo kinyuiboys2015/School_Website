@@ -1,5 +1,6 @@
 import {
   MAIN_DEPARTMENT_TYPE,
+  SUB_DEPARTMENT_TYPE,
   buildDepartmentHierarchy,
   isSubDepartment,
   normalizeDepartmentType,
@@ -51,6 +52,12 @@ const isVisibleStaff = (staff, includeInactive = false) =>
   includeInactive ||
   (staff?.status || "active").toString().trim().toLowerCase() !== "inactive";
 
+const isTeacherRecord = (staff) => {
+  const role = (staff?.role || "").toString().trim().toLowerCase();
+  const staffType = (staff?.staffType || "").toString().trim().toLowerCase();
+  return role === "teacher" || staffType === "teacher";
+};
+
 const matchesDepartment = (staff, department) => {
   const departmentId = Number(department.id);
 
@@ -84,7 +91,10 @@ export const loadDepartmentStaff = async (prisma, includeInactive = false) => {
     select: publicDepartmentStaffSelect,
     orderBy: [{ role: "asc" }, { name: "asc" }],
   });
-  return staff.filter((member) => isVisibleStaff(member, includeInactive));
+  return staff.filter(
+    (member) =>
+      !isTeacherRecord(member) && isVisibleStaff(member, includeInactive)
+  );
 };
 
 export const decorateDepartment = (
@@ -105,10 +115,8 @@ export const decorateDepartment = (
     cbePathwayType: department.cbePathway?.type || null,
     pathwayName: department.cbePathway?.name || null,
     staffCount: assignedStaff.length,
-    teacherCount: assignedStaff.length,
     directStaffCount: directStaff.length,
     staff: includeStaff ? assignedStaff : undefined,
-    teachers: includeStaff ? assignedStaff : undefined,
   };
 };
 

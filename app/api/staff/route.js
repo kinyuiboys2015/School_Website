@@ -453,8 +453,7 @@ export async function POST(req) {
 
     const isTeacher = isTeacherStaff(role, staffType);
 
-    // 🔹 Restrict public individual profiles to leadership, while allowing
-    // department-mapped teachers for the department pages/carousel.
+    // Teacher records are standalone and are not mapped into departments.
     if (!isTeacher && !isAllowedLeadershipRole(role, position)) {
       return NextResponse.json(
         {
@@ -467,33 +466,24 @@ export async function POST(req) {
     }
 
     let mappedDepartment = null;
-    try {
-      mappedDepartment = await resolveDepartmentMapping({
-        departmentId,
-        departmentName: department,
-        mainDepartmentId,
-        subDepartmentId,
-      });
-    } catch (error) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: error.message,
-          authenticated: true,
-        },
-        { status: 400 }
-      );
-    }
-
-    if (isTeacher && !mappedDepartment?.mainDepartment?.id) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Teacher records must be linked to an existing active department.",
-          authenticated: true,
-        },
-        { status: 400 }
-      );
+    if (!isTeacher) {
+      try {
+        mappedDepartment = await resolveDepartmentMapping({
+          departmentId,
+          departmentName: department,
+          mainDepartmentId,
+          subDepartmentId,
+        });
+      } catch (error) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: error.message,
+            authenticated: true,
+          },
+          { status: 400 }
+        );
+      }
     }
 
     if (isTeacher && !subjectOffered.toString().trim()) {
@@ -659,10 +649,16 @@ export async function POST(req) {
         name,
         role,
         position: position || (isTeacher ? "Teacher" : null),
-        department: mappedDepartment?.departmentName || department || null,
-        departmentId: mappedDepartment?.departmentId || null,
-        mainDepartmentId: mappedDepartment?.mainDepartment?.id || null,
-        subDepartmentId: mappedDepartment?.subDepartment?.id || null,
+        department: isTeacher
+          ? null
+          : mappedDepartment?.departmentName || department || null,
+        departmentId: isTeacher ? null : mappedDepartment?.departmentId || null,
+        mainDepartmentId: isTeacher
+          ? null
+          : mappedDepartment?.mainDepartment?.id || null,
+        subDepartmentId: isTeacher
+          ? null
+          : mappedDepartment?.subDepartment?.id || null,
         staffType: isTeacher ? "Teacher" : (staffType || "Leadership"),
         subjectOffered: isTeacher ? subjectOffered.toString().trim() : null,
         email: email || null,

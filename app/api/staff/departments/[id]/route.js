@@ -546,10 +546,19 @@ export async function PUT(req, { params }) {
     if (isSubDepartment(department)) {
       await prisma.staff.updateMany({
         where: {
-          OR: [
-            { subDepartmentId: id },
-            { mainDepartmentId: id },
-            { departmentId: id },
+          AND: [
+            {
+              OR: [
+                { subDepartmentId: id },
+                { mainDepartmentId: id },
+                { departmentId: id },
+              ],
+            },
+            {
+              NOT: {
+                OR: [{ role: "Teacher" }, { staffType: "Teacher" }],
+              },
+            },
           ],
         },
         data: {
@@ -562,7 +571,14 @@ export async function PUT(req, { params }) {
     } else {
       await prisma.staff.updateMany({
         where: {
-          OR: [{ subDepartmentId: id }, { departmentId: id }],
+          AND: [
+            { OR: [{ subDepartmentId: id }, { departmentId: id }] },
+            {
+              NOT: {
+                OR: [{ role: "Teacher" }, { staffType: "Teacher" }],
+              },
+            },
+          ],
         },
         data: {
           mainDepartmentId: id,
@@ -639,9 +655,18 @@ export async function DELETE(req, { params }) {
 
       await prisma.staff.updateMany({
         where: {
-          OR: [
-            { subDepartmentId: id },
-            { departmentId: id },
+          AND: [
+            {
+              OR: [
+                { subDepartmentId: id },
+                { departmentId: id },
+              ],
+            },
+            {
+              NOT: {
+                OR: [{ role: "Teacher" }, { staffType: "Teacher" }],
+              },
+            },
           ],
         },
         data: {
@@ -654,10 +679,19 @@ export async function DELETE(req, { params }) {
     } else {
       await prisma.staff.updateMany({
         where: {
-          OR: [
-            { mainDepartmentId: id },
-            { subDepartmentId: id },
-            { departmentId: id },
+          AND: [
+            {
+              OR: [
+                { mainDepartmentId: id },
+                { subDepartmentId: id },
+                { departmentId: id },
+              ],
+            },
+            {
+              NOT: {
+                OR: [{ role: "Teacher" }, { staffType: "Teacher" }],
+              },
+            },
           ],
         },
         data: {
