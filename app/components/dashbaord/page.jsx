@@ -1156,29 +1156,17 @@ setGrowthMetrics({
       
       // ========== QUICK STATS ==========
       const quickStatsData = [
-        { 
-          label: 'Assignment Completion', 
-          value: `${Math.round((completedAssignments / totalAssignments) * 100) || 0}%`, 
-          change: parseFloat(assignmentGrowth.toFixed(1)), 
-          icon: assignmentGrowth >= 0 ? FiTrendingUp : FiTrendingDown, 
-          color: assignmentGrowth >= 0 ? 'green' : 'red',
-          calculation: 'Based on assignment completion'
+        {
+          label: 'Assignments',
+          value: Array.isArray(assignments.assignments) ? assignments.assignments.length : 0,
+          icon: FiClipboard,
+          color: 'blue'
         },
-        { 
-          label: 'Alumni Network', 
-          value: `${alumniOverview.total}`, 
-          change: 0, 
-          icon: alumniOverview.total > 0 ? FiTrendingUp : FiTrendingDown, 
-          color: alumniOverview.total > 0 ? 'orange' : 'red',
-          calculation: `${alumniOverview.featured} featured profiles`
-        },
-        { 
-          label: 'Admission Growth', 
-          value: `${monthlyApplications}`, 
-          change: 0, 
-          icon: monthlyApplications > 0 ? FiTrendingUp : FiTrendingDown, 
-          color: monthlyApplications > 0 ? 'purple' : 'red',
-          calculation: 'Monthly applications'
+        {
+          label: 'Resources',
+          value: Array.isArray(resources.resources) ? resources.resources.length : 0,
+          icon: FiBookOpen,
+          color: 'emerald'
         }
       ];
       
@@ -1798,9 +1786,10 @@ const StatCard = ({ icon: Icon, label, value, change, color, subtitle, trend }) 
         </div>
         
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {quickStats.map((stat, index) => {
-            const isPositive = stat.change >= 0;
+            const hasTrend = Number.isFinite(stat.change);
+            const isPositive = hasTrend && stat.change >= 0;
             
             const colorStyles = {
               blue: 'bg-blue-50 border-blue-100 text-blue-600 glow-blue',
@@ -1829,9 +1818,11 @@ const StatCard = ({ icon: Icon, label, value, change, color, subtitle, trend }) 
                       <h3 className="text-3xl font-black text-slate-900 tracking-tighter tabular-nums">
                         {stat.value}
                       </h3>
-                      <span className="text-[10px] font-bold text-slate-400 italic">
-                        {stat.calculation}
-                      </span>
+                      {stat.calculation && (
+                        <span className="text-[10px] font-bold text-slate-400 italic">
+                          {stat.calculation}
+                        </span>
+                      )}
                     </div>
                   </div>
                   
@@ -1841,21 +1832,22 @@ const StatCard = ({ icon: Icon, label, value, change, color, subtitle, trend }) 
                   </div>
                 </div>
                 
-                {/* Trend Footer */}
-                <div className="mt-6 flex items-center justify-between relative z-10">
-                  <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black tracking-tight border ${
-                    isPositive 
-                      ? 'bg-emerald-50 text-emerald-600 border-emerald-100' 
-                      : 'bg-rose-50 text-rose-600 border-rose-100'
-                  }`}>
-                    {isPositive ? <FiTrendingUp size={14} /> : <FiTrendingDown size={14} />}
-                    <span>{isPositive ? '+' : ''}{stat.change}%</span>
+                {hasTrend && (
+                  <div className="mt-6 flex items-center justify-between relative z-10">
+                    <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black tracking-tight border ${
+                      isPositive
+                        ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
+                        : 'bg-rose-50 text-rose-600 border-rose-100'
+                    }`}>
+                      {isPositive ? <FiTrendingUp size={14} /> : <FiTrendingDown size={14} />}
+                      <span>{isPositive ? '+' : ''}{stat.change}%</span>
+                    </div>
+
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                      vs. Last Month
+                    </span>
                   </div>
-                  
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    vs. Last Month
-                  </span>
-                </div>
+                )}
               </div>
             );
           })}
