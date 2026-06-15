@@ -1222,7 +1222,7 @@ function ModernStaffModal({ onClose, onSave, staff, loading, existingDeputyCount
                     {
                       value: 'Leadership',
                       label: 'Leadership Profile',
-                      description: 'Principal, deputy principal, senior teacher, HOD or AHOD.',
+                      description: 'Principal, deputy principal, senior teacher, or HOD.',
                       icon: FaShieldAlt,
                       styles: 'from-slate-900 via-slate-800 to-slate-700'
                     },

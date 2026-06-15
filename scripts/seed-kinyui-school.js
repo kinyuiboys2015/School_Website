@@ -85,7 +85,6 @@ const staffDepartments = [
     description:
       "A caring team focused on student wellbeing, mentorship, and pastoral support across the school.",
     headName: "Mr. Muller",
-    assistantHeadName: "Mr. Kariuki",
     staffCount: 3,
     displayOrder: 1,
     image: "/male.png",
@@ -102,7 +101,6 @@ const staffDepartments = [
     description:
       "Mathematics department leading the school in strong numeracy, problem solving, and exam preparation.",
     headName: "Stephen Mutinda",
-    assistantHeadName: "",
     staffCount: 1,
     displayOrder: 2,
     image: "/male.png",
@@ -119,10 +117,9 @@ const staffDepartments = [
     description:
       "Humanities department supporting history, geography, CRE and related subjects with strong leadership.",
     headName: "BK Maingi",
-    assistantHeadName: "",
     staffCount: 1,
     displayOrder: 3,
-    image: "/male.png",
+    image: "/departments/humanities.JPG",
     extra: {
       focusAreas: ["Humanities education", "Social studies", "Character formation"],
       subjects: ["History", "Geography", "CRE"],
@@ -136,10 +133,9 @@ const staffDepartments = [
     description:
       "Applied Sciences department guiding students in Agriculture, Computer Studies, Home Science, and biology-based practical learning.",
     headName: "Madam Mutuku",
-    assistantHeadName: "",
     staffCount: 1,
     displayOrder: 4,
-    image: "/male.png",
+    image: "/departments/sciences.JPG",
     extra: {
       focusAreas: ["Agriculture", "Digital literacy", "Home Science", "Practical learning"],
       subjects: ["Biology", "Agriculture", "Computer Studies", "Home Science"],
@@ -153,10 +149,9 @@ const staffDepartments = [
     description:
       "Languages department delivering strong English and Kiswahili instruction and communication skills.",
     headName: "Kilonzo",
-    assistantHeadName: "",
     staffCount: 1,
     displayOrder: 5,
-    image: "/male.png",
+    image: "/departments/languages.JPG",
     extra: {
       focusAreas: ["Language skills", "Literacy", "Communication"],
       subjects: ["English", "Kiswahili"],
@@ -478,7 +473,6 @@ const createOrUpdateDepartment = async (department) => {
     category: department.category,
     description: department.description || null,
     headName: department.headName || null,
-    assistantHeadName: department.assistantHeadName || null,
     staffCount: department.staffCount || 0,
     displayOrder: department.displayOrder || 0,
     isActive: true,
