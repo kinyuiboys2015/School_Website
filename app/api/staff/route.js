@@ -369,19 +369,8 @@ export async function GET(req) {
             id: true,
             name: true,
             category: true,
-            departmentType: true,
-            parentDepartmentId: true,
-          },
-        },
-        mainDepartmentRecord: {
-          select: { id: true, name: true, departmentType: true },
-        },
-        subDepartmentRecord: {
-          select: {
-            id: true,
-            name: true,
-            departmentType: true,
-            parentDepartmentId: true,
+            isActive: true,
+            displayOrder: true,
           },
         },
       },
@@ -653,12 +642,6 @@ export async function POST(req) {
           ? null
           : mappedDepartment?.departmentName || department || null,
         departmentId: isTeacher ? null : mappedDepartment?.departmentId || null,
-        mainDepartmentId: isTeacher
-          ? null
-          : mappedDepartment?.mainDepartment?.id || null,
-        subDepartmentId: isTeacher
-          ? null
-          : mappedDepartment?.subDepartment?.id || null,
         staffType: isTeacher ? "Teacher" : (staffType || "Leadership"),
         subjectOffered: isTeacher ? subjectOffered.toString().trim() : null,
         email: email || null,
@@ -678,9 +661,7 @@ export async function POST(req) {
     });
 
     await syncDepartmentStaffCount(
-      newStaff.departmentId,
-      newStaff.mainDepartmentId,
-      newStaff.subDepartmentId
+      newStaff.departmentId
     );
 
     console.log(`✅ Staff member created by ${auth.user.name}: ${newStaff.name} (${newStaff.role}${newStaff.position ? ' - ' + newStaff.position : ''})`);

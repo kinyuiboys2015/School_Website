@@ -243,7 +243,7 @@ function RecordModal({ record, onClose, onSaved }) {
       if (form.image) payload.append("image", form.image);
       form.images.forEach((file) => payload.append("images", file));
 
-      const response = await fetch(record?.id ? `/api/alumni/${record.id}` : "/api/alumni", {
+      const response = await fetch(record?.id ? `/api/alumini/${record.id}` : "/api/alumini", {
         method: record?.id ? "PUT" : "POST",
         headers: getAuthHeaders(),
         body: payload,
@@ -359,7 +359,7 @@ function ImageManagerModal({ record, onClose, onSaved }) {
       payload.append("existingImage", primaryImage || "");
       payload.append("existingImages", JSON.stringify(galleryImages || []));
 
-      const response = await fetch(`/api/alumni/${record.id}`, {
+      const response = await fetch(`/api/alumini/${record.id}`, {
         method: "PUT",
         headers: getAuthHeaders(),
         body: payload,
@@ -448,7 +448,7 @@ export default function AlumniGovernanceManager() {
   const fetchRecords = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/alumni?includeInactive=1", { headers: getAuthHeaders() });
+      const response = await fetch("/api/alumini?includeInactive=1", { headers: getAuthHeaders() });
       const data = await response.json();
       if (!response.ok || !data.success) throw new Error(data.error || "Failed to load records");
       setRecords(data.records || []);
@@ -468,7 +468,7 @@ export default function AlumniGovernanceManager() {
   const handleDelete = async (record) => {
     if (!window.confirm(`Delete "${record.name}"?`)) return;
     try {
-      const response = await fetch(`/api/alumni/${record.id}`, { method: "DELETE", headers: getAuthHeaders() });
+      const response = await fetch(`/api/alumini/${record.id}`, { method: "DELETE", headers: getAuthHeaders() });
       const data = await response.json();
       if (!response.ok || !data.success) throw new Error(data.error || "Failed to delete record");
       toast.success("Record deleted");

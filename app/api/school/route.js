@@ -198,6 +198,24 @@ const parseJsonField = (value, fieldName) => {
   }
 };
 
+const fetchSchoolWithMagazineSafe = async () => {
+  // Primary query with relation include.
+  try {
+    return await prisma.schoolInfo.findFirst({ include: { Magazine: true } });
+  } catch (includeError) {
+    console.warn("⚠️ schoolInfo include query failed, falling back to base query:", includeError?.message || includeError);
+  }
+
+  // Fallback query without relation to avoid total fetch failure.
+  const school = await prisma.schoolInfo.findFirst();
+  if (!school) return null;
+
+  return {
+    ...school,
+    Magazine: null,
+  };
+};
+
 // ============ CLOUDINARY FUNCTIONS ============
 
 // Upload file to Cloudinary
@@ -520,13 +538,8 @@ const validateRequiredFieldsUpdate = (formData) => {
 export async function GET() {
   try {
     console.log("🔍 GET /api/school - Fetching school info");
-    
-    // ✅ FIX: Include Magazine relation
-    const school = await prisma.schoolInfo.findFirst({
-      include: { 
-        Magazine: true  // This was already there, keep it
-      }
-    });
+
+    const school = await fetchSchoolWithMagazineSafe();
     
     if (!school) {
       console.log("📭 No school found in database");
@@ -761,10 +774,8 @@ export async function PUT(req) {
     console.log("✏️ PUT /api/school - Updating school info");
     console.log(`Request from: ${auth.user.name} (${auth.user.role})`);
     
-    // FIRST: Get existing school with Magazine relation
-    const existing = await prisma.schoolInfo.findFirst({
-      include: { Magazine: true }
-    });
+    // FIRST: Get existing school with safe fallback
+    const existing = await fetchSchoolWithMagazineSafe();
     
     if (!existing) {
       return NextResponse.json(
@@ -796,7 +807,7 @@ export async function PUT(req) {
     }
 
     // THIRD: Handle Magazine Update
-    let magazineId = existing.magazineId;
+    let magazineId = existing?.Magazine?.id || null;
     const magazineTitle = formData.get("magazineTitle");
     const magazineYear = formData.get("magazineYear") ? parseInt(formData.get("magazineYear")) : null;
     const magazineDescription = formData.get("magazineDescription") || null;
@@ -1028,10 +1039,8 @@ export async function DELETE(req) {
     console.log("🗑️ DELETE /api/school - Deleting school info");
     console.log(`Request from: ${auth.user.name} (${auth.user.role})`);
     
-    // Get school with Magazine to delete magazine files too
-    const existing = await prisma.schoolInfo.findFirst({
-      include: { Magazine: true }
-    });
+    // Get school with safe fallback so delete flow does not fail on relation include issues.
+    const existing = await fetchSchoolWithMagazineSafe();
     
     if (!existing) {
       return NextResponse.json(

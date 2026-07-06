@@ -368,19 +368,8 @@ export async function GET(req, { params }) {
             id: true,
             name: true,
             category: true,
-            departmentType: true,
-            parentDepartmentId: true,
-          },
-        },
-        mainDepartmentRecord: {
-          select: { id: true, name: true, departmentType: true },
-        },
-        subDepartmentRecord: {
-          select: {
-            id: true,
-            name: true,
-            departmentType: true,
-            parentDepartmentId: true,
+            isActive: true,
+            displayOrder: true,
           },
         },
       },
@@ -446,8 +435,6 @@ export async function PUT(req, { params }) {
     const newPosition = formData.get("position");
     const newStaffType = formData.get("staffType");
     const newDepartmentId = formData.get("departmentId");
-    const newMainDepartmentId = formData.get("mainDepartmentId");
-    const newSubDepartmentId = formData.get("subDepartmentId");
     const newDepartment = formData.get("department");
     const newSubjectOffered = formData.get("subjectOffered");
     const effectiveStaffType = newStaffType || existingStaff.staffType;
@@ -486,12 +473,6 @@ export async function PUT(req, { params }) {
           departmentName: formData.has("department")
             ? newDepartment
             : existingStaff.department,
-          mainDepartmentId: formData.has("mainDepartmentId")
-            ? newMainDepartmentId
-            : existingStaff.mainDepartmentId,
-          subDepartmentId: formData.has("subDepartmentId")
-            ? newSubDepartmentId
-            : existingStaff.subDepartmentId,
         });
       } catch (error) {
         return NextResponse.json(
@@ -617,15 +598,11 @@ export async function PUT(req, { params }) {
     if (isTeacher) {
       data.department = null;
       data.departmentId = null;
-      data.mainDepartmentId = null;
-      data.subDepartmentId = null;
     } else if (formData.get("department")) {
       data.department = formData.get("department");
     }
     if (!isTeacher && mappedDepartment) {
       data.departmentId = mappedDepartment.departmentId || null;
-      data.mainDepartmentId = mappedDepartment.mainDepartment?.id || null;
-      data.subDepartmentId = mappedDepartment.subDepartment?.id || null;
       data.department =
         mappedDepartment.departmentName || data.department || null;
     } else if (
@@ -635,8 +612,6 @@ export async function PUT(req, { params }) {
         formData.has("subDepartmentId"))
     ) {
       data.departmentId = null;
-      data.mainDepartmentId = null;
-      data.subDepartmentId = null;
     }
     if (formData.get("email")) data.email = formData.get("email");
     if (formData.get("phone")) data.phone = formData.get("phone");
@@ -736,11 +711,7 @@ export async function PUT(req, { params }) {
     const departmentsToSync = new Set(
       [
         existingStaff.departmentId,
-        existingStaff.mainDepartmentId,
-        existingStaff.subDepartmentId,
         updatedStaff.departmentId,
-        updatedStaff.mainDepartmentId,
-        updatedStaff.subDepartmentId,
       ].filter(Boolean)
     );
     await syncDepartmentStaffCount(...departmentsToSync);
@@ -831,9 +802,7 @@ export async function DELETE(req, { params }) {
     });
 
     await syncDepartmentStaffCount(
-      staff.departmentId,
-      staff.mainDepartmentId,
-      staff.subDepartmentId
+      staff.departmentId
     );
 
     console.log(`✅ Staff member deleted by ${auth.user.name}: ${staff.name}`);
