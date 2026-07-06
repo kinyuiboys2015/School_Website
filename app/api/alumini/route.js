@@ -6,225 +6,193 @@ import {
   validateSchoolImage,
 } from "../../../libs/schoolContentUpload";
 
-const decodeJwtPayload = (token) => {
-  const payload = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
-  const paddedPayload = payload.padEnd(
-    payload.length + ((4 - (payload.length % 4)) % 4),
-    "="
-  );
+const SECTIONS = new Set([
+  "ALUMNI",
+  "COMMITTEE",
+  "BOM",
+  "PTA",
+  "PRINCIPAL_CURRENT",
+  "PRINCIPAL_PREVIOUS",
+]);
 
-  return JSON.parse(Buffer.from(paddedPayload, "base64").toString("utf-8"));
+const parseJwtPayload = (token) => {
+  const payload = token.split(".")[1];
+  const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = normalized.padEnd(normalized.length + ((4 - normalized.length % 4) % 4), "=");
+  return JSON.parse(Buffer.from(padded, "base64").toString("utf-8"));
 };
 
-const authenticateWriteRequest = (request) => {
-  try {
-    const adminToken =
-      request.headers.get("x-admin-token") ||
-      request.headers.get("authorization")?.replace("Bearer ", "");
-    const deviceToken = request.headers.get("x-device-token");
+class DeviceTokenManager {
+  static validateTokensFromHeaders(headers) {
+    try {
+      const adminToken = headers.get("x-admin-token") || headers.get("authorization")?.replace("Bearer ", "");
+      const deviceToken = headers.get("x-device-token");
 
-    if (!adminToken || !deviceToken) {
-      throw new Error("Admin and device tokens are required.");
+      if (!adminToken || !deviceToken) {
+        return { valid: false, message: "Admin and device tokens are required" };
+      }
+
+      const adminParts = adminToken.split(".");
+      if (adminParts.length !== 3) {
+        return { valid: false, message: "Invalid admin token format" };
+      }
+
+      const deviceValid = this.validateDeviceToken(deviceToken);
+      if (!deviceValid.valid) return { valid: false, message: deviceValid.error || "Invalid device token" };
+
+      const payload = parseJwtPayload(adminToken);
+      if (payload.exp && payload.exp < Date.now() / 1000) {
+        return { valid: false, message: "Admin token has expired" };
+      }
+
+      const role = (payload.role || payload.userRole || "").toUpperCase();
+      if (!["ADMIN", "SUPER_ADMIN", "ADMINISTRATOR", "PRINCIPAL", "STAFF"].includes(role)) {
+        return { valid: false, message: "User does not have permission to manage alumni records" };
+      }
+
+      return {
+        valid: true,
+        user: {
+          id: payload.userId || payload.id,
+          name: payload.name,
+          email: payload.email,
+          role: payload.role || payload.userRole,
+        },
+      };
+    } catch (error) {
+      return { valid: false, message: error.message || "Authentication failed" };
     }
+  }
 
-    const adminPayload = decodeJwtPayload(adminToken);
-    if (adminPayload.exp && adminPayload.exp < Date.now() / 1000) {
-      throw new Error("Admin token has expired.");
+  static validateDeviceToken(token) {
+    try {
+      const payload = JSON.parse(Buffer.from(token, "base64").toString("utf-8"));
+      if (payload.exp && payload.exp * 1000 <= Date.now()) {
+        return { valid: false, error: "Device token has expired" };
+      }
+      return { valid: true, payload };
+    } catch (error) {
+      return { valid: false, error: error.message };
     }
+  }
+}
 
-    const role = String(adminPayload.role || adminPayload.userRole || "").toUpperCase();
-    if (!["ADMIN", "SUPER_ADMIN", "ADMINISTRATOR", "PRINCIPAL", "STAFF"].includes(role)) {
-      throw new Error("You do not have permission to manage alumni.");
-    }
-
-    const devicePayload = JSON.parse(
-      Buffer.from(deviceToken, "base64").toString("utf-8")
-    );
-    if (devicePayload.exp && devicePayload.exp * 1000 <= Date.now()) {
-      throw new Error("Device token has expired.");
-    }
-
-    return { authenticated: true };
-  } catch (error) {
+const authenticateWriteRequest = (req) => {
+  const validation = DeviceTokenManager.validateTokensFromHeaders(req.headers);
+  if (!validation.valid) {
     return {
       authenticated: false,
       response: NextResponse.json(
-        {
-          success: false,
-          error: "Access Denied",
-          message: error.message || "Authentication required to manage alumni.",
-        },
+        { success: false, error: "Access Denied", message: validation.message },
         { status: 401 }
       ),
     };
   }
+  return { authenticated: true, user: validation.user };
 };
 
-const parseBoolean = (value, fallback = false) => {
-  if (value === null || value === undefined || value === "") return fallback;
-  return value === true || value === "true" || value === "1";
-};
-
-const parseInteger = (value, fallback = null) => {
-  if (value === null || value === undefined || value === "") return fallback;
-  const parsed = Number.parseInt(value, 10);
-  return Number.isInteger(parsed) ? parsed : fallback;
-};
-
-const cleanAlumni = (alumni) => ({
-  ...alumni,
-  name: alumni.title,
-  description: alumni.story,
-  images: Array.isArray(alumni.images) ? alumni.images : [],
+const normalizeRecord = (record) => ({
+  ...record,
+  images: Array.isArray(record.images) ? record.images : [],
 });
 
-const getFormValue = (formData, ...fields) => {
-  for (const field of fields) {
-    const value = formData.get(field);
-    if (value !== null && value !== undefined && value.toString().trim()) {
-      return value.toString().trim();
-    }
-  }
-  return "";
+const parseBoolean = (value, fallback = true) => {
+  if (value === null || value === undefined || value === "") return fallback;
+  return value === "true" || value === "1" || value === true;
 };
 
-export async function GET(request) {
-  try {
-    const url = new URL(request.url);
-    const includeInactive = url.searchParams.get("includeInactive") === "1";
-    const featured = url.searchParams.get("featured");
-    const year = parseInteger(url.searchParams.get("year"));
+const readRecordForm = async (req) => {
+  const formData = await req.formData();
+  const section = (formData.get("section") || "ALUMNI").toString().trim();
+  const name = (formData.get("name") || "").toString().trim();
+  const position = (formData.get("position") || "").toString().trim();
+  const description = (formData.get("description") || "").toString().trim();
+  const displayOrder = Number(formData.get("displayOrder") || 0);
+  const isActive = parseBoolean(formData.get("isActive"), true);
 
-    if (includeInactive) {
-      const auth = authenticateWriteRequest(request);
-      if (!auth.authenticated) return auth.response;
+  if (!SECTIONS.has(section)) throw new Error("Invalid section");
+  if (!name) throw new Error("Name is required");
+  if (!Number.isFinite(displayOrder)) throw new Error("Display order must be a valid number");
+
+  for (const file of [...formData.getAll("images"), formData.get("image")].filter(isFileUpload)) {
+    const validation = validateSchoolImage(file);
+    if (!validation.valid) throw new Error(validation.error);
+  }
+
+  const uploadedMain = await uploadSchoolImagesFromFormData(formData, "image", "school/alumni-governance");
+  const uploadedImages = await uploadSchoolImagesFromFormData(formData, "images", "school/alumni-governance");
+
+  const image = uploadedMain[0]?.url || (formData.get("existingImage") || "").toString().trim() || null;
+  const existingImagesValue = formData.get("existingImages");
+  let existingImages = [];
+  if (existingImagesValue) {
+    try {
+      existingImages = JSON.parse(existingImagesValue.toString());
+    } catch {
+      existingImages = [];
     }
+  }
 
-    const where = {
-      ...(includeInactive ? {} : { isActive: true }),
-      ...(featured === "true" ? { isFeatured: true } : {}),
-      ...(year ? { graduationYear: year } : {}),
-    };
+  return {
+    section,
+    name,
+    position: position || null,
+    description: description || null,
+    displayOrder: Math.floor(displayOrder),
+    isActive,
+    image,
+    images: [
+      ...existingImages.filter((item) => item?.url),
+      ...uploadedImages,
+    ],
+  };
+};
 
-    const alumni = await prisma.alumni.findMany({
+export async function GET(req) {
+  try {
+    const url = new URL(req.url);
+    const section = url.searchParams.get("section");
+    const includeInactive = url.searchParams.get("includeInactive") === "1";
+
+    const where = {};
+    if (section) {
+      if (!SECTIONS.has(section)) {
+        return NextResponse.json({ success: false, error: "Invalid section" }, { status: 400 });
+      }
+      where.section = section;
+    }
+    if (!includeInactive) where.isActive = true;
+
+    const records = await prisma.alumniGovernanceRecord.findMany({
       where,
-      include: {
-        images: { orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }] },
-      },
-      orderBy: [
-        { isFeatured: "desc" },
-        { displayOrder: "asc" },
-        { createdAt: "desc" },
-      ],
+      orderBy: [{ section: "asc" }, { displayOrder: "asc" }, { createdAt: "desc" }],
     });
 
-    const cleanedAlumni = alumni.map(cleanAlumni);
-    return NextResponse.json({
-      success: true,
-      alumni: cleanedAlumni,
-      collections: cleanedAlumni,
-      count: cleanedAlumni.length,
-    });
+    const normalized = records.map(normalizeRecord);
+    const grouped = normalized.reduce((acc, record) => {
+      if (!acc[record.section]) acc[record.section] = [];
+      acc[record.section].push(record);
+      return acc;
+    }, {});
+
+    return NextResponse.json({ success: true, records: normalized, grouped });
   } catch (error) {
-    console.error("GET Alumni Error:", error);
-    return NextResponse.json(
-      { success: false, error: "Failed to fetch alumni records" },
-      { status: 500 }
-    );
+    console.error("GET alumni error:", error);
+    return NextResponse.json({ success: false, error: "Failed to fetch records" }, { status: 500 });
   }
 }
 
-export async function POST(request) {
+export async function POST(req) {
   try {
-    const auth = authenticateWriteRequest(request);
+    const auth = authenticateWriteRequest(req);
     if (!auth.authenticated) return auth.response;
 
-    const formData = await request.formData();
-    const title = getFormValue(formData, "title", "name");
-    if (!title) {
-      return NextResponse.json(
-        { success: false, error: "Alumni name or collection title is required" },
-        { status: 400 }
-      );
-    }
+    const data = await readRecordForm(req);
+    const record = await prisma.alumniGovernanceRecord.create({ data });
 
-    const imageFiles = [
-      ...formData.getAll("images"),
-      formData.get("image"),
-    ].filter(isFileUpload);
-    for (const file of imageFiles) {
-      const validation = validateSchoolImage(file);
-      if (!validation.valid) {
-        return NextResponse.json(
-          { success: false, error: validation.error },
-          { status: 400 }
-        );
-      }
-    }
-
-    const uploadedImages = await uploadSchoolImagesFromFormData(
-      formData,
-      "images",
-      "school/alumni"
-    );
-    if (isFileUpload(formData.get("image"))) {
-      uploadedImages.unshift(
-        ...(await uploadSchoolImagesFromFormData(
-          formData,
-          "image",
-          "school/alumni"
-        ))
-      );
-    }
-
-    const imageUrl =
-      uploadedImages[0]?.url ||
-      (!isFileUpload(formData.get("image"))
-        ? getFormValue(formData, "image")
-        : "") ||
-      null;
-    const displayOrder = parseInteger(formData.get("displayOrder"), 0);
-
-    const alumni = await prisma.alumni.create({
-      data: {
-        title,
-        graduationYear: parseInteger(formData.get("graduationYear")),
-        currentRole: getFormValue(formData, "currentRole", "profession") || null,
-        organization: getFormValue(formData, "organization") || null,
-        location: getFormValue(formData, "location") || null,
-        story: getFormValue(formData, "story", "description", "bio") || null,
-        achievement: getFormValue(formData, "achievement", "achievements") || null,
-        website: getFormValue(formData, "website", "link") || null,
-        image: imageUrl,
-        isFeatured: parseBoolean(formData.get("isFeatured"), false),
-        isActive: parseBoolean(formData.get("isActive"), true),
-        displayOrder,
-        images: uploadedImages.length
-          ? {
-              create: uploadedImages.map((image, index) => ({
-                url: image.url,
-                publicId: image.publicId,
-                caption: image.caption || null,
-                altText: image.altText || title,
-                displayOrder: index,
-              })),
-            }
-          : undefined,
-      },
-      include: {
-        images: { orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }] },
-      },
-    });
-
-    return NextResponse.json(
-      { success: true, alumni: cleanAlumni(alumni) },
-      { status: 201 }
-    );
+    return NextResponse.json({ success: true, record: normalizeRecord(record) }, { status: 201 });
   } catch (error) {
-    console.error("POST Alumni Error:", error);
-    return NextResponse.json(
-      { success: false, error: error.message || "Failed to create alumni record" },
-      { status: 500 }
-    );
+    console.error("POST alumni error:", error);
+    return NextResponse.json({ success: false, error: error.message || "Failed to create record" }, { status: 400 });
   }
 }
