@@ -1,6 +1,6 @@
 import { prisma } from "../../libs/prisma";
 import { cleanFileRecordName } from "../../libs/displayNames";
-import AcademicDownloadsPage from "../components/AcademicDownloadsPage";
+import AcademicDownloadsPage from "../components/AcademicDowloadsPage";
 
 export const metadata = {
   title: "Learning Resources & Exams | A.I.C Katwanyaa Senior School",

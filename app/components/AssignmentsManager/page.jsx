@@ -77,7 +77,7 @@ import {
 
 // Import subject list and components
 import { ALL_SUBJECTS } from '../../constants/subjects';
-import SearchableSubjectDropdown from '../SearchableSubjectDropdown';
+import SearchableSubjectDropdown from '../SearchableSubjectDropdown/page';
 
 import { Modal, Box, CircularProgress } from '@mui/material';
 

@@ -139,6 +139,20 @@ const normalizeRole = (role) => {
   return compactRole;
 };
 
+const normalizeAdminPhoneForForm = (phone) => {
+  const value = String(phone || '').trim();
+  if (!value) return '07';
+
+  // Keep legacy stored values usable in the form.
+  const plus254Match = value.match(/^\+254(7\d{8})$/);
+  if (plus254Match) return `0${plus254Match[1]}`;
+
+  const plain254Match = value.match(/^254(7\d{8})$/);
+  if (plain254Match) return `0${plain254Match[1]}`;
+
+  return value;
+};
+
 export default function AdminManager() {
   const [session, setSession] = useState(null);
   const [status, setStatus] = useState('loading');
@@ -168,7 +182,7 @@ const [viewingAdmin, setViewingAdmin] = useState(null);
     name: '',
     email: '',
     password: '',
-    phone: '+254',
+    phone: '07',
     role: 'ADMIN', // Default to ADMIN
     permissions: {
       manageUsers: false,
@@ -695,7 +709,7 @@ const handleCreateAdmin = () => {
     name: '',
     email: '',
     password: '',
-    phone: '+254',
+    phone: '07',
     role: 'ADMIN',
     permissions: {
       manageUsers: false,
@@ -725,7 +739,7 @@ const handleEditAdmin = (admin) => {
     name: admin.name || '',
     email: admin.email || '',
     password: '',
-    phone: admin.phone || '+254',
+    phone: normalizeAdminPhoneForForm(admin.phone),
     role: admin.role || 'ADMIN',
     permissions: admin.permissions || {
       manageUsers: false,
@@ -788,10 +802,9 @@ const handleSaveAdmin = async (e) => {
       return;
     }
     
-    // Phone number validation (Kenyan format)
-    const phoneRegex = /^\+254[17]\d{8}$/;
-    if (!phoneRegex.test(adminData.phone)) {
-      toast.error('Phone number must be in format: +2547XXXXXXXX or +2541XXXXXXXX');
+    const normalizedPhone = adminData.phone.trim().replace(/\s+/g, '');
+    if (!normalizedPhone.startsWith('07')) {
+      toast.error('Phone number must start with 07');
       setSavingAdmin(false);
       return;
     }
@@ -890,7 +903,7 @@ const handleSaveAdmin = async (e) => {
     const adminPayload = {
       name: adminData.name.trim(),
       email: adminData.email.trim().toLowerCase(),
-      phone: adminData.phone.trim(),
+      phone: normalizedPhone,
       role: adminData.role,
       status: adminData.status,
       // Only send password if it's provided (for new admin or password change)
@@ -1005,7 +1018,7 @@ const handleSaveAdmin = async (e) => {
         name: '',
         email: '',
         password: '',
-        phone: '+254',
+        phone: '07',
         role: 'ADMIN',
         permissions: {
           manageUsers: false,
@@ -1369,7 +1382,7 @@ if (loading) {
               },
               { 
                 label: 'Contact', 
-                val: session.user.phone || '+254 XXX XXX', 
+                val: session.user.phone || '07XXXXXXXX', 
                 icon: <Phone size={10} />,
                 color: 'from-green-500/20 to-green-600/10'
               }
@@ -1819,7 +1832,7 @@ if (loading) {
                       value={adminData.phone}
                       onChange={(e) => setAdminData({ ...adminData, phone: e.target.value })}
                       className="w-full px-4 py-3 border-2 border-emerald-200 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 bg-white text-base font-bold"
-                      placeholder="+254700000000"
+                      placeholder="07XXXXXXXX"
                     />
                   </div>
 
