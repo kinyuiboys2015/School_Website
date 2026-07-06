@@ -1,801 +1,373 @@
+
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import {
-  FiAlertCircle,
-  FiBookOpen,
-  FiCheckCircle,
-  FiDownload,
-  FiEye,
-  FiFileText,
-  FiFolder,
-  FiRefreshCw,
-  FiSearch,
-  FiTarget,
-  FiUser,
-  FiX,
-} from "react-icons/fi";
-import SearchableSubjectDropdown from "./SearchableSubjectDropdown/page";
-import {
-  ALL_SUBJECTS_LABEL,
-  SUBJECT_OPTIONS,
-} from "../constants/subjects";
-import {
-  normalizeDownloadFile,
-} from "../../libs/displayNames";
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { FiArchive, FiBookOpen, FiCheckCircle, FiDownload, FiEye, FiExternalLink, FiFileText, FiFilter, FiSearch, FiX } from "react-icons/fi";
+import { cleanFileRecordName } from "../../libs/displayNames";
 
-const ALL_CLASSES = "All Classes";
-const normalizeFilterValue = (value) =>
-  String(value || "").trim().toLowerCase();
+const formatDate = (value) => {
+  if (!value) return "Not listed";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Not listed";
+  return new Intl.DateTimeFormat("en-KE", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+};
 
-const getItemFiles = (item, contentType) => {
-  const rawFiles =
-    contentType === "assignments"
-      ? [...(item.assignmentFiles || []), ...(item.attachments || [])]
-      : item.files || [];
+const normalizeFiles = (files = []) => {
+  return files
+    .map((file) => {
+      if (!file) return null;
+      if (typeof file === "string") {
+        return {
+          url: file,
+          name: cleanFileRecordName({ url: file }),
+        };
+      }
 
-  return rawFiles
-    .map((file, index) =>
-      normalizeDownloadFile(file, `${item.title || "Academic"} file ${index + 1}`)
-    )
+      const url = file.url || file.downloadUrl || file.href;
+      if (!url) return null;
+
+      return {
+        ...file,
+        url,
+        name: cleanFileRecordName({ ...file, url }),
+      };
+    })
     .filter(Boolean);
 };
 
-const fetchAcademicData = async (endpoint, signal, attempts = 3) => {
-  let lastError;
-
-  for (let attempt = 0; attempt < attempts; attempt += 1) {
-    try {
-      const response = await fetch(endpoint, {
-        signal,
-        cache: "no-store",
-      });
-      const data = await response.json();
-
-      if (response.ok && data.success) return data;
-      lastError = new Error(data.error || `Request failed: ${response.status}`);
-    } catch (error) {
-      if (error.name === "AbortError") throw error;
-      lastError = error;
-    }
-
-    if (attempt < attempts - 1) {
-      await new Promise((resolve) => setTimeout(resolve, 750 * (attempt + 1)));
-    }
-  }
-
-  throw lastError || new Error("Unable to load academic downloads.");
+const triggerBrowserDownload = (url, fileName) => {
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = fileName || "download";
+  anchor.rel = "noopener noreferrer";
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
 };
 
-export default function AcademicDowloadsPage({ contentType = "assignments" }) {
-  const isAssignments = contentType === "assignments";
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [subject, setSubject] = useState(ALL_SUBJECTS_LABEL);
-  const [className, setClassName] = useState(ALL_CLASSES);
-  const [refreshKey, setRefreshKey] = useState(0);
+const openDownload = async (file) => {
+  const fileName = file.name || "download";
+
+  try {
+    const response = await fetch(file.url);
+    if (!response.ok) throw new Error("Unable to fetch file");
+
+    const blob = await response.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    triggerBrowserDownload(blobUrl, fileName);
+    window.setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+  } catch {
+    triggerBrowserDownload(file.url, fileName);
+  }
+};
+
+const downloadAll = (files) => {
+  normalizeFiles(files).forEach((file, index) => {
+    window.setTimeout(() => openDownload(file), index * 250);
+  });
+};
+
+export default function AcademicDownloadsPage({
+  title,
+  eyebrow,
+  description,
+  items = [],
+  type = "assignments",
+}) {
+  const [query, setQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedClass, setSelectedClass] = useState("all");
+  const [sortOrder, setSortOrder] = useState("newest");
   const [selectedItem, setSelectedItem] = useState(null);
 
-  useEffect(() => {
-    const controller = new AbortController();
+  const pageInstructions = type === "assignments"
+    ? [
+        "Download the assignment files for your class and read every instruction before you begin.",
+        "Plan your time early, complete the work honestly, and submit it according to your teacher's guidance.",
+        "Use the filters to quickly find assignments by subject, class, or upload date.",
+      ]
+    : [
+        "Use these materials for steady revision, exam preparation, and independent study.",
+        "Start with your class resources, then use past papers and revision files to test your understanding.",
+        "Download all related files when a resource has several documents or images.",
+      ];
 
-    const loadItems = async () => {
-      setLoading(true);
-      setError("");
-
-      try {
-        const endpoint = isAssignments
-          ? "/api/assignment?limit=250"
-          : "/api/resources?isActive=true&limit=250";
-        const data = await fetchAcademicData(endpoint, controller.signal);
-
-        setItems(
-          isAssignments
-            ? Array.isArray(data.assignments)
-              ? data.assignments
-              : []
-            : Array.isArray(data.resources)
-              ? data.resources
-              : []
-        );
-      } catch (loadError) {
-        if (loadError.name !== "AbortError") {
-          setError(loadError.message || "Unable to load academic downloads.");
-          setItems([]);
-        }
-      } finally {
-        if (!controller.signal.aborted) setLoading(false);
-      }
-    };
-
-    loadItems();
-    return () => controller.abort();
-  }, [isAssignments, refreshKey]);
-
-  useEffect(() => {
-    if (!selectedItem) return undefined;
-
-    const previousOverflow = document.body.style.overflow;
-    const closeOnEscape = (event) => {
-      if (event.key === "Escape") setSelectedItem(null);
-    };
-
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", closeOnEscape);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", closeOnEscape);
-    };
-  }, [selectedItem]);
-
-  const subjectOptions = useMemo(() => {
-    const values = items.map((item) => item.subject).filter(Boolean);
-    return Array.from(new Set([...SUBJECT_OPTIONS, ...values]));
+  const subjects = useMemo(() => {
+    const values = items
+      .map((item) => item.subject)
+      .filter((subject) => subject && subject.toLowerCase() !== "general");
+    return ["all", ...Array.from(new Set(values))];
   }, [items]);
 
-  const classOptions = useMemo(
-    () => [
-      ALL_CLASSES,
-      ...Array.from(
-        new Set(items.map((item) => item.className).filter(Boolean))
-      ).sort(),
-    ],
-    [items]
-  );
+  const classes = useMemo(() => {
+    const values = items.map((item) => item.className).filter(Boolean);
+    return ["all", ...Array.from(new Set(values))];
+  }, [items]);
 
-  const visibleItems = useMemo(() => {
-    const query = normalizeFilterValue(searchTerm);
-    const selectedSubject = normalizeFilterValue(subject);
-    const selectedClass = normalizeFilterValue(className);
-
-    return items.filter((item) => {
-      const files = getItemFiles(item, contentType);
-      const searchableText = [
+  const filteredItems = useMemo(() => {
+    const text = query.trim().toLowerCase();
+    return items
+      .filter((item) => {
+      const matchesSubject = selectedCategory === "all" || item.subject === selectedCategory;
+      const matchesClass = selectedClass === "all" || item.className === selectedClass;
+      const haystack = [
         item.title,
         item.description,
         item.subject,
-        item.teacher,
         item.className,
-        ...files.flatMap((file) => [
-          file.name,
-          file.extension,
-          file.fileType,
-        ]),
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-      return (
-        (!query || searchableText.includes(query)) &&
-        (subject === ALL_SUBJECTS_LABEL ||
-          normalizeFilterValue(item.subject) === selectedSubject) &&
-        (className === ALL_CLASSES ||
-          normalizeFilterValue(item.className) === selectedClass)
-      );
-    });
-  }, [className, contentType, items, searchTerm, subject]);
-
-  const hasActiveFilters =
-    Boolean(searchTerm.trim()) ||
-    subject !== ALL_SUBJECTS_LABEL ||
-    className !== ALL_CLASSES;
-
-  const clearFilters = () => {
-    setSearchTerm("");
-    setSubject(ALL_SUBJECTS_LABEL);
-    setClassName(ALL_CLASSES);
-  };
-
-  const downloadAllFiles = (item) => {
-    const type = isAssignments ? "assignment" : "resource";
-    const link = document.createElement("a");
-    link.href = `/api/academic-downloads/${type}/${item.id}`;
-    link.download = "";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  };
-
-  const pageTitle = isAssignments ? "Student Assignments" : "Exam Resources";
+        item.teacher,
+        item.category,
+      ].filter(Boolean).join(" ").toLowerCase();
+      return matchesSubject && matchesClass && (!text || haystack.includes(text));
+    })
+      .sort((a, b) => {
+        const aDate = new Date(a.dateUploaded || 0).getTime();
+        const bDate = new Date(b.dateUploaded || 0).getTime();
+        if (sortOrder === "oldest") return aDate - bDate;
+        if (sortOrder === "title") return (a.title || "").localeCompare(b.title || "");
+        return bDate - aDate;
+      });
+  }, [items, query, selectedCategory, selectedClass, sortOrder]);
 
   return (
-    <main
-      className={`min-h-screen text-slate-950 ${
-        isAssignments ? "bg-amber-50/40" : "bg-cyan-50/40"
-      }`}
-    >
-      {isAssignments ? (
-        <section className="relative overflow-hidden bg-[#2b1208] px-4 pb-24 pt-24 text-white sm:px-6 lg:px-8">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.35),transparent_34%),linear-gradient(135deg,transparent,rgba(124,45,18,0.35))]" />
-          <div className="relative mx-auto max-w-6xl">
+    <main className="min-h-screen bg-slate-50 text-slate-900">
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-amber-200">
-                <FiTarget className="h-4 w-4" />
-                {pageTitle}
-              </span>
-              <h1 className="mt-6 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
-                Open the task. Complete the work.
+              <p className="text-xs font-black uppercase tracking-[0.28em] text-blue-700">{eyebrow}</p>
+              <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+                {title}
               </h1>
-              <p className="mt-5 max-w-2xl text-base leading-7 text-amber-50/75 sm:text-lg">
-                Review current Kinyui Boys assignments, teacher instructions,
-                and every submitted file needed to complete your coursework.
-              </p>
+              <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">{description}</p>
+            </div>
+            <div className="flex items-center gap-3 rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-blue-900">
+              {type === "assignments" ? <FiFileText size={22} /> : <FiBookOpen size={22} />}
+              <div>
+                <p className="text-2xl font-black">{items.length}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest">Published Items</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 grid gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4 lg:grid-cols-[1fr_1fr]">
+            <div>
+              <div className="mb-3 flex items-center gap-2">
+                <FiCheckCircle className="text-blue-700" />
+                <h2 className="text-xs font-black uppercase tracking-[0.2em] text-slate-700">
+                  Instructions
+                </h2>
+              </div>
+              <div className="space-y-2">
+                {pageInstructions.map((instruction) => (
+                  <p key={instruction} className="text-sm font-semibold leading-6 text-slate-600">
+                    {instruction}
+                  </p>
+                ))}
+              </div>
             </div>
 
-          </div>
-        </section>
-      ) : (
-        <section className="relative overflow-hidden bg-gradient-to-br from-teal-950 via-slate-950 to-cyan-950 px-4 pb-24 pt-24 text-white sm:px-6 lg:px-8">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.2),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.2),transparent_34%)]" />
-          <div className="relative mx-auto max-w-6xl">
-            <div className="max-w-3xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
-                <FiFolder className="h-4 w-4" />
-                {pageTitle}
-              </span>
-              <h1 className="mt-6 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
-                Your revision library, always ready.
-              </h1>
-              <p className="mt-5 max-w-2xl text-base leading-7 text-cyan-50/70 sm:text-lg">
-                Browse active Kinyui Boys notes, revision documents, past
-                papers, and examination resources by subject and class.
-              </p>
-            </div>
-
-          </div>
-        </section>
-      )}
-
-      <section className="relative z-10 mx-auto -mt-10 max-w-6xl px-4 pb-20 sm:px-6 lg:px-8">
-        <div
-          className={`grid gap-4 rounded-3xl border bg-white p-5 shadow-xl md:grid-cols-3 ${
-            isAssignments
-              ? "border-amber-200 shadow-amber-100/60"
-              : "border-cyan-200 shadow-cyan-100/60"
-          }`}
-        >
-          <div>
-            <label className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
-              Search
-            </label>
-            <div
-              className={`flex min-h-12 items-center gap-3 rounded-xl border border-slate-200 px-4 focus-within:ring-4 ${
-                isAssignments
-                  ? "focus-within:border-amber-500 focus-within:ring-amber-100"
-                  : "focus-within:border-teal-500 focus-within:ring-teal-100"
-              }`}
-            >
-              <FiSearch className="h-4 w-4 text-slate-500" />
+            <div className="rounded-lg border border-blue-100 bg-white p-4">
+              <div className="mb-3 flex items-center gap-2">
+                <FiFilter className="text-blue-700" />
+                <h2 className="text-xs font-black uppercase tracking-[0.2em] text-slate-700">
+                  Filter Materials
+                </h2>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+            <div className="relative">
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
-                value={searchTerm}
-                onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder={`Search ${
-                  isAssignments ? "assignments" : "resources"
-                }...`}
-                aria-label={`Search ${
-                  isAssignments ? "assignment" : "resource"
-                } table`}
-                className="min-w-0 flex-1 bg-transparent text-sm outline-none"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={`Search ${title.toLowerCase()}`}
+                className="w-full rounded-lg border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm font-semibold outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
-              {searchTerm ? (
-                <button
-                  type="button"
-                  onClick={() => setSearchTerm("")}
-                  aria-label="Clear search"
-                  className="rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
-                >
-                  <FiX className="h-4 w-4" />
-                </button>
-              ) : null}
             </div>
-          </div>
-
-          <SearchableSubjectDropdown
-            value={subject}
-            onChange={setSubject}
-            options={subjectOptions}
-            tone={isAssignments ? "amber" : "teal"}
-          />
-
-          <div>
-            <label className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
-              Class
-            </label>
             <select
-              value={className}
-              onChange={(event) => setClassName(event.target.value)}
-              className={`min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-800 shadow-sm outline-none transition focus:ring-4 ${
-                isAssignments
-                  ? "focus:border-amber-500 focus:ring-amber-100"
-                  : "focus:border-teal-500 focus:ring-teal-100"
-              }`}
+              value={selectedCategory}
+              onChange={(event) => setSelectedCategory(event.target.value)}
+              className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-bold outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             >
-              {classOptions.map((option) => (
-                <option key={option}>{option}</option>
+              {subjects.map((subject) => (
+                <option key={subject} value={subject}>
+                  {subject === "all" ? "All Subjects" : subject}
+                </option>
               ))}
             </select>
-          </div>
-        </div>
-
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
-          <p className="text-sm font-semibold text-slate-600">
-            {loading
-              ? `Loading ${isAssignments ? "assignments" : "resources"}...`
-              : `Browse the submitted ${
-                  isAssignments ? "assignments" : "resources"
-                } below.`}
-          </p>
-          <div className="flex items-center gap-2">
-            {hasActiveFilters ? (
-              <button
-                type="button"
-                onClick={clearFilters}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50"
-              >
-                <FiX className="h-4 w-4" />
-                Clear filters
-              </button>
-            ) : null}
-            <button
-              type="button"
-              onClick={() => setRefreshKey((key) => key + 1)}
-              disabled={loading}
-              className={`inline-flex items-center gap-2 rounded-xl border bg-white px-4 py-2 text-sm font-bold shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 ${
-                isAssignments
-                  ? "border-amber-200 text-amber-900 hover:bg-amber-50"
-                  : "border-teal-200 text-teal-900 hover:bg-teal-50"
-              }`}
-            >
-              <FiRefreshCw
-                className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
-              />
-              Refresh
-            </button>
-          </div>
-        </div>
-
-        {error ? (
-          <div className="mt-8 rounded-3xl border border-red-200 bg-red-50 p-8 text-center">
-            <FiAlertCircle className="mx-auto h-10 w-10 text-red-600" />
-            <h2 className="mt-4 text-lg font-black text-red-950">
-              {pageTitle} could not be loaded
-            </h2>
-            <p className="mt-2 text-sm text-red-800">{error}</p>
-          </div>
-        ) : (
-          <div
-            className={`mt-8 overflow-hidden rounded-3xl border bg-white shadow-sm ${
-              isAssignments ? "border-amber-200" : "border-cyan-200"
-            }`}
-          >
-            <div
-              className={`flex items-center justify-between gap-4 border-b px-5 py-4 sm:px-6 ${
-                isAssignments
-                  ? "border-amber-100 bg-amber-50"
-                  : "border-cyan-100 bg-cyan-50"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className={`flex h-10 w-10 items-center justify-center rounded-xl text-white ${
-                    isAssignments
-                      ? "bg-gradient-to-br from-amber-500 to-orange-600"
-                      : "bg-gradient-to-br from-teal-500 to-cyan-600"
-                  }`}
+                <select
+                  value={selectedClass}
+                  onChange={(event) => setSelectedClass(event.target.value)}
+                  className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-bold outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 >
-                  {isAssignments ? (
-                    <FiCheckCircle className="h-5 w-5" />
-                  ) : (
-                    <FiFolder className="h-5 w-5" />
-                  )}
-                </div>
-                <div>
-                  <h2 className="font-black text-slate-950">
-                    {isAssignments ? "Academic Assignments" : "Digital Resources"}
-                  </h2>
-                  <p className="text-xs font-semibold text-slate-500">
-                    {loading
-                      ? "Loading records..."
-                      : "Only submitted information is shown"}
-                  </p>
-                </div>
+                  {classes.map((className) => (
+                    <option key={className} value={className}>
+                      {className === "all" ? "All Classes/Forms" : className}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={sortOrder}
+                  onChange={(event) => setSortOrder(event.target.value)}
+                  className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-bold outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                >
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="title">Title A-Z</option>
+                </select>
               </div>
-              <span
-                className={`hidden rounded-full px-3 py-1 text-xs font-black sm:inline-flex ${
-                  isAssignments
-                    ? "bg-amber-100 text-amber-900"
-                    : "bg-cyan-100 text-cyan-900"
-                }`}
-              >
-                Scroll sideways on small screens
-              </span>
-            </div>
-
-            <div className="overflow-x-auto">
-              {isAssignments ? (
-                <table className="w-full min-w-[850px] border-collapse">
-                  <thead>
-                    <tr className="border-b border-slate-200 bg-slate-50 text-left">
-                      <th className="px-6 py-4 text-xs font-black uppercase tracking-wider text-slate-500">
-                        Assignment
-                      </th>
-                      <th className="px-5 py-4 text-xs font-black uppercase tracking-wider text-slate-500">
-                        Subject / Class
-                      </th>
-                      <th className="px-5 py-4 text-xs font-black uppercase tracking-wider text-slate-500">
-                        Teacher
-                      </th>
-                      <th className="px-6 py-4 text-xs font-black uppercase tracking-wider text-slate-500">
-                        Files
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {loading ? (
-                      <tr>
-                        <td colSpan={4} className="px-6 py-16 text-center">
-                          <FiRefreshCw className="mx-auto h-7 w-7 animate-spin text-amber-600" />
-                          <p className="mt-3 text-sm font-bold text-slate-600">
-                            Loading assignments into the table...
-                          </p>
-                        </td>
-                      </tr>
-                    ) : visibleItems.length ? (
-                      visibleItems.map((item) => {
-                        const files = getItemFiles(item, contentType);
-
-                        return (
-                          <tr
-                            key={item.id}
-                            className="align-top transition hover:bg-amber-50/50"
-                          >
-                          <td className="max-w-[330px] px-6 py-5">
-                            <div className="flex items-start gap-3">
-                              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-800">
-                                <FiFileText className="h-5 w-5" />
-                              </div>
-                              <div className="min-w-0">
-                                <p className="font-black text-slate-950">
-                                  {item.title || "Untitled assignment"}
-                                </p>
-                                <p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-500">
-                                  {item.description ||
-                                    "No description has been provided."}
-                                </p>
-                                <button
-                                  type="button"
-                                  onClick={() => setSelectedItem(item)}
-                                  className="mt-3 inline-flex items-center gap-2 rounded-lg border border-amber-200 bg-white px-3 py-2 text-xs font-black text-amber-900 transition hover:bg-amber-100"
-                                >
-                                  <FiEye className="h-3.5 w-3.5" />
-                                  View details
-                                </button>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-5 py-5">
-                            <p className="text-sm font-black text-slate-900">
-                              {item.subject || "Not provided"}
-                            </p>
-                            <p className="mt-1 text-xs font-semibold text-slate-500">
-                              {item.className || "Not provided"}
-                            </p>
-                          </td>
-                          <td className="px-5 py-5">
-                            <span className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                              <FiUser className="h-4 w-4 text-amber-700" />
-                              {item.teacher || "Not provided"}
-                            </span>
-                          </td>
-                          <td className="min-w-[220px] px-6 py-5">
-                            {files.length ? (
-                              <div className="space-y-2">
-                                {files.map((file, index) => (
-                                  <a
-                                    key={`${file.url}-${index}`}
-                                    href={file.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex max-w-[240px] items-center justify-between gap-2 rounded-lg bg-amber-100 px-3 py-2 text-xs font-black text-amber-900 transition hover:bg-amber-500 hover:text-[#2b1208]"
-                                  >
-                                    <span className="truncate">{file.name}</span>
-                                    <FiDownload className="h-3.5 w-3.5 shrink-0" />
-                                  </a>
-                                ))}
-                                <button
-                                  type="button"
-                                  onClick={() => downloadAllFiles(item)}
-                                  className="flex w-full max-w-[240px] items-center justify-center gap-2 rounded-lg bg-[#2b1208] px-3 py-2 text-xs font-black text-white transition hover:bg-amber-700"
-                                >
-                                  <FiDownload className="h-3.5 w-3.5" />
-                                  Download all
-                                </button>
-                              </div>
-                            ) : (
-                              <span className="text-xs font-semibold text-slate-400">
-                                No files attached
-                              </span>
-                            )}
-                          </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <tr>
-                        <td colSpan={4} className="px-6 py-16 text-center">
-                          <FiBookOpen className="mx-auto h-9 w-9 text-slate-400" />
-                          <p className="mt-3 font-black text-slate-900">
-                            No matching assignments
-                          </p>
-                          <p className="mt-1 text-sm text-slate-500">
-                            Change the search phrase, subject, or class.
-                          </p>
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              ) : (
-                <table className="w-full min-w-[850px] border-collapse">
-                  <thead>
-                    <tr className="border-b border-slate-200 bg-slate-50 text-left">
-                      <th className="px-6 py-4 text-xs font-black uppercase tracking-wider text-slate-500">
-                        Resource
-                      </th>
-                      <th className="px-5 py-4 text-xs font-black uppercase tracking-wider text-slate-500">
-                        Subject / Class
-                      </th>
-                      <th className="px-5 py-4 text-xs font-black uppercase tracking-wider text-slate-500">
-                        Teacher
-                      </th>
-                      <th className="px-6 py-4 text-xs font-black uppercase tracking-wider text-slate-500">
-                        Files
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {loading ? (
-                      <tr>
-                        <td colSpan={4} className="px-6 py-16 text-center">
-                          <FiRefreshCw className="mx-auto h-7 w-7 animate-spin text-teal-600" />
-                          <p className="mt-3 text-sm font-bold text-slate-600">
-                            Loading resources into the table...
-                          </p>
-                        </td>
-                      </tr>
-                    ) : visibleItems.length ? (
-                      visibleItems.map((item) => {
-                        const files = getItemFiles(item, contentType);
-
-                        return (
-                          <tr
-                            key={item.id}
-                            className="align-top transition hover:bg-cyan-50/50"
-                          >
-                          <td className="max-w-[330px] px-6 py-5">
-                            <div className="flex items-start gap-3">
-                              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 text-white">
-                                <FiFolder className="h-5 w-5" />
-                              </div>
-                              <div className="min-w-0">
-                                <p className="font-black text-slate-950">
-                                  {item.title || "Untitled resource"}
-                                </p>
-                                <p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-500">
-                                  {item.description ||
-                                    "No description has been provided."}
-                                </p>
-                                <button
-                                  type="button"
-                                  onClick={() => setSelectedItem(item)}
-                                  className="mt-3 inline-flex items-center gap-2 rounded-lg border border-teal-200 bg-white px-3 py-2 text-xs font-black text-teal-900 transition hover:bg-teal-50"
-                                >
-                                  <FiEye className="h-3.5 w-3.5" />
-                                  View details
-                                </button>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-5 py-5">
-                            <p className="text-sm font-black text-slate-900">
-                              {item.subject || "Not provided"}
-                            </p>
-                            <p className="mt-1 text-xs font-semibold text-slate-500">
-                              {item.className || "Not provided"}
-                            </p>
-                          </td>
-                          <td className="px-5 py-5">
-                            <span className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                              <FiUser className="h-4 w-4 text-teal-600" />
-                              {item.teacher || "Not provided"}
-                            </span>
-                          </td>
-                          <td className="min-w-[220px] px-6 py-5">
-                            {files.length ? (
-                              <div className="space-y-2">
-                                {files.map((file, index) => (
-                                  <a
-                                    key={`${file.url}-${index}`}
-                                    href={file.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex max-w-[240px] items-center justify-between gap-2 rounded-lg border border-teal-200 bg-teal-50 px-3 py-2 text-xs font-black text-teal-900 transition hover:border-teal-600 hover:bg-teal-600 hover:text-white"
-                                  >
-                                    <span className="truncate">{file.name}</span>
-                                    <FiDownload className="h-3.5 w-3.5 shrink-0" />
-                                  </a>
-                                ))}
-                                <button
-                                  type="button"
-                                  onClick={() => downloadAllFiles(item)}
-                                  className="flex w-full max-w-[240px] items-center justify-center gap-2 rounded-lg bg-teal-700 px-3 py-2 text-xs font-black text-white transition hover:bg-teal-800"
-                                >
-                                  <FiDownload className="h-3.5 w-3.5" />
-                                  Download all
-                                </button>
-                              </div>
-                            ) : (
-                              <span className="text-xs font-semibold text-slate-400">
-                                No files attached
-                              </span>
-                            )}
-                          </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <tr>
-                        <td colSpan={4} className="px-6 py-16 text-center">
-                          <FiBookOpen className="mx-auto h-9 w-9 text-slate-400" />
-                          <p className="mt-3 font-black text-slate-900">
-                            No matching resources
-                          </p>
-                          <p className="mt-1 text-sm text-slate-500">
-                            Change the search phrase, subject, or class.
-                          </p>
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              )}
+              <p className="mt-3 text-xs font-bold text-slate-500">
+                Showing {filteredItems.length} of {items.length} published item{items.length === 1 ? "" : "s"}.
+              </p>
             </div>
           </div>
-        )}
+        </div>
       </section>
 
-      {selectedItem ? (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="academic-details-title"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) setSelectedItem(null);
-          }}
-        >
-          <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-3xl bg-white shadow-2xl">
-            <div
-              className={`sticky top-0 z-10 flex items-start justify-between gap-4 border-b px-6 py-5 ${
-                isAssignments
-                  ? "border-amber-200 bg-amber-50"
-                  : "border-cyan-200 bg-cyan-50"
-              }`}
-            >
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-slate-200">
+              <thead className="bg-slate-900 text-white">
+                <tr>
+                  <th className="px-4 py-4 text-left text-xs font-black uppercase tracking-widest">Title</th>
+                  <th className="px-4 py-4 text-left text-xs font-black uppercase tracking-widest">Description</th>
+                  <th className="px-4 py-4 text-left text-xs font-black uppercase tracking-widest">Date Uploaded</th>
+                  <th className="px-4 py-4 text-right text-xs font-black uppercase tracking-widest">Download</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {filteredItems.map((item) => {
+                  const files = normalizeFiles(item.files);
+                  return (
+                    <tr key={`${type}-${item.id}`} className="align-top hover:bg-slate-50">
+                      <td className="min-w-[220px] px-4 py-4">
+                        <p className="font-black text-slate-950">{item.title}</p>
+                        <p className="mt-1 text-xs font-bold uppercase tracking-widest text-slate-400">
+                          {[item.subject, item.className, item.category].filter(Boolean).join(" / ")}
+                        </p>
+                      </td>
+                      <td className="min-w-[280px] px-4 py-4 text-sm leading-6 text-slate-600">
+                        <p
+                          className="max-w-[420px] overflow-hidden"
+                          style={{
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                          }}
+                        >
+                          {item.description || "No description provided."}
+                        </p>
+                      </td>
+                      <td className="min-w-[150px] px-4 py-4 text-sm font-bold text-slate-700">
+                        {formatDate(item.dateUploaded)}
+                      </td>
+                      <td className="min-w-[260px] px-4 py-4">
+                        <div className="flex flex-col items-stretch gap-2 sm:items-end">
+                          {files.length > 0 ? (
+                            <button
+                              type="button"
+                              onClick={() => downloadAll(files)}
+                              className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-2 text-xs font-black uppercase tracking-widest text-white transition hover:bg-blue-800"
+                            >
+                              <FiArchive size={14} /> Download All
+                            </button>
+                          ) : (
+                            <span className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-500">
+                              <FiExternalLink size={14} /> No file
+                            </span>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => setSelectedItem({ ...item, files })}
+                            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs font-black uppercase tracking-widest text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                          >
+                            <FiEye size={14} /> View All
+                          </button>
+                          <p className="text-right text-xs font-bold text-slate-400">
+                            {files.length} file{files.length === 1 ? "" : "s"}
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {filteredItems.length === 0 && (
+            <div className="p-10 text-center">
+              <FiFileText className="mx-auto text-5xl text-slate-300" />
+              <h2 className="mt-4 text-xl font-black text-slate-900">No items found</h2>
+              <p className="mt-2 text-sm text-slate-500">Try another search or category filter.</p>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-6">
+          <Link href="/" className="text-sm font-bold text-blue-700 hover:text-blue-900">
+            Back to home
+          </Link>
+        </div>
+      </section>
+
+      {selectedItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4">
+          <div className="max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-lg bg-white shadow-2xl">
+            <div className="flex items-start justify-between gap-4 border-b border-slate-200 bg-slate-900 px-5 py-4 text-white">
               <div>
-                <p
-                  className={`text-xs font-black uppercase tracking-[0.18em] ${
-                    isAssignments ? "text-amber-800" : "text-teal-700"
-                  }`}
-                >
-                  {isAssignments ? "Assignment details" : "Resource details"}
+                <p className="text-xs font-black uppercase tracking-[0.22em] text-blue-200">
+                  {type === "assignments" ? "Assignment Details" : "Resource Details"}
                 </p>
-                <h2
-                  id="academic-details-title"
-                  className="mt-2 text-2xl font-black text-slate-950"
-                >
-                  {selectedItem.title ||
-                    (isAssignments ? "Untitled assignment" : "Untitled resource")}
-                </h2>
+                <h2 className="mt-2 text-xl font-black">{selectedItem.title}</h2>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedItem(null)}
+                className="rounded-lg p-2 text-white transition hover:bg-white/10"
                 aria-label="Close details"
-                className="rounded-full border border-slate-200 bg-white p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
               >
-                <FiX className="h-5 w-5" />
+                <FiX size={20} />
               </button>
             </div>
-
-            <div className="space-y-7 p-6">
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {[
-                  ["Subject", selectedItem.subject || "Not provided"],
-                  ["Class", selectedItem.className || "Not provided"],
-                  [
-                    "Teacher",
-                    selectedItem.teacher || "Not provided",
-                  ],
-                ].map(([label, value]) => (
-                  <div
-                    key={label}
-                    className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
-                  >
-                    <p className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">
-                      {label}
-                    </p>
-                    <p className="mt-2 text-sm font-bold text-slate-900">
-                      {value}
-                    </p>
-                  </div>
-                ))}
+            <div className="max-h-[calc(90vh-92px)] overflow-y-auto p-5">
+              <div className="grid gap-3 text-sm font-bold text-slate-600 sm:grid-cols-2">
+                <p><span className="text-slate-950">Subject:</span> {selectedItem.subject || "General"}</p>
+                <p><span className="text-slate-950">Class:</span> {selectedItem.className || "All Classes"}</p>
+                <p><span className="text-slate-950">Teacher:</span> {selectedItem.teacher || "Not listed"}</p>
+                <p><span className="text-slate-950">Uploaded:</span> {formatDate(selectedItem.dateUploaded)}</p>
               </div>
 
-              <section>
-                <h3 className="text-sm font-black uppercase tracking-[0.16em] text-slate-500">
-                  Description
-                </h3>
-                <div className="mt-3 whitespace-pre-wrap rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-700">
-                  {selectedItem.description ||
-                    `No ${
-                      isAssignments ? "instructions" : "description"
-                    } have been provided.`}
-                </div>
-              </section>
+              <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-700">Description</h3>
+                <p className="mt-3 whitespace-pre-line text-sm leading-7 text-slate-600">
+                  {selectedItem.description || "No description provided."}
+                </p>
+              </div>
 
-              <section>
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <h3 className="text-sm font-black uppercase tracking-[0.16em] text-slate-500">
-                    Attached files
-                  </h3>
-                  {getItemFiles(selectedItem, contentType).length ? (
-                    <button
-                      type="button"
-                      onClick={() => downloadAllFiles(selectedItem)}
-                      className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-black text-white transition ${
-                        isAssignments
-                          ? "bg-amber-700 hover:bg-amber-800"
-                          : "bg-teal-700 hover:bg-teal-800"
-                      }`}
-                    >
-                      <FiDownload className="h-4 w-4" />
-                      Download all
-                    </button>
-                  ) : null}
-                </div>
-
-                <div className="mt-3 space-y-2">
-                  {getItemFiles(selectedItem, contentType).length ? (
-                    getItemFiles(selectedItem, contentType).map(
-                      (file, index) => (
-                        <a
-                          key={`${file.url}-modal-${index}`}
-                          href={file.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-800 transition hover:border-slate-400 hover:bg-white"
-                        >
-                          <span className="min-w-0 truncate">{file.name}</span>
-                          <FiDownload className="h-4 w-4 shrink-0" />
-                        </a>
-                      )
-                    )
-                  ) : (
-                    <p className="rounded-xl border border-dashed border-slate-300 p-5 text-sm font-semibold text-slate-500">
-                      No files are attached to this item.
-                    </p>
-                  )}
-                </div>
-              </section>
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm font-bold text-slate-500">
+                  {selectedItem.files.length} downloadable file{selectedItem.files.length === 1 ? "" : "s"} available.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => downloadAll(selectedItem.files)}
+                  disabled={selectedItem.files.length === 0}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-xs font-black uppercase tracking-widest text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+                >
+                  <FiDownload size={14} /> Download All
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </main>
   );
 }

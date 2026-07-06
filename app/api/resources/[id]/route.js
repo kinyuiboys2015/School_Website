@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../../libs/prisma";
-import cloudinary, { requireCloudinary } from "../../../../libs/cloudinary";
-import { SCHOOL_COMMUNICATION_NUMBER } from "../../../../libs/delivery";
+import cloudinary from "../../../../libs/cloudinary";
+import { cleanGeneratedFileName } from "../../../../libs/displayNames";
 
 const decodeJwtPayload = (token) => {
   const payload = token.split('.')[1];
@@ -144,7 +144,6 @@ const authenticateRequest = (req) => {
 // FIXED: Works EXACTLY like school-documents API
 const uploadFileToCloudinary = async (file) => {
   if (!file?.name || file.size === 0) return null;
-  requireCloudinary();
 
   try {
     const originalName = file.name;
@@ -239,7 +238,6 @@ const uploadMultipleFilesToCloudinary = async (files) => {
 // FIXED: Delete function for new folder structure
 const deleteFileFromCloudinary = async (fileUrl) => {
   if (!fileUrl) return;
-  requireCloudinary();
 
   try {
     // Extract full public ID including extension
@@ -319,20 +317,22 @@ const cleanResourceResponse = (resource) => {
     description: resource.description,
     category: resource.category,
     type: resource.type,
-    files: (resource.files || []).map(file => ({
-      url: file.url,
-      name: file.name,
-      size: file.size,
-      extension: file.extension || '.' + file.name.split('.').pop().toLowerCase(),
-      fileType: file.fileType || getFileType(file.name),
-      uploadedAt: file.uploadedAt,
-      formattedSize: formatFileSize(file.size || 0)
-    })),
+    files: (resource.files || []).map(file => {
+      const displayName = cleanGeneratedFileName(file.name || file.url);
+      return {
+        url: file.url,
+        name: displayName,
+        size: file.size,
+        extension: file.extension || (displayName.includes('.') ? '.' + displayName.split('.').pop().toLowerCase() : ''),
+        fileType: file.fileType || getFileType(displayName),
+        uploadedAt: file.uploadedAt,
+        formattedSize: formatFileSize(file.size || 0)
+      };
+    }),
     accessLevel: resource.accessLevel,
     uploadedBy: resource.uploadedBy,
     downloads: resource.downloads,
     isActive: resource.isActive,
-    senderReference: SCHOOL_COMMUNICATION_NUMBER,
     createdAt: resource.createdAt,
     updatedAt: resource.updatedAt
   };
@@ -479,6 +479,7 @@ async function handleFormUpdate(request, id, existingResource) {
     if (accessLevel !== null && accessLevel !== undefined) updateData.accessLevel = accessLevel;
     if (uploadedBy !== null && uploadedBy !== undefined) updateData.uploadedBy = uploadedBy;
     if (isActive !== null && isActive !== undefined) updateData.isActive = isActive === "true";
+
     // Handle file updates
     const existingFilesStr = formData.get("existingFiles");
     const filesToRemoveStr = formData.get("filesToRemove");
@@ -550,10 +551,12 @@ async function handleFormUpdate(request, id, existingResource) {
 
     console.log("💾 Saving to database...");
 
-    const resource = await prisma.resource.update({
+    const savedResource = await prisma.resource.update({
       where: { id: id },
       data: updateData,
     });
+
+    const resource = savedResource;
 
     console.log("✅ Update successful");
     console.log("- Updated resource ID:", resource.id);

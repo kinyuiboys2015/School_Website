@@ -1,8 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import SubjectSearchSelect from '../SubjectSearchSelect';
-import { ALL_LEARNING_SUBJECTS } from '../../../libs/subjects';
+import { useState, useEffect, useMemo } from 'react';
 import {
   FiPlus,
   FiSearch,
@@ -36,7 +34,6 @@ import {
   FiBookOpen,
   FiArchive,
   FiTag,
-  FiMail,
   FiUserCheck, 
   FiClipboard, 
   FiShield,
@@ -56,7 +53,8 @@ import {
   FiCopy,
   FiShare2,
   FiInfo, 
-  FiHeart
+  FiFilter,
+  FiHeart,
 } from 'react-icons/fi';
 
 import {
@@ -76,9 +74,65 @@ import {
   IoChevronForwardOutline,
   IoCheckmarkCircleOutline
 } from 'react-icons/io5';
+
+// Import subject list and components
+import { ALL_SUBJECTS } from '../../constants/subjects';
+import SearchableSubjectDropdown from '../SearchableSubjectDropdown';
+
 import { Modal, Box, CircularProgress } from '@mui/material';
 
-const DELIVERY_LEVEL_OPTIONS = ['Grade 10', 'Grade 11', 'Grade 12', 'Form 3', 'Form 4', 'Form 1', 'Form 2'];
+const DELIVERY_LEVEL_OPTIONS = ['Grade 10', 'Grade 11', 'Grade 12', 'Form 3', 'Form 4'];
+
+const formatDisplayText = (value, fallback = '') => {
+  if (value === null || value === undefined || value === '') return fallback;
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+  if (value instanceof Error) return value.message || fallback;
+  if (typeof value === 'object') {
+    return value.message || value.error || value.detail || value.code || fallback || JSON.stringify(value);
+  }
+  return String(value);
+};
+
+const safeText = (value) => {
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number') return String(value);
+  if (Array.isArray(value)) return value.map(safeText).filter(Boolean).join(' ');
+  if (value && typeof value === 'object') {
+    return String(value.name || value.label || value.title || value.subject || value.value || '');
+  }
+  return '';
+};
+
+const cleanUploadedFileName = (value = 'File') => {
+  const text = safeText(value) || 'File';
+  const withoutQuery = text.split('?')[0].split('#')[0];
+  const lastSegment = withoutQuery.split('/').pop() || withoutQuery;
+  try {
+    return decodeURIComponent(lastSegment).replace(/^\d{10,}[-_]+/, '') || 'File';
+  } catch {
+    return lastSegment.replace(/^\d{10,}[-_]+/, '') || 'File';
+  }
+};
+
+const normalizeUploadedFile = (file, fallbackName = 'File') => {
+  if (!file) return null;
+  if (typeof file === 'string') {
+    return {
+      url: file,
+      name: cleanUploadedFileName(file) || fallbackName,
+    };
+  }
+
+  const url = file.url || file.downloadUrl || file.href || '';
+  if (!url) return null;
+
+  return {
+    ...file,
+    url,
+    name: cleanUploadedFileName(file.fileName || file.name || file.originalName || url) || fallbackName,
+  };
+};
 
 // Modern Loading Spinner Component
 const Spinner = ({ size = 40, color = 'inherit', thickness = 3.6, variant = 'indeterminate', value = 0 }) => {
@@ -247,6 +301,8 @@ function Notification({
   type = 'success', 
   title, 
   message, 
+  actionLabel,
+  onAction,
   duration = 5000 
 }) {
   const [progress, setProgress] = useState(100);
@@ -330,6 +386,9 @@ function Notification({
   };
 
   const styles = getTypeStyles();
+  const displayTitle = formatDisplayText(title);
+  const displayMessage = formatDisplayText(message);
+  const displayActionLabel = formatDisplayText(actionLabel);
 
   if (!open) return null;
 
@@ -342,8 +401,18 @@ function Notification({
               {getIcon()}
             </div>
             <div className="flex-1">
-              <h4 className={`font-bold ${styles.title} mb-1`}>{title}</h4>
-              <p className="text-gray-700 text-sm">{message}</p>
+              <h4 className={`font-bold ${styles.title} mb-1`}>{displayTitle}</h4>
+              <p className="text-gray-700 text-sm">{displayMessage}</p>
+              {displayActionLabel && onAction && (
+                <button
+                  type="button"
+                  onClick={onAction}
+                  className="mt-3 inline-flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-800 shadow-sm ring-1 ring-slate-200 transition hover:bg-slate-50"
+                >
+                  <FiRotateCw size={14} />
+                  {displayActionLabel}
+                </button>
+              )}
             </div>
             <button 
               onClick={onClose}
@@ -362,9 +431,34 @@ function Notification({
 function ModernAssignmentDetailModal({ assignment, onClose, onEdit }) {
   if (!assignment) return null;
 
+  // Status colors
+  const getStatusColor = (status) => {
+    switch (safeText(status).toLowerCase()) {
+      case 'completed': return { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200', icon: 'bg-green-500' };
+      case 'in progress': return { bg: 'bg-teal-100', text: 'text-teal-800', border: 'border-teal-200', icon: 'bg-teal-600' };
+      case 'pending': return { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200', icon: 'bg-yellow-500' };
+      case 'overdue': return { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200', icon: 'bg-red-500' };
+      case 'assigned': return { bg: 'bg-emerald-100', text: 'text-emerald-800', border: 'border-emerald-200', icon: 'bg-emerald-600' };
+      default: return { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200', icon: 'bg-gray-500' };
+    }
+  };
+
+  // Priority colors
+  const getPriorityColor = (priority) => {
+    switch (safeText(priority).toLowerCase()) {
+      case 'high': return { bg: 'bg-red-100', text: 'text-red-800' };
+      case 'medium': return { bg: 'bg-orange-100', text: 'text-orange-800' };
+      case 'low': return { bg: 'bg-teal-100', text: 'text-teal-800' };
+      default: return { bg: 'bg-gray-100', text: 'text-gray-800' };
+    }
+  };
+
+  const statusColor = getStatusColor(assignment.status);
+  const priorityColor = getPriorityColor(assignment.priority);
+
   const getFileIcon = (type) => {
     if (!type) return <FiFile />;
-    switch (type.toLowerCase()) {
+    switch (safeText(type).toLowerCase()) {
       case 'pdf': return <FiFileText />;
       case 'video': return <FiVideo />;
       case 'image': return <FiImage />;
@@ -412,6 +506,15 @@ function ModernAssignmentDetailModal({ assignment, onClose, onEdit }) {
 
           {/* Tags Bar */}
           <div className="flex flex-wrap gap-2 mt-6">
+            <div className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold ${statusColor.bg} ${statusColor.text} border ${statusColor.border}`}>
+              <span className={`w-2 h-2 rounded-full ${statusColor.icon}`}></span>
+              {assignment.status?.charAt(0).toUpperCase() + assignment.status?.slice(1) || 'Pending'}
+            </div>
+            {assignment.priority && (
+              <div className="px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-emerald-50 to-teal-50 text-teal-700 border border-teal-100">
+                {assignment.priority} Priority
+              </div>
+            )}
             {assignment.subject && (
               <div className="px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
                 {assignment.subject}
@@ -447,6 +550,23 @@ function ModernAssignmentDetailModal({ assignment, onClose, onEdit }) {
                 </div>
               </section>
 
+              {/* Instructions Section */}
+              {assignment.instructions && (
+                <section className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-xl bg-teal-50 flex items-center justify-center text-teal-700">
+                      <FiBookOpen />
+                    </div>
+                    <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Instructions</h3>
+                  </div>
+                  <div className="bg-teal-50/50 p-6 rounded-[24px] border border-teal-100">
+                    <p className="text-slate-600 leading-relaxed text-base">
+                      {assignment.instructions}
+                    </p>
+                  </div>
+                </section>
+              )}
+
               {/* Files Grid - Modernized */}
               {(assignment.assignmentFiles?.length > 0 || assignment.attachments?.length > 0) && (
                 <section className="space-y-4">
@@ -460,7 +580,8 @@ function ModernAssignmentDetailModal({ assignment, onClose, onEdit }) {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[...(assignment.assignmentFiles || []), ...(assignment.attachments || [])].map((file, idx) => {
-                      const fileName = typeof file === 'string' ? file.split('/').pop() : file.name || 'File';
+                      const normalizedFile = normalizeUploadedFile(file, `File ${idx + 1}`);
+                      const fileName = normalizedFile?.name || `File ${idx + 1}`;
                       const fileExt = fileName.split('.').pop()?.toLowerCase();
                       
                       return (
@@ -470,7 +591,7 @@ function ModernAssignmentDetailModal({ assignment, onClose, onEdit }) {
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-bold text-slate-900 truncate">
-                              {fileName.replace(/^[\d-]+/, "")}
+                              {fileName}
                             </p>
                             <p className="text-[10px] font-bold text-slate-400 uppercase mt-1">
                               {fileExt?.toUpperCase()} • Assignment File
@@ -502,8 +623,76 @@ function ModernAssignmentDetailModal({ assignment, onClose, onEdit }) {
                       </div>
                     </div>
 
+                    {/* Due Date */}
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center">
+                        <FiCalendar className="text-rose-400" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-bold text-white/40 uppercase">Due Date</p>
+                        <p className="text-sm font-bold">
+                          {assignment.dueDate ? new Date(assignment.dueDate).toLocaleDateString('en-GB', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric'
+                          }) : 'Not set'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Assigned Date */}
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center">
+                        <IoCalendarOutline className="text-emerald-400" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-bold text-white/40 uppercase">Assigned On</p>
+                        <p className="text-sm font-bold">
+                          {assignment.dateAssigned ? new Date(assignment.dateAssigned).toLocaleDateString('en-GB', {
+                            day: 'numeric',
+                            month: 'short'
+                          }) : 'Today'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Estimated Time */}
+                    {assignment.estimatedTime && (
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center">
+                          <FiClock className="text-amber-400" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold text-white/40 uppercase">Time Estimate</p>
+                          <p className="text-sm font-bold">{assignment.estimatedTime}</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
+
+                {/* Learning Objectives Card */}
+                {assignment.learningObjectives?.length > 0 && (
+                  <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-[24px] p-6 border border-teal-100">
+                    <div className="flex items-center gap-2 mb-4">
+                      <FiTarget className="text-teal-700" />
+                      <h3 className="text-sm font-bold text-teal-900">Learning Objectives</h3>
+                    </div>
+                    <div className="space-y-3">
+                      {assignment.learningObjectives.slice(0, 3).map((objective, idx) => (
+                        <div key={idx} className="flex items-start gap-2">
+                          <FiCheck className="text-teal-600 mt-1 flex-shrink-0" size={12} />
+                          <p className="text-xs text-teal-800 font-medium">{objective}</p>
+                        </div>
+                      ))}
+                      {assignment.learningObjectives.length > 3 && (
+                        <p className="text-[10px] font-bold text-teal-700/70 uppercase tracking-wider mt-2">
+                          +{assignment.learningObjectives.length - 3} more objectives
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -534,17 +723,10 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading }) {
   const [formData, setFormData] = useState({
     title: assignment?.title || '',
     description: assignment?.description || '',
-    // simplified: keep only title, description, class, teacher and learning fields
-    subject: assignment?.subject || 'General Studies',
-    dueDate: assignment?.dueDate ? new Date(assignment.dueDate).toISOString().split('T')[0] : '',
+    subject: assignment?.subject || '',
+    dueDate: '',
     className: assignment?.className || '',
     teacher: assignment?.teacher || '',
-    status: assignment?.status || 'pending',
-    priority: assignment?.priority || 'medium',
-    estimatedTime: assignment?.estimatedTime || '',
-    instructions: assignment?.instructions || '',
-    additionalWork: assignment?.additionalWork || '',
-    teacherRemarks: assignment?.teacherRemarks || '',
   });
 
   // File states with size tracking
@@ -566,30 +748,40 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading }) {
     ...DELIVERY_LEVEL_OPTIONS
   ];
 
+  // Subject options intentionally removed to simplify the form
+
   // Initialize with assignment data
   useEffect(() => {
     if (assignment) {
       // Initialize assignment files
       if (assignment.assignmentFiles && assignment.assignmentFiles.length > 0) {
-        const files = assignment.assignmentFiles.map((url, index) => ({
+        const files = assignment.assignmentFiles.map((file, index) => {
+          const normalizedFile = normalizeUploadedFile(file, `Assignment File ${index + 1}`);
+          if (!normalizedFile) return null;
+          return {
           id: `existing-assignment-${index}`,
-          name: url.split('/').pop() || `Assignment File ${index + 1}`,
-          url: url,
+          name: normalizedFile.name,
+          url: normalizedFile.url,
           isExisting: true,
-          size: 0 // We don't know the size of existing files
-        }));
+          size: normalizedFile.size || 0
+        };
+        }).filter(Boolean);
         setAssignmentFiles(files);
       }
       
       // Initialize attachments
       if (assignment.attachments && assignment.attachments.length > 0) {
-        const attach = assignment.attachments.map((url, index) => ({
+        const attach = assignment.attachments.map((file, index) => {
+          const normalizedFile = normalizeUploadedFile(file, `Attachment ${index + 1}`);
+          if (!normalizedFile) return null;
+          return {
           id: `existing-attachment-${index}`,
-          name: url.split('/').pop() || `Attachment ${index + 1}`,
-          url: url,
+          name: normalizedFile.name,
+          url: normalizedFile.url,
           isExisting: true,
-          size: 0 // We don't know the size of existing files
-        }));
+          size: normalizedFile.size || 0
+        };
+        }).filter(Boolean);
         setAttachments(attach);
       }
     }
@@ -830,7 +1022,7 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading }) {
     
     // Call parent's onSave with all data
     await onSave(
-      formData, 
+      formData,
       assignment?.id, 
       assignmentFiles, 
       attachments, 
@@ -937,15 +1129,6 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading }) {
             </div>
 
             {/* Subject and Class in Grid */}
-            <SubjectSearchSelect
-              value={formData.subject}
-              onChange={(subject) => handleChange('subject', subject)}
-              options={ALL_LEARNING_SUBJECTS}
-              disabled={loading}
-              required
-            />
-
-            {/* Class */}
               <div>
                 <label className=" text-base font-bold text-gray-800 mb-3 flex items-center gap-2">
                   <span className="text-red-500">*</span>
@@ -965,6 +1148,18 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading }) {
                   ))}
                 </select>
               </div>
+
+            {/* Subject selection with search */}
+            <div>
+              <label className="block text-base font-bold text-gray-800 mb-3">Subject</label>
+              <SearchableSubjectDropdown
+                value={formData.subject}
+                onChange={(value) => handleChange('subject', value)}
+                options={ALL_SUBJECTS}
+                placeholder="Select or search subject..."
+                className="w-full"
+              />
+            </div>
 
             {/* Teacher - Full Width */}
             <div>
@@ -1225,17 +1420,17 @@ function ModernAssignmentModal({ onClose, onSave, assignment, loading }) {
               >
                 Cancel
               </button>
-
-              <button
+              
+              <button 
                 type="submit"
                 disabled={loading || totalSizeMB > 4.5 || !formData.title.trim() || !formData.className}
                 className="px-6 py-3 text-white rounded-xl font-bold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 bg-gradient-to-r from-teal-700 to-emerald-700 text-sm hover:from-teal-800 hover:to-emerald-800 transition-all"
               >
-	                {loading ? (
-	                  <>
-	                    <CircularProgress size={16} className="text-white" />
-	                    {assignment ? 'Updating...' : 'Creating...'}
-	                  </>
+                {loading ? (
+                  <>
+                    <CircularProgress size={16} className="text-white" />
+                    {assignment ? 'Updating...' : 'Creating...'}
+                  </>
                 ) : (
                   <>
                     <FiCheck className="text-sm" />
@@ -1256,7 +1451,9 @@ export default function AssignmentsManager() {
   const [assignments, setAssignments] = useState([]);
   const [filteredAssignments, setFilteredAssignments] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('all');
   const [selectedSubject, setSelectedSubject] = useState('all');
+  const [selectedPriority, setSelectedPriority] = useState('all');
   const [selectedClass, setSelectedClass] = useState('all');
   const [showModal, setShowModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
@@ -1269,6 +1466,7 @@ export default function AssignmentsManager() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [stats, setStats] = useState(null);
   
   // Bulk delete states
   const [selectedAssignments, setSelectedAssignments] = useState(new Set());
@@ -1281,23 +1479,53 @@ export default function AssignmentsManager() {
     open: false,
     type: 'success',
     title: '',
-    message: ''
+    message: '',
+    actionLabel: '',
+    onAction: null
   });
 
-  const subjectOptions = ALL_LEARNING_SUBJECTS;
+  // Status options
+  const statusOptions = [
+    { value: 'pending', label: 'Pending', color: 'yellow' },
+    { value: 'in progress', label: 'In Progress', color: 'blue' },
+    { value: 'completed', label: 'Completed', color: 'green' },
+    { value: 'overdue', label: 'Overdue', color: 'red' },
+    { value: 'assigned', label: 'Assigned', color: 'indigo' }
+  ];
+
+  // Priority options
+  const priorityOptions = [
+    { value: 'low', label: 'Low', color: 'blue' },
+    { value: 'medium', label: 'Medium', color: 'orange' },
+    { value: 'high', label: 'High', color: 'red' }
+  ];
 
   // Class options
   const classOptions = [
     ...DELIVERY_LEVEL_OPTIONS
   ];
 
+  const subjectFilterOptions = useMemo(() => {
+    const databaseSubjects = assignments
+      .map(assignment => safeText(assignment.subject).trim())
+      .filter(subject => subject && subject.toLowerCase() !== 'general');
+    const standardSubjects = ALL_SUBJECTS
+      .map(subject => safeText(subject.label || subject.value).trim())
+      .filter(Boolean);
+
+    return Array.from(new Set([...standardSubjects, ...databaseSubjects]))
+      .sort((a, b) => a.localeCompare(b));
+  }, [assignments]);
+
   // Notification handler
-  const showNotification = (type, title, message) => {
+  const showNotification = (type, title, message, action = {}) => {
     setNotification({
       open: true,
       type,
-      title,
-      message
+      title: formatDisplayText(title),
+      message: formatDisplayText(message),
+      actionLabel: formatDisplayText(action.label),
+      onAction: action.onClick || null
     });
   };
 
@@ -1320,31 +1548,77 @@ export default function AssignmentsManager() {
     setShowDeleteModal(true);
   };
 
-  // Keep only values returned by the database; do not manufacture display records.
+  // Map JSON data to our component's expected structure
   const mapAssignmentData = (apiAssignment) => {
     return {
       id: apiAssignment.id,
-      title: apiAssignment.title,
+      title: apiAssignment.title || 'Untitled Assignment',
       description: apiAssignment.description || '',
-      dueDate: apiAssignment.dueDate || '',
-      dateAssigned: apiAssignment.dateAssigned || '',
-      subject: apiAssignment.subject,
+      dueDate: apiAssignment.dueDate || new Date().toISOString().split('T')[0],
+      dateAssigned: apiAssignment.dateAssigned || new Date().toISOString(),
+      subject: apiAssignment.subject || 'General',
       className: apiAssignment.className || apiAssignment.grade || '',
       teacher: apiAssignment.teacher || '',
-      status: apiAssignment.status || '',
-      priority: apiAssignment.priority || '',
+      status: apiAssignment.status || 'pending',
+      priority: apiAssignment.priority || 'medium',
       estimatedTime: apiAssignment.estimatedTime || '',
       instructions: apiAssignment.instructions || '',
-      assignmentFiles: apiAssignment.assignmentFiles || [],
-      attachments: apiAssignment.attachments || [],
+      assignmentFiles: (apiAssignment.assignmentFiles || []).map((file) => normalizeUploadedFile(file)).filter(Boolean),
+      attachments: (apiAssignment.attachments || []).map((file) => normalizeUploadedFile(file)).filter(Boolean),
       additionalWork: apiAssignment.additionalWork || '',
       teacherRemarks: apiAssignment.teacherRemarks || '',
       feedback: apiAssignment.feedback || null,
       learningObjectives: apiAssignment.learningObjectives || [],
-      targetCriteria: apiAssignment.targetCriteria || null,
-      createdAt: apiAssignment.createdAt || '',
-      updatedAt: apiAssignment.updatedAt || ''
+      createdAt: apiAssignment.createdAt || new Date().toISOString(),
+      updatedAt: apiAssignment.updatedAt || new Date().toISOString(),
+      
+      // Legacy fields for compatibility
+      grade: apiAssignment.className || apiAssignment.grade || '',
+      assignedTo: apiAssignment.teacher || '',
+      points: 100,
+      submissionType: 'online',
+      maxScore: 100,
+      completionRate: 0,
+      averageScore: 0,
+      submissionsCount: 0
     };
+  };
+
+  // Calculate statistics
+  const calculateStats = (assignmentsList) => {
+    const today = new Date();
+    const stats = {
+      total: assignmentsList.length,
+      pending: assignmentsList.filter(a => a.status === 'pending').length,
+      inProgress: assignmentsList.filter(a => a.status === 'in progress').length,
+      completed: assignmentsList.filter(a => a.status === 'completed').length,
+      assigned: assignmentsList.filter(a => a.status === 'assigned').length,
+      overdue: assignmentsList.filter(a => 
+        a.status !== 'completed' && 
+        a.dueDate && 
+        new Date(a.dueDate) < today
+      ).length,
+      highPriority: assignmentsList.filter(a => a.priority === 'high').length,
+      thisWeek: assignmentsList.filter(a => {
+        if (!a.dueDate) return false;
+        const dueDate = new Date(a.dueDate);
+        const nextWeek = new Date();
+        nextWeek.setDate(today.getDate() + 7);
+        return dueDate >= today && dueDate <= nextWeek;
+      }).length,
+      totalPoints: assignmentsList.reduce((acc, a) => acc + (parseInt(a.points) || 0), 0),
+      avgCompletion: assignmentsList.reduce((acc, a) => acc + (a.completionRate || 0), 0) / (assignmentsList.length || 1),
+      
+      // Class stats
+      grade10: assignmentsList.filter(a => a.className === 'Grade 10').length,
+      grade11: assignmentsList.filter(a => a.className === 'Grade 11').length,
+      grade12: assignmentsList.filter(a => a.className === 'Grade 12').length,
+      form1: assignmentsList.filter(a => a.className === 'Form 1').length,
+      form2: assignmentsList.filter(a => a.className === 'Form 2').length,
+      form3: assignmentsList.filter(a => a.className === 'Form 3').length,
+      form4: assignmentsList.filter(a => a.className === 'Form 4').length
+    };
+    setStats(stats);
   };
 
   // Helper function to get authentication headers for PROTECTED endpoints
@@ -1388,6 +1662,7 @@ export default function AssignmentsManager() {
         const mappedAssignments = result.assignments.map(mapAssignmentData);
         setAssignments(mappedAssignments);
         setFilteredAssignments(mappedAssignments);
+        calculateStats(mappedAssignments);
         
         if (mappedAssignments.length === 0) {
           showNotification('info', 'No Assignments', 'No assignments found in the system.');
@@ -1397,6 +1672,7 @@ export default function AssignmentsManager() {
       } else if (result.success && result.assignments === null) {
         setAssignments([]);
         setFilteredAssignments([]);
+        calculateStats([]);
         showNotification('info', 'No Assignments', 'No assignments found in the system.');
       } else {
         throw new Error(result.error || 'Invalid response from server');
@@ -1406,6 +1682,7 @@ export default function AssignmentsManager() {
       showNotification('error', 'Load Failed', error.message || 'Failed to load assignments. Please try again.');
       setAssignments([]);
       setFilteredAssignments([]);
+      calculateStats([]);
     } finally {
       if (isRefresh) {
         setRefreshing(false);
@@ -1426,17 +1703,28 @@ export default function AssignmentsManager() {
 
     // Search filter
     if (searchTerm) {
+      const search = safeText(searchTerm).toLowerCase();
       filtered = filtered.filter(assignment =>
-        assignment.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (assignment.description && assignment.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (assignment.subject && assignment.subject.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (assignment.teacher && assignment.teacher.toLowerCase().includes(searchTerm.toLowerCase()))
+        safeText(assignment.title).toLowerCase().includes(search) ||
+        safeText(assignment.description).toLowerCase().includes(search) ||
+        safeText(assignment.subject).toLowerCase().includes(search) ||
+        safeText(assignment.teacher).toLowerCase().includes(search)
       );
+    }
+
+    // Status filter
+    if (selectedStatus !== 'all') {
+      filtered = filtered.filter(assignment => assignment.status === selectedStatus);
     }
 
     // Subject filter
     if (selectedSubject !== 'all') {
       filtered = filtered.filter(assignment => assignment.subject === selectedSubject);
+    }
+
+    // Priority filter
+    if (selectedPriority !== 'all') {
+      filtered = filtered.filter(assignment => assignment.priority === selectedPriority);
     }
 
     // Class filter
@@ -1446,7 +1734,7 @@ export default function AssignmentsManager() {
 
     setFilteredAssignments(filtered);
     setCurrentPage(1);
-  }, [searchTerm, selectedSubject, selectedClass, assignments]);
+  }, [searchTerm, selectedStatus, selectedSubject, selectedPriority, selectedClass, assignments]);
 
   // Pagination
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -1455,6 +1743,19 @@ export default function AssignmentsManager() {
   const totalPages = Math.ceil(filteredAssignments.length / itemsPerPage);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const hasActiveAssignmentFilters = searchTerm ||
+    selectedStatus !== 'all' ||
+    selectedSubject !== 'all' ||
+    selectedPriority !== 'all' ||
+    selectedClass !== 'all';
+
+  const clearAssignmentFilters = () => {
+    setSearchTerm('');
+    setSelectedStatus('all');
+    setSelectedSubject('all');
+    setSelectedPriority('all');
+    setSelectedClass('all');
+  };
 
   // View assignment
   const handleView = (assignment) => {
@@ -1742,7 +2043,6 @@ export default function AssignmentsManager() {
       if (result.success) {
         // Refresh the list
         await fetchAssignments();
-
         setShowModal(false);
         showNotification(
           'success',
@@ -1853,6 +2153,8 @@ export default function AssignmentsManager() {
         type={notification.type}
         title={notification.title}
         message={notification.message}
+        actionLabel={notification.actionLabel}
+        onAction={notification.onAction}
       />
 
       {/* Delete Confirmation Modal */}
@@ -1867,63 +2169,49 @@ export default function AssignmentsManager() {
         loading={deleting || bulkDeleting}
       />
 
-{/* ── Clean Responsive Assignments Header ── */}
-<div className="relative mb-6 overflow-hidden rounded-2xl bg-[#064e3b] p-4 shadow-sm sm:mb-8 sm:p-6">
-  <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-    
-    {/* Left Content */}
-    <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
-      {/* Icon */}
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10">
-        <FiClipboard className="h-6 w-6 text-white" />
+      {/* Assignments Header - matched to Student Upload */}
+      <div className="relative mb-6 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-slate-950 via-indigo-950 to-blue-950 p-6 text-white shadow-2xl shadow-slate-900/20 sm:mb-8 sm:p-8">
+        <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex min-w-0 items-start gap-3">
+            <div className="rounded-2xl border border-white/10 bg-white/10 p-2">
+              <FiClipboard className="text-2xl text-yellow-300" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-300">Katwanyaa Senior School</p>
+              <h1 className="mt-1 text-3xl font-bold">Assignments Manager</h1>
+              <p className="mt-2 max-w-2xl text-base leading-7 text-slate-200">
+                Create, organize, and manage student assignments across classes and subjects.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={() => document.getElementById('assignment-filters')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              className="flex items-center justify-center gap-2 rounded-xl border border-white/20 px-5 py-3 text-sm font-bold text-white/85 transition hover:bg-white/10 hover:text-white"
+            >
+              <FiFilter />
+              Filters
+            </button>
+            <button
+              onClick={() => fetchAssignments(true)}
+              disabled={refreshing}
+              className="flex items-center justify-center gap-2 rounded-xl border border-white/20 px-5 py-3 text-sm font-bold text-white/85 transition hover:bg-white/10 hover:text-white disabled:opacity-60"
+            >
+              {refreshing ? <CircularProgress size={16} color="inherit" /> : <FiRotateCw />}
+              {refreshing ? 'Refreshing...' : 'Refresh'}
+            </button>
+            <button
+              onClick={handleCreate}
+              className="flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-slate-950 shadow-lg transition hover:shadow-xl"
+            >
+              <FiPlus />
+              Create Assignment
+            </button>
+          </div>
+        </div>
       </div>
-
-      {/* Text */}
-      <div className="min-w-0 flex-1">
-        <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">
-          Kinyui Boys Senior School
-        </p>
-
-        <h1 className="text-2xl font-black leading-tight text-white sm:text-3xl md:text-4xl">
-          Assignments Manager
-        </h1>
-
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-emerald-50/75 sm:text-base">
-          Create, organize, and manage student assignments across classes and subjects.
-        </p>
-      </div>
-    </div>
-
-    {/* Right Actions */}
-    <div className="flex w-full flex-col gap-2 sm:flex-row lg:w-auto lg:justify-end">
-      <button
-        onClick={() => fetchAssignments(true)}
-        disabled={refreshing}
-        className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/15 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-      >
-        {refreshing ? (
-          <>
-            <CircularProgress size={16} color="inherit" />
-            <span>Refreshing...</span>
-          </>
-        ) : (
-          <>
-            <FiRotateCw className="h-4 w-4" />
-            <span>Refresh</span>
-          </>
-        )}
-      </button>
-
-      <button
-        onClick={handleCreate}
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 active:scale-95 sm:w-auto"
-      >
-        <FiPlus className="h-4 w-4" />
-        <span>Create Assignment</span>
-      </button>
-    </div>
-  </div>
-</div>
       {/* Bulk Actions Section */}
       {selectedAssignments.size > 0 && (
         <div className="bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-200 rounded-2xl p-4 shadow-lg">
@@ -1970,10 +2258,112 @@ export default function AssignmentsManager() {
         </div>
       )}
 
+      {/* Stats Overview */}
+      {stats && (
+        <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4">
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs lg:text-sm font-bold text-gray-600 mb-1">Total</p>
+                <p className="text-xl lg:text-2xl font-bold text-gray-900">{stats.total}</p>
+              </div>
+              <div className="p-3 bg-teal-100 text-teal-700 rounded-2xl">
+                <IoDocumentTextOutline className="text-lg" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs lg:text-sm font-bold text-gray-600 mb-1">This Week</p>
+                <p className="text-xl lg:text-2xl font-bold text-gray-900">{stats.thisWeek}</p>
+              </div>
+              <div className="p-3 bg-emerald-100 text-emerald-700 rounded-2xl">
+                <IoCalendarOutline className="text-lg" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs lg:text-sm font-bold text-gray-600 mb-1">Grade 10</p>
+                <p className="text-xl lg:text-2xl font-bold text-gray-900">{stats.grade10 || 0}</p>
+              </div>
+              <div className="p-3 bg-teal-100 text-teal-700 rounded-2xl">
+                <FiUsers className="text-lg" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs lg:text-sm font-bold text-gray-600 mb-1">Grade 11</p>
+                <p className="text-xl lg:text-2xl font-bold text-gray-900">{stats.grade11 || 0}</p>
+              </div>
+              <div className="p-3 bg-green-100 text-green-600 rounded-2xl">
+                <FiUsers className="text-lg" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs lg:text-sm font-bold text-gray-600 mb-1">Grade 12</p>
+                <p className="text-xl lg:text-2xl font-bold text-gray-900">{stats.grade12 || 0}</p>
+              </div>
+              <div className="p-3 bg-emerald-100 text-emerald-700 rounded-2xl">
+                <FiUsers className="text-lg" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs lg:text-sm font-bold text-gray-600 mb-1">Form 3</p>
+                <p className="text-xl lg:text-2xl font-bold text-gray-900">{stats.form3 || 0}</p>
+              </div>
+              <div className="p-3 bg-amber-100 text-amber-600 rounded-2xl">
+                <FiUsers className="text-lg" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs lg:text-sm font-bold text-gray-600 mb-1">Form 4</p>
+                <p className="text-xl lg:text-2xl font-bold text-gray-900">{stats.form4 || 0}</p>
+              </div>
+              <div className="p-3 bg-amber-100 text-amber-600 rounded-2xl">
+                <FiUsers className="text-lg" />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Filters Section */}
-      <div className="bg-white rounded-2xl p-4 lg:p-6 shadow-lg border border-gray-200">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="relative">
+      <div id="assignment-filters" className="scroll-mt-6 bg-white rounded-2xl p-4 lg:p-6 shadow-lg border border-gray-200">
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.24em] text-slate-400">
+              <FiFilter className="text-teal-700" />
+              Filters
+            </p>
+            <h2 className="mt-1 text-lg font-black text-slate-950">Refine assignment records</h2>
+          </div>
+          <div className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-teal-100 bg-teal-50 px-3 py-2 text-xs font-black uppercase tracking-[0.16em] text-teal-700 sm:w-auto">
+            <FiFilter />
+            Filter Tools
+          </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-7 gap-4">
+          <div className="lg:col-span-2 relative">
             <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
@@ -1985,14 +2375,35 @@ export default function AssignmentsManager() {
           </div>
 
           <select
-            value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
-            className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 bg-gray-50 cursor-pointer text-sm"
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-600 focus:border-teal-600 bg-gray-50 cursor-pointer text-sm"
           >
-            <option value="all">All Subjects</option>
-            {subjectOptions.map(subject => (
-              <option key={subject} value={subject}>
-                {subject}
+            <option value="all">All Status</option>
+            {statusOptions.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+
+          <SearchableSubjectDropdown
+            value={selectedSubject}
+            onChange={(value) => setSelectedSubject(value)}
+            options={subjectFilterOptions}
+            placeholder="Search subjects..."
+            className="w-full"
+          />
+
+          <select
+            value={selectedPriority}
+            onChange={(e) => setSelectedPriority(e.target.value)}
+            className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-gray-50 cursor-pointer text-sm"
+          >
+            <option value="all">All Priorities</option>
+            {priorityOptions.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
               </option>
             ))}
           </select>
@@ -2008,8 +2419,18 @@ export default function AssignmentsManager() {
               <option key={className} value={className}>
                 {className}
               </option>
-            ))}
+              ))}
           </select>
+
+          <button
+            type="button"
+            onClick={clearAssignmentFilters}
+            disabled={!hasActiveAssignmentFilters}
+            className="inline-flex h-full min-h-[48px] items-center justify-center gap-2 rounded-xl border-2 border-slate-200 bg-slate-50 px-4 py-3 text-sm font-black text-slate-700 transition hover:border-teal-200 hover:bg-teal-50 hover:text-teal-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <FiFilter />
+            Clear
+          </button>
         </div>
       </div>
 
@@ -2043,9 +2464,15 @@ export default function AssignmentsManager() {
                     />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900">Academic Assignments</h3>
-                    <p className="mt-1 text-sm text-slate-500">
-                      Database records created through the assignment form
+                    <h3 className="text-lg font-bold text-slate-900">
+                      Academic Assignments
+                      <span className="ml-2 px-2.5 py-0.5 bg-gradient-to-r from-teal-100 to-emerald-100 text-teal-800 text-xs font-semibold rounded-full">
+                        {filteredAssignments.length} items
+                      </span>
+                    </h3>
+                    <p className="text-sm text-slate-800 mt-1 flex items-center gap-2">
+                      <FiClock className="w-3 h-3" />
+                      Updated today
                     </p>
                   </div>
                 </div>
@@ -2053,7 +2480,7 @@ export default function AssignmentsManager() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[900px]">
+              <table className="w-full min-w-[1000px]">
                 <thead>
                   <tr className="bg-gradient-to-r from-slate-50/80 to-white/80 backdrop-blur-sm">
                     <th className="py-5 px-8 text-left text-xs font-bold text-slate-800 uppercase tracking-[0.2em] w-16">
@@ -2069,6 +2496,12 @@ export default function AssignmentsManager() {
                       <div className="flex items-center gap-2">
                         <FiBookOpen className="w-4 h-4 text-emerald-500" />
                         Subject & Class
+                      </div>
+                    </th>
+                    <th className="py-5 px-8 text-left text-xs font-bold text-slate-800 uppercase tracking-[0.2em]">
+                      <div className="flex items-center gap-2">
+                        <FiCalendar className="w-4 h-4 text-rose-500" />
+                        Due Date & Status
                       </div>
                     </th>
                     <th className="py-5 px-8 text-left text-xs font-bold text-slate-800 uppercase tracking-[0.2em]">
@@ -2090,10 +2523,33 @@ export default function AssignmentsManager() {
                 </thead>
                 <tbody className="divide-y divide-slate-100/50">
                   {currentItems.map((assignment) => {
-                    const files = [
-                      ...(assignment.assignmentFiles || []),
-                      ...(assignment.attachments || [])
-                    ];
+                    // Calculate days remaining
+                    const daysRemaining = assignment.dueDate ? 
+                      Math.ceil((new Date(assignment.dueDate) - new Date()) / (1000 * 60 * 60 * 24)) : 
+                      null;
+                    
+                    // Status colors
+                    const getStatusColor = (status) => {
+                      switch (safeText(status).toLowerCase()) {
+                        case 'completed': return 'bg-green-100 text-green-800';
+                        case 'in progress': return 'bg-teal-100 text-teal-800';
+                        case 'pending': return 'bg-yellow-100 text-yellow-800';
+                        case 'overdue': return 'bg-red-100 text-red-800';
+                        case 'assigned': return 'bg-emerald-100 text-emerald-800';
+                        default: return 'bg-gray-100 text-gray-800';
+                      }
+                    };
+                    
+                    // Priority colors
+                    const getPriorityColor = (priority) => {
+                      switch (safeText(priority).toLowerCase()) {
+                        case 'high': return 'bg-red-100 text-red-700';
+                        case 'medium': return 'bg-orange-100 text-orange-700';
+                        case 'low': return 'bg-teal-100 text-teal-700';
+                        default: return 'bg-gray-100 text-gray-700';
+                      }
+                    };
+
                     return (
                       <tr 
                         key={assignment.id} 
@@ -2116,17 +2572,36 @@ export default function AssignmentsManager() {
                         {/* Assignment Details Column */}
                         <td className="py-5 px-8 cursor-pointer" onClick={() => handleView(assignment)}>
                           <div className="flex items-start gap-4">
-                            <div className="relative rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50 p-3.5 shadow-sm shadow-teal-500/10 transition-all duration-300 group-hover:scale-105">
-                              <IoDocumentTextOutline className="text-xl text-teal-700" />
+                            <div className={`relative p-3 rounded-xl transition-all duration-300 group-hover:scale-105 ${
+                              assignment.status === 'completed' 
+                                ? 'bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100 shadow-sm shadow-green-500/10' 
+                                : assignment.status === 'in progress' 
+                                ? 'bg-gradient-to-br from-teal-50 to-cyan-50 border border-teal-100 shadow-sm shadow-teal-500/10'
+                                : assignment.status === 'overdue' 
+                                ? 'bg-gradient-to-br from-red-50 to-pink-50 border border-red-100 shadow-sm shadow-red-500/10' 
+                                : assignment.status === 'pending' 
+                                ? 'bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-100 shadow-sm shadow-yellow-500/10'
+                                : 'bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 shadow-sm shadow-emerald-500/10'
+                            }`}>
+                              <IoDocumentTextOutline className={`text-lg ${
+                                assignment.status === 'completed' ? 'text-green-600' :
+                                assignment.status === 'in progress' ? 'text-teal-600' :
+                                assignment.status === 'overdue' ? 'text-red-600' :
+                                assignment.status === 'pending' ? 'text-yellow-600' :
+                                'text-emerald-600'
+                              }`} />
+                              {assignment.status === 'overdue' && (
+                                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-red-400 to-pink-400 rounded-full flex items-center justify-center">
+                                  <FiAlertTriangle className="w-2 h-2 text-white" />
+                                </div>
+                              )}
                             </div>
                             <div className="flex-1 min-w-0">
-                              <div className="flex items-start justify-between gap-2 mb-2">
-                                <h4 className="font-bold text-slate-900 text-sm leading-tight group-hover:text-teal-700 transition-colors">
-                                  {assignment.title || 'Untitled Assignment'}
-                                </h4>
-                              </div>
-                              <p className="text-slate-900 text-xs line-clamp-2 mb-3">
-                                {assignment.description || 'No description provided'}
+                              <h4 className="font-bold text-slate-900 text-sm leading-tight group-hover:text-teal-700 transition-colors line-clamp-1">
+                                {assignment.title || 'Untitled Assignment'}
+                              </h4>
+                              <p className="text-slate-700 text-xs line-clamp-1 mt-1">
+                                {assignment.description || 'No description'}
                               </p>
                             </div>
                           </div>
@@ -2134,66 +2609,80 @@ export default function AssignmentsManager() {
 
                         {/* Subject & Class Column */}
                         <td className="py-5 px-8">
-                          <div className="space-y-3">
-                            <div className="inline-flex flex-col gap-1.5">
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-100">
-                                <FiBookOpen className="w-3 h-3" />
-                                {assignment.subject || 'General Studies'}
-                              </span>
-                              <span className="inline-block px-3 py-1.5 bg-gradient-to-r from-emerald-50 to-teal-50 text-teal-800 text-xs font-bold rounded-xl border border-teal-100">
-                                <FiUsers className="w-3 h-3" />
-                                {assignment.className || 'All Classes'}
+                          <div className="flex flex-col gap-2">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 text-xs font-bold rounded-lg border border-emerald-100 w-fit">
+                              <FiBookOpen className="w-3 h-3" />
+                              {assignment.subject || 'General'}
+                            </span>
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-50 to-teal-50 text-teal-700 text-xs font-bold rounded-lg border border-teal-100 w-fit">
+                              <FiUsers className="w-3 h-3" />
+                              {assignment.className || 'All Classes'}
+                            </span>
+                          </div>
+                        </td>
+
+                        {/* Due Date & Status Column */}
+                        <td className="py-5 px-8">
+                          <div className="flex flex-col gap-2">
+                            <div className="flex items-center gap-2">
+                              <FiCalendar className="text-teal-600 w-4 h-4" />
+                              <span className="text-sm font-medium text-slate-900">
+                                {new Date(assignment.dueDate).toLocaleDateString('en-GB', {
+                                  day: 'numeric',
+                                  month: 'short'
+                                })}
                               </span>
                             </div>
+                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-bold w-fit ${getStatusColor(assignment.status)}`}>
+                              <div className={`w-1.5 h-1.5 rounded-full ${
+                                assignment.status === 'completed' ? 'bg-green-500' :
+                                assignment.status === 'in progress' ? 'bg-teal-600' :
+                                assignment.status === 'pending' ? 'bg-yellow-500' :
+                                assignment.status === 'overdue' ? 'bg-red-500' :
+                                assignment.status === 'assigned' ? 'bg-emerald-600' :
+                                'bg-gray-500'
+                              }`}></div>
+                              {assignment.status?.charAt(0).toUpperCase() + assignment.status?.slice(1) || 'Pending'}
+                            </span>
                           </div>
                         </td>
 
                         {/* Teacher Column */}
                         <td className="py-5 px-8">
-                          <div className="flex items-center gap-2 group/author">
+                          <div className="flex items-center gap-3 group/author">
                             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-xs shadow-md shadow-amber-500/25">
-                              {assignment.teacher?.split(' ').map(n => n[0]).join('') || '?'}
+                              {assignment.teacher?.split(' ').map(n => n[0]).join('') || 'A'}
                             </div>
                             <div className="flex flex-col">
-                              <span className="text-xs font-bold text-slate-900 group-hover/author:text-emerald-700 transition-colors">
-                                {assignment.teacher || 'Not provided'}
+                              <span className="text-sm font-bold text-slate-900 group-hover/author:text-emerald-700 transition-colors">
+                                {assignment.teacher || 'System Admin'}
                               </span>
-                              <span className="text-xs text-slate-500 font-medium">Teacher</span>
+                              <span className="text-xs text-slate-600 font-medium">
+                                Assigned
+                              </span>
                             </div>
                           </div>
                         </td>
 
                         {/* Files Column */}
                         <td className="py-5 px-8">
-                          {files.length ? (
-                            <div className="max-w-[220px] space-y-1.5">
-                              {files.slice(0, 2).map((file, index) => {
-                                const url = typeof file === 'string' ? file : file?.url;
-                                const name = typeof file === 'string'
-                                  ? decodeURIComponent(file.split('?')[0].split('/').pop())
-                                  : file?.name || `File ${index + 1}`;
-                                return (
-                                  <a
-                                    key={`${url}-${index}`}
-                                    href={url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-2 rounded-lg bg-teal-50 px-2.5 py-2 text-xs font-bold text-teal-800 hover:bg-teal-100"
-                                  >
-                                    <FiPaperclip className="shrink-0" />
-                                    <span className="truncate">{name}</span>
-                                  </a>
-                                );
-                              })}
-                              {files.length > 2 && (
-                                <p className="text-xs font-semibold text-slate-500">
-                                  +{files.length - 2} more files
-                                </p>
-                              )}
+                          <div className="flex items-center gap-2">
+                            <div className={`p-2 rounded-lg ${
+                              (assignment.assignmentFiles?.length || 0) + (assignment.attachments?.length || 0) > 0 
+                                ? 'bg-teal-50 text-teal-700' 
+                                : 'bg-slate-50 text-slate-400'
+                            }`}>
+                              <FiPaperclip className="w-4 h-4" />
                             </div>
-                          ) : (
-                            <span className="text-xs font-semibold text-slate-400">No files</span>
-                          )}
+                            <div className="flex flex-col">
+                              <span className="text-sm font-bold text-slate-900">
+                                {(assignment.assignmentFiles?.length || 0) + (assignment.attachments?.length || 0)}
+                              </span>
+                              <span className="text-xs text-slate-800 font-medium">
+                                files
+                              </span>
+                            </div>
+                          </div>
                         </td>
 
                         {/* Actions Column */}
@@ -2285,13 +2774,13 @@ export default function AssignmentsManager() {
             </div>
             
             <h3 className="text-2xl font-bold text-slate-900 mb-3">
-              {searchTerm || selectedSubject !== 'all' || selectedClass !== 'all' 
+              {searchTerm || selectedStatus !== 'all' || selectedSubject !== 'all' || selectedClass !== 'all' 
                 ? 'No assignments match your search' 
                 : 'Your assignment library is empty'}
             </h3>
             
             <p className="text-slate-600 text-base mb-8 max-w-md mx-auto">
-              {searchTerm || selectedSubject !== 'all' || selectedClass !== 'all' 
+              {searchTerm || selectedStatus !== 'all' || selectedSubject !== 'all' || selectedClass !== 'all' 
                 ? 'Try adjusting your filters or search keywords to find what you need.' 
                 : 'Start building your academic tasks by creating your first assignment.'}
             </p>
@@ -2306,11 +2795,7 @@ export default function AssignmentsManager() {
               </button>
               
               <button 
-                onClick={() => {
-                  setSearchTerm('');
-                  setSelectedSubject('all');
-                  setSelectedClass('all');
-                }}
+                onClick={clearAssignmentFilters}
                 className="px-6 py-3.5 rounded-2xl font-semibold border-2 border-slate-200 text-slate-700 hover:border-teal-300 hover:text-teal-700 hover:bg-white transition-all duration-300"
               >
                 Clear Filters
@@ -2322,11 +2807,11 @@ export default function AssignmentsManager() {
 
       {/* Create/Edit Modal */}
       {showModal && (
-        <ModernAssignmentModal
-          onClose={() => setShowModal(false)}
-          onSave={handleSubmit}
+        <ModernAssignmentModal 
+          onClose={() => setShowModal(false)} 
+          onSave={handleSubmit} 
           assignment={editingAssignment}
-          loading={saving}
+          loading={saving} 
         />
       )}
       
@@ -2338,6 +2823,7 @@ export default function AssignmentsManager() {
           onEdit={handleEdit}
         />
       )}
+
     </div>
   );
 }

@@ -1,239 +1,647 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
-import {
-  FiAward,
-  FiBriefcase,
-  FiCalendar,
-  FiExternalLink,
-  FiMapPin,
-  FiRefreshCw,
-  FiUsers,
-} from "react-icons/fi";
+import { useEffect, useMemo, useState } from "react";
+import { FiCheckCircle, FiEdit, FiEye, FiImage, FiPlus, FiRefreshCw, FiSave, FiTrash2, FiUploadCloud, FiUsers, FiX } from "react-icons/fi";
+import { toast } from "sonner";
 
-const createSlug = (value = "") =>
-  value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "") || "alumni";
+const MAX_ALUMNI_IMAGE_SIZE = 5 * 1024 * 1024;
+const MAX_BULK_UPLOAD = 20;
 
-const normalizeImages = (record) => {
-  const images = Array.isArray(record.images)
-    ? record.images
-        .map((image) =>
-          typeof image === "string"
-            ? { url: image, altText: record.title }
-            : image
-        )
-        .filter((image) => image?.url)
-    : [];
+const SECTION_OPTIONS = [
+  { value: "ALUMNI", label: "Alumni Gallery" },
+  { value: "COMMITTEE", label: "Committee Members" },
+  { value: "BOM", label: "Board of Management" },
+  { value: "PTA", label: "PTA Members" },
+  { value: "PRINCIPAL_CURRENT", label: "Current Principal" },
+  { value: "PRINCIPAL_PREVIOUS", label: "Previous Principals" },
+];
 
-  if (record.image && !images.some((image) => image.url === record.image)) {
-    images.unshift({ url: record.image, altText: record.title });
-  }
+const emptyForm = {
+  section: "ALUMNI",
+  name: "",
+  position: "",
+  description: "",
+  displayOrder: 0,
+  isActive: true,
+  image: null,
+  images: [],
+  existingImage: "",
+  existingImages: [],
+};
 
+const getAuthHeaders = () => {
+  const adminToken = localStorage.getItem("admin_token");
+  const deviceToken = localStorage.getItem("device_token");
+  if (!adminToken || !deviceToken) throw new Error("Authentication required");
+  return {
+    Authorization: `Bearer ${adminToken}`,
+    "x-device-token": deviceToken,
+  };
+};
+
+const formatFileSize = (bytes = 0) => {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+};
+
+const normalizeImageItem = (image, fallbackAlt = "Alumni image") => {
+  if (!image) return null;
+  if (typeof image === "string") return image.trim() ? { url: image.trim(), altText: fallbackAlt } : null;
+  const url = image.url || image.secure_url || image.preview;
+  if (!url) return null;
+  return {
+    ...image,
+    url,
+    altText: image.altText || image.alt || fallbackAlt,
+  };
+};
+
+const normalizeImageList = (images, fallbackAlt) => {
+  const seen = new Set();
+  return (Array.isArray(images) ? images : [])
+    .map((image) => normalizeImageItem(image, fallbackAlt))
+    .filter((image) => {
+      if (!image?.url || seen.has(image.url)) return false;
+      seen.add(image.url);
+      return true;
+    });
+};
+
+const normalizeSectionKey = (section = "ALUMNI") => {
+  const normalized = section.toString().trim().toUpperCase().replace(/[\s-]+/g, "_");
+  return SECTION_OPTIONS.some((option) => option.value === normalized) ? normalized : "ALUMNI";
+};
+
+const getRecordImages = (record) => {
+  const images = [];
+  const seen = new Set();
+  const addImage = (image, type) => {
+    const normalized = normalizeImageItem(image, record?.name || "Alumni image");
+    if (!normalized?.url || seen.has(normalized.url)) return;
+    seen.add(normalized.url);
+    images.push({ ...normalized, type });
+  };
+
+  addImage(record?.image, "primary");
+  normalizeImageList(record?.images, record?.name || "Alumni image").forEach((image) => addImage(image, "gallery"));
   return images;
 };
 
-export default function AlumniPage() {
-  const [alumni, setAlumni] = useState([]);
-  const [loading, setLoading] = useState(true);
+function GalleryImagePicker({ files, existingImages, onFilesChange, onExistingImagesChange, disabled }) {
+  const [previews, setPreviews] = useState([]);
   const [error, setError] = useState("");
 
-  const loadAlumni = useCallback(async () => {
-    setLoading(true);
-    setError("");
-
-    try {
-      const response = await fetch("/api/alumini", { cache: "no-store" });
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.error || "Failed to load alumni");
-      }
-
-      setAlumni(data.alumni || data.collections || []);
-    } catch (fetchError) {
-      setError(fetchError.message || "Failed to load alumni");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    loadAlumni();
-  }, [loadAlumni]);
+    const nextPreviews = files.map((file, index) => ({
+      id: `${file.name}-${file.lastModified}-${index}`,
+      name: file.name,
+      size: file.size,
+      url: URL.createObjectURL(file),
+    }));
+    setPreviews(nextPreviews);
+
+    return () => nextPreviews.forEach((preview) => URL.revokeObjectURL(preview.url));
+  }, [files]);
+
+  const addFiles = (fileList) => {
+    const incoming = Array.from(fileList || []);
+    if (!incoming.length) return;
+
+    if (files.length + incoming.length > MAX_BULK_UPLOAD) {
+      setError(`You can upload up to ${MAX_BULK_UPLOAD} gallery images at once.`);
+      return;
+    }
+
+    const valid = [];
+    for (const file of incoming) {
+      if (!file.type?.startsWith("image/")) {
+        setError(`${file.name} is not an image file.`);
+        continue;
+      }
+      if (file.size > MAX_ALUMNI_IMAGE_SIZE) {
+        setError(`${file.name} is ${formatFileSize(file.size)}. Maximum size is 5MB.`);
+        continue;
+      }
+      valid.push(file);
+    }
+
+    if (valid.length) {
+      setError("");
+      onFilesChange([...files, ...valid]);
+    }
+  };
+
+  const removeNewFile = (index) => onFilesChange(files.filter((_, fileIndex) => fileIndex !== index));
+  const removeExistingImage = (url) => onExistingImagesChange(existingImages.filter((image) => image.url !== url));
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-950">
-      <section className="relative overflow-hidden bg-slate-950 px-4 pb-20 pt-28 text-white sm:px-6 lg:px-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,0.32),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(14,116,144,0.26),transparent_38%)]" />
-        <div className="relative mx-auto max-w-6xl">
-          <span className="inline-flex items-center gap-2 rounded-full border border-orange-300/30 bg-orange-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-orange-200">
-            <FiUsers className="h-4 w-4" />
-            Alumni collection
-          </span>
-          <h1 className="mt-6 max-w-4xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
-            Kinyui Boys Alumni
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
-            Meet former students and explore the stories, achievements, and
-            journeys shared by the Kinyui Boys community.
+    <div className="space-y-4 sm:col-span-2">
+      <div className="flex flex-col gap-3 rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-600">
+            <FiImage /> Gallery Images
           </p>
-          <p className="mt-8 text-sm font-black text-orange-200">
-            {loading ? "Loading alumni..." : `${alumni.length} alumni records`}
-          </p>
+          <p className="mt-1 text-xs font-semibold text-slate-500">Bulk upload, review, and remove images before saving.</p>
         </div>
-      </section>
+        <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-xs font-black uppercase tracking-widest text-white">
+          <FiUploadCloud /> Add Images
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            disabled={disabled}
+            onChange={(event) => {
+              addFiles(event.target.files);
+              event.target.value = "";
+            }}
+            className="hidden"
+          />
+        </label>
+      </div>
 
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4">
+      {error && (
+        <div className="flex items-center justify-between rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-700">
+          <span>{error}</span>
+          <button type="button" onClick={() => setError("")} className="text-red-600">
+            <FiX />
+          </button>
+        </div>
+      )}
+
+      {(existingImages.length > 0 || previews.length > 0) && (
+        <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {existingImages.map((image, index) => (
+            <div key={image.url} className="relative overflow-hidden rounded-lg border border-slate-200 bg-white">
+              <img src={image.url} alt={image.altText || `Saved image ${index + 1}`} className="h-28 w-full object-cover" />
+              <button type="button" onClick={() => removeExistingImage(image.url)} className="absolute right-2 top-2 rounded-full bg-red-600 p-1.5 text-white">
+                <FiX />
+              </button>
+              <p className="flex items-center gap-1 px-3 py-2 text-[10px] font-black uppercase tracking-widest text-emerald-700">
+                <FiCheckCircle /> Saved
+              </p>
+            </div>
+          ))}
+          {previews.map((preview, index) => (
+            <div key={preview.id} className="relative overflow-hidden rounded-lg border border-blue-200 bg-white">
+              <img src={preview.url} alt={preview.name} className="h-28 w-full object-cover" />
+              <button type="button" onClick={() => removeNewFile(index)} className="absolute right-2 top-2 rounded-full bg-red-600 p-1.5 text-white">
+                <FiX />
+              </button>
+              <p className="truncate px-3 py-2 text-[10px] font-black uppercase tracking-widest text-blue-700">
+                New - {formatFileSize(preview.size)}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function RecordModal({ record, onClose, onSaved }) {
+  const [form, setForm] = useState(() => record ? {
+    section: normalizeSectionKey(record.section),
+    name: record.name || "",
+    position: record.position || "",
+    description: record.description || "",
+    displayOrder: record.displayOrder || 0,
+    isActive: record.isActive !== false,
+    image: null,
+    images: [],
+    existingImage: record.image || "",
+    existingImages: normalizeImageList(record.images, record.name || "Alumni image"),
+  } : emptyForm);
+  const [saving, setSaving] = useState(false);
+  const [primaryPreview, setPrimaryPreview] = useState("");
+
+  const update = (field, value) => setForm((previous) => ({ ...previous, [field]: value }));
+
+  useEffect(() => {
+    if (!form.image) {
+      setPrimaryPreview("");
+      return undefined;
+    }
+    const url = URL.createObjectURL(form.image);
+    setPrimaryPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [form.image]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      setSaving(true);
+      const payload = new FormData();
+      payload.append("section", form.section);
+      payload.append("name", form.name.trim());
+      payload.append("position", form.position.trim());
+      payload.append("description", form.description.trim());
+      payload.append("displayOrder", String(Number(form.displayOrder) || 0));
+      payload.append("isActive", form.isActive ? "true" : "false");
+      payload.append("existingImage", form.existingImage || "");
+      payload.append("existingImages", JSON.stringify(form.existingImages || []));
+      if (form.image) payload.append("image", form.image);
+      form.images.forEach((file) => payload.append("images", file));
+
+      const response = await fetch(record?.id ? `/api/alumni/${record.id}` : "/api/alumni", {
+        method: record?.id ? "PUT" : "POST",
+        headers: getAuthHeaders(),
+        body: payload,
+      });
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.error || "Failed to save record");
+
+      toast.success(record?.id ? "Record updated" : "Record created");
+      onSaved();
+    } catch (error) {
+      toast.error(error.message || "Failed to save record");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[220] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
+      <form onSubmit={handleSubmit} className="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white shadow-2xl">
+        <div className="flex items-center justify-between border-b border-slate-200 p-5">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-orange-700">
-              From the API
-            </p>
-            <h2 className="mt-2 text-2xl font-black sm:text-3xl">
-              Alumni stories
-            </h2>
+            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-blue-700">Alumni & Governance</p>
+            <h2 className="mt-1 text-2xl font-black text-slate-950">{record ? "Edit Record" : "Create Record"}</h2>
           </div>
-          <button
-            type="button"
-            onClick={loadAlumni}
-            disabled={loading}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-black text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-700 disabled:cursor-wait disabled:opacity-60"
-          >
-            <FiRefreshCw className={loading ? "animate-spin" : ""} />
-            Refresh
+          <button type="button" onClick={onClose} className="rounded-lg bg-slate-100 p-2 text-slate-600">
+            <FiX />
           </button>
         </div>
 
-        {loading ? (
-          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[0, 1, 2].map((item) => (
-              <div
-                key={item}
-                className="h-[420px] animate-pulse rounded-3xl bg-slate-200"
-              />
-            ))}
-          </div>
-        ) : error ? (
-          <div className="mt-8 rounded-3xl border border-red-200 bg-red-50 p-8 text-center">
-            <p className="font-black text-red-900">Unable to load alumni.</p>
-            <p className="mt-2 text-sm text-red-700">{error}</p>
-          </div>
-        ) : alumni.length ? (
-          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {alumni.map((record) => {
-              const images = normalizeImages(record);
-              const primaryImage = images[0];
+        <div className="grid gap-4 p-5 sm:grid-cols-2">
+          <label className="space-y-2">
+            <span className="text-xs font-black uppercase tracking-widest text-slate-500">Section</span>
+            <select value={form.section} onChange={(event) => update("section", event.target.value)} className="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm font-bold">
+              {SECTION_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+            </select>
+          </label>
+          <label className="space-y-2">
+            <span className="text-xs font-black uppercase tracking-widest text-slate-500">Name</span>
+            <input required value={form.name} onChange={(event) => update("name", event.target.value)} className="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm font-bold" />
+          </label>
+          <label className="space-y-2">
+            <span className="text-xs font-black uppercase tracking-widest text-slate-500">Position</span>
+            <input value={form.position} onChange={(event) => update("position", event.target.value)} className="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm font-bold" placeholder="Chairperson, Member, Principal" />
+          </label>
+          <label className="space-y-2">
+            <span className="text-xs font-black uppercase tracking-widest text-slate-500">Display Order</span>
+            <input type="number" value={form.displayOrder} onChange={(event) => update("displayOrder", event.target.value)} className="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm font-bold" />
+          </label>
+          <label className="space-y-2 sm:col-span-2">
+            <span className="text-xs font-black uppercase tracking-widest text-slate-500">Description / Biography</span>
+            <textarea value={form.description} onChange={(event) => update("description", event.target.value)} rows={4} className="w-full resize-none rounded-lg border border-slate-200 px-4 py-3 text-sm font-semibold leading-6" />
+          </label>
+          <label className="space-y-2">
+            <span className="text-xs font-black uppercase tracking-widest text-slate-500">Primary Image</span>
+            <input type="file" accept="image/*" onChange={(event) => update("image", event.target.files?.[0] || null)} className="w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-bold file:text-blue-700" />
+            {(primaryPreview || form.existingImage) && (
+              <div className="relative mt-3 overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
+                <img src={primaryPreview || form.existingImage} alt="Primary preview" className="h-36 w-full object-cover" />
+                <button type="button" onClick={() => update(primaryPreview ? "image" : "existingImage", primaryPreview ? null : "")} className="absolute right-2 top-2 rounded-full bg-red-600 p-1.5 text-white">
+                  <FiX />
+                </button>
+              </div>
+            )}
+          </label>
+          <label className="flex items-center gap-3 rounded-lg bg-slate-50 p-4 text-sm font-bold text-slate-700">
+            <input type="checkbox" checked={form.isActive} onChange={(event) => update("isActive", event.target.checked)} className="h-5 w-5" />
+            Active
+          </label>
+          <GalleryImagePicker
+            files={form.images}
+            existingImages={form.existingImages}
+            disabled={saving}
+            onFilesChange={(files) => update("images", files)}
+            onExistingImagesChange={(images) => update("existingImages", images)}
+          />
+        </div>
 
-              return (
-                <article
-                  key={record.id}
-                  className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
-                >
-                  <div className="aspect-[4/3] bg-slate-200">
-                    {primaryImage ? (
-                      <img
-                        src={primaryImage.url}
-                        alt={primaryImage.altText || record.title || record.name}
-                        loading="lazy"
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center bg-gradient-to-br from-orange-100 to-amber-200 text-orange-700">
-                        <FiUsers className="h-14 w-14" />
-                      </div>
-                    )}
+        <div className="flex justify-end gap-3 border-t border-slate-200 p-5">
+          <button type="button" onClick={onClose} className="rounded-lg bg-slate-100 px-5 py-3 text-sm font-black uppercase tracking-widest text-slate-600">Cancel</button>
+          <button type="submit" disabled={saving} className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-5 py-3 text-sm font-black uppercase tracking-widest text-white disabled:opacity-50">
+            <FiSave /> {saving ? "Saving..." : "Save"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+function ImageManagerModal({ record, onClose, onSaved }) {
+  const [primaryImage, setPrimaryImage] = useState(record.image || "");
+  const [galleryImages, setGalleryImages] = useState(() => normalizeImageList(record.images, record.name || "Alumni image"));
+  const [saving, setSaving] = useState(false);
+  const allImages = getRecordImages({ ...record, image: primaryImage, images: galleryImages });
+
+  const removeImage = (image) => {
+    if (image.type === "primary") {
+      setPrimaryImage("");
+      return;
+    }
+    setGalleryImages((current) => current.filter((item) => item.url !== image.url));
+  };
+
+  const saveChanges = async () => {
+    try {
+      setSaving(true);
+      const payload = new FormData();
+      payload.append("section", normalizeSectionKey(record.section));
+      payload.append("name", record.name || "");
+      payload.append("position", record.position || "");
+      payload.append("description", record.description || "");
+      payload.append("displayOrder", String(Number(record.displayOrder) || 0));
+      payload.append("isActive", record.isActive === false ? "false" : "true");
+      payload.append("existingImage", primaryImage || "");
+      payload.append("existingImages", JSON.stringify(galleryImages || []));
+
+      const response = await fetch(`/api/alumni/${record.id}`, {
+        method: "PUT",
+        headers: getAuthHeaders(),
+        body: payload,
+      });
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.error || "Failed to update images");
+
+      toast.success("Images updated");
+      onSaved();
+    } catch (error) {
+      toast.error(error.message || "Failed to update images");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[230] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
+      <div className="max-h-[92vh] w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-2xl">
+        <div className="flex items-center justify-between border-b border-slate-200 bg-slate-900 p-5 text-white">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-blue-200">Manage Uploaded Images</p>
+            <h2 className="mt-1 text-2xl font-black">{record.name}</h2>
+          </div>
+          <button type="button" onClick={onClose} className="rounded-lg bg-white/10 p-2 text-white">
+            <FiX />
+          </button>
+        </div>
+
+        <div className="max-h-[calc(92vh-150px)] overflow-y-auto p-5">
+          {allImages.length > 0 ? (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {allImages.map((image) => (
+                <div key={`${image.type}-${image.url}`} className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                  <div className="relative">
+                    <img src={image.url} alt={image.altText || record.name} className="h-44 w-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(image)}
+                      className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-red-600 px-3 py-1.5 text-xs font-black uppercase tracking-widest text-white shadow-lg"
+                    >
+                      <FiX /> Remove
+                    </button>
                   </div>
-
-                  <div className="p-6">
-                    <div className="flex flex-wrap gap-2 text-xs font-black">
-                      {record.graduationYear ? (
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-3 py-1.5 text-orange-800">
-                          <FiCalendar />
-                          Class of {record.graduationYear}
-                        </span>
-                      ) : null}
-                      {record.isFeatured ? (
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1.5 text-amber-800">
-                          <FiAward />
-                          Featured
-                        </span>
-                      ) : null}
-                    </div>
-
-                    <h3 className="mt-4 text-xl font-black text-slate-950">
-                      {record.title || record.name}
-                    </h3>
-
-                    {record.currentRole || record.organization ? (
-                      <p className="mt-2 flex items-start gap-2 text-sm font-bold text-slate-700">
-                        <FiBriefcase className="mt-0.5 shrink-0 text-orange-600" />
-                        <span>
-                          {[record.currentRole, record.organization]
-                            .filter(Boolean)
-                            .join(" at ")}
-                        </span>
-                      </p>
-                    ) : null}
-
-                    {record.location ? (
-                      <p className="mt-2 flex items-center gap-2 text-sm text-slate-500">
-                        <FiMapPin className="shrink-0 text-orange-600" />
-                        {record.location}
-                      </p>
-                    ) : null}
-
-                    {record.story || record.description ? (
-                      <p className="mt-4 line-clamp-5 text-sm leading-6 text-slate-600">
-                        {record.story || record.description}
-                      </p>
-                    ) : null}
-
-                    {record.achievement ? (
-                      <p className="mt-4 rounded-2xl bg-orange-50 p-4 text-sm leading-6 text-orange-950">
-                        <strong>Achievement:</strong> {record.achievement}
-                      </p>
-                    ) : null}
-
-                    <div className="mt-5 flex flex-wrap items-center gap-4">
-                      <Link
-                        href={`/alumini/${record.id}/${createSlug(record.title || record.name)}`}
-                        className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-black text-white transition hover:bg-orange-700"
-                      >
-                        View Profile
-                        <FiExternalLink />
-                      </Link>
-
-                      {record.website ? (
-                        <a
-                          href={record.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-sm font-black text-orange-700 hover:text-orange-900"
-                        >
-                          External website
-                          <FiExternalLink />
-                        </a>
-                      ) : null}
-                    </div>
+                  <div className="flex items-center justify-between px-3 py-2">
+                    <span className={`rounded-full px-2 py-1 text-[10px] font-black uppercase tracking-widest ${image.type === "primary" ? "bg-blue-50 text-blue-700" : "bg-emerald-50 text-emerald-700"}`}>
+                      {image.type === "primary" ? "Primary" : "Gallery"}
+                    </span>
+                    <a href={image.url} target="_blank" rel="noreferrer" className="text-xs font-black uppercase tracking-widest text-slate-500 hover:text-blue-700">
+                      View
+                    </a>
                   </div>
-                </article>
-              );
-            })}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-10 text-center">
+              <FiImage className="mx-auto text-5xl text-slate-300" />
+              <h3 className="mt-4 text-lg font-black text-slate-900">No images selected</h3>
+              <p className="mt-2 text-sm font-semibold text-slate-500">Save to remove all uploaded images from this record.</p>
+            </div>
+          )}
+        </div>
+
+        <div className="flex justify-end gap-3 border-t border-slate-200 p-5">
+          <button type="button" onClick={onClose} className="rounded-lg bg-slate-100 px-5 py-3 text-sm font-black uppercase tracking-widest text-slate-600">
+            Cancel
+          </button>
+          <button type="button" onClick={saveChanges} disabled={saving} className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-5 py-3 text-sm font-black uppercase tracking-widest text-white disabled:opacity-50">
+            <FiSave /> {saving ? "Saving..." : "Save Image Changes"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function AlumniGovernanceManager() {
+  const [records, setRecords] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editingRecord, setEditingRecord] = useState(null);
+  const [managingImagesRecord, setManagingImagesRecord] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [section, setSection] = useState("all");
+
+  const fetchRecords = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("/api/alumni?includeInactive=1", { headers: getAuthHeaders() });
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.error || "Failed to load records");
+      setRecords(data.records || []);
+    } catch (error) {
+      toast.error(error.message || "Failed to load records");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecords();
+  }, []);
+
+  const filtered = useMemo(() => records.filter((record) => section === "all" || normalizeSectionKey(record.section) === section), [records, section]);
+
+  const handleDelete = async (record) => {
+    if (!window.confirm(`Delete "${record.name}"?`)) return;
+    try {
+      const response = await fetch(`/api/alumni/${record.id}`, { method: "DELETE", headers: getAuthHeaders() });
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.error || "Failed to delete record");
+      toast.success("Record deleted");
+      fetchRecords();
+    } catch (error) {
+      toast.error(error.message || "Failed to delete record");
+    }
+  };
+
+  const openCreate = () => {
+    setEditingRecord(null);
+    setShowModal(true);
+  };
+
+  const openEdit = (record) => {
+    setEditingRecord(record);
+    setShowModal(true);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="rounded-2xl border border-blue-100 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-blue-700">Alumni Management Module</p>
+            <h1 className="mt-2 text-2xl font-black text-slate-950">Alumni, Committees, BOM, PTA & Principals</h1>
+            <p className="mt-2 text-sm leading-6 text-slate-600">Create, edit, update, and delete public alumni galleries and leadership records.</p>
           </div>
-        ) : (
-          <div className="mt-8 rounded-3xl border border-dashed border-orange-300 bg-white p-12 text-center">
-            <FiUsers className="mx-auto h-10 w-10 text-orange-400" />
-            <h3 className="mt-4 text-lg font-black">No alumni records yet</h3>
-            <p className="mt-2 text-sm text-slate-600">
-              Records added through the alumni API will appear here.
-            </p>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <button onClick={fetchRecords} className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 px-5 py-3 text-xs font-black uppercase tracking-widest text-slate-700">
+              <FiRefreshCw /> Refresh
+            </button>
+            <button onClick={openCreate} className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-700 px-5 py-3 text-xs font-black uppercase tracking-widest text-white">
+              <FiPlus /> Add Record
+            </button>
           </div>
-        )}
-      </section>
-    </main>
+        </div>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {SECTION_OPTIONS.map((option) => (
+            <div key={option.value} className="rounded-lg bg-slate-50 p-4">
+              <FiUsers className="text-blue-700" />
+              <p className="mt-2 text-xl font-black text-slate-950">{records.filter((record) => normalizeSectionKey(record.section) === option.value).length}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">{option.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="rounded-lg border border-slate-200 bg-white p-4">
+        <select value={section} onChange={(event) => setSection(event.target.value)} className="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm font-bold sm:max-w-xs">
+          <option value="all">All Sections</option>
+          {SECTION_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+        </select>
+      </div>
+
+      {loading ? (
+        <div className="rounded-lg bg-white p-10 text-center text-sm font-bold text-slate-500">Loading records...</div>
+      ) : filtered.length > 0 ? (
+        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-slate-200">
+              <thead className="bg-slate-900 text-white">
+                <tr>
+                  <th className="px-4 py-4 text-left text-xs font-black uppercase tracking-widest">Name</th>
+                  <th className="px-4 py-4 text-left text-xs font-black uppercase tracking-widest">Section</th>
+                  <th className="px-4 py-4 text-left text-xs font-black uppercase tracking-widest">Description</th>
+                  <th className="px-4 py-4 text-left text-xs font-black uppercase tracking-widest">Images</th>
+                  <th className="px-4 py-4 text-left text-xs font-black uppercase tracking-widest">Status</th>
+                  <th className="px-4 py-4 text-right text-xs font-black uppercase tracking-widest">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {filtered.map((record) => {
+                  const sectionKey = normalizeSectionKey(record.section);
+                  const label = SECTION_OPTIONS.find((option) => option.value === sectionKey)?.label || record.section;
+                  const recordImages = getRecordImages(record);
+                  const galleryCount = recordImages.length;
+                  const thumbnail = recordImages[0]?.url;
+
+                  return (
+                    <tr key={record.id} className="align-top hover:bg-slate-50">
+                      <td className="min-w-[220px] px-4 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-slate-100">
+                            {thumbnail ? (
+                              <img src={thumbnail} alt={record.name} className="h-full w-full rounded-lg object-cover" />
+                            ) : (
+                              <FiImage className="text-xl text-slate-300" />
+                            )}
+                          </div>
+                          <div>
+                            <p className="font-black text-slate-950">{record.name}</p>
+                            <p className="mt-1 text-xs font-bold uppercase tracking-widest text-slate-400">{record.position || "Position not set"}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="min-w-[180px] px-4 py-4 text-sm font-bold text-slate-700">{label}</td>
+                      <td className="min-w-[280px] px-4 py-4 text-sm leading-6 text-slate-600">{record.description || "No description added."}</td>
+                      <td className="min-w-[220px] px-4 py-4">
+                        <div className="space-y-3">
+                          <div className="flex -space-x-2">
+                            {recordImages.slice(0, 4).map((image) => (
+                              <img key={image.url} src={image.url} alt={image.altText || record.name} className="h-10 w-10 rounded-lg border-2 border-white object-cover shadow-sm" />
+                            ))}
+                            {galleryCount === 0 && <span className="text-sm font-bold text-slate-400">No images</span>}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setManagingImagesRecord(record)}
+                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-black uppercase tracking-widest text-slate-700 transition hover:bg-blue-50 hover:text-blue-700"
+                          >
+                            <FiEye /> Manage Images ({galleryCount})
+                          </button>
+                        </div>
+                      </td>
+                      <td className="min-w-[120px] px-4 py-4">
+                        <span className={`inline-flex rounded-lg px-3 py-1 text-[10px] font-black uppercase tracking-widest ${record.isActive === false ? "bg-amber-50 text-amber-700" : "bg-emerald-50 text-emerald-700"}`}>
+                          {record.isActive === false ? "Inactive" : "Active"}
+                        </span>
+                      </td>
+                      <td className="min-w-[150px] px-4 py-4">
+                        <div className="flex justify-end gap-2">
+                          <button onClick={() => openEdit(record)} className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-xs font-black uppercase tracking-widest text-white">
+                            <FiEdit /> Edit
+                          </button>
+                          <button onClick={() => handleDelete(record)} className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-50 text-red-600">
+                            <FiTrash2 />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : (
+        <div className="rounded-lg border border-dashed border-slate-300 bg-white p-10 text-center">
+          <FiUsers className="mx-auto text-5xl text-slate-300" />
+          <h2 className="mt-4 text-xl font-black text-slate-950">No records found</h2>
+          <button onClick={openCreate} className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-700 px-5 py-3 text-xs font-black uppercase tracking-widest text-white">
+            <FiPlus /> Add Record
+          </button>
+        </div>
+      )}
+
+      {showModal && (
+        <RecordModal
+          record={editingRecord}
+          onClose={() => {
+            setShowModal(false);
+            setEditingRecord(null);
+          }}
+          onSaved={() => {
+            setShowModal(false);
+            setEditingRecord(null);
+            fetchRecords();
+          }}
+        />
+      )}
+
+      {managingImagesRecord && (
+        <ImageManagerModal
+          record={managingImagesRecord}
+          onClose={() => setManagingImagesRecord(null)}
+          onSaved={() => {
+            setManagingImagesRecord(null);
+            fetchRecords();
+          }}
+        />
+      )}
+    </div>
   );
 }

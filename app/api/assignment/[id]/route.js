@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../../libs/prisma";
-import cloudinary, { requireCloudinary } from "../../../../libs/cloudinary";
-import { SCHOOL_COMMUNICATION_NUMBER } from "../../../../libs/delivery";
+import cloudinary from "../../../../libs/cloudinary";
 
 const decodeJwtPayload = (token) => {
   const payload = token.split('.')[1];
@@ -143,7 +142,6 @@ const authenticateRequest = (req) => {
 // ==================== CLOUDINARY HELPERS (FIXED FOR EXTENSIONS) ====================
 const uploadFileToCloudinary = async (file, folder = "files") => {
   if (!file?.name || file.size === 0) return null;
-  requireCloudinary();
 
   try {
     // Get file extension properly
@@ -255,7 +253,6 @@ const uploadMultipleFilesToCloudinary = async (files, folder = "files") => {
 // FIXED: Delete function for new folder structure
 const deleteFileFromCloudinary = async (fileUrl) => {
   if (!fileUrl) return;
-  requireCloudinary();
 
   try {
     // Extract full public ID including extension
@@ -446,8 +443,7 @@ const cleanAssignmentResponse = (assignment) => {
   return {
     ...assignment,
     assignmentFileAttachments,
-    attachmentAttachments,
-    senderReference: SCHOOL_COMMUNICATION_NUMBER
+    attachmentAttachments
   };
 };
 
@@ -659,15 +655,15 @@ export async function PUT(request, { params }) {
       attachments: updatedAttachments.length
     });
     
-    const updatedAssignment = await prisma.assignment.update({
+    const savedAssignment = await prisma.assignment.update({
       where: { id: assignmentId },
-      data: { 
+      data: {
         title,
         subject,
         className,
         teacher,
-        dueDate: dueDate && typeof dueDate === 'string' ? new Date(dueDate) : existingAssignment.dueDate,
-        dateAssigned: dateAssigned && typeof dateAssigned === 'string' ? new Date(dateAssigned) : existingAssignment.dateAssigned,
+        dueDate: dueDate ? new Date(dueDate) : existingAssignment.dueDate,
+        dateAssigned: dateAssigned ? new Date(dateAssigned) : existingAssignment.dateAssigned, // FIX: Added dateAssigned
         status,
         description,
         instructions,
@@ -681,6 +677,8 @@ export async function PUT(request, { params }) {
         updatedAt: new Date()
       },
     });
+
+    const updatedAssignment = savedAssignment;
 
     console.log('✅ Update successful:', updatedAssignment.id);
     
