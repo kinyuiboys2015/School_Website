@@ -16,6 +16,33 @@ const SECTIONS = new Set([
   "PRINCIPAL_PREVIOUS",
 ]);
 
+const ALUMNI_TABLE = "alumni_governance_records";
+
+const isMissingAlumniTableError = (error) =>
+  error?.code === "P2021" && String(error?.meta?.table || "").includes(ALUMNI_TABLE);
+
+const ensureAlumniTableExists = async () => {
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS \`${ALUMNI_TABLE}\` (
+      \`id\` INT NOT NULL AUTO_INCREMENT,
+      \`section\` VARCHAR(50) NOT NULL,
+      \`name\` VARCHAR(255) NOT NULL,
+      \`position\` VARCHAR(255) NULL,
+      \`description\` TEXT NULL,
+      \`image\` TEXT NULL,
+      \`images\` JSON NOT NULL,
+      \`displayOrder\` INT NOT NULL DEFAULT 0,
+      \`isActive\` BOOLEAN NOT NULL DEFAULT true,
+      \`createdAt\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+      \`updatedAt\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+      PRIMARY KEY (\`id\`),
+      INDEX \`alumni_governance_records_section_idx\` (\`section\`),
+      INDEX \`alumni_governance_records_isActive_idx\` (\`isActive\`),
+      INDEX \`alumni_governance_records_displayOrder_idx\` (\`displayOrder\`)
+    )
+  `);
+};
+
 const parseJwtPayload = (token) => {
   const payload = token.split(".")[1];
   const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
@@ -153,7 +180,14 @@ export async function GET(_req, { params }) {
     const id = Number(params.id);
     if (!Number.isFinite(id)) return NextResponse.json({ success: false, error: "Invalid id" }, { status: 400 });
 
-    const record = await prisma.alumniGovernanceRecord.findUnique({ where: { id } });
+    let record;
+    try {
+      record = await prisma.alumniGovernanceRecord.findUnique({ where: { id } });
+    } catch (error) {
+      if (!isMissingAlumniTableError(error)) throw error;
+      await ensureAlumniTableExists();
+      record = await prisma.alumniGovernanceRecord.findUnique({ where: { id } });
+    }
     if (!record) return NextResponse.json({ success: false, error: "Record not found" }, { status: 404 });
 
     return NextResponse.json({ success: true, record: normalizeRecord(record) });
@@ -171,12 +205,26 @@ export async function PUT(req, { params }) {
     const id = Number(params.id);
     if (!Number.isFinite(id)) return NextResponse.json({ success: false, error: "Invalid id" }, { status: 400 });
 
-    const existing = await prisma.alumniGovernanceRecord.findUnique({ where: { id } });
+    let existing;
+    try {
+      existing = await prisma.alumniGovernanceRecord.findUnique({ where: { id } });
+    } catch (error) {
+      if (!isMissingAlumniTableError(error)) throw error;
+      await ensureAlumniTableExists();
+      existing = await prisma.alumniGovernanceRecord.findUnique({ where: { id } });
+    }
     if (!existing) return NextResponse.json({ success: false, error: "Record not found" }, { status: 404 });
 
     const data = await readUpdateForm(req, existing);
     const removedImages = collectRemovedImages(existing, data);
-    const updated = await prisma.alumniGovernanceRecord.update({ where: { id }, data });
+    let updated;
+    try {
+      updated = await prisma.alumniGovernanceRecord.update({ where: { id }, data });
+    } catch (error) {
+      if (!isMissingAlumniTableError(error)) throw error;
+      await ensureAlumniTableExists();
+      updated = await prisma.alumniGovernanceRecord.update({ where: { id }, data });
+    }
     await deleteSchoolImages(removedImages);
 
     return NextResponse.json({ success: true, record: normalizeRecord(updated) });
@@ -194,7 +242,14 @@ export async function DELETE(req, { params }) {
     const id = Number(params.id);
     if (!Number.isFinite(id)) return NextResponse.json({ success: false, error: "Invalid id" }, { status: 400 });
 
-    const existing = await prisma.alumniGovernanceRecord.findUnique({ where: { id } });
+    let existing;
+    try {
+      existing = await prisma.alumniGovernanceRecord.findUnique({ where: { id } });
+    } catch (error) {
+      if (!isMissingAlumniTableError(error)) throw error;
+      await ensureAlumniTableExists();
+      existing = await prisma.alumniGovernanceRecord.findUnique({ where: { id } });
+    }
     if (!existing) return NextResponse.json({ success: false, error: "Record not found" }, { status: 404 });
 
     await deleteSchoolImages([

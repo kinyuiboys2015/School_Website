@@ -164,10 +164,18 @@ function RecordCard({ record, section }) {
 }
 
 export default async function AlumniPage() {
-  const records = await prisma.alumniGovernanceRecord.findMany({
-    where: { isActive: true },
-    orderBy: [{ section: "asc" }, { displayOrder: "asc" }, { createdAt: "desc" }],
-  });
+  let records = [];
+  try {
+    records = await prisma.alumniGovernanceRecord.findMany({
+      where: { isActive: true },
+      orderBy: [{ section: "asc" }, { displayOrder: "asc" }, { createdAt: "desc" }],
+    });
+  } catch (error) {
+    if (error?.code !== "P2021") {
+      throw error;
+    }
+    console.warn("Alumni table missing in database; returning empty alumni list.");
+  }
 
   const grouped = records.reduce((acc, record) => {
     const sectionKey = normalizeSectionKey(record.section);

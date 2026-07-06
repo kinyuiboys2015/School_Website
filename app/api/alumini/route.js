@@ -15,6 +15,33 @@ const SECTIONS = new Set([
   "PRINCIPAL_PREVIOUS",
 ]);
 
+const ALUMNI_TABLE = "alumni_governance_records";
+
+const isMissingAlumniTableError = (error) =>
+  error?.code === "P2021" && String(error?.meta?.table || "").includes(ALUMNI_TABLE);
+
+const ensureAlumniTableExists = async () => {
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS \`${ALUMNI_TABLE}\` (
+      \`id\` INT NOT NULL AUTO_INCREMENT,
+      \`section\` VARCHAR(50) NOT NULL,
+      \`name\` VARCHAR(255) NOT NULL,
+      \`position\` VARCHAR(255) NULL,
+      \`description\` TEXT NULL,
+      \`image\` TEXT NULL,
+      \`images\` JSON NOT NULL,
+      \`displayOrder\` INT NOT NULL DEFAULT 0,
+      \`isActive\` BOOLEAN NOT NULL DEFAULT true,
+      \`createdAt\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+      \`updatedAt\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+      PRIMARY KEY (\`id\`),
+      INDEX \`alumni_governance_records_section_idx\` (\`section\`),
+      INDEX \`alumni_governance_records_isActive_idx\` (\`isActive\`),
+      INDEX \`alumni_governance_records_displayOrder_idx\` (\`displayOrder\`)
+    )
+  `);
+};
+
 const parseJwtPayload = (token) => {
   const payload = token.split(".")[1];
   const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
@@ -163,10 +190,21 @@ export async function GET(req) {
     }
     if (!includeInactive) where.isActive = true;
 
-    const records = await prisma.alumniGovernanceRecord.findMany({
-      where,
-      orderBy: [{ section: "asc" }, { displayOrder: "asc" }, { createdAt: "desc" }],
-    });
+    let records;
+    try {
+      records = await prisma.alumniGovernanceRecord.findMany({
+        where,
+        orderBy: [{ section: "asc" }, { displayOrder: "asc" }, { createdAt: "desc" }],
+      });
+    } catch (error) {
+      if (!isMissingAlumniTableError(error)) throw error;
+      console.warn("Alumni table missing, creating table:", ALUMNI_TABLE);
+      await ensureAlumniTableExists();
+      records = await prisma.alumniGovernanceRecord.findMany({
+        where,
+        orderBy: [{ section: "asc" }, { displayOrder: "asc" }, { createdAt: "desc" }],
+      });
+    }
 
     const normalized = records.map(normalizeRecord);
     const grouped = normalized.reduce((acc, record) => {
@@ -188,7 +226,15 @@ export async function POST(req) {
     if (!auth.authenticated) return auth.response;
 
     const data = await readRecordForm(req);
-    const record = await prisma.alumniGovernanceRecord.create({ data });
+    let record;
+    try {
+      record = await prisma.alumniGovernanceRecord.create({ data });
+    } catch (error) {
+      if (!isMissingAlumniTableError(error)) throw error;
+      console.warn("Alumni table missing during POST, creating table:", ALUMNI_TABLE);
+      await ensureAlumniTableExists();
+      record = await prisma.alumniGovernanceRecord.create({ data });
+    }
 
     return NextResponse.json({ success: true, record: normalizeRecord(record) }, { status: 201 });
   } catch (error) {
