@@ -448,7 +448,7 @@ export default function AlumniGovernanceManager() {
   const fetchRecords = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/alumini?includeInactive=1", { headers: getAuthHeaders() });
+      const response = await fetch("/api/alumini?includeInactive=1");
       const data = await response.json();
       if (!response.ok || !data.success) throw new Error(data.error || "Failed to load records");
       setRecords(data.records || []);

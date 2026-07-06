@@ -54,7 +54,7 @@ import Fees from "../components/fees/page";
 import SchoolDocs from "../components/schooldocuments/page";
 import AchievementsManager from "../components/Achievements/page";
 import SchoolHubManager from "../components/schoolhub/page";
-import AlumniManager from "../components/alumni-management/page";
+import AlumniManager from "../components/alumini/page";
 
 
 export default function AdminDashboard() {

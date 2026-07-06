@@ -15,9 +15,7 @@ const alumniCollections = [
       "This collection celebrates former student leaders whose school experience developed discipline, responsibility, teamwork, and a commitment to serving their communities.",
     achievement:
       "Members continue to support youth mentorship, community initiatives, professional networking, and leadership development.",
-    website: "https://kinyuiboyssenior.school/alumini",
     image: "/home/prefects-campus.jpg",
-    isFeatured: true,
     isActive: true,
     displayOrder: 1,
     images: [
@@ -48,9 +46,7 @@ const alumniCollections = [
       "The academic alumni circle connects former students pursuing further education, entrepreneurship, technical training, and professional careers while maintaining strong links with their school community.",
     achievement:
       "The network promotes career guidance, academic encouragement, peer connections, and support for students preparing for life after school.",
-    website: "https://kinyuiboyssenior.school/alumini",
     image: "/home/student-leaders-library.jpg",
-    isFeatured: true,
     isActive: true,
     displayOrder: 2,
     images: [
@@ -81,9 +77,7 @@ const alumniCollections = [
       "This alumni collection recognizes former learners shaped by teamwork, resilience, healthy competition, and the discipline developed through school games and physical education.",
     achievement:
       "Members contribute to local teams, youth coaching, wellness activities, and school-community sports programmes.",
-    website: "https://kinyuiboyssenior.school/alumini",
     image: "/hero/sports.jpeg",
-    isFeatured: true,
     isActive: true,
     displayOrder: 3,
     images: [
@@ -109,9 +103,7 @@ const alumniCollections = [
       "The creative alumni community brings together former students who developed confidence, expression, collaboration, and technical skills through music, performance, worship, and school events.",
     achievement:
       "Members continue to encourage student talent, participate in community events, and share creative and production skills with younger learners.",
-    website: "https://kinyuiboyssenior.school/alumini",
     image: "/home/music-talent-canteen.jpg",
-    isFeatured: false,
     isActive: true,
     displayOrder: 4,
     images: [
@@ -137,9 +129,7 @@ const alumniCollections = [
       "This collection represents alumni building pathways in science, technology, engineering, agriculture, business, and practical technical fields.",
     achievement:
       "The group supports digital literacy, career talks, practical learning, innovation awareness, and mentorship for students interested in STEM pathways.",
-    website: "https://kinyuiboyssenior.school/alumini",
     image: "/home/teacher-student-community.jpg",
-    isFeatured: false,
     isActive: true,
     displayOrder: 5,
     images: [
@@ -165,9 +155,7 @@ const alumniCollections = [
       "The young alumni community keeps recent graduates connected to the school through mentorship, career transition support, community service, and positive peer networks.",
     achievement:
       "Members provide relatable guidance on further studies, training opportunities, personal discipline, and the transition from school into adult responsibility.",
-    website: "https://kinyuiboyssenior.school/alumini",
     image: "/home/student-voice-campus.jpg",
-    isFeatured: true,
     isActive: true,
     displayOrder: 6,
     images: [
@@ -190,46 +178,38 @@ const alumniCollections = [
   },
 ];
 
-const createOrUpdateAlumniCollection = async (collection) => {
-  const existing = await prisma.alumni.findFirst({
-    where: {
-      title: collection.title,
-      graduationYear: collection.graduationYear,
-    },
+const SECTION = "ALUMNI";
+
+const toGovernanceRecord = (collection) => ({
+  section: SECTION,
+  name: collection.title,
+  position: collection.currentRole,
+  description: [
+    `Graduating class of ${collection.graduationYear} — ${collection.organization} (${collection.location}).`,
+    collection.story,
+    `Achievement: ${collection.achievement}`,
+  ].join("\n\n"),
+  image: collection.image,
+  images: collection.images,
+  displayOrder: collection.displayOrder,
+  isActive: collection.isActive,
+});
+
+const createOrUpdateAlumniRecord = async (collection) => {
+  const data = toGovernanceRecord(collection);
+
+  const existing = await prisma.alumniGovernanceRecord.findFirst({
+    where: { section: SECTION, name: data.name },
   });
 
-  const { images, ...data } = collection;
-  const imageData = images.map((image, index) => ({
-    url: image.url,
-    publicId: null,
-    caption: image.caption || null,
-    altText: image.altText || collection.title,
-    displayOrder: index,
-  }));
-
   if (existing) {
-    return prisma.alumni.update({
+    return prisma.alumniGovernanceRecord.update({
       where: { id: existing.id },
-      data: {
-        ...data,
-        images: {
-          deleteMany: {},
-          create: imageData,
-        },
-      },
-      include: { images: true },
+      data,
     });
   }
 
-  return prisma.alumni.create({
-    data: {
-      ...data,
-      images: {
-        create: imageData,
-      },
-    },
-    include: { images: true },
-  });
+  return prisma.alumniGovernanceRecord.create({ data });
 };
 
 const withTimeout = (promise, ms) =>
@@ -253,13 +233,13 @@ const withTimeout = (promise, ms) =>
 
 async function main() {
   for (const collection of alumniCollections) {
-    const alumni = await createOrUpdateAlumniCollection(collection);
+    const record = await createOrUpdateAlumniRecord(collection);
     console.log(
-      `Seeded alumni collection: ${alumni.title} (${alumni.images.length} images)`
+      `Seeded alumni record: ${record.name} (${record.images.length} images)`
     );
   }
 
-  console.log(`Seeded ${alumniCollections.length} alumni collections.`);
+  console.log(`Seeded ${alumniCollections.length} alumni records.`);
 }
 
 console.log("Starting Kinyui alumni seed...");
