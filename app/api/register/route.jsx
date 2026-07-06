@@ -35,257 +35,63 @@ class DeviceTokenManager {
       if (!deviceToken) {
         return { valid: false, reason: 'no_device_token', message: 'Device token is required' };
       }
-
-      const adminParts = adminToken.split('.');
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
       if (adminParts.length !== 3) {
         return { valid: false, reason: 'invalid_admin_token_format', message: 'Invalid admin token format' };
-      }
+            <body style="margin:0; padding:0; font-family: Arial, sans-serif; background:#f5f5f5; color:#1f2937; line-height:1.6;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5; padding:24px 0;">
+                <tr>
+                  <td align="center">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; background:#ffffff; border:1px solid #e5e7eb;">
+                      <tr>
+                        <td style="padding:24px; background:#111827; color:#ffffff; text-align:center;">
+                          <h1 style="margin:0; font-size:22px; font-weight:700;">${SCHOOL_NAME}</h1>
+                          <p style="margin:8px 0 0; font-size:14px;">Administrator Account Registration</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:24px;">
+                          <h2 style="margin:0 0 12px; font-size:18px; color:#111827;">Administrator account created successfully.</h2>
+                          <p style="margin:0 0 16px; font-size:14px; color:#374151;">
+                            Welcome to the platform. Your administrator account has been registered successfully.
+                          </p>
+                          <p style="margin:0 0 16px; font-size:14px; color:#374151;">
+                            Dear ${user.name}, your account is now active and you can access the dashboard using your registered email.
+                          </p>
 
-      const deviceValid = this.validateDeviceToken(deviceToken);
-      if (!deviceValid.valid) {
-        return { 
-          valid: false, 
-          reason: `device_${deviceValid.reason}`,
-          message: `Device token ${deviceValid.reason}: ${deviceValid.error || ''}`
-        };
-      }
+                          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e5e7eb; margin:0 0 16px;">
+                            <tr>
+                              <td style="padding:10px; width:35%; font-size:13px; color:#6b7280; border-bottom:1px solid #e5e7eb;">Role</td>
+                              <td style="padding:10px; font-size:13px; color:#111827; border-bottom:1px solid #e5e7eb;">${user.role}</td>
+                            </tr>
+                            <tr>
+                              <td style="padding:10px; width:35%; font-size:13px; color:#6b7280;">Email</td>
+                              <td style="padding:10px; font-size:13px; color:#111827;">${user.email}</td>
+                            </tr>
+                          </table>
 
-      let adminPayload;
-      try {
-        adminPayload = JSON.parse(atob(adminParts[1]));
-        
-        const currentTime = Date.now() / 1000;
-        if (adminPayload.exp < currentTime) {
-          return { valid: false, reason: 'admin_token_expired', message: 'Admin token has expired' };
-        }
-        
-        const userRole = adminPayload.role || adminPayload.userRole;
-        // Only allow roles defined in Prisma enum UserRole
-        const validRoles = ['ADMIN', 'SUPER_ADMIN', 'USER'];
-        if (!userRole || !validRoles.includes(userRole.toUpperCase())) {
-          return { 
-            valid: false, 
-            reason: 'invalid_role', 
-            message: 'User does not have permission to manage resources' 
-          };
-        }
-        
-      } catch (error) {
-        return { valid: false, reason: 'invalid_admin_token', message: 'Invalid admin token' };
-      }
-
-      console.log('✅ Resource management authentication successful for user:', adminPayload.name || 'Unknown');
-      
-      return { 
-        valid: true, 
-        user: {
-          id: adminPayload.userId || adminPayload.id,
-          name: adminPayload.name,
-          email: adminPayload.email,
-          role: adminPayload.role || adminPayload.userRole
-        },
-        deviceInfo: deviceValid.payload
-      };
-
-    } catch (error) {
-      console.error('❌ Token validation error:', error);
-      return { 
-        valid: false, 
-        reason: 'validation_error', 
-        message: 'Authentication validation failed',
-        error: error.message 
-      };
-    }
-  }
-
-  static validateDeviceToken(token) {
-    try {
-      const payloadStr = Buffer.from(token, 'base64').toString('utf-8');
-      const payload = JSON.parse(payloadStr);
-      
-      if (payload.exp && payload.exp * 1000 <= Date.now()) {
-        return { valid: false, reason: 'expired', payload, error: 'Device token has expired' };
-      }
-      
-      const createdAt = new Date(payload.createdAt || payload.iat * 1000);
-      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-      
-      if (createdAt < thirtyDaysAgo) {
-        return { valid: false, reason: 'age_expired', payload, error: 'Device token is too old' };
-      }
-      
-      return { valid: true, payload };
-    } catch (error) {
-      return { valid: false, reason: 'invalid_format', error: error.message };
-    }
-  }
-}
-
-const authenticateRequest = (req) => {
-  const headers = req.headers;
-  
-  const validationResult = DeviceTokenManager.validateTokensFromHeaders(headers);
-  
-  if (!validationResult.valid) {
-    return {
-      authenticated: false,
-      response: NextResponse.json(
-        { 
-          success: false, 
-          error: "Access Denied",
-          message: "Authentication required to manage resources.",
-          details: validationResult.message
-        },
-        { status: 401 }
-      )
-    };
-  }
-
-  return {
-    authenticated: true,
-    user: validationResult.user,
-    deviceInfo: validationResult.devInfo
-  };
-};
-
-
-function getRegistrationSuccessTemplate(user) {
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-      <meta name="x-apple-disable-message-reformatting">
-      <title>Account Created - ${SCHOOL_NAME}</title>
-    </head>
-    <body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f1f5f9; line-height: 1.6; color: #1e293b; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
-      
-      <!-- Wrapper table for full-width background -->
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f1f5f9;">
-        <tr>
-          <td align="center" style="padding: 4% 3%;">
-            
-            <!-- Main container -->
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(15,23,42,0.08);">
-              
-              <!-- HEADER -->
-              <tr>
-                <td style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%); padding: 10% 6% 8%; text-align: center;">
-                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-                    <tr>
-                      <td align="center" style="padding-bottom: 12px;">
-                        <div style="display: inline-block; background: rgba(255,255,255,0.1); border-radius: 50%; width: 56px; height: 56px; line-height: 56px; text-align: center;">
-                          <span style="font-size: 28px;">🎓</span>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center">
-                        <h1 style="color: white; font-size: clamp(20px, 5.5vw, 28px); font-weight: 800; margin: 0 0 8px; line-height: 1.2; letter-spacing: -0.02em;">Welcome to ${SCHOOL_NAME}</h1>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center">
-                        <p style="color: rgba(255,255,255,0.85); font-size: clamp(13px, 3.5vw, 15px); margin: 0 0 14px; font-weight: 400;">Your Account Has Been Successfully Created</p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center">
-                        <span style="display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15); padding: 6px 18px; border-radius: 24px; font-size: clamp(10px, 2.5vw, 11px); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.95);">✓ Account Active</span>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              
-              <!-- CONTENT -->
-              <tr>
-                <td style="padding: 8% 6%;">
-                  
-                  <!-- Success Card -->
-                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #334155; margin-bottom: 6%;">
-                    <tr>
-                      <td style="padding: 6% 5%; text-align: center;">
-                        <span style="font-size: clamp(36px, 10vw, 48px); display: block; margin-bottom: 10px;">✅</span>
-                        <h2 style="color: #0f172a; font-size: clamp(17px, 4.5vw, 20px); font-weight: 700; margin: 0 0 6px; letter-spacing: -0.01em;">Welcome Aboard!</h2>
-                        <p style="color: #475569; font-size: clamp(13px, 3.5vw, 15px); margin: 0; line-height: 1.5;">Your account is now fully active and ready to use</p>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                  <!-- Welcome Text -->
-                  <p style="color: #334155; font-size: clamp(14px, 3.5vw, 16px); line-height: 1.7; margin: 0 0 6%;">
-                    Dear <strong>${user.name}</strong>,
-                    <br><br>
-                    Congratulations! Your staff account at ${SCHOOL_NAME} has been successfully created. You now have full access to the school management dashboard and all system privileges.
-                  </p>
-                  
-                  <!-- Info Cards -->
-                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 6%;">
-                    <tr>
-                      <td style="padding-bottom: 10px;">
-                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #475569;">
-                          <tr>
-                            <td style="padding: 5% 5%;">
-                              <p style="font-size: clamp(10px, 2.5vw, 11px); font-weight: 700; text-transform: uppercase; color: #475569; letter-spacing: 0.06em; margin: 0 0 6px;">👤 Account Role</p>
-                              <p style="font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; color: #0f172a; margin: 0; word-break: break-word;">${user.role}</p>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #475569;">
-                          <tr>
-                            <td style="padding: 5% 5%;">
-                              <p style="font-size: clamp(10px, 2.5vw, 11px); font-weight: 700; text-transform: uppercase; color: #475569; letter-spacing: 0.06em; margin: 0 0 6px;">📧 Email Address</p>
-                              <p style="font-size: clamp(14px, 3.5vw, 16px); font-weight: 700; color: #0f172a; margin: 0; word-break: break-word;">${user.email}</p>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                  <!-- Features Section -->
-                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #334155; margin-bottom: 6%;">
-                    <tr>
-                      <td style="padding: 6% 5%;">
-                        <h3 style="color: #0f172a; font-size: clamp(15px, 4vw, 17px); font-weight: 700; margin: 0 0 5%;">✨ Dashboard Features & Privileges</h3>
-                        
-                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-                          <tr>
-                            <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; font-size: clamp(13px, 3.2vw, 14px); color: #334155; line-height: 1.5;">
-                              <span style="font-size: 18px; margin-right: 8px; vertical-align: middle;">📊</span>
-                              <strong>Dashboard Access:</strong> Monitor school operations and statistics
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; font-size: clamp(13px, 3.2vw, 14px); color: #334155; line-height: 1.5;">
-                              <span style="font-size: 18px; margin-right: 8px; vertical-align: middle;">👨‍🎓</span>
-                              <strong>Student Management:</strong> Manage student records and information
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; font-size: clamp(13px, 3.2vw, 14px); color: #334155; line-height: 1.5;">
-                              <span style="font-size: 18px; margin-right: 8px; vertical-align: middle;">📝</span>
-                              <strong>Admissions:</strong> Handle admission applications and enrollment
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; font-size: clamp(13px, 3.2vw, 14px); color: #334155; line-height: 1.5;">
-                              <span style="font-size: 18px; margin-right: 8px; vertical-align: middle;">📅</span>
-                              <strong>Academic Calendar:</strong> Manage school events and schedules
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; font-size: clamp(13px, 3.2vw, 14px); color: #334155; line-height: 1.5;">
-                              <span style="font-size: 18px; margin-right: 8px; vertical-align: middle;">📢</span>
-                              <strong>Communications:</strong> Send announcements and newsletters
-                            </td>
-                          </tr>
+                          <p style="margin:0 0 10px; font-size:14px; color:#374151;">
+                            Dashboard URL:
+                            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://kinyuiboyssenior.school'}/MainDashboard" style="color:#1d4ed8; text-decoration:none;">
+                              Open Dashboard
+                            </a>
+                          </p>
+                          <p style="margin:0; font-size:13px; color:#6b7280;">
+                            Keep your login credentials secure and do not share them.
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:18px 24px; background:#f9fafb; border-top:1px solid #e5e7eb; font-size:12px; color:#6b7280; text-align:center;">
+                          <p style="margin:0 0 6px;">${SCHOOL_LOCATION}</p>
+                          <p style="margin:0 0 6px;">${SCHOOL_MOTTO}</p>
+                          <p style="margin:0;">${CONTACT_PHONE} | ${CONTACT_EMAIL}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
                           <tr>
                             <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; font-size: clamp(13px, 3.2vw, 14px); color: #334155; line-height: 1.5;">
                               <span style="font-size: 18px; margin-right: 8px; vertical-align: middle;">⚙️</span>
@@ -422,7 +228,7 @@ async function sendRegistrationEmail(user) {
         address: process.env.EMAIL_USER
       },
       to: user.email,
-      subject: `✅ Account Created Successfully - ${SCHOOL_NAME}`,
+      subject: `Administrator Account Created - ${SCHOOL_NAME}`,
       html: getRegistrationSuccessTemplate(user)
     };
 
@@ -568,7 +374,8 @@ export async function POST(request) {
     return NextResponse.json(
       {
         success: true,
-        message: 'User registered successfully',
+        message: 'Administrator account created successfully.',
+        welcomeMessage: 'Welcome to the platform. Your administrator account has been registered successfully.',
         user: sanitizeUser(user),
         token
         // createdBy: only included if authentication is enabled

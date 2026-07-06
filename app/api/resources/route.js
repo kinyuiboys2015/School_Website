@@ -1,14 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../libs/prisma";
-import cloudinary, { requireCloudinary } from "../../../libs/cloudinary";
-import { SCHOOL_COMMUNICATION_NUMBER } from "../../../libs/delivery";
-
-const DEFAULT_RESOURCE_SUBJECT = "General Studies";
-
-const cleanFormValue = (value) => {
-  const text = value?.toString().trim() || "";
-  return ["undefined", "null"].includes(text.toLowerCase()) ? "" : text;
-};
+import cloudinary from "../../../libs/cloudinary";
+import { cleanGeneratedFileName } from "../../../libs/displayNames";
 
 const decodeJwtPayload = (token) => {
   const payload = token.split('.')[1];
@@ -151,7 +144,6 @@ const authenticateRequest = (req) => {
 // FIXED: UPDATED to work EXACTLY like school-documents API
 const uploadFileToCloudinary = async (file) => {
   if (!file?.name || file.size === 0) return null;
-  requireCloudinary();
 
   try {
     const originalName = file.name;
@@ -256,7 +248,6 @@ const uploadMultipleFilesToCloudinary = async (files) => {
 // FIXED: Delete function updated for new folder structure
 const deleteFileFromCloudinary = async (fileUrl) => {
   if (!fileUrl) return;
-  requireCloudinary();
 
   try {
     // Extract public ID from URL - updated for new folder structure
@@ -341,22 +332,24 @@ const cleanResourceResponse = (resource) => {
     description: resource.description,
     category: resource.category,
     type: resource.type,
-    files: (resource.files || []).map(file => ({
-      url: file.url,
-      name: file.name,
-      size: file.size,
-      extension: file.extension || '.' + file.name.split('.').pop().toLowerCase(),
-      fileType: file.fileType || getFileType(file.name),
-      uploadedAt: file.uploadedAt,
-      formattedSize: formatFileSize(file.size || 0),
-      publicId: file.publicId,
-      format: file.format
-    })),
+    files: (resource.files || []).map(file => {
+      const displayName = cleanGeneratedFileName(file.name || file.url);
+      return {
+        url: file.url,
+        name: displayName,
+        size: file.size,
+        extension: file.extension || (displayName.includes('.') ? '.' + displayName.split('.').pop().toLowerCase() : ''),
+        fileType: file.fileType || getFileType(displayName),
+        uploadedAt: file.uploadedAt,
+        formattedSize: formatFileSize(file.size || 0),
+        publicId: file.publicId,
+        format: file.format
+      };
+    }),
     accessLevel: resource.accessLevel,
     uploadedBy: resource.uploadedBy,
     downloads: resource.downloads,
     isActive: resource.isActive,
-    senderReference: SCHOOL_COMMUNICATION_NUMBER,
     createdAt: resource.createdAt,
     updatedAt: resource.updatedAt
   };
@@ -365,33 +358,12 @@ const cleanResourceResponse = (resource) => {
 // ==================== API ENDPOINTS ====================
 
 // GET - Fetch all resources (PUBLIC)
-export async function GET(request) {
+export async function GET() {
   try {
-    const { searchParams } = new URL(request.url);
-    const subject = cleanFormValue(searchParams.get("subject"));
-    const className = cleanFormValue(searchParams.get("className"));
-    const category = cleanFormValue(searchParams.get("category"));
-    const accessLevel = cleanFormValue(searchParams.get("accessLevel"));
-    const isActiveParam = cleanFormValue(searchParams.get("isActive"));
-    const requestedLimit = Number.parseInt(searchParams.get("limit") || "", 10);
-    const limit = Number.isFinite(requestedLimit)
-      ? Math.min(Math.max(requestedLimit, 1), 250)
-      : undefined;
-
-    const where = {};
-    if (subject) where.subject = { contains: subject };
-    if (className) where.className = { contains: className };
-    if (category) where.category = { contains: category };
-    if (accessLevel) where.accessLevel = accessLevel;
-    if (["true", "false"].includes(isActiveParam.toLowerCase())) {
-      where.isActive = isActiveParam.toLowerCase() === "true";
-    }
     console.log("📥 GET /api/resources");
     
     const resources = await prisma.resource.findMany({
-      where,
       orderBy: { createdAt: "desc" },
-      ...(limit ? { take: limit } : {}),
     });
 
     const formattedResources = resources.map(cleanResourceResponse);
@@ -427,22 +399,21 @@ export async function POST(request) {
     const formData = await request.formData();
 
     // Get form fields
-    const actorName = auth.user.name || auth.user.email || "Admin";
-    const title = cleanFormValue(formData.get("title"));
-    const subject = cleanFormValue(formData.get("subject")) || DEFAULT_RESOURCE_SUBJECT;
-    const teacher = cleanFormValue(formData.get("teacher")) || actorName;
-    const className = cleanFormValue(formData.get("className"));
-    const description = cleanFormValue(formData.get("description"));
-    const category = cleanFormValue(formData.get("category")) || "general";
-    const accessLevel = cleanFormValue(formData.get("accessLevel")) || "student";
-    const uploadedBy = cleanFormValue(formData.get("uploadedBy")) || actorName;
+    const title = formData.get("title")?.trim() || "";
+    const subject = formData.get("subject")?.trim() || "";
+    const teacher = formData.get("teacher")?.trim() || "";
+    const className = formData.get("className")?.trim() || "";
+    const description = formData.get("description")?.trim() || "";
+    const category = formData.get("category")?.trim() || "general";
+    const accessLevel = formData.get("accessLevel")?.trim() || "student";
+    const uploadedBy = formData.get("uploadedBy")?.trim() || auth.user.name;
 
     // Validate required fields
-    if (!title || !className) {
+    if (!title || !subject || !teacher || !className) {
       return NextResponse.json(
         { 
           success: false, 
-          error: "Title and class name are required" 
+          error: "Title, subject, teacher, and class name are required" 
         },
         { status: 400 }
       );
@@ -487,7 +458,7 @@ export async function POST(request) {
     const mainType = determineMainTypeFromFiles(uploadedFiles);
 
     // Create resource in database
-    const resource = await prisma.resource.create({
+    const createdResource = await prisma.resource.create({
       data: {
         title,
         subject,
@@ -504,6 +475,7 @@ export async function POST(request) {
       },
     });
 
+    const resource = createdResource;
     console.log(`✅ Resource created with ID: ${resource.id}`);
 
     return NextResponse.json(

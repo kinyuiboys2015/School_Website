@@ -1,28 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../libs/prisma";
-import cloudinary, { requireCloudinary } from "../../../libs/cloudinary";
-import { SCHOOL_COMMUNICATION_NUMBER } from "../../../libs/delivery";
-
-const DEFAULT_ASSIGNMENT_SUBJECT = "General Studies";
-
-const cleanFormValue = (value) => {
-  const text = value?.toString().trim() || "";
-  return ["undefined", "null"].includes(text.toLowerCase()) ? "" : text;
-};
-
-const getDefaultDueDate = () => {
-  const dueDate = new Date();
-  dueDate.setDate(dueDate.getDate() + 7);
-  return dueDate;
-};
-
-const parseDateOrDefault = (value, fallback = getDefaultDueDate()) => {
-  const cleanValue = cleanFormValue(value);
-  if (!cleanValue) return fallback;
-
-  const parsedDate = new Date(cleanValue);
-  return Number.isNaN(parsedDate.getTime()) ? fallback : parsedDate;
-};
+import cloudinary from "../../../libs/cloudinary";
 
 const decodeJwtPayload = (token) => {
   const payload = token.split('.')[1];
@@ -164,7 +142,6 @@ const authenticateRequest = (req) => {
 // ==================== CLOUDINARY HELPERS (FIXED FOR EXTENSIONS) ====================
 const uploadFileToCloudinary = async (file, folder = "files") => {
   if (!file?.name || file.size === 0) return null;
-  requireCloudinary();
 
   try {
     const originalName = file.name;
@@ -267,7 +244,6 @@ const uploadMultipleFilesToCloudinary = async (files, folder = "files") => {
 
 const deleteFileFromCloudinary = async (fileUrl) => {
   if (!fileUrl) return;
-  requireCloudinary();
 
   try {
     // Extract full public ID including extension (FIXED for new folder structure)
@@ -450,8 +426,7 @@ const cleanAssignmentResponse = (assignment) => {
   return {
     ...assignment,
     assignmentFileAttachments,
-    attachmentAttachments,
-    senderReference: SCHOOL_COMMUNICATION_NUMBER
+    attachmentAttachments
   };
 };
 
@@ -468,22 +443,16 @@ export async function GET(request) {
     const className = searchParams.get('className');
     const teacher = searchParams.get('teacher');
     const status = searchParams.get('status');
-    const requestedLimit = Number.parseInt(searchParams.get('limit') || '', 10);
-    const limit = Number.isFinite(requestedLimit)
-      ? Math.min(Math.max(requestedLimit, 1), 250)
-      : undefined;
     
     const whereClause = {};
-    // MySQL string comparisons follow the configured database collation.
-    if (subject) whereClause.subject = { contains: subject };
-    if (className) whereClause.className = { contains: className };
-    if (teacher) whereClause.teacher = { contains: teacher };
+    if (subject) whereClause.subject = { contains: subject, mode: 'insensitive' };
+    if (className) whereClause.className = { contains: className, mode: 'insensitive' };
+    if (teacher) whereClause.teacher = { contains: teacher, mode: 'insensitive' };
     if (status) whereClause.status = status;
     
     const assignments = await prisma.assignment.findMany({
       where: whereClause,
       orderBy: { createdAt: "desc" },
-      ...(limit ? { take: limit } : {}),
     });
 
     const formattedAssignments = assignments.map(cleanAssignmentResponse);
@@ -520,27 +489,30 @@ export async function POST(request) {
     const formData = await request.formData();
 
     // Get form fields
-    const actorName = auth.user.name || auth.user.email || "Admin";
-    const title = cleanFormValue(formData.get("title"));
-    const subject = cleanFormValue(formData.get("subject")) || DEFAULT_ASSIGNMENT_SUBJECT;
-    const className = cleanFormValue(formData.get("className"));
-    const teacher = cleanFormValue(formData.get("teacher")) || actorName;
-    const dueDate = cleanFormValue(formData.get("dueDate"));
-    const status = cleanFormValue(formData.get("status")) || "pending";
-    const description = cleanFormValue(formData.get("description"));
-    const instructions = cleanFormValue(formData.get("instructions"));
-    const priority = cleanFormValue(formData.get("priority")) || "medium";
-    const estimatedTime = cleanFormValue(formData.get("estimatedTime"));
-    const additionalWork = cleanFormValue(formData.get("additionalWork"));
-    const teacherRemarks = cleanFormValue(formData.get("teacherRemarks"));
-    const learningObjectives = cleanFormValue(formData.get("learningObjectives"));
+    const title = formData.get("title")?.toString().trim() || "";
+    const subject = formData.get("subject")?.toString().trim() || "";
+    const className = formData.get("className")?.toString().trim() || "";
+    const teacher = formData.get("teacher")?.toString().trim() || auth.user.name;
+    const dueDate = formData.get("dueDate")?.toString();
+    const status = formData.get("status")?.toString() || "pending";
+    const description = formData.get("description")?.toString().trim() || "";
+    const instructions = formData.get("instructions")?.toString().trim() || "";
+    const priority = formData.get("priority")?.toString() || "medium";
+    const estimatedTime = formData.get("estimatedTime")?.toString().trim() || "";
+    const additionalWork = formData.get("additionalWork")?.toString().trim() || "";
+    const teacherRemarks = formData.get("teacherRemarks")?.toString().trim() || "";
+    const learningObjectives = formData.get("learningObjectives")?.toString();
+
+    // Calculate dueDate: use provided date or default to 7 days from today
+    const dateAssignedDate = new Date();
+    const calculatedDueDate = dueDate ? new Date(dueDate) : new Date(dateAssignedDate.getTime() + 7 * 24 * 60 * 60 * 1000);
 
     // Validate required fields
-    if (!title || !className) {
+    if (!title || !subject || !className || !teacher) {
       return NextResponse.json(
         { 
           success: false, 
-          error: "Title and class name are required" 
+          error: "Title, subject, class name, and teacher are required" 
         },
         { status: 400 }
       );
@@ -589,14 +561,14 @@ export async function POST(request) {
     }
 
     // FIX: Create assignment with dateAssigned field
-    const assignment = await prisma.assignment.create({
+    const createdAssignment = await prisma.assignment.create({
       data: {
         title,
         subject,
         className,
         teacher,
-        dueDate: parseDateOrDefault(dueDate),
-        dateAssigned: new Date(),
+        dueDate: calculatedDueDate,
+        dateAssigned: dateAssignedDate,
         status,
         description,
         instructions,
@@ -612,6 +584,7 @@ export async function POST(request) {
       },
     });
 
+    const assignment = createdAssignment;
     console.log(`✅ Assignment created with ID: ${assignment.id}`);
 
     return NextResponse.json(
